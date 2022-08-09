@@ -1,28 +1,22 @@
 <?php
 
 /**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
+ * Plugin Name:       Prestations
+ * Plugin URI:        https://magiiic.com/wordpress/plugins/prestations/
+ * Description:       Group WooCommerce orders that are related together into prestations, to handle them as a whole
+ * Version:           0.1.0
+ * Author:            Magiiic
+ * Author URI:        https://magiiic.com/
+ * License:           AGPLv3
+ * License URI:       http://www.gnu.org/licenses/agpl-3.0.txt
+ * Text Domain:       prestations
+ * Domain Path:       /languages
  *
  * @link              http://example.com
  * @since             0.1.0
  * @package           Prestations
  *
  * @wordpress-plugin
- * Plugin Name:       Prestations
- * Plugin URI:        https://magiiic.com/wordpress/plugins/prestations/
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
- * Version:           0.1.0
- * Author:            Magiiic
- * Author URI:        https://magiiic.com/
- * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       prestations
- * Domain Path:       /languages
  */
 
 // If this file is called directly, abort.
