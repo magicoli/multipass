@@ -1,0 +1,16 @@
+{
+    "name": "magicoli/prestations",
+    "description": "Prestations",
+    "type": "wordpress-plugin",
+    "license": "AGPLv3",
+    "authors": [
+        {
+            "name": "Olivier van Helden",
+            "email": "olivier@van-helden.net"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php-imap/php-imap": "^5.0"
+    }
+}
