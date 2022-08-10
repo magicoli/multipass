@@ -1,0 +1,268 @@
+<?php
+
+/**
+ * Register all actions and filters for the plugin
+ *
+ * @link       http://example.com
+ * @since      0.1.0
+ *
+ * @package    Prestations
+ * @subpackage Prestations/includes
+ */
+
+/**
+ * Register all actions and filters for the plugin.
+ *
+ * Maintain a list of all hooks that are registered throughout
+ * the plugin, and register them with the WordPress API. Call the
+ * run function to execute the list of actions and filters.
+ *
+ * @package    Prestations
+ * @subpackage Prestations/includes
+ * @author     Your Name <email@example.com>
+ */
+class Prestations_Mailbox {
+
+	/**
+	 * The array of actions registered with WordPress.
+	 *
+	 * @since    0.1.0
+	 * @access   protected
+	 * @var      array    $actions    The actions registered with WordPress to fire when the plugin loads.
+	 */
+	protected $actions;
+
+	/**
+	 * The array of filters registered with WordPress.
+	 *
+	 * @since    0.1.0
+	 * @access   protected
+	 * @var      array    $filters    The filters registered with WordPress to fire when the plugin loads.
+	 */
+	protected $filters;
+
+	/**
+	 * Initialize the collections used to maintain the actions and filters.
+	 *
+	 * @since    0.1.0
+	 */
+	public function __construct() {
+		// error_log(__FUNCTION__);
+		//
+	}
+
+	/**
+	 * Register the filters and actions with WordPress.
+	 *
+	 * @since    0.1.0
+	 */
+	public function run() {
+
+		$this->actions = array(
+			array(
+				'hook' => 'init',
+				'callback' => 'get_mails',
+			),
+		);
+
+		$this->filters = array(
+			array(
+				'hook' => 'rwmb_meta_boxes',
+				'callback' => 'register_settings_fields',
+			),
+		);
+
+		$defaults = array(
+			'component'     => __CLASS__,
+			'priority'      => 10,
+			'accepted_args' => 1,
+		);
+
+		foreach ( $this->filters as $hook ) {
+			$hook = array_merge($defaults, $hook);
+			add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
+		}
+
+		foreach ( $this->actions as $hook ) {
+			$hook = array_merge($defaults, $hook);
+			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
+		}
+
+	}
+
+	/**
+	 * Fetch mail from IMAP server
+	 *
+	 * TODO: make this as a background task. ASAP. I mean it!
+	 *
+	 * @return [type] [description]
+	 */
+	static function get_mails() {
+		$transient_key = sanitize_title(__CLASS__ . ' ' . __FUNCTION__);
+		if(get_transient($transient_key)) return;
+		set_transient($transient_key, true, get_option('prestations:imap_interval', 300));
+
+		// $server = Prestations::get_option(__CLASS__ . '::)
+		$server = Prestations::get_option('prestations:imap_server');
+		$username = Prestations::get_option('prestations:imap_username');
+		$port = Prestations::get_option('prestations:imap_port');
+		$enc = 'ssl'; // Prestations::get_option('prestations:imap_encryption');
+		$protocol = 'imap';
+		$password = Prestations::get_option('prestations:imap_password');
+		$folder = ''; // INBOX
+
+		// TODO: better sanitization, as PhpImap\Mailbox is not forgiving
+		if(empty($server)) return;
+		if(empty($username)) return;
+		if(empty($password)) return;
+
+		$mailbox = new PhpImap\Mailbox(
+			"{{$server}:$port/$protocol/$enc}$folder", // IMAP server and mailbox folder
+			$username, // Username for the before configured mailbox
+			$password, // Password for the before configured username
+			NULL, // Directory, where attachments will be saved (optional)
+			'UTF-8', // Server encoding (optional)
+			true, // Trim leading/ending whitespaces of IMAP path (optional)
+			false // Attachment filename mode (optional; false = random filename; true = original filename)
+		);
+
+		// set some connection arguments (if appropriate)
+		$mailbox->setConnectionArgs(
+			CL_EXPUNGE // expunge deleted mails upon mailbox close
+			// | OP_SECURE // don't do non-secure authentication
+		);
+
+		try {
+			// Get all emails (messages)
+			// PHP.net imap_search criteria: http://php.net/manual/en/function.imap-search.php
+
+			// After activation, we should at least once read them all
+			// $mail_ids = $mailbox->searchMailbox('ALL');
+
+			// On a regular basis, we only check unseen mails
+			$mail_ids = $mailbox->searchMailbox('UNSEEN');
+
+			// $mail_ids = $mailbox->searchMailbox('SUBJECT "part of the subject"');
+			//
+		} catch (PhpImap\Exceptions\ConnectionException $ex) {
+			error_log('IMAP connection failed: '.$ex->getMessage());
+			return;
+		} catch (PhpImap\Exceptions\Exception $ex) {
+			error_log('An error occured: '.$ex->getMessage());
+			return;
+		} catch (Exception $ex) {
+			error_log('An error occured, not cached by PhpImap: '.$ex->getMessage());
+			return;
+		}
+
+		$message = sprintf(
+			'Mailbox connected (%d mails)',
+			count($mail_ids),
+		) . "\n";
+		// If $mail_ids is empty, no emails could be found
+		if($mail_ids) {
+			// Get the first message
+			// If '__DIR__' was defined in the first line, it will automatically
+			// save all attachments to the specified directory
+			foreach($mail_ids as $mail_id) {
+				$mail = $mailbox->getMail($mail_id);
+
+				if (!empty($email->autoSubmitted)) {
+            // Mark email as "read" / "seen"
+            $mailbox->markMailAsRead($mail_id);
+            echo "+------ IGNORING: Auto-Reply ------+\n";
+						continue;
+        }
+
+        if (!empty($email_content->precedence)) {
+            // Mark email as "read" / "seen"
+            $mailbox->markMailAsRead($mail_id);
+            echo "+------ IGNORING: Non-Delivery Report/Receipt ------+\n";
+						continue;
+        }
+
+				// Show, if $mail has one or more attachments
+				// $message =  "\nMail has attachments? ";
+				// if($mail->hasAttachments()) {
+				// 	$message .= "Yes\n";
+				// } else {
+				// 	$message .= "No\n";
+				// }
+				//
+				// // Print all information of $mail
+				// $message .= print_r($mail->headers, true);
+				$message .= $mail_id . ' ' . $mail->headers->date . ' ' . $mail->headers->fromaddress . ' ' . $mail->headers->subject . "\n";
+				//
+				// // Print all attachements of $mail
+				// $message .= "\n\nAttachments:\n";
+				// $message .= print_r($mail->getAttachments(), true);
+				//
+			}
+			error_log($message);
+		}
+
+	}
+
+	static function register_settings_fields( $meta_boxes ) {
+		$prefix = 'imap_';
+
+		$meta_boxes[] = [
+			'title'          => __( 'Prestations Mail Settings', 'prestations' ),
+			'id'             => 'prestations-mail-settings',
+			'settings_pages' => ['prestations'],
+			'fields'         => [
+				[
+					'name'        => __( 'IMAP Server', 'prestations' ),
+					'id'          => $prefix . 'server',
+					'type'        => 'text',
+					'placeholder' => __( 'mail.example.org', 'prestations' ),
+					'size'        => 40,
+					'required'    => true,
+				],
+				[
+					'name'     => __( 'Port', 'prestations' ),
+					'id'       => $prefix . 'port',
+					'type'     => 'button_group',
+					'options'  => [
+						143 => __( '143', 'prestations' ),
+						993 => __( '993', 'prestations' ),
+					],
+					'std'      => 993,
+					'required' => true,
+				],
+				[
+					'name'     => __( 'Encryption', 'prestations' ),
+					'id'       => $prefix . 'encryption',
+					'type'     => 'button_group',
+					'options'  => [
+						'TLS/SSL' => __( 'TLS/SSL', 'prestations' ),
+					],
+					'std'      => 'TLS/SSL',
+					'required' => true,
+				],
+				[
+					'name'     => __( 'Username', 'prestations' ),
+					'id'       => $prefix . 'username',
+					'type'     => 'text',
+					'size'     => 40,
+					'required' => true,
+				],
+				[
+					'name'     => __( 'Password', 'prestations' ),
+					'id'       => $prefix . 'password',
+					'type'     => 'text',
+					'size'     => 40,
+					'required' => true,
+					],
+					[
+					'name' => __( 'Save Attachments', 'prestations' ),
+					'id'   => $prefix . 'attachments',
+					'type' => 'switch',
+				],
+			],
+		];
+
+		return $meta_boxes;
+	}
+
+}

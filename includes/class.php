@@ -122,10 +122,13 @@ class Prestations {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-public.php';
 
-
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-settings.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-mailbox.php';
 
 		$this->loader = new Prestations_Loader();
+		$this->loaders[] = new Prestations_Settings();
+		$this->loaders[] = new Prestations_Mailbox();
 
 	}
 
@@ -185,6 +188,11 @@ class Prestations {
 	 */
 	public function run() {
 		$this->loader->run();
+		if(!empty($this->loaders) && is_array($this->loaders)) {
+			foreach($this->loaders as $key => $loader) {
+				$this->loaders[$key]->run();
+			}
+		}
 	}
 
 	/**
@@ -218,4 +226,17 @@ class Prestations {
 		return $this->version;
 	}
 
+	static function get_option($option, $default = false) {
+		$settings_page = NULL;
+		$result = $default;
+		if(preg_match('/:/', $option)) {
+			$settings_page = strstr($option, ':', true);
+			$option = trim(strstr($option, ':'), ':');
+			$settings = get_option($settings_page);
+			if($settings && isset($settings[$option])) $result = $settings[$option];
+		} else {
+			$result = get_option($option, $default);
+		}
+		return $result;
+	}
 }
