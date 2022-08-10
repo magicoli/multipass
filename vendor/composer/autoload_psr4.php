@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'PhpImap\\' => array($vendorDir . '/php-imap/php-imap/src/PhpImap'),
+    'Composer\\Installers\\' => array($vendorDir . '/composer/installers/src/Composer/Installers'),
 );

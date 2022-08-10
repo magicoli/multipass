@@ -11,6 +11,23 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "php-imap/php-imap": "^5.0"
+        "php-imap/php-imap": "^5.0",
+        "wpmetabox/meta-box": "^5.6",
+        "meta-box/mb-settings-page": "dev-master",
+        "meta-box/meta-box-conditional-logic": "dev-master",
+        "meta-box/meta-box-columns": "dev-master",
+        "meta-box/mb-admin-columns": "dev-master"
+    },
+    "extra": {
+      "installer-types": ["library"],
+      "installer-paths": {
+        "vendor/meta-box/{$name}": ["vendor:wpmetabox","vendor:meta-box"],
+        "vendor/{$vendor}/{$name}": ["type:wordpress-plugin"]
+      }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
     }
 }

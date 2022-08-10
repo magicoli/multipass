@@ -4,12 +4,16 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit96caeb35395b6e41d80a60d4ec045175
+class ComposerStaticInitfe6292387e56d846764579a2c23c0495
 {
     public static $prefixLengthsPsr4 = array (
         'P' => 
         array (
             'PhpImap\\' => 8,
+        ),
+        'C' => 
+        array (
+            'Composer\\Installers\\' => 20,
         ),
     );
 
@@ -17,6 +21,10 @@ class ComposerStaticInit96caeb35395b6e41d80a60d4ec045175
         'PhpImap\\' => 
         array (
             0 => __DIR__ . '/..' . '/php-imap/php-imap/src/PhpImap',
+        ),
+        'Composer\\Installers\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
         ),
     );
 
@@ -27,9 +35,9 @@ class ComposerStaticInit96caeb35395b6e41d80a60d4ec045175
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit96caeb35395b6e41d80a60d4ec045175::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit96caeb35395b6e41d80a60d4ec045175::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit96caeb35395b6e41d80a60d4ec045175::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitfe6292387e56d846764579a2c23c0495::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitfe6292387e56d846764579a2c23c0495::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitfe6292387e56d846764579a2c23c0495::$classMap;
 
         }, null, ClassLoader::class);
     }
