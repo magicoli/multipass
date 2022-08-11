@@ -61,7 +61,7 @@ class Prestations_Mailbox {
 		$this->actions = array(
 			array(
 				'hook' => 'init',
-				'callback' => 'get_mails',
+				'callback' => 'self::background_process',
 			),
 		);
 
@@ -90,6 +90,68 @@ class Prestations_Mailbox {
 
 	}
 
+	static function register_settings_fields( $meta_boxes ) {
+		$prefix = 'imap_';
+
+		$meta_boxes[] = [
+			'title'          => __( 'Prestations Mail Settings', 'prestations' ),
+			'id'             => 'prestations-mail-settings',
+			'settings_pages' => ['prestations'],
+			'fields'         => [
+				[
+					'name'        => __( 'IMAP Server', 'prestations' ),
+					'id'          => $prefix . 'server',
+					'type'        => 'text',
+					'placeholder' => __( 'mail.example.org', 'prestations' ),
+					'size'        => 40,
+					'required'    => true,
+				],
+				[
+					'name'     => __( 'Port', 'prestations' ),
+					'id'       => $prefix . 'port',
+					'type'     => 'button_group',
+					'options'  => [
+						143 => __( '143', 'prestations' ),
+						993 => __( '993', 'prestations' ),
+					],
+					'std'      => 993,
+					'required' => true,
+				],
+				[
+					'name'     => __( 'Encryption', 'prestations' ),
+					'id'       => $prefix . 'encryption',
+					'type'     => 'button_group',
+					'options'  => [
+						'TLS/SSL' => __( 'TLS/SSL', 'prestations' ),
+					],
+					'std'      => 'TLS/SSL',
+					'required' => true,
+				],
+				[
+					'name'     => __( 'Username', 'prestations' ),
+					'id'       => $prefix . 'username',
+					'type'     => 'text',
+					'size'     => 40,
+					'required' => true,
+				],
+				[
+					'name'     => __( 'Password', 'prestations' ),
+					'id'       => $prefix . 'password',
+					'type'     => 'text',
+					'size'     => 40,
+					'required' => true,
+					],
+					[
+					'name' => __( 'Save Attachments', 'prestations' ),
+					'id'   => $prefix . 'attachments',
+					'type' => 'switch',
+				],
+			],
+		];
+
+		return $meta_boxes;
+	}
+
 	/**
 	 * Fetch mail from IMAP server
 	 *
@@ -97,10 +159,11 @@ class Prestations_Mailbox {
 	 *
 	 * @return [type] [description]
 	 */
-	static function get_mails() {
-		$transient_key = sanitize_title(__CLASS__ . ' ' . __FUNCTION__);
-		if(get_transient($transient_key)) return;
-		set_transient($transient_key, true, get_option('prestations:imap_interval', 300));
+	static function fetch_mails() {
+		error_log(__CLASS__ . ' ' . __FUNCTION__ . "()");
+		// $transient_key = sanitize_title(__CLASS__ . ' ' . __FUNCTION__);
+		// if(get_transient($transient_key)) return;
+		// set_transient($transient_key, 'processing', get_option('prestations:imap_interval', 300));
 
 		// $server = Prestations::get_option(__CLASS__ . '::)
 		$server = Prestations::get_option('prestations:imap_server');
@@ -203,66 +266,86 @@ class Prestations_Mailbox {
 
 	}
 
-	static function register_settings_fields( $meta_boxes ) {
-		$prefix = 'imap_';
+	function background_process() {
+		$this->background_queue = new Prestations_Mailbox_Process();
 
-		$meta_boxes[] = [
-			'title'          => __( 'Prestations Mail Settings', 'prestations' ),
-			'id'             => 'prestations-mail-settings',
-			'settings_pages' => ['prestations'],
-			'fields'         => [
-				[
-					'name'        => __( 'IMAP Server', 'prestations' ),
-					'id'          => $prefix . 'server',
-					'type'        => 'text',
-					'placeholder' => __( 'mail.example.org', 'prestations' ),
-					'size'        => 40,
-					'required'    => true,
-				],
-				[
-					'name'     => __( 'Port', 'prestations' ),
-					'id'       => $prefix . 'port',
-					'type'     => 'button_group',
-					'options'  => [
-						143 => __( '143', 'prestations' ),
-						993 => __( '993', 'prestations' ),
-					],
-					'std'      => 993,
-					'required' => true,
-				],
-				[
-					'name'     => __( 'Encryption', 'prestations' ),
-					'id'       => $prefix . 'encryption',
-					'type'     => 'button_group',
-					'options'  => [
-						'TLS/SSL' => __( 'TLS/SSL', 'prestations' ),
-					],
-					'std'      => 'TLS/SSL',
-					'required' => true,
-				],
-				[
-					'name'     => __( 'Username', 'prestations' ),
-					'id'       => $prefix . 'username',
-					'type'     => 'text',
-					'size'     => 40,
-					'required' => true,
-				],
-				[
-					'name'     => __( 'Password', 'prestations' ),
-					'id'       => $prefix . 'password',
-					'type'     => 'text',
-					'size'     => 40,
-					'required' => true,
-					],
-					[
-					'name' => __( 'Save Attachments', 'prestations' ),
-					'id'   => $prefix . 'attachments',
-					'type' => 'switch',
-				],
-			],
-		];
+ 		$action = __CLASS__ . '::fetch_mails';
+		if(get_transient('Prestations_Mailbox_wait')) return;
+		set_transient('Prestations_Mailbox_wait', true, 30);
 
-		return $meta_boxes;
+		$this->background_queue->push_to_queue(__CLASS__ . '::fetch_mails');
+
+		$this->background_queue->save()->dispatch();
+
+		// One-off task:
+		//
+		// $this->background_request = new Prestations_Mailbox_Request();
+		// $this->background_request->data( array( 'value1' => $value1, 'value2' => $value2 ) );
+		// $this->background_request->dispatch();
+	}
+
+}
+
+class Prestations_Mailbox_Request extends WP_Async_Request {
+
+	/**
+	 * @var string
+	 */
+	protected $action = 'background_request';
+
+	/**
+	 * Handle
+	 *
+	 * Override this method to perform any actions required
+	 * during the async request.
+	 */
+	protected function handle() {
+		// Actions to perform
+	}
+
+}
+
+class Prestations_Mailbox_Process extends WP_Background_Process {
+
+	/**
+	 * @var string
+	 */
+	protected $action = 'background_process';
+
+	/**
+	 * Task
+	 *
+	 * Override this method to perform any actions required on each
+	 * queue item. Return the modified item for further processing
+	 * in the next pass through. Or, return false to remove the
+	 * item from the queue.
+	 *
+	 * @param mixed $item Queue item to iterate over
+	 *
+	 * @return mixed
+	 */
+	protected function task( $item ) {
+		set_transient('Prestations_Mailbox_wait', true, 0);
+
+		error_log(__CLASS__ . ' ' . __FUNCTION__ . "($item)");
+		call_user_func($item);
+
+		set_transient('Prestations_Mailbox_wait', true, 30);
+
+		return false; // Don't change this, false prevents running it forever
+	}
+
+	/**
+	 * Complete
+	 *
+	 * Override if applicable, but ensure that the below actions are
+	 * performed, or, call parent::complete().
+	 */
+	protected function complete() {
+		parent::complete();
+
+		error_log(__CLASS__ . ' ' . __FUNCTION__ . "() " . print_r($this, true));
+		// Show notice to user or perform some other arbitrary task...
 	}
 
 }
