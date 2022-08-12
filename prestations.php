@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Plugin Name:       Prestations
+ * Plugin Name:       Prestations (dev)
  * Plugin URI:        https://magiiic.com/wordpress/plugins/prestations/
  * Description:       Group WooCommerce orders that are related together into prestations, to handle them as a whole
- * Version:           0.1.0
+ * Version:           0.1.0.x-dev
  * Author:            Magiiic
  * Author URI:        https://magiiic.com/
  * License:           AGPLv3
@@ -29,7 +29,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'PRESTATIONS_VERSION', '1.0.0' );
+define( 'PRESTATIONS_VERSION', '0.1.0.x-dev');
 
 /**
  * The code that runs during plugin activation.
