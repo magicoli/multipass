@@ -543,6 +543,29 @@ class Prestations_Prestation {
 			],
 		];
 		register_taxonomy( 'prestation-status', ['prestation'], $args );
+
+		$terms = [
+			[
+				'slug' => 'pending',
+				'name' => __('Pending', 'prestations'),
+			],
+			[
+				'slug' => 'unpaid',
+				'name' => __('Unpaid', 'prestations'),
+			],
+			[
+				'slug' => 'partial',
+				'name' => __('Partial Payment', 'prestations'),
+			],
+			[
+				'slug' => 'paid',
+				'name' => __('Paid', 'prestations'),
+			],
+		];
+
+		foreach($terms as $term) {
+			wp_insert_term( $term['name'], 'prestation-status', [ 'slug' => $term['slug']] );
+		}
 	}
 
 	static function get_available_items() {
