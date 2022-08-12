@@ -138,6 +138,11 @@ class Prestations_Prestation {
 				'hook' => 'rwmb_meta_boxes',
 				'callback' => 'register_fields'
 			),
+			array(
+				'hook' => 'term_link',
+				'callback' => 'term_link_filter',
+				'accepted_args' => 3,
+			),
 		);
 
 		foreach ( $filters as $hook ) {
@@ -231,6 +236,7 @@ class Prestations_Prestation {
 			'post_types' => ['prestation'],
 			'context'    => 'after_title',
 			'style'      => 'seamless',
+			'autosave'   => true,
 			'fields'     => [
 				[
 					'name'          => __( 'Customer', 'prestations' ),
@@ -294,19 +300,6 @@ class Prestations_Prestation {
 					'placeholder'   => __( 'Select an order', 'prestations' ),
 					'admin_columns' => 'after prestation_customer_name',
 				],
-				[
-					'name'           => __( 'Status', 'prestations' ),
-					'id'             => $prefix . 'status',
-					'type'           => 'taxonomy',
-					'taxonomy'       => ['prestation-status'],
-					'field_type'     => 'select',
-					'remove_default' => true,
-					'admin_columns'  => [
-						'position'   => 'before date',
-						'sort'       => true,
-						'filterable' => true,
-					],
-				],
 			],
 		];
 
@@ -351,9 +344,9 @@ class Prestations_Prestation {
 			],
 		];
 
-		$prefix = 'prestation_balance_';
+		$prefix = 'prestation_';
 		$meta_boxes[] = [
-			'title'      => __( 'Payments', 'your-text-domain' ),
+			'title'      => __( 'Payments', 'prestations' ),
 			'id'         => 'prestation-payments',
 			'post_types' => ['prestation'],
 			'fields'     => [
@@ -363,34 +356,34 @@ class Prestations_Prestation {
 					'clone'  => true,
 					'fields' => [
 						[
-							'name'    => __( 'Payment ID', 'your-text-domain' ),
+							'name'    => __( 'Payment ID', 'prestations' ),
 							'id'      => $prefix . 'payment_id',
 							'type'    => 'select_advanced',
 							'options' => self::get_available_payments(),
 							'columns' => 2,
 						],
 						[
-							'name'    => __( 'Type', 'your-text-domain' ),
+							'name'    => __( 'Type', 'prestations' ),
 							'id'      => $prefix . 'type',
 							'type'    => 'select',
 							'options' => [
-								'cash'        => __( 'Cash', 'your-text-domain' ),
-								'wire'        => __( 'Wire Transfer', 'your-text-domain' ),
-								'order'       => __( 'WooCommerce Order', 'your-text-domain' ),
-								'hbook'       => __( 'HBook Order', 'your-text-domain' ),
-								'booking_com' => __( 'Booking.com', 'your-text-domain' ),
-								'airbnb'      => __( 'Airbnb', 'your-text-domain' ),
+								'cash'        => __( 'Cash', 'prestations' ),
+								'wire'        => __( 'Wire Transfer', 'prestations' ),
+								'order'       => __( 'WooCommerce Order', 'prestations' ),
+								'hbook'       => __( 'HBook Order', 'prestations' ),
+								'booking_com' => __( 'Booking.com', 'prestations' ),
+								'airbnb'      => __( 'Airbnb', 'prestations' ),
 							],
 							'columns' => 2,
 						],
 						[
-							'name'    => __( 'Reference', 'your-text-domain' ),
+							'name'    => __( 'Reference', 'prestations' ),
 							'id'      => $prefix . 'reference',
 							'type'    => 'text',
 							'columns' => 3,
 						],
 						[
-							'name'    => __( 'Amount', 'your-text-domain' ),
+							'name'    => __( 'Amount', 'prestations' ),
 							'id'      => $prefix . 'amount',
 							'type'    => 'number',
 							'columns' => 2,
@@ -400,6 +393,7 @@ class Prestations_Prestation {
 			],
 		];
 
+		$prefix = 'prestation_balance_';
 		$meta_boxes[] = [
 			'title'      => __( 'Balance', 'prestations' ),
 			'id'         => 'prestation-balance',
@@ -407,36 +401,52 @@ class Prestations_Prestation {
 			'context'    => 'side',
 			'fields'     => [
 				[
+					'name'           => __( 'Status', 'prestations' ),
+					'id'             => 'prestation_status',
+					'type'           => 'taxonomy',
+					'taxonomy'       => ['prestation-status'],
+					'field_type'     => 'select',
+					// 'disabled' => true,
+					'readonly' => true,
+					// 'save_field' => false,
+					// 'placeholder' => ' ',
+					'remove_default' => true,
+					'admin_columns'  => [
+						'position' => 'after prestation_date_to',
+						// 'sort'       => true,
+						'filterable' => true,
+					],
+				],
+				[
 					'name'          => __( 'Total', 'prestations' ),
 					'id'            => $prefix . 'total',
 					'type'          => 'custom_html',
-					'callback'      => 'get_balance_total',
-					'admin_columns' => 'before date',
+					'callback'      => 'Prestations_Prestation::get_balance_total',
 				],
 				[
 					'name'     => __( 'Deposit %', 'prestations' ),
 					'id'       => $prefix . 'deposit_percent',
 					'type'     => 'custom_html',
-					'callback' => 'get_balance_deposit_percent',
+					'callback' => 'Prestations_Prestation::get_balance_deposit_percent',
 				],
 				[
 					'name'     => __( 'Deposit', 'prestations' ),
 					'id'       => $prefix . 'deposit',
 					'type'     => 'custom_html',
-					'callback' => 'get_balance_deposit',
+					'callback' => 'Prestations_Prestation::get_balance_deposit',
 				],
 				[
 					'name'          => __( 'Paid', 'prestations' ),
 					'id'            => $prefix . 'paid',
 					'type'          => 'custom_html',
-					'callback'      => 'get_balance_paid',
+					'callback'      => 'Prestations_Prestation::get_balance_paid',
 					'admin_columns' => 'after prestation_balance_total',
 				],
 				[
 					'name'          => __( 'Due', 'prestations' ),
 					'id'            => $prefix . 'due',
 					'type'          => 'custom_html',
-					'callback'      => 'get_balance_due',
+					'callback'      => 'Prestations_Prestation::get_balance_due',
 					'admin_columns' => 'after prestation_balance_paid',
 				],
 			],
@@ -505,7 +515,7 @@ class Prestations_Prestation {
 			'items_list'                 => esc_html__( 'Prestation statuses list', 'prestations' ),
 			'most_used'                  => esc_html__( 'Most Used', 'prestations' ),
 			'back_to_items'              => esc_html__( 'Back to prestation statuses', 'prestations' ),
-			'text_domain'                => esc_html__( 'prestations', 'prestations' ),
+			'text_domain'                => 'prestations',
 		];
 		$args = [
 			'label'              => esc_html__( 'Prestation statuses', 'prestations' ),
@@ -541,4 +551,46 @@ class Prestations_Prestation {
 	static function get_available_payments() {
 		return [];
 	}
+
+	static function get_balance_total($args = []) {
+		global $post;
+		$amount = 0;
+		error_log(__FUNCTION__ . ' ' . print_r($post, true));
+		return wc_price($amount);
+	}
+
+	static function get_balance_deposit($args = []) {
+		global $post;
+		$amount = 0;
+		return wc_price($amount);
+	}
+
+	static function get_balance_paid($args = []) {
+		global $post;
+		$amount = 0;
+		return wc_price($amount);
+	}
+
+	static function get_balance_due($args = []) {
+		global $post;
+		$amount = 0;
+		return wc_price($amount);
+	}
+
+	static function get_balance_deposit_percent($args = []) {
+		global $post;
+		$percent = 0;
+		error_log(__FUNCTION__ . ' ' . print_r($post, true));
+		return number_format_i18n($number, 2) . '%';
+	}
+
+	static function term_link_filter ( $termlink, $term, $taxonomy ) {
+		if ( 'prestation-status' === $taxonomy ) {
+			return add_query_arg( array(
+				'prestation-status' => $term->slug,
+			), admin_url(sprintf(basename($_SERVER['REQUEST_URI']))) );
+		}
+		return $termlink;
+	}
+
 }
