@@ -405,7 +405,8 @@ class Prestations_Prestation {
 					'id'             => 'prestation_status',
 					'type'           => 'taxonomy',
 					'taxonomy'       => ['prestation-status'],
-					'field_type'     => 'select',
+					'field_type'     => 'custom_html',
+					'callback' => __CLASS__ . '::display_prestation_status',
 					// 'disabled' => true,
 					'readonly' => true,
 					// 'save_field' => false,
@@ -555,7 +556,6 @@ class Prestations_Prestation {
 	static function get_balance_total($args = []) {
 		global $post;
 		$amount = 0;
-		error_log(__FUNCTION__ . ' ' . print_r($post, true));
 		return wc_price($amount);
 	}
 
@@ -580,8 +580,7 @@ class Prestations_Prestation {
 	static function get_balance_deposit_percent($args = []) {
 		global $post;
 		$percent = 0;
-		error_log(__FUNCTION__ . ' ' . print_r($post, true));
-		return number_format_i18n($number, 2) . '%';
+		if($percent > 0) return number_format_i18n($percent, 0) . '%';
 	}
 
 	static function term_link_filter ( $termlink, $term, $taxonomy ) {
@@ -593,4 +592,20 @@ class Prestations_Prestation {
 		return $termlink;
 	}
 
+	static function display_prestation_status() {
+		$status = NULL;
+		global $post;
+		$terms = get_the_terms($post, 'prestation-status');
+		if(is_array($terms) && isset($terms[0])) {
+			$term = $terms[0];
+			if(!empty($term)) return sprintf(
+				'<span class="%1$s-status-box status-%2$s">%3$s</span>',
+				$post->post_type,
+				$term->slug,
+				$term->name,
+			);
+		}
+
+		return $status;
+	}
 }
