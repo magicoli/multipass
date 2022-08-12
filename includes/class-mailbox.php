@@ -99,12 +99,23 @@ class Prestations_Mailbox {
 			'settings_pages' => ['prestations'],
 			'fields'         => [
 				[
+						'name'              => __( 'Email Processing', 'prestations' ),
+						'id'                => $prefix . 'email_processing',
+						'type'              => 'switch',
+						'label_description' => __( 'Add received emails to prestation messages', 'prestations' ),
+						'style'             => 'rounded',
+				],
+				[
 					'name'        => __( 'IMAP Server', 'prestations' ),
 					'id'          => $prefix . 'server',
 					'type'        => 'text',
 					'placeholder' => __( 'mail.example.org', 'prestations' ),
 					'size'        => 40,
 					'required'    => true,
+					'visible'     => [
+							'when'     => [['email_processing', '=', 1]],
+							'relation' => 'or',
+					],
 				],
 				[
 					'name'     => __( 'Port', 'prestations' ),
@@ -116,6 +127,10 @@ class Prestations_Mailbox {
 					],
 					'std'      => 993,
 					'required' => true,
+					'visible'     => [
+							'when'     => [['email_processing', '=', 1]],
+							'relation' => 'or',
+					],
 				],
 				[
 					'name'     => __( 'Encryption', 'prestations' ),
@@ -126,6 +141,10 @@ class Prestations_Mailbox {
 					],
 					'std'      => 'TLS/SSL',
 					'required' => true,
+					'visible'     => [
+							'when'     => [['email_processing', '=', 1]],
+							'relation' => 'or',
+					],
 				],
 				[
 					'name'     => __( 'Username', 'prestations' ),
@@ -133,6 +152,10 @@ class Prestations_Mailbox {
 					'type'     => 'text',
 					'size'     => 40,
 					'required' => true,
+					'visible'     => [
+							'when'     => [['email_processing', '=', 1]],
+							'relation' => 'or',
+					],
 				],
 				[
 					'name'     => __( 'Password', 'prestations' ),
@@ -140,11 +163,19 @@ class Prestations_Mailbox {
 					'type'     => 'text',
 					'size'     => 40,
 					'required' => true,
+					'visible'     => [
+							'when'     => [['email_processing', '=', 1]],
+							'relation' => 'or',
 					],
-					[
+				],
+				[
 					'name' => __( 'Save Attachments', 'prestations' ),
 					'id'   => $prefix . 'attachments',
 					'type' => 'switch',
+					'visible'     => [
+							'when'     => [['email_processing', '=', 1]],
+							'relation' => 'or',
+					],
 				],
 			],
 		];
@@ -273,6 +304,7 @@ class Prestations_Mailbox {
 		if(get_transient('Prestations_Mailbox_wait')) return;
 		set_transient('Prestations_Mailbox_wait', true, 30);
 
+		if(Prestations::get_option('prestations:email_processing', false))
 		$this->background_queue->push_to_queue(__CLASS__ . '::fetch_mails');
 
 		$this->background_queue->save()->dispatch();

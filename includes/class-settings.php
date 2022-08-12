@@ -147,14 +147,27 @@ class Prestations_Settings {
 	}
 
 	static function register_settings_pages( $settings_pages ) {
+		// $settings_pages[] = [
+		// 	'menu_title'    => __( 'Prestations', 'prestations' ),
+		// 	'id'            => 'prestations',
+		// 	'position'      => 15,
+		// 	'submenu_title' => 'Settings',
+		// 	'capability'    => 'manage_options',
+		// 	'style'         => 'no-boxes',
+		// 	'columns'       => 1,
+		// 	'icon_url'      => 'dashicons-book',
+		// ];
+
 		$settings_pages[] = [
-			'menu_title'    => __( 'Prestations', 'prestations' ),
+			'menu_title'    => __( 'Settings', 'prestations' ),
 			'id'            => 'prestations',
-			'position'      => 15,
+			'option_name'   => 'Prestations Settings',
+			// 'position'      => 23,
 			'submenu_title' => 'Settings',
+			'parent'        => 'edit.php?post_type=prestation',
+			// 'parent'        => 'prestation',
 			'capability'    => 'manage_options',
 			'style'         => 'no-boxes',
-			'columns'       => 1,
 			'icon_url'      => 'dashicons-book',
 		];
 

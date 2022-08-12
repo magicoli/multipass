@@ -123,10 +123,12 @@ class Prestations {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-public.php';
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-cpt-prestation.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-settings.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-mailbox.php';
 
 		$this->loader = new Prestations_Loader();
+		$this->loaders[] = new Prestations_Prestation();
 		$this->loaders[] = new Prestations_Settings();
 		$this->loaders[] = new Prestations_Mailbox();
 
