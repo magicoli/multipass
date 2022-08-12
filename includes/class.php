@@ -247,4 +247,10 @@ class Prestations {
 		}
 		return $result;
 	}
+
+	static function is_new_post($args = null){
+	    global $pagenow;
+	    return ( is_admin() && in_array( $pagenow, array( 'post-new.php' ) ));
+	}
+
 }
