@@ -66,6 +66,10 @@ class Prestations_Mailbox {
 		);
 
 		$this->filters = array(
+			array (
+				'hook' => 'mb_settings_pages',
+				'callback' => 'register_settings_pages',
+			),
 			array(
 				'hook' => 'rwmb_meta_boxes',
 				'callback' => 'register_settings_fields',
@@ -90,32 +94,28 @@ class Prestations_Mailbox {
 
 	}
 
+	static function register_settings_pages( $settings_pages ) {
+		$settings_pages['prestations']['tabs']['imap'] = 'IMAP';
+
+		return $settings_pages;
+	}
+
 	static function register_settings_fields( $meta_boxes ) {
 		$prefix = 'imap_';
 
 		$meta_boxes[] = [
-			'title'          => __( 'Prestations Mail Settings', 'prestations' ),
+			'title'          => __( 'IMAP Settings', 'prestations' ),
 			'id'             => 'prestations-mail-settings',
 			'settings_pages' => ['prestations'],
+			'tab'            => 'imap',
 			'fields'         => [
-				[
-						'name'              => __( 'Email Processing', 'prestations' ),
-						'id'                => $prefix . 'email_processing',
-						'type'              => 'switch',
-						'label_description' => __( 'Add received emails to prestation messages', 'prestations' ),
-						'style'             => 'rounded',
-				],
 				[
 					'name'        => __( 'IMAP Server', 'prestations' ),
 					'id'          => $prefix . 'server',
 					'type'        => 'text',
 					'placeholder' => __( 'mail.example.org', 'prestations' ),
 					'size'        => 40,
-					'required'    => true,
-					'visible'     => [
-							'when'     => [['email_processing', '=', 1]],
-							'relation' => 'or',
-					],
+					'required'    => false,
 				],
 				[
 					'name'     => __( 'Port', 'prestations' ),
@@ -126,11 +126,7 @@ class Prestations_Mailbox {
 						993 => __( '993', 'prestations' ),
 					],
 					'std'      => 993,
-					'required' => true,
-					'visible'     => [
-							'when'     => [['email_processing', '=', 1]],
-							'relation' => 'or',
-					],
+					'required' => false,
 				],
 				[
 					'name'     => __( 'Encryption', 'prestations' ),
@@ -140,42 +136,26 @@ class Prestations_Mailbox {
 						'TLS/SSL' => __( 'TLS/SSL', 'prestations' ),
 					],
 					'std'      => 'TLS/SSL',
-					'required' => true,
-					'visible'     => [
-							'when'     => [['email_processing', '=', 1]],
-							'relation' => 'or',
-					],
+					'required' => false,
 				],
 				[
 					'name'     => __( 'Username', 'prestations' ),
 					'id'       => $prefix . 'username',
 					'type'     => 'text',
 					'size'     => 40,
-					'required' => true,
-					'visible'     => [
-							'when'     => [['email_processing', '=', 1]],
-							'relation' => 'or',
-					],
+					'required' => false,
 				],
 				[
 					'name'     => __( 'Password', 'prestations' ),
 					'id'       => $prefix . 'password',
 					'type'     => 'text',
 					'size'     => 40,
-					'required' => true,
-					'visible'     => [
-							'when'     => [['email_processing', '=', 1]],
-							'relation' => 'or',
-					],
+					'required' => false,
 				],
 				[
 					'name' => __( 'Save Attachments', 'prestations' ),
 					'id'   => $prefix . 'attachments',
 					'type' => 'switch',
-					'visible'     => [
-							'when'     => [['email_processing', '=', 1]],
-							'relation' => 'or',
-					],
 				],
 			],
 		];

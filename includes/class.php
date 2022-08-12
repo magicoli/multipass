@@ -122,15 +122,19 @@ class Prestations {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-public.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-cpt-prestation.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-settings.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-mailbox.php';
-
 		$this->loader = new Prestations_Loader();
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-cpt-prestation.php';
 		$this->loaders[] = new Prestations_Prestation();
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-settings.php';
 		$this->loaders[] = new Prestations_Settings();
-		$this->loaders[] = new Prestations_Mailbox();
+
+		if( Prestations::get_option('prestations:enable_email_processing') == true) {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-mailbox.php';
+			$this->loaders[] = new Prestations_Mailbox();
+		}
 
 	}
 
@@ -235,7 +239,9 @@ class Prestations {
 			$settings_page = strstr($option, ':', true);
 			$option = trim(strstr($option, ':'), ':');
 			$settings = get_option($settings_page);
-			if($settings && isset($settings[$option])) $result = $settings[$option];
+			if($settings && isset($settings[$option])) {
+				$result = $settings[$option];
+			}
 		} else {
 			$result = get_option($option, $default);
 		}

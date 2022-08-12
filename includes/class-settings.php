@@ -124,10 +124,10 @@ class Prestations_Settings {
 				'hook' => 'mb_settings_pages',
 				'callback' => 'register_settings_pages',
 			),
-			// array (
-			// 	'hook' => 'rwmb_meta_boxes',
-			// 	'callback' => 'register_settings_fields'
-			// ),
+			array (
+				'hook' => 'rwmb_meta_boxes',
+				'callback' => 'register_settings_fields'
+			),
 		);
 
 		foreach ( $filters as $hook ) {
@@ -158,20 +158,44 @@ class Prestations_Settings {
 		// 	'icon_url'      => 'dashicons-book',
 		// ];
 
-		$settings_pages[] = [
+		$settings_pages['prestations'] = [
 			'menu_title'    => __( 'Settings', 'prestations' ),
 			'id'            => 'prestations',
-			'option_name'   => 'Prestations Settings',
+			'option_name'   => 'prestations',
 			// 'position'      => 23,
 			'submenu_title' => 'Settings',
 			'parent'        => 'edit.php?post_type=prestation',
-			// 'parent'        => 'prestation',
 			'capability'    => 'manage_options',
 			'style'         => 'no-boxes',
+			'columns'       => 2,
+			'tabs'          => [
+				'general' => 'General',
+			],
 			'icon_url'      => 'dashicons-book',
 		];
 
 		return $settings_pages;
 	}
 
+	static function register_settings_fields( $meta_boxes ) {
+		$prefix = '';
+
+		$meta_boxes[] = [
+			'title'          => __( 'General', 'prestations' ),
+			'id'             => 'prestations-settings-fields',
+			'settings_pages' => ['prestations'],
+			'tab'            => 'general',
+			'fields'         => [
+				[
+					'name'  => __( 'Enable Email Processing', 'prestations' ),
+					'id'    => $prefix . 'enable_email_processing',
+					'type'  => 'switch',
+					'desc_tip'  => __( 'Use IMAP to collect emails and attach them to prestations', 'prestations' ),
+					'style' => 'rounded',
+				],
+			],
+		];
+
+		return $meta_boxes;
+	}
 }
