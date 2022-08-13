@@ -749,6 +749,9 @@ class Prestations_Prestation {
 		if( !$update ) return;
 		if( Prestations::is_new_post() ) return; // triggered when opened new post page, empty
 		if( $post->post_type != 'prestation' ) return;
+		if( isset($_REQUEST['action']) && $_REQUEST['action'] == 'trash' ) return;
+
+		error_log(__FUNCTION__ . ' ' . (isset($_REQUEST['action'])) ? $_REQUEST['action'] : '' );
 
 		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
 
@@ -769,6 +772,8 @@ class Prestations_Prestation {
 		    if(isset($_REQUEST[$key])) $amounts[$key] = is_array($_REQUEST[$key]) ? $_REQUEST[$key] : esc_attr($_REQUEST[$key]);
 		  }
 		}
+		if(!is_array($updates['discount'])) $updates['discount'] = [ 'percent' => NULL, 'amount' => NULL ];
+		if(!is_array($updates['deposit'])) $updates['deposit'] = [ 'percent' => NULL, 'amount' => NULL ];
 
 		$updates['price'] = 0; // get_post_meta($post_id, 'price', true);
 		if(is_array($amounts['items'])) {
@@ -782,18 +787,19 @@ class Prestations_Prestation {
 		  }
 		}
 
-		if(!empty($updates['discount']['percent'])) {
+		if($updates['discount']['percent'] > 0) {
 			$updates['discount']['amount'] = $updates['price'] * $updates['discount']['percent'] / 100;
 		} else {
 			$updates['discount']['amount'] = (empty($updates['discount']['amount'])) ? 0 : $updates['discount']['amount'];
 		}
 		if($updates['discount']['amount'] > $updates['price']) $updates['discount']['amount'] = $updates['price'];
+
 		$updates['total'] = $updates['price'] - $updates['discount']['amount'];
 
-		if($updates['total'] > 0 &! empty($updates['deposit']['percent'])) {
+		if($updates['total'] > 0 && $updates['deposit']['percent'] > 0 ) {
 		  $updates['deposit']['amount'] = $updates['total'] * $updates['deposit']['percent'] / 100;
 		} else {
-		  $updates['deposit']['amount'] = (empty($updates['deposit']['amount'])) ? 0 : $updates['deposit']['amount'];
+			$updates['deposit']['amount'] = (empty($updates['deposit']['amount'])) ? 0 : $updates['deposit']['amount'];
 		}
 
 		$updates['paid'] = 0; // Will be overridden // get_post_meta($post_id, 'paid', true);
@@ -830,7 +836,7 @@ class Prestations_Prestation {
 
 		$post_update = array(
 			'ID' => $post_id,
-			'post_title' => "Prestation #$post_id " . $display_name,
+			'post_title' => "#$post_id " . $display_name,
 			'meta_input' => $updates,
 			'tax_input' => array(
 				'prestation-status' => $status,
