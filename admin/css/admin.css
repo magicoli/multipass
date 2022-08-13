@@ -3,12 +3,27 @@
  * included in this file.
  */
 
-#prestation-balance .rwmb-field {
+.rwmb-field.inline > .rwmb-input > div {
+  display: inline-block;
+  margin-right: 1em;
+}
+#prestation-summary .rwmb-field {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 6px;
 }
-
-#prestation-balance .rwmb-field .rwmb-input {
+#prestation-summary .rwmb-field.total,
+#prestation-summary .rwmb-field.balance {
+  font-weight: bold;
+  border-top: solid 1px #ccc;
+  border-bottom: solid 1px #ccc;
+  padding: 6px 0 3px;
+}
+#prestation-summary .rwmb-field.status {
+  margin-top: 1em;
+  margin-bottom: 0;
+}
+#prestation-summary .rwmb-field .rwmb-input {
   text-align: right;
 }
 
@@ -33,6 +48,8 @@
   color: #94660c;
   background: #ffcc99;
 }
+.prestation-status-box.status-free,
+.column-status a[href*="prestation-status=free"],
 .prestation-status-box.status-paid,
 .column-status a[href*="prestation-status=paid"] {
   color: #5b841b;

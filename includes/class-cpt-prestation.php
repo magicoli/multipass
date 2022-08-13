@@ -301,6 +301,64 @@ class Prestations_Prestation {
 								'sort'     => true,
 						],
 				],
+				[
+				  'name'   => __( 'Discount', 'prestations' ),
+				  'id'     => $prefix . 'discount',
+				  'type'   => 'group',
+					'class' => 'inline',
+				  'fields' => [
+				    [
+				      'id'      => $prefix . 'percent',
+				      'type'    => 'number',
+				      'min'     => 0,
+				      'max'     => 100,
+				      'size'    => 5,
+				      'prepend' => '%',
+				    ],
+				    [
+				      'id'      => $prefix . 'amount',
+				      'type'    => 'number',
+				      'min'     => 0,
+				      'step'    => 'any',
+				      'size'    => 10,
+				      'prepend' => get_woocommerce_currency_symbol(),
+				      'visible' => [
+				        'when'     => [['discount_percent', '=', '']],
+				        'relation' => 'or',
+				      ],
+				    ],
+				  ],
+				],
+				[
+					'name'   => __( 'Deposit', 'prestations' ),
+					'id'     => $prefix . 'deposit',
+					'type'   => 'group',
+					'class'	 => 'inline',
+					'fields' => [
+						[
+							'id'      => $prefix . 'percent',
+							'type'    => 'number',
+							'min'     => 0,
+							'max'     => 100,
+							'size'    => 5,
+							'prepend' => '%',
+							'class' => 'percent class',
+						],
+						[
+							'id'      => $prefix . 'amount',
+							'type'    => 'number',
+							'min'     => 0,
+							'step'    => 'any',
+							'size'    => 10,
+							'prepend' => get_woocommerce_currency_symbol(),
+							'class' => 'amount class',
+							'visible' => [
+								'when'     => [['deposit_percent', '=', '']],
+								'relation' => 'or',
+							],
+						],
+					],
+				],
 			],
 		];
 
@@ -408,11 +466,58 @@ class Prestations_Prestation {
 		];
 
 		$meta_boxes[] = [
-			'title'      => __( 'Balance', 'prestations' ),
-			'id'         => 'prestation-balance',
+			'title'      => __( 'Summary', 'prestations' ),
+			'id'         => 'prestation-summary',
 			'post_types' => ['prestation'],
 			'context'    => 'side',
 			'fields'     => [
+				[
+					'name'          => __( 'Regular Price', 'prestations' ),
+					'id'            => $prefix . 'price_html',
+					'type'          => 'custom_html',
+					'callback'      => 'Prestations_Prestation::get_summary_price',
+				],
+				[
+					'name'          => __( 'Discount', 'prestations' ),
+					'id'            => $prefix . 'discount_html',
+					'type'          => 'custom_html',
+					'callback'      => 'Prestations_Prestation::get_summary_discount',
+				],
+				[
+					'name'          => __( 'Total', 'prestations' ),
+					'id'            => $prefix . 'total_html',
+					'type'          => 'custom_html',
+					'class'          => 'total',
+					'callback'      => 'Prestations_Prestation::get_summary_total',
+				],
+				[
+					'name'     => __( 'Deposit', 'prestations_html' ),
+					'id'       => $prefix . 'deposit_amount_html',
+					'type'     => 'custom_html',
+					'callback' => 'Prestations_Prestation::get_summary_deposit',
+				],
+				[
+					'name'          => __( 'Paid', 'prestations' ),
+					'id'            => $prefix . 'paid_html',
+					'type'          => 'custom_html',
+					'callback'      => 'Prestations_Prestation::get_summary_paid',
+					'admin_columns' => 'after total',
+				],
+				[
+					'name'          => __( 'Balance', 'prestations' ),
+					'id'            => $prefix . 'balance_html',
+					'type'          => 'custom_html',
+					'class' => 'balance',
+					'callback'      => 'Prestations_Prestation::get_summary_balance',
+					'admin_columns' => 'after paid',
+				],
+				// [
+				// 	'name'          => __( 'Due', 'prestations' ),
+				// 	'id'            => $prefix . 'due_html',
+				// 	'type'          => 'custom_html',
+				// 	'callback'      => 'Prestations_Prestation::get_summary_due',
+				// 	'admin_columns' => 'after paid',
+				// ],
 				[
 					'name'           => __( 'Status', 'prestations' ),
 					'id'             => 'status',
@@ -420,6 +525,7 @@ class Prestations_Prestation {
 					'taxonomy'       => ['prestation-status'],
 					'field_type'     => 'custom_html',
 					'callback' => __CLASS__ . '::display_status',
+					'class' => 'status',
 					// 'disabled' => true,
 					'readonly' => true,
 					// 'save_field' => false,
@@ -430,38 +536,6 @@ class Prestations_Prestation {
 						// 'sort'       => true,
 						'filterable' => true,
 					],
-				],
-				[
-					'name'          => __( 'Total', 'prestations' ),
-					'id'            => $prefix . 'total_html',
-					'type'          => 'custom_html',
-					'callback'      => 'Prestations_Prestation::get_balance_total',
-				],
-				[
-					'name'     => __( 'Deposit %', 'prestations' ),
-					'id'       => $prefix . 'deposit_percent_html',
-					'type'     => 'custom_html',
-					'callback' => 'Prestations_Prestation::get_balance_deposit_percent',
-				],
-				[
-					'name'     => __( 'Deposit', 'prestations_html' ),
-					'id'       => $prefix . 'deposit',
-					'type'     => 'custom_html',
-					'callback' => 'Prestations_Prestation::get_balance_deposit',
-				],
-				[
-					'name'          => __( 'Paid', 'prestations' ),
-					'id'            => $prefix . 'paid_html',
-					'type'          => 'custom_html',
-					'callback'      => 'Prestations_Prestation::get_balance_paid',
-					'admin_columns' => 'after total',
-				],
-				[
-					'name'          => __( 'Due', 'prestations' ),
-					'id'            => $prefix . 'due_html',
-					'type'          => 'custom_html',
-					'callback'      => 'Prestations_Prestation::get_balance_due',
-					'admin_columns' => 'after paid',
 				],
 			],
 		];
@@ -597,36 +671,53 @@ class Prestations_Prestation {
 		return [];
 	}
 
-	static function get_balance_total($args = []) {
+	static function get_summary_price($args = []) {
+		global $post;
+		$amount = get_post_meta($post->ID, 'price', true);
+		if(empty($amount)) $amount = 0;
+		return wc_price($amount);
+	}
+
+	static function get_summary_discount($args = []) {
+		global $post;
+		$discount = get_post_meta($post->ID, 'discount', true);
+		$amount = (isset($discount['amount'])) ? $discount['amount'] : NULL;
+		if( $amount > 0) return wc_price($amount);
+	}
+
+	static function get_summary_total($args = []) {
 		global $post;
 		$amount = get_post_meta($post->ID, 'total', true);
 		if(empty($amount)) $amount = 0;
 		return wc_price($amount);
 	}
 
-	static function get_balance_deposit($args = []) {
+	static function get_summary_deposit_percent($args = []) {
 		global $post;
-		$amount = get_post_meta($post->ID, 'deposit', true);
-		return wc_price($amount);
+		$deposit = get_post_meta($post->ID, 'deposit', true);
+		$percent = (isset($deposit['percent'])) ? $deposit['percent'] : NULL;
+		if($percent > 0) return number_format_i18n($percent, 0) . '%';
 	}
 
-	static function get_balance_paid($args = []) {
+	static function get_summary_deposit($args = []) {
+		global $post;
+		$deposit = get_post_meta($post->ID, 'deposit', true);
+		$amount = (isset($deposit['amount'])) ? $deposit['amount'] : NULL;
+		if($amount > 0) return wc_price($amount);
+	}
+
+	static function get_summary_paid($args = []) {
 		global $post;
 		$amount = get_post_meta($post->ID, 'paid', true);
 		return wc_price($amount);
 	}
 
-	static function get_balance_due($args = []) {
+	static function get_summary_balance($args = []) {
 		global $post;
-		$amount = get_post_meta($post->ID, 'due', true);
+		$amount = get_post_meta($post->ID, 'balance', true);
 		return wc_price($amount);
 	}
 
-	static function get_balance_deposit_percent($args = []) {
-		global $post;
-		$percent = get_post_meta($post->ID, 'deposit_percent', true);
-		if($percent > 0) return number_format_i18n($percent, 0) . '%';
-	}
 
 	static function term_link_filter ( $termlink, $term, $taxonomy ) {
 		if ( 'prestation-status' === $taxonomy ) {
@@ -658,79 +749,83 @@ class Prestations_Prestation {
 		if( !$update ) return;
 		if( Prestations::is_new_post() ) return; // triggered when opened new post page, empty
 		if( $post->post_type != 'prestation' ) return;
-		$transient_key = __CLASS__ . ' ' . __FUNCTION__ . ' ' . $post_id;
-		if(get_transient($transient_key)) {
-			error_log("transient_key $transient_key NOGO");
-			return;
-		}
-		set_transient($transient_key, true, 10);
+
+		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
 
 		$updates['customer'] = get_post_meta($post_id, 'customer', true);
 		$updates['guest_name'] = get_post_meta($post_id, 'guest_name', true);
 
 		$amounts['items'] = get_post_meta($post_id, 'items', true);
 		$amounts['payments'] = get_post_meta($post_id, 'payments', true);
-		$updates['deposit_percent'] = 30; // DEBUG get_post_meta($post_id, 'deposit_percent', true);
 		$updates['deposit'] = get_post_meta($post_id, 'deposit', true);
-		$updates['due'] = get_post_meta($post_id, 'due', true);
+		$updates['discount'] = get_post_meta($post_id, 'discount', true);
+		$updates['balance'] = get_post_meta($post_id, 'balance', true);
 
 		if(is_array($_REQUEST)) {
-			foreach ($updates as $key => $value) {
-				if(isset($_REQUEST[$key])) $updates[$key] = is_array($_REQUEST[$key]) ? $_REQUEST[$key] : esc_attr($_REQUEST[$key]);
-			}
-			foreach ($amounts as $key => $value) {
-				if(isset($_REQUEST[$key])) $amounts[$key] = is_array($_REQUEST[$key]) ? $_REQUEST[$key] : esc_attr($_REQUEST[$key]);
-			}
+		  foreach ($updates as $key => $value) {
+		    if(isset($_REQUEST[$key])) $updates[$key] = is_array($_REQUEST[$key]) ? $_REQUEST[$key] : esc_attr($_REQUEST[$key]);
+		  }
+		  foreach ($amounts as $key => $value) {
+		    if(isset($_REQUEST[$key])) $amounts[$key] = is_array($_REQUEST[$key]) ? $_REQUEST[$key] : esc_attr($_REQUEST[$key]);
+		  }
 		}
 
-		$updates['total'] = 0; // get_post_meta($post_id, 'total', true);
+		$updates['price'] = 0; // get_post_meta($post_id, 'price', true);
 		if(is_array($amounts['items'])) {
-			foreach($amounts['items'] as $item) {
-				if(empty($item['quantity'])) {
-					if(empty($item['unit_price'])) continue;
-					else $item['quantity'] = 1;
-				}
-				if(empty($item['quantity']) || empty($item['unit_price'])) continue;
-				$updates['total'] += $item['quantity'] * $item['unit_price'];
-			}
+		  foreach($amounts['items'] as $item) {
+		    if(empty($item['quantity'])) {
+		      if(empty($item['unit_price'])) continue;
+		      else $item['quantity'] = 1;
+		    }
+		    if(empty($item['quantity']) || empty($item['unit_price'])) continue;
+		    $updates['price'] += $item['quantity'] * $item['unit_price'];
+		  }
+		}
+
+		if(!empty($updates['discount']['percent'])) {
+			$updates['discount']['amount'] = $updates['price'] * $updates['discount']['percent'] / 100;
+		} else {
+			$updates['discount']['amount'] = (empty($updates['discount']['amount'])) ? 0 : $updates['discount']['amount'];
+		}
+		if($updates['discount']['amount'] > $updates['price']) $updates['discount']['amount'] = $updates['price'];
+		$updates['total'] = $updates['price'] - $updates['discount']['amount'];
+
+		if($updates['total'] > 0 &! empty($updates['deposit']['percent'])) {
+		  $updates['deposit']['amount'] = $updates['total'] * $updates['deposit']['percent'] / 100;
+		} else {
+		  $updates['deposit']['amount'] = (empty($updates['deposit']['amount'])) ? 0 : $updates['deposit']['amount'];
 		}
 
 		$updates['paid'] = 0; // Will be overridden // get_post_meta($post_id, 'paid', true);
 		if(is_array($amounts['payments'])) {
-			foreach($amounts['payments'] as $payment) {
-				if(empty($payment['amount'])) continue;
-				$amount = esc_attr($payment['amount']);
-				$updates['paid'] += $amount;
-			}
+		  foreach($amounts['payments'] as $payment) {
+		    if(empty($payment['amount'])) continue;
+		    $amount = esc_attr($payment['amount']);
+		    $updates['paid'] += $amount;
+		  }
 		}
 
-		if(!empty($updates['deposit_percent'])) {
-			$updates['deposit'] = $updates['total'] * $updates['deposit_percent'] / 100;
-		} else {
-			$updates['deposit'] = (empty($updates['deposit'])) ? 0 : $updates['deposit'];
-		}
-
-		$updates['due'] = ($updates['total'] - $updates['paid'] == 0) ? NULL : $updates['total'] - $updates['paid'];
+		$updates['balance'] = ($updates['total'] - $updates['paid'] == 0) ? NULL : $updates['total'] - $updates['paid'];
 
 		if($updates['total'] <= 0) {
-			$status = 'free';
+		  $status = 'free';
 		} else if($updates['paid'] < $updates['total']) {
-			if($updates['paid'] >= $updates['deposit'] && $updates['deposit'] > 0 )
-			$status = 'deposit';
-			else if ($updates['paid'] > 0)
-			$status = 'partial';
-			else
-			$status = 'unpaid';
+		  if($updates['paid'] >= $updates['deposit']['amount'] && $updates['deposit']['amount'] > 0 )
+		  $status = 'deposit_amount';
+		  else if ($updates['paid'] > 0)
+		  $status = 'partial';
+		  else
+		  $status = 'unpaid';
 		// } else if($updates['paid'] > $updates['total']) {
 		// 	$status = 'overpaid';
 		} else {
-			$status = 'paid';
+		  $status = 'paid';
 		}
 
 		if(empty($updates['guest_name']) &! empty($updates['customer'])) {
-			$display_name = trim(get_userdata($updates['customer'])->first_name. ' ' . get_userdata($updates['customer'])->last_name);
+		  $display_name = trim(get_userdata($updates['customer'])->first_name. ' ' . get_userdata($updates['customer'])->last_name);
 		} else {
-			$display_name = $updates['guest_name'];
+		  $display_name = $updates['guest_name'];
 		}
 
 		$post_update = array(
@@ -743,22 +838,15 @@ class Prestations_Prestation {
 		);
 		wp_update_post($post_update);
 
-		// TODO: get why metadata and taxonomies are not saved with wp_update_post
-		foreach ($updates as $key => $value) {
-			update_post_meta( $post_id, $key, $value );
-		}
+		/*
+		* TODO: get why metadata and taxonomies are not saved with wp_update_post
+		* In the meantime, we force the update
+		*/
+		foreach ($updates as $key => $value) update_post_meta( $post_id, $key, $value );
 		wp_set_post_terms( $post_id, $status, 'prestation-status');
 
-		error_log("updating $post_id - updates " . print_r($post_update, true));
-		delete_transient($transient_key);
+		add_action(current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3);
 		return;
-
-		error_log(
-		print_r(get_post_meta($post_id), true)
-		. "\ndata" . print_r($updates, true)
-		);
-
-		delete_transient($transient_key);
 	}
 
 	// static function save_prestation_action($post_id, $post, $updates ) {
