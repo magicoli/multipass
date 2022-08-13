@@ -125,6 +125,11 @@ class Prestations_Prestation {
 				'hook' => 'init',
 				'callback' => 'register_taxonomies',
 			),
+			array (
+				'hook' => 'save_post_prestation',
+				'callback' => 'update_prestation_amounts',
+				'accepted_args' => 3,
+			),
 			// array(
 			// 	'hook' => 'mb_relationships_init',
 			// 	'callback' => 'register_relationships',
@@ -217,7 +222,7 @@ class Prestations_Prestation {
 			'menu_position'       => NULL,
 			'menu_icon'           => 'dashicons-book-alt',
 			'capability_type'     => 'post',
-			'supports'            => ['revisions', 'title'],
+			'supports'            => ['revisions' ],
 			'taxonomies'          => [],
 			'rewrite'             => [
 				'with_front' => false,
@@ -227,8 +232,12 @@ class Prestations_Prestation {
 		register_post_type( 'prestation', $args );
 	}
 
+	static function title_html() {
+		return the_title('<h1>', '</h1>', false);
+	}
+
 	static function register_fields( $meta_boxes ) {
-		$prefix = 'prestation_';
+		$prefix = '';
 
 		$meta_boxes[] = [
 			'title'      => __( 'Prestations', 'prestations' ),
@@ -238,6 +247,11 @@ class Prestations_Prestation {
 			'style'      => 'seamless',
 			'autosave'   => true,
 			'fields'     => [
+				[
+					'id'            => $prefix . 'title_html',
+					'type'          => 'custom_html',
+					'callback' => __CLASS__ . '::title_html',
+				],
 				[
 					'name'          => __( 'Customer', 'prestations' ),
 					'id'            => $prefix . 'customer',
@@ -250,17 +264,14 @@ class Prestations_Prestation {
 					],
 				],
 				[
-					'name'          => __( 'Customer name', 'prestations' ),
-					'id'            => $prefix . 'customer_name',
+					'name'          => __( 'Guest name', 'prestations' ),
+					'id'            => $prefix . 'guest_name',
 					'type'          => 'text',
+					'description'		=> __('Leave empty if same as customer name', 'prestations'),
 					'admin_columns' => [
-						'position'   => 'after prestation_customer',
+						'position'   => 'after customer',
 						'sort'       => true,
 						'searchable' => true,
-					],
-					'visible'       => [
-						'when'     => [['customer', '=', '']],
-						'relation' => 'or',
 					],
 				],
 				[
@@ -286,31 +297,20 @@ class Prestations_Prestation {
 						'id'            => $prefix . 'date_to',
 						'type'          => 'date',
 						'admin_columns' => [
-								'position' => 'after prestation_date_from',
+								'position' => 'after date_from',
 								'sort'     => true,
 						],
-				],
-				[
-					'name'          => __( 'Orders', 'prestations' ),
-					'id'            => $prefix . 'orders',
-					'type'          => 'post',
-					'post_type'     => ['shop_order'],
-					'field_type'    => 'select_advanced',
-					'multiple'      => true,
-					'placeholder'   => __( 'Select an order', 'prestations' ),
-					'admin_columns' => 'after prestation_customer_name',
 				],
 			],
 		];
 
-		$prefix = 'prestation_';
 		$meta_boxes[] = [
 			'title'      => __( 'Prestation Items', 'prestations' ),
 			'id'         => 'prestation-items',
 			'post_types' => ['prestation'],
 			'fields'     => [
 				[
-					'id'     => $prefix . 'item',
+					'id'     => $prefix . 'items',
 					'type'   => 'group',
 					'clone'  => true,
 					'fields' => [
@@ -325,18 +325,32 @@ class Prestations_Prestation {
 							'name'    => __( 'Additional details', 'prestations' ),
 							'id'      => $prefix . 'details',
 							'type'    => 'text',
-							'columns' => 4,
+							'columns' => 3,
+						],
+						[
+								'name'          => __( 'From', 'prestations' ),
+								'id'            => $prefix . 'from',
+								'type'          => 'date',
+								'columns' => 2,
+						],
+						[
+								'name'          => __( 'To', 'prestations' ),
+								'id'            => $prefix . 'to',
+								'type'          => 'date',
+								'columns' => 2,
 						],
 						[
 							'name'    => __( 'Quantity', 'prestations' ),
 							'id'      => $prefix . 'quantity',
 							'type'    => 'number',
+							'step' => 'any',
 							'columns' => 1,
 						],
 						[
-							'name'    => __( 'Price', 'prestations' ),
-							'id'      => $prefix . 'price',
+							'name'    => __( 'Unit Price', 'prestations' ),
+							'id'      => $prefix . 'unit_price',
 							'type'    => 'number',
+							'step' => 'any',
 							'columns' => 2,
 						],
 					],
@@ -344,14 +358,13 @@ class Prestations_Prestation {
 			],
 		];
 
-		$prefix = 'prestation_';
 		$meta_boxes[] = [
 			'title'      => __( 'Payments', 'prestations' ),
 			'id'         => 'prestation-payments',
 			'post_types' => ['prestation'],
 			'fields'     => [
 				[
-					'id'     => $prefix . 'payment',
+					'id'     => $prefix . 'payments',
 					'type'   => 'group',
 					'clone'  => true,
 					'fields' => [
@@ -387,13 +400,13 @@ class Prestations_Prestation {
 							'id'      => $prefix . 'amount',
 							'type'    => 'number',
 							'columns' => 2,
+							'step' => 'any',
 						],
 					],
 				],
 			],
 		];
 
-		$prefix = 'prestation_balance_';
 		$meta_boxes[] = [
 			'title'      => __( 'Balance', 'prestations' ),
 			'id'         => 'prestation-balance',
@@ -402,53 +415,53 @@ class Prestations_Prestation {
 			'fields'     => [
 				[
 					'name'           => __( 'Status', 'prestations' ),
-					'id'             => 'prestation_status',
+					'id'             => 'status',
 					'type'           => 'taxonomy',
 					'taxonomy'       => ['prestation-status'],
 					'field_type'     => 'custom_html',
-					'callback' => __CLASS__ . '::display_prestation_status',
+					'callback' => __CLASS__ . '::display_status',
 					// 'disabled' => true,
 					'readonly' => true,
 					// 'save_field' => false,
 					// 'placeholder' => ' ',
 					'remove_default' => true,
 					'admin_columns'  => [
-						'position' => 'after prestation_date_to',
+						'position' => 'after date_to',
 						// 'sort'       => true,
 						'filterable' => true,
 					],
 				],
 				[
 					'name'          => __( 'Total', 'prestations' ),
-					'id'            => $prefix . 'total',
+					'id'            => $prefix . 'total_html',
 					'type'          => 'custom_html',
 					'callback'      => 'Prestations_Prestation::get_balance_total',
 				],
 				[
 					'name'     => __( 'Deposit %', 'prestations' ),
-					'id'       => $prefix . 'deposit_percent',
+					'id'       => $prefix . 'deposit_percent_html',
 					'type'     => 'custom_html',
 					'callback' => 'Prestations_Prestation::get_balance_deposit_percent',
 				],
 				[
-					'name'     => __( 'Deposit', 'prestations' ),
+					'name'     => __( 'Deposit', 'prestations_html' ),
 					'id'       => $prefix . 'deposit',
 					'type'     => 'custom_html',
 					'callback' => 'Prestations_Prestation::get_balance_deposit',
 				],
 				[
 					'name'          => __( 'Paid', 'prestations' ),
-					'id'            => $prefix . 'paid',
+					'id'            => $prefix . 'paid_html',
 					'type'          => 'custom_html',
 					'callback'      => 'Prestations_Prestation::get_balance_paid',
-					'admin_columns' => 'after prestation_balance_total',
+					'admin_columns' => 'after total',
 				],
 				[
 					'name'          => __( 'Due', 'prestations' ),
-					'id'            => $prefix . 'due',
+					'id'            => $prefix . 'due_html',
 					'type'          => 'custom_html',
 					'callback'      => 'Prestations_Prestation::get_balance_due',
-					'admin_columns' => 'after prestation_balance_paid',
+					'admin_columns' => 'after paid',
 				],
 			],
 		];
@@ -526,7 +539,7 @@ class Prestations_Prestation {
 			'publicly_queryable' => false,
 			'hierarchical'       => false,
 			'show_ui'            => true,
-			'show_in_menu'       => false,
+			'show_in_menu'       => true,
 			'show_in_nav_menus'  => false,
 			'show_in_rest'       => true,
 			'show_tagcloud'      => false,
@@ -550,12 +563,20 @@ class Prestations_Prestation {
 				'name' => __('Pending', 'prestations'),
 			],
 			[
+				'slug' => 'free',
+				'name' => __('Free', 'prestations'),
+			],
+			[
 				'slug' => 'unpaid',
 				'name' => __('Unpaid', 'prestations'),
 			],
 			[
+				'slug' => 'deposit',
+				'name' => __('Deposit', 'prestations'),
+			],
+			[
 				'slug' => 'partial',
-				'name' => __('Partial Payment', 'prestations'),
+				'name' => __('Partial', 'prestations'),
 			],
 			[
 				'slug' => 'paid',
@@ -578,31 +599,32 @@ class Prestations_Prestation {
 
 	static function get_balance_total($args = []) {
 		global $post;
-		$amount = 0;
+		$amount = get_post_meta($post->ID, 'total', true);
+		if(empty($amount)) $amount = 0;
 		return wc_price($amount);
 	}
 
 	static function get_balance_deposit($args = []) {
 		global $post;
-		$amount = 0;
+		$amount = get_post_meta($post->ID, 'deposit', true);
 		return wc_price($amount);
 	}
 
 	static function get_balance_paid($args = []) {
 		global $post;
-		$amount = 0;
+		$amount = get_post_meta($post->ID, 'paid', true);
 		return wc_price($amount);
 	}
 
 	static function get_balance_due($args = []) {
 		global $post;
-		$amount = 0;
+		$amount = get_post_meta($post->ID, 'due', true);
 		return wc_price($amount);
 	}
 
 	static function get_balance_deposit_percent($args = []) {
 		global $post;
-		$percent = 0;
+		$percent = get_post_meta($post->ID, 'deposit_percent', true);
 		if($percent > 0) return number_format_i18n($percent, 0) . '%';
 	}
 
@@ -615,7 +637,7 @@ class Prestations_Prestation {
 		return $termlink;
 	}
 
-	static function display_prestation_status() {
+	static function display_status() {
 		$status = NULL;
 		global $post;
 		$terms = get_the_terms($post, 'prestation-status');
@@ -631,4 +653,119 @@ class Prestations_Prestation {
 
 		return $status;
 	}
+
+	static function update_prestation_amounts($post_id, $post, $update ) {
+		if( !$update ) return;
+		if( Prestations::is_new_post() ) return; // triggered when opened new post page, empty
+		if( $post->post_type != 'prestation' ) return;
+		$transient_key = __CLASS__ . ' ' . __FUNCTION__ . ' ' . $post_id;
+		if(get_transient($transient_key)) {
+			error_log("transient_key $transient_key NOGO");
+			return;
+		}
+		set_transient($transient_key, true, 10);
+
+		$updates['customer'] = get_post_meta($post_id, 'customer', true);
+		$updates['guest_name'] = get_post_meta($post_id, 'guest_name', true);
+
+		$amounts['items'] = get_post_meta($post_id, 'items', true);
+		$amounts['payments'] = get_post_meta($post_id, 'payments', true);
+		$updates['deposit_percent'] = 30; // DEBUG get_post_meta($post_id, 'deposit_percent', true);
+		$updates['deposit'] = get_post_meta($post_id, 'deposit', true);
+		$updates['due'] = get_post_meta($post_id, 'due', true);
+
+		if(is_array($_REQUEST)) {
+			foreach ($updates as $key => $value) {
+				if(isset($_REQUEST[$key])) $updates[$key] = is_array($_REQUEST[$key]) ? $_REQUEST[$key] : esc_attr($_REQUEST[$key]);
+			}
+			foreach ($amounts as $key => $value) {
+				if(isset($_REQUEST[$key])) $amounts[$key] = is_array($_REQUEST[$key]) ? $_REQUEST[$key] : esc_attr($_REQUEST[$key]);
+			}
+		}
+
+		$updates['total'] = 0; // get_post_meta($post_id, 'total', true);
+		if(is_array($amounts['items'])) {
+			foreach($amounts['items'] as $item) {
+				if(empty($item['quantity'])) {
+					if(empty($item['unit_price'])) continue;
+					else $item['quantity'] = 1;
+				}
+				if(empty($item['quantity']) || empty($item['unit_price'])) continue;
+				$updates['total'] += $item['quantity'] * $item['unit_price'];
+			}
+		}
+
+		$updates['paid'] = 0; // Will be overridden // get_post_meta($post_id, 'paid', true);
+		if(is_array($amounts['payments'])) {
+			foreach($amounts['payments'] as $payment) {
+				if(empty($payment['amount'])) continue;
+				$amount = esc_attr($payment['amount']);
+				$updates['paid'] += $amount;
+			}
+		}
+
+		if(!empty($updates['deposit_percent'])) {
+			$updates['deposit'] = $updates['total'] * $updates['deposit_percent'] / 100;
+		} else {
+			$updates['deposit'] = (empty($updates['deposit'])) ? 0 : $updates['deposit'];
+		}
+
+		$updates['due'] = ($updates['total'] - $updates['paid'] == 0) ? NULL : $updates['total'] - $updates['paid'];
+
+		if($updates['total'] <= 0) {
+			$status = 'free';
+		} else if($updates['paid'] < $updates['total']) {
+			if($updates['paid'] >= $updates['deposit'] && $updates['deposit'] > 0 )
+			$status = 'deposit';
+			else if ($updates['paid'] > 0)
+			$status = 'partial';
+			else
+			$status = 'unpaid';
+		// } else if($updates['paid'] > $updates['total']) {
+		// 	$status = 'overpaid';
+		} else {
+			$status = 'paid';
+		}
+
+		if(empty($updates['guest_name']) &! empty($updates['customer'])) {
+			$display_name = trim(get_userdata($updates['customer'])->first_name. ' ' . get_userdata($updates['customer'])->last_name);
+		} else {
+			$display_name = $updates['guest_name'];
+		}
+
+		$post_update = array(
+			'ID' => $post_id,
+			'post_title' => "Prestation #$post_id " . $display_name,
+			'meta_input' => $updates,
+			'tax_input' => array(
+				'prestation-status' => $status,
+			),
+		);
+		wp_update_post($post_update);
+
+		// TODO: get why metadata and taxonomies are not saved with wp_update_post
+		foreach ($updates as $key => $value) {
+			update_post_meta( $post_id, $key, $value );
+		}
+		wp_set_post_terms( $post_id, $status, 'prestation-status');
+
+		error_log("updating $post_id - updates " . print_r($post_update, true));
+		delete_transient($transient_key);
+		return;
+
+		error_log(
+		print_r(get_post_meta($post_id), true)
+		. "\ndata" . print_r($updates, true)
+		);
+
+		delete_transient($transient_key);
+	}
+
+	// static function save_prestation_action($post_id, $post, $updates ) {
+	// 	if(!$updates) return;
+	// 	if(Prestations::is_new_post())  return; // triggered when opened new post page, empty
+	// 	if( $post->post_type != 'prestation' ) return;
+	// 	if(!isset($_REQUEST['items'])) return;
+	// }
+
 }

@@ -13,7 +13,7 @@
 }
 
 .prestation-status-box,
-.column-prestation_status a {
+.column-status a {
   border-radius: 0.25em;
   padding: 0.5em 1em;
   color: #777;
@@ -21,18 +21,20 @@
 }
 
 .prestation-status-box.status-unpaid,
-.column-prestation_status a[href*="prestation-status=unpaid"]
+.column-status a[href*="prestation-status=unpaid"]
 {
   color: #993333;
   background: pink;
 }
-.prestation-status-box.status-partial,
-.column-prestation_status a[href*="prestation-status=partial"] {
+.prestation-status-box.status-deposit,
+.column-status a[href*="prestation-status=deposit"],
+.prestation-status-box.status-partiall-paid,
+.column-status a[href*="prestation-status=partial"] {
   color: #94660c;
   background: #ffcc99;
 }
 .prestation-status-box.status-paid,
-.column-prestation_status a[href*="prestation-status=paid"] {
+.column-status a[href*="prestation-status=paid"] {
   color: #5b841b;
   background: #c6e1c6;
 }
