@@ -3,7 +3,7 @@
 /**
  * Plugin Name:       Prestations (dev)
  * Plugin URI:        https://magiiic.com/wordpress/plugins/prestations/
- * Description:       Group WooCommerce orders that are related together into prestations, to handle them as a whole
+ * Description:       Group orders from different sources (WooCommerce, OTA, booking engines...) to get the global picture of a set of services.
  * Version:           0.1.0.x-dev
  * Author:            Magiiic
  * Author URI:        https://magiiic.com/
