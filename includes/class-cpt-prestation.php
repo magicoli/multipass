@@ -790,7 +790,7 @@ class Prestations_Prestation {
 		if($updates['discount']['percent'] > 0) {
 			$updates['discount']['amount'] = $updates['price'] * $updates['discount']['percent'] / 100;
 		} else {
-			$updates['discount']['amount'] = (empty($updates['discount']['amount'])) ? 0 : $updates['discount']['amount'];
+			$updates['discount']['amount'] = (empty($updates['discount']['amount'])) ? NULL : $updates['discount']['amount'];
 		}
 		if($updates['discount']['amount'] > $updates['price']) $updates['discount']['amount'] = $updates['price'];
 
@@ -799,7 +799,7 @@ class Prestations_Prestation {
 		if($updates['total'] > 0 && $updates['deposit']['percent'] > 0 ) {
 		  $updates['deposit']['amount'] = $updates['total'] * $updates['deposit']['percent'] / 100;
 		} else {
-			$updates['deposit']['amount'] = (empty($updates['deposit']['amount'])) ? 0 : $updates['deposit']['amount'];
+			$updates['deposit']['amount'] = (empty($updates['deposit']['amount'])) ? NULL : $updates['deposit']['amount'];
 		}
 
 		$updates['paid'] = 0; // Will be overridden // get_post_meta($post_id, 'paid', true);
