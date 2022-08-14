@@ -262,7 +262,8 @@ class Prestations_Prestation {
 	}
 
 	static function title_html() {
-		return the_title('<h1>', '</h1>', false);
+		return preg_replace('/(#[[:alnum:]]+)/', '<code>$1</code>', the_title('<h1>', '</h1>', false));
+		// return the_title('<h1>', '</h1>', false);
 	}
 
 	static function register_fields( $meta_boxes ) {
@@ -418,9 +419,10 @@ class Prestations_Prestation {
 					'clone'  => true,
 					'fields' => [
 						[
-							'name'    => __( 'Reference', 'prestations' ),
+							'name'    => __( 'ID', 'prestations' ),
 							'id'      => $prefix . 'item_id',
-							'type'    => 'select_advanced',
+							'type'    => 'text',
+							'readonly' => true,
 							'columns' => 2,
 							'options' => self::get_available_items(),
 						],
@@ -472,13 +474,6 @@ class Prestations_Prestation {
 					'clone'  => true,
 					'fields' => [
 						[
-							'name'    => __( 'Payment ID', 'prestations' ),
-							'id'      => $prefix . 'payment_id',
-							'type'    => 'select_advanced',
-							'options' => self::get_available_payments(),
-							'columns' => 2,
-						],
-						[
 							'name'    => __( 'Type', 'prestations' ),
 							'id'      => $prefix . 'type',
 							'type'    => 'select',
@@ -493,8 +488,16 @@ class Prestations_Prestation {
 							'columns' => 2,
 						],
 						[
-							'name'    => __( 'Reference', 'prestations' ),
-							'id'      => $prefix . 'reference',
+							'name'    => __( 'Payment ID', 'prestations' ),
+							'id'      => $prefix . 'payment_id',
+							'type'    => 'text',
+							'readonly' => true,
+							'options' => self::get_available_payments(),
+							'columns' => 2,
+						],
+						[
+							'name'    => __( 'Payment reference', 'prestations' ),
+							'id'      => $prefix . 'payment_reference',
 							'type'    => 'text',
 							'columns' => 3,
 						],
@@ -563,6 +566,12 @@ class Prestations_Prestation {
 				// 	'callback'      => 'Prestations_Prestation::get_summary_due',
 				// 	'admin_columns' => 'after paid',
 				// ],
+				[
+					'name'          => __( 'Reference #', 'prestations' ),
+					'id'            => $prefix . 'reference',
+					'type'          => 'custom_html',
+					'callback'      => 'Prestations_Prestation::get_summary_reference',
+				],
 				[
 					'name'           => __( 'Status', 'prestations' ),
 					'id'             => 'status',
@@ -763,6 +772,17 @@ class Prestations_Prestation {
 		return wc_price($amount);
 	}
 
+	static function get_summary_reference($args = []) {
+		if( Prestations::is_new_post() ) return; // triggered when opened new post page, empty
+		global $post;
+
+		return sprintf(
+			'<code>%s</code>',
+			// get_permalink($post),
+			$post->post_name,
+		);
+	}
+
 
 	static function term_link_filter ( $termlink, $term, $taxonomy ) {
 		if ( 'prestation-status' === $taxonomy ) {
@@ -897,7 +917,7 @@ class Prestations_Prestation {
 
 		$post_update = array(
 			'ID' => $post_id,
-			'post_title' => "#$post_id " . $display_name,
+			'post_title' => trim($display_name . ' ' . "#" . ((empty($post->post_name)) ? $post_id : $post->post_name)),
 			'post_status' => $post_status,
 			'meta_input' => $updates,
 			'tax_input' => array(
