@@ -6,8 +6,8 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    W4OS
- * @subpackage W4OS/includes
+ * @package    prestations
+ * @subpackage prestations/includes
  */
 
 /**
@@ -17,8 +17,8 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    W4OS
- * @subpackage W4OS/includes
+ * @package    prestations
+ * @subpackage prestations/includes
  * @author     Your Name <email@example.com>
  */
 class Prestations_Settings {
@@ -124,6 +124,10 @@ class Prestations_Settings {
 				'hook' => 'mb_settings_pages',
 				'callback' => 'register_settings_pages',
 			),
+			array(
+				'hook' => 'plugin_action_links_prestations/prestations.php',
+				'callback' => 'plugin_action_links',
+			),
 			array (
 				'hook' => 'rwmb_meta_boxes',
 				'callback' => 'register_settings_fields'
@@ -198,4 +202,12 @@ class Prestations_Settings {
 
 		return $meta_boxes;
 	}
+
+	static function plugin_action_links( $links ) {
+		$url = esc_url( add_query_arg( 'page', 'prestations', get_admin_url() . 'admin.php' ) );
+		$links = [ 'settings' => "<a href='$url'>" . __('Settings', 'prestations') . "</a>" ] + $links;
+
+		return $links;
+	}
+
 }
