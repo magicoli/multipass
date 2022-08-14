@@ -248,6 +248,20 @@ class Prestations {
 		return $result;
 	}
 
+	static function update_option($option, $value, $autoload = null) {
+		$settings_page = NULL;
+		if(preg_match('/:/', $option)) {
+			$settings_page = strstr($option, ':', true);
+			$option = trim(strstr($option, ':'), ':');
+			$settings = get_option($settings_page);
+			$settings[$option] = $value;
+			$result = update_option($settings_page, $settings, $autoload);
+		} else {
+			$result = update_option($option, $value, $autoload);
+		}
+		return $result;
+	}
+
 	static function is_new_post($args = null){
 	    global $pagenow;
 	    return ( is_admin() && in_array( $pagenow, array( 'post-new.php' ) ));
