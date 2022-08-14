@@ -756,7 +756,7 @@ class Prestations_Prestation {
 	}
 
 	static function display_status() {
-		$status = NULL;
+		$paid_status = NULL;
 		global $post;
 		$terms = get_the_terms($post, 'prestation-status');
 		if(is_array($terms) && isset($terms[0])) {
@@ -769,7 +769,7 @@ class Prestations_Prestation {
 			);
 		}
 
-		return $status;
+		return $paid_status;
 	}
 
 	static function update_prestation_amounts($post_id, $post, $update ) {
@@ -839,25 +839,40 @@ class Prestations_Prestation {
 
 		$updates['balance'] = ($updates['total'] - $updates['paid'] == 0) ? NULL : $updates['total'] - $updates['paid'];
 
-		if($updates['total'] <= 0) {
-		  $status = 'free';
-		} else if($updates['paid'] < $updates['total']) {
-		  if($updates['paid'] >= $updates['deposit']['amount'] && $updates['deposit']['amount'] > 0 )
-		  $status = 'deposit_amount';
-		  else if ($updates['paid'] > 0)
-		  $status = 'partial';
-		  else
-		  $status = 'unpaid';
-		// } else if($updates['paid'] > $updates['total']) {
-		// 	$status = 'overpaid';
-		} else {
-		  $status = 'paid';
+		$post_status = $post->post_status;
+
+		switch($post->post_status) {
+			case 'publish':
+			if($updates['total'] <= 0) {
+				$paid_status = 'free';
+			} else if($updates['paid'] < $updates['total']) {
+				if($updates['paid'] >= $updates['deposit']['amount'] && $updates['deposit']['amount'] > 0 )  {
+					$paid_status = 'deposit';
+					$post_status = 'publish';
+				} else {
+					$post_status = 'pending';
+					if ($updates['paid'] > 0)
+					$paid_status = 'partial';
+					else
+					$paid_status = 'unpaid';
+
+				}
+				// } else if($updates['paid'] > $updates['total']) {
+				// 	$paid_status = 'overpaid';
+			} else {
+				$post_status = 'publish';
+				$paid_status = 'paid';
+			}
+			break;
+
+			default:
+			$paid_status = $post->post_status;
 		}
 
 		if(empty($updates['guest_name']) &! empty($updates['customer'])) {
-		  $display_name = trim(get_userdata($updates['customer'])->first_name. ' ' . get_userdata($updates['customer'])->last_name);
+			$display_name = trim(get_userdata($updates['customer'])->first_name. ' ' . get_userdata($updates['customer'])->last_name);
 		} else {
-		  $display_name = $updates['guest_name'];
+			$display_name = $updates['guest_name'];
 		}
 
 		$updates['date_sort'] = (isset($updates['dates']) && isset($updates['dates']['from'])) ? $updates['dates']['from'] : '';
@@ -865,9 +880,10 @@ class Prestations_Prestation {
 		$post_update = array(
 			'ID' => $post_id,
 			'post_title' => "#$post_id " . $display_name,
+			'post_status' => $post_status,
 			'meta_input' => $updates,
 			'tax_input' => array(
-				'prestation-status' => $status,
+				'prestation-status' => $paid_status,
 			),
 		);
 		wp_update_post($post_update);
@@ -877,7 +893,7 @@ class Prestations_Prestation {
 		* In the meantime, we force the update
 		*/
 		foreach ($updates as $key => $value) update_post_meta( $post_id, $key, $value );
-		wp_set_post_terms( $post_id, $status, 'prestation-status');
+		wp_set_post_terms( $post_id, $paid_status, 'prestation-status');
 
 		add_action(current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3);
 		return;
