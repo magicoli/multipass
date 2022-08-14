@@ -788,6 +788,7 @@ class Prestations_Prestation {
 		$updates['deposit'] = get_post_meta($post_id, 'deposit', true);
 		$updates['discount'] = get_post_meta($post_id, 'discount', true);
 		$updates['balance'] = get_post_meta($post_id, 'balance', true);
+		$updates['dates'] = get_post_meta($post_id, 'dates', true);
 
 		if(is_array($_REQUEST)) {
 		  foreach ($updates as $key => $value) {
@@ -859,6 +860,8 @@ class Prestations_Prestation {
 		  $display_name = $updates['guest_name'];
 		}
 
+		$updates['date_sort'] = (isset($updates['dates']) && isset($updates['dates']['from'])) ? $updates['dates']['from'] : '';
+
 		$post_update = array(
 			'ID' => $post_id,
 			'post_title' => "#$post_id " . $display_name,
@@ -897,6 +900,7 @@ class Prestations_Prestation {
 	  // Image column
 	  if ( 'dates' === $column ) {
 			$dates = get_post_meta($post_id, 'dates', true);
+			$dates = array_filter($dates);
 			if(is_array($dates) &! empty($dates)) {
 				echo join(' / ', $dates);
 				return;
@@ -905,7 +909,7 @@ class Prestations_Prestation {
 	}
 
 	static function sortable_columns($columns) {
-		$columns['dates'] = 'dates_from';
+		$columns['dates'] = 'dates';
 		return $columns;
 	}
 
@@ -916,8 +920,8 @@ class Prestations_Prestation {
 
 		$orderby = $query->get('orderby');
 		if ($orderby == 'dates') {
-			$query->set('meta_key', 'dates');
-			$query->set('orderby', 'meta_value[0]');
+			$query->set('meta_key', 'date_sort');
+			$query->set('orderby', 'meta_value');
 			// $query->set('orderby', 'meta_value_num');
 		}
 	}
