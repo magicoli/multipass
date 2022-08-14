@@ -125,11 +125,18 @@ class Prestations_Prestation {
 				'hook' => 'init',
 				'callback' => 'register_taxonomies',
 			),
+
 			array (
 				'hook' => 'save_post_prestation',
 				'callback' => 'update_prestation_amounts',
 				'accepted_args' => 3,
 			),
+
+			array(
+				'hook' => 'pre_get_posts',
+				'callback' => 'sortable_columns_order',
+			),
+
 			// array(
 			// 	'hook' => 'mb_relationships_init',
 			// 	'callback' => 'register_relationships',
@@ -147,6 +154,22 @@ class Prestations_Prestation {
 				'hook' => 'term_link',
 				'callback' => 'term_link_filter',
 				'accepted_args' => 3,
+			),
+
+			array(
+				'hook' => 'manage_prestation_posts_columns',
+				'callback' => 'add_admin_columns',
+			),
+
+			array(
+				'hook' => 'manage_prestation_posts_custom_column',
+				'callback' => 'admin_columns_display',
+				'priority' => 99,
+				'accepted_args' => 2,
+			),
+			array(
+				'hook' => 'manage_edit-prestation_sortable_columns',
+				'callback' => 'sortable_columns',
 			),
 		);
 
@@ -284,22 +307,26 @@ class Prestations_Prestation {
 					],
 				],
 				[
-						'name'          => __( 'From', 'prestations' ),
-						'id'            => $prefix . 'date_from',
-						'type'          => 'date',
-						'admin_columns' => [
-								'position' => 'replace date',
-								'sort'     => true,
+				  'name'   => __( 'Dates', 'prestations' ),
+				  'id'     => $prefix . 'dates',
+				  'type'   => 'group',
+					'class' => 'inline',
+					// 'admin_columns' => [
+					// 	'position' => 'replace date',
+					// 	'sort'     => true,
+					// ],
+				  'fields' => [
+						[
+							'prepend'          => __( 'From', 'prestations' ),
+							'id'            => $prefix . 'from',
+							'type'          => 'date',
 						],
-				],
-				[
-						'name'          => __( 'To', 'prestations' ),
-						'id'            => $prefix . 'date_to',
-						'type'          => 'date',
-						'admin_columns' => [
-								'position' => 'after date_from',
-								'sort'     => true,
+						[
+							'prepend'          => __( 'To', 'prestations' ),
+							'id'            => $prefix . 'to',
+							'type'          => 'date',
 						],
+					],
 				],
 				[
 				  'name'   => __( 'Discount', 'prestations' ),
@@ -532,7 +559,7 @@ class Prestations_Prestation {
 					// 'placeholder' => ' ',
 					'remove_default' => true,
 					'admin_columns'  => [
-						'position' => 'after date_to',
+						'position' => 'after dates',
 						// 'sort'       => true,
 						'filterable' => true,
 					],
@@ -751,8 +778,6 @@ class Prestations_Prestation {
 		if( $post->post_type != 'prestation' ) return;
 		if( isset($_REQUEST['action']) && $_REQUEST['action'] == 'trash' ) return;
 
-		error_log(__FUNCTION__ . ' ' . (isset($_REQUEST['action'])) ? $_REQUEST['action'] : '' );
-
 		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
 
 		$updates['customer'] = get_post_meta($post_id, 'customer', true);
@@ -855,11 +880,46 @@ class Prestations_Prestation {
 		return;
 	}
 
-	// static function save_prestation_action($post_id, $post, $updates ) {
-	// 	if(!$updates) return;
-	// 	if(Prestations::is_new_post())  return; // triggered when opened new post page, empty
-	// 	if( $post->post_type != 'prestation' ) return;
-	// 	if(!isset($_REQUEST['items'])) return;
-	// }
+	static function dates_column_callback() {
+		echo "echo";
+		return "return";
+	}
+
+	static function add_admin_columns( $columns ) {
+
+		unset($columns['date']);
+		$columns['dates'] = __('Dates', 'prestations');
+
+		return $columns;
+	}
+
+	static function admin_columns_display( $column, $post_id ) {
+	  // Image column
+	  if ( 'dates' === $column ) {
+			$dates = get_post_meta($post_id, 'dates', true);
+			if(is_array($dates) &! empty($dates)) {
+				echo join(' / ', $dates);
+				return;
+			}
+	  }
+	}
+
+	static function sortable_columns($columns) {
+		$columns['dates'] = 'dates_from';
+		return $columns;
+	}
+
+	static function sortable_columns_order($query) {
+		if (!is_admin()) {
+			return;
+		}
+
+		$orderby = $query->get('orderby');
+		if ($orderby == 'dates') {
+			$query->set('meta_key', 'dates');
+			$query->set('orderby', 'meta_value[0]');
+			// $query->set('orderby', 'meta_value_num');
+		}
+	}
 
 }
