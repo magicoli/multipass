@@ -384,6 +384,18 @@ class Prestations_Prestation {
 								'relation' => 'or',
 							],
 						],
+						[
+								'prepend'          => __( 'Before', 'prestations' ),
+								'id'            => $prefix . 'deposit_before',
+								'type'          => 'date',
+								'visible' => [
+									'when'     => [
+										['deposit_percent', '!=', ''],
+										['deposit_amount', '!=', ''],
+									],
+									'relation' => 'or',
+								],
+						],
 					],
 				],
 			],
