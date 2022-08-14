@@ -151,6 +151,12 @@ class Prestations_Prestation {
 				'callback' => 'register_fields'
 			),
 			array(
+				'hook' => 'wp_insert_post_data',
+				'callback' => 'new_post_random_slug',
+				'accepted_args' => 2
+			),
+
+			array(
 				'hook' => 'term_link',
 				'callback' => 'term_link_filter',
 				'accepted_args' => 3,
@@ -952,6 +958,15 @@ class Prestations_Prestation {
 			$query->set('orderby', 'meta_value');
 			// $query->set('orderby', 'meta_value_num');
 		}
+	}
+
+	static function new_post_random_slug( $data, $postarr ) {
+		if ( ! empty( $postarr['ID'] ) ) return $data; // Not a new post.
+		if ( ! in_array( $data['post_type'], [ 'prestation' ], true ) )  return $data; // Not a prestation
+
+		$data['post_name'] = Prestations::unique_random_slug();
+
+		return $data;
 	}
 
 }
