@@ -788,7 +788,7 @@ class Prestations_Prestation {
 		if ( 'prestation-status' === $taxonomy ) {
 			return add_query_arg( array(
 				'prestation-status' => $term->slug,
-			), admin_url(sprintf(basename($_SERVER['REQUEST_URI']))) );
+			), admin_url(basename($_SERVER['REQUEST_URI'])) );
 		}
 		return $termlink;
 	}
