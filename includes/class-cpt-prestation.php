@@ -518,7 +518,7 @@ class Prestations_Prestation {
 			],
 		];
 
-		$meta_boxes[] = [
+		$meta_boxes['prestation-summary'] = [
 			'title'      => __( 'Summary', 'prestations' ),
 			'id'         => 'prestation-summary',
 			'post_types' => ['prestation'],

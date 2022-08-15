@@ -136,6 +136,11 @@ class Prestations {
 			$this->loaders[] = new Prestations_Mailbox();
 		}
 
+		if(is_plugin_active('woocommerce/woocommerce.php')) {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-integration-woocommerce.php';
+			$this->loaders[] = new Prestations_WooCommerce();
+		}
+
 	}
 
 	/**

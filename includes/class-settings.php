@@ -184,7 +184,7 @@ class Prestations_Settings {
 	static function register_settings_fields( $meta_boxes ) {
 		$prefix = '';
 
-		$meta_boxes[] = [
+		$meta_boxes['prestations-settings'] = [
 			'title'          => __( 'General', 'prestations' ),
 			'id'             => 'prestations-settings-fields',
 			'settings_pages' => ['prestations'],
