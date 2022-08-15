@@ -60,8 +60,9 @@ class Prestations_WooCommerce {
 
 		$this->actions = array(
 			array(
-				'hook' => 'mb_relationships_init',
-				'callback' => 'self::register_relationships',
+				'hook' => 'save_post_shop_order',
+				'callback' => 'set_or_create_prestation',
+				'accepted_args' => 3,
 			),
 			// array(
 			// 	'hook' => 'init',
@@ -70,6 +71,10 @@ class Prestations_WooCommerce {
 		);
 
 		$this->filters = array(
+			array(
+				'hook' => 'rwmb_meta_boxes',
+				'callback' => 'register_fields'
+			),
 			array (
 				'hook' => 'mb_settings_pages',
 				'callback' => 'register_settings_pages',
@@ -82,6 +87,18 @@ class Prestations_WooCommerce {
 				'hook' => 'manage_edit-shop_order_columns',
 				'callback' => 'add_shop_order_columns',
 			),
+
+			array(
+				'hook' => 'manage_prestation_posts_custom_column',
+				'callback' => 'prestations_columns_display',
+				'accepted_args' => 2,
+			),
+			array(
+				'hook' => 'manage_shop_order_posts_custom_column',
+				'callback' => 'shop_orders_columns_display',
+				'accepted_args' => 2,
+			),
+
 		);
 
 		$defaults = array( 'component' => __CLASS__, 'priority' => 10, 'accepted_args' => 1 );
@@ -96,6 +113,28 @@ class Prestations_WooCommerce {
 			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
 
+	}
+
+	static function register_fields( $meta_boxes ) {
+		$prefix = 'prestation_';
+
+		$meta_boxes[] = [
+			'title'      => __( 'Prestation', 'prestations' ),
+			'id'         => 'prestation-woocommerce-order',
+			'post_types' => ['shop_order'],
+			'context'    => 'side',
+			'fields'     => [
+				[
+					// 'name'       => __( 'Prestation', 'prestations' ),
+					'id'         => $prefix . 'id',
+					'type'       => 'post',
+					'post_type'  => ['prestation'],
+					'field_type' => 'select_advanced',
+				],
+			],
+		];
+
+		return $meta_boxes;
 	}
 
 	static function register_settings_pages( $settings_pages ) {
@@ -119,43 +158,6 @@ class Prestations_WooCommerce {
 		return $meta_boxes;
 	}
 
-	function register_relationships() {
-		MB_Relationships_API::register( [
-			'id'         => 'wc-order-prestation',
-			// 'reciprocal' => true, // Only for items of the same type
-			'from'       => [
-				'object_type'  => 'post',
-				'post_type'    => 'shop_order',
-				'admin_column' => true,
-				'admin_column' => [
-					'position' => 'after order_number',
-					'link'     => 'edit',
-					'searchable' => true,
-				],
-				'meta_box'     => [
-					'title'    => 'Prestation',
-					'priority' => 'high',
-				],
-			],
-			'to'         => [
-				'object_type'  => 'post',
-				'post_type'    => 'prestation',
-				'admin_column' => [
-					'position' => 'after dates',
-					'link'     => 'view',
-					'searchable' => true,
-				],
-				'meta_box'     => [
-					'title'   => 'Orders',
-					'context' => 'normal',
-				],
-				'field'        => [
-					'max_clone' => '1',
-				],
-			],
-		]);
-	}
-
 	/**
 	 * Tweak to force add shop order columns, which should be added by mb_relationships_init but aren't
 	 */
@@ -163,11 +165,42 @@ class Prestations_WooCommerce {
 		foreach($columns as $key => $value) {
 			$updated_columns[$key] = $value;
 			if($key == 'order_number') {
-				$updated_columns['wc-order-prestation_to'] = __('Prestation', 'prestations');
+				$updated_columns['prestation'] = __('Prestation', 'prestations');
 			}
 		}
 		if(isset($updated_columns)) $columns = $updated_columns;
 		return $columns;
+	}
+
+	static function get_related_links($post_id, $relation_id, $direction) {
+		if( empty($post_id) || empty($relation_id) ) return [];
+		$related = [];
+
+		return $related;
+	}
+
+	static function prestations_columns_display( $column, $post_id ) {
+		switch($column) {
+			case 'wc-order-prestation_to':
+			$related = self::get_related_links($post_id, 'wc-order-prestation', 'from');
+			echo 'O ' . join(' ', $related);
+			break;
+		}
+	}
+
+	static function shop_orders_columns_display( $column, $post_id ) {
+		switch($column) {
+			case 'prestation':
+			$prestation_id = get_post_meta($post_id, 'prestation_id', true);
+			if(!empty($prestation_id)) {
+				echo sprintf(
+					'<a href="%s">#%s</a>',
+					get_edit_post_link($prestation_id),
+					get_post_field( 'post_name', $prestation_id),
+				);
+			}
+			break;
+		}
 	}
 
 	function background_process() {
@@ -187,6 +220,33 @@ class Prestations_WooCommerce {
 		// $this->background_request = new Prestations_WooCommerce_Request();
 		// $this->background_request->data( array( 'value1' => $value1, 'value2' => $value2 ) );
 		// $this->background_request->dispatch();
+	}
+
+	static function set_or_create_prestation($post_id, $post, $update ) {
+		if( !$update ) return;
+		if( Prestations::is_new_post() ) return; // new posts are empty
+		if( $post->post_type != 'shop_order' ) return;
+		if( isset($_REQUEST['action']) && $_REQUEST['action'] == 'trash' ) return;
+
+		// $loop = new WP_Query( [
+		// 	'relationship' => [
+		// 		'id'   => 'posts_to_pages',
+		// 		'from' => get_the_ID(), // You can pass object ID or full object
+		// 	],
+		// 	'nopaging'     => true,
+		// ]);
+		// while ( $loop->have_posts() ) : $loop->the_post() {
+		// 	echo sprintf(
+		// 		'<a href="%s">%s</a>',
+		// 		the_permalink(),
+		// 		the_title(),
+		// 	);
+		// }
+		// wp_reset_postdata();
+
+		// error_log(print_r($post, true));
+
+		return;
 	}
 
 }
