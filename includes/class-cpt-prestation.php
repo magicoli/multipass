@@ -298,6 +298,11 @@ class Prestations_Prestation {
 					'id'            => $prefix . 'guest_name',
 					'type'          => 'text',
 					'description'		=> __('Leave empty if same as customer name', 'prestations'),
+				],
+				[
+					'name'          => __( 'Guest', 'prestations' ),
+					'id'            => $prefix . 'display_name',
+					'type'          => 'hidden',
 					'admin_columns' => [
 						'position'   => 'after customer',
 						'sort'       => true,
@@ -919,10 +924,11 @@ class Prestations_Prestation {
 		if(empty($updates['guest_name']) &! empty($updates['customer'])) {
 			$display_name = trim(get_userdata($updates['customer'])->first_name. ' ' . get_userdata($updates['customer'])->last_name);
 		} else {
-			$display_name = $updates['guest_name'];
+			$display_name = trim($updates['guest_name']);
 		}
 
-		$updates['date_sort'] = (isset($updates['dates']) && isset($updates['dates']['from'])) ? $updates['dates']['from'] : '';
+		$updates['sort_date'] = (isset($updates['dates']) && isset($updates['dates']['from'])) ? $updates['dates']['from'] : '';
+		$updates['display_name'] = $display_name;
 
 		$post_update = array(
 			'ID' => $post_id,
@@ -961,31 +967,31 @@ class Prestations_Prestation {
 
 	static function admin_columns_display( $column, $post_id ) {
 	  // Image column
-	  if ( 'dates' === $column ) {
+	  switch($column) {
+			case 'dates':
 			$dates = get_post_meta($post_id, 'dates', true);
 			$dates = array_filter($dates);
-			if(is_array($dates) &! empty($dates)) {
-				echo join(' / ', $dates);
-				return;
-			}
-	  }
+			if(is_array($dates) &! empty($dates))
+			echo join(' / ', $dates);
+			break;
+		}
 	}
 
 	static function sortable_columns($columns) {
 		$columns['dates'] = 'dates';
+		// $columns['guest'] = 'guest';
 		return $columns;
 	}
 
 	static function sortable_columns_order($query) {
-		if (!is_admin()) {
-			return;
-		}
-
+		if (!is_admin()) return;
 		$orderby = $query->get('orderby');
-		if ($orderby == 'dates') {
-			$query->set('meta_key', 'date_sort');
+
+		switch($orderby) {
+			case 'dates':
+			$query->set('meta_key', 'sort_date');
 			$query->set('orderby', 'meta_value');
-			// $query->set('orderby', 'meta_value_num');
+			break;
 		}
 	}
 
