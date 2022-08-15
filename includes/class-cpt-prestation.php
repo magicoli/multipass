@@ -981,10 +981,11 @@ class Prestations_Prestation {
 	}
 
 	static function new_post_random_slug( $data, $postarr ) {
-		if ( ! empty( $postarr['ID'] ) ) return $data; // Not a new post.
-		if ( ! in_array( $data['post_type'], [ 'prestation' ], true ) )  return $data; // Not a prestation
+		if ( ! in_array( $data['post_type'], [ 'prestation' ], true ) )  return $data;
 
-		$data['post_name'] = Prestations::unique_random_slug();
+		if( empty( $postarr['ID'] ) || empty($postarr['post_name']) ) {
+			$data['post_name'] = Prestations::unique_random_slug();
+		}
 
 		return $data;
 	}
