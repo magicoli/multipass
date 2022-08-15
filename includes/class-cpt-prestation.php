@@ -228,7 +228,7 @@ class Prestations_Prestation {
 			'item_reverted_to_draft'   => esc_html__( 'Prestation reverted to draft', 'prestations' ),
 			'item_scheduled'           => esc_html__( 'Prestation scheduled', 'prestations' ),
 			'item_updated'             => esc_html__( 'Prestation updated', 'prestations' ),
-			'text_domain'              => esc_html__( 'prestations', 'prestations' ),
+			'text_domain'              => 'prestations',
 		];
 		$args = [
 			'label'               => esc_html__( 'Prestations', 'prestations' ),
