@@ -773,14 +773,23 @@ class Prestations_Prestation {
 	}
 
 	static function get_summary_reference($args = []) {
-		if( Prestations::is_new_post() ) return; // triggered when opened new post page, empty
 		global $post;
+		if ($post->post_type != 'prestation') return;
+		if( Prestations::is_new_post() ) return; // triggered when opened new post page, empty
 
-		return sprintf(
-			'<code>%s</code>',
-			// get_permalink($post),
-			$post->post_name,
-		);
+		if(is_post_type_viewable( $post->post_type )) {
+			return sprintf(
+				'<a href="%s"><code>%s</code></a>',
+				// '<a href="%s" class="thickbox"><code>%s</code></a>',
+				get_permalink($post),
+				$post->post_name,
+			);
+		} else {
+			return sprintf(
+				'<code>%s</code>',
+				$post->post_name,
+			);
+		}
 	}
 
 
