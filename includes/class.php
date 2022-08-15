@@ -274,28 +274,28 @@ class Prestations {
 
 		$i = 0; do {
 			$i++;
-			if($i > 5) {
-				// If failed to find a nunique ID several times in a row, increase slug size to avoid slowing down process
+			if($i > 5) { // failed several times to find a unique slug, increase length
 				$slug_length++;
 				$i = 0;
 				Prestations::update_option('prestations:slug_length', $slug_length);
 			}
 
-			// $slug = bin2hex( openssl_random_pseudo_bytes( $slug_length / 2 ) ); // Only hex characters, Deprecated
-			// $slug = bin2hex(random_bytes( $slug_length / 2)); // Only hex characters,
-
-			$chars = implode('', range('a', 'z')); // . implode('', range('A', 'Z')) . implode('', range('0', '9'));
+			$chars = implode(range('a', 'z'));
+			// $chars = implode('', range('a', 'z')) . implode('', range('A', 'Z')) . implode('', range('0', '9')); // more characters allowed
 
 			# Basic method: does not allow duplicate characters, less enthropy, slug length limited to $chars length
 			$slug = substr(str_shuffle($chars), 0, $slug_length);
 
-			# Alternative: more enthropy, length not limited, maybe slower
+			# Alternative: more enthropy, length not limited, might be slower
 			// $chars_length = strlen($chars);
 			// $slug = '';
 			// for($i = 0; $i < $slug_length; $i++) {
 			// 	$random_character = $chars[mt_rand(0, $chars_length - 1)];
 			// 	$slug .= $random_character;
 			// }
+
+			# hexadecimal alternative
+			// $slug = bin2hex(random_bytes( $slug_length / 2));
 
 			// Check uniqueness.
 			$result = $wpdb->get_var( $wpdb->prepare( "SELECT post_name FROM $wpdb->posts WHERE post_name = %s LIMIT 1", $slug ) );
