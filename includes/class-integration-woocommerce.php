@@ -116,8 +116,9 @@ class Prestations_WooCommerce {
 	}
 
 	static function register_fields( $meta_boxes ) {
-		$prefix = 'prestation_';
 
+		// For WC Orders
+		$prefix = 'prestation_';
 		$meta_boxes[] = [
 			'title'      => __( 'Prestation', 'prestations' ),
 			'id'         => 'prestation-woocommerce-order',
@@ -134,7 +135,43 @@ class Prestations_WooCommerce {
 			],
 		];
 
+		// For Prestations
+		$meta_boxes['prestations-extensions']['fields']['woocommerce'] = [
+			'name' => 'WooCommerce',
+			'id'     => $prefix . 'wc_order',
+			'type'   => 'group',
+			'clone'  => true,
+			'fields' => [
+				[
+					'name'    => __( 'Order ID', 'prestations' ),
+					'id'      => 'id',
+					'type'    => 'text',
+					'post_type' => 'shop_order',
+					// 'std' => self::get_order_details(),
+					// 'readonly' => true,
+					'columns' => 3,
+					// 'options' => self::get_available_items(),
+				],
+				[
+					'name'    => __( 'Additional details', 'prestations' ),
+					'id'      => 'details',
+					'type'    => 'custom_html',
+					'callback' => __CLASS__ . '::get_order_details',
+					'columns' => 6,
+				],
+			],
+		];
+
 		return $meta_boxes;
+	}
+
+	static function get_order_details($one = NULL, $two = NULL, $three = NULL) {
+		error_log(__FUNCTION__
+		. ' one ' . print_r($one, true)
+		. ' two ' . print_r($two, true)
+		. ' three ' . print_r($three, true)
+		);
+		return 'got it';
 	}
 
 	static function register_settings_pages( $settings_pages ) {
