@@ -199,16 +199,16 @@ class Prestations_WooCommerce {
 			$row = sprintf(
 				'<div class="prestation-order">
 				<a href="%s">%s</a>
-				%s - <strong>%s</strong> - %s %s
+				%s - <strong>%s</strong> - %s
 				</div>',
 				get_permalink($order->ID),
 				"#$order->ID",
 				$order->get_date_created()->date(get_option('date_format')),
 				wc_price($order->get_remaining_refund_amount()),
 				$order->get_status(),
-				$order->get_date_paid()->date(get_option('date_format')),
+				// $order->get_date_paid()->date(get_option('date_format')),
 			);
-			$row .= '<ol>';
+			$items = [];
 			foreach ( $order->get_items() as $item_id => $item ) {
 				$product_id = $item->get_product_id();
 				$variation_id = $item->get_variation_id();
@@ -223,9 +223,10 @@ class Prestations_WooCommerce {
 				$allmeta = $item->get_meta_data();
 				$somemeta = $item->get_meta( );
 				$item_type = $item->get_type(); // e.g. "line_item"
-				$row .= '<li>' . "$product_name $quantity x $subtotal = $total " . '</li>';
+				$items[] = '<li>' . "$product_name $quantity x $subtotal = $total " . '</li>';
 			}
-			$row .= '</ol>';
+			if(!empty($items)) $row .= '<ol>' . implode($items) . '</ol>';
+
 			$rows[] = $row;
 		}
 		return implode($rows);
