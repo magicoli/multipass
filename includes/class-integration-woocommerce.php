@@ -123,7 +123,7 @@ class Prestations_WooCommerce {
 
 	static function register_fields( $meta_boxes ) {
 
-		// For WC Orders
+		// Prestation info on WC Orders
 		$prefix = 'prestation_';
 		$meta_boxes[] = [
 			'title'      => __( 'Prestation', 'prestations' ),
@@ -138,10 +138,15 @@ class Prestations_WooCommerce {
 					'post_type'  => ['prestation'],
 					'field_type' => 'select_advanced',
 				],
+				[
+					'id' => $prefix . 'prestation_link',
+					'type' => 'custom_html',
+					'callback' => __CLASS__ . '::display_prestation_link',
+				]
 			],
 		];
 
-		// For Prestations
+		// WC Orders on prestation
 		$prefix = 'woocommerce_';
 		$meta_boxes['prestations-extensions']['fields']['woocommerce'] = [
 			'name'    => __( 'Woocommerce Orders', 'prestations' ),
@@ -188,6 +193,16 @@ class Prestations_WooCommerce {
 		}
 
 		return $query;
+	}
+
+	static function display_prestation_link($arg = NULL, $field = NULL) {
+		global $post;
+		$prestation_id = get_post_meta($post->ID, 'prestation_id', true);
+		$link = get_edit_post_link($prestation_id);
+
+		if(!empty($link)) echo sprintf(
+			'<a href="%s">%s</a>', $link, __('View prestation', 'prestations'),
+		);
 	}
 
 	static function get_order_details($arg = NULL, $field = NULL) {
