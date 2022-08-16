@@ -28,12 +28,27 @@
   border-bottom: solid 1px #ccc;
   padding: 6px 0 3px;
 }
+#prestation-summary .rwmb-field .rwmb-input {
+  text-align: right;
+  width: auto;
+}
+
 #prestation-summary .rwmb-field.status {
+  /* display: flex;
+  flex-wrap: wrap;*/
+  grid-template-columns: 1fr 3fr;
+
   margin-top: 1em;
   margin-bottom: 0;
 }
-#prestation-summary .rwmb-field .rwmb-input {
-  text-align: right;
+#prestation-summary .rwmb-field.status .rwmb-input {
+  display: flex;
+  justify-content: right;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  left: 0;
+  right: 0;
+  width: 100%;
 }
 
 .prestation-status-box,
@@ -42,6 +57,7 @@
   padding: 0.5em 1em;
   color: #777;
   background: #e5e5e5;
+  width: auto;
 }
 
 .prestation-status-box.status-unpaid,
