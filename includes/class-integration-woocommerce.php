@@ -201,7 +201,7 @@ class Prestations_WooCommerce {
 				<a href="%s">%s</a>
 				%s - <strong>%s</strong> - %s
 				</div>',
-				get_permalink($order->ID),
+				get_edit_post_link($order->ID),
 				"#$order->ID",
 				$order->get_date_created()->date(get_option('date_format')),
 				wc_price($order->get_remaining_refund_amount()),
