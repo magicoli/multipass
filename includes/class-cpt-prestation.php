@@ -969,7 +969,7 @@ class Prestations_Prestation {
 		* In the meantime, we force the update
 		*/
 		foreach ($updates as $key => $value) update_post_meta( $post_id, $key, $value );
-		wp_set_post_terms( $post_id, $paid_status, 'prestation-status');
+		wp_set_object_terms( $post_id, $paid_status, 'prestation-status');
 
 		add_action(current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3);
 		return;
