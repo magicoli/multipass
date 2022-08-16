@@ -3,6 +3,10 @@
  * included in this file.
  */
 
+:root {
+  --unpaid: pending;
+  --partial: pending;
+}
 .post-php.post-type-prestation .rwmb-group-wrapper .rwmb-clone::after {
   padding-bottom: 0;
   margin-bottom: 0px;
@@ -60,23 +64,35 @@
   width: auto;
 }
 
+.prestation-status-box.status-pending,
+.column-status a[href*="prestation-status=pending"],
 .prestation-status-box.status-unpaid,
 .column-status a[href*="prestation-status=unpaid"]
 {
-  color: #993333;
-  background: pink;
+  --hue: 0;
+  color: hsl(var(--hue), 100%, 25%);
+  background: hsl(var(--hue), 100%, 80%);
 }
+.prestation-status-box.status-partial,
+.column-status a[href*="prestation-status=partial"] {
+  --hue: 30;
+  color: hsl(var(--hue), 100%, 25%);
+  background: hsl(var(--hue), 100%, 80%);
+}
+
 .prestation-status-box.status-deposit,
 .column-status a[href*="prestation-status=deposit"],
-.prestation-status-box.status-partiall-paid,
-.column-status a[href*="prestation-status=partial"] {
-  color: #94660c;
-  background: #ffcc99;
+.prestation-status-box.status-on-hold,
+.column-status a[href*="prestation-status=on-hold"] {
+  --hue: 60;
+  color: hsl(var(--hue), 100%, 25%);
+  background: hsl(var(--hue), 75%, 75%);
 }
 .prestation-status-box.status-free,
 .column-status a[href*="prestation-status=free"],
 .prestation-status-box.status-paid,
 .column-status a[href*="prestation-status=paid"] {
-  color: #5b841b;
-  background: #c6e1c6;
+  --hue: 90;
+  color: hsl(var(--hue), 100%, 25%);
+  background: hsl(var(--hue), 75%, 75%);
 }

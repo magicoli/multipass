@@ -716,11 +716,11 @@ class Prestations_Prestation {
 			// Draft (not available for new order inclusion)
 			'checkout-draft' => [ 'name' => __('Draft', 'prestations') ],
 
-			'deposit' => [ 'name' => __('Paid Deposit', 'prestations'), 'parent' => 'on-hold' ],
+			'deposit' => [ 'name' => __('Deposit paid', 'prestations'), 'parent' => 'on-hold' ],
 			'paid' => [ 'name' => __('Paid', 'prestations'), 'parent' => 'on-hold' ],
 
 			'unpaid' => [ 'name' => __('Unpaid', 'prestations'), 'parent' => 'pending' ],
-			'partial' => [ 'name' => __('Partial', 'prestations'), 'parent' => 'pending' ],
+			'partial' => [ 'name' => __('Partially paid', 'prestations'), 'parent' => 'pending' ],
 		);
 
 		foreach($terms as $slug => $term) {
@@ -826,6 +826,7 @@ class Prestations_Prestation {
 		$paid_status = NULL;
 		global $post;
 		$terms = get_the_terms($post, 'prestation-status');
+
 		if(is_array($terms) && isset($terms[0])) {
 			$status = [];
 			foreach($terms as $term) {
@@ -922,27 +923,27 @@ class Prestations_Prestation {
 				$paid_status = 'on-hold';
 			} else if($updates['paid'] < $updates['total']) {
 				if($updates['paid'] >= $updates['deposit']['amount'] && $updates['deposit']['amount'] > 0 )  {
-					$paid_status = 'on-hold';
 					$post_status = 'publish';
+					$paid_status = 'deposit';
 				} else {
-					$paid_status = 'pending';
 					$post_status = 'pending';
-					// if ($updates['paid'] > 0)
-					// $paid_status = [ 'pending', 'partial' ];
-					// else
-					// $paid_status = 'unpaid';
+					if ($updates['paid'] > 0)
+					$paid_status = 'partial';
+					else
+					$paid_status = 'unpaid';
 				}
 				// } else if($updates['paid'] > $updates['total']) {
 				// 	$paid_status = 'overpaid';
 			} else {
 				$post_status = 'publish';
-				$paid_status = 'on-hold';
+				$paid_status = 'paid';
 			}
 			break;
 
 			default:
 			$paid_status = $post->post_status;
 		}
+		$paid_status = (is_array($paid_status)) ? $paid_status : [ $paid_status ];
 
 		if(empty($updates['guest_name']) &! empty($updates['customer'])) {
 			$display_name = trim(get_userdata($updates['customer'])->first_name. ' ' . get_userdata($updates['customer'])->last_name);
@@ -962,6 +963,7 @@ class Prestations_Prestation {
 				'prestation-status' => $paid_status,
 			),
 		);
+
 		wp_update_post($post_update);
 
 		/*
