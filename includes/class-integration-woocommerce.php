@@ -99,6 +99,12 @@ class Prestations_WooCommerce {
 				'accepted_args' => 2,
 			),
 
+			array(
+				'hook' => 'woocommerce_order_data_store_cpt_get_orders_query',
+				'callback' => 'wc_get_orders_handle_prestation_id',
+				'accepted_args' => 2,
+			),
+
 		);
 
 		$defaults = array( 'component' => __CLASS__, 'priority' => 10, 'accepted_args' => 1 );
@@ -136,42 +142,93 @@ class Prestations_WooCommerce {
 		];
 
 		// For Prestations
+		$prefix = 'woocommerce_';
 		$meta_boxes['prestations-extensions']['fields']['woocommerce'] = [
-			'name' => 'WooCommerce',
-			'id'     => $prefix . 'wc_order',
-			'type'   => 'group',
-			'clone'  => true,
-			'fields' => [
-				[
-					'name'    => __( 'Order ID', 'prestations' ),
-					'id'      => 'id',
-					'type'    => 'text',
-					'post_type' => 'shop_order',
-					// 'std' => self::get_order_details(),
-					// 'readonly' => true,
-					'columns' => 3,
-					// 'options' => self::get_available_items(),
-				],
-				[
-					'name'    => __( 'Additional details', 'prestations' ),
-					'id'      => 'details',
-					'type'    => 'custom_html',
-					'callback' => __CLASS__ . '::get_order_details',
-					'columns' => 6,
-				],
-			],
+			'name'    => __( 'Woocommerce Orders', 'prestations' ),
+			'id'      => 'orders',
+			'type'    => 'custom_html',
+			'callback' => __CLASS__ . '::get_order_details',
+			// 'columns' => 6,
+
+			// 'name' => 'WooCommerce',
+			// 'id'     => $prefix . 'wc_order',
+			// 'type'   => 'group',
+			// 'clone'  => true,
+			// 'fields' => [
+			// 	[
+			// 		'name'    => __( 'Order ID', 'prestations' ),
+			// 		'id'      => 'id',
+			// 		'type'    => 'text',
+			// 		'post_type' => 'shop_order',
+			// 		'callback' => __CLASS__ . '::get_order_details',
+			// 		// 'std' => self::get_order_details(),
+			// 		// 'readonly' => true,
+			// 		'columns' => 3,
+			// 		// 'options' => self::get_available_items(),
+			// 	],
+			// 	[
+			// 		'name'    => __( 'Additional details', 'prestations' ),
+			// 		'id'      => 'details',
+			// 		'type'    => 'custom_html',
+			// 		'callback' => __CLASS__ . '::get_order_details',
+			// 		'columns' => 6,
+			// 	],
+			// ],
 		];
 
 		return $meta_boxes;
 	}
 
-	static function get_order_details($one = NULL, $two = NULL, $three = NULL) {
-		error_log(__FUNCTION__
-		. ' one ' . print_r($one, true)
-		. ' two ' . print_r($two, true)
-		. ' three ' . print_r($three, true)
-		);
-		return 'got it';
+	static function wc_get_orders_handle_prestation_id( $query, $query_vars ) {
+		if ( ! empty( $query_vars['prestation_id'] ) ) {
+			$query['meta_query'][] = array(
+				'key' => 'prestation_id',
+				'value' => esc_attr( $query_vars['prestation_id'] ),
+			);
+		}
+
+		return $query;
+	}
+
+	static function get_order_details($arg = NULL, $field = NULL) {
+		global $post;
+		$orders = wc_get_orders([ 'prestation_id' => $post->ID ]);
+		$rows = [];
+		foreach ($orders as $key => $order) {
+			// error_log(print_r($order, true));
+			$row = sprintf(
+				'<div class="prestation-order">
+				<a href="%s">%s</a>
+				%s - <strong>%s</strong> - %s %s
+				</div>',
+				get_permalink($order->ID),
+				"#$order->ID",
+				$order->get_date_created()->date(get_option('date_format')),
+				wc_price($order->get_remaining_refund_amount()),
+				$order->get_status(),
+				$order->get_date_paid()->date(get_option('date_format')),
+			);
+			$row .= '<ol>';
+			foreach ( $order->get_items() as $item_id => $item ) {
+				$product_id = $item->get_product_id();
+				$variation_id = $item->get_variation_id();
+				$product = $item->get_product(); // see link above to get $product info
+				$product_name = $item->get_name();
+				$quantity = $item->get_quantity();
+				$subtotal = $item->get_subtotal();
+				$total = $item->get_total();
+				$tax = $item->get_subtotal_tax();
+				$tax_class = $item->get_tax_class();
+				$tax_status = $item->get_tax_status();
+				$allmeta = $item->get_meta_data();
+				$somemeta = $item->get_meta( );
+				$item_type = $item->get_type(); // e.g. "line_item"
+				$row .= '<li>' . "$product_name $quantity x $subtotal = $total " . '</li>';
+			}
+			$row .= '</ol>';
+			$rows[] = $row;
+		}
+		return implode($rows);
 	}
 
 	static function register_settings_pages( $settings_pages ) {
