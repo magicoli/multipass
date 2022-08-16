@@ -413,6 +413,15 @@ class Prestations_Prestation {
 			],
 		];
 
+		$meta_boxes['prestations-extensions'] = [
+			'title'      => __( 'Managed Services', 'prestations' ),
+			'id'         => 'prestations-extensions',
+			'post_types' => ['prestation'],
+			'style' => 'seamless',
+			'fields'     => [
+			],
+		];
+
 		$meta_boxes[] = [
 			'title'      => __( 'Prestation Items', 'prestations' ),
 			'id'         => 'prestation-items',
