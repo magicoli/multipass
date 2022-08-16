@@ -3,6 +3,15 @@
  * included in this file.
  */
 
+.post-php.post-type-prestation .rwmb-group-wrapper .rwmb-clone::after {
+  padding-bottom: 0;
+  margin-bottom: 0px;
+}
+.post-php.post-type-prestation .rwmb-group-clone:not(:first-child) label {
+  display: none;
+  background: pink;
+}
+
 .rwmb-field.inline > .rwmb-input > div {
   display: inline-block;
   margin-right: 1em;
