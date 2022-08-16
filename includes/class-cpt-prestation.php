@@ -143,7 +143,6 @@ class Prestations_Prestation {
 			// 	'priority' => 20,
 			// ),
 		);
-		// add_action( 'init', 'register_taxonomies' );
 
 		$filters = array(
 			array(
@@ -166,7 +165,6 @@ class Prestations_Prestation {
 				'hook' => 'manage_prestation_posts_columns',
 				'callback' => 'add_admin_columns',
 			),
-
 			array(
 				'hook' => 'manage_prestation_posts_custom_column',
 				'callback' => 'admin_columns_display',
@@ -679,7 +677,7 @@ class Prestations_Prestation {
 			'description'        => '',
 			'public'             => false,
 			'publicly_queryable' => false,
-			'hierarchical'       => false,
+			'hierarchical'       => true,
 			'show_ui'            => true,
 			'show_in_menu'       => true,
 			'show_in_nav_menus'  => false,
@@ -689,7 +687,7 @@ class Prestations_Prestation {
 			'show_admin_column'  => false,
 
 			'query_var'          => true,
-			'sort'               => false,
+			'sort'               => true,
 			'meta_box_cb'        => 'post_tags_meta_box',
 			'rest_base'          => '',
 			'rewrite'            => [
@@ -699,35 +697,43 @@ class Prestations_Prestation {
 		];
 		register_taxonomy( 'prestation-status', ['prestation'], $args );
 
-		$terms = [
-			[
-				'slug' => 'pending',
-				'name' => __('Pending', 'prestations'),
-			],
-			[
-				'slug' => 'free',
-				'name' => __('Free', 'prestations'),
-			],
-			[
-				'slug' => 'unpaid',
-				'name' => __('Unpaid', 'prestations'),
-			],
-			[
-				'slug' => 'deposit',
-				'name' => __('Deposit', 'prestations'),
-			],
-			[
-				'slug' => 'partial',
-				'name' => __('Partial', 'prestations'),
-			],
-			[
-				'slug' => 'paid',
-				'name' => __('Paid', 'prestations'),
-			],
-		];
+		/**
+		 * Prestation statuses, we use basically the same terminology as
+		 * WooCommerce, but it is not mandatory.
+		 */
+		$terms = array(
+			// Open (still modifiable, available for new order inclusion)
+			'pending' => [ 'name' => __('Pending payment', 'prestations') ],  // unpaid or paid less than deposit, not confirmed
+			'on-hold' => [ 'name' => __('On hold', 'prestations') ], // fully paid and not started
+			'processing' => [ 'name' => __('Processing', 'prestations') ], // paid and started
 
-		foreach($terms as $term) {
-			wp_insert_term( $term['name'], 'prestation-status', [ 'slug' => $term['slug']] );
+			// Closed (not modifiable except refunds, not available for new order inclusion)
+			'completed' => [ 'name' => __('Completed', 'prestations') ], // paid and finished
+			'cancelled' => [ 'name' => __('Cancelled', 'prestations') ],
+			'refunded' => [ 'name' => __('Refunded', 'prestations') ],
+			'failed' => [ 'name' => __('Failed', 'prestations') ], // shouldn't need that at prestation level
+
+			// Draft (not available for new order inclusion)
+			'checkout-draft' => [ 'name' => __('Draft', 'prestations') ],
+
+			'deposit' => [ 'name' => __('Paid Deposit', 'prestations'), 'parent' => 'on-hold' ],
+			'paid' => [ 'name' => __('Paid', 'prestations'), 'parent' => 'on-hold' ],
+
+			'unpaid' => [ 'name' => __('Unpaid', 'prestations'), 'parent' => 'pending' ],
+			'partial' => [ 'name' => __('Partial', 'prestations'), 'parent' => 'pending' ],
+		);
+
+		foreach($terms as $slug => $term) {
+			$targs = array_merge( $term, [ 'slug' => $slug ] );
+			if(isset($targs['parent'])) {
+				$parent = term_exists( $targs['parent'], 'prestation-status' );
+    		if( $parent && isset($parent['term_id']) ) {
+					$targs['parent'] = $parent['term_id'];
+				}
+				else unset($targs['parent']);
+			}
+			unset($targs['name']);
+			wp_insert_term( $term['name'], 'prestation-status', $targs );
 		}
 	}
 
@@ -821,16 +827,24 @@ class Prestations_Prestation {
 		global $post;
 		$terms = get_the_terms($post, 'prestation-status');
 		if(is_array($terms) && isset($terms[0])) {
-			$term = $terms[0];
-			if(!empty($term)) return sprintf(
-				'<span class="%1$s-status-box status-%2$s">%3$s</span>',
-				$post->post_type,
-				$term->slug,
-				$term->name,
-			);
+			$status = [];
+			foreach($terms as $term) {
+				$status[] = sprintf(
+					'<span class="%1$s-status-box status-%2$s">%3$s</span>',
+					$post->post_type,
+					$term->slug,
+					$term->name,
+				);
+			}
+			return implode(' ', $status);
+			// $term = $terms[0];
+			// if(!empty($term)) return sprintf(
+			// 	'<span class="%1$s-status-box status-%2$s">%3$s</span>',
+			// 	$post->post_type,
+			// 	$term->slug,
+			// 	$term->name,
+			// );
 		}
-
-		return $paid_status;
 	}
 
 	static function update_prestation_amounts($post_id, $post, $update ) {
@@ -905,24 +919,24 @@ class Prestations_Prestation {
 		switch($post->post_status) {
 			case 'publish':
 			if($updates['total'] <= 0) {
-				$paid_status = 'free';
+				$paid_status = 'on-hold';
 			} else if($updates['paid'] < $updates['total']) {
 				if($updates['paid'] >= $updates['deposit']['amount'] && $updates['deposit']['amount'] > 0 )  {
-					$paid_status = 'deposit';
+					$paid_status = 'on-hold';
 					$post_status = 'publish';
 				} else {
+					$paid_status = 'pending';
 					$post_status = 'pending';
-					if ($updates['paid'] > 0)
-					$paid_status = 'partial';
-					else
-					$paid_status = 'unpaid';
-
+					// if ($updates['paid'] > 0)
+					// $paid_status = [ 'pending', 'partial' ];
+					// else
+					// $paid_status = 'unpaid';
 				}
 				// } else if($updates['paid'] > $updates['total']) {
 				// 	$paid_status = 'overpaid';
 			} else {
 				$post_status = 'publish';
-				$paid_status = 'paid';
+				$paid_status = 'on-hold';
 			}
 			break;
 
