@@ -60,10 +60,15 @@ class Prestations_WooCommerce {
 
 		$this->actions = array(
 			array(
-				'hook' => 'save_post_shop_order',
-				'callback' => 'set_or_create_prestation',
+				'hook' => 'wp_insert_post',
+				'callback' => 'update_order_prestation',
 				'accepted_args' => 3,
 			),
+			// array(
+			// 	'hook' => 'save_post_shop_order',
+			// 	'callback' => 'update_order_prestation',
+			// 	'accepted_args' => 3,
+			// ),
 			// array(
 			// 	'hook' => 'init',
 			// 	'callback' => 'self::background_process',
@@ -98,6 +103,12 @@ class Prestations_WooCommerce {
 				'callback' => 'shop_orders_columns_display',
 				'accepted_args' => 2,
 			),
+
+			// array(
+			// 	'hook' => 'update_post_metadata',
+			// 	'callback' => 'update_order_prestation',
+			// 	'accepted_args' => 5,
+			// ),
 
 			array(
 				'hook' => 'woocommerce_order_data_store_cpt_get_orders_query',
@@ -332,11 +343,47 @@ class Prestations_WooCommerce {
 		// $this->background_request->dispatch();
 	}
 
-	static function set_or_create_prestation($post_id, $post, $update ) {
+	// static function update_order_prestation( $data, $postarr, $unsanitized_postarr, $update ) {
+	// static function update_order_prestation( $meta_id, $object_id, $meta_key, $_meta_value ) {
+	// static function update_order_prestation( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
+	static function update_order_prestation($order_id, $order, $update ) {
 		if( !$update ) return;
 		if( Prestations::is_new_post() ) return; // new posts are empty
-		if( $post->post_type != 'shop_order' ) return;
-		if( isset($_REQUEST['action']) && $_REQUEST['action'] == 'trash' ) return;
+		if( $order->post_type != 'shop_order' ) return;
+		if( $order->post_status == 'trash' ) return;
+
+		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
+
+		$prestation_id = get_post_meta($order_id, 'prestation_id', true);
+		$prestation = get_post($prestation_id);
+		if(empty($prestation_id) || ! $prestation) {
+			$postarr = array(
+				'post_author' => $order->post_author,
+				'post_date' => $order->post_date,
+				'post_date_gmt' => $order->post_date_gmt,
+				'post_type' => 'prestation',
+				'post_status' => 'publish',
+				'meta_input' => array(
+					'customer_id' => get_post_meta($order_id, '_customer_user', true),
+					'customer_name' => trim(get_post_meta($order_id, '_billing_first_name', true) . ' ' . get_post_meta($order_id, '_billing_last_name', true)),
+				),
+			);
+			$prestation_id = wp_insert_post($postarr);
+			Prestations_Prestation::update_prestation_amounts($prestation_id, get_post($prestation_id), true );
+
+			update_post_meta( $order_id, 'prestation_id', $prestation_id );
+			error_log(
+				"Order $order->ID no prestation, created $prestation_id\n"
+				. print_r($postarr, true)
+				// . print_r(get_post($prestation_id), true)
+				. print_r(get_post_meta($order_id), true)
+			);
+		} else {
+			error_log(
+				"Order $order->ID prestation_id $prestation_id"
+				. print_r(get_post_meta($order_id), true)
+			);
+		}
 
 		// $loop = new WP_Query( [
 		// 	'relationship' => [
@@ -356,6 +403,7 @@ class Prestations_WooCommerce {
 
 		// error_log(print_r($post, true));
 
+		add_action(current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3);
 		return;
 	}
 

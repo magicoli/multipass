@@ -282,7 +282,7 @@ class Prestations_Prestation {
 				],
 				[
 					'name'          => __( 'Customer', 'prestations' ),
-					'id'            => $prefix . 'customer',
+					'id'            => $prefix . 'customer_id',
 					'type'          => 'user',
 					'field_type'    => 'select_advanced',
 					'admin_columns' => [
@@ -302,7 +302,7 @@ class Prestations_Prestation {
 					'id'            => $prefix . 'display_name',
 					'type'          => 'hidden',
 					'admin_columns' => [
-						'position'   => 'after customer',
+						'position'   => 'after customer_id',
 						'sort'       => true,
 						'searchable' => true,
 					],
@@ -312,7 +312,7 @@ class Prestations_Prestation {
 					'id'      => $prefix . 'customer_email',
 					'type'    => 'email',
 					'visible' => [
-						'when'     => [['customer', '=', '']],
+						'when'     => [['customer_id', '=', '']],
 						'relation' => 'or',
 					],
 				],
@@ -411,72 +411,90 @@ class Prestations_Prestation {
 			],
 		];
 
-		$meta_boxes['prestations-extensions'] = [
-			'title'      => __( 'Managed Services', 'prestations' ),
-			'id'         => 'prestations-extensions',
-			'post_types' => ['prestation'],
-			'style' => 'seamless',
-			'fields'     => [
-			],
-		];
+		// $meta_boxes['prestations-extensions'] = [
+		// 	'title'      => __( 'Managed Services', 'prestations' ),
+		// 	'id'         => 'prestations-extensions',
+		// 	'post_types' => ['prestation'],
+		// 	'style' => 'seamless',
+		// 	'fields'     => [
+		// 	],
+		// ];
 
-		$meta_boxes[] = [
-			'title'      => __( 'Prestation Items', 'prestations' ),
-			'id'         => 'prestation-items',
-			'post_types' => ['prestation'],
-			'fields'     => [
-				[
-					'id'     => $prefix . 'items',
-					'type'   => 'group',
-					'clone'  => true,
-					'fields' => [
-						[
-							'name'    => __( 'ID', 'prestations' ),
-							'id'      => $prefix . 'item_id',
-							'type'    => 'text',
-							'readonly' => true,
+		$items_list_fields = [
+			'items' => [
+				'id'     => $prefix . 'items',
+				'type'   => 'group',
+				'clone'  => true,
+				'readonly' => false,
+				'fields' => [
+					[
+						'name'    => __( 'ID', 'prestations' ),
+						'id'      => $prefix . 'item_id',
+						'type'    => 'text',
+						'readonly' => true,
+						'columns' => 2,
+						'options' => self::get_available_items(),
+					],
+					[
+						'name'    => __( 'Additional details', 'prestations' ),
+						'id'      => $prefix . 'details',
+						'type'    => 'text',
+						'columns' => 3,
+					],
+					[
+							'name'          => __( 'From', 'prestations' ),
+							'id'            => $prefix . 'from',
+							'type'          => 'date',
 							'columns' => 2,
-							'options' => self::get_available_items(),
-						],
-						[
-							'name'    => __( 'Additional details', 'prestations' ),
-							'id'      => $prefix . 'details',
-							'type'    => 'text',
-							'columns' => 3,
-						],
-						[
-								'name'          => __( 'From', 'prestations' ),
-								'id'            => $prefix . 'from',
-								'type'          => 'date',
-								'columns' => 2,
-						],
-						[
-								'name'          => __( 'To', 'prestations' ),
-								'id'            => $prefix . 'to',
-								'type'          => 'date',
-								'columns' => 2,
-						],
-						[
-							'name'    => __( 'Quantity', 'prestations' ),
-							'id'      => $prefix . 'quantity',
-							'type'    => 'number',
-							'step' => 'any',
-							'columns' => 1,
-						],
-						[
-							'name'    => __( 'Unit Price', 'prestations' ),
-							'id'      => $prefix . 'unit_price',
-							'type'    => 'number',
-							'step' => 'any',
+					],
+					[
+							'name'          => __( 'To', 'prestations' ),
+							'id'            => $prefix . 'to',
+							'type'          => 'date',
 							'columns' => 2,
-						],
+					],
+					[
+						'name'    => __( 'Quantity', 'prestations' ),
+						'id'      => $prefix . 'quantity',
+						'type'    => 'number',
+						'step' => 'any',
+						'columns' => 1,
+					],
+					[
+						'name'    => __( 'Unit Price', 'prestations' ),
+						'id'      => $prefix . 'unit_price',
+						'type'    => 'number',
+						'step' => 'any',
+						'columns' => 2,
 					],
 				],
 			],
 		];
 
+		$meta_boxes['third-party'] = [
+			'title'      => __( 'Third-Party orders and bookings', 'prestations' ),
+			'id'         => 'prestation-third-party',
+			'post_types' => ['prestation'],
+			'fields'     => $items_list_fields,
+			'style' => 'seamless',
+			'readonly' => true,
+		];
+		$meta_boxes['third-party']['fields']['items']['clone'] = false;
+		$meta_boxes['third-party']['fields']['items']['name'] = $meta_boxes['third-party']['title'];
+		foreach($meta_boxes['third-party']['fields']['items']['fields'] as $key => $field) {
+			$meta_boxes['third-party']['fields']['items']['fields'][$key]['readonly'] = true;
+		}
+
+		// error_log(print_r($meta_boxes['third-party'], true));
 		$meta_boxes[] = [
-			'title'      => __( 'Payments', 'prestations' ),
+			'title'      => __( 'Prestation Items', 'prestations' ),
+			'id'         => 'prestation-items',
+			'post_types' => ['prestation'],
+			'fields'     => $items_list_fields,
+		];
+
+		$meta_boxes[] = [
+			'title'      => __( 'Manual payments', 'prestations' ),
 			'id'         => 'prestation-payments',
 			'post_types' => ['prestation'],
 			'fields'     => [
@@ -489,6 +507,7 @@ class Prestations_Prestation {
 							'name'    => __( 'Type', 'prestations' ),
 							'id'      => $prefix . 'type',
 							'type'    => 'select',
+							'placeholder' => __('Select a payment method'),
 							'options' => [
 								'cash'        => __( 'Cash', 'prestations' ),
 								'wire'        => __( 'Wire Transfer', 'prestations' ),
@@ -853,10 +872,11 @@ class Prestations_Prestation {
 		if( Prestations::is_new_post() ) return; // triggered when opened new post page, empty
 		if( $post->post_type != 'prestation' ) return;
 		if( isset($_REQUEST['action']) && $_REQUEST['action'] == 'trash' ) return;
+		error_log(__CLASS__ . '::' . __FUNCTION__ . "($post_id)");
 
 		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
 
-		$updates['customer'] = get_post_meta($post_id, 'customer', true);
+		$updates['customer_id'] = get_post_meta($post_id, 'customer_id', true);
 		$updates['guest_name'] = get_post_meta($post_id, 'guest_name', true);
 
 		$amounts['items'] = get_post_meta($post_id, 'items', true);
@@ -945,8 +965,8 @@ class Prestations_Prestation {
 		}
 		$paid_status = (is_array($paid_status)) ? $paid_status : [ $paid_status ];
 
-		if(empty($updates['guest_name']) &! empty($updates['customer'])) {
-			$display_name = trim(get_userdata($updates['customer'])->first_name. ' ' . get_userdata($updates['customer'])->last_name);
+		if(empty($updates['guest_name']) &! empty($updates['customer_id'])) {
+			$display_name = trim(get_userdata($updates['customer_id'])->first_name. ' ' . get_userdata($updates['customer_id'])->last_name);
 		} else {
 			$display_name = trim($updates['guest_name']);
 		}
@@ -995,9 +1015,13 @@ class Prestations_Prestation {
 	  switch($column) {
 			case 'dates':
 			$dates = get_post_meta($post_id, 'dates', true);
-			$dates = array_filter($dates);
-			if(is_array($dates) &! empty($dates))
-			echo join(' / ', $dates);
+			if(is_array($dates)) {
+				$dates = array_filter($dates);
+				if(! empty($dates))
+				echo join(' / ', $dates);
+			} else {
+				echo "$dates";
+			}
 			break;
 		}
 	}
