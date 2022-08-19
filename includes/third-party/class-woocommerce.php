@@ -356,6 +356,72 @@ class Prestations_WooCommerce {
 
 		$prestation_id = get_post_meta($order_id, 'prestation_id', true);
 		$prestation = get_post($prestation_id);
+		$customer_id = get_post_meta($order_id, '_customer_user', true);
+		$customer = get_user_by('id', $customer_id);
+		if($customer) {
+			$customer_name = $customer->display_name;
+			$customer_email = $customer->user_email;
+			// error_log("customer " . print_r($customer, true));
+		} else {
+			$customer_name = trim(get_post_meta($order_id, '_billing_first_name', true) . ' ' . get_post_meta($order_id, '_billing_last_name', true));
+			$customer_email = get_post_meta($order_id, '_billing_email', true);
+		}
+
+		if(empty($prestation_id) || ! $prestation) {
+			$args = array(
+				'post_type' => 'prestation',
+				'post_status__in' => [
+					'pending',
+					'on-hold',
+					'deposit',
+					'partial',
+					'unpaid',
+					'processing',
+					],
+				'orderby' => 'post_date',
+				'order' => 'desc',
+			);
+			if($customer) {
+				$args['meta_query'] = array(
+					array(
+						'key' => 'customer_id',
+						'value' => $customer_id,
+					)
+				);
+			} else if (!empty($customer_email)) {
+				$args['meta_query'] = array(
+					'relation' => 'OR',
+					array(
+						'key' => 'customer_email',
+						'value' => $customer_email,
+					),
+					array(
+						'key' => 'guest_email',
+						'value' => $customer_email,
+					),
+				);
+			} else if (!empty($customer_name)) {
+				$args['meta_query'] = array(
+					'relation' => 'OR',
+					array(
+						'key' => 'customer_name',
+						'value' => $customer_name,
+					),
+					array(
+						'key' => 'guest_name',
+						'value' => $customer_name,
+					),
+				);
+			}
+			$prestations = get_posts($args);
+			if($prestations) {
+				$prestation = $prestations[0];
+				$prestation_id = $prestation->ID;
+				error_log("$prestation->ID $prestation->post_title " . print_r($prestation, true));
+				update_post_meta( $order_id, 'prestation_id', $prestation_id );
+			}
+		}
+
 		if(empty($prestation_id) || ! $prestation) {
 			$postarr = array(
 				'post_author' => $order->post_author,
@@ -370,38 +436,8 @@ class Prestations_WooCommerce {
 			);
 			$prestation_id = wp_insert_post($postarr);
 			Prestations_Prestation::update_prestation_amounts($prestation_id, get_post($prestation_id), true );
-
 			update_post_meta( $order_id, 'prestation_id', $prestation_id );
-			error_log(
-				"Order $order->ID no prestation, created $prestation_id\n"
-				. print_r($postarr, true)
-				// . print_r(get_post($prestation_id), true)
-				. print_r(get_post_meta($order_id), true)
-			);
-		} else {
-			error_log(
-				"Order $order->ID prestation_id $prestation_id"
-				. print_r(get_post_meta($order_id), true)
-			);
 		}
-
-		// $loop = new WP_Query( [
-		// 	'relationship' => [
-		// 		'id'   => 'posts_to_pages',
-		// 		'from' => get_the_ID(), // You can pass object ID or full object
-		// 	],
-		// 	'nopaging'     => true,
-		// ]);
-		// while ( $loop->have_posts() ) : $loop->the_post() {
-		// 	echo sprintf(
-		// 		'<a href="%s">%s</a>',
-		// 		the_permalink(),
-		// 		the_title(),
-		// 	);
-		// }
-		// wp_reset_postdata();
-
-		// error_log(print_r($post, true));
 
 		add_action(current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3);
 		return;
