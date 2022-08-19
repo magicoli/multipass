@@ -872,11 +872,12 @@ class Prestations_Prestation {
 		if( Prestations::is_new_post() ) return; // triggered when opened new post page, empty
 		if( $post->post_type != 'prestation' ) return;
 		if( isset($_REQUEST['action']) && $_REQUEST['action'] == 'trash' ) return;
-		error_log(__CLASS__ . '::' . __FUNCTION__ . "($post_id)");
 
 		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
 
 		$updates['customer_id'] = get_post_meta($post_id, 'customer_id', true);
+		$updates['customer_email'] = get_post_meta($post_id, 'customer_email', true);
+		$updates['customer_name'] = get_post_meta($post_id, 'customer_name', true);
 		$updates['guest_name'] = get_post_meta($post_id, 'guest_name', true);
 
 		$amounts['items'] = get_post_meta($post_id, 'items', true);
@@ -965,11 +966,15 @@ class Prestations_Prestation {
 		}
 		$paid_status = (is_array($paid_status)) ? $paid_status : [ $paid_status ];
 
-		if(empty($updates['guest_name']) &! empty($updates['customer_id'])) {
-			$display_name = trim(get_userdata($updates['customer_id'])->first_name. ' ' . get_userdata($updates['customer_id'])->last_name);
-		} else {
-			$display_name = trim($updates['guest_name']);
+		if(! empty($updates['customer_id'])) {
+			$updates['customer_name'] = trim(get_userdata($updates['customer_id'])->first_name. ' ' . get_userdata($updates['customer_id'])->last_name);
+			$updates['customer_email'] = get_userdata($updates['customer_id'])->user_email;
 		}
+
+		if(empty($updates['guest_name'])) $updates['guest_name'] = $updates['customer_name'];
+		$display_name = trim($updates['guest_name']);
+
+		if(empty($updates['guest_email'])) $updates['guest_email'] = $updates['customer_email'];
 
 		$updates['sort_date'] = (isset($updates['dates']) && isset($updates['dates']['from'])) ? $updates['dates']['from'] : '';
 		$updates['display_name'] = $display_name;
@@ -985,7 +990,6 @@ class Prestations_Prestation {
 		);
 
 		wp_update_post($post_update);
-
 		/*
 		* TODO: get why metadata and taxonomies are not saved with wp_update_post
 		* In the meantime, we force the update
