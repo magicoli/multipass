@@ -133,6 +133,28 @@ class Prestations_WooCommerce {
 	}
 
 	static function register_fields( $meta_boxes ) {
+		// WooCommerce settings
+
+		$prefix = 'woocommerce_';
+
+    $meta_boxes[] = [
+        'title'          => __( 'WooCommerce Settings', 'prestations' ),
+        'id'             => 'prestations-woocommerce',
+        'settings_pages' => ['prestations'],
+        'tab'            => 'woocommerce',
+        'fields'         => [
+            [
+                'name'              => __( 'Sync orders', 'prestations' ),
+                'id'                => $prefix . 'sync_orders',
+                'type'              => 'switch',
+                'desc'              => __( 'Sync orders and prestations, create prestation if none exist. Only needed at plugin activation or if out of sync.', 'prestations' ),
+                'style'             => 'rounded',
+                'sanitize_callback' => 'Prestations_WooCommerce::sync_orders',
+								'save_field' => false,
+            ],
+        ],
+    ];
+
 
 		// Prestation info on WC Orders
 		$prefix = 'prestation_';
@@ -370,14 +392,7 @@ class Prestations_WooCommerce {
 		if(empty($prestation_id) || ! $prestation) {
 			$args = array(
 				'post_type' => 'prestation',
-				'post_status__in' => [
-					'pending',
-					'on-hold',
-					'deposit',
-					'partial',
-					'unpaid',
-					'processing',
-					],
+				'post_status__in' => [ 'pending', 'on-hold', 'deposit', 'partial', 'unpaid', 'processing' ],
 				'orderby' => 'post_date',
 				'order' => 'desc',
 			);
@@ -417,7 +432,7 @@ class Prestations_WooCommerce {
 			if($prestations) {
 				$prestation = $prestations[0];
 				$prestation_id = $prestation->ID;
-				error_log("$prestation->ID $prestation->post_title " . print_r($prestation, true));
+				// error_log("$prestation->ID $prestation->post_title " . print_r($prestation, true));
 				update_post_meta( $order_id, 'prestation_id', $prestation_id );
 			}
 		}
@@ -443,4 +458,20 @@ class Prestations_WooCommerce {
 		return;
 	}
 
+	static function sync_orders($one = NULL, $two = NULL, $three = NULL) {
+		if(isset($_REQUEST['woocommerce_sync_orders']) && $_REQUEST['woocommerce_sync_orders'] == true) {
+			$orders = wc_get_orders( array(
+				'limit'        => -1, // Query all orders
+				// 'orderby'      => 'date',
+				// 'order'        => 'DESC',
+				'meta_key'     => 'prestation_id', // The postmeta key field
+				'meta_compare' => 'NOT EXISTS', // The comparison argument
+			));
+			// error_log("found " . count($orders) . " order(s) without prestation");
+			foreach ($orders as $key => $order) {
+				$order_post = get_post($order->id);
+				self::update_order_prestation($order_post->ID, $order_post, true);
+			}
+		}
+	}
 }
