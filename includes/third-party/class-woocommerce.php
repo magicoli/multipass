@@ -433,7 +433,7 @@ class Prestations_WooCommerce {
 				$prestation = $prestations[0];
 				$prestation_id = $prestation->ID;
 				// error_log("$prestation->ID $prestation->post_title " . print_r($prestation, true));
-				update_post_meta( $order_id, 'prestation_id', $prestation_id );
+				// update_post_meta( $order_id, 'prestation_id', $prestation_id );
 			}
 		}
 
@@ -445,13 +445,26 @@ class Prestations_WooCommerce {
 				'post_type' => 'prestation',
 				'post_status' => 'publish',
 				'meta_input' => array(
-					'customer_id' => get_post_meta($order_id, '_customer_user', true),
-					'customer_name' => trim(get_post_meta($order_id, '_billing_first_name', true) . ' ' . get_post_meta($order_id, '_billing_last_name', true)),
+					'prestation_id' => $prestation_id,
+					'customer_id' => $customer_id,
+					'customer_name' => $customer_name,
+					'customer_email' => $customer_email,
 				),
 			);
 			$prestation_id = wp_insert_post($postarr);
+			// update_post_meta( $order_id, 'prestation_id', $prestation_id );
+			// foreach ($postarr['meta_input'] as $key => $value) update_post_meta( $order_id, $key, $value );
+		}
+
+		if(!empty($prestation_id)) {
+			$meta = array(
+				'prestation_id' => $prestation_id,
+				'customer_id' => $customer_id,
+				'customer_name' => $customer_name,
+				'customer_email' => $customer_email,
+			);
+			foreach ($meta as $key => $value) update_post_meta( $order_id, $key, $value );
 			Prestations_Prestation::update_prestation_amounts($prestation_id, get_post($prestation_id), true );
-			update_post_meta( $order_id, 'prestation_id', $prestation_id );
 		}
 
 		add_action(current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3);
@@ -462,12 +475,12 @@ class Prestations_WooCommerce {
 		if(isset($_REQUEST['woocommerce_sync_orders']) && $_REQUEST['woocommerce_sync_orders'] == true) {
 			$orders = wc_get_orders( array(
 				'limit'        => -1, // Query all orders
-				// 'orderby'      => 'date',
-				// 'order'        => 'DESC',
-				'meta_key'     => 'prestation_id', // The postmeta key field
-				'meta_compare' => 'NOT EXISTS', // The comparison argument
+				'orderby'      => 'date',
+				'order'        => 'ASC',
+				// 'meta_key'     => 'prestation_id', // The postmeta key field
+				// 'meta_compare' => 'NOT EXISTS', // The comparison argument
 			));
-			// error_log("found " . count($orders) . " order(s) without prestation");
+			error_log("found " . count($orders) . " order(s) without prestation");
 			foreach ($orders as $key => $order) {
 				$order_post = get_post($order->id);
 				self::update_order_prestation($order_post->ID, $order_post, true);
