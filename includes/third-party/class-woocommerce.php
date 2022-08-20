@@ -387,11 +387,12 @@ class Prestations_WooCommerce {
 			'meta_key'     => 'prestation_id',
 			'meta_value' => $prestation_id,
 		) );
-		error_log(__FUNCTION__ . "$prestation_id '$prestation->post_title' found " . count($orders) . " orders");
+
 		$p_orders_total = 0;
 		$p_orders_paid = 0;
 		$p_orders_discount = 0;
 		$p_orders_refunded = 0;
+		$p_orders_subtotal = 0;
 
 		foreach ($orders as $key => $order) {
 			$tax = ($order->prices_include_tax == true) ? false : true;
@@ -410,7 +411,6 @@ class Prestations_WooCommerce {
 				'edit_url' => $order->get_edit_order_url(),
 			);
 			$p_order['paid'] = ($order->get_date_paid()) ? $p_order['total'] : 0;
-			// $p_order['date_paid'] = ;
 
 			foreach ( $order->get_items() as $item_id => $item ) {
 				 $p_order['items'][] = array(
@@ -439,8 +439,6 @@ class Prestations_WooCommerce {
 			$p_order['title'] = $p_order['items'][0]['product_name']
 			. ( (count($p_order['items']) > 1) ? $p_order['title'] .= sprintf( __(' + %s items', 'prestations'), count($p_order['items']) - 1 ) : '' );
 
-			error_log(print_r($p_order, true));
-
 			$p_orders[$order->id] = $p_order;
 			$p_orders_subtotal += $p_order['subtotal'];
 			$p_orders_discount += $p_order['discount'];
@@ -449,13 +447,16 @@ class Prestations_WooCommerce {
 			$p_orders_paid += $p_order['paid'];
 		}
 
-		error_log("prestation $prestation_id orders " . print_r(array(
+		update_post_meta( $prestation_id, 'third_party-woocommerce', array(
 			'subtotal' => $p_orders_subtotal,
 			'discount' => $p_orders_discount,
 			'refunded' => $p_orders_refunded,
 			'total' => $p_orders_total,
 			'paid' => $p_orders_paid,
-		), true));
+			'orders' => $p_orders,
+		) );
+
+		// error_log("prestation $prestation_id orders " . print_r(get_post_meta($prestation_id, 'third_party-woocommerce'), true));
 
 		wp_cache_set(__CLASS__ . '-' . __FUNCTION__ . '-' . $prestation_id, true);
 	}
