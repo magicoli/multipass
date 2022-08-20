@@ -870,7 +870,7 @@ class Prestations_Prestation {
 	static function update_prestation_amounts($post_id, $post, $update ) {
 		if( !$update ) return;
 		if( Prestations::is_new_post() ) return; // triggered when opened new post page, empty
-		if( @$post->post_type != 'prestation' ) return;
+		if( is_object($post) && $post->post_type != 'prestation' ) return;
 		if( isset($_REQUEST['action']) && $_REQUEST['action'] == 'trash' ) return;
 
 		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
@@ -938,7 +938,6 @@ class Prestations_Prestation {
 		  }
 		}
 
-		error_log("updates before " . print_r($updates, true));
 		$updates['discount']['third_party'] = 0;
 		$updates['deposit']['third_party'] = 0;
 		$updates['refunded'] = 0;
