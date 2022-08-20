@@ -122,24 +122,32 @@ class Prestations_WooCommerce {
 
 		$prefix = 'woocommerce_';
 
-    $meta_boxes[] = [
-        'title'          => __( 'WooCommerce Settings', 'prestations' ),
-        'id'             => 'prestations-woocommerce',
-        'settings_pages' => ['prestations'],
-        'tab'            => 'woocommerce',
-        'fields'         => [
-            [
-                'name'              => __( 'Sync orders', 'prestations' ),
-                'id'                => $prefix . 'sync_orders',
-                'type'              => 'switch',
-                'desc'              => __( 'Sync orders and prestations, create prestation if none exist. Only needed at plugin activation or if out of sync.', 'prestations' ),
-                'style'             => 'rounded',
-                'sanitize_callback' => 'Prestations_WooCommerce::sync_orders',
-								'save_field' => false,
-            ],
-        ],
-    ];
-
+		$meta_boxes[] = [
+			'title'          => __( 'WooCommerce Settings', 'prestations' ),
+			'id'             => 'prestations-woocommerce',
+			'settings_pages' => ['prestations'],
+			'tab'            => 'woocommerce',
+			'fields'         => [
+				[
+					'name'              => __( 'Sync orders', 'prestations' ),
+					'id'                => $prefix . 'sync_orders',
+					'type'              => 'switch',
+					'desc'              => __( 'Sync orders and prestations, create prestation if none exist. Only needed at plugin activation or if out of sync.', 'prestations' ),
+					'style'             => 'rounded',
+					'sanitize_callback' => 'Prestations_WooCommerce::sync_orders',
+					'save_field' => false,
+				],
+				[
+					'name'       => __( 'Payment products', 'prestations' ),
+					'id'         => $prefix . 'payment_products',
+					'type'       => 'post',
+					'desc'       => __( 'Products to handle as payment only (price is used only for payment calculation, not for prestation cost)', 'prestations' ),
+					'post_type'  => ['product'],
+					'field_type' => 'select_advanced',
+					'multiple'   => true,
+				],
+			],
+		];
 
 		// Prestation info on WC Orders
 		$prefix = 'prestation_';
