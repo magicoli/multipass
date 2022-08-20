@@ -406,6 +406,8 @@ class Prestations_WooCommerce {
 				'total' => $order->get_total() - $order->get_total_refunded(),
 				'paid' => NULL,
 				'status' =>  $order->status,
+				'view_url' => $order->get_view_order_url(),
+				'edit_url' => $order->get_edit_order_url(),
 			);
 			$p_order['paid'] = ($order->get_date_paid()) ? $p_order['total'] : 0;
 			// $p_order['date_paid'] = ;
