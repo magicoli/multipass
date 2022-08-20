@@ -919,15 +919,9 @@ class Prestations_Prestation {
 		} else {
 			$updates['discount']['amount'] = (empty($updates['discount']['amount'])) ? NULL : $updates['discount']['amount'];
 		}
-		if($updates['discount']['amount'] > $updates['price']) $updates['discount']['amount'] = $updates['price'];
+		// if($updates['discount']['amount'] > $updates['price']) $updates['discount']['amount'] = $updates['price'];
 
 		$updates['total'] = $updates['price'] - $updates['discount']['amount'];
-
-		if($updates['total'] > 0 && $updates['deposit']['percent'] > 0 ) {
-		  $updates['deposit']['amount'] = $updates['total'] * $updates['deposit']['percent'] / 100;
-		} else {
-			$updates['deposit']['amount'] = (empty($updates['deposit']['amount'])) ? NULL : $updates['deposit']['amount'];
-		}
 
 		$updates['paid'] = 0; // Will be overridden // get_post_meta($post_id, 'paid', true);
 		if(is_array($amounts['payments'])) {
@@ -952,12 +946,18 @@ class Prestations_Prestation {
 				$updates['deposit']['third_party'] += @$third_party['deposit'];
 				$updates['discount']['third_party'] += @$third_party['discount'];
 				$updates['refunded'] += @$third_party['refunded'];
-				$updates['total'] += @$third_party['total'] - @$third_party['discount'];
+				$updates['total'] += @$third_party['total'];
 				$updates['paid'] += @$third_party['paid'];
 			}
 		}
-		$updates['deposit']['total'] += $updates['deposit']['amount'] + $updates['deposit']['third_party'];
 		$updates['discount']['total'] += $updates['discount']['amount'] + $updates['discount']['third_party'];
+
+		if($updates['total'] > 0 && $updates['deposit']['percent'] > 0 ) {
+			$updates['deposit']['amount'] = $updates['total'] * $updates['deposit']['percent'] / 100;
+		} else {
+			$updates['deposit']['amount'] = (empty($updates['deposit']['amount'])) ? NULL : $updates['deposit']['amount'];
+		}
+		$updates['deposit']['total'] += $updates['deposit']['amount'] + $updates['deposit']['third_party'];
 
 		// error_log("updates after " . print_r($updates, true));
 
