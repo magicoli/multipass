@@ -397,6 +397,7 @@ class Prestations_WooCommerce {
 		foreach ($orders as $key => $order) {
 			$tax = ($order->prices_include_tax == true) ? false : true;
 			$payment_products = Prestations::get_option('prestations:woocommerce_payment_products');
+			if(!is_array($payment_products)) $payment_products = [ $payment_products ];
 
 			$p_order = array(
 				'id' => $order->id,
@@ -455,8 +456,6 @@ class Prestations_WooCommerce {
 			'paid' => $p_orders_paid,
 			'orders' => $p_orders,
 		) );
-
-		// error_log("prestation $prestation_id orders " . print_r(get_post_meta($prestation_id, 'third_party-woocommerce'), true));
 
 		wp_cache_set(__CLASS__ . '-' . __FUNCTION__ . '-' . $prestation_id, true);
 	}
