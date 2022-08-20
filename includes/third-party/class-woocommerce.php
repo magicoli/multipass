@@ -392,8 +392,11 @@ class Prestations_WooCommerce {
 		$p_orders_paid = 0;
 		$p_orders_discount = 0;
 		$p_orders_refunded = 0;
+
 		foreach ($orders as $key => $order) {
 			$tax = ($order->prices_include_tax == true) ? false : true;
+			$payment_products = Prestations::get_option('prestations:woocommerce_payment_products');
+
 			$p_order = array(
 				'id' => $order->id,
 				'created' => $order->get_date_created(),
@@ -404,7 +407,8 @@ class Prestations_WooCommerce {
 				'paid' => NULL,
 				'status' =>  $order->status,
 			);
-			$p_order['paid'] = (in_array($order->status, [ 'processing', 'completed'])) ? $p_order['total'] : 0;
+			$p_order['paid'] = ($order->get_date_paid()) ? $p_order['total'] : 0;
+			// $p_order['date_paid'] = ;
 
 			foreach ( $order->get_items() as $item_id => $item ) {
 				 $p_order['items'][] = array(
@@ -414,7 +418,7 @@ class Prestations_WooCommerce {
 					 'product_name' => $item->get_name(),
 					 // 'quantity' => $item->get_quantity(),
 					 'subtotal' => $item->get_subtotal(),
-					 'total' => $item->get_total($tax),
+					 'total' => $item->get_total(),
 					 'tax' => $item->get_subtotal_tax(),
 					 'tax_class' => $item->get_tax_class(),
 					 'tax_status' => $item->get_tax_status(),
@@ -422,14 +426,16 @@ class Prestations_WooCommerce {
 					 // 'somemeta' => $item->get_meta( '_whatever', true ),
 					 'item_type' => $item->get_type(), // e.g. "line_item"
 				 );
+
+				 if(in_array($item->get_product_id(), $payment_products)) {
+					 $p_order['subtotal'] -= $item->get_subtotal();
+					 $p_order['refunded'] -= $order->get_total_refunded_for_item($item_id);
+					 $p_order['total'] = $p_order['total'] - $item->get_total() + $order->get_total_refunded_for_item($item_id);
+				 }
 			}
-			// error_log(print_r($order, true));
-			$p_order['title'] = $p_order['items'][0]['product_name'];
-			if (count($p_order['items']) > 1)
-			$p_order['title'] .= sprintf(
-				__(' + %s items', 'prestations'),
-				count($p_order['items']) - 1
-			);
+
+			$p_order['title'] = $p_order['items'][0]['product_name']
+			. ( (count($p_order['items']) > 1) ? $p_order['title'] .= sprintf( __(' + %s items', 'prestations'), count($p_order['items']) - 1 ) : '' );
 
 			error_log(print_r($p_order, true));
 
@@ -441,13 +447,14 @@ class Prestations_WooCommerce {
 			$p_orders_paid += $p_order['paid'];
 		}
 
-		error_log("order $order->id " . print_r(array(
+		error_log("prestation $prestation_id orders " . print_r(array(
 			'subtotal' => $p_orders_subtotal,
 			'discount' => $p_orders_discount,
 			'refunded' => $p_orders_refunded,
 			'total' => $p_orders_total,
 			'paid' => $p_orders_paid,
 		), true));
+
 		wp_cache_set(__CLASS__ . '-' . __FUNCTION__ . '-' . $prestation_id, true);
 	}
 
