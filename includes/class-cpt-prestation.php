@@ -774,7 +774,7 @@ class Prestations_Prestation {
 	static function get_summary_discount($args = []) {
 		global $post;
 		$discount = get_post_meta($post->ID, 'discount', true);
-		$amount = (isset($discount['amount'])) ? $discount['amount'] : NULL;
+		$amount = (isset($discount['total'])) ? $discount['total'] : NULL;
 		if( $amount > 0) return wc_price($amount);
 	}
 
@@ -795,7 +795,7 @@ class Prestations_Prestation {
 	static function get_summary_deposit($args = []) {
 		global $post;
 		$deposit = get_post_meta($post->ID, 'deposit', true);
-		$amount = (isset($deposit['amount'])) ? $deposit['amount'] : NULL;
+		$amount = (isset($deposit['total'])) ? $deposit['total'] : NULL;
 		if($amount > 0) return wc_price($amount);
 	}
 
@@ -870,7 +870,7 @@ class Prestations_Prestation {
 	static function update_prestation_amounts($post_id, $post, $update ) {
 		if( !$update ) return;
 		if( Prestations::is_new_post() ) return; // triggered when opened new post page, empty
-		if( $post->post_type != 'prestation' ) return;
+		if( @$post->post_type != 'prestation' ) return;
 		if( isset($_REQUEST['action']) && $_REQUEST['action'] == 'trash' ) return;
 
 		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
@@ -899,7 +899,10 @@ class Prestations_Prestation {
 		if(!is_array($updates['discount'])) $updates['discount'] = [ 'percent' => NULL, 'amount' => NULL ];
 		if(!is_array($updates['deposit'])) $updates['deposit'] = [ 'percent' => NULL, 'amount' => NULL ];
 
+		// error_log("prestation $post_id orders " . print_r(get_post_meta($post_id, 'third_party-woocommerce'), true));
+
 		$updates['price'] = 0; // get_post_meta($post_id, 'price', true);
+
 		if(is_array($amounts['items'])) {
 		  foreach($amounts['items'] as $item) {
 		    if(empty($item['quantity'])) {
@@ -935,6 +938,30 @@ class Prestations_Prestation {
 		  }
 		}
 
+		error_log("updates before " . print_r($updates, true));
+		$updates['discount']['third_party'] = 0;
+		$updates['deposit']['third_party'] = 0;
+		$updates['refunded'] = 0;
+		$updates['discount']['total'] = 0;
+		$updates['deposit']['total'] = 0;
+		foreach(get_post_meta($post_id) as $key => $serialized) {
+			if(preg_match('/^third_party-/', $key)) {
+				$third_party = unserialize($serialized[0]);
+				// error_log("$key = " . print_r($third_party, true));
+				// continue;
+				$updates['price'] += @$third_party['subtotal'];
+				$updates['deposit']['third_party'] += @$third_party['deposit'];
+				$updates['discount']['third_party'] += @$third_party['discount'];
+				$updates['refunded'] += @$third_party['refunded'];
+				$updates['total'] += @$third_party['total'] - @$third_party['discount'];
+				$updates['paid'] += @$third_party['paid'];
+			}
+		}
+		$updates['deposit']['total'] += $updates['deposit']['amount'] + $updates['deposit']['third_party'];
+		$updates['discount']['total'] += $updates['discount']['amount'] + $updates['discount']['third_party'];
+
+		// error_log("updates after " . print_r($updates, true));
+
 		$updates['balance'] = ($updates['total'] - $updates['paid'] == 0) ? NULL : $updates['total'] - $updates['paid'];
 
 		$post_status = $post->post_status;
@@ -944,7 +971,7 @@ class Prestations_Prestation {
 			if($updates['total'] <= 0) {
 				$paid_status = 'on-hold';
 			} else if($updates['paid'] < $updates['total']) {
-				if($updates['paid'] >= $updates['deposit']['amount'] && $updates['deposit']['amount'] > 0 )  {
+				if($updates['paid'] >= $updates['deposit']['total'] && $updates['deposit']['total'] > 0 )  {
 					$post_status = 'publish';
 					$paid_status = 'deposit';
 				} else {
