@@ -881,6 +881,7 @@ class Prestations_Prestation {
 		$updates['guest_name'] = get_post_meta($post_id, 'guest_name', true);
 
 		$amounts['items'] = get_post_meta($post_id, 'items', true);
+		$amounts['third_party'] = get_post_meta($post_id, 'third_party', true);
 		$amounts['payments'] = get_post_meta($post_id, 'payments', true);
 		$updates['deposit'] = get_post_meta($post_id, 'deposit', true);
 		$updates['discount'] = get_post_meta($post_id, 'discount', true);

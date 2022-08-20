@@ -61,18 +61,9 @@ class Prestations_WooCommerce {
 		$this->actions = array(
 			array(
 				'hook' => 'wp_insert_post',
-				'callback' => 'update_order_prestation',
+				'callback' => 'wp_insert_post_action',
 				'accepted_args' => 3,
 			),
-			// array(
-			// 	'hook' => 'save_post_shop_order',
-			// 	'callback' => 'update_order_prestation',
-			// 	'accepted_args' => 3,
-			// ),
-			// array(
-			// 	'hook' => 'init',
-			// 	'callback' => 'self::background_process',
-			// ),
 		);
 
 		$this->filters = array(
@@ -103,12 +94,6 @@ class Prestations_WooCommerce {
 				'callback' => 'shop_orders_columns_display',
 				'accepted_args' => 2,
 			),
-
-			// array(
-			// 	'hook' => 'update_post_metadata',
-			// 	'callback' => 'update_order_prestation',
-			// 	'accepted_args' => 5,
-			// ),
 
 			array(
 				'hook' => 'woocommerce_order_data_store_cpt_get_orders_query',
@@ -365,16 +350,104 @@ class Prestations_WooCommerce {
 		// $this->background_request->dispatch();
 	}
 
-	// static function update_order_prestation( $data, $postarr, $unsanitized_postarr, $update ) {
-	// static function update_order_prestation( $meta_id, $object_id, $meta_key, $_meta_value ) {
-	// static function update_order_prestation( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
-	static function update_order_prestation($order_id, $order, $update ) {
+	static function wp_insert_post_action($post_id, $post, $update ) {
 		if( !$update ) return;
 		if( Prestations::is_new_post() ) return; // new posts are empty
-		if( $order->post_type != 'shop_order' ) return;
-		if( $order->post_status == 'trash' ) return;
 
 		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
+		switch($post->post_type) {
+			case 'shop_order':
+			self::update_order_prestation($post_id, $post, $update );
+			break;
+
+			case 'prestation':
+			self::update_prestation_orders($post_id, $post, $update );
+			break;
+		}
+		add_action(current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3);
+	}
+
+	static function update_prestation_orders($prestation_id, $prestation, $update ) {
+		if( wp_cache_get(__CLASS__ . '-' . __FUNCTION__ . '-' . $prestation_id) ) return;
+		if( $prestation->post_type != 'prestation' ) return;
+		if( $prestation->post_status == 'trash' ) return; // TODO: remove prestation reference from orders
+
+		$orders = wc_get_orders( array(
+			'limit'        => -1, // Query all orders
+			'orderby'      => 'date',
+			'order'        => 'ASC',
+			'meta_key'     => 'prestation_id',
+			'meta_value' => $prestation_id,
+		) );
+		error_log(__FUNCTION__ . "$prestation_id '$prestation->post_title' found " . count($orders) . " orders");
+		$p_orders_total = 0;
+		$p_orders_paid = 0;
+		$p_orders_discount = 0;
+		$p_orders_refunded = 0;
+		foreach ($orders as $key => $order) {
+			$tax = ($order->prices_include_tax == true) ? false : true;
+			$p_order = array(
+				'id' => $order->id,
+				'created' => $order->get_date_created(),
+				'subtotal' => ($tax == true) ? $order->get_subtotal() : (float)wp_strip_all_tags(preg_replace('/"woocommerce-Price-currencySymbol">[^<]*</', '><', $order->get_subtotal_to_display())),
+				'discount' => $order->get_total_discount($tax),
+				'refunded' => $order->get_total_refunded(),
+				'total' => $order->get_total() - $order->get_total_refunded(),
+				'paid' => NULL,
+				'status' =>  $order->status,
+			);
+			$p_order['paid'] = (in_array($order->status, [ 'processing', 'completed'])) ? $p_order['total'] : 0;
+
+			foreach ( $order->get_items() as $item_id => $item ) {
+				 $p_order['items'][] = array(
+					 'product_id' => $item->get_product_id(),
+					 'variation_id' => $item->get_variation_id(),
+					 // 'product' => $item->get_product(), // see link above to get $product info
+					 'product_name' => $item->get_name(),
+					 // 'quantity' => $item->get_quantity(),
+					 'subtotal' => $item->get_subtotal(),
+					 'total' => $item->get_total($tax),
+					 'tax' => $item->get_subtotal_tax(),
+					 'tax_class' => $item->get_tax_class(),
+					 'tax_status' => $item->get_tax_status(),
+					 'allmeta' => $item->get_meta_data(),
+					 // 'somemeta' => $item->get_meta( '_whatever', true ),
+					 'item_type' => $item->get_type(), // e.g. "line_item"
+				 );
+			}
+			// error_log(print_r($order, true));
+			$p_order['title'] = $p_order['items'][0]['product_name'];
+			if (count($p_order['items']) > 1)
+			$p_order['title'] .= sprintf(
+				__(' + %s items', 'prestations'),
+				count($p_order['items']) - 1
+			);
+
+			error_log(print_r($p_order, true));
+
+			$p_orders[$order->id] = $p_order;
+			$p_orders_subtotal += $p_order['subtotal'];
+			$p_orders_discount += $p_order['discount'];
+			$p_orders_refunded += $p_order['refunded'];
+			$p_orders_total += $p_order['total'];
+			$p_orders_paid += $p_order['paid'];
+		}
+
+		error_log("order $order->id " . print_r(array(
+			'subtotal' => $p_orders_subtotal,
+			'discount' => $p_orders_discount,
+			'refunded' => $p_orders_refunded,
+			'total' => $p_orders_total,
+			'paid' => $p_orders_paid,
+		), true));
+		wp_cache_set(__CLASS__ . '-' . __FUNCTION__ . '-' . $prestation_id, true);
+	}
+
+	static function update_order_prestation($order_id, $order, $update ) {
+		if( $order->post_type != 'shop_order' ) return;
+		if( $order->post_status == 'trash' ) return; // TODO: update previously linked prestation
+
+		remove_action(current_action(), __CLASS__ . '::wp_insert_post_action');
 
 		$prestation_id = get_post_meta($order_id, 'prestation_id', true);
 		$prestation = get_post($prestation_id);
@@ -467,7 +540,7 @@ class Prestations_WooCommerce {
 			Prestations_Prestation::update_prestation_amounts($prestation_id, get_post($prestation_id), true );
 		}
 
-		add_action(current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3);
+		add_action(current_action(), __CLASS__ . '::wp_insert_post_action', 10, 3);
 		return;
 	}
 
