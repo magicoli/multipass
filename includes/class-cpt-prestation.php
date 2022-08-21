@@ -426,18 +426,26 @@ class Prestations_Prestation {
 				'type'   => 'group',
 				'clone'  => true,
 				'readonly' => false,
+				'class' => 'low-gap',
 				'fields' => [
 					[
 						'name'    => __( 'ID', 'prestations' ),
 						'id'      => $prefix . 'item_id',
 						'type'    => 'text',
 						'readonly' => true,
-						'columns' => 2,
+						'columns' => 1,
 						'options' => self::get_available_items(),
 					],
 					[
-						'name'    => __( 'Additional details', 'prestations' ),
-						'id'      => $prefix . 'details',
+						'name'    => __( 'Source', 'prestations' ),
+						'id'      => $prefix . 'source',
+						'type'    => 'text',
+						'readonly' => true,
+						'columns' => 1,
+					],
+					[
+						'name'    => __( 'Description', 'prestations' ),
+						'id'      => $prefix . 'description',
 						'type'    => 'text',
 						'columns' => 3,
 					],
@@ -445,13 +453,13 @@ class Prestations_Prestation {
 							'name'          => __( 'From', 'prestations' ),
 							'id'            => $prefix . 'from',
 							'type'          => 'date',
-							'columns' => 2,
+							'columns' => 1,
 					],
 					[
 							'name'          => __( 'To', 'prestations' ),
 							'id'            => $prefix . 'to',
 							'type'          => 'date',
-							'columns' => 2,
+							'columns' => 1,
 					],
 					[
 						'name'    => __( 'Quantity', 'prestations' ),
@@ -465,84 +473,321 @@ class Prestations_Prestation {
 						'id'      => $prefix . 'unit_price',
 						'type'    => 'number',
 						'step' => 'any',
-						'columns' => 2,
+						'columns' => 1,
+					],
+					[
+						'name'    => __( 'Discount', 'prestations' ),
+						'id'      => $prefix . 'discount',
+						'type'    => 'number',
+						'step' => 'any',
+						'columns' => 1,
+					],
+					[
+						'name'    => __( 'Price', 'prestations' ),
+						'id'      => $prefix . 'price',
+						'type'    => 'number',
+						'step' => 'any',
+						'columns' => 1,
+					],
+					[
+						'name'    => __( 'Paid', 'prestations' ),
+						'id'      => $prefix . 'paid',
+						'type'    => 'number',
+						'step' => 'any',
+						'columns' => 1,
 					],
 				],
 			],
 		];
 
+		// $prefix = 'third_party';
 		$meta_boxes['third-party'] = [
-			'title'      => __( 'Third-Party orders and bookings', 'prestations' ),
 			'id'         => 'prestation-third-party',
 			'post_types' => ['prestation'],
-			'fields'     => $items_list_fields,
 			'style' => 'seamless',
 			'readonly' => true,
+			'fields'     => [
+				'items' => [
+					'name'      => __( 'Managed orders and bookings', 'prestations' ),
+					'id'     => $prefix . 'third_party_items',
+					'type'   => 'group',
+					// 'clone'  => true,
+					// 'multiple'  => true,
+					'class' => 'low-gap',
+					'fields' => [
+						[
+							'name'    => __( 'ID', 'prestations' ),
+							'id'      => $prefix . 'item_id',
+							'type'    => 'text',
+							'readonly' => true,
+							'columns' => 1,
+							'options' => self::get_available_items(),
+							'readonly' => true,
+						],
+						[
+							'name'    => __( 'Source', 'prestations' ),
+							'id'      => $prefix . 'source',
+							'type'    => 'text',
+							'readonly' => true,
+							'columns' => 1,
+							'readonly' => true,
+						],
+						[
+							'name'    => __( 'Description', 'prestations' ),
+							'id'      => $prefix . 'description',
+							'type'    => 'text',
+							'columns' => 3,
+							'readonly' => true,
+						],
+						[
+								'name'          => __( 'From', 'prestations' ),
+								'id'            => $prefix . 'from',
+								'type'          => 'date',
+								'columns' => 1,
+								'readonly' => true,
+						],
+						[
+								'name'          => __( 'To', 'prestations' ),
+								'id'            => $prefix . 'to',
+								'type'          => 'date',
+								'columns' => 1,
+								'readonly' => true,
+						],
+						[
+							'name'    => __( 'Quantity', 'prestations' ),
+							'id'      => $prefix . 'quantity',
+							'type'    => 'number',
+							'step' => 'any',
+							'columns' => 1,
+							'readonly' => true,
+						],
+						[
+							'name'    => __( 'Unit Price', 'prestations' ),
+							'id'      => $prefix . 'unit_price',
+							'type'    => 'number',
+							'step' => 'any',
+							'columns' => 1,
+							'readonly' => true,
+						],
+						[
+							'name'    => __( 'Discount', 'prestations' ),
+							'id'      => $prefix . 'discount',
+							'type'    => 'number',
+							'step' => 'any',
+							'columns' => 1,
+							'readonly' => true,
+						],
+						[
+							'name'    => __( 'Price', 'prestations' ),
+							'id'      => $prefix . 'price',
+							'type'    => 'number',
+							'step' => 'any',
+							'columns' => 1,
+							'readonly' => true,
+						],
+						[
+							'name'    => __( 'Paid', 'prestations' ),
+							'id'      => $prefix . 'paid',
+							'type'    => 'number',
+							'step' => 'any',
+							'columns' => 1,
+							'readonly' => true,
+						],
+					],
+				],
+			],
 		];
-		$meta_boxes['third-party']['fields']['items']['clone'] = false;
-		$meta_boxes['third-party']['fields']['items']['name'] = $meta_boxes['third-party']['title'];
-		foreach($meta_boxes['third-party']['fields']['items']['fields'] as $key => $field) {
-			$meta_boxes['third-party']['fields']['items']['fields'][$key]['readonly'] = true;
-		}
+		// $meta_boxes['third-party']['fields']['items']['clone'] = false;
+		// $meta_boxes['third-party']['fields']['items']['name'] = $meta_boxes['third-party']['title'];
+		// foreach($meta_boxes['third-party']['fields']['items']['fields'] as $key => $field) {
+		// 	$meta_boxes['third-party']['fields']['items']['fields'][$key]['readonly'] = true;
+		// }
 
+		// $prefix = 'manual';
 		// error_log(print_r($meta_boxes['third-party'], true));
 		$meta_boxes[] = [
-			'title'      => __( 'Prestation Items', 'prestations' ),
 			'id'         => 'prestation-items',
 			'post_types' => ['prestation'],
-			'fields'     => $items_list_fields,
-		];
-
-		$meta_boxes[] = [
-			'title'      => __( 'Manual payments', 'prestations' ),
-			'id'         => 'prestation-payments',
-			'post_types' => ['prestation'],
+			'style' => 'seamless',
 			'fields'     => [
-				[
-					'id'     => $prefix . 'payments',
+				'items' => [
+					'name'      => __( 'Unmanaged Items', 'prestations' ),
+					'id'     => $prefix . 'manual_items',
 					'type'   => 'group',
 					'clone'  => true,
+					'readonly' => false,
+					'class' => 'low-gap',
 					'fields' => [
 						[
 							'name'    => __( 'Type', 'prestations' ),
 							'id'      => $prefix . 'type',
 							'type'    => 'select',
-							'placeholder' => __('Select a payment method'),
 							'options' => [
-								'cash'        => __( 'Cash', 'prestations' ),
-								'wire'        => __( 'Wire Transfer', 'prestations' ),
-								'order'       => __( 'WooCommerce Order', 'prestations' ),
-								'hbook'       => __( 'HBook Order', 'prestations' ),
-								'booking_com' => __( 'Booking.com', 'prestations' ),
-								'airbnb'      => __( 'Airbnb', 'prestations' ),
+									'product' => __( 'Unmanaged Product', 'prestations' ),
+									'booking' => __( 'Unmanaged Booking', 'prestations' ),
+									'payment' => __( 'Unmanaged Payment', 'prestations' ),
 							],
+							'placeholder' => __('Select a type', 'prestations'),
 							'columns' => 2,
 						],
 						[
-							'name'    => __( 'Payment ID', 'prestations' ),
-							'id'      => $prefix . 'payment_id',
-							'type'    => 'text',
-							'readonly' => true,
-							'options' => self::get_available_payments(),
-							'columns' => 2,
-						],
-						[
-							'name'    => __( 'Payment reference', 'prestations' ),
-							'id'      => $prefix . 'payment_reference',
+							'name'    => __( 'Description', 'prestations' ),
+							'id'      => $prefix . 'description',
 							'type'    => 'text',
 							'columns' => 3,
 						],
 						[
-							'name'    => __( 'Amount', 'prestations' ),
-							'id'      => $prefix . 'amount',
+								'name'          => __( 'Date', 'prestations' ),
+								'id'            => $prefix . 'from',
+								'type'          => 'date',
+								'columns' => 1,
+								'required' => true,
+								'visible' => [
+									'when'     => [
+										['type', '=', 'booking'],
+										['type', '=', 'payment']
+									],
+									'relation' => 'or',
+								],
+						],
+						[
+								'name'          => __( 'To', 'prestations' ),
+								'id'            => $prefix . 'to',
+								'type'          => 'date',
+								'columns' => 1,
+								'visible' => [
+									'when'     => [
+										['type', '=', 'booking'],
+										['from', '!=', '' ],
+									],
+									'relation' => 'and',
+								],
+						],
+						[
+							'name'    => __( 'Quantity', 'prestations' ),
+							'id'      => $prefix . 'quantity',
 							'type'    => 'number',
-							'columns' => 2,
 							'step' => 'any',
+							'columns' => 1,
+							'visible' => [
+								'when'     => [
+									['type', '!=', ''],
+									['type', '!=', 'payment'],
+								],
+								'relation' => 'and',
+							],
+						],
+						[
+							'name'    => __( 'Unit Price', 'prestations' ),
+							'id'      => $prefix . 'unit_price',
+							'type'    => 'number',
+							'step' => 'any',
+							'columns' => 1,
+							'visible' => [
+								'when'     => [
+									['type', '!=', ''],
+									['type', '!=', 'payment'],
+								],
+								'relation' => 'and',
+							],
+						],
+						[
+							'name'    => __( 'Discount', 'prestations' ),
+							'id'      => $prefix . 'discount',
+							'type'    => 'number',
+							'step' => 'any',
+							'columns' => 1,
+							'visible' => [
+								'when'     => [
+									['type', '!=', ''],
+									['type', '!=', 'payment'],
+								],
+								'relation' => 'and',
+							],
+						],
+						[
+							'name'    => __( 'Price', 'prestations' ),
+							'id'      => $prefix . 'price',
+							'type'    => 'number',
+							'step' => 'any',
+							'columns' => 1,
+							'visible' => [
+								'when'     => [
+									['type', '!=', ''],
+									['type', '!=', 'payment'],
+								],
+								'relation' => 'and',
+							],
+						],
+						[
+							'name'    => __( 'Paid', 'prestations' ),
+							'id'      => $prefix . 'paid',
+							'type'    => 'number',
+							'step' => 'any',
+							'columns' => 1,
+							'visible' => [
+								'when'     => [
+									['type', '!=', ''],
+								],
+							],
 						],
 					],
 				],
 			],
 		];
+
+		// $prefix
+		// $meta_boxes[] = [
+		// 	'title'      => __( 'Manual payments', 'prestations' ),
+		// 	'id'         => 'prestation-payments',
+		// 	'post_types' => ['prestation'],
+		// 	'class' => 'low-gap',
+		// 	'fields'     => [
+		// 		[
+		// 			'id'     => $prefix . 'payments',
+		// 			'type'   => 'group',
+		// 			'clone'  => true,
+		// 			'fields' => [
+		// 				[
+		// 					'name'    => __( 'Type', 'prestations' ),
+		// 					'id'      => $prefix . 'type',
+		// 					'type'    => 'select',
+		// 					'placeholder' => __('Select a payment method'),
+		// 					'options' => [
+		// 						'cash'        => __( 'Cash', 'prestations' ),
+		// 						'wire'        => __( 'Wire Transfer', 'prestations' ),
+		// 						'order'       => __( 'WooCommerce Order', 'prestations' ),
+		// 						'hbook'       => __( 'HBook Order', 'prestations' ),
+		// 						'booking_com' => __( 'Booking.com', 'prestations' ),
+		// 						'airbnb'      => __( 'Airbnb', 'prestations' ),
+		// 					],
+		// 					'columns' => 2,
+		// 				],
+		// 				[
+		// 					'name'    => __( 'Payment ID', 'prestations' ),
+		// 					'id'      => $prefix . 'payment_id',
+		// 					'type'    => 'text',
+		// 					'readonly' => true,
+		// 					'options' => self::get_available_payments(),
+		// 					'columns' => 2,
+		// 				],
+		// 				[
+		// 					'name'    => __( 'Payment reference', 'prestations' ),
+		// 					'id'      => $prefix . 'payment_reference',
+		// 					'type'    => 'text',
+		// 					'columns' => 3,
+		// 				],
+		// 				[
+		// 					'name'    => __( 'Amount', 'prestations' ),
+		// 					'id'      => $prefix . 'amount',
+		// 					'type'    => 'number',
+		// 					'columns' => 2,
+		// 					'step' => 'any',
+		// 				],
+		// 			],
+		// 		],
+		// 	],
+		// ];
 
 		$meta_boxes['prestation-summary'] = [
 			'title'      => __( 'Summary', 'prestations' ),
@@ -754,6 +999,7 @@ class Prestations_Prestation {
 			unset($targs['name']);
 			wp_insert_term( $term['name'], 'prestation-status', $targs );
 		}
+
 	}
 
 	static function get_available_items() {

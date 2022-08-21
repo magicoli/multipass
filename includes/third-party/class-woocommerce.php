@@ -570,7 +570,7 @@ class Prestations_WooCommerce {
 				// 'meta_key'     => 'prestation_id', // The postmeta key field
 				// 'meta_compare' => 'NOT EXISTS', // The comparison argument
 			));
-			error_log("found " . count($orders) . " order(s) without prestation");
+			// error_log("found " . count($orders) . " order(s) without prestation");
 			foreach ($orders as $key => $order) {
 				$order_post = get_post($order->id);
 				self::update_order_prestation($order_post->ID, $order_post, true);
