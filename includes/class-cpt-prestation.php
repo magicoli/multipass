@@ -1216,9 +1216,13 @@ class Prestations_Prestation {
 			if($updates['total'] <= 0) {
 				$paid_status = 'on-hold';
 			} else if($updates['paid'] < $updates['total']) {
-				if($updates['paid'] >= $updates['deposit']['total'] && $updates['deposit']['total'] > 0 )  {
+				if($updates['paid'] >= $updates['deposit']['total'] )  {
 					$post_status = 'publish';
-					$paid_status = 'deposit';
+					if($updates['deposit']['total'] > 0) {
+						$paid_status = 'deposit';
+					} else {
+						$paid_status = 'partial';
+					}
 				} else {
 					$post_status = 'pending';
 					if ($updates['paid'] > 0)
