@@ -125,6 +125,7 @@ class Prestations {
 		$this->loader = new Prestations_Loader();
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-list-table.php';
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-cpt-prestation.php';
 		$this->loaders[] = new Prestations_Prestation();

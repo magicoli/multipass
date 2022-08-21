@@ -411,200 +411,116 @@ class Prestations_Prestation {
 			],
 		];
 
-		// $meta_boxes['prestations-extensions'] = [
-		// 	'title'      => __( 'Managed Services', 'prestations' ),
-		// 	'id'         => 'prestations-extensions',
-		// 	'post_types' => ['prestation'],
-		// 	'style' => 'seamless',
-		// 	'fields'     => [
-		// 	],
-		// ];
 
-		$items_list_fields = [
-			'items' => [
-				'id'     => $prefix . 'items',
-				'type'   => 'group',
-				'clone'  => true,
-				'readonly' => false,
-				'class' => 'low-gap',
-				'fields' => [
-					[
-						'name'    => __( 'ID', 'prestations' ),
-						'id'      => $prefix . 'item_id',
-						'type'    => 'text',
-						'readonly' => true,
-						'columns' => 1,
-						'options' => self::get_available_items(),
-					],
-					[
-						'name'    => __( 'Source', 'prestations' ),
-						'id'      => $prefix . 'source',
-						'type'    => 'text',
-						'readonly' => true,
-						'columns' => 1,
-					],
-					[
-						'name'    => __( 'Description', 'prestations' ),
-						'id'      => $prefix . 'description',
-						'type'    => 'text',
-						'columns' => 3,
-					],
-					[
-							'name'          => __( 'From', 'prestations' ),
-							'id'            => $prefix . 'from',
-							'type'          => 'date',
-							'columns' => 1,
-					],
-					[
-							'name'          => __( 'To', 'prestations' ),
-							'id'            => $prefix . 'to',
-							'type'          => 'date',
-							'columns' => 1,
-					],
-					[
-						'name'    => __( 'Quantity', 'prestations' ),
-						'id'      => $prefix . 'quantity',
-						'type'    => 'number',
-						'step' => 'any',
-						'columns' => 1,
-					],
-					[
-						'name'    => __( 'Unit Price', 'prestations' ),
-						'id'      => $prefix . 'unit_price',
-						'type'    => 'number',
-						'step' => 'any',
-						'columns' => 1,
-					],
-					[
-						'name'    => __( 'Discount', 'prestations' ),
-						'id'      => $prefix . 'discount',
-						'type'    => 'number',
-						'step' => 'any',
-						'columns' => 1,
-					],
-					[
-						'name'    => __( 'Price', 'prestations' ),
-						'id'      => $prefix . 'price',
-						'type'    => 'number',
-						'step' => 'any',
-						'columns' => 1,
-					],
-					[
-						'name'    => __( 'Paid', 'prestations' ),
-						'id'      => $prefix . 'paid',
-						'type'    => 'number',
-						'step' => 'any',
-						'columns' => 1,
-					],
-				],
-			],
-		];
-
-		// $prefix = 'managed';
+		$prefix = 'managed_';
 		$meta_boxes['managed'] = [
 			'id'         => 'prestation-managed',
 			'post_types' => ['prestation'],
 			'style' => 'seamless',
 			'readonly' => true,
 			'fields'     => [
-				'items' => [
-					// 'name'      => __( 'Managed orders and bookings', 'prestations' ),
-					'id'     => $prefix . 'managed',
-					'type'   => 'group',
-					// 'clone'  => true,
-					// 'multiple'  => true,
-					'class' => 'low-gap',
-					'fields' => [
-						[
-							'name'    => __( 'ID', 'prestations' ),
-							'id'      => $prefix . 'item_id',
-							'type'    => 'text',
-							'readonly' => true,
-							'columns' => 1,
-							'options' => self::get_available_items(),
-							'readonly' => true,
-						],
-						[
-							'name'    => __( 'Source', 'prestations' ),
-							'id'      => $prefix . 'source',
-							'type'    => 'text',
-							'readonly' => true,
-							'columns' => 1,
-							'readonly' => true,
-						],
-						[
-							'name'    => __( 'Description', 'prestations' ),
-							'id'      => $prefix . 'description',
-							'type'    => 'text',
-							'columns' => 3,
-							'readonly' => true,
-						],
-						[
-								'name'          => __( 'From', 'prestations' ),
-								'id'            => $prefix . 'from',
-								'type'          => 'date',
-								'columns' => 1,
-								'readonly' => true,
-						],
-						[
-								'name'          => __( 'To', 'prestations' ),
-								'id'            => $prefix . 'to',
-								'type'          => 'date',
-								'columns' => 1,
-								'readonly' => true,
-						],
-						[
-							'name'    => __( 'Quantity', 'prestations' ),
-							'id'      => $prefix . 'quantity',
-							'type'    => 'number',
-							'step' => 'any',
-							'columns' => 1,
-							'readonly' => true,
-						],
-						[
-							'name'    => __( 'Unit Price', 'prestations' ),
-							'id'      => $prefix . 'unit_price',
-							'type'    => 'number',
-							'step' => 'any',
-							'columns' => 1,
-							'readonly' => true,
-						],
-						[
-							'name'    => __( 'Discount', 'prestations' ),
-							'id'      => $prefix . 'discount',
-							'type'    => 'number',
-							'step' => 'any',
-							'columns' => 1,
-							'readonly' => true,
-						],
-						[
-							'name'    => __( 'Price', 'prestations' ),
-							'id'      => $prefix . 'price',
-							'type'    => 'number',
-							'step' => 'any',
-							'columns' => 1,
-							'readonly' => true,
-						],
-						[
-							'name'    => __( 'Paid', 'prestations' ),
-							'id'      => $prefix . 'paid',
-							'type'    => 'number',
-							'step' => 'any',
-							'columns' => 1,
-							'readonly' => true,
-						],
-					],
+				[
+					// 'name'          => __( 'Managed Items', 'prestations' ),
+					'id'            => $prefix . 'list',
+					'type'          => 'custom_html',
+					'callback'      => __CLASS__ . '::get_managed_list',
+					'columns' => 12,
 				],
 			],
 		];
-		// $meta_boxes['managed']['fields']['items']['clone'] = false;
-		// $meta_boxes['managed']['fields']['items']['name'] = $meta_boxes['managed']['title'];
-		// foreach($meta_boxes['managed']['fields']['items']['fields'] as $key => $field) {
-		// 	$meta_boxes['managed']['fields']['items']['fields'][$key]['readonly'] = true;
-		// }
+		// 		'items' => [
+		// 			// 'name'      => __( 'Managed orders and bookings', 'prestations' ),
+		// 			'id'     => $prefix . 'managed',
+		// 			'type'   => 'group',
+		// 			'clone'  => true,
+		// 			'readonly' => true,
+		// 			// 'multiple'  => true,
+		// 			'class' => 'low-gap',
+		// 			'fields' => [
+		// 				[
+		// 					'name'    => __( 'ID', 'prestations' ),
+		// 					'id'      => $prefix . 'id',
+		// 					'type'    => 'text',
+		// 					'readonly' => true,
+		// 					'columns' => 1,
+		// 					'options' => self::get_available_items(),
+		// 					'readonly' => true,
+		// 				],
+		// 				[
+		// 					'name'    => __( 'Source', 'prestations' ),
+		// 					'id'      => $prefix . 'source',
+		// 					'type'    => 'text',
+		// 					'readonly' => true,
+		// 					'columns' => 1,
+		// 					'readonly' => true,
+		// 				],
+		// 				[
+		// 					'name'    => __( 'Description', 'prestations' ),
+		// 					'id'      => $prefix . 'description',
+		// 					'type'    => 'text',
+		// 					'columns' => 3,
+		// 					'readonly' => true,
+		// 				],
+		// 				[
+		// 						'name'          => __( 'From', 'prestations' ),
+		// 						'id'            => $prefix . 'from',
+		// 						'type'          => 'date',
+		// 						'columns' => 1,
+		// 						'readonly' => true,
+		// 				],
+		// 				[
+		// 						'name'          => __( 'To', 'prestations' ),
+		// 						'id'            => $prefix . 'to',
+		// 						'type'          => 'date',
+		// 						'columns' => 1,
+		// 						'readonly' => true,
+		// 				],
+		// 				[
+		// 					'name'    => __( 'Quantity', 'prestations' ),
+		// 					'id'      => $prefix . 'quantity',
+		// 					'type'    => 'text',
+		// 					'step' => 'any',
+		// 					'columns' => 1,
+		// 					'readonly' => true,
+		// 				],
+		// 				[
+		// 					'name'    => __( 'Unit Price', 'prestations' ),
+		// 					'id'      => $prefix . 'unit_price',
+		// 					'type'    => 'text',
+		// 					'step' => 'any',
+		// 					'columns' => 1,
+		// 					'readonly' => true,
+		// 				],
+		// 				[
+		// 					'name'    => __( 'Discount', 'prestations' ),
+		// 					'id'      => $prefix . 'discount',
+		// 					'type'    => 'text',
+		// 					'step' => 'any',
+		// 					'columns' => 1,
+		// 					'readonly' => true,
+		// 				],
+		// 				[
+		// 					'name'    => __( 'Total', 'prestations' ),
+		// 					'id'      => $prefix . 'total',
+		// 					'type'    => 'text',
+		// 					'step' => 'any',
+		// 					'columns' => 1,
+		// 					'readonly' => true,
+		// 				],
+		// 				[
+		// 					'name'    => __( 'Paid', 'prestations' ),
+		// 					'id'      => $prefix . 'paid',
+		// 					'type'    => 'text',
+		// 					'step' => 'any',
+		// 					'columns' => 1,
+		// 					'readonly' => true,
+		// 				],
+		// 			],
+		// 		],
+		// 	],
+		// ];
 
 		// $prefix = 'manual';
-		// error_log(print_r($meta_boxes['managed'], true));
 		$meta_boxes[] = [
 			'id'         => 'prestation-items',
 			'post_types' => ['prestation'],
@@ -1008,6 +924,15 @@ class Prestations_Prestation {
 
 	static function get_available_payments() {
 		return [];
+	}
+
+	static function get_managed_list($args = [], $field = []) {
+		$html = apply_filters('get_managed_list', NULL);
+
+		if(empty($html))
+		$html = __('No data', 'prestations');
+
+		return $html;
 	}
 
 	static function get_summary_price($args = []) {

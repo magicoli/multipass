@@ -101,6 +101,10 @@ class Prestations_WooCommerce {
 				'accepted_args' => 2,
 			),
 
+			array(
+				'hook' => 'get_managed_list',
+				'callback' => 'get_managed_list_filter',
+			)
 		);
 
 		$defaults = array( 'component' => __CLASS__, 'priority' => 10, 'accepted_args' => 1 );
@@ -394,6 +398,7 @@ class Prestations_WooCommerce {
 		$p_orders_refunded = 0;
 		$p_orders_subtotal = 0;
 
+		$lines = [];
 		foreach ($orders as $key => $order) {
 			$tax = ($order->prices_include_tax == true) ? false : true;
 			$payment_products = Prestations::get_option('prestations:woocommerce_payment_products');
@@ -401,6 +406,8 @@ class Prestations_WooCommerce {
 
 			$p_order = array(
 				'id' => $order->id,
+				'source' => 'WooCommerce',
+				'object' => __CLASS__,
 				'created' => $order->get_date_created(),
 				'subtotal' => ($tax == true) ? $order->get_subtotal() : (float)wp_strip_all_tags(preg_replace('/"woocommerce-Price-currencySymbol">[^<]*</', '><', $order->get_subtotal_to_display())),
 				'discount' => $order->get_total_discount($tax),
@@ -425,7 +432,7 @@ class Prestations_WooCommerce {
 					 'tax' => $item->get_subtotal_tax(),
 					 'tax_class' => $item->get_tax_class(),
 					 'tax_status' => $item->get_tax_status(),
-					 'allmeta' => $item->get_meta_data(),
+					 // 'allmeta' => $item->get_meta_data(),
 					 // 'somemeta' => $item->get_meta( '_whatever', true ),
 					 'item_type' => $item->get_type(), // e.g. "line_item"
 				 );
@@ -437,10 +444,12 @@ class Prestations_WooCommerce {
 				 }
 			}
 
-			$p_order['title'] = $p_order['items'][0]['product_name']
+			$p_order['description'] = $p_order['items'][0]['product_name']
 			. ( (count($p_order['items']) > 1) ? sprintf( __(' + %s items', 'prestations'), count($p_order['items']) - 1 ) : '' );
 
+			$lines[] = $p_order;
 			$p_orders[$order->id] = $p_order;
+
 			$p_orders_subtotal += $p_order['subtotal'];
 			$p_orders_discount += $p_order['discount'];
 			$p_orders_refunded += $p_order['refunded'];
@@ -454,8 +463,22 @@ class Prestations_WooCommerce {
 			'refunded' => $p_orders_refunded,
 			'total' => $p_orders_total,
 			'paid' => $p_orders_paid,
-			'orders' => $p_orders,
+			// 'orders' => $p_orders,
+			'rows' => $lines,
 		) );
+
+		$metas = get_post_meta($prestation_id, 'managed-woocommerce');
+		// error_log(print_r($metas, true));
+		// $metas['woocommerce'] = $lines;
+		// foreach($metas as $key => $meta) {
+		// 	if(!isset($meta['source']) || $meta['source'] == 'woocommerce') {
+		// 		unset($meta[$key]);
+		// 	}
+		// }
+		// // $metas = array_merge($metas, $p_orders);
+		// $metas = $lines;
+
+		// update_post_meta($prestation_id, 'managed', $metas);
 
 		wp_cache_set(__CLASS__ . '-' . __FUNCTION__ . '-' . $prestation_id, true);
 	}
@@ -576,5 +599,45 @@ class Prestations_WooCommerce {
 				self::update_order_prestation($order_post->ID, $order_post, true);
 			}
 		}
+	}
+
+	static function get_managed_list_filter($html = '') {
+		$title = __('WooCommerce', 'prestations');
+		if(empty($list)) $list = __('Empty list', 'prestations');
+
+		global $post;
+
+		$data = get_post_meta($post->ID, 'managed-woocommerce', true);
+		$data['columns'] = array(
+			'id' => __('ID', 'prestations'),
+			'description' => __('Description', 'prestations'),
+			'created' => __('Date', 'prestations'),
+			'subtotal' => __('Subtotal', 'prestations'),
+			'discount' => __('Discount', 'prestations'),
+			'refunded' => __('Refunded', 'prestations'),
+			'total' => __('Total', 'prestations'),
+			'paid' => __('Paid', 'prestations'),
+			'actions' => '',
+		);
+		$data['format'] = array(
+			'created' => 'date',
+			'subtotal' => 'price',
+			'discount' => 'price',
+			'refunded' => 'price',
+			'total' => 'price',
+			'paid' => 'price',
+		);
+
+		$list = new Prestations_Table($data);
+
+		$html .= sprintf('
+		<div class="managed-list managed-list-woocommerce">
+			<h3>%s</h3>
+			%s
+		</div>',
+			$title,
+			$list->render(),
+		);
+		return $html;
 	}
 }
