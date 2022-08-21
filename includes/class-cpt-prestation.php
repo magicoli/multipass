@@ -500,16 +500,16 @@ class Prestations_Prestation {
 			],
 		];
 
-		// $prefix = 'third_party';
-		$meta_boxes['third-party'] = [
-			'id'         => 'prestation-third-party',
+		// $prefix = 'managed';
+		$meta_boxes['managed'] = [
+			'id'         => 'prestation-managed',
 			'post_types' => ['prestation'],
 			'style' => 'seamless',
 			'readonly' => true,
 			'fields'     => [
 				'items' => [
-					'name'      => __( 'Managed orders and bookings', 'prestations' ),
-					'id'     => $prefix . 'third_party_items',
+					// 'name'      => __( 'Managed orders and bookings', 'prestations' ),
+					'id'     => $prefix . 'managed',
 					'type'   => 'group',
 					// 'clone'  => true,
 					// 'multiple'  => true,
@@ -597,14 +597,14 @@ class Prestations_Prestation {
 				],
 			],
 		];
-		// $meta_boxes['third-party']['fields']['items']['clone'] = false;
-		// $meta_boxes['third-party']['fields']['items']['name'] = $meta_boxes['third-party']['title'];
-		// foreach($meta_boxes['third-party']['fields']['items']['fields'] as $key => $field) {
-		// 	$meta_boxes['third-party']['fields']['items']['fields'][$key]['readonly'] = true;
+		// $meta_boxes['managed']['fields']['items']['clone'] = false;
+		// $meta_boxes['managed']['fields']['items']['name'] = $meta_boxes['managed']['title'];
+		// foreach($meta_boxes['managed']['fields']['items']['fields'] as $key => $field) {
+		// 	$meta_boxes['managed']['fields']['items']['fields'][$key]['readonly'] = true;
 		// }
 
 		// $prefix = 'manual';
-		// error_log(print_r($meta_boxes['third-party'], true));
+		// error_log(print_r($meta_boxes['managed'], true));
 		$meta_boxes[] = [
 			'id'         => 'prestation-items',
 			'post_types' => ['prestation'],
@@ -1127,7 +1127,7 @@ class Prestations_Prestation {
 		$updates['guest_name'] = get_post_meta($post_id, 'guest_name', true);
 
 		$amounts['items'] = get_post_meta($post_id, 'items', true);
-		$amounts['third_party'] = get_post_meta($post_id, 'third_party', true);
+		$amounts['managed'] = get_post_meta($post_id, 'managed', true);
 		$amounts['payments'] = get_post_meta($post_id, 'payments', true);
 		$updates['deposit'] = get_post_meta($post_id, 'deposit', true);
 		$updates['discount'] = get_post_meta($post_id, 'discount', true);
@@ -1145,7 +1145,7 @@ class Prestations_Prestation {
 		if(!is_array($updates['discount'])) $updates['discount'] = [ 'percent' => NULL, 'amount' => NULL ];
 		if(!is_array($updates['deposit'])) $updates['deposit'] = [ 'percent' => NULL, 'amount' => NULL ];
 
-		// error_log("prestation $post_id orders " . print_r(get_post_meta($post_id, 'third_party-woocommerce'), true));
+		// error_log("prestation $post_id orders " . print_r(get_post_meta($post_id, 'managed-woocommerce'), true));
 
 		$updates['price'] = 0; // get_post_meta($post_id, 'price', true);
 
@@ -1178,32 +1178,32 @@ class Prestations_Prestation {
 		  }
 		}
 
-		$updates['discount']['third_party'] = 0;
-		$updates['deposit']['third_party'] = 0;
+		$updates['discount']['managed'] = 0;
+		$updates['deposit']['managed'] = 0;
 		$updates['refunded'] = 0;
 		$updates['discount']['total'] = 0;
 		$updates['deposit']['total'] = 0;
 		foreach(get_post_meta($post_id) as $key => $serialized) {
-			if(preg_match('/^third_party-/', $key)) {
-				$third_party = unserialize($serialized[0]);
-				// error_log("$key = " . print_r($third_party, true));
+			if(preg_match('/^managed-/', $key)) {
+				$managed = unserialize($serialized[0]);
+				// error_log("$key = " . print_r($managed, true));
 				// continue;
-				$updates['price'] += @$third_party['subtotal'];
-				$updates['deposit']['third_party'] += @$third_party['deposit'];
-				$updates['discount']['third_party'] += @$third_party['discount'];
-				$updates['refunded'] += @$third_party['refunded'];
-				$updates['total'] += @$third_party['total'];
-				$updates['paid'] += @$third_party['paid'];
+				$updates['price'] += @$managed['subtotal'];
+				$updates['deposit']['managed'] += @$managed['deposit'];
+				$updates['discount']['managed'] += @$managed['discount'];
+				$updates['refunded'] += @$managed['refunded'];
+				$updates['total'] += @$managed['total'];
+				$updates['paid'] += @$managed['paid'];
 			}
 		}
-		$updates['discount']['total'] += $updates['discount']['amount'] + $updates['discount']['third_party'];
+		$updates['discount']['total'] += $updates['discount']['amount'] + $updates['discount']['managed'];
 
 		if($updates['total'] > 0 && $updates['deposit']['percent'] > 0 ) {
 			$updates['deposit']['amount'] = $updates['total'] * $updates['deposit']['percent'] / 100;
 		} else {
 			$updates['deposit']['amount'] = (empty($updates['deposit']['amount'])) ? NULL : $updates['deposit']['amount'];
 		}
-		$updates['deposit']['total'] += $updates['deposit']['amount'] + $updates['deposit']['third_party'];
+		$updates['deposit']['total'] += $updates['deposit']['amount'] + $updates['deposit']['managed'];
 
 		// error_log("updates after " . print_r($updates, true));
 

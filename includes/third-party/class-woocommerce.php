@@ -448,7 +448,7 @@ class Prestations_WooCommerce {
 			$p_orders_paid += $p_order['paid'];
 		}
 
-		update_post_meta( $prestation_id, 'third_party-woocommerce', array(
+		update_post_meta( $prestation_id, 'managed-woocommerce', array(
 			'subtotal' => $p_orders_subtotal,
 			'discount' => $p_orders_discount,
 			'refunded' => $p_orders_refunded,
