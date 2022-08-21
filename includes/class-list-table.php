@@ -44,8 +44,13 @@ class Prestations_Table extends WP_List_Table {
   }
 
   function column_default( $item, $column_id ) {
+    if(!is_array($item)) $item = array(
+      $column_id => $item,
+    );
+
     switch( $column_id ) {
       case 'actions':
+      $actions = [];
       if(isset($item['external_url'])) {
         $actions[] = sprintf(
           '<a class="dashicons dashicons-external" href="%s"></a>',
@@ -80,6 +85,7 @@ class Prestations_Table extends WP_List_Table {
 
       default:
       $value = $item[ $column_id ];
+      // else $value = $item;
     }
 
     if(isset($this->data['format'][$column_id])) {
@@ -93,7 +99,8 @@ class Prestations_Table extends WP_List_Table {
         break;
 
         case 'status':
-        return $this->render_status($item['id'], $value);
+        if(is_array($item)) return $this->render_status($item['id'], $value);
+        else return $item;
         break;
 
       }
@@ -184,6 +191,8 @@ class Prestations_Table extends WP_List_Table {
     $footers = '';
     foreach($this->get_columns() as $column_id => $column_name) {
       $value = (isset($this->data[$column_id])) ? $this->data[$column_id] : '';
+      $value = $this->column_default($value, $column_id);
+
       $footers .= "<th class='column column-$column_id'>$value</th>";
     }
     return $footers;
