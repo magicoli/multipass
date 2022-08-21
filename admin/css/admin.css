@@ -170,8 +170,13 @@
   width: 10%;
   text-align: right;
 }
+.wp-list-table.prestations-list .column.column-created {
+  width: 8em;
+  white-space: nowrap;
+}
 .wp-list-table.prestations-list .column.column-actions {
   width: 1%;
+  /* white-space: nowrap; */
   padding-left: 1em;
   border: none;
   color: #999;
