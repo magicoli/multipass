@@ -617,6 +617,7 @@ class Prestations_WooCommerce {
 			'refunded' => __('Refunded', 'prestations'),
 			'total' => __('Total', 'prestations'),
 			'paid' => __('Paid', 'prestations'),
+			'status' => __('Status', 'prestations'),
 			'actions' => '',
 		);
 		$data['format'] = array(
@@ -626,6 +627,7 @@ class Prestations_WooCommerce {
 			'refunded' => 'price',
 			'total' => 'price',
 			'paid' => 'price',
+			'status' => 'status',
 		);
 
 		$list = new Prestations_Table($data);

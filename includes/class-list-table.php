@@ -92,9 +92,31 @@ class Prestations_Table extends WP_List_Table {
         $value = wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime($value) );
         break;
 
+        case 'status':
+        return $this->render_status($item['id'], $value);
+        break;
+
       }
     }
     return $value;
+  }
+
+  function render_status($post_id = NULL, $status = NULL) {
+    error_log("status $post_id $status");
+
+    if(empty($status)) return;
+
+    $post = get_post($item['id']);
+    if($post) $post_type = $post->post_type;
+
+    $html = sprintf(
+      '<span class="prestation-status-box %1$s-status status-%2$s">%3$s</span>',
+      $post_type,
+      $status,
+      $status,
+    );
+
+    return $html;
   }
 
   function prepare_items() {
@@ -150,7 +172,6 @@ class Prestations_Table extends WP_List_Table {
         $format = (isset($this->data['format'][$column_id])) ? $this->data['format'][$column_id] : '';
         $value = $this->column_default($row, $column_id);
         $rows .= "<td class='column column-$column_id $format'>$value</td>";
-        error_log("row " . print_r($row, true));
       }
       $rows .= '</tr>';
 
