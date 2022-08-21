@@ -438,7 +438,7 @@ class Prestations_WooCommerce {
 			}
 
 			$p_order['title'] = $p_order['items'][0]['product_name']
-			. ( (count($p_order['items']) > 1) ? $p_order['title'] .= sprintf( __(' + %s items', 'prestations'), count($p_order['items']) - 1 ) : '' );
+			. ( (count($p_order['items']) > 1) ? sprintf( __(' + %s items', 'prestations'), count($p_order['items']) - 1 ) : '' );
 
 			$p_orders[$order->id] = $p_order;
 			$p_orders_subtotal += $p_order['subtotal'];
