@@ -585,6 +585,7 @@ class Prestations_Prestation {
 							'name'    => __( 'Quantity', 'prestations' ),
 							'id'      => $prefix . 'quantity',
 							'type'    => 'number',
+							'class' => 'item_quantity',
 							'step' => 'any',
 							'columns' => 1,
 							'visible' => [
@@ -598,6 +599,7 @@ class Prestations_Prestation {
 						[
 							'name'    => __( 'Unit Price', 'prestations' ),
 							'id'      => $prefix . 'unit_price',
+							'class' => 'item_unit_price',
 							'type'    => 'text',
 							'pattern'  => '[0-9]+([,\.][0-9]+)?',
 							'columns' => 1,
@@ -613,6 +615,7 @@ class Prestations_Prestation {
 							'name'    => __( 'Discount', 'prestations' ),
 							'id'      => $prefix . 'discount',
 							'type'    => 'text',
+							'class' => 'item_discount',
 							'pattern'  => '[0-9]+([,\.][0-9]+)?',
 							'columns' => 1,
 							'visible' => [
@@ -626,6 +629,7 @@ class Prestations_Prestation {
 						[
 							'name'    => __( 'Price', 'prestations' ),
 							'id'      => $prefix . 'price',
+							'class' => 'item_price',
 							'type'    => 'text',
 							'readonly' => true,
 							// 'pattern'  => '[0-9]+([,\.][0-9]+)?',
@@ -641,6 +645,7 @@ class Prestations_Prestation {
 						[
 							'name'    => __( 'Paid', 'prestations' ),
 							'id'      => $prefix . 'paid',
+							'class' => 'item_paid',
 							'type'    => 'text',
 							'step' => 'any',
 							'columns' => 1,
