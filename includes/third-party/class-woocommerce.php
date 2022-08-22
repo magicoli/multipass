@@ -260,19 +260,19 @@ class Prestations_WooCommerce {
 			);
 			$items = [];
 			foreach ( $order->get_items() as $item_id => $item ) {
-				$product_id = $item->get_product_id();
-				$variation_id = $item->get_variation_id();
-				$product = $item->get_product(); // see link above to get $product info
+				// $product_id = $item->get_product_id();
+				// $variation_id = $item->get_variation_id();
+				// $product = $item->get_product(); // see link above to get $product info
 				$product_name = $item->get_name();
 				$quantity = $item->get_quantity();
 				$subtotal = $item->get_subtotal();
 				$total = $item->get_total();
-				$tax = $item->get_subtotal_tax();
-				$tax_class = $item->get_tax_class();
-				$tax_status = $item->get_tax_status();
-				$allmeta = $item->get_meta_data();
-				$somemeta = $item->get_meta( );
-				$item_type = $item->get_type(); // e.g. "line_item"
+				// $tax = $item->get_subtotal_tax();
+				// $tax_class = $item->get_tax_class();
+				// $tax_status = $item->get_tax_status();
+				// $allmeta = $item->get_meta_data();
+				// $somemeta = $item->get_meta( );
+				// $item_type = $item->get_type(); // e.g. "line_item"
 				$items[] = '<li>' . "$product_name $quantity x $subtotal = $total " . '</li>';
 			}
 			if(!empty($items)) $row .= '<ol>' . implode($items) . '</ol>';
@@ -415,7 +415,8 @@ class Prestations_WooCommerce {
 
 		$lines = [];
 		foreach ($orders as $key => $order) {
-			$tax = ($order->prices_include_tax == true) ? false : true;
+			// $excl_tax = ($order->prices_include_tax == true) ? false : true;
+			$excl_tax = false;
 			$payment_products = Prestations::get_option('prestations:woocommerce_payment_products');
 			if(!is_array($payment_products)) $payment_products = [ $payment_products ];
 
@@ -424,8 +425,8 @@ class Prestations_WooCommerce {
 				'source' => 'WooCommerce',
 				'object' => __CLASS__,
 				'created' => $order->get_date_created(),
-				'subtotal' => ($tax == true) ? $order->get_subtotal() : (float)wp_strip_all_tags(preg_replace('/"woocommerce-Price-currencySymbol">[^<]*</', '><', $order->get_subtotal_to_display())),
-				'discount' => $order->get_total_discount($tax),
+				'subtotal' => ($excl_tax == true) ? $order->get_subtotal() : (float)wp_strip_all_tags(preg_replace('/"woocommerce-Price-currencySymbol">[^<]*</', '><', $order->get_subtotal_to_display())),
+				'discount' => $order->get_total_discount($excl_tax),
 				'refunded' => $order->get_total_refunded(),
 				'total' => $order->get_total() - $order->get_total_refunded(),
 				'paid' => NULL,
