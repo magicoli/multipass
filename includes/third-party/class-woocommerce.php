@@ -413,12 +413,13 @@ class Prestations_WooCommerce {
 		$p_orders_refunded = 0;
 		$p_orders_subtotal = 0;
 
+		$payment_products = Prestations::get_option('prestations:woocommerce_payment_products');
+		if(!is_array($payment_products)) $payment_products = [ $payment_products ];
+		$excl_tax = false;
+
 		$lines = [];
 		foreach ($orders as $key => $order) {
 			// $excl_tax = ($order->prices_include_tax == true) ? false : true;
-			$excl_tax = false;
-			$payment_products = Prestations::get_option('prestations:woocommerce_payment_products');
-			if(!is_array($payment_products)) $payment_products = [ $payment_products ];
 
 			$p_order = array(
 				'id' => $order->get_id(),
@@ -438,27 +439,39 @@ class Prestations_WooCommerce {
 			$p_order['paid'] = (in_array($order->get_status(), [ 'completed', 'processing' ])) ? $p_order['total'] : 0;
 
 			foreach ( $order->get_items() as $item_id => $item ) {
-				 $p_order['items'][] = array(
-					 'product_id' => $item->get_product_id(),
-					 'variation_id' => $item->get_variation_id(),
-					 // 'product' => $item->get_product(), // see link above to get $product info
-					 'product_name' => $item->get_name(),
-					 // 'quantity' => $item->get_quantity(),
-					 'subtotal' => $item->get_subtotal(),
-					 'total' => $item->get_total(),
-					 'tax' => $item->get_subtotal_tax(),
-					 'tax_class' => $item->get_tax_class(),
-					 'tax_status' => $item->get_tax_status(),
-					 // 'allmeta' => $item->get_meta_data(),
-					 // 'somemeta' => $item->get_meta( '_whatever', true ),
-					 'item_type' => $item->get_type(), // e.g. "line_item"
-				 );
+				// 'product' => $item->get_product(), // see link above to get $product info
+				$product_id = $item->get_product_id();
+				if(!in_array($product_id, $payment_products)) {
+					$terms = get_the_terms( $product_id, 'product_cat' );
+					if($terms) $category = $terms[0]->name;
+				}
 
-				 if(in_array($item->get_product_id(), $payment_products)) {
-					 $p_order['subtotal'] -= $item->get_subtotal();
-					 $p_order['refunded'] -= $order->get_total_refunded_for_item($item_id);
-					 $p_order['total'] = $p_order['total'] - $item->get_total() + $order->get_total_refunded_for_item($item_id);
-				 }
+				$product_name = join(' ', array_filter(array(
+					isset($category) ? $category : '',
+					$item->get_name(),
+					isset($variation) ? $variation->get_formatted_name() : '',
+				)));
+
+				$p_order['items'][] = array(
+					'product_id' => $item->get_product_id(),
+					'variation_id' => $item->get_variation_id(),
+					'product_name' => $product_name,
+					// 'quantity' => $item->get_quantity(),
+					'subtotal' => $item->get_subtotal(),
+					'total' => $item->get_total(),
+					'tax' => $item->get_subtotal_tax(),
+					'tax_class' => $item->get_tax_class(),
+					'tax_status' => $item->get_tax_status(),
+					// 'allmeta' => $item->get_meta_data(),
+					// 'somemeta' => $item->get_meta( '_whatever', true ),
+					'item_type' => $item->get_type(), // e.g. "line_item"
+				);
+
+				if(in_array($item->get_product_id(), $payment_products)) {
+					$p_order['subtotal'] -= $item->get_subtotal();
+					$p_order['refunded'] -= $order->get_total_refunded_for_item($item_id);
+					$p_order['total'] = $p_order['total'] - $item->get_total() + $order->get_total_refunded_for_item($item_id);
+				}
 			}
 
 			$p_order['description'] = $p_order['items'][0]['product_name']

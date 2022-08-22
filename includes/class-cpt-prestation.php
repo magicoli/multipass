@@ -541,9 +541,9 @@ class Prestations_Prestation {
 							'id'      => $prefix . 'type',
 							'type'    => 'select',
 							'options' => [
-									'product' => __( 'Unmanaged Product', 'prestations' ),
-									'booking' => __( 'Unmanaged Booking', 'prestations' ),
-									'payment' => __( 'Unmanaged Payment', 'prestations' ),
+									'product' => __( 'Product', 'prestations' ),
+									'booking' => __( 'Booking', 'prestations' ),
+									'payment' => __( 'Payment', 'prestations' ),
 							],
 							'placeholder' => __('Select a type', 'prestations'),
 							'columns' => 2,
@@ -1094,7 +1094,7 @@ class Prestations_Prestation {
 		  foreach($amounts['items'] as $item) {
 				if(isset($item['paid'])) $updates['paid'] += (float)$item['paid'];
 
-				if(isset($item['discount'])) 
+				if(isset($item['discount']))
 				$updates['discount']['total'] += (float)$item['discount'];
 
 		    if(empty($item['quantity'])) {
