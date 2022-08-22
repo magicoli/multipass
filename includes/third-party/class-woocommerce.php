@@ -251,8 +251,8 @@ class Prestations_WooCommerce {
 				<a href="%s">%s</a>
 				%s - <strong>%s</strong> - %s
 				</div>',
-				get_edit_post_link($order->ID),
-				"#$order->ID",
+				get_edit_post_link($order->get_id()),
+				"#" . $order->get_id(),
 				$order->get_date_created()->date(get_option('date_format')),
 				wc_price($order->get_remaining_refund_amount()),
 				$order->get_status(),
@@ -421,7 +421,7 @@ class Prestations_WooCommerce {
 			if(!is_array($payment_products)) $payment_products = [ $payment_products ];
 
 			$p_order = array(
-				'id' => $order->id,
+				'id' => $order->get_id(),
 				'source' => 'WooCommerce',
 				'object' => __CLASS__,
 				'created' => $order->get_date_created(),
@@ -430,7 +430,7 @@ class Prestations_WooCommerce {
 				'refunded' => $order->get_total_refunded(),
 				'total' => $order->get_total() - $order->get_total_refunded(),
 				'paid' => NULL,
-				'status' =>  $order->status,
+				'status' =>  $order->get_status(),
 				'view_url' => $order->get_view_order_url(),
 				'edit_url' => $order->get_edit_order_url(),
 			);
@@ -465,7 +465,7 @@ class Prestations_WooCommerce {
 			. ( (count($p_order['items']) > 1) ? sprintf( __(' + %s items', 'prestations'), count($p_order['items']) - 1 ) : '' );
 
 			$lines[] = $p_order;
-			$p_orders[$order->id] = $p_order;
+			$p_orders[$order->get_id()] = $p_order;
 
 			$p_orders_subtotal += $p_order['subtotal'];
 			$p_orders_discount += $p_order['discount'];
@@ -571,8 +571,8 @@ class Prestations_WooCommerce {
 
 		if(empty($prestation_id) || ! $prestation) {
 			$postarr = array(
-				'post_author' => $order->post_author,
-				'post_date' => $order->post_date,
+				'post_author' => $order->get_customer_id(),
+				'post_date' => $order->get_date_created(),
 				'post_date_gmt' => $order->post_date_gmt,
 				'post_type' => 'prestation',
 				'post_status' => 'publish',
@@ -614,7 +614,7 @@ class Prestations_WooCommerce {
 			));
 			// error_log("found " . count($orders) . " order(s) without prestation");
 			foreach ($orders as $key => $order) {
-				$order_post = get_post($order->id);
+				$order_post = get_post($order->get_id());
 				self::update_order_prestation($order_post->ID, $order_post, true);
 			}
 		}
