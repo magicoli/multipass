@@ -109,8 +109,6 @@ class Prestations_Table extends WP_List_Table {
   }
 
   function render_status($post_id = NULL, $status = NULL) {
-    error_log("status $post_id $status");
-
     if(empty($status)) return;
 
     $post = get_post($post_id);
@@ -192,6 +190,7 @@ class Prestations_Table extends WP_List_Table {
     foreach($this->get_columns() as $column_id => $column_name) {
       $value = (isset($this->data[$column_id])) ? $this->data[$column_id] : '';
       $value = $this->column_default($value, $column_id);
+      if(is_array($value)) $value = implode($value);
 
       $footers .= "<th class='column column-$column_id'>$value</th>";
     }
