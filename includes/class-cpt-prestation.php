@@ -354,9 +354,9 @@ class Prestations_Prestation {
 				    ],
 				    [
 				      'id'      => $prefix . 'amount',
-				      'type'    => 'number',
+				      'type'    => 'text',
+							'pattern'  => '[0-9]+([,\.][0-9]+)?',
 				      'min'     => 0,
-				      'step'    => 'any',
 				      'size'    => 10,
 				      'prepend' => get_woocommerce_currency_symbol(),
 				      'visible' => [
@@ -383,7 +383,8 @@ class Prestations_Prestation {
 						],
 						[
 							'id'      => $prefix . 'amount',
-							'type'    => 'number',
+							'type'    => 'text',
+							'pattern'  => '[0-9]+([,\.][0-9]+)?',
 							'min'     => 0,
 							'step'    => 'any',
 							'size'    => 10,
@@ -525,6 +526,7 @@ class Prestations_Prestation {
 			'id'         => 'prestation-items',
 			'post_types' => ['prestation'],
 			'style' => 'seamless',
+
 			'fields'     => [
 				'items' => [
 					'name'      => __( 'Unmanaged Items', 'prestations' ),
@@ -596,8 +598,8 @@ class Prestations_Prestation {
 						[
 							'name'    => __( 'Unit Price', 'prestations' ),
 							'id'      => $prefix . 'unit_price',
-							'type'    => 'number',
-							'step' => 'any',
+							'type'    => 'text',
+							'pattern'  => '[0-9]+([,\.][0-9]+)?',
 							'columns' => 1,
 							'visible' => [
 								'when'     => [
@@ -610,8 +612,8 @@ class Prestations_Prestation {
 						[
 							'name'    => __( 'Discount', 'prestations' ),
 							'id'      => $prefix . 'discount',
-							'type'    => 'number',
-							'step' => 'any',
+							'type'    => 'text',
+							'pattern'  => '[0-9]+([,\.][0-9]+)?',
 							'columns' => 1,
 							'visible' => [
 								'when'     => [
@@ -624,8 +626,8 @@ class Prestations_Prestation {
 						[
 							'name'    => __( 'Price', 'prestations' ),
 							'id'      => $prefix . 'price',
-							'type'    => 'number',
-							'step' => 'any',
+							'type'    => 'text',
+							'pattern'  => '[0-9]+([,\.][0-9]+)?',
 							'columns' => 1,
 							'visible' => [
 								'when'     => [
@@ -638,7 +640,7 @@ class Prestations_Prestation {
 						[
 							'name'    => __( 'Paid', 'prestations' ),
 							'id'      => $prefix . 'paid',
-							'type'    => 'number',
+							'type'    => 'text',
 							'step' => 'any',
 							'columns' => 1,
 							'visible' => [
@@ -646,6 +648,7 @@ class Prestations_Prestation {
 									['type', '!=', ''],
 								],
 							],
+							'pattern'  => '[0-9]+([,\.][0-9]+)?',
 						],
 					],
 				],
