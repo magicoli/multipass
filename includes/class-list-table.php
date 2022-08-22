@@ -99,7 +99,7 @@ class Prestations_Table extends WP_List_Table {
         break;
 
         case 'status':
-        if(is_array($item)) return $this->render_status($item['id'], $value);
+        if(is_array($item) && isset($item['id'])) return $this->render_status($item['id'], $value);
         else return $item;
         break;
 
@@ -113,7 +113,7 @@ class Prestations_Table extends WP_List_Table {
 
     if(empty($status)) return;
 
-    $post = get_post($item['id']);
+    $post = get_post($post_id);
     if($post) $post_type = $post->post_type;
 
     $html = sprintf(
