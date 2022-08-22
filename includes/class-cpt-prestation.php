@@ -311,10 +311,10 @@ class Prestations_Prestation {
 					'name'    => __( 'Customer Email', 'prestations' ),
 					'id'      => $prefix . 'customer_email',
 					'type'    => 'email',
-					'visible' => [
-						'when'     => [['customer_id', '=', '']],
-						'relation' => 'or',
-					],
+					// 'visible' => [
+					// 	'when'     => [['customer_id', '=', '']],
+					// 	'relation' => 'or',
+					// ],
 				],
 				[
 				  'name'   => __( 'Dates', 'prestations' ),
