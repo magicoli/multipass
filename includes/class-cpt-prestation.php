@@ -627,7 +627,8 @@ class Prestations_Prestation {
 							'name'    => __( 'Price', 'prestations' ),
 							'id'      => $prefix . 'price',
 							'type'    => 'text',
-							'pattern'  => '[0-9]+([,\.][0-9]+)?',
+							'readonly' => true,
+							// 'pattern'  => '[0-9]+([,\.][0-9]+)?',
 							'columns' => 1,
 							'visible' => [
 								'when'     => [
@@ -1065,16 +1066,6 @@ class Prestations_Prestation {
 		$updates['price'] = 0; // get_post_meta($post_id, 'price', true);
 		$updates['paid'] = 0; // Will be overridden // get_post_meta($post_id, 'paid', true);
 
-		if(empty($updates['deposit'])) $updates['deposit'] = [];
-		$updates['deposit']['managed'] = 0;
-		$updates['deposit']['total'] = 0;
-
-		if(empty($updates['discount'])) $updates['discount'] = [];
-		// $updates['discount']['amount'] = (empty($updates['discount']['amount'])) ? 0 : $updates['discount']['amount'];
-		// $updates['discount']['total'] = $updates['discount']['amount'];
-		$updates['discount']['managed'] = 0;
-		$updates['refunded'] = 0;
-		$updates['discount']['total'] = 0;
 
 		if(is_array($_REQUEST)) {
 		  foreach ($updates as $key => $value) {
@@ -1084,27 +1075,34 @@ class Prestations_Prestation {
 		    if(isset($_REQUEST[$key])) $amounts[$key] = is_array($_REQUEST[$key]) ? $_REQUEST[$key] : esc_attr($_REQUEST[$key]);
 		  }
 		}
-		if(!is_array($updates['discount'])) $updates['discount'] = [ 'percent' => NULL, 'amount' => NULL ];
+
 		if(!is_array($updates['deposit'])) $updates['deposit'] = [ 'percent' => NULL, 'amount' => NULL ];
+		// if(empty($updates['deposit'])) $updates['deposit'] = [];
+		$updates['deposit']['managed'] = 0;
+		$updates['deposit']['total'] = 0;
+
+		if(!is_array($updates['discount'])) $updates['discount'] = [ 'percent' => NULL, 'amount' => NULL ];
+		// if(empty($updates['discount'])) $updates['discount'] = [];
+		// $updates['discount']['amount'] = (empty($updates['discount']['amount'])) ? 0 : $updates['discount']['amount'];
+		// $updates['discount']['total'] = $updates['discount']['amount'];
+		$updates['discount']['managed'] = 0;
+		$updates['discount']['total'] = 0;
+		$updates['refunded'] = 0;
+		$updates['discount']['total'] = 0;
 
 		if(is_array($amounts['items'])) {
 		  foreach($amounts['items'] as $item) {
-				if(isset($item['paid'])) $updates['paid'] += $item['paid'];
-				// errorè
-				if(isset($item['discount'])) {
-					error_log(
-						"discount " . print_r($updates['discount'], true)
-						. "item " . print_r($item, true)
-					);
-					$updates['discount']['total'] += $item['discount'];
-				}
+				if(isset($item['paid'])) $updates['paid'] += (float)$item['paid'];
+
+				if(isset($item['discount'])) 
+				$updates['discount']['total'] += (float)$item['discount'];
 
 		    if(empty($item['quantity'])) {
 		      if(empty($item['unit_price'])) continue;
 		      else $item['quantity'] = 1;
 		    }
 		    if(empty($item['quantity']) || empty($item['unit_price'])) continue;
-				$updates['price'] += $item['quantity'] * $item['unit_price'];
+				$updates['price'] += (float)$item['quantity'] * (float)$item['unit_price'];
 		  }
 		}
 
