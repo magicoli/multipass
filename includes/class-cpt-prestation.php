@@ -520,7 +520,7 @@ class Prestations_Prestation {
 		// 	],
 		// ];
 
-		// $prefix = 'manual';
+		$prefix = '';
 		$meta_boxes[] = [
 			'id'         => 'prestation-items',
 			'post_types' => ['prestation'],
@@ -1051,7 +1051,7 @@ class Prestations_Prestation {
 		$updates['customer_name'] = get_post_meta($post_id, 'customer_name', true);
 		$updates['guest_name'] = get_post_meta($post_id, 'guest_name', true);
 
-		$amounts['items'] = get_post_meta($post_id, 'items', true);
+		$amounts['items'] = get_post_meta($post_id, 'manual_items', true);
 		$amounts['managed'] = get_post_meta($post_id, 'managed', true);
 		$amounts['payments'] = get_post_meta($post_id, 'payments', true);
 		$updates['deposit'] = get_post_meta($post_id, 'deposit', true);
@@ -1073,15 +1073,19 @@ class Prestations_Prestation {
 		// error_log("prestation $post_id orders " . print_r(get_post_meta($post_id, 'managed-woocommerce'), true));
 
 		$updates['price'] = 0; // get_post_meta($post_id, 'price', true);
+		$updates['paid'] = 0; // Will be overridden // get_post_meta($post_id, 'paid', true);
 
 		if(is_array($amounts['items'])) {
 		  foreach($amounts['items'] as $item) {
+				if(isset($item['paid'])) {
+					$updates['paid'] += $item['paid'];
+				}
 		    if(empty($item['quantity'])) {
 		      if(empty($item['unit_price'])) continue;
 		      else $item['quantity'] = 1;
 		    }
 		    if(empty($item['quantity']) || empty($item['unit_price'])) continue;
-		    $updates['price'] += $item['quantity'] * $item['unit_price'];
+				$updates['price'] += $item['quantity'] * $item['unit_price'];
 		  }
 		}
 
@@ -1094,7 +1098,6 @@ class Prestations_Prestation {
 
 		$updates['total'] = $updates['price'] - $updates['discount']['amount'];
 
-		$updates['paid'] = 0; // Will be overridden // get_post_meta($post_id, 'paid', true);
 		if(is_array($amounts['payments'])) {
 		  foreach($amounts['payments'] as $payment) {
 		    if(empty($payment['amount'])) continue;
