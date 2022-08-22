@@ -170,10 +170,15 @@
   width: 10%;
   text-align: right;
 }
-.wp-list-table.prestations-list .column.column-created {
+.wp-list-table.prestations-list .column.date_time {
   width: 8em;
   white-space: nowrap;
 }
+.wp-list-table.prestations-list .column.date {
+  width: 5em;
+  white-space: nowrap;
+}
+
 .wp-list-table.prestations-list .column.column-actions {
   width: 1%;
   /* white-space: nowrap; */

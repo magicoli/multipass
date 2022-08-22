@@ -642,8 +642,10 @@ class Prestations_WooCommerce {
 		$data = get_post_meta($post->ID, 'managed-woocommerce', true);
 		$data['columns'] = array(
 			'id' => __('ID', 'prestations'),
+			'created' => __('Created', 'prestations'),
 			'description' => __('Description', 'prestations'),
-			'created' => __('Date', 'prestations'),
+			'from' => __('From', 'prestations'),
+			'to' => __('To', 'prestations'),
 			'subtotal' => __('Subtotal', 'prestations'),
 			'discount' => __('Discount', 'prestations'),
 			'refunded' => __('Refunded', 'prestations'),
@@ -653,7 +655,9 @@ class Prestations_WooCommerce {
 			'actions' => '',
 		);
 		$data['format'] = array(
-			'created' => 'date',
+			'created' => 'date_time',
+			'from' => 'date',
+			'to' => 'date',
 			'subtotal' => 'price',
 			'discount' => 'price',
 			'refunded' => 'price',

@@ -94,8 +94,12 @@ class Prestations_Table extends WP_List_Table {
         $value = wc_price($value);
         break;
 
+        case 'date_time';
+        if(!empty($value)) $value = wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime($value) );
+        break;
+
         case 'date';
-        $value = wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime($value) );
+        if(!empty($value)) $value = wp_date( get_option( 'date_format' ) );
         break;
 
         case 'status':
