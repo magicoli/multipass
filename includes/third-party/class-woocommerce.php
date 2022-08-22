@@ -64,6 +64,11 @@ class Prestations_WooCommerce {
 				'callback' => 'wp_insert_post_action',
 				'accepted_args' => 3,
 			),
+			array (
+				'hook' => 'save_post_shop_order',
+				'callback' => 'save_post_shop_order_action',
+				'accepted_args' => 3,
+			),
 		);
 
 		$this->filters = array(
@@ -362,15 +367,25 @@ class Prestations_WooCommerce {
 		// $this->background_request->dispatch();
 	}
 
+	static function save_post_shop_order_action($post_id, $post, $update ) {
+		if( !$update ) return;
+
+		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
+
+		self::update_order_prestation($post_id, $post, $update );
+
+		add_action(current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3);
+	}
+
 	static function wp_insert_post_action($post_id, $post, $update ) {
 		if( !$update ) return;
 		if( Prestations::is_new_post() ) return; // new posts are empty
 
 		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
 		switch($post->post_type) {
-			case 'shop_order':
-			self::update_order_prestation($post_id, $post, $update );
-			break;
+			// case 'shop_order':
+			// self::update_order_prestation($post_id, $post, $update );
+			// break;
 
 			case 'prestation':
 			self::update_prestation_orders($post_id, $post, $update );
@@ -418,7 +433,8 @@ class Prestations_WooCommerce {
 				'view_url' => $order->get_view_order_url(),
 				'edit_url' => $order->get_edit_order_url(),
 			);
-			$p_order['paid'] = ($order->get_date_paid()) ? $p_order['total'] : 0;
+			// $p_order['paid'] = ($order->get_date_paid()) ? $p_order['total'] : 0;
+			$p_order['paid'] = (in_array($order->get_status(), [ 'completed', 'processing' ])) ? $p_order['total'] : 0;
 
 			foreach ( $order->get_items() as $item_id => $item ) {
 				 $p_order['items'][] = array(
@@ -467,7 +483,9 @@ class Prestations_WooCommerce {
 			'rows' => $lines,
 		) );
 
-		$metas = get_post_meta($prestation_id, 'managed-woocommerce');
+		Prestations_Prestation::update_prestation_amounts($prestation_id, get_post($prestation_id), true );
+
+		// $metas = get_post_meta($prestation_id, 'managed-woocommerce');
 		// error_log(print_r($metas, true));
 		// $metas['woocommerce'] = $lines;
 		// foreach($metas as $key => $meta) {
@@ -487,7 +505,7 @@ class Prestations_WooCommerce {
 		if( $order->post_type != 'shop_order' ) return;
 		if( $order->post_status == 'trash' ) return; // TODO: update previously linked prestation
 
-		remove_action(current_action(), __CLASS__ . '::wp_insert_post_action');
+		// remove_action(current_action(), __CLASS__ . '::wp_insert_post_action');
 
 		$prestation_id = get_post_meta($order_id, 'prestation_id', true);
 		$prestation = get_post($prestation_id);
@@ -577,10 +595,10 @@ class Prestations_WooCommerce {
 				'customer_email' => $customer_email,
 			);
 			foreach ($meta as $key => $value) update_post_meta( $order_id, $key, $value );
-			Prestations_Prestation::update_prestation_amounts($prestation_id, get_post($prestation_id), true );
+			Prestations_WooCommerce::update_prestation_orders($prestation_id, get_post($prestation_id), true );
 		}
 
-		add_action(current_action(), __CLASS__ . '::wp_insert_post_action', 10, 3);
+		// add_action(current_action(), __CLASS__ . '::wp_insert_post_action', 10, 3);
 		return;
 	}
 

@@ -1140,7 +1140,7 @@ class Prestations_Prestation {
 			case 'publish':
 			if($updates['total'] <= 0) {
 				$paid_status = 'on-hold';
-			} else if($updates['paid'] < $updates['total']) {
+			} else if( $updates['paid'] < $updates['total'] ) {
 				if($updates['paid'] >= $updates['deposit']['total'] )  {
 					$post_status = 'publish';
 					if($updates['deposit']['total'] > 0) {
