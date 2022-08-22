@@ -1059,6 +1059,20 @@ class Prestations_Prestation {
 		$updates['balance'] = get_post_meta($post_id, 'balance', true);
 		$updates['dates'] = get_post_meta($post_id, 'dates', true);
 
+		$updates['price'] = 0; // get_post_meta($post_id, 'price', true);
+		$updates['paid'] = 0; // Will be overridden // get_post_meta($post_id, 'paid', true);
+
+		if(empty($updates['deposit'])) $updates['deposit'] = [];
+		$updates['deposit']['managed'] = 0;
+		$updates['deposit']['total'] = 0;
+
+		if(empty($updates['discount'])) $updates['discount'] = [];
+		// $updates['discount']['amount'] = (empty($updates['discount']['amount'])) ? 0 : $updates['discount']['amount'];
+		// $updates['discount']['total'] = $updates['discount']['amount'];
+		$updates['discount']['managed'] = 0;
+		$updates['refunded'] = 0;
+		$updates['discount']['total'] = 0;
+
 		if(is_array($_REQUEST)) {
 		  foreach ($updates as $key => $value) {
 		    if(isset($_REQUEST[$key])) $updates[$key] = is_array($_REQUEST[$key]) ? $_REQUEST[$key] : esc_attr($_REQUEST[$key]);
@@ -1072,14 +1086,19 @@ class Prestations_Prestation {
 
 		// error_log("prestation $post_id orders " . print_r(get_post_meta($post_id, 'managed-woocommerce'), true));
 
-		$updates['price'] = 0; // get_post_meta($post_id, 'price', true);
-		$updates['paid'] = 0; // Will be overridden // get_post_meta($post_id, 'paid', true);
 
 		if(is_array($amounts['items'])) {
 		  foreach($amounts['items'] as $item) {
-				if(isset($item['paid'])) {
-					$updates['paid'] += $item['paid'];
+				if(isset($item['paid'])) $updates['paid'] += $item['paid'];
+				// errorè
+				if(isset($item['discount'])) {
+					error_log(
+						"discount " . print_r($updates['discount'], true)
+						. "item " . print_r($item, true)
+					);
+					$updates['discount']['total'] += $item['discount'];
 				}
+
 		    if(empty($item['quantity'])) {
 		      if(empty($item['unit_price'])) continue;
 		      else $item['quantity'] = 1;
@@ -1106,11 +1125,6 @@ class Prestations_Prestation {
 		  }
 		}
 
-		$updates['discount']['managed'] = 0;
-		$updates['deposit']['managed'] = 0;
-		$updates['refunded'] = 0;
-		$updates['discount']['total'] = 0;
-		$updates['deposit']['total'] = 0;
 		foreach(get_post_meta($post_id) as $key => $serialized) {
 			if(preg_match('/^managed-/', $key)) {
 				$managed = unserialize($serialized[0]);
