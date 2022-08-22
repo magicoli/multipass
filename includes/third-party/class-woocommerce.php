@@ -621,7 +621,7 @@ class Prestations_WooCommerce {
 	}
 
 	static function get_managed_list_filter($html = '') {
-		$title = __('WooCommerce', 'prestations');
+		$title = __('Online Shop (WooCommerce)', 'prestations');
 		if(empty($list)) $list = __('Empty list', 'prestations');
 
 		global $post;

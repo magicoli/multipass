@@ -1084,9 +1084,6 @@ class Prestations_Prestation {
 		if(!is_array($updates['discount'])) $updates['discount'] = [ 'percent' => NULL, 'amount' => NULL ];
 		if(!is_array($updates['deposit'])) $updates['deposit'] = [ 'percent' => NULL, 'amount' => NULL ];
 
-		// error_log("prestation $post_id orders " . print_r(get_post_meta($post_id, 'managed-woocommerce'), true));
-
-
 		if(is_array($amounts['items'])) {
 		  foreach($amounts['items'] as $item) {
 				if(isset($item['paid'])) $updates['paid'] += $item['paid'];
