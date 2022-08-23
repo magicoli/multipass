@@ -4,7 +4,7 @@
  * Plugin Name:       Prestations (dev)
  * Plugin URI:        https://magiiic.com/wordpress/plugins/prestations/
  * Description:       Group orders from different sources (WooCommerce, OTA, booking engines...) to get the global picture of a set of services.
- * Version:           0.1.0.x-dev
+ * Version:           0.1.1.x-dev
  * Author:            Magiiic
  * Author URI:        https://magiiic.com/
  * License:           AGPLv3
@@ -29,7 +29,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'PRESTATIONS_VERSION', '0.1.0.x-dev' . '-' . time() );
+define( 'PRESTATIONS_VERSION', '0.1.1.x-dev' . '-' . time() );
 
 /**
  * The code that runs during plugin activation.

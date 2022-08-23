@@ -5,7 +5,7 @@ Donate link: https: //magiiic.com/support/Prestations+Plugin
 Tags: hotel, booking, multi-prestations, multi-services, woocommerce
 Requires at least: 3.0.1
 Tested up to: 6.0.1
-Stable tag: 4.3
+Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: http: //www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,17 +30,18 @@ This should also fit well for other kind of services, needing a more fluid appro
 
 ## Features
 
-- Centralized view of prestations (sets of services, ordered as parts of a common project).
-- Prestations admin list, showing service dates and payment status.
-- Prestation or service level deposit percentage or fixed amount.
-- Prestation or service level discount percentage or fixed amount.
-- Summarized payment status, centralizing amounts paid locally or via external providers.
+- [x] Centralized view of prestations (sets of services, ordered as parts of a common project).
+- [x] Prestations admin list, showing service dates and payment status.
+- [x] Prestation or service level deposit percentage or fixed amount.
+- [x] Prestation or service level discount percentage or fixed amount.
+- [x] Summarized payment status, centralizing amounts paid locally or via external providers.
 
 ### Integrations (work in progress)
 
-- WooCommerce, including
-  - WooCommerce Bookings
-  - WooCommerce Accommodation Bookings
+- [x] WooCommerce, including
+  - [x] WooCommerce Bookings
+  - [x] WooCommerce Accommodation Bookings
+  - [x] Custom payments made via WooCommerce
 - Lodgify
 - HBook by Maestrel
 
