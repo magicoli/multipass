@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'PhpImap\\' => array($vendorDir . '/php-imap/php-imap/src/PhpImap'),
+    'Currency\\Util\\' => array($vendorDir . '/terdia/currency-util/src'),
     'Composer\\Installers\\' => array($vendorDir . '/composer/installers/src/Composer/Installers'),
 );

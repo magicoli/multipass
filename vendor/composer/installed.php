@@ -5,7 +5,7 @@
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'cb5e5255040987343d9b5bacc601b58d71b9768c',
+        'reference' => '6e53459ca0f4aeaed13a60bef3fd05261bd388d9',
         'name' => 'magicoli/prestations',
         'dev' => true,
     ),
@@ -34,7 +34,7 @@
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'cb5e5255040987343d9b5bacc601b58d71b9768c',
+            'reference' => '6e53459ca0f4aeaed13a60bef3fd05261bd388d9',
             'dev_requirement' => false,
         ),
         'meta-box/mb-admin-columns' => array(
@@ -93,6 +93,15 @@
             'replaced' => array(
                 0 => '*',
             ),
+        ),
+        'terdia/currency-util' => array(
+            'pretty_version' => 'v1.0.1',
+            'version' => '1.0.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../terdia/currency-util',
+            'aliases' => array(),
+            'reference' => 'ea23ad9d3d29744d104066a00d0b46f2ea4badc8',
+            'dev_requirement' => false,
         ),
         'wpmetabox/meta-box' => array(
             'pretty_version' => '5.6.6',

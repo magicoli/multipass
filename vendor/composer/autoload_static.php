@@ -13,6 +13,7 @@ class ComposerStaticInitfe6292387e56d846764579a2c23c0495
         ),
         'C' => 
         array (
+            'Currency\\Util\\' => 14,
             'Composer\\Installers\\' => 20,
         ),
     );
@@ -21,6 +22,10 @@ class ComposerStaticInitfe6292387e56d846764579a2c23c0495
         'PhpImap\\' => 
         array (
             0 => __DIR__ . '/..' . '/php-imap/php-imap/src/PhpImap',
+        ),
+        'Currency\\Util\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/terdia/currency-util/src',
         ),
         'Composer\\Installers\\' => 
         array (
