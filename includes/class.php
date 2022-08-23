@@ -341,6 +341,8 @@ class Prestations {
 				if(isset($options['code'])) {
 					$search_currency = $options['code'];
 				}
+			} else {
+				$search_currency = $currency;
 			}
 
 			$symbols = Currency\Util\CurrencySymbolMapping::values();
@@ -352,9 +354,11 @@ class Prestations {
 	}
 
 	static function price($price, $args = []) {
-		// return apply_filters('prestations_price', $price, $args);
-
+		if(empty($price)&& $price !== 0) return;
 		if(function_exists('wc_price')) return wc_price($price, $args);
+
+		$before = '';
+		$after = '';
 
 		$options = wp_parse_args(
 			Prestations::get_option('currency'),
@@ -367,19 +371,20 @@ class Prestations {
 			)
 		);
 		$args = wp_parse_args($args, $options);
-		$before = '';
-		$after = '';
+
 		if(!empty($args['code'])) {
 			$currency = $args['code'];
+			$symbol = Prestations::get_currency_symbol();
 			switch($args['pos']) {
-				case 'left': $before = $currency; break;
-				case 'left_space': $before = "$currency "; break;
-				case 'right': $after = $currency; break;
+				case 'left': $before = $symbol; break;
+				case 'left_space': $before = "$symbol "; break;
+				case 'right': $after = $symbol; break;
 				case 'right_space':
-				default: $after = " $currency"; break;
+				default: $after = " $symbol"; break;
 			}
 		}
-		if(isset($args['num_decimals'])) {
+
+		if(isset($args['num_decimals']) &! empty($price)) {
 			$price = number_format_i18n($price, $args['num_decimals']);
 		} else {
 			$price = number_format_i18n($price);
