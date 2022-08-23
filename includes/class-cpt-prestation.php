@@ -1277,18 +1277,31 @@ class Prestations_Prestation {
 		return $columns;
 	}
 
+	static function format_date_range($dates = []) {
+		if(empty($dates)) return;
+		if(!is_array($dates)) $dates = [ $dates ];
+		$dates = array_filter($dates);
+
+		$formatted = [];
+		foreach($dates as $date) {
+			$formatted[] = date_i18n(get_option( 'date_format' ), $date);
+		}
+		if(count($formatted) == 2) {
+			return sprintf(
+				__('%s to %s', 'prestations'),
+				$formatted[0],
+				$formatted[1],
+			);
+		} else {
+			return join(', ', $formatted);
+		}
+	}
+
 	static function admin_columns_display( $column, $post_id ) {
 	  // Image column
 	  switch($column) {
 			case 'dates':
-			$dates = get_post_meta($post_id, 'dates', true);
-			if(is_array($dates)) {
-				$dates = array_filter($dates);
-				if(! empty($dates))
-				echo join(' / ', $dates);
-			} else {
-				echo "$dates";
-			}
+			echo self::format_date_range(get_post_meta($post_id, 'dates', true));
 			break;
 		}
 	}
