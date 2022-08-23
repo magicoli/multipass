@@ -1,34 +1,38 @@
 msgid ""
 msgstr ""
+"Project-Id-Version: Prestations for WC\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/prestations\n"
+"POT-Creation-Date: 2022-08-23T18:41:40-04:00\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
-"Project-Id-Version: Prestations for WC\n"
-"Language: fr\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #. Plugin Name of the plugin
-#: 
 msgid "Prestations (dev)"
 msgstr "Prestations (dev)"
 
 #. Plugin URI of the plugin
-#: 
 msgid "https://magiiic.com/wordpress/plugins/prestations/"
 msgstr "https://magiiic.com/wordpress/plugins/prestations/"
 
 #. Description of the plugin
-#: 
-msgid "Group orders from different sources (WooCommerce, OTA, booking engines...) to get the global picture of a set of services."
-msgstr "Regroupez les commandes de différentes sources (WooCommerce, OTA, moteurs de réservation...) pour avoir une vue d'ensemble d'un ensemble de services."
+msgid ""
+"Group orders from different sources (WooCommerce, OTA, booking engines...) "
+"to get the global picture of a set of services."
+msgstr ""
+"Regroupez les commandes de différentes sources (WooCommerce, OTA, moteurs de "
+"réservation...) pour avoir une vue d'ensemble d'un ensemble de services."
 
 #. Author of the plugin
-#: 
 msgid "Magiiic"
 msgstr "Magiiic"
 
 #. Author URI of the plugin
-#: 
 msgid "https://magiiic.com/"
 msgstr "https://magiiic.com/"
 
@@ -145,7 +149,7 @@ msgstr "Prestation remise en brouillon"
 
 #: includes/class-cpt-prestation.php:227
 msgid "Prestation scheduled"
-msgstr "Préstation planifiée"
+msgstr "Prestation planifiée"
 
 #: includes/class-cpt-prestation.php:228
 msgid "Prestation updated"
@@ -347,11 +351,11 @@ msgstr "Filtrer par statut de prestation"
 
 #: includes/class-cpt-prestation.php:880
 msgid "Prestation statuses list pagination"
-msgstr "Pagination de la liste des statuts de la station"
+msgstr "Pagination de la liste des statuts de prestation"
 
 #: includes/class-cpt-prestation.php:881
 msgid "Prestation statuses list"
-msgstr "Liste des statuts de la station"
+msgstr "Liste des statuts de prestation"
 
 #: includes/class-cpt-prestation.php:882
 msgid "Most Used"
@@ -517,7 +521,8 @@ msgstr "Utilisez IMAP pour collecter les emails et les joindre aux prestations"
 
 #: includes/third-party/class-woocommerce.php:139
 msgid "Set currency options in %sWooCommerce settings page%s"
-msgstr "Définissez les options de devise sur la %spage des paramètres WooCommerce%s"
+msgstr ""
+"Définissez les options de devise sur la %spage des paramètres WooCommerce%s"
 
 #: includes/third-party/class-woocommerce.php:146
 #: includes/third-party/class-woocommerce.php:306
@@ -529,16 +534,25 @@ msgid "Sync orders"
 msgstr "Synchroniser les commandes"
 
 #: includes/third-party/class-woocommerce.php:155
-msgid "Sync orders and prestations, create prestation if none exist. Only needed at plugin activation or if out of sync."
-msgstr "Synchroniser les commandes et les prestations, créer des prestations si aucune n'existe. Nécessaire uniquement lors de l'activation du plugin ou en cas de désynchronisation."
+msgid ""
+"Sync orders and prestations, create prestation if none exist. Only needed at "
+"plugin activation or if out of sync."
+msgstr ""
+"Synchroniser les commandes et les prestations, créer des prestations si "
+"aucune n'existe. Nécessaire uniquement lors de l'activation du plugin ou en "
+"cas de désynchronisation."
 
 #: includes/third-party/class-woocommerce.php:161
 msgid "Payment products"
 msgstr "Produits de paiement"
 
 #: includes/third-party/class-woocommerce.php:164
-msgid "Products to handle as payment only (price is used only for payment calculation, not for prestation cost)"
-msgstr "Produits à traiter comme paiement uniquement (le prix est utilisé uniquement pour le calcul du paiement, pas pour le coût de la prestation)"
+msgid ""
+"Products to handle as payment only (price is used only for payment "
+"calculation, not for prestation cost)"
+msgstr ""
+"Produits à traiter comme paiement uniquement (le prix est utilisé uniquement "
+"pour le calcul du paiement, pas pour le coût de la prestation)"
 
 #: includes/third-party/class-woocommerce.php:198
 msgid "Woocommerce Orders"
@@ -571,4 +585,3 @@ msgstr "Créé"
 #: includes/third-party/class-woocommerce.php:685
 msgid "Subtotal"
 msgstr "Sous-total"
-
