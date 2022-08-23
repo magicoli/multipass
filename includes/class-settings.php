@@ -199,18 +199,19 @@ class Prestations_Settings {
 								[
 										'name'     => __( 'Code', 'prestations' ),
 										'id'       => $prefix . 'code',
-										'type'     => 'text',
+										'type'     => 'select_advanced',
 										'size'     => 3,
-										'datalist' => [
-												'id'      => '630532931670c',
-												'options' => [
-														'EUR
-',
-														'USD
-',
-														'GBP',
-												],
-										],
+										'options' => Prestations::currency_options(),
+// 										'datalist' => [
+// 												'id'      => '630532931670c',
+// 												'options' => [
+// 														'EUR
+// ',
+// 														'USD
+// ',
+// 														'GBP',
+// 												],
+// 										],
 								],
 								[
 										'name'    => __( 'Position', 'prestations' ),
