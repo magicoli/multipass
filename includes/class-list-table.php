@@ -101,21 +101,21 @@ class Prestations_Table extends WP_List_Table {
         case 'date';
         if(!empty($value)) {
           if(!is_numeric($value)) $value = strtotime($value);
-          $value = wp_date( $date_format, $value);
+          $value = date_i18n( $date_format, $value);
         }
         break;
 
         case 'time';
         if(!empty($value)) {
           if(!is_numeric($value)) $value = strtotime($value);
-          $value = wp_date( $time_format, $value);
+          $value = date_i18n( $time_format, $value);
         }
         break;
 
         case 'date_time';
         if(!empty($value)) {
           if(!is_numeric($value)) $value = strtotime($value);
-          $value = wp_date( "$date_format $time_format", $value);
+          $value = date_i18n( "$date_format $time_format", $value);
         }
         break;
 
