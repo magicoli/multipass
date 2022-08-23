@@ -319,9 +319,13 @@ class Prestations {
 		// return apply_filters('prestations_currency_symbol', $currency);
 
 		if(function_exists('get_woocommerce_currency_symbol'))
-		return get_woocommerce_currency_symbol($string);
+		return get_woocommerce_currency_symbol($currency);
 
-		return Prestations::get_option('currency_symbol', 'EUR');
+		$options = Prestations::get_option('currency');
+
+		if(!empty($currency)) return $currency;
+
+		if(isset($options['code'])) return $options['code'];
 	}
 
 	static function price($price, $args = []) {
