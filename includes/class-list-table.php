@@ -134,11 +134,15 @@ class Prestations_Table extends WP_List_Table {
     $post = get_post($post_id);
     if($post) $post_type = $post->post_type;
 
+    // $term = get_term('on-hold', 'prestation-status');
+    $term = get_term_by('slug', $status, 'prestation-status');
+    $status_string = ($term) ? $term->name : __($status, 'prestations');
+
     $html = sprintf(
       '<span class="prestation-status-box %1$s-status status-%2$s">%3$s</span>',
       $post_type,
       $status,
-      $status,
+      $status_string,
     );
 
     return $html;
