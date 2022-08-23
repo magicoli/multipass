@@ -1,575 +1,574 @@
-# Copyright (C) 2022 Magiiic
-# This file is distributed under the AGPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: Prestations (dev) 0.1.0.x-dev\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/prestations\n"
-"POT-Creation-Date: 2022-08-23T18:02:08-04:00\n"
-"PO-Revision-Date: 2022-08-23 18:03-0400\n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Prestations for WC\n"
+"Language: fr\n"
 
 #. Plugin Name of the plugin
+#: 
 msgid "Prestations (dev)"
-msgstr ""
+msgstr "Prestations (dev)"
 
 #. Plugin URI of the plugin
+#: 
 msgid "https://magiiic.com/wordpress/plugins/prestations/"
-msgstr ""
+msgstr "https://magiiic.com/wordpress/plugins/prestations/"
 
 #. Description of the plugin
+#: 
 msgid "Group orders from different sources (WooCommerce, OTA, booking engines...) to get the global picture of a set of services."
-msgstr ""
+msgstr "Regroupez les commandes de différentes sources (WooCommerce, OTA, moteurs de réservation...) pour avoir une vue d'ensemble d'un ensemble de services."
 
 #. Author of the plugin
+#: 
 msgid "Magiiic"
-msgstr ""
+msgstr "Magiiic"
 
 #. Author URI of the plugin
+#: 
 msgid "https://magiiic.com/"
-msgstr ""
+msgstr "https://magiiic.com/"
 
 #: includes/class-cpt-prestation.php:198 includes/class-cpt-prestation.php:219
 #: includes/class-cpt-prestation.php:232 includes/class-cpt-prestation.php:272
 msgid "Prestations"
-msgstr ""
+msgstr "Prestations"
 
 #: includes/class-cpt-prestation.php:199
 #: includes/third-party/class-woocommerce.php:175
 #: includes/third-party/class-woocommerce.php:324
 msgid "Prestation"
-msgstr ""
+msgstr "Prestation"
 
 #: includes/class-cpt-prestation.php:200
 msgid "Add New"
-msgstr ""
+msgstr "Ajouter"
 
 #: includes/class-cpt-prestation.php:201
 msgid "Add new prestation"
-msgstr ""
+msgstr "Ajouter une nouvelle prestation"
 
 #: includes/class-cpt-prestation.php:202
 msgid "Edit Prestation"
-msgstr ""
+msgstr "Modifier la prestation"
 
 #: includes/class-cpt-prestation.php:203
 msgid "New Prestation"
-msgstr ""
+msgstr "Nouvelle Prestation"
 
 #: includes/class-cpt-prestation.php:204
 msgid "View Prestation"
-msgstr ""
+msgstr "Voir la prestation"
 
 #: includes/class-cpt-prestation.php:205
 msgid "View Prestations"
-msgstr ""
+msgstr "Voir les prestations"
 
 #: includes/class-cpt-prestation.php:206
 msgid "Search Prestations"
-msgstr ""
+msgstr "Rechercher des prestations"
 
 #: includes/class-cpt-prestation.php:207
 msgid "No prestations found"
-msgstr ""
+msgstr "Aucune prestation trouvée"
 
 #: includes/class-cpt-prestation.php:208
 msgid "No prestations found in Trash"
-msgstr ""
+msgstr "Aucune prestation trouvée dans la corbeille"
 
 #: includes/class-cpt-prestation.php:209
 msgid "Parent Prestation:"
-msgstr ""
+msgstr "Prestation parente :"
 
 #: includes/class-cpt-prestation.php:210
 msgid "All Prestations"
-msgstr ""
+msgstr "Toutes les prestations"
 
 #: includes/class-cpt-prestation.php:211
 msgid "Prestation Archives"
-msgstr ""
+msgstr "Archives des prestations"
 
 #: includes/class-cpt-prestation.php:212
 msgid "Prestation Attributes"
-msgstr ""
+msgstr "Attributs de prestation"
 
 #: includes/class-cpt-prestation.php:213
 msgid "Insert into prestation"
-msgstr ""
+msgstr "Insérer dans la prestation"
 
 #: includes/class-cpt-prestation.php:214
 msgid "Uploaded to this prestation"
-msgstr ""
+msgstr "Téléchargé sur cette prestation"
 
 #: includes/class-cpt-prestation.php:215
 msgid "Featured image"
-msgstr ""
+msgstr "Image mise en avant"
 
 #: includes/class-cpt-prestation.php:216
 msgid "Set featured image"
-msgstr ""
+msgstr "Définir l'image mise en avant"
 
 #: includes/class-cpt-prestation.php:217
 msgid "Remove featured image"
-msgstr ""
+msgstr "Supprimer l'image mise en avant"
 
 #: includes/class-cpt-prestation.php:218
 msgid "Use as featured image"
-msgstr ""
+msgstr "Utiliser comme image mise en avant"
 
 #: includes/class-cpt-prestation.php:220
 msgid "Filter prestations list"
-msgstr ""
+msgstr "Filtrer la liste des prestations"
 
 #: includes/class-cpt-prestation.php:222
 msgid "Prestations list navigation"
-msgstr ""
+msgstr "Navigation dans la liste des prestations"
 
 #: includes/class-cpt-prestation.php:223
 msgid "Prestations list"
-msgstr ""
+msgstr "Liste des prestations"
 
 #: includes/class-cpt-prestation.php:224
 msgid "Prestation published"
-msgstr ""
+msgstr "Prestation publiée"
 
 #: includes/class-cpt-prestation.php:225
 msgid "Prestation published privately"
-msgstr ""
+msgstr "Prestation publiée en privé"
 
 #: includes/class-cpt-prestation.php:226
 msgid "Prestation reverted to draft"
-msgstr ""
+msgstr "Prestation remise en brouillon"
 
 #: includes/class-cpt-prestation.php:227
 msgid "Prestation scheduled"
-msgstr ""
+msgstr "Préstation planifiée"
 
 #: includes/class-cpt-prestation.php:228
 msgid "Prestation updated"
-msgstr ""
+msgstr "Prestation mise à jour"
 
 #: includes/class-cpt-prestation.php:285
 msgid "Customer"
-msgstr ""
+msgstr "Client"
 
 #: includes/class-cpt-prestation.php:296
 msgid "Guest name"
-msgstr ""
+msgstr "Nom de l'invité"
 
 #: includes/class-cpt-prestation.php:299
 msgid "Leave empty if same as customer name"
-msgstr ""
+msgstr "Laisser vide si identique au nom du client"
 
 #: includes/class-cpt-prestation.php:302
 msgid "Guest"
-msgstr ""
+msgstr "Invité"
 
 #: includes/class-cpt-prestation.php:312
 msgid "Customer Email"
-msgstr ""
+msgstr "Email client"
 
 #: includes/class-cpt-prestation.php:321 includes/class-cpt-prestation.php:1275
 msgid "Dates"
-msgstr ""
+msgstr "Dates"
 
 #: includes/class-cpt-prestation.php:331
 #: includes/third-party/class-woocommerce.php:683
 msgid "From"
-msgstr ""
+msgstr "Du"
 
 #: includes/class-cpt-prestation.php:342 includes/class-cpt-prestation.php:590
 #: includes/third-party/class-woocommerce.php:684
 msgid "To"
-msgstr ""
+msgstr "Au"
 
 #: includes/class-cpt-prestation.php:355 includes/class-cpt-prestation.php:638
 #: includes/class-cpt-prestation.php:753
 #: includes/third-party/class-woocommerce.php:686
 msgid "Discount"
-msgstr ""
+msgstr "Remise"
 
 #: includes/class-cpt-prestation.php:383 includes/class-cpt-prestation.php:766
 msgid "Deposit"
-msgstr ""
+msgstr "Acompte"
 
 #: includes/class-cpt-prestation.php:412
 msgid "Before"
-msgstr ""
+msgstr "Avant"
 
 #: includes/class-cpt-prestation.php:545
 msgid "Unmanaged Items"
-msgstr ""
+msgstr "Éléments non gérés"
 
 #: includes/class-cpt-prestation.php:553
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #: includes/class-cpt-prestation.php:557
 msgid "Product"
-msgstr ""
+msgstr "Produit"
 
 #: includes/class-cpt-prestation.php:558
 msgid "Booking"
-msgstr ""
+msgstr "Réservation"
 
 #: includes/class-cpt-prestation.php:559
 msgid "Payment"
-msgstr ""
+msgstr "Paiement"
 
 #: includes/class-cpt-prestation.php:561
 msgid "Select a type"
-msgstr ""
+msgstr "Sélectionnez un type"
 
 #: includes/class-cpt-prestation.php:565
 #: includes/third-party/class-woocommerce.php:682
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
 #: includes/class-cpt-prestation.php:571
 msgid "Date"
-msgstr ""
+msgstr "Date"
 
 #: includes/class-cpt-prestation.php:608
 msgid "Quantity"
-msgstr ""
+msgstr "Quantité"
 
 #: includes/class-cpt-prestation.php:623
 msgid "Unit Price"
-msgstr ""
+msgstr "Prix unitaire"
 
 #: includes/class-cpt-prestation.php:653
 msgid "Price"
-msgstr ""
+msgstr "Prix"
 
 #: includes/class-cpt-prestation.php:669 includes/class-cpt-prestation.php:772
 #: includes/class-cpt-prestation.php:932
 #: includes/third-party/class-woocommerce.php:689
 msgid "Paid"
-msgstr ""
+msgstr "Payé"
 
 #: includes/class-cpt-prestation.php:741
 msgid "Summary"
-msgstr ""
+msgstr "Résumé"
 
 #: includes/class-cpt-prestation.php:747
 msgid "Regular Price"
-msgstr ""
+msgstr "Prix de base"
 
 #: includes/class-cpt-prestation.php:759
 #: includes/third-party/class-woocommerce.php:688
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 #: includes/class-cpt-prestation.php:779
 msgid "Balance"
-msgstr ""
+msgstr "Solde"
 
 #: includes/class-cpt-prestation.php:794
 msgid "Reference #"
-msgstr ""
+msgstr "Référence #"
 
 #: includes/class-cpt-prestation.php:800
 #: includes/third-party/class-woocommerce.php:690
 msgid "Status"
-msgstr ""
+msgstr "Statut"
 
 #: includes/class-cpt-prestation.php:861 includes/class-cpt-prestation.php:863
 #: includes/class-cpt-prestation.php:887
 msgid "Prestation statuses"
-msgstr ""
+msgstr "Statuts de prestation"
 
 #: includes/class-cpt-prestation.php:862
 msgid "Prestation status"
-msgstr ""
+msgstr "Statut de la prestation"
 
 #: includes/class-cpt-prestation.php:864
 msgid "Search Prestation statuses"
-msgstr ""
+msgstr "Rechercher dans les statuts de prestation"
 
 #: includes/class-cpt-prestation.php:865
 msgid "Popular Prestation statuses"
-msgstr ""
+msgstr "Statuts de prestation populaires"
 
 #: includes/class-cpt-prestation.php:866
 msgid "All Prestation statuses"
-msgstr ""
+msgstr "Tous les statuts de prestation"
 
 #: includes/class-cpt-prestation.php:867 includes/class-cpt-prestation.php:868
 msgid "Parent Prestation status"
-msgstr ""
+msgstr "Statut de prestation parent"
 
 #: includes/class-cpt-prestation.php:869
 msgid "Edit Prestation status"
-msgstr ""
+msgstr "Modifier le statut de prestation"
 
 #: includes/class-cpt-prestation.php:870
 msgid "View Prestation status"
-msgstr ""
+msgstr "Afficher le statut de prestation"
 
 #: includes/class-cpt-prestation.php:871
 msgid "Update Prestation status"
-msgstr ""
+msgstr "Mettre à jour le statut de prestation"
 
 #: includes/class-cpt-prestation.php:872
 msgid "Add new prestation status"
-msgstr ""
+msgstr "Ajouter un nouveau statut de prestation"
 
 #: includes/class-cpt-prestation.php:873
 msgid "New prestation status name"
-msgstr ""
+msgstr "Nom du nouveau statut de prestation"
 
 #: includes/class-cpt-prestation.php:874
 msgid "Separate prestation statuses with commas"
-msgstr ""
+msgstr "Séparez les statuts de prestation par des virgules"
 
 #: includes/class-cpt-prestation.php:875
 msgid "Add or remove prestation statuses"
-msgstr ""
+msgstr "Ajouter ou supprimer des statuts de prestation"
 
 #: includes/class-cpt-prestation.php:876
 msgid "Choose most used prestation statuses"
-msgstr ""
+msgstr "Choisissez parmi les statuts de prestation les plus utilisés"
 
 #: includes/class-cpt-prestation.php:877
 msgid "No prestation statuses found"
-msgstr ""
+msgstr "Aucun statut de prestation trouvé"
 
 #: includes/class-cpt-prestation.php:878
 msgid "No Prestation statuses"
-msgstr ""
+msgstr "Aucun statut de prestation"
 
 #: includes/class-cpt-prestation.php:879
 msgid "Filter by prestation status"
-msgstr ""
+msgstr "Filtrer par statut de prestation"
 
 #: includes/class-cpt-prestation.php:880
 msgid "Prestation statuses list pagination"
-msgstr ""
+msgstr "Pagination de la liste des statuts de la station"
 
 #: includes/class-cpt-prestation.php:881
 msgid "Prestation statuses list"
-msgstr ""
+msgstr "Liste des statuts de la station"
 
 #: includes/class-cpt-prestation.php:882
 msgid "Most Used"
-msgstr ""
+msgstr "Les plus utilisés"
 
 #: includes/class-cpt-prestation.php:883
 msgid "Back to prestation statuses"
-msgstr ""
+msgstr "Retour aux statuts de prestation"
 
 #: includes/class-cpt-prestation.php:918
 msgid "Pending payment"
-msgstr ""
+msgstr "En attente de paiement"
 
 #: includes/class-cpt-prestation.php:919
 msgid "On hold"
-msgstr ""
+msgstr "En attente"
 
 #: includes/class-cpt-prestation.php:920
 msgid "Processing"
-msgstr ""
+msgstr "En cours"
 
 #: includes/class-cpt-prestation.php:923
 msgid "Completed"
-msgstr ""
+msgstr "Terminé"
 
 #: includes/class-cpt-prestation.php:924
 msgid "Cancelled"
-msgstr ""
+msgstr "Annulé"
 
 #: includes/class-cpt-prestation.php:925
 #: includes/third-party/class-woocommerce.php:687
 msgid "Refunded"
-msgstr ""
+msgstr "Remboursé"
 
 #: includes/class-cpt-prestation.php:926
 msgid "Failed"
-msgstr ""
+msgstr "Échoué"
 
 #: includes/class-cpt-prestation.php:929
 msgid "Draft"
-msgstr ""
+msgstr "Brouillon"
 
 #: includes/class-cpt-prestation.php:931
 msgid "Deposit paid"
-msgstr ""
+msgstr "Acompte payé"
 
 #: includes/class-cpt-prestation.php:934
 msgid "Unpaid"
-msgstr ""
+msgstr "Non payé"
 
 #: includes/class-cpt-prestation.php:935
 msgid "Partially paid"
-msgstr ""
+msgstr "Partiellement payé"
 
 #: includes/class-cpt-prestation.php:965
 msgid "No data"
-msgstr ""
+msgstr "Aucune donnée"
 
 #: includes/class-cpt-prestation.php:1291
 msgid "%s to %s"
-msgstr ""
+msgstr "%s à %s"
 
 #: includes/class-list-table.php:23
 msgid "Not an array"
-msgstr ""
+msgstr "Pas un tableau"
 
 #: includes/class-list-table.php:24
 msgid "Empty table"
-msgstr ""
+msgstr "Tableau vide"
 
 #: includes/class-mailbox.php:107
 msgid "IMAP Settings"
-msgstr ""
+msgstr "Paramètres IMAP"
 
 #: includes/class-mailbox.php:113
 msgid "IMAP Server"
-msgstr ""
+msgstr "Serveur IMAP"
 
 #: includes/class-mailbox.php:116
 msgid "mail.example.org"
-msgstr ""
+msgstr "mail.example.org"
 
 #: includes/class-mailbox.php:121
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: includes/class-mailbox.php:125
 msgid "143"
-msgstr ""
+msgstr "143"
 
 #: includes/class-mailbox.php:126
 msgid "993"
-msgstr ""
+msgstr "993"
 
 #: includes/class-mailbox.php:132
 msgid "Encryption"
-msgstr ""
+msgstr "Chiffrement"
 
 #: includes/class-mailbox.php:136
 msgid "TLS/SSL"
-msgstr ""
+msgstr "TLS/SSL"
 
 #: includes/class-mailbox.php:142
 msgid "Username"
-msgstr ""
+msgstr "Nom d'utilisateur"
 
 #: includes/class-mailbox.php:149
 msgid "Password"
-msgstr ""
+msgstr "Mot de passe"
 
 #: includes/class-mailbox.php:156
 msgid "Save Attachments"
-msgstr ""
+msgstr "Enregistrer les pièces jointes"
 
 #: includes/class-settings.php:166 includes/class-settings.php:267
 msgid "Settings"
-msgstr ""
+msgstr "Réglages"
 
 #: includes/class-settings.php:188
 msgid "General"
-msgstr ""
+msgstr "Général"
 
 #: includes/class-settings.php:194
 #: includes/third-party/class-woocommerce.php:135
 msgid "Currency Options"
-msgstr ""
+msgstr "Options de devise"
 
 #: includes/class-settings.php:200
 msgid "Code"
-msgstr ""
+msgstr "Code"
 
 #: includes/class-settings.php:217
 msgid "Position"
-msgstr ""
+msgstr "Position"
 
 #: includes/class-settings.php:222
 msgid "Left"
-msgstr ""
+msgstr "Gauche"
 
 #: includes/class-settings.php:223
 msgid "Right"
-msgstr ""
+msgstr "Droite"
 
 #: includes/class-settings.php:224
 msgid "Left with space"
-msgstr ""
+msgstr "Gauche avec espace"
 
 #: includes/class-settings.php:225
 msgid "Right with space"
-msgstr ""
+msgstr "Droite avec espace"
 
 #: includes/class-settings.php:242
 msgid "Decimals"
-msgstr ""
+msgstr "Décimales"
 
 #: includes/class-settings.php:253
 msgid "Enable Email Processing"
-msgstr ""
+msgstr "Activer le traitement des e-mails"
 
 #: includes/class-settings.php:256
 msgid "Use IMAP to collect emails and attach them to prestations"
-msgstr ""
+msgstr "Utilisez IMAP pour collecter les emails et les joindre aux prestations"
 
 #: includes/third-party/class-woocommerce.php:139
 msgid "Set currency options in %sWooCommerce settings page%s"
-msgstr ""
+msgstr "Définissez les options de devise sur la %spage des paramètres WooCommerce%s"
 
 #: includes/third-party/class-woocommerce.php:146
 #: includes/third-party/class-woocommerce.php:306
 msgid "WooCommerce Settings"
-msgstr ""
+msgstr "Paramètres WooCommerce"
 
 #: includes/third-party/class-woocommerce.php:152
 msgid "Sync orders"
-msgstr ""
+msgstr "Synchroniser les commandes"
 
 #: includes/third-party/class-woocommerce.php:155
 msgid "Sync orders and prestations, create prestation if none exist. Only needed at plugin activation or if out of sync."
-msgstr ""
+msgstr "Synchroniser les commandes et les prestations, créer des prestations si aucune n'existe. Nécessaire uniquement lors de l'activation du plugin ou en cas de désynchronisation."
 
 #: includes/third-party/class-woocommerce.php:161
 msgid "Payment products"
-msgstr ""
+msgstr "Produits de paiement"
 
 #: includes/third-party/class-woocommerce.php:164
 msgid "Products to handle as payment only (price is used only for payment calculation, not for prestation cost)"
-msgstr ""
+msgstr "Produits à traiter comme paiement uniquement (le prix est utilisé uniquement pour le calcul du paiement, pas pour le coût de la prestation)"
 
 #: includes/third-party/class-woocommerce.php:198
 msgid "Woocommerce Orders"
-msgstr ""
+msgstr "Commandes Woocommerce"
 
 #: includes/third-party/class-woocommerce.php:250
 msgid "View prestation"
-msgstr ""
+msgstr "Voir les prestations"
 
 #: includes/third-party/class-woocommerce.php:509
 msgid " + %s items"
-msgstr ""
+msgstr " + %s éléments"
 
 #: includes/third-party/class-woocommerce.php:673
 msgid "Online Shop (WooCommerce)"
-msgstr ""
+msgstr "Boutique en ligne (WooCommerce)"
 
 #: includes/third-party/class-woocommerce.php:674
 msgid "Empty list"
-msgstr ""
+msgstr "Liste vide"
 
 #: includes/third-party/class-woocommerce.php:680
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: includes/third-party/class-woocommerce.php:681
 msgid "Created"
-msgstr ""
+msgstr "Créé"
 
 #: includes/third-party/class-woocommerce.php:685
 msgid "Subtotal"
-msgstr ""
+msgstr "Sous-total"
+
