@@ -11,11 +11,9 @@ class Prestations_Table extends WP_List_Table {
 
   public function __construct($data = [])
   {
-
     $this->data = $data;
     $this->rows = isset($data['rows']) ? $data['rows'] : [];
     $this->prepare_items();
-    // $this->display();
   }
 
   function get_columns() {
@@ -119,8 +117,12 @@ class Prestations_Table extends WP_List_Table {
         break;
 
         case 'status':
-        if(is_array($item) && isset($item['id'])) return $this->render_status($item['id'], $value);
-        else return $item;
+        if(is_array($item) && isset($item['id'])) {
+          $slug = $item['status'];
+          $term = get_term_by('slug', $slug, 'prestation-status');
+          $status_name = __( (($term) ? $term->name : $slug), 'prestations');
+          return $this->render_status($item['id'], $slug, $status_name);
+        } else return $item;
         break;
 
       }
@@ -128,21 +130,19 @@ class Prestations_Table extends WP_List_Table {
     return $value;
   }
 
-  function render_status($post_id = NULL, $status = NULL) {
-    if(empty($status)) return;
+  function render_status($post_id = NULL, $slug = NULL, $name = NULL) {
+    if(empty($slug)) return;
 
     $post = get_post($post_id);
     if($post) $post_type = $post->post_type;
 
-    // $term = get_term('on-hold', 'prestation-status');
-    $term = get_term_by('slug', $status, 'prestation-status');
-    $status_string = ($term) ? $term->name : __($status, 'prestations');
+    if(empty($name)) $name = $slug;
 
     $html = sprintf(
       '<span class="prestation-status-box %1$s-status status-%2$s">%3$s</span>',
       $post_type,
-      $status,
-      $status_string,
+      $slug,
+      $name,
     );
 
     return $html;

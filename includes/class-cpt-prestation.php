@@ -1056,7 +1056,7 @@ class Prestations_Prestation {
 					'<span class="%1$s-status-box status-%2$s">%3$s</span>',
 					$post->post_type,
 					$term->slug,
-					$term->name,
+					__($term->name, 'prestations'),
 				);
 			}
 			return implode(' ', $status);
