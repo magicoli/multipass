@@ -330,20 +330,25 @@ class Prestations {
 	}
 
 	static function get_currency_symbol($currency = '') {
-		// return apply_filters('prestations_currency_symbol', $currency);
+		$symbol = wp_cache_get('get_currency_symbol-' . $currency);
+		if($symbol) return $symbol;
 
-		if(function_exists('get_woocommerce_currency_symbol'))
-		return get_woocommerce_currency_symbol($currency);
-
-		if(empty($currency)) {
-			$options = Prestations::get_option('currency');
-			if(isset($options['code'])) {
-				$currency = $options['code'];
+		if(function_exists('get_woocommerce_currency_symbol')) {
+			$symbol = get_woocommerce_currency_symbol($currency);
+		} else {
+			if(empty($currency)) {
+				$options = Prestations::get_option('currency');
+				if(isset($options['code'])) {
+					$search_currency = $options['code'];
+				}
 			}
+
+			$symbols = Currency\Util\CurrencySymbolMapping::values();
+			$symbol = (!empty($symbols[$search_currency])) ? $symbols[$search_currency] : $currency;
 		}
 
-		$symbols = Currency\Util\CurrencySymbolMapping::values();
-		return (!empty($symbols[$currency])) ? $symbols[$currency] : $currency;
+		wp_cache_set('get_currency_symbol-' . $currency, $symbol);
+		return $symbol;
 	}
 
 	static function price($price, $args = []) {
