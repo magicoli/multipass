@@ -84,22 +84,39 @@ class Prestations_Table extends WP_List_Table {
       // break;
 
       default:
-      $value = $item[ $column_id ];
+      $value = isset($item[ $column_id ]) ? $item[ $column_id ] : NULL;
       // else $value = $item;
     }
 
     if(isset($this->data['format'][$column_id])) {
+      $date_format = get_option( 'date_format', 'd/m/Y' );
+      $time_format = get_option( 'time_format' );
       switch ($this->data['format'][$column_id]) {
         case 'price':
-        $value = wc_price($value);
-        break;
-
-        case 'date_time';
-        if(!empty($value)) $value = wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime($value) );
+        if(empty($value)) $value = NULL;
+        else if(function_exists('wc_price')) $value = wc_price($value);
+        else $value = number_format_i18n($value, 2);
         break;
 
         case 'date';
-        if(!empty($value)) $value = wp_date( get_option( 'date_format' ) );
+        if(!empty($value)) {
+          if(!is_numeric($value)) $value = strtotime($value);
+          $value = wp_date( $date_format, $value);
+        }
+        break;
+
+        case 'time';
+        if(!empty($value)) {
+          if(!is_numeric($value)) $value = strtotime($value);
+          $value = wp_date( $time_format, $value);
+        }
+        break;
+
+        case 'date_time';
+        if(!empty($value)) {
+          if(!is_numeric($value)) $value = strtotime($value);
+          $value = wp_date( "$date_format $time_format", $value);
+        }
         break;
 
         case 'status':

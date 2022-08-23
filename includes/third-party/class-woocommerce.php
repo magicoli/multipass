@@ -437,14 +437,15 @@ class Prestations_WooCommerce {
 			);
 			// $p_order['paid'] = ($order->get_date_paid()) ? $p_order['total'] : 0;
 			$p_order['paid'] = (in_array($order->get_status(), [ 'completed', 'processing' ])) ? $p_order['total'] : 0;
+			$starts = [];
+			$ends = [];
 
 			foreach ( $order->get_items() as $item_id => $item ) {
-				// 'product' => $item->get_product(), // see link above to get $product info
-				$product_id = $item->get_product_id();
-				if(!in_array($product_id, $payment_products)) {
-					$terms = get_the_terms( $product_id, 'product_cat' );
-					if($terms) $category = $terms[0]->name;
-				}
+				$product = $item->get_product();
+				$product_id = $product->get_id();
+
+				$terms = get_the_terms( $product_id, 'product_cat' );
+				if($terms) $category = $terms[0]->name;
 
 				$product_name = join(' ', array_filter(array(
 					isset($category) ? $category : '',
@@ -452,11 +453,21 @@ class Prestations_WooCommerce {
 					isset($variation) ? $variation->get_formatted_name() : '',
 				)));
 
+				if ( $product->is_type('booking') ) {
+					$booking_ids = WC_Booking_Data_Store::get_booking_ids_from_order_item_id( $item_id );
+					foreach ( $booking_ids as $booking_id ) {
+						$booking = get_wc_booking( $booking_id );
+						// $datetimes[] = esc_html( apply_filters( 'wc_bookings_summary_list_date', date_i18n( $date_format, $booking->get_start() ), $booking->get_start(), $booking->get_end() ) );
+						$starts[] = $booking->get_start();
+						$ends[] = $booking->get_end();
+					}
+				}
+
 				$p_order['items'][] = array(
-					'product_id' => $item->get_product_id(),
+					'product_id' => $product_id,
 					'variation_id' => $item->get_variation_id(),
 					'product_name' => $product_name,
-					// 'quantity' => $item->get_quantity(),
+					'quantity' => $item->get_quantity(),
 					'subtotal' => $item->get_subtotal(),
 					'total' => $item->get_total(),
 					'tax' => $item->get_subtotal_tax(),
@@ -473,6 +484,12 @@ class Prestations_WooCommerce {
 					$p_order['total'] = $p_order['total'] - $item->get_total() + $order->get_total_refunded_for_item($item_id);
 				}
 			}
+			$starts = array_filter($starts);
+			$ends = array_filter($ends);
+			error_log(wp_date(wc_date_format(), $starts), true);
+
+			$p_order['from'] = (!empty($starts)) ? min($starts) : NULL;
+			$p_order['to'] = (!empty($ends)) ? max($ends) : NULL;
 
 			$p_order['description'] = $p_order['items'][0]['product_name']
 			. ( (count($p_order['items']) > 1) ? sprintf( __(' + %s items', 'prestations'), count($p_order['items']) - 1 ) : '' );
