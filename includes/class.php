@@ -329,6 +329,36 @@ class Prestations {
 
 		if(function_exists('wc_price')) return wc_price($price, $args);
 
-		return number_format_i18n($price, 2);
+		$options = wp_parse_args(
+			Prestations::get_option('currency'),
+			array(
+				'code'   => null,
+				'pos' => null,
+				'thousand_sep'     => null,
+				'decimal_sep'   => null,
+				'num_decimals'   => null,
+			)
+		);
+		$args = wp_parse_args($args, $options);
+		$before = '';
+		$after = '';
+		if(!empty($args['code'])) {
+			$currency = $args['code'];
+			switch($args['pos']) {
+				case 'left': $before = $currency; break;
+				case 'left_space': $before = "$currency "; break;
+				case 'right': $after = $currency; break;
+				case 'right_space':
+				default: $after = " $currency"; break;
+			}
+		}
+		if(isset($args['num_decimals'])) {
+			$price = number_format_i18n($price, $args['num_decimals']);
+		} else {
+			$price = number_format_i18n($price);
+		}
+		$price = $before . $price . $after;
+
+		return $price;
 	}
 }

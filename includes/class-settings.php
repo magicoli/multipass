@@ -190,6 +190,64 @@ class Prestations_Settings {
 			'settings_pages' => ['prestations'],
 			'tab'            => 'general',
 			'fields'         => [
+				'currency_options' => [
+						'name'   => __( 'Currency Options', 'prestations' ),
+						'id'     => $prefix . 'currency',
+						'type'   => 'group',
+						'class' => 'inline',
+						'fields' => [
+								[
+										'name'     => __( 'Code', 'prestations' ),
+										'id'       => $prefix . 'code',
+										'type'     => 'text',
+										'size'     => 3,
+										'datalist' => [
+												'id'      => '630532931670c',
+												'options' => [
+														'EUR
+',
+														'USD
+',
+														'GBP',
+												],
+										],
+								],
+								[
+										'name'    => __( 'Position', 'prestations' ),
+										'id'      => $prefix . 'pos',
+										'type'    => 'select',
+										'size' => 5,
+										'options' => [
+												'left'         => __( 'Left', 'prestations' ),
+												'right'        => __( 'Right', 'prestations' ),
+												'left_space'    => __( 'Left with space', 'prestations' ),
+												'right_spâce' => __( 'Right with space', 'prestations' ),
+										],
+										'std'     => 'right_space',
+								],
+								// [
+								// 		'name' => __( 'Thousand separator', 'prestations' ),
+								// 		'id'   => $prefix . 'thousand_sep',
+								// 		'type' => 'text',
+								// 		'size' => 3,
+								// ],
+								// [
+								// 		'name' => __( 'Decimal Separator', 'prestations' ),
+								// 		'id'   => $prefix . 'decimal_sep',
+								// 		'type' => 'text',
+								// 		'size' => 3,
+								// ],
+								[
+										'name' => __( 'Decimals', 'prestations' ),
+										'id'   => $prefix . 'num_decimals',
+										'type' => 'number',
+										'min'  => 0,
+										'step' => 1,
+										'std'  => 2,
+										'size' => 3,
+								],
+						],
+				],
 				[
 					'name'  => __( 'Enable Email Processing', 'prestations' ),
 					'id'    => $prefix . 'enable_email_processing',
