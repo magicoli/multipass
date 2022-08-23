@@ -132,7 +132,7 @@ class Prestations {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-settings.php';
 		$this->loaders[] = new Prestations_Settings();
 
-		if( Prestations::get_option('prestations:enable_email_processing') == true) {
+		if( Prestations::get_option('enable_email_processing') == true) {
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-mailbox.php';
 			$this->loaders[] = new Prestations_Mailbox();
 		}
@@ -244,13 +244,18 @@ class Prestations {
 		if(preg_match('/:/', $option)) {
 			$settings_page = strstr($option, ':', true);
 			$option = trim(strstr($option, ':'), ':');
-			$settings = get_option($settings_page);
-			if($settings && isset($settings[$option])) {
-				$result = $settings[$option];
-			}
 		} else {
-			$result = get_option($option, $default);
+			$settings_page = 'prestations';
 		}
+
+		$settings = get_option($settings_page);
+		if($settings && isset($settings[$option])) {
+			$result = $settings[$option];
+		}
+
+		// } else {
+		// 	$result = get_option($option, $default);
+		// }
 		return $result;
 	}
 
@@ -276,7 +281,7 @@ class Prestations {
 	static function unique_random_slug($slug_size = NULL) {
 		global $wpdb;
 
-		if(empty($slug_length)) $slug_length = Prestations::get_option('prestations:slug_length', 4);
+		if(empty($slug_length)) $slug_length = Prestations::get_option('slug_length', 4);
 
 		$i = 0; do {
 			$i++;
@@ -310,4 +315,20 @@ class Prestations {
 		return $slug;
 	}
 
+	static function get_currency_symbol($currency = '') {
+		// return apply_filters('prestations_currency_symbol', $currency);
+
+		if(function_exists('get_woocommerce_currency_symbol'))
+		return get_woocommerce_currency_symbol($string);
+
+		return Prestations::get_option('currency_symbol', 'EUR');
+	}
+
+	static function price($price, $args = []) {
+		// return apply_filters('prestations_price', $price, $args);
+
+		if(function_exists('wc_price')) return wc_price($price, $args);
+
+		return number_format_i18n($price, 2);
+	}
 }

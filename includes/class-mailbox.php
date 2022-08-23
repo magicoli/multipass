@@ -174,15 +174,15 @@ class Prestations_Mailbox {
 		error_log(__CLASS__ . ' ' . __FUNCTION__ . "()");
 		// $transient_key = sanitize_title(__CLASS__ . ' ' . __FUNCTION__);
 		// if(get_transient($transient_key)) return;
-		// set_transient($transient_key, 'processing', get_option('prestations:imap_interval', 300));
+		// set_transient($transient_key, 'processing', get_option('imap_interval', 300));
 
 		// $server = Prestations::get_option(__CLASS__ . '::)
-		$server = Prestations::get_option('prestations:imap_server');
-		$username = Prestations::get_option('prestations:imap_username');
-		$port = Prestations::get_option('prestations:imap_port');
-		$enc = 'ssl'; // Prestations::get_option('prestations:imap_encryption');
+		$server = Prestations::get_option('imap_server');
+		$username = Prestations::get_option('imap_username');
+		$port = Prestations::get_option('imap_port');
+		$enc = 'ssl'; // Prestations::get_option('imap_encryption');
 		$protocol = 'imap';
-		$password = Prestations::get_option('prestations:imap_password');
+		$password = Prestations::get_option('imap_password');
 		$folder = ''; // INBOX
 
 		// TODO: better sanitization, as PhpImap\Mailbox is not forgiving
@@ -284,7 +284,7 @@ class Prestations_Mailbox {
 		if(get_transient('Prestations_Mailbox_wait')) return;
 		set_transient('Prestations_Mailbox_wait', true, 30);
 
-		if(Prestations::get_option('prestations:email_processing', false))
+		if(Prestations::get_option('email_processing', false))
 		$this->background_queue->push_to_queue(__CLASS__ . '::fetch_mails');
 
 		$this->background_queue->save()->dispatch();

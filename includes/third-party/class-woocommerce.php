@@ -355,7 +355,7 @@ class Prestations_WooCommerce {
 		// if(get_transient('Prestations_WooCommerce_wait')) return;
 		// set_transient('Prestations_WooCommerce_wait', true, 30);
 		//
-		// if(Prestations::get_option('prestations:email_processing', false))
+		// if(Prestations::get_option('email_processing', false))
 		// $this->background_queue->push_to_queue(__CLASS__ . '::fetch_mails');
 		//
 		// $this->background_queue->save()->dispatch();
@@ -413,7 +413,7 @@ class Prestations_WooCommerce {
 		$p_orders_refunded = 0;
 		$p_orders_subtotal = 0;
 
-		$payment_products = Prestations::get_option('prestations:woocommerce_payment_products');
+		$payment_products = Prestations::get_option('woocommerce_payment_products');
 		if(!is_array($payment_products)) $payment_products = [ $payment_products ];
 		$excl_tax = false;
 

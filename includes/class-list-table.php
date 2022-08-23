@@ -94,8 +94,7 @@ class Prestations_Table extends WP_List_Table {
       switch ($this->data['format'][$column_id]) {
         case 'price':
         if(empty($value)) $value = NULL;
-        else if(function_exists('wc_price')) $value = wc_price($value);
-        else $value = number_format_i18n($value, 2);
+        else $value = Prestations::price($value);
         break;
 
         case 'date';

@@ -371,7 +371,7 @@ class Prestations_Prestation {
 							'pattern'  => '[0-9]+([,\.][0-9]+)?',
 				      'min'     => 0,
 				      'size'    => 10,
-				      'prepend' => get_woocommerce_currency_symbol(),
+				      'prepend' => Prestations::get_currency_symbol(),
 				      'visible' => [
 				        'when'     => [['discount_percent', '=', '']],
 				        'relation' => 'or',
@@ -401,7 +401,7 @@ class Prestations_Prestation {
 							'min'     => 0,
 							'step'    => 'any',
 							'size'    => 10,
-							'prepend' => get_woocommerce_currency_symbol(),
+							'prepend' => Prestations::get_currency_symbol(),
 							'class' => 'amount class',
 							'visible' => [
 								'when'     => [['deposit_percent', '=', '']],
@@ -971,21 +971,21 @@ class Prestations_Prestation {
 		global $post;
 		$amount = get_post_meta($post->ID, 'price', true);
 		if(empty($amount)) $amount = 0;
-		return wc_price($amount);
+		return Prestations::price($amount);
 	}
 
 	static function get_summary_discount($args = []) {
 		global $post;
 		$discount = get_post_meta($post->ID, 'discount', true);
 		$amount = (isset($discount['total'])) ? $discount['total'] : NULL;
-		if( $amount > 0) return wc_price($amount);
+		if( $amount > 0) return Prestations::price($amount);
 	}
 
 	static function get_summary_total($args = []) {
 		global $post;
 		$amount = get_post_meta($post->ID, 'total', true);
 		if(empty($amount)) $amount = 0;
-		return wc_price($amount);
+		return Prestations::price($amount);
 	}
 
 	static function get_summary_deposit_percent($args = []) {
@@ -999,19 +999,19 @@ class Prestations_Prestation {
 		global $post;
 		$deposit = get_post_meta($post->ID, 'deposit', true);
 		$amount = (isset($deposit['total'])) ? $deposit['total'] : NULL;
-		if($amount > 0) return wc_price($amount);
+		if($amount > 0) return Prestations::price($amount);
 	}
 
 	static function get_summary_paid($args = []) {
 		global $post;
 		$amount = get_post_meta($post->ID, 'paid', true);
-		return wc_price($amount);
+		return Prestations::price($amount);
 	}
 
 	static function get_summary_balance($args = []) {
 		global $post;
 		$amount = get_post_meta($post->ID, 'balance', true);
-		return wc_price($amount);
+		return Prestations::price($amount);
 	}
 
 	static function get_summary_reference($args = []) {
@@ -1333,5 +1333,4 @@ class Prestations_Prestation {
 
 		return $data;
 	}
-
 }
