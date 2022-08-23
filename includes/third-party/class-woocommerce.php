@@ -131,6 +131,17 @@ class Prestations_WooCommerce {
 
 		$prefix = 'woocommerce_';
 
+		$meta_boxes['prestations-settings']['fields']['currency_options'] = [
+			'name'   => __( 'Currency Options', 'prestations' ),
+			'id'     => $prefix . 'currency',
+			'type'   => 'custom_html',
+			'std' => sprintf(
+				__('Set currency options in %sWooCommerce settings page%s', 'prestations'),
+				'<a href="' . get_admin_url(NULL, 'admin.php?page=wc-settings#pricing_options-description') . '">',
+				'</a>',
+			),
+		];
+
 		$meta_boxes[] = [
 			'title'          => __( 'WooCommerce Settings', 'prestations' ),
 			'id'             => 'prestations-woocommerce',
