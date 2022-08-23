@@ -265,8 +265,9 @@ class Prestations_Prestation {
 	}
 
 	static function register_fields( $meta_boxes ) {
-		$prefix = '';
+		$js_date_format_short = preg_match('/^[Fm]/', get_option('date_format')) ? 'mm-dd-yy' : 'dd-mm-yy';
 
+		$prefix = '';
 		$meta_boxes[] = [
 			'title'      => __( 'Prestations', 'prestations' ),
 			'id'         => 'prestations',
@@ -329,12 +330,24 @@ class Prestations_Prestation {
 						[
 							'prepend'          => __( 'From', 'prestations' ),
 							'id'            => $prefix . 'from',
+							'readonly' => true,
+							'size' => 10,
 							'type'          => 'date',
+							'timestamp'     => true,
+							'js_options'    => [
+									'dateFormat' => $js_date_format_short,
+							],
 						],
 						[
 							'prepend'          => __( 'To', 'prestations' ),
 							'id'            => $prefix . 'to',
 							'type'          => 'date',
+							'timestamp'     => true,
+							'readonly' => true,
+							'size' => 10,
+							'js_options'    => [
+									'dateFormat' => $js_date_format_short,
+							],
 						],
 					],
 				],
@@ -558,6 +571,11 @@ class Prestations_Prestation {
 								'name'          => __( 'Date', 'prestations' ),
 								'id'            => $prefix . 'from',
 								'type'          => 'date',
+								'type'          => 'date',
+								'timestamp'     => true,
+								'js_options'    => [
+										'dateFormat' => $js_date_format_short,
+								],
 								'columns' => 1,
 								'required' => true,
 								'visible' => [
@@ -572,6 +590,11 @@ class Prestations_Prestation {
 								'name'          => __( 'To', 'prestations' ),
 								'id'            => $prefix . 'to',
 								'type'          => 'date',
+								'type'          => 'date',
+								'timestamp'     => true,
+								'js_options'    => [
+										'dateFormat' => $js_date_format_short,
+								],
 								'columns' => 1,
 								'visible' => [
 									'when'     => [
@@ -1070,6 +1093,7 @@ class Prestations_Prestation {
 
 		$updates['price'] = 0; // get_post_meta($post_id, 'price', true);
 		$updates['paid'] = 0; // Will be overridden // get_post_meta($post_id, 'paid', true);
+		$dates = [];
 
 
 		if(is_array($_REQUEST)) {
@@ -1108,6 +1132,9 @@ class Prestations_Prestation {
 		    }
 		    if(empty($item['quantity']) || empty($item['unit_price'])) continue;
 				$updates['price'] += (float)$item['quantity'] * (float)$item['unit_price'];
+
+				if(!empty($item['from']['timestamp'])) $dates[] = $item['from']['timestamp'];
+				if(!empty($item['to']['timestamp'])) $dates[] = $item['to']['timestamp'];
 		  }
 		}
 
@@ -1139,8 +1166,22 @@ class Prestations_Prestation {
 				$updates['refunded'] += @$managed['refunded'];
 				$updates['total'] += @$managed['total'];
 				$updates['paid'] += @$managed['paid'];
+				if(is_array(@$managed['dates']) &! empty($managed['dates'])) {
+					$dates[] = min($managed['dates']);
+					$dates[] = max($managed['dates']);
+				}
 			}
 		}
+
+		$dates = array_unique(array_filter($dates));
+		if(!empty($dates)) {
+			$updates['dates'] = [
+				'from' => min($dates),
+				'to' => max($dates),
+			];
+			if($updates['dates']['to'] == $updates['dates']['from']) unset($updates['dates']['to']);
+		}
+
 		$updates['discount']['total'] += $updates['discount']['amount'] + $updates['discount']['managed'];
 
 		if($updates['total'] > 0 && $updates['deposit']['percent'] > 0 ) {

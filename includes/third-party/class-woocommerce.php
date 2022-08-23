@@ -417,8 +417,10 @@ class Prestations_WooCommerce {
 		if(!is_array($payment_products)) $payment_products = [ $payment_products ];
 		$excl_tax = false;
 
+		$dates = [];
 		$lines = [];
 		foreach ($orders as $key => $order) {
+			$order_dates = [];
 			// $excl_tax = ($order->prices_include_tax == true) ? false : true;
 
 			$p_order = array(
@@ -437,8 +439,6 @@ class Prestations_WooCommerce {
 			);
 			// $p_order['paid'] = ($order->get_date_paid()) ? $p_order['total'] : 0;
 			$p_order['paid'] = (in_array($order->get_status(), [ 'completed', 'processing' ])) ? $p_order['total'] : 0;
-			$starts = [];
-			$ends = [];
 
 			foreach ( $order->get_items() as $item_id => $item ) {
 				$product = $item->get_product();
@@ -458,8 +458,8 @@ class Prestations_WooCommerce {
 					foreach ( $booking_ids as $booking_id ) {
 						$booking = get_wc_booking( $booking_id );
 						// $datetimes[] = esc_html( apply_filters( 'wc_bookings_summary_list_date', date_i18n( $date_format, $booking->get_start() ), $booking->get_start(), $booking->get_end() ) );
-						$starts[] = $booking->get_start();
-						$ends[] = $booking->get_end();
+						$order_dates[] = $booking->get_start();
+						$order_dates[] = $booking->get_end();
 					}
 				}
 
@@ -484,12 +484,15 @@ class Prestations_WooCommerce {
 					$p_order['total'] = $p_order['total'] - $item->get_total() + $order->get_total_refunded_for_item($item_id);
 				}
 			}
-			$starts = array_filter($starts);
-			$ends = array_filter($ends);
-			error_log(wp_date(wc_date_format(), $starts), true);
+			$order_dates = array_filter($order_dates);
+			error_log("dates " . wp_date(wc_date_format(), $order_dates), true);
 
-			$p_order['from'] = (!empty($starts)) ? min($starts) : NULL;
-			$p_order['to'] = (!empty($ends)) ? max($ends) : NULL;
+			$p_order['from'] = (!empty($order_dates)) ? min($order_dates) : NULL;
+			$p_order['to'] = (!empty($order_dates)) ? max($order_dates) : NULL;
+			if($p_order['to'] == $p_order['from']) $p_order['to'] = NULL;
+
+			$dates[] = $p_order['from'];
+			$dates[] = $p_order['to'];
 
 			$p_order['description'] = $p_order['items'][0]['product_name']
 			. ( (count($p_order['items']) > 1) ? sprintf( __(' + %s items', 'prestations'), count($p_order['items']) - 1 ) : '' );
@@ -504,12 +507,17 @@ class Prestations_WooCommerce {
 			$p_orders_paid += $p_order['paid'];
 		}
 
+		$dates = array_filter($dates);
+		if(!empty($dates)) {
+			$dates = array_unique(array(min($dates), max($dates)));
+		}
 		update_post_meta( $prestation_id, 'managed-woocommerce', array(
 			'subtotal' => $p_orders_subtotal,
 			'discount' => $p_orders_discount,
 			'refunded' => $p_orders_refunded,
 			'total' => $p_orders_total,
 			'paid' => $p_orders_paid,
+			'dates' => $dates,
 			// 'orders' => $p_orders,
 			'rows' => $lines,
 		) );
