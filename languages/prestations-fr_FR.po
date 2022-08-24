@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Prestations for WC\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/prestations\n"
-"POT-Creation-Date: 2022-08-23T18:41:40-04:00\n"
+"POT-Creation-Date: 2022-08-24T15:16:24-04:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -10,6 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.0.1\n"
 
 #. Plugin Name of the plugin
@@ -42,8 +43,9 @@ msgid "Prestations"
 msgstr "Prestations"
 
 #: includes/class-cpt-prestation.php:199
-#: includes/third-party/class-woocommerce.php:175
-#: includes/third-party/class-woocommerce.php:324
+#: includes/third-party/class-woocommerce-payment-product.php:270
+#: includes/third-party/class-woocommerce.php:166
+#: includes/third-party/class-woocommerce.php:315
 msgid "Prestation"
 msgstr "Prestation"
 
@@ -180,18 +182,19 @@ msgid "Dates"
 msgstr "Dates"
 
 #: includes/class-cpt-prestation.php:331
-#: includes/third-party/class-woocommerce.php:683
+#: includes/third-party/class-woocommerce-payment-product.php:287
+#: includes/third-party/class-woocommerce.php:674
 msgid "From"
 msgstr "Du"
 
 #: includes/class-cpt-prestation.php:342 includes/class-cpt-prestation.php:590
-#: includes/third-party/class-woocommerce.php:684
+#: includes/third-party/class-woocommerce.php:675
 msgid "To"
 msgstr "Au"
 
 #: includes/class-cpt-prestation.php:355 includes/class-cpt-prestation.php:638
 #: includes/class-cpt-prestation.php:753
-#: includes/third-party/class-woocommerce.php:686
+#: includes/third-party/class-woocommerce.php:677
 msgid "Discount"
 msgstr "Remise"
 
@@ -228,7 +231,7 @@ msgid "Select a type"
 msgstr "Sélectionnez un type"
 
 #: includes/class-cpt-prestation.php:565
-#: includes/third-party/class-woocommerce.php:682
+#: includes/third-party/class-woocommerce.php:673
 msgid "Description"
 msgstr "Description"
 
@@ -250,7 +253,7 @@ msgstr "Prix"
 
 #: includes/class-cpt-prestation.php:669 includes/class-cpt-prestation.php:772
 #: includes/class-cpt-prestation.php:932
-#: includes/third-party/class-woocommerce.php:689
+#: includes/third-party/class-woocommerce.php:680
 msgid "Paid"
 msgstr "Payé"
 
@@ -263,7 +266,7 @@ msgid "Regular Price"
 msgstr "Prix de base"
 
 #: includes/class-cpt-prestation.php:759
-#: includes/third-party/class-woocommerce.php:688
+#: includes/third-party/class-woocommerce.php:679
 msgid "Total"
 msgstr "Total"
 
@@ -276,7 +279,7 @@ msgid "Reference #"
 msgstr "Référence #"
 
 #: includes/class-cpt-prestation.php:800
-#: includes/third-party/class-woocommerce.php:690
+#: includes/third-party/class-woocommerce.php:681
 msgid "Status"
 msgstr "Statut"
 
@@ -386,7 +389,7 @@ msgid "Cancelled"
 msgstr "Annulé"
 
 #: includes/class-cpt-prestation.php:925
-#: includes/third-party/class-woocommerce.php:687
+#: includes/third-party/class-woocommerce.php:678
 msgid "Refunded"
 msgstr "Remboursé"
 
@@ -418,11 +421,11 @@ msgstr "Aucune donnée"
 msgid "%s to %s"
 msgstr "%s à %s"
 
-#: includes/class-list-table.php:23
+#: includes/class-list-table.php:21
 msgid "Not an array"
 msgstr "Pas un tableau"
 
-#: includes/class-list-table.php:24
+#: includes/class-list-table.php:22
 msgid "Empty table"
 msgstr "Tableau vide"
 
@@ -519,13 +522,120 @@ msgstr "Activer le traitement des e-mails"
 msgid "Use IMAP to collect emails and attach them to prestations"
 msgstr "Utilisez IMAP pour collecter les emails et les joindre aux prestations"
 
+#: includes/third-party/class-woocommerce-payment-product.php:47
+msgid "Payment Products"
+msgstr "Produits de paiement"
+
+#: includes/third-party/class-woocommerce-payment-product.php:53
+msgid "Payment products"
+msgstr "Produits de paiement"
+
+#: includes/third-party/class-woocommerce-payment-product.php:59
+msgid ""
+"Payment products are used to provide a payment gateway for prestation not "
+"handled by WooCommerce (like deposits, custom items or services handled by "
+"an external website)."
+msgstr ""
+"Les produits de paiement permettent de fournir une passerelle de paiement "
+"aux prestations non gérées par WooCommerce (comme les accomptes, les "
+"éléments personnalisés ou les services gérés par des sites externes)."
+
+#: includes/third-party/class-woocommerce-payment-product.php:62
+msgid ""
+"To enable a product as payment, check the \"Payment Only\" option on product "
+"edit page and set its price to 0 (zero)."
+msgstr ""
+"Pour définir un produit comme produit de paiement, cocher la case \"Paiement "
+"seulement\" sur la page de modification du produit et réglez son prix sur 0 "
+"(zéro)."
+
+#: includes/third-party/class-woocommerce-payment-product.php:63
+msgid ""
+"Enabling Payment Only will disable fixed product price and add amount and "
+"reference fields to product page."
+msgstr ""
+"Activer \"Paiement seulement\" désactivera le prix fixe du produit et "
+"ajoutera les champs montant et référence à la page produit."
+
+#: includes/third-party/class-woocommerce-payment-product.php:64
+msgid "Only one Payment Only product is needed by Prestations plugin."
+msgstr "Seul un produit de paiement est requis par l'extension Prestations."
+
+#: includes/third-party/class-woocommerce-payment-product.php:70
+msgid "Default payment product"
+msgstr "Produit de paiement par défaut"
+
+#: includes/third-party/class-woocommerce-payment-product.php:73
+msgid "Create a payment product first"
+msgstr "Créez un produits de paiement d'abord"
+
+#: includes/third-party/class-woocommerce-payment-product.php:75
+msgid "Used to generate payment links."
+msgstr "Utilisé pour générer les liens de paiement."
+
+#: includes/third-party/class-woocommerce-payment-product.php:119
+msgid "%s product enabled: %s"
+msgid_plural "%s products enabled: %s"
+msgstr[0] "%s produit activé: %s"
+msgstr[1] "%s produits activés: %s"
+
+#: includes/third-party/class-woocommerce-payment-product.php:127
+#: includes/third-party/class-woocommerce-payment-product.php:132
+msgid "Pay prestation"
+msgstr "Payer la prestation"
+
+#: includes/third-party/class-woocommerce-payment-product.php:146
+msgid "Payments Only"
+msgstr "Paiement seulement"
+
+#: includes/third-party/class-woocommerce-payment-product.php:147
+msgid "Check to use product as custom payments only."
+msgstr "Cocher pour utilser le produit uniquement pour les paiements."
+
+#: includes/third-party/class-woocommerce-payment-product.php:176
+msgid "Amount"
+msgstr "Montant"
+
+#: includes/third-party/class-woocommerce-payment-product.php:179
+msgid "Amount to pay"
+msgstr "Montant à payer"
+
+#: includes/third-party/class-woocommerce-payment-product.php:190
+msgid "Prestation reference"
+msgstr "Référence de la prestation"
+
+#: includes/third-party/class-woocommerce-payment-product.php:194
+msgid "Enter a prestation id"
+msgstr "Entrez un ID de prestation"
+
+#: includes/third-party/class-woocommerce-payment-product.php:195
+msgid "Use the reference number received during order."
+msgstr "Utilisez le numéro de référence reçu lors de la commande."
+
+#: includes/third-party/class-woocommerce-payment-product.php:212
+msgid ""
+"\"%s\" could not be added to the cart. Please provide a valid amount to pay."
+msgstr ""
+"\"%s\" n'a pas pu être ajouté au panier. Merci de fournir un montant à payer "
+"valide."
+
+#: includes/third-party/class-woocommerce-payment-product.php:221
+msgid "\"%s\" could not be added to the cart. Please provide a prestation id."
+msgstr ""
+"\"%s\" n'a pas pu être ajouté au panier. Merci de fournir une référence de "
+"prestation."
+
+#: includes/third-party/class-woocommerce-payment-product.php:257
+msgid "Payment for prestation #"
+msgstr "Paiement pour la prestation #"
+
 #: includes/third-party/class-woocommerce.php:139
 msgid "Set currency options in %sWooCommerce settings page%s"
 msgstr ""
 "Définissez les options de devise sur la %spage des paramètres WooCommerce%s"
 
 #: includes/third-party/class-woocommerce.php:146
-#: includes/third-party/class-woocommerce.php:306
+#: includes/third-party/class-woocommerce.php:297
 msgid "WooCommerce Settings"
 msgstr "Paramètres WooCommerce"
 
@@ -535,53 +645,48 @@ msgstr "Synchroniser les commandes"
 
 #: includes/third-party/class-woocommerce.php:155
 msgid ""
-"Sync orders and prestations, create prestation if none exist. Only needed at "
-"plugin activation or if out of sync."
+"Sync orders and prestations, create prestation if none exist. Only useful "
+"after plugin activation or if out of sync."
 msgstr ""
-"Synchroniser les commandes et les prestations, créer des prestations si "
-"aucune n'existe. Nécessaire uniquement lors de l'activation du plugin ou en "
+"Synchroniser les commandes et les prestations, créer une prestation si "
+"aucune n'existe. Utile uniquement après l'activation de l'extension ou en "
 "cas de désynchronisation."
 
-#: includes/third-party/class-woocommerce.php:161
-msgid "Payment products"
-msgstr "Produits de paiement"
-
-#: includes/third-party/class-woocommerce.php:164
-msgid ""
-"Products to handle as payment only (price is used only for payment "
-"calculation, not for prestation cost)"
-msgstr ""
-"Produits à traiter comme paiement uniquement (le prix est utilisé uniquement "
-"pour le calcul du paiement, pas pour le coût de la prestation)"
-
-#: includes/third-party/class-woocommerce.php:198
+#: includes/third-party/class-woocommerce.php:189
 msgid "Woocommerce Orders"
 msgstr "Commandes Woocommerce"
 
-#: includes/third-party/class-woocommerce.php:250
+#: includes/third-party/class-woocommerce.php:241
 msgid "View prestation"
 msgstr "Voir les prestations"
 
-#: includes/third-party/class-woocommerce.php:509
+#: includes/third-party/class-woocommerce.php:500
 msgid " + %s items"
 msgstr " + %s éléments"
 
-#: includes/third-party/class-woocommerce.php:673
+#: includes/third-party/class-woocommerce.php:664
 msgid "Online Shop (WooCommerce)"
 msgstr "Boutique en ligne (WooCommerce)"
 
-#: includes/third-party/class-woocommerce.php:674
+#: includes/third-party/class-woocommerce.php:665
 msgid "Empty list"
 msgstr "Liste vide"
 
-#: includes/third-party/class-woocommerce.php:680
+#: includes/third-party/class-woocommerce.php:671
 msgid "ID"
 msgstr "ID"
 
-#: includes/third-party/class-woocommerce.php:681
+#: includes/third-party/class-woocommerce.php:672
 msgid "Created"
 msgstr "Créé"
 
-#: includes/third-party/class-woocommerce.php:685
+#: includes/third-party/class-woocommerce.php:676
 msgid "Subtotal"
 msgstr "Sous-total"
+
+#~ msgid ""
+#~ "Products to handle as payment only (price is used only for payment "
+#~ "calculation, not for prestation cost)"
+#~ msgstr ""
+#~ "Produits à traiter comme paiement uniquement (le prix est utilisé "
+#~ "uniquement pour le calcul du paiement, pas pour le coût de la prestation)"

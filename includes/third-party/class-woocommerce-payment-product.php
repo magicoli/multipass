@@ -199,7 +199,7 @@ class Prestations_Payment_Product {
       (empty($prestation_id)) ? 'text' : 'hidden',
       $prestation_id,
       __("Enter a prestation id", 'prestations'),
-      (empty($prestation_id)) ? __('User the reference number received during reservation.', 'prestations') : '',
+      (empty($prestation_id)) ? __('Use the reference number received during order.', 'prestations') : '',
     );
   }
 
