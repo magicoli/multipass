@@ -27,19 +27,115 @@ class Prestations_Payment_Product {
 
 		add_action( 'woocommerce_checkout_create_order_line_item', __CLASS__ . '::add_custom_data_to_order', 10, 4 );
 
-		// Set pay button text
-		// add_filter( 'woocommerce_product_add_to_cart_text', __CLASS__ . '::add_to_card_button', 10, 2);
-		// add_filter( 'woocommerce_product_single_add_to_cart_text', __CLASS__ . '::single_add_to_card_button', 10, 2);
+		// Allow search on payment_products fields
+		add_filter( 'woocommerce_order_data_store_cpt_get_orders_query', __CLASS__ . '::wc_get_orders_handle_meta_fields', 10, 2 );
 
-		// add_action( 'plugins_loaded', __CLASS__ . '::load_plugin_textdomain' );
+		// Set pay button text
+		// add_filter( 'woocommerce_product_add_to_cart_text', __CLASS__ . '::add_to_cart_button', 10, 2);
+		// add_filter( 'woocommerce_product_single_add_to_cart_text', __CLASS__ . '::single_add_to_cart_button', 10, 2);
+
+		// Settings page
+		add_filter( 'rwmb_meta_boxes', __CLASS__ . '::register_settings_fields' );
+
   }
 
-  static function add_to_card_button( $text, $product ) {
+	static function register_settings_fields( $meta_boxes ) {
+		$prefix = 'woocommerce_';
+
+
+		// $meta_boxes['woocommerce_settings']['fields'][] =  [
+		$meta_boxes[] =  [
+			'title'          => __( 'Payment Products', 'prestations' ),
+			'id'             => 'prestations-payments',
+			'settings_pages' => ['prestations'],
+			'tab'            => 'woocommerce',
+			'fields'         => [
+				[
+					'name'       => __( 'Payment products', 'prestations' ),
+					'id'         => $prefix . 'payment_products',
+					'type'       => 'group',
+					// 'desc'       => __( 'Products to handle as payment only (price is used only for payment calculation, not for prestation cost)', 'prestations' ),
+					'fields' => [
+						[
+							'id' => 'products',
+							'type' => 'custom_html',
+							'callback' => __CLASS__ . '::list_payment_products',
+							'desc' => sprintf(
+								'<p>%s</p><p>%s</p>',
+								__('Payment products are used to provide a payment gateway for prestation not handled by WooCommerce (like deposits, custom items or services handled by an external website).', 'prestations'),
+								join(
+									'<br/>', array(
+										__('To enable a product as payment, check the "Payment Only" option on product edit page', 'prestations'),
+										__('Enabling Payment Only will disable fixed product price and add amount and reference fields to product page.', 'prestations'),
+										__('Only one Payment Only product is needed by Prestations plugin.', 'prestations'),
+									),
+								),
+							),
+						]
+						// [
+						// 	'name'       => __( 'Payment products', 'prestations' ),
+						// 	'id'         => $prefix . 'payment_products',
+						// 	'type'       => 'post',
+						// 	'desc'       => __( 'Products to handle as payment only (price is used only for payment calculation, not for prestation cost)', 'prestations' ),
+						// 	'post_type'  => ['product'],
+						// 	'field_type' => 'select_advanced',
+						// 	'multiple'   => true,
+						// ],
+					],
+				],
+			],
+		];
+
+		return $meta_boxes;
+	}
+
+	static function wc_get_orders_handle_meta_fields( $query, $query_vars ) {
+		if ( ! empty( $query_vars['_prpay'] ) ) {
+			$query['meta_query'][] = array(
+				'key' => '_prpay',
+				'value' => esc_attr( $query_vars['prestation_id'] ),
+			);
+		}
+		error_log('query ' . print_r($query, true));
+
+		return $query;
+	}
+
+	static function list_payment_products() {
+		$html = '';
+		$args = array(
+			'status' => 'publish',
+			'meta_key' => '_prpay',
+			'meta_value' => 'yes',
+		);
+		$products = wc_get_products( $args );
+		if($products) {
+			foreach($products as $product) {
+				$product_id = $product->get_id();
+				$prpay_products[$product_id] = sprintf(
+					'<a href="%s">%s (#%s)</a>',
+					get_edit_post_link($product_id),
+					$product->get_title(),
+					$product_id,
+				);
+				// error_log('product ' . print_r($product->get_id() . ' ' . $product->get_title(), true));
+			}
+		}
+		$count = count($products);
+		$html .= sprintf(
+			_n(  '%s product enabled: %s', '%s products enabled: %s', $count, 'text-domain' ),
+			number_format_i18n( $count ),
+			join(', ', $prpay_products),
+		);
+		return $html;
+	}
+
+  static function add_to_cart_button( $text, $product ) {
     if($product->get_meta( '_prpay' ) == 'yes') $text = __('Pay prestation', 'prestations');
   	return $text;
   }
 
-  static function single_add_to_card_button( $text, $product ) {
+  static function single_add_to_cart_button( $text, $product ) {
     if($product->get_meta( '_prpay' ) == 'yes') $text = __('Pay prestation', 'prestations');
   	return $text;
   }

@@ -142,7 +142,7 @@ class Prestations_WooCommerce {
 			),
 		];
 
-		$meta_boxes[] = [
+		$meta_boxes['woocommerce_settings'] = [
 			'title'          => __( 'WooCommerce Settings', 'prestations' ),
 			'id'             => 'prestations-woocommerce',
 			'settings_pages' => ['prestations'],
@@ -156,15 +156,6 @@ class Prestations_WooCommerce {
 					'style'             => 'rounded',
 					'sanitize_callback' => 'Prestations_WooCommerce::sync_orders',
 					'save_field' => false,
-				],
-				[
-					'name'       => __( 'Payment products', 'prestations' ),
-					'id'         => $prefix . 'payment_products',
-					'type'       => 'post',
-					'desc'       => __( 'Products to handle as payment only (price is used only for payment calculation, not for prestation cost)', 'prestations' ),
-					'post_type'  => ['product'],
-					'field_type' => 'select_advanced',
-					'multiple'   => true,
 				],
 			],
 		];
@@ -237,7 +228,7 @@ class Prestations_WooCommerce {
 				'value' => esc_attr( $query_vars['prestation_id'] ),
 			);
 		}
-
+		error_log('query ' . print_r($query, true));
 		return $query;
 	}
 
