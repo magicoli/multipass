@@ -152,7 +152,7 @@ class Prestations_WooCommerce {
 					'name'              => __( 'Sync orders', 'prestations' ),
 					'id'                => $prefix . 'sync_orders',
 					'type'              => 'switch',
-					'desc'              => __( 'Sync orders and prestations, create prestation if none exist. Only needed at plugin activation or if out of sync.', 'prestations' ),
+					'desc'              => __( 'Sync orders and prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'prestations' ),
 					'style'             => 'rounded',
 					'sanitize_callback' => 'Prestations_WooCommerce::sync_orders',
 					'save_field' => false,
