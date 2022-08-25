@@ -36,11 +36,11 @@ class Prestations_Payment_Product {
 		// add_filter( 'woocommerce_product_single_add_to_cart_text', __CLASS__ . '::single_add_to_cart_button', 10, 2);
 
 		// Settings page
-		add_filter( 'rwmb_meta_boxes', __CLASS__ . '::register_settings_fields' );
+		add_filter( 'rwmb_meta_boxes', __CLASS__ . '::register_fields' );
 
   }
 
-	static function register_settings_fields( $meta_boxes ) {
+	static function register_fields( $meta_boxes ) {
 		$prefix = 'woocommerce_';
 
 		$pp = self::get_payment_products();
@@ -92,6 +92,15 @@ class Prestations_Payment_Product {
 				],
 			],
 		];
+
+    $meta_boxes['prestation-cpt']['fields'][] = [
+      'name'          => __( 'Payment link', 'prestations' ),
+      'id'            => $prefix . 'payment_link',
+      'type'          => 'custom_html',
+      'class' => 'payment-link',
+      'callback'      => 'Prestations_Payment_Product::get_payment_link',
+      // 'admin_columns' => 'after paid',
+    ];
 
 		return $meta_boxes;
 	}
@@ -359,6 +368,32 @@ class Prestations_Payment_Product {
     if($value != $oldvalue) set_transient('prestations_rewrite_flush', true);
 
     return $value;
+  }
+
+  static function get_payment_link() {
+    global $post;
+
+    // $product_id = Prestations::get_option('woocommerce_default_product');
+    $reference = $post->post_name;
+    $balance = get_post_meta($post->ID, 'balance', true);
+    $paid = (float)get_post_meta($post->ID, 'paid', true);
+    $deposit = (float)get_post_meta($post->ID, 'deposit', true)['total'];
+
+    $slug = __(Prestations::get_option('woocommerce_rewrite_slug'), 'prestations');
+
+    if($deposit > $paid) {
+      $deposit_due = $deposit - $paid;
+      $links[__('Deposit', 'prestations')] = get_home_url(NULL, "$slug/$reference/" . $deposit_due);
+    }
+    $links[__('Balance', 'prestations')] = get_home_url(NULL, "$slug/$reference/$balance");
+    foreach($links as $key=>$link) {
+      $html .= sprintf(
+        '<li>%1$s: <a href="%2$s" target="blank">%2$s</a></li>',
+        $key,
+        $link,
+      );
+    }
+    return (!empty($html)) ? '<ul>' . $html . '</ul>' : NULL;
   }
 
   static function rewrite_rules() {

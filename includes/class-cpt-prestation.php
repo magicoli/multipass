@@ -268,7 +268,7 @@ class Prestations_Prestation {
 		$js_date_format_short = preg_match('/^[Fm]/', get_option('date_format')) ? 'mm-dd-yy' : 'dd-mm-yy';
 
 		$prefix = '';
-		$meta_boxes[] = [
+		$meta_boxes['prestation-cpt'] = [
 			'title'      => __( 'Prestations', 'prestations' ),
 			'id'         => 'prestations',
 			'post_types' => ['prestation'],
@@ -1008,9 +1008,16 @@ class Prestations_Prestation {
 		return Prestations::price($amount);
 	}
 
-	static function get_summary_balance($args = []) {
+	static function get_balance($args = []) {
 		global $post;
 		$amount = get_post_meta($post->ID, 'balance', true);
+		return $amount;
+	}
+
+	static function get_summary_balance($args = []) {
+		// global $post;
+		// $amount = get_post_meta($post->ID, 'balance', true);
+		$amount = self::get_balance();
 		return Prestations::price($amount);
 	}
 
