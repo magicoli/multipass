@@ -85,7 +85,7 @@ class Prestations_Payment_Product {
 					'id' => $prefix . 'rewrite_slug',
 					'type' => 'text',
           'size' => 10,
-          // Translators: slug used to generate payment links
+          // TRANSLATORS: slug used to generate payment links
           'std' => __('pay', 'prestations'),
 					// 'desc' => __('Used to generate payment links.', 'prestations'),
           'sanitize_callback' => __CLASS__ . '::rewrite_slug_validation',
@@ -278,32 +278,32 @@ class Prestations_Payment_Product {
     return $cart_item_data;
   }
 
-  /**
-  * Display the custom field value in the cart
-  * @since 1.0.0
-  */
+  static function prestation_cart_name($prestation) {
+    if(is_numeric($prestation)) $prestation = get_post($prestation);
+
+    $dates = get_post_meta($prestation->ID, 'dates', true);
+    $from = date_i18n(get_option( 'date_format' ), $dates['from']);
+    $to = date_i18n(get_option( 'date_format' ), $dates['to']);
+
+    $cart_item_name = sprintf(
+      '%s<p class="prestation-details description">%s</p>',
+      $prestation->post_title,
+      sprintf(
+        // TRANSLATORS: from [start date] to [end date] (without time)
+        __('from %s to %s', 'prestations'),
+        $from,
+        $to,
+      ),
+    );
+    return $cart_item_name;
+  }
+
   static function cart_item_name( $name, $cart_item, $cart_item_key ) {
     if( isset( $cart_item['prpay_reference'] ) ) {
       $reference = sanitize_text_field($cart_item['prpay_reference']);
 
       $prestation = get_page_by_path( $reference, OBJECT, 'prestation');
-      if($prestation) {
-        $dates = get_post_meta($prestation->ID, 'dates', true);
-        $from = date_i18n(get_option( 'date_format' ), $dates['from']);
-        $to = date_i18n(get_option( 'date_format' ), $dates['to']);
-
-        $cart_item_name = sprintf(
-          '%s<p>%s<p>',
-          $prestation->post_title,
-          sprintf(
-            // Translators: from [start date] to [end date] (without time)
-            __('from %s to %s', 'prestations'),
-            $from,
-            $to,
-          ),
-        );
-        return $cart_item_name;
-      }
+      if($prestation) return self::prestation_cart_name($prestation);
 
       return sprintf(
 				'<span class=prpay-prestation-id>%s%s</span>',

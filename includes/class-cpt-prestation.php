@@ -1295,6 +1295,7 @@ class Prestations_Prestation {
 		}
 		if(count($formatted) == 2) {
 			return sprintf(
+				// TRANSLATORS: [start date] to [end date] (without time)
 				__('%s to %s', 'prestations'),
 				$formatted[0],
 				$formatted[1],
