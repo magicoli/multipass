@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-08-25T13:04:11-04:00\n"
+"POT-Creation-Date: 2022-08-25T18:15:08-04:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 
@@ -41,7 +41,7 @@ msgid "Prestations"
 msgstr ""
 
 #: includes/class-cpt-prestation.php:199
-#: includes/third-party/class-woocommerce-payment-product.php:293
+#: includes/third-party/class-woocommerce-payment-product.php:325
 #: includes/third-party/class-woocommerce.php:166
 #: includes/third-party/class-woocommerce.php:315
 msgid "Prestation"
@@ -176,12 +176,12 @@ msgid "Customer Email"
 msgstr ""
 
 #: includes/class-cpt-prestation.php:321
-#: includes/class-cpt-prestation.php:1275
+#: includes/class-cpt-prestation.php:1282
 msgid "Dates"
 msgstr ""
 
 #: includes/class-cpt-prestation.php:331
-#: includes/third-party/class-woocommerce-payment-product.php:310
+#: includes/third-party/class-woocommerce-payment-product.php:342
 #: includes/third-party/class-woocommerce.php:674
 msgid "From"
 msgstr ""
@@ -201,6 +201,7 @@ msgstr ""
 
 #: includes/class-cpt-prestation.php:383
 #: includes/class-cpt-prestation.php:766
+#: includes/third-party/class-woocommerce-payment-product.php:409
 msgid "Deposit"
 msgstr ""
 
@@ -274,6 +275,7 @@ msgid "Total"
 msgstr ""
 
 #: includes/class-cpt-prestation.php:779
+#: includes/third-party/class-woocommerce-payment-product.php:411
 msgid "Balance"
 msgstr ""
 
@@ -422,7 +424,7 @@ msgstr ""
 msgid "No data"
 msgstr ""
 
-#: includes/class-cpt-prestation.php:1291
+#: includes/class-cpt-prestation.php:1298
 msgid "%s to %s"
 msgstr ""
 
@@ -577,55 +579,64 @@ msgstr ""
 msgid "pay"
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:133
+#: includes/third-party/class-woocommerce-payment-product.php:97
+msgid "Payment link"
+msgstr ""
+
+#: includes/third-party/class-woocommerce-payment-product.php:142
 msgid "%s product enabled: %s"
 msgid_plural "%s products enabled: %s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:141
-#: includes/third-party/class-woocommerce-payment-product.php:146
+#: includes/third-party/class-woocommerce-payment-product.php:150
+#: includes/third-party/class-woocommerce-payment-product.php:155
 msgid "Pay prestation"
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:160
+#: includes/third-party/class-woocommerce-payment-product.php:169
 msgid "Prestation Payment"
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:161
+#: includes/third-party/class-woocommerce-payment-product.php:170
 msgid "Check to use product as custom Prestation Payment."
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:190
+#: includes/third-party/class-woocommerce-payment-product.php:199
 msgid "Amount"
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:193
+#: includes/third-party/class-woocommerce-payment-product.php:202
 msgid "Amount to pay"
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:204
+#: includes/third-party/class-woocommerce-payment-product.php:213
 msgid "Prestation reference"
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:208
+#: includes/third-party/class-woocommerce-payment-product.php:217
 msgid "Enter a prestation id"
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:209
+#: includes/third-party/class-woocommerce-payment-product.php:218
 msgid "Use the reference number received during order."
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:236
+#: includes/third-party/class-woocommerce-payment-product.php:245
 msgid "\"%s\" could not be added to the cart. Please provide a valid amount to pay."
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:245
+#: includes/third-party/class-woocommerce-payment-product.php:254
 msgid "\"%s\" could not be added to the cart. Please provide a prestation id."
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:280
-msgid "Payment for prestation #"
+#. Translators: from [start date] to [end date] (without time)
+#: includes/third-party/class-woocommerce-payment-product.php:300
+msgid "from %s to %s"
+msgstr ""
+
+#: includes/third-party/class-woocommerce-payment-product.php:311
+msgid "Reference #%s"
 msgstr ""
 
 #: includes/third-party/class-woocommerce.php:139
