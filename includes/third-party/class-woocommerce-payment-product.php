@@ -85,19 +85,8 @@ class Prestations_Payment_Product {
 					'id' => $prefix . 'rewrite_slug',
 					'type' => 'text',
           'size' => 10,
-          'desc' => sprintf(
-            '%1$s <a href="%2$s" target="_blank">%2$s</a>',
-            'Try this ',
-            get_site_url() . '/' . Prestations::get_option('woocommerce_rewrite_slug') . '/' . wp_generate_password(8, false) . '/' . wp_rand(1, 5000)/100,
-          ) . sprintf(
-            '%1$s <a href="%2$s" target="_blank">%2$s</a>',
-            '<br>or this ',
-            get_site_url() . '/' . Prestations::get_option('woocommerce_rewrite_slug') . '/' . wp_generate_password(8,false),
-          ) . sprintf(
-            '%1$s <a href="%2$s" target="_blank">%2$s</a>',
-            '<br>or this ',
-            get_site_url() . '/' . Prestations::get_option('woocommerce_rewrite_slug'),
-          ),
+          // Translators: slug used to generate payment links
+          'std' => __('pay', 'prestations'),
 					// 'desc' => __('Used to generate payment links.', 'prestations'),
           'sanitize_callback' => __CLASS__ . '::rewrite_slug_validation',
 				],
@@ -376,30 +365,35 @@ class Prestations_Payment_Product {
     global $wp_query;
     $pattern_ref = '([^&/]+)';
     $pattern_price = '([^&/]+)';
-    $slug = Prestations::get_option('woocommerce_rewrite_slug');
+
     $product_id = Prestations::get_option('woocommerce_default_product');
     $cart_id = wc_get_page_id('cart');
 
     // add_rewrite_tag('%reference%', $pattern_ref, 'reference=');
     // add_rewrite_tag('%amount%', $pattern_price, 'amount=');
 
-    add_rewrite_rule(
-      "^$slug/$pattern_ref/$pattern_price/?$",
-      sprintf(
-        'index.php?page_id=%s&add-to-cart=%s&action=prestation_pay&reference=$matches[1]&amount=$matches[2]',
-        $cart_id,
-        $product_id,
-      ),
-    	'top',
-    );
-    add_rewrite_rule(
-      "^$slug(/$pattern_ref)?/?$",
-      sprintf(
-        'index.php?destination=%s&action=prestation_pay&reference=$matches[2]',
-        $product_id,
-      ),
-    	'top',
-    );
+    $slugs[] = Prestations::get_option('woocommerce_rewrite_slug');
+    $slugs[] = __($slugs[0], 'prestations');
+    $slugs = array_unique($slugs);
+    foreach($slugs as $slug) {
+      add_rewrite_rule(
+        "^$slug/$pattern_ref/$pattern_price/?$",
+        sprintf(
+          'index.php?page_id=%s&add-to-cart=%s&action=prestation_pay&reference=$matches[1]&amount=$matches[2]',
+          $cart_id,
+          $product_id,
+        ),
+        'top',
+      );
+      add_rewrite_rule(
+        "^$slug(/$pattern_ref)?/?$",
+        sprintf(
+          'index.php?destination=%s&action=prestation_pay&reference=$matches[2]',
+          $product_id,
+        ),
+        'top',
+      );
+    }
 
 	}
 
