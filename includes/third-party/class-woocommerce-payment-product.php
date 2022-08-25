@@ -194,8 +194,8 @@ class Prestations_Payment_Product {
 		printf(
 		  '<div class="prpay-field prpay-field-amount">
 		    <p class="form-row form-row-wide">
-		      <label for="prpay_product_amount" class="required">%s%s</label>
-		      <input type="number" class="input-text" name="prpay_product_amount" value="%s" placeholder="%s" required>
+		      <label for="prpay_amount" class="required">%s%s</label>
+		      <input type="number" class="input-text" name="prpay_amount" value="%s" placeholder="%s" required>
 		    </p>
 		  </div>',
 		  __('Amount', 'prestations'),
@@ -229,7 +229,7 @@ class Prestations_Payment_Product {
   }
 
   static function get_payment_amount() {
-    if(!empty($_POST['prpay_product_amount'])) $amount = sanitize_text_field($_POST['prpay_product_amount']);
+    if(!empty($_POST['prpay_amount'])) $amount = sanitize_text_field($_POST['prpay_amount']);
     else if(!empty($_REQUEST['amount'])) $amount = sanitize_text_field($_REQUEST['amount']);
     else $amount = NULL;
     if(!is_numeric($amount)) $amount = NULL;
@@ -273,10 +273,9 @@ class Prestations_Payment_Product {
   static function add_cart_item_data( $cart_item_data, $product_id, $variation_id, $quantity ) {
     $reference = self::get_payment_reference();
     $amount = self::get_payment_amount();
-    error_log('ref ' . $reference . 'amount ' . $amount);
 
     if(!empty($reference)) $cart_item_data['prpay_reference'] = $reference;
-		if(!empty($amount)) $cart_item_data['prpay_product_amount'] = $amount;
+		if(!empty($amount)) $cart_item_data['prpay_amount'] = $amount;
 
     return $cart_item_data;
   }
@@ -309,7 +308,7 @@ class Prestations_Payment_Product {
 
 	static function get_price_html( $price_html, $product ) {
     if($product->get_meta( '_prpay' ) == 'yes') {
-      $price = max($product->get_price(), get_option('prpay_product_project_minimum_price', 0));
+      $price = max($product->get_price(), Prestations::get_option('woocommerce_payment_minimum_price', 0));
       if( $price == 0 ) {
         $price_html = apply_filters( 'woocommerce_empty_price_html', '', $product );
       } else {
@@ -337,13 +336,13 @@ class Prestations_Payment_Product {
     foreach( $cart->get_cart() as $cart_key => $cart_item ) {
       $cached = wp_cache_get('prpay_product_cart_item_processed_' . $cart_key, 'prestations');
       if(!$cached) {
-        $added = (isset($cart_item['prpay_product_amount_added'])) ? $cart_item['prpay_product_amount_added'] : false;
-        if( is_numeric( $cart_item['prpay_product_amount']) &! $added) {
-					// $cart_item['data']->adjust_price( $cart_item['prpay_product_amount'] );
+        $added = (isset($cart_item['prpay_amount_added'])) ? $cart_item['prpay_amount_added'] : false;
+        if( is_numeric( $cart_item['prpay_amount']) &! $added) {
+					// $cart_item['data']->adjust_price( $cart_item['prpay_amount'] );
           $price = (float)$cart_item['data']->get_price( 'edit' );
-          $total = $price + $cart_item['prpay_product_amount'];
+          $total = $price + $cart_item['prpay_amount'];
           $cart_item['data']->set_price( ( $total ) );
-          $cart_item['prpay_product_amount_added'] = true;
+          $cart_item['prpay_amount_added'] = true;
         }
         wp_cache_set('prpay_product_cart_item_processed_' . $cart_key, true, 'prestations');
       }
