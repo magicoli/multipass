@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-08-24T15:16:24-04:00\n"
+"POT-Creation-Date: 2022-08-25T13:04:11-04:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 
@@ -41,7 +41,7 @@ msgid "Prestations"
 msgstr ""
 
 #: includes/class-cpt-prestation.php:199
-#: includes/third-party/class-woocommerce-payment-product.php:270
+#: includes/third-party/class-woocommerce-payment-product.php:293
 #: includes/third-party/class-woocommerce.php:166
 #: includes/third-party/class-woocommerce.php:315
 msgid "Prestation"
@@ -181,7 +181,7 @@ msgid "Dates"
 msgstr ""
 
 #: includes/class-cpt-prestation.php:331
-#: includes/third-party/class-woocommerce-payment-product.php:287
+#: includes/third-party/class-woocommerce-payment-product.php:310
 #: includes/third-party/class-woocommerce.php:674
 msgid "From"
 msgstr ""
@@ -528,90 +528,103 @@ msgstr ""
 msgid "Use IMAP to collect emails and attach them to prestations"
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:47
+#: includes/third-party/class-woocommerce-payment-product.php:51
 msgid "Payment Products"
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:53
+#: includes/third-party/class-woocommerce-payment-product.php:57
 msgid "Payment products"
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:59
+#: includes/third-party/class-woocommerce-payment-product.php:63
 msgid "Payment products are used to provide a payment gateway for prestation not handled by WooCommerce (like deposits, custom items or services handled by an external website)."
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:62
+#: includes/third-party/class-woocommerce-payment-product.php:66
 msgid "To enable a product as payment, check the \"Payment Only\" option on product edit page and set its price to 0 (zero)."
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:63
+#: includes/third-party/class-woocommerce-payment-product.php:67
 msgid "Enabling Payment Only will disable fixed product price and add amount and reference fields to product page."
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:64
+#: includes/third-party/class-woocommerce-payment-product.php:68
 msgid "Only one Payment Only product is needed by Prestations plugin."
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:70
-msgid "Default payment product"
+#: includes/third-party/class-woocommerce-payment-product.php:74
+msgid "Default product"
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:73
+#: includes/third-party/class-woocommerce-payment-product.php:77
 msgid "Create a payment product first"
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:75
+#: includes/third-party/class-woocommerce-payment-product.php:79
+msgid "Select a product"
+msgstr ""
+
+#: includes/third-party/class-woocommerce-payment-product.php:80
 msgid "Used to generate payment links."
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:119
+#: includes/third-party/class-woocommerce-payment-product.php:84
+msgid "Payment link slug"
+msgstr ""
+
+#. Translators: slug used to generate payment links
+#: includes/third-party/class-woocommerce-payment-product.php:89
+msgid "pay"
+msgstr ""
+
+#: includes/third-party/class-woocommerce-payment-product.php:133
 msgid "%s product enabled: %s"
 msgid_plural "%s products enabled: %s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:127
-#: includes/third-party/class-woocommerce-payment-product.php:132
+#: includes/third-party/class-woocommerce-payment-product.php:141
+#: includes/third-party/class-woocommerce-payment-product.php:146
 msgid "Pay prestation"
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:146
+#: includes/third-party/class-woocommerce-payment-product.php:160
 msgid "Prestation Payment"
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:147
+#: includes/third-party/class-woocommerce-payment-product.php:161
 msgid "Check to use product as custom Prestation Payment."
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:176
+#: includes/third-party/class-woocommerce-payment-product.php:190
 msgid "Amount"
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:179
+#: includes/third-party/class-woocommerce-payment-product.php:193
 msgid "Amount to pay"
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:190
+#: includes/third-party/class-woocommerce-payment-product.php:204
 msgid "Prestation reference"
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:194
+#: includes/third-party/class-woocommerce-payment-product.php:208
 msgid "Enter a prestation id"
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:195
+#: includes/third-party/class-woocommerce-payment-product.php:209
 msgid "Use the reference number received during order."
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:212
+#: includes/third-party/class-woocommerce-payment-product.php:236
 msgid "\"%s\" could not be added to the cart. Please provide a valid amount to pay."
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:221
+#: includes/third-party/class-woocommerce-payment-product.php:245
 msgid "\"%s\" could not be added to the cart. Please provide a prestation id."
 msgstr ""
 
-#: includes/third-party/class-woocommerce-payment-product.php:257
+#: includes/third-party/class-woocommerce-payment-product.php:280
 msgid "Payment for prestation #"
 msgstr ""
 
