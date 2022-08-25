@@ -88,7 +88,15 @@ class Prestations_Payment_Product {
           'desc' => sprintf(
             '%1$s <a href="%2$s" target="_blank">%2$s</a>',
             'Try this ',
-            get_site_url() . '/' . Prestations::get_option('woocommerce_rewrite_slug') . '/B1234/123.45',
+            get_site_url() . '/' . Prestations::get_option('woocommerce_rewrite_slug') . '/' . wp_generate_password(8, false) . '/' . wp_rand(1, 5000)/100,
+          ) . sprintf(
+            '%1$s <a href="%2$s" target="_blank">%2$s</a>',
+            '<br>or this ',
+            get_site_url() . '/' . Prestations::get_option('woocommerce_rewrite_slug') . '/' . wp_generate_password(8,false),
+          ) . sprintf(
+            '%1$s <a href="%2$s" target="_blank">%2$s</a>',
+            '<br>or this ',
+            get_site_url() . '/' . Prestations::get_option('woocommerce_rewrite_slug'),
           ),
 					// 'desc' => __('Used to generate payment links.', 'prestations'),
           'sanitize_callback' => __CLASS__ . '::rewrite_slug_validation',
@@ -115,7 +123,6 @@ class Prestations_Payment_Product {
 					$product->get_title(),
 					$product_id,
 				);
-				// error_log('product ' . print_r($product->get_id() . ' ' . $product->get_title(), true));
 			}
 		}
 		return $payment_products;
@@ -130,7 +137,6 @@ class Prestations_Payment_Product {
 				get_edit_post_link($product_id),
 				$product_title,
 			);
-			// error_log('product ' . print_r($product->get_id() . ' ' . $product->get_title(), true));
 		}
 
 		$count = count($payment_products);
@@ -216,8 +222,6 @@ class Prestations_Payment_Product {
   }
 
   static function add_to_cart_validation( $passed, $product_id, $quantity ) {
-    error_log("request " . print_r($_REQUEST, true));
-
     if($passed && self::is_payment_product( $product_id )) {
       if(!empty($_POST['prpay_reference'])) $reference = sanitize_text_field($_POST['prpay_reference']);
       else if(!empty($_REQUEST['reference'])) $reference = sanitize_text_field($_REQUEST['reference']);
@@ -323,7 +327,7 @@ class Prestations_Payment_Product {
     foreach( $cart->get_cart() as $cart_key => $cart_item ) {
       $cached = wp_cache_get('prpay_product_cart_item_processed_' . $cart_key, 'prestations');
       if(!$cached) {
-        if( is_numeric( $cart_item['prpay_product_amount'] &! $cart_item['prpay_product_amount_added']) ) {
+        if( is_numeric( $cart_item['prpay_product_amount'] && empty($cart_item['prpay_product_amount_added'])) ) {
 					// $cart_item['data']->adjust_price( $cart_item['prpay_product_amount'] );
           $price = (float)$cart_item['data']->get_price( 'edit' );
           $total = $price + $cart_item['prpay_product_amount'];
@@ -352,7 +356,7 @@ class Prestations_Payment_Product {
       $value = (get_post_status ( $value )) ? $value : NULL;
       break;
     }
-    // error_log($field['id'] . "=$value");
+
     if($value != $oldvalue) set_transient('prestations_rewrite_flush', true);
 
     return $value;
@@ -360,9 +364,8 @@ class Prestations_Payment_Product {
 
   static function rewrite_rules() {
     global $wp_query;
-
     $pattern_ref = '([^&/]+)';
-    $pattern_price = '([0-9,.]+)';
+    $pattern_price = '([^&/]+)';
     $slug = Prestations::get_option('woocommerce_rewrite_slug');
     $product_id = Prestations::get_option('woocommerce_default_product');
     $cart_id = wc_get_page_id('cart');
@@ -370,33 +373,19 @@ class Prestations_Payment_Product {
     // add_rewrite_tag('%reference%', $pattern_ref, 'reference=');
     // add_rewrite_tag('%amount%', $pattern_price, 'amount=');
 
-    // error_log("\n pattern $slug/$pattern_ref/$pattern_price/? \n dest $dest\n");
-		// error_log(sprintf(
-    //   'add_rewrite_rule(%s, %s);',
-		// 	"$slug/$pattern_ref/$pattern_price/?",
-    //   sprintf(
-    //     'index.php?page_id=%1s&add-to-cart=%s&reference=$matches[1]&amount=$matches[2]',
-    //     $cart_id,
-    //     $product_id,
-    //   ),
-		// ));
-
-    // add_rewrite_rule(
-    //   "$slug/$pattern_ref/$pattern_price/?",
-    //   sprintf(
-    //     'index.php?page_id=%s&add-to-cart=%s&reference=$matches[1]&amount=$matches[2]',
-    //     // $cart_id,
-    //     $product_id,
-    //     $product_id,
-    //   ),
-    //   'top',
-    // );
-
     add_rewrite_rule(
-      "$slug/$pattern_ref/$pattern_price/?",
+      "^$slug/$pattern_ref/$pattern_price/?$",
       sprintf(
-        'index.php?page_id=%s&add-to-cart=%s&reference=$matches[1]&amount=$matches[2]',
+        'index.php?page_id=%s&add-to-cart=%s&action=prestation_pay&reference=$matches[1]&amount=$matches[2]',
         $cart_id,
+        $product_id,
+      ),
+    	'top',
+    );
+    add_rewrite_rule(
+      "^$slug(/$pattern_ref)?/?$",
+      sprintf(
+        'index.php?destination=%s&action=prestation_pay&reference=$matches[2]',
         $product_id,
       ),
     	'top',
@@ -405,25 +394,34 @@ class Prestations_Payment_Product {
 	}
 
   static function query_vars ( $query_vars ) {
+    $query_vars[] = 'add-to-cart';
+    $query_vars[] = 'action';
     $query_vars[] = 'reference';
     $query_vars[] = 'amount';
-    $query_vars[] = 'add-to-cart';
+    $query_vars[] = 'destination';
     return $query_vars;
   }
 
   static function template_include( $template ) {
-    if(!empty(get_query_var('add-to-cart'))) {
-      global $woocommerce;
-      $woocommerce->cart->add_to_cart(get_query_var('add-to-cart'));
+    global $wp_query;
+
+    $args = array_filter($wp_query->query);
+    if(isset($args['action']) && $args['action'] == 'prestation_pay') {
+      if(isset($args['add-to-cart']) && isset($args['reference']) && isset($args['amount']) && is_numeric($args['amount'])) {
+        $url = wc_get_cart_url();
+      } else {
+        $url = get_permalink($args['destination']);
+      }
+      unset($args['action']);
+      unset($args['destination']);
+      if(!empty($url)) {
+        $location = add_query_arg( $args, $url );
+        wp_redirect($location);
+        die();
+      }
     }
-    // error_log('page ' . get_query_var('page_id') . ' add-to-cart ' . get_query_var('add-to-cart') . ' ref ' . get_query_var('reference') . ' amount ' . get_query_var('amount') );
-    // if ( get_query_var( 'myparamname' ) == false || get_query_var( 'myparamname' ) == '' ) {
-    // }
 
-    return $template;
     // return get_template_directory() . '/template-name.php';
+    return $template;
   }
-
 }
-
-// Prestations_Payment_Product::run();
