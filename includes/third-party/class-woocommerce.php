@@ -705,4 +705,5 @@ class Prestations_WooCommerce {
 		);
 		return $html;
 	}
+
 }

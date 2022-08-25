@@ -9,7 +9,7 @@ class Prestations_Payment_Product {
   * Bootstraps the class and hooks required actions & filters.
   */
   public static function run() {
-		// Add Payments Only option to product edit page
+		// Add Prestation Payment option to product edit page
     add_filter( 'product_type_options', __CLASS__ . '::add_product_prpay_options');
     add_action( 'save_post_product', __CLASS__ . '::save_product_prpay_options', 10, 3);
 
@@ -26,6 +26,10 @@ class Prestations_Payment_Product {
 		add_filter( 'woocommerce_get_price_html', __CLASS__ . '::get_price_html', 10, 2 );
 
 		add_action( 'woocommerce_checkout_create_order_line_item', __CLASS__ . '::add_custom_data_to_order', 10, 4 );
+
+    add_action( 'init',  __CLASS__ . '::rewrite_rules');
+    add_filter( 'query_vars', __CLASS__ . '::query_vars');
+    add_action( 'template_include', __CLASS__ . '::template_include');
 
 		// Set pay button text
 		// add_filter( 'woocommerce_product_add_to_cart_text', __CLASS__ . '::add_to_cart_button', 10, 2);
@@ -66,13 +70,28 @@ class Prestations_Payment_Product {
 						),
 					),
 				],
-				[
-					'name' => __('Default payment product', 'prestations'),
-					'id' => 'default_product',
+        [
+					'name' => __('Default product', 'prestations'),
+					'id' => $prefix . 'default_product',
 					'type' => ($pp_count > 0) ? 'select' : 'custom_html',
-					'std' => ($pp_count > 0) ? NULL : __('Create a payment product first', 'prestations'),
+					'std' => ($pp_count > 0) ? array_key_first($pp) : __('Create a payment product first', 'prestations'),
 					'options' => $pp,
+          'placeholder' => __('Select a product', 'prestations'),
 					'desc' => __('Used to generate payment links.', 'prestations'),
+          'sanitize_callback' => __CLASS__ . '::rewrite_slug_validation',
+				],
+        [
+					'name' => __('Payment link slug', 'prestations'),
+					'id' => $prefix . 'rewrite_slug',
+					'type' => 'text',
+          'size' => 10,
+          'desc' => sprintf(
+            '%1$s <a href="%2$s" target="_blank">%2$s</a>',
+            'Try this ',
+            get_site_url() . '/' . Prestations::get_option('woocommerce_rewrite_slug') . '/B1234/123.45',
+          ),
+					// 'desc' => __('Used to generate payment links.', 'prestations'),
+          'sanitize_callback' => __CLASS__ . '::rewrite_slug_validation',
 				],
 			],
 		];
@@ -135,7 +154,7 @@ class Prestations_Payment_Product {
 
   static function add_to_cart_message( $message, $product_id ) {
       // make filter magic happen here...
-      if(!empty($_POST['prpay_product_prestation_id'])) $message = $_POST['prpay_product_prestation_id'] . ": $message";
+      if(!empty($_POST['prpay_reference'])) $message = $_POST['prpay_reference'] . ": $message";
       return $message;
   }
 
@@ -143,8 +162,8 @@ class Prestations_Payment_Product {
     $product_type_options['prpay'] = array(
       "id"            => "_prpay",
       "wrapper_class" => "show_if_simple show_if_variable",
-      "label"         => __('Payments Only', 'prestations'),
-      "description"   => __('Check to use product as custom payments only.', 'prestations'),
+      "label"         => __('Prestation Payment', 'prestations'),
+      "description"   => __('Check to use product as custom Prestation Payment.', 'prestations'),
       "default"       => "no",
     );
     return $product_type_options;
@@ -162,10 +181,10 @@ class Prestations_Payment_Product {
     global $post;
 		if(!self::is_payment_product( wc_get_product( $post->ID ) )) return;
 
-    $prestation_id = (isset($_REQUEST['prestation_id'])) ? esc_attr($_REQUEST['prestation_id']) : NULL;
+    $reference = (isset($_REQUEST['reference'])) ? esc_attr($_REQUEST['reference']) : NULL;
 		$amount = (isset($_REQUEST['amount'])) ? esc_attr($_REQUEST['amount']) : ((isset($_REQUEST['nyp'])) ? esc_attr($_REQUEST['nyp']) : NULL);
 
-    // $prestation_id = isset( $_POST['prpay_product_prestation_id'] ) ? sanitize_text_field( $_POST['prpay_product_prestation_id'] ) : '';
+    // $reference = isset( $_POST['prpay_product_reference'] ) ? sanitize_text_field( $_POST['prpay_product_reference'] ) : '';
 		printf(
 		  '<div class="prpay-field prpay-field-amount">
 		    <p class="form-row form-row-wide">
@@ -182,25 +201,27 @@ class Prestations_Payment_Product {
 		printf(
       '<div class="prpay-field prpay-field-prestation-id">
 				<p class="form-row form-row-wide">
-					<label for="prpay_product_prestation_id" class="required">%s%s</label>
-					<input type="%s" class="input-text" name="prpay_product_prestation_id" value="%s" placeholder="%s" class=width:auto required>
+					<label for="prpay_reference" class="required">%s%s</label>
+					<input type="%s" class="input-text" name="prpay_reference" value="%s" placeholder="%s" class=width:auto required>
 					%s
         </p>
       </div>',
       __('Prestation reference', 'prestations'),
-      (empty($prestation_id)) ? ' <abbr class="required" title="required">*</abbr>' : ': <span class=prestation_id>' . $prestation_id . '</span>',
-      (empty($prestation_id)) ? 'text' : 'hidden',
-      $prestation_id,
+      (empty($reference)) ? ' <abbr class="required" title="required">*</abbr>' : ': <span class=reference>' . $reference . '</span>',
+      (empty($reference)) ? 'text' : 'hidden',
+      $reference,
       __("Enter a prestation id", 'prestations'),
-      (empty($prestation_id)) ? __('Use the reference number received during order.', 'prestations') : '',
+      (empty($reference)) ? __('Use the reference number received during order.', 'prestations') : '',
     );
   }
 
   static function add_to_cart_validation( $passed, $product_id, $quantity ) {
+    error_log("request " . print_r($_REQUEST, true));
+
     if($passed && self::is_payment_product( $product_id )) {
-      if(!empty($_POST['prpay_product_prestation_id'])) $prestation_id = sanitize_text_field($_POST['prpay_product_prestation_id']);
-      else if(!empty($_REQUEST['prestation_id'])) $prestation_id = sanitize_text_field($_REQUEST['prestation_id']);
-      else $prestation_id = NULL;
+      if(!empty($_POST['prpay_reference'])) $reference = sanitize_text_field($_POST['prpay_reference']);
+      else if(!empty($_REQUEST['reference'])) $reference = sanitize_text_field($_REQUEST['reference']);
+      else $reference = NULL;
 
 			if(!empty($_POST['prpay_product_amount'])) $amount = sanitize_text_field($_POST['prpay_product_amount']);
       else if(!empty($_REQUEST['amount'])) $amount = sanitize_text_field($_REQUEST['amount']);
@@ -214,7 +235,7 @@ class Prestations_Payment_Product {
         ), 'error' );
         return false;
 			}
-			if( empty( $prestation_id ) ) {
+			if( empty( $reference ) ) {
         $product_title = wc_get_product( $product_id )->get_title();
 
         wc_add_notice( sprintf(
@@ -236,8 +257,8 @@ class Prestations_Payment_Product {
   * @param Boolean $quantity Quantity
   */
   static function add_cart_item_data( $cart_item_data, $product_id, $variation_id, $quantity ) {
-    if(!empty($_POST['prpay_product_prestation_id'])) $cart_item_data['prpay_product_prestation_id'] = sanitize_text_field($_POST['prpay_product_prestation_id']);
-    else if(!empty($_REQUEST['prestation_id'])) $cart_item_data['prpay_product_prestation_id'] = sanitize_text_field($_REQUEST['prestation_id']);
+    if(!empty($_POST['prpay_reference'])) $cart_item_data['prpay_reference'] = sanitize_text_field($_POST['prpay_reference']);
+    else if(!empty($_REQUEST['reference'])) $cart_item_data['prpay_reference'] = sanitize_text_field($_REQUEST['reference']);
 
 		if(!empty($_POST['prpay_product_amount'])) $cart_item_data['prpay_product_amount'] = sanitize_text_field($_POST['prpay_product_amount']);
     else if(!empty($_REQUEST['amount'])) $cart_item_data['prpay_product_amount'] = sanitize_text_field($_REQUEST['amount']);
@@ -251,11 +272,11 @@ class Prestations_Payment_Product {
   * @since 1.0.0
   */
   static function cart_item_name( $name, $cart_item, $cart_item_key ) {
-    if( isset( $cart_item['prpay_product_prestation_id'] ) ) {
+    if( isset( $cart_item['prpay_reference'] ) ) {
       $name = sprintf(
 				'<span class=prpay-prestation-id>%s%s</span>',
 				__('Payment for prestation #', 'prestations'),
-				esc_html( $cart_item['prpay_product_prestation_id'] ),
+				esc_html( $cart_item['prpay_reference'] ),
       );
     }
     return $name;
@@ -319,6 +340,90 @@ class Prestations_Payment_Product {
 		return (wc_get_product( $product_id )->get_meta( '_prpay' ) == 'yes');
 	}
 
+  static function rewrite_slug_validation($value, $field, $oldvalue) {
+    switch($field['id']) {
+      case 'woocommerce_rewrite_slug':
+      $value = sanitize_title($value);
+      break;
+
+      case 'woocommerce_default_product':
+      $pp = self::get_payment_products();
+      if(empty($value) && count($pp)==1) $value = array_key_first($pp);
+      $value = (get_post_status ( $value )) ? $value : NULL;
+      break;
+    }
+    // error_log($field['id'] . "=$value");
+    if($value != $oldvalue) set_transient('prestations_rewrite_flush', true);
+
+    return $value;
+  }
+
+  static function rewrite_rules() {
+    global $wp_query;
+
+    $pattern_ref = '([^&/]+)';
+    $pattern_price = '([0-9,.]+)';
+    $slug = Prestations::get_option('woocommerce_rewrite_slug');
+    $product_id = Prestations::get_option('woocommerce_default_product');
+    $cart_id = wc_get_page_id('cart');
+
+    // add_rewrite_tag('%reference%', $pattern_ref, 'reference=');
+    // add_rewrite_tag('%amount%', $pattern_price, 'amount=');
+
+    // error_log("\n pattern $slug/$pattern_ref/$pattern_price/? \n dest $dest\n");
+		// error_log(sprintf(
+    //   'add_rewrite_rule(%s, %s);',
+		// 	"$slug/$pattern_ref/$pattern_price/?",
+    //   sprintf(
+    //     'index.php?page_id=%1s&add-to-cart=%s&reference=$matches[1]&amount=$matches[2]',
+    //     $cart_id,
+    //     $product_id,
+    //   ),
+		// ));
+
+    // add_rewrite_rule(
+    //   "$slug/$pattern_ref/$pattern_price/?",
+    //   sprintf(
+    //     'index.php?page_id=%s&add-to-cart=%s&reference=$matches[1]&amount=$matches[2]',
+    //     // $cart_id,
+    //     $product_id,
+    //     $product_id,
+    //   ),
+    //   'top',
+    // );
+
+    add_rewrite_rule(
+      "$slug/$pattern_ref/$pattern_price/?",
+      sprintf(
+        'index.php?page_id=%s&add-to-cart=%s&reference=$matches[1]&amount=$matches[2]',
+        $cart_id,
+        $product_id,
+      ),
+    	'top',
+    );
+
+	}
+
+  static function query_vars ( $query_vars ) {
+    $query_vars[] = 'reference';
+    $query_vars[] = 'amount';
+    $query_vars[] = 'add-to-cart';
+    return $query_vars;
+  }
+
+  static function template_include( $template ) {
+    if(!empty(get_query_var('add-to-cart'))) {
+      global $woocommerce;
+      $woocommerce->cart->add_to_cart(get_query_var('add-to-cart'));
+    }
+    // error_log('page ' . get_query_var('page_id') . ' add-to-cart ' . get_query_var('add-to-cart') . ' ref ' . get_query_var('reference') . ' amount ' . get_query_var('amount') );
+    // if ( get_query_var( 'myparamname' ) == false || get_query_var( 'myparamname' ) == '' ) {
+    // }
+
+    return $template;
+    // return get_template_directory() . '/template-name.php';
+  }
+
 }
 
-Prestations_Payment_Product::run();
+// Prestations_Payment_Product::run();

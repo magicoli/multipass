@@ -576,11 +576,11 @@ msgid "Pay prestation"
 msgstr ""
 
 #: includes/third-party/class-woocommerce-payment-product.php:146
-msgid "Payments Only"
+msgid "Prestation Payment"
 msgstr ""
 
 #: includes/third-party/class-woocommerce-payment-product.php:147
-msgid "Check to use product as custom payments only."
+msgid "Check to use product as custom Prestation Payment."
 msgstr ""
 
 #: includes/third-party/class-woocommerce-payment-product.php:176

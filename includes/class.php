@@ -145,6 +145,14 @@ class Prestations {
 			$this->loaders[] = new Prestations_Payment_Product();
 		}
 
+		if(get_transient('prestations_rewrite_flush') || get_transient('prestations_rewrite_version') != PRESTATIONS_VERSION) {
+		  wp_cache_flush();
+		  add_action('init', 'flush_rewrite_rules');
+			delete_transient('prestations_rewrite_flush');
+		  set_transient('prestations_rewrite_version', PRESTATIONS_VERSION);
+		  // prestations_admin_notice( 'Rewrite rules flushed' );
+		}
+
 	}
 
 	/**

@@ -34,6 +34,7 @@ This should also fit well for other kind of services, needing a more fluid appro
 * [x] Prestation or service level deposit percentage or fixed amount.
 * [x] Prestation or service level discount percentage or fixed amount.
 * [x] Summarized payment status, centralizing amounts paid locally or via external providers.
+* [x] Custom payments via WooCommerce product
 
 = Integrations (work in progress) =
 
