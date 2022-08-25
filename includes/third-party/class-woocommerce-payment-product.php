@@ -221,17 +221,27 @@ class Prestations_Payment_Product {
     );
   }
 
+  static function get_payment_reference() {
+    if(!empty($_POST['prpay_reference'])) $reference = sanitize_text_field($_POST['prpay_reference']);
+    else if(!empty($_REQUEST['reference'])) $reference = sanitize_text_field($_REQUEST['reference']);
+    else $reference = NULL;
+    return $reference;
+  }
+
+  static function get_payment_amount() {
+    if(!empty($_POST['prpay_product_amount'])) $amount = sanitize_text_field($_POST['prpay_product_amount']);
+    else if(!empty($_REQUEST['amount'])) $amount = sanitize_text_field($_REQUEST['amount']);
+    else $amount = NULL;
+    if(!is_numeric($amount)) $amount = NULL;
+    return $amount;
+  }
+
   static function add_to_cart_validation( $passed, $product_id, $quantity ) {
     if($passed && self::is_payment_product( $product_id )) {
-      if(!empty($_POST['prpay_reference'])) $reference = sanitize_text_field($_POST['prpay_reference']);
-      else if(!empty($_REQUEST['reference'])) $reference = sanitize_text_field($_REQUEST['reference']);
-      else $reference = NULL;
+      $reference = self::get_payment_reference();
+      $amount = self::get_payment_amount();
 
-			if(!empty($_POST['prpay_product_amount'])) $amount = sanitize_text_field($_POST['prpay_product_amount']);
-      else if(!empty($_REQUEST['amount'])) $amount = sanitize_text_field($_REQUEST['amount']);
-      else $amount = NULL;
-
-			if(!is_numeric($amount) || $amount <= 0) {
+			if( $amount <= 0 ) {
 				$product_title = wc_get_product( $product_id )->get_title();
 				wc_add_notice( sprintf(
           __('"%s" could not be added to the cart. Please provide a valid amount to pay.', 'prestations'),
@@ -261,12 +271,12 @@ class Prestations_Payment_Product {
   * @param Boolean $quantity Quantity
   */
   static function add_cart_item_data( $cart_item_data, $product_id, $variation_id, $quantity ) {
-    if(!empty($_POST['prpay_reference'])) $cart_item_data['prpay_reference'] = sanitize_text_field($_POST['prpay_reference']);
-    else if(!empty($_REQUEST['reference'])) $cart_item_data['prpay_reference'] = sanitize_text_field($_REQUEST['reference']);
+    $reference = self::get_payment_reference();
+    $amount = self::get_payment_amount();
+    error_log('ref ' . $reference . 'amount ' . $amount);
 
-		if(!empty($_POST['prpay_product_amount'])) $cart_item_data['prpay_product_amount'] = sanitize_text_field($_POST['prpay_product_amount']);
-    else if(!empty($_REQUEST['amount'])) $cart_item_data['prpay_product_amount'] = sanitize_text_field($_REQUEST['amount']);
-		else if(!empty($_REQUEST['nyp'])) $cart_item_data['prpay_product_amount'] = sanitize_text_field($_REQUEST['nyp']);
+    if(!empty($reference)) $cart_item_data['prpay_reference'] = $reference;
+		if(!empty($amount)) $cart_item_data['prpay_product_amount'] = $amount;
 
     return $cart_item_data;
   }
@@ -298,7 +308,7 @@ class Prestations_Payment_Product {
   }
 
 	static function get_price_html( $price_html, $product ) {
-    if($product->get_meta( '_linkproject' ) == 'yes') {
+    if($product->get_meta( '_prpay' ) == 'yes') {
       $price = max($product->get_price(), get_option('prpay_product_project_minimum_price', 0));
       if( $price == 0 ) {
         $price_html = apply_filters( 'woocommerce_empty_price_html', '', $product );
@@ -327,7 +337,8 @@ class Prestations_Payment_Product {
     foreach( $cart->get_cart() as $cart_key => $cart_item ) {
       $cached = wp_cache_get('prpay_product_cart_item_processed_' . $cart_key, 'prestations');
       if(!$cached) {
-        if( is_numeric( $cart_item['prpay_product_amount'] && empty($cart_item['prpay_product_amount_added'])) ) {
+        $added = (isset($cart_item['prpay_product_amount_added'])) ? $cart_item['prpay_product_amount_added'] : false;
+        if( is_numeric( $cart_item['prpay_product_amount']) &! $added) {
 					// $cart_item['data']->adjust_price( $cart_item['prpay_product_amount'] );
           $price = (float)$cart_item['data']->get_price( 'edit' );
           $total = $price + $cart_item['prpay_product_amount'];
