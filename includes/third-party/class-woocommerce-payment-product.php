@@ -284,10 +284,33 @@ class Prestations_Payment_Product {
   */
   static function cart_item_name( $name, $cart_item, $cart_item_key ) {
     if( isset( $cart_item['prpay_reference'] ) ) {
-      $name = sprintf(
+      $reference = sanitize_text_field($cart_item['prpay_reference']);
+
+      $prestation = get_page_by_path( $reference, OBJECT, 'prestation');
+      if($prestation) {
+        $dates = get_post_meta($prestation->ID, 'dates', true);
+        $from = date_i18n(get_option( 'date_format' ), $dates['from']);
+        $to = date_i18n(get_option( 'date_format' ), $dates['to']);
+
+        $cart_item_name = sprintf(
+          '%s<p>%s<p>',
+          $prestation->post_title,
+          sprintf(
+            // Translators: from [start date] to [end date] (without time)
+            __('from %s to %s', 'prestations'),
+            $from,
+            $to,
+          ),
+        );
+        return $cart_item_name;
+      }
+
+      return sprintf(
 				'<span class=prpay-prestation-id>%s%s</span>',
-				__('Payment for prestation #', 'prestations'),
-				esc_html( $cart_item['prpay_reference'] ),
+				sprintf(
+          __('Reference #%s', 'prestations'),
+          $reference,
+        ),
       );
     }
     return $name;
