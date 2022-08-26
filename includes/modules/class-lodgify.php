@@ -96,14 +96,19 @@ class Prestations_Lodgify {
 		$prefix = 'lodgify_';
 
 		// Lodify Settings tab
-		$meta_boxes['prestations-lodgify-settings'] = [
-			'title'          => __( 'Lodgify Settings', 'prestations' ),
-			'id'             => 'prestations-lodgify-settings',
-			'settings_pages' => ['prestations'],
-			'tab'            => 'lodgify',
-			'fields'         => [
-			],
-		];
+    $meta_boxes[] = [
+        'title'          => __( 'Lodgify Settings', 'prestations' ),
+        'id'             => 'lodgify-settings',
+        'settings_pages' => ['prestations'],
+        'tab'            => 'lodgify',
+        'fields'         => [
+            [
+                'name' => __( 'API Key', 'prestations' ),
+                'id'   => $prefix . 'api_key',
+                'type' => 'text',
+            ],
+        ],
+    ];
 
 		return $meta_boxes;
 	}
