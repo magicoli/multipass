@@ -138,10 +138,10 @@ class Prestations {
 		}
 
 		if(is_plugin_active('woocommerce/woocommerce.php')) {
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/third-party/class-woocommerce.php';
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/modules/class-woocommerce.php';
 			$this->loaders[] = new Prestations_WooCommerce();
 
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/third-party/class-woocommerce-payment-product.php';
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/modules/class-woocommerce-payment-product.php';
 			$this->loaders[] = new Prestations_Payment_Product();
 		}
 

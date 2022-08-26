@@ -542,12 +542,13 @@ class Prestations_Prestation {
 
 			'fields'     => [
 				'items' => [
-					'name'      => __( 'Unmanaged Items', 'prestations' ),
+					'name'      => __( 'Manual operations', 'prestations' ),
 					'id'     => $prefix . 'manual_items',
 					'type'   => 'group',
 					'clone'  => true,
 					'readonly' => false,
 					'class' => 'low-gap',
+					'label_description' => '<p>' . __('Use manual operations only for items not managed by modules.', 'prestations') . '</p>',
 					'fields' => [
 						[
 							'name'    => __( 'Type', 'prestations' ),
@@ -961,8 +962,8 @@ class Prestations_Prestation {
 	static function get_managed_list($args = [], $field = []) {
 		$html = apply_filters('prestations_managed_list', NULL);
 
-		if(empty($html))
-		$html = __('No data', 'prestations');
+		// if(empty($html))
+		// $html = __('No data', 'prestations');
 
 		return $html;
 	}

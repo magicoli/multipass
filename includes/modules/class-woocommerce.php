@@ -676,6 +676,7 @@ class Prestations_WooCommerce {
 		$data['columns'] = array(
 			'id' => __('ID', 'prestations'),
 			'created' => __('Created', 'prestations'),
+			'source' => __('Source', 'prestations'),
 			'description' => __('Description', 'prestations'),
 			'from' => __('From', 'prestations'),
 			'to' => __('To', 'prestations'),
