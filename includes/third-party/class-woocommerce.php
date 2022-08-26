@@ -47,8 +47,8 @@ class Prestations_WooCommerce {
 	 * @since    0.1.0
 	 */
 	public function __construct() {
-		// error_log(__FUNCTION__);
-		//
+		register_activation_hook( PRESTATIONS_FILE, __CLASS__ . '::activate' );
+		// register_deactivation_hook( PRESTATIONS_FILE, __CLASS__ . '::deactivate' );
 	}
 
 	/**
@@ -124,6 +124,10 @@ class Prestations_WooCommerce {
 			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
 
+	}
+
+	static function activate() {
+		self::sync_orders();
 	}
 
 	static function register_fields( $meta_boxes ) {

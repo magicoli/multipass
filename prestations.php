@@ -30,6 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 define( 'PRESTATIONS_VERSION', '0.1.1.x-dev' . '-' . time() );
+define( 'PRESTATIONS_FILE', __FILE__ );
 
 /**
  * The code that runs during plugin activation.
