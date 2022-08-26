@@ -44,9 +44,9 @@ class Prestations {
 	 *
 	 * @since    0.1.0
 	 * @access   protected
-	 * @var      string    $prestations    The string used to uniquely identify this plugin.
+	 * @var      string    $plugin_slug    The string used to uniquely identify this plugin.
 	 */
-	protected $prestations;
+	protected $plugin_slug;
 
 	/**
 	 * The current version of the plugin.
@@ -72,7 +72,7 @@ class Prestations {
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->prestations = 'prestations';
+		$this->plugin_slug = 'prestations';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -181,7 +181,7 @@ class Prestations {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Prestations_Admin( $this->get_prestations(), $this->get_version() );
+		$plugin_admin = new Prestations_Admin( $this->get_plugin_slug(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -197,7 +197,7 @@ class Prestations {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Prestations_Public( $this->get_prestations(), $this->get_version() );
+		$plugin_public = new Prestations_Public( $this->get_plugin_slug(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
@@ -225,8 +225,8 @@ class Prestations {
 	 * @since     0.1.0
 	 * @return    string    The name of the plugin.
 	 */
-	public function get_prestations() {
-		return $this->prestations;
+	public function get_plugin_slug() {
+		return $this->plugin_slug;
 	}
 
 	/**

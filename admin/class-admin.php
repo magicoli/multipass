@@ -27,9 +27,9 @@ class Prestations_Admin {
 	 *
 	 * @since    0.1.0
 	 * @access   private
-	 * @var      string    $prestations    The ID of this plugin.
+	 * @var      string    $plugin_slug    The ID of this plugin.
 	 */
-	private $prestations;
+	private $plugin_slug;
 
 	/**
 	 * The version of this plugin.
@@ -44,12 +44,12 @@ class Prestations_Admin {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.1.0
-	 * @param      string    $prestations       The name of this plugin.
+	 * @param      string    $plugin_slug       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $prestations, $version ) {
+	public function __construct( $plugin_slug, $version ) {
 
-		$this->prestations = $prestations;
+		$this->plugin_slug = $plugin_slug;
 		$this->version = $version;
 
 	}
@@ -73,7 +73,7 @@ class Prestations_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->prestations, plugin_dir_url( __FILE__ ) . 'css/admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_slug, plugin_dir_url( __FILE__ ) . 'css/admin.css', array(), $this->version, 'all' );
 
 	}
 
@@ -96,7 +96,7 @@ class Prestations_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->prestations, plugin_dir_url( __FILE__ ) . 'js/admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_slug, plugin_dir_url( __FILE__ ) . 'js/admin.js', array( 'jquery' ), $this->version, false );
 
 	}
 
