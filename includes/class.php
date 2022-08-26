@@ -147,7 +147,7 @@ class Prestations {
 		  add_action('init', 'flush_rewrite_rules');
 			delete_transient('prestations_rewrite_flush');
 		  set_transient('prestations_rewrite_version', PRESTATIONS_VERSION);
-		  // prestations_admin_notice( 'Rewrite rules flushed' );
+		  // admin_notice( 'Rewrite rules flushed' );
 		}
 
 	}
@@ -213,6 +213,8 @@ class Prestations {
 				$this->loaders[$key]->run();
 			}
 		}
+
+		add_action('admin_head', __CLASS__ . '::get_admin_notices_queue');
 	}
 
 	/**
@@ -401,4 +403,45 @@ class Prestations {
 
 		return $price;
 	}
+
+	static function admin_notice($notice, $class='info', $dismissible=true ) {
+		if(empty($notice)) return;
+		if($dismissible) $is_dismissible = 'is-dismissible';
+		if(is_admin()) {
+			add_action( 'admin_notices', function() use ($notice, $class, $is_dismissible) {
+				?>
+				<div class="notice notice-<?=$class?> <?=$is_dismissible?>">
+					<p><strong><?php echo PRESTATIONS_PLUGIN_NAME; ?></strong>: <?php _e( $notice, 'band-tools' ); ?></p>
+				</div>
+				<?php
+			} );
+		} else {
+			delay_admin_notice($notice, $class, $dismissible, __FUNCTION__);
+		}
+	}
+
+	static function delay_admin_notice( $notice, $class='info', $dismissible=true, $key = NULL ) {
+		$transient_key = sanitize_title(__CLASS__ . '-admin_notices_queue');
+
+		$queue = get_transient( $transient_key );
+		if(!is_array($queue)) $queue = array($queue);
+
+		$hash = hash('md5', $notice);
+		$queue[$hash] = array('notice' => $notice, 'class' => $class, 'dismissible' => $dismissible);
+		set_transient( $transient_key, $queue );
+	}
+
+	static function get_admin_notices_queue() {
+		if(!is_admin()) return;
+		$transient_key = sanitize_title(__CLASS__ . '-admin_notices_queue');
+
+		$queue = get_transient( $transient_key );
+		if(!is_array($queue)) $queue = array($queue);
+		foreach($queue as $key => $notice) {
+			if(!is_array($notice)) continue;
+			admin_notice($notice['notice'], $notice['class'], $notice['dismissible'] );
+		}
+		delete_transient( $transient_key );
+	}
+
 }

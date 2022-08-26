@@ -31,6 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'PRESTATIONS_VERSION', '0.1.1.x-dev' . '-' . time() );
 define( 'PRESTATIONS_FILE', __FILE__ );
+define( 'PRESTATIONS_PLUGIN_NAME', 'Prestations' );
 
 /**
  * The code that runs during plugin activation.
