@@ -137,13 +137,15 @@ class Prestations {
 			$this->loaders[] = new Prestations_Mailbox();
 		}
 
-		if(is_plugin_active('woocommerce/woocommerce.php')) {
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/modules/class-woocommerce.php';
-			$this->loaders[] = new Prestations_WooCommerce();
-
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/modules/class-woocommerce-payment-product.php';
-			$this->loaders[] = new Prestations_Payment_Product();
-		}
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/modules/load-modules.php';
+		$this->loaders[] = new Prestations_Modules();
+		// if(is_plugin_active('woocommerce/woocommerce.php')) {
+		// 	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/modules/class-woocommerce.php';
+		// 	$this->loaders[] = new Prestations_WooCommerce();
+		//
+		// 	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/modules/class-woocommerce-payment-product.php';
+		// 	$this->loaders[] = new Prestations_Payment_Product();
+		// }
 
 		if(get_transient('prestations_rewrite_flush') || get_transient('prestations_rewrite_version') != PRESTATIONS_VERSION) {
 		  wp_cache_flush();

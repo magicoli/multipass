@@ -21,7 +21,7 @@
  * @subpackage Prestations/includes
  * @author     Your Name <email@example.com>
  */
-class Prestations_WooCommerce {
+class Prestations_WooCommerce extends Prestations_Modules {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -106,10 +106,11 @@ class Prestations_WooCommerce {
 				'accepted_args' => 2,
 			),
 
-			array(
-				'hook' => 'prestations_managed_list',
-				'callback' => 'managed_list_filter',
-			)
+			// array(
+			// 	'hook' => 'prestations_managed_list',
+			// 	'component' => get_parent_class();
+			// 	'callback' => 'managed_list_filter',
+			// )
 		);
 
 		$defaults = array( 'component' => __CLASS__, 'priority' => 10, 'accepted_args' => 1 );
@@ -519,7 +520,7 @@ class Prestations_WooCommerce {
 		if(!empty($dates)) {
 			$dates = array_unique(array(min($dates), max($dates)));
 		}
-		update_post_meta( $prestation_id, 'managed-woocommerce', array(
+		update_post_meta( $prestation_id, 'modules-data', array(
 			'subtotal' => $p_orders_subtotal,
 			'discount' => $p_orders_discount,
 			'refunded' => $p_orders_refunded,
@@ -532,7 +533,7 @@ class Prestations_WooCommerce {
 
 		Prestations_Prestation::update_prestation_amounts($prestation_id, get_post($prestation_id), true );
 
-		// $metas = get_post_meta($prestation_id, 'managed-woocommerce');
+		// $metas = get_post_meta($prestation_id, 'modules-data');
 		// error_log(print_r($metas, true));
 		// $metas['woocommerce'] = $lines;
 		// foreach($metas as $key => $meta) {
@@ -672,7 +673,7 @@ class Prestations_WooCommerce {
 
 		global $post;
 
-		$data = get_post_meta($post->ID, 'managed-woocommerce', true);
+		$data = get_post_meta($post->ID, 'modules-data', true);
 		$data['columns'] = array(
 			'id' => __('ID', 'prestations'),
 			'created' => __('Created', 'prestations'),
