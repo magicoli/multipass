@@ -75,6 +75,9 @@ class Prestations_Modules {
 		if(in_array('imap', $enabled))
 		require_once plugin_dir_path(PRESTATIONS_FILE) . 'includes/class-mailbox.php';
 
+		if(in_array('lodgify', $enabled))
+		require_once plugin_dir_path(PRESTATIONS_FILE) . 'includes/modules/class-lodgify.php';
+
 	}
 
 	/**
@@ -138,6 +141,7 @@ class Prestations_Modules {
                 'type'    => 'checkbox_list',
                 'options' => [
                     'imap'    => __( 'Mail Processing', 'prestations' ),
+                    'lodgify' => __( 'Lodgify', 'prestations' ),
                 ],
             ],
         ],
