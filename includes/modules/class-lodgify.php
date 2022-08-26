@@ -41,12 +41,18 @@ class Prestations_Lodgify {
 	 */
 	protected $filters;
 
+	protected $api_url;
+	protected $api_key;
+
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
 	 *
 	 * @since    0.1.0
 	 */
 	public function __construct() {
+		$this->api_url = 'https://api.lodgify.com';
+		$this->api_key = Prestations::get_option('lodgify_api_key');
+
 		// register_activation_hook( PRESTATIONS_FILE, __CLASS__ . '::activate' );
 		// register_deactivation_hook( PRESTATIONS_FILE, __CLASS__ . '::deactivate' );
 	}
@@ -106,13 +112,70 @@ class Prestations_Lodgify {
                 'name' => __( 'API Key', 'prestations' ),
                 'id'   => $prefix . 'api_key',
                 'type' => 'text',
+								'sanitize_callback' => __CLASS__ . '::api_key_validation',
             ],
+						[
+							'name'              => __( 'Sync bookings', 'prestations' ),
+							'id'                => $prefix . 'sync_bookings',
+							'type'              => 'switch',
+							'desc'              => __( 'Sync Lodgify bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'prestations' ),
+							'style'             => 'rounded',
+							'sanitize_callback' => 'Prestations_Lodgify::sync_bookings',
+							'save_field' => false,
+							'visible' => [
+									'when'     => [['api_key', '!=', '']],
+									'relation' => 'or',
+							],
+						],
         ],
     ];
 
 		return $meta_boxes;
 	}
 
+	function api_request($path, $args = []) {
+		$url = $this->api_url . "$path?" . http_build_query($args);
+		$options = array(
+			// 'method'  => 'GET',
+			'timeout' => 10,
+			// 'ignore_errors' => true,
+			'headers'  => array(
+				'X-ApiKey' => $this->api_key,
+			),
+		);
+		$response = wp_remote_get( $url, $options );
+		if(is_wp_error($response)) {
+			// error_log( __FUNCTION__ . "($path) error " . $response->get_error_message() );
+			return $response;
+		} else if ( $response['response']['code'] != 200 ) {
+			return new WP_Error ( __FUNCTION__ . '-wrongresponse', 'Response code ' . $response['response']['code'] );
+		} else {
+			$json_data = json_decode($response['body'], true);
+		}
+
+		return $json_data;
+	}
+
+	static function api_key_validation($value, $field, $oldvalue) {
+		if(empty($value)) return false;
+		if($value == $oldvalue) return $value; // we assume it has already been checked
+
+		$lodgify = new Prestations_Lodgify();
+		$lodgify->api_key = $value;
+
+		$result = $lodgify->api_request('/v1/properties', array());
+
+		if(is_wp_error($result)) {
+			$message = sprintf(
+				__('API Key verification failed (%s).', 'prestations') ,
+				$result->get_error_message(),
+			);
+			add_settings_error( $field['id'], $field['id'], $message, 'error' );
+			return false;
+		}
+
+		return $value;
+	}
 }
 
 $this->loaders[] = new Prestations_Lodgify();
