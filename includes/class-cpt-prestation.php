@@ -959,7 +959,7 @@ class Prestations_Prestation {
 	}
 
 	static function get_managed_list($args = [], $field = []) {
-		$html = apply_filters('get_managed_list', NULL);
+		$html = apply_filters('prestations_managed_list', NULL);
 
 		if(empty($html))
 		$html = __('No data', 'prestations');

@@ -107,8 +107,8 @@ class Prestations_WooCommerce {
 			),
 
 			array(
-				'hook' => 'get_managed_list',
-				'callback' => 'get_managed_list_filter',
+				'hook' => 'prestations_managed_list',
+				'callback' => 'managed_list_filter',
 			)
 		);
 
@@ -666,7 +666,7 @@ class Prestations_WooCommerce {
 		}
 	}
 
-	static function get_managed_list_filter($html = '') {
+	static function managed_list_filter($html = '') {
 		$title = __('Online Shop (WooCommerce)', 'prestations');
 		if(empty($list)) $list = __('Empty list', 'prestations');
 
