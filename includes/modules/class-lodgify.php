@@ -53,6 +53,9 @@ class Prestations_Lodgify {
 		$this->api_url = 'https://api.lodgify.com';
 		$this->api_key = Prestations::get_option('lodgify_api_key');
 
+		$this->locale = preg_replace('/_.*/', '', get_locale());
+		if(empty($this->locale)) $this->locale = 'en';
+
 		// register_activation_hook( PRESTATIONS_FILE, __CLASS__ . '::activate' );
 		// register_deactivation_hook( PRESTATIONS_FILE, __CLASS__ . '::deactivate' );
 	}
@@ -141,6 +144,7 @@ class Prestations_Lodgify {
 			// 'ignore_errors' => true,
 			'headers'  => array(
 				'X-ApiKey' => $this->api_key,
+				'Accept-Language' => $this->locale,
 			),
 		);
 		$response = wp_remote_get( $url, $options );
