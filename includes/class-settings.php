@@ -249,13 +249,13 @@ class Prestations_Settings {
 								],
 						],
 				],
-				[
-					'name'  => __( 'Enable Email Processing', 'prestations' ),
-					'id'    => $prefix . 'enable_email_processing',
-					'type'  => 'switch',
-					'desc_tip'  => __( 'Use IMAP to collect emails and attach them to prestations', 'prestations' ),
-					'style' => 'rounded',
-				],
+				// [
+				// 	'name'  => __( 'Enable Email Processing', 'prestations' ),
+				// 	'id'    => $prefix . 'enable_email_processing',
+				// 	'type'  => 'switch',
+				// 	'desc_tip'  => __( 'Use IMAP to collect emails and attach them to prestations', 'prestations' ),
+				// 	'style' => 'rounded',
+				// ],
 			],
 		];
 

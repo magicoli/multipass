@@ -67,6 +67,14 @@ class Prestations_Modules {
 			require_once plugin_dir_path(PRESTATIONS_FILE) . 'includes/modules/class-woocommerce-payment-product.php';
 			$this->loaders[] = new Prestations_Payment_Product();
 		}
+
+		if(isset($_REQUEST['submit']) && $_REQUEST['page'] == 'prestations')
+		$enabled = (isset($_REQUEST['modules_enable'])) ? $_REQUEST['modules_enable'] : [];
+		else $enabled = Prestations::get_option('modules_enable', []);
+
+		if(in_array('imap', $enabled))
+		require_once plugin_dir_path(PRESTATIONS_FILE) . 'includes/class-mailbox.php';
+
 	}
 
 	/**
@@ -90,14 +98,10 @@ class Prestations_Modules {
 			// 	'hook' => 'mb_settings_pages',
 			// 	'callback' => 'register_settings_pages',
 			// ),
-			// array(
-			// 	'hook' => 'rwmb_meta_boxes',
-			// 	'callback' => 'register_settings_fields',
-			// ),
-			// array(
-			// 	'hook' => 'rwmb_meta_boxes',
-			// 	'callback' => 'register_fields'
-			// ),
+			array(
+				'hook' => 'rwmb_meta_boxes',
+				'callback' => 'register_fields'
+			),
 			array(
 				'hook' => 'prestations_managed_list',
 				'callback' => 'managed_list_filter',
@@ -116,6 +120,30 @@ class Prestations_Modules {
 			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
 
+	}
+
+	static function register_fields( $meta_boxes ) {
+		$prefix = 'modules_';
+
+		// Modules settings in General tab
+    $meta_boxes[] = [
+        'title'          => __( 'Prestations Modules', 'prestations' ),
+        'id'             => 'prestations-modules',
+        'settings_pages' => ['prestations'],
+        'tab'            => 'general',
+        'fields'         => [
+            [
+                'name'    => __( 'Modules', 'prestations' ),
+                'id'      => $prefix . 'enable',
+                'type'    => 'checkbox_list',
+                'options' => [
+                    'imap'    => __( 'Mail Processing', 'prestations' ),
+                ],
+            ],
+        ],
+    ];
+
+    return $meta_boxes;
 	}
 
 	static function managed_list_filter($html = '') {

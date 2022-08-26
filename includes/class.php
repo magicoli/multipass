@@ -132,11 +132,6 @@ class Prestations {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-settings.php';
 		$this->loaders[] = new Prestations_Settings();
 
-		if( Prestations::get_option('enable_email_processing') == true) {
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-mailbox.php';
-			$this->loaders[] = new Prestations_Mailbox();
-		}
-
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/modules/load-modules.php';
 		$this->loaders[] = new Prestations_Modules();
 		// if(is_plugin_active('woocommerce/woocommerce.php')) {
