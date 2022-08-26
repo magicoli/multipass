@@ -414,7 +414,7 @@ class Prestations_WooCommerce {
 		$p_orders_refunded = 0;
 		$p_orders_subtotal = 0;
 
-		$payment_products = Prestations::get_option('woocommerce_payment_products');
+		$payment_products = Prestations_Payment_Product::get_payment_products();
 		if(!is_array($payment_products)) $payment_products = [ $payment_products ];
 		$excl_tax = false;
 
@@ -479,7 +479,10 @@ class Prestations_WooCommerce {
 					'item_type' => $item->get_type(), // e.g. "line_item"
 				);
 
-				if(in_array($item->get_product_id(), $payment_products)) {
+				// if(in_array($item->get_product_id(), $payment_products)) {
+				if(Prestations_Payment_Product::is_payment_product($product)) {
+					error_log("item_id $item_id is payment product $product_id");
+
 					$p_order['subtotal'] -= $item->get_subtotal();
 					$p_order['refunded'] -= $order->get_total_refunded_for_item($item_id);
 					$p_order['total'] = $p_order['total'] - $item->get_total() + $order->get_total_refunded_for_item($item_id);

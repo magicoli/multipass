@@ -373,9 +373,12 @@ class Prestations_Payment_Product {
     }
   }
 
-	static function is_payment_product($product_id) {
+	static function is_payment_product($product) {
 	  // return true; // let's handle this later
-		return (wc_get_product( $product_id )->get_meta( '_prpay' ) == 'yes');
+	  if(is_numeric($product)) $product = wc_get_product($product);
+    if(!$product) return false;
+
+		return ($product->get_meta( '_prpay' ) == 'yes') ? true : false;
 	}
 
   static function rewrite_slug_validation($value, $field, $oldvalue) {
