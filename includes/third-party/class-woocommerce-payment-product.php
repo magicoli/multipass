@@ -127,7 +127,7 @@ class Prestations_Payment_Product {
 	}
 
 	static function payment_products_list() {
-		$html = '';
+		$output = '';
 		$payment_products = self::get_payment_products();
 		foreach($payment_products as $product_id => $product_title) {
 			$payment_products[$product_id] = sprintf(
@@ -138,12 +138,12 @@ class Prestations_Payment_Product {
 		}
 
 		$count = count($payment_products);
-		$html = sprintf(
+		$output = sprintf(
 			_n(  '%s product enabled: %s', '%s products enabled: %s', $count, 'text-domain' ),
 			number_format_i18n( $count ),
 			join(', ', $payment_products),
 		);
-		return $html;
+		return $output;
 	}
 
   static function add_to_cart_button( $text, $product ) {
@@ -274,6 +274,8 @@ class Prestations_Payment_Product {
 
     if(!empty($reference)) $cart_item_data['prpay_reference'] = $reference;
 		if(!empty($amount)) $cart_item_data['prpay_amount'] = $amount;
+    $prestation = get_page_by_path( $reference, OBJECT, 'prestation');
+    if($prestation) $cart_item_data['title'] = self::prestation_cart_name($prestation);
 
     return $cart_item_data;
   }
@@ -320,10 +322,11 @@ class Prestations_Payment_Product {
   * Add custom field to order object
   */
   static function add_custom_data_to_order( $item, $cart_item_key, $values, $order ) {
-    foreach( $item as $cart_item_key=>$values ) {
-      if( isset( $values['prpay_product_project_name'] ) ) {
-        $item->add_meta_data( __( 'Prestation', 'prestations' ), $values['prpay_product_project_name'], true );
-      }
+    if(isset($values['title'])) {
+      $item->set_name($values['title']);
+      // $item->set_meta_data(array(
+      //   'title' => $values['title'],
+      // ));
     }
   }
 
@@ -409,14 +412,15 @@ class Prestations_Payment_Product {
       $links[__('Deposit', 'prestations')] = get_home_url(NULL, "$slug/$reference/" . $deposit_due);
     }
     $links[__('Balance', 'prestations')] = get_home_url(NULL, "$slug/$reference/$balance");
+    $output = '';
     foreach($links as $key=>$link) {
-      $html .= sprintf(
+      $output .= sprintf(
         '<li>%1$s: <a href="%2$s" target="blank">%2$s</a></li>',
         $key,
         $link,
       );
     }
-    return (!empty($html)) ? '<ul>' . $html . '</ul>' : NULL;
+    return (!empty($output)) ? '<ul>' . $output . '</ul>' : NULL;
   }
 
   static function rewrite_rules() {

@@ -228,7 +228,6 @@ class Prestations_WooCommerce {
 				'value' => esc_attr( $query_vars['prestation_id'] ),
 			);
 		}
-		error_log('query ' . print_r($query, true));
 		return $query;
 	}
 
