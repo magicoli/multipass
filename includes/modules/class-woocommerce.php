@@ -84,6 +84,12 @@ class Prestations_WooCommerce extends Prestations_Modules {
 				'hook' => 'rwmb_meta_boxes',
 				'callback' => 'register_settings_fields',
 			),
+
+			array(
+				'hook' => 'prestations_set_association_title',
+				'callback' => 'set_association_title',
+			),
+
 			array(
 				'hook' => 'manage_edit-shop_order_columns',
 				'callback' => 'add_shop_order_columns',
@@ -221,6 +227,14 @@ class Prestations_WooCommerce extends Prestations_Modules {
 			// 		'columns' => 6,
 			// 	],
 			// ],
+		];
+
+		$meta_boxes['associations']['fields'][] = [
+			'name'       => __( 'Product', 'prestations' ),
+			'id'         => 'association_product_id',
+			'type'       => 'post',
+			'post_type'  => ['product'],
+			'field_type' => 'select_advanced',
 		];
 
 		return $meta_boxes;
@@ -372,6 +386,20 @@ class Prestations_WooCommerce extends Prestations_Modules {
 		// $this->background_request->data( array( 'value1' => $value1, 'value2' => $value2 ) );
 		// $this->background_request->dispatch();
 	}
+
+	static function set_association_title ($data ) {
+		// error_log(__CLASS__ . '::' . __FUNCTION__);
+		if(empty($_REQUEST['association_product_id'])) return $data;
+
+		if(empty($data['post_title'])) {
+			$data['post_title'] = get_the_title($_REQUEST['association_product_id']);
+			$data['post_name'] = sanitize_title($data['post_title']);
+			error_log(__CLASS__ . ' title now ' . $data['post_title'] . ' (' . $data['post_name'] . ')' );
+		}
+
+		return $data;
+	}
+
 
 	static function save_post_shop_order_action($post_id, $post, $update ) {
 		if( !$update ) return;

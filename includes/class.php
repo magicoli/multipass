@@ -129,6 +129,8 @@ class Prestations {
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-cpt-prestation.php';
 		$this->loaders[] = new Prestations_Prestation();
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-cpt-association.php';
+		$this->loaders[] = new Prestations_Association();
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-settings.php';
 		$this->loaders[] = new Prestations_Settings();
 
