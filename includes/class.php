@@ -103,44 +103,44 @@ class Prestations {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-loader.php';
+		require_once PRESTATIONS_DIR . 'includes/class-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-i18n.php';
+		require_once PRESTATIONS_DIR . 'includes/class-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-admin.php';
+		require_once PRESTATIONS_DIR . 'admin/class-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-public.php';
+		require_once PRESTATIONS_DIR . 'public/class-public.php';
 
 		$this->loader = new Prestations_Loader();
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-list-table.php';
+		require_once PRESTATIONS_DIR . 'vendor/autoload.php';
+		require_once PRESTATIONS_DIR . 'includes/class-list-table.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-cpt-prestation.php';
+		require_once PRESTATIONS_DIR . 'includes/class-cpt-prestation.php';
 		$this->loaders[] = new Prestations_Prestation();
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-cpt-association.php';
+		require_once PRESTATIONS_DIR . 'includes/class-cpt-association.php';
 		$this->loaders[] = new Prestations_Association();
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-settings.php';
+		require_once PRESTATIONS_DIR . 'includes/class-settings.php';
 		$this->loaders[] = new Prestations_Settings();
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/modules/load-modules.php';
+		require_once PRESTATIONS_DIR . 'includes/modules/load-modules.php';
 		$this->loaders[] = new Prestations_Modules();
 		// if(is_plugin_active('woocommerce/woocommerce.php')) {
-		// 	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/modules/class-woocommerce.php';
+		// 	require_once PRESTATIONS_DIR . 'includes/modules/class-woocommerce.php';
 		// 	$this->loaders[] = new Prestations_WooCommerce();
 		//
-		// 	require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/modules/class-woocommerce-payment-product.php';
+		// 	require_once PRESTATIONS_DIR . 'includes/modules/class-woocommerce-payment-product.php';
 		// 	$this->loaders[] = new Prestations_Payment_Product();
 		// }
 

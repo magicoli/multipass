@@ -494,3 +494,5 @@ class Prestations_Payment_Product {
     return $template;
   }
 }
+
+$this->modules[] = new Prestations_Payment_Product();

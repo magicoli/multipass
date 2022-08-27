@@ -182,4 +182,4 @@ class Prestations_Lodgify {
 	}
 }
 
-$this->loaders[] = new Prestations_Lodgify();
+$this->modules[] = new Prestations_Lodgify();

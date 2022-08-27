@@ -41,6 +41,8 @@ class Prestations_Modules {
 	 */
 	protected $filters;
 
+	public $locale;
+
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
 	 *
@@ -49,6 +51,8 @@ class Prestations_Modules {
 	public function __construct() {
 		$this->version = PRESTATIONS_VERSION;
 		$this->plugin_slug = 'prestations';
+
+		$this->locale = $this->get_locale();
 
 		$this->load_dependencies();
 		// $this->define_admin_hooks();
@@ -59,37 +63,48 @@ class Prestations_Modules {
 	}
 
 	private function load_dependencies() {
-		// error_log(__CLASS__ . ' ' . plugin_dir_path(PRESTATIONS_FILE) . 'includes/modules/class-woocommerce.php');
-		if(is_plugin_active('woocommerce/woocommerce.php')) {
-			require_once plugin_dir_path(PRESTATIONS_FILE) . 'includes/modules/class-woocommerce.php';
-			$this->loaders[] = new Prestations_WooCommerce();
-
-			require_once plugin_dir_path(PRESTATIONS_FILE) . 'includes/modules/class-woocommerce-payment-product.php';
-			$this->loaders[] = new Prestations_Payment_Product();
-		}
-
 		if(isset($_REQUEST['submit']) && $_REQUEST['page'] == 'prestations')
 		$enabled = (isset($_REQUEST['modules_enable'])) ? $_REQUEST['modules_enable'] : [];
 		else $enabled = Prestations::get_option('modules_enable', []);
 
-		if(in_array('imap', $enabled))
-		require_once plugin_dir_path(PRESTATIONS_FILE) . 'includes/class-mailbox.php';
+		$this->modules = [];
 
-		if(in_array('lodgify', $enabled))
-		require_once plugin_dir_path(PRESTATIONS_FILE) . 'includes/modules/class-lodgify.php';
+		if(is_plugin_active('woocommerce/woocommerce.php')) {
+			require_once PRESTATIONS_DIR . 'includes/modules/class-woocommerce.php';
+			require_once PRESTATIONS_DIR . 'includes/modules/class-woocommerce-payment-product.php';
+		}
+
+		if(in_array('imap', $enabled)) {
+			require_once PRESTATIONS_DIR . 'includes/class-mailbox.php';
+		}
+
+		if(in_array('lodgify', $enabled)) {
+			require_once PRESTATIONS_DIR . 'includes/modules/class-lodgify.php';
+		}
+
+		if(in_array('hbook', $enabled)) {
+			require_once PRESTATIONS_DIR . 'includes/modules/class-hbook.php';
+		}
 
 	}
 
+	public function get_locale() {
+		if(!empty($this->locale)) return $this->locale;
+
+		$locale = preg_replace('/_.*/', '', get_locale());
+		if(empty($locale)) $locale = 'en';
+
+		return $locale;
+	}
 	/**
 	 * Register the filters and actions with WordPress.
 	 *
 	 * @since    0.1.0
 	 */
 	public function run() {
-
-		if(!empty($this->loaders) && is_array($this->loaders)) {
-			foreach($this->loaders as $key => $loader) {
-				$this->loaders[$key]->run();
+		if(!empty($this->modules) && is_array($this->modules)) {
+			foreach($this->modules as $key => $loader) {
+				$this->modules[$key]->run();
 			}
 		}
 
@@ -129,23 +144,24 @@ class Prestations_Modules {
 		$prefix = 'modules_';
 
 		// Modules settings in General tab
-    $meta_boxes[] = [
-        'title'          => __( 'Prestations Modules', 'prestations' ),
-        'id'             => 'prestations-modules',
-        'settings_pages' => ['prestations'],
-        'tab'            => 'general',
-        'fields'         => [
-            [
-                'name'    => __( 'Modules', 'prestations' ),
-                'id'      => $prefix . 'enable',
-                'type'    => 'checkbox_list',
-                'options' => [
-                    'imap'    => __( 'Mail Processing', 'prestations' ),
-                    'lodgify' => __( 'Lodgify', 'prestations' ),
-                ],
-            ],
-        ],
-    ];
+		$meta_boxes[] = [
+			'title'          => __( 'Prestations Modules', 'prestations' ),
+			'id'             => 'prestations-modules',
+			'settings_pages' => ['prestations'],
+			'tab'            => 'general',
+			'fields'         => [
+				[
+					'name'    => __( 'Modules', 'prestations' ),
+					'id'      => $prefix . 'enable',
+					'type'    => 'checkbox_list',
+					'options' => [
+						'imap'    => __( 'Mail Processing', 'prestations' ),
+						'lodgify' => __( 'Lodgify', 'prestations' ),
+						'hbook' => __( 'HBook Plugin', 'prestations' ),
+					],
+				],
+			],
+		];
 
     return $meta_boxes;
 	}
@@ -156,7 +172,7 @@ class Prestations_Modules {
 
 		global $post;
 		$data = get_post_meta($post->ID, 'modules-data', true);
-		error_log(__FUNCTION__ . '(' . $post->ID . ') ' . print_r($data, true));
+
 		if(empty($data)) $data = [];
 		// if(is_array($data)) {
 			$data['columns'] = array(

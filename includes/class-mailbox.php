@@ -362,4 +362,4 @@ class Prestations_Mailbox_Process extends WP_Background_Process {
 
 }
 
-$this->loaders[] = new Prestations_Mailbox();
+$this->modules[] = new Prestations_Mailbox();

@@ -235,6 +235,12 @@ class Prestations_WooCommerce extends Prestations_Modules {
 			'type'       => 'post',
 			'post_type'  => ['product'],
 			'field_type' => 'select_advanced',
+			'admin_columns' => [
+					'position'   => 'before date',
+					'sort'       => true,
+					'searchable' => true,
+			],
+			'columns' => 3,
 		];
 
 		return $meta_boxes;
@@ -265,7 +271,6 @@ class Prestations_WooCommerce extends Prestations_Modules {
 		$orders = wc_get_orders([ 'prestation_id' => $post->ID ]);
 		$rows = [];
 		foreach ($orders as $key => $order) {
-			// error_log(print_r($order, true));
 			$row = sprintf(
 				'<div class="prestation-order">
 				<a href="%s">%s</a>
@@ -388,13 +393,11 @@ class Prestations_WooCommerce extends Prestations_Modules {
 	}
 
 	static function set_association_title ($data ) {
-		// error_log(__CLASS__ . '::' . __FUNCTION__);
 		if(empty($_REQUEST['association_product_id'])) return $data;
 
 		if(empty($data['post_title'])) {
 			$data['post_title'] = get_the_title($_REQUEST['association_product_id']);
 			$data['post_name'] = sanitize_title($data['post_title']);
-			error_log(__CLASS__ . ' title now ' . $data['post_title'] . ' (' . $data['post_name'] . ')' );
 		}
 
 		return $data;
@@ -514,7 +517,6 @@ class Prestations_WooCommerce extends Prestations_Modules {
 
 				// if(in_array($item->get_product_id(), $payment_products)) {
 				if(Prestations_Payment_Product::is_payment_product($product)) {
-					error_log("item_id $item_id is payment product $product_id");
 
 					$p_order['subtotal'] -= $item->get_subtotal();
 					$p_order['refunded'] -= $order->get_total_refunded_for_item($item_id);
@@ -522,7 +524,6 @@ class Prestations_WooCommerce extends Prestations_Modules {
 				}
 			}
 			$order_dates = array_filter($order_dates);
-			error_log("dates " . wp_date(wc_date_format(), $order_dates), true);
 
 			$p_order['from'] = (!empty($order_dates)) ? min($order_dates) : NULL;
 			$p_order['to'] = (!empty($order_dates)) ? max($order_dates) : NULL;
@@ -743,3 +744,5 @@ class Prestations_WooCommerce extends Prestations_Modules {
 	}
 
 }
+
+$this->modules[] = new Prestations_WooCommerce();

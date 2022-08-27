@@ -274,6 +274,7 @@ class Prestations_Association {
         'title'      => __( 'Associations', 'prestations' ),
         'post_types' => ['pr_association'],
         'autosave'   => true,
+				'style' => 'seamless',
         'fields'     => [
             [
                 'name'          => __( 'Page', 'prestations' ),
@@ -281,7 +282,12 @@ class Prestations_Association {
                 'type'          => 'post',
                 'post_type'     => ['page'],
                 'field_type'    => 'select_advanced',
-                'admin_columns' => 'after title',
+								'admin_columns' => [
+										'position'   => 'after title',
+										'sort'       => true,
+										'searchable' => true,
+								],
+								'columns' => 3,
             ],
         ],
     ];
@@ -296,7 +302,6 @@ class Prestations_Association {
 
 	static function insert_association_data ($data, $postarr, $unsanitized_postarr, $update ) {
 		if(!$update) return $data;
-		error_log(__CLASS__ . '::' . __FUNCTION__);
 		if($data['post_type'] !== 'pr_association') return $data;
 
 		$data = apply_filters('prestations_set_association_title', $data);
@@ -311,7 +316,6 @@ class Prestations_Association {
 		if(empty($data['post_title'])) {
 			$data['post_title'] = get_the_title($_REQUEST['association_page_id']);
 			$data['post_name'] = sanitize_title($data['post_title']);
-			error_log(__CLASS__ . ' title now ' . $data['post_title'] . ' (' . $data['post_name'] . ')' );
 		}
 		return $data;
 	}

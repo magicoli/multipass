@@ -177,7 +177,6 @@ class Prestations_Settings {
 			],
 			'icon_url'      => 'dashicons-book',
 		];
-
 		return $settings_pages;
 	}
 

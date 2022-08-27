@@ -31,6 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'PRESTATIONS_VERSION', '0.1.1.x-dev' . '-' . time() );
 define( 'PRESTATIONS_FILE', __FILE__ );
+define( 'PRESTATIONS_DIR', plugin_dir_path(__FILE__) );
 define( 'PRESTATIONS_PLUGIN_NAME', 'Prestations' );
 
 /**
@@ -38,7 +39,7 @@ define( 'PRESTATIONS_PLUGIN_NAME', 'Prestations' );
  * This action is documented in includes/class-activator.php
  */
 function activate_prestations() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-activator.php';
+	require_once PRESTATIONS_DIR . 'includes/class-activator.php';
 	Prestations_Activator::activate();
 }
 
@@ -47,7 +48,7 @@ function activate_prestations() {
  * This action is documented in includes/class-deactivator.php
  */
 function deactivate_prestations() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-deactivator.php';
+	require_once PRESTATIONS_DIR . 'includes/class-deactivator.php';
 	Prestations_Deactivator::deactivate();
 }
 
@@ -58,7 +59,7 @@ register_deactivation_hook( __FILE__, 'deactivate_prestations' );
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class.php';
+require PRESTATIONS_DIR . 'includes/class.php';
 
 /**
  * Begins execution of the plugin.
