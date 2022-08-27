@@ -173,7 +173,7 @@ class Prestations_Settings {
 			'style'         => 'no-boxes',
 			'columns'       => 2,
 			'tabs'          => [
-				'general' => 'General',
+				'general' => __('General', 'prestations'),
 			],
 			'icon_url'      => 'dashicons-book',
 		];
