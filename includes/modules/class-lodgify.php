@@ -21,25 +21,7 @@
  * @subpackage Prestations/includes
  * @author     Your Name <email@example.com>
  */
-class Prestations_Lodgify {
-
-	/**
-	 * The array of actions registered with WordPress.
-	 *
-	 * @since    0.1.0
-	 * @access   protected
-	 * @var      array    $actions    The actions registered with WordPress to fire when the plugin loads.
-	 */
-	protected $actions;
-
-	/**
-	 * The array of filters registered with WordPress.
-	 *
-	 * @since    0.1.0
-	 * @access   protected
-	 * @var      array    $filters    The filters registered with WordPress to fire when the plugin loads.
-	 */
-	protected $filters;
+class Prestations_Lodgify extends Prestations_Modules {
 
 	protected $api_url;
 	protected $api_key;
@@ -53,8 +35,7 @@ class Prestations_Lodgify {
 		$this->api_url = 'https://api.lodgify.com';
 		$this->api_key = Prestations::get_option('lodgify_api_key');
 
-		$this->locale = preg_replace('/_.*/', '', get_locale());
-		if(empty($this->locale)) $this->locale = 'en';
+		$this->locale = $this->get_locale();
 
 		// register_activation_hook( PRESTATIONS_FILE, __CLASS__ . '::activate' );
 		// register_deactivation_hook( PRESTATIONS_FILE, __CLASS__ . '::deactivate' );
@@ -103,6 +84,7 @@ class Prestations_Lodgify {
 
 	static function register_fields( $meta_boxes ) {
 		$prefix = 'lodgify_';
+		$lodgify = new Prestations_Lodgify();
 
 		// Lodify Settings tab
     $meta_boxes[] = [
@@ -133,7 +115,51 @@ class Prestations_Lodgify {
         ],
     ];
 
+		$meta_boxes['associations']['fields'][] = [
+			'name'       => __( 'Lodgify Property', 'prestations' ),
+			'id'         => 'association_lodgify_id',
+			'type'       => 'select_advanced',
+			'options'	=> $lodgify->get_property_options(),
+			'admin_columns' => [
+					'position'   => 'before date',
+					'sort'       => true,
+					'searchable' => true,
+			],
+			'columns' => 3,
+		];
+
 		return $meta_boxes;
+	}
+
+	function get_properties() {
+		$transient_key = sanitize_title(__CLASS__ . '-' . __FUNCTION__);
+		$properties = get_transient($transient_key);
+		if($properties) return $properties;
+
+		$results = $this->api_request('/v1/properties', array());
+		if(is_wp_error($results)) {
+			$message = sprintf(__('Get properties failed (%s).', 'prestations') , $results->get_error_message(),);
+			error_log($message);
+			// add_settings_error( $field['id'], $field['id'], $message, 'error' );
+			return [];
+		}
+
+		$properties = [];
+		foreach ($results as $result) {
+			$properties[$result['id']] = $result;
+		}
+
+		set_transient($transient_key, $properties, 3600);
+		return $properties;
+	}
+
+	function get_property_options() {
+		$options = [];
+		$properties = $this->get_properties();
+		if($properties) foreach($properties as $id => $property) {
+			$options[$id] = $property['name'];
+		}
+		return $options;
 	}
 
 	function api_request($path, $args = []) {
@@ -149,7 +175,6 @@ class Prestations_Lodgify {
 		);
 		$response = wp_remote_get( $url, $options );
 		if(is_wp_error($response)) {
-			// error_log( __FUNCTION__ . "($path) error " . $response->get_error_message() );
 			return $response;
 		} else if ( $response['response']['code'] != 200 ) {
 			return new WP_Error ( __FUNCTION__ . '-wrongresponse', 'Response code ' . $response['response']['code'] );
