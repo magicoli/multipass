@@ -705,4 +705,25 @@ class Prestations_Service {
 		return $data;
 	}
 
+	static function sanitize_guest($value, $field, $oldvalue) {
+		error_log(print_r($value, true));
+		if(isset($value['user_id'])) {
+			$user = get_user_by('id', $value['user_id']);
+		} else if(isset($value['email'])) {
+			$user = get_user_by('email', $value['email']);
+		} else if(isset($value['name'])) {
+			// $user = get_user_by('name', $value['name']);
+			$users = get_users(array('search' => $value['name']));
+			if (!empty($users)) $user = $users[0];
+		}
+		if(!empty($user)) {
+			$value = array_merge($value, array(
+				'user_id' => $user->ID,
+				'name' => $user->display_name,
+				'email' => $user->user_email,
+			));
+			error_log(print_r($value, true));
+		}
+		return $value;
+	}
 }
