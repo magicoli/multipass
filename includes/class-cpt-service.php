@@ -135,6 +135,12 @@ class Prestations_Service {
 				'hook' => 'init',
 				'callback' => 'register_taxonomies',
 			),
+
+			array (
+				'hook' => 'save_post',
+				'callback' => 'save_post_action',
+				'accepted_args' => 3,
+			),
 		);
 
 
@@ -149,6 +155,23 @@ class Prestations_Service {
 				'callback' => 'insert_service_data',
 				'accepted_args' => 4,
 			),
+			// array(
+			// 	'hook' => 'update_post_metadata',
+			// 	'callback' => 'update_metadata_filter',
+			// 	'accepted_args' => 5,
+			// ),
+
+			array(
+				'hook' => 'sanitize_post_meta_customer_for_service',
+				'callback' => 'sanitize_service_meta',
+				'accepted_args' => 3,
+			),
+			array(
+				'hook' => 'sanitize_post_meta_guest_for_service',
+				'callback' => 'sanitize_service_meta',
+				'accepted_args' => 3,
+			),
+
 			array(
 				'hook' => 'prestations_set_service_title',
 				'callback' => 'set_service_title',
@@ -314,11 +337,10 @@ class Prestations_Service {
                 'id'                => $prefix . 'customer',
                 'type'              => 'group',
                 'class'             => 'inline',
-                'sanitize_callback' => 'Prestations_Service::sanitize_guest',
                 'fields'            => [
                     [
                         'name'       => __( 'Existing User', 'prestations' ),
-                        'id'         => $prefix . 'id',
+                        'id'         => $prefix . 'user_id',
                         'type'       => 'user',
                         'field_type' => 'select_advanced',
                     ],
@@ -344,6 +366,39 @@ class Prestations_Service {
                 'visible'           => [
                     'when'     => [['prestation', '=', '']],
                     'relation' => 'or',
+                ],
+            ],
+						[
+                'name'              => __( 'Guest', 'prestations' ),
+                'id'                => $prefix . 'guest',
+                'type'              => 'group',
+                'class'             => 'inline',
+								'desc'              => __( 'Fill only if different from customer.', 'prestations' ),
+                'fields'            => [
+                    [
+                        'name'       => __( 'Existing User', 'prestations' ),
+                        'id'         => $prefix . 'user_id',
+                        'type'       => 'user',
+                        'field_type' => 'select_advanced',
+                    ],
+                    [
+                        'name'          => __( 'Name', 'prestations' ),
+                        'id'            => $prefix . 'name',
+                        'type'          => 'text',
+                        'size'          => 30,
+                        'admin_columns' => 'after title',
+                    ],
+                    [
+                        'name' => __( 'Email', 'prestations' ),
+                        'id'   => $prefix . 'email',
+                        'type' => 'email',
+                        'size' => 30,
+                    ],
+                    [
+                        'name' => __( 'Phone', 'prestations' ),
+                        'id'   => $prefix . 'phone',
+                        'type' => 'text',
+                    ],
                 ],
             ],
             [
@@ -718,25 +773,182 @@ class Prestations_Service {
 		return $data;
 	}
 
-	static function sanitize_guest($value, $field, $oldvalue) {
-		error_log(print_r($value, true));
-		if(isset($value['user_id'])) {
-			$user = get_user_by('id', $value['user_id']);
-		} else if(isset($value['email'])) {
-			$user = get_user_by('email', $value['email']);
-		} else if(isset($value['name'])) {
-			// $user = get_user_by('name', $value['name']);
-			$users = get_users(array('search' => $value['name']));
-			if (!empty($users)) $user = $users[0];
+	static function save_post_action($post_id, $post, $update ) {
+		if( !$update ) return;
+		if( 'service' !== $post->post_type) return;
+
+		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
+
+		$service_info = get_post_meta($post->ID, 'customer', true);
+		$prestation_id = get_post_meta($post_id, 'prestation', true);
+		$prestation_info = array_filter(array(
+			'user_id' => get_post_meta($prestation_id, 'customer_id', true),
+			'name' => get_post_meta($prestation_id, 'guest_name', true),
+			'email' => get_post_meta($prestation_id, 'guest_email', true),
+			'phone' => get_post_meta($prestation_id, 'guest_phone', true),
+		));
+		$user_info = array_replace($service_info, $prestation_info);
+		if($user_info != $service_info) {
+			error_log(__FUNCTION__ . '::' . __FUNCTION__ . ' meta ' . print_r($user_info, true));
+			update_post_meta( $post_id, 'customer', $user_info );
 		}
-		if(!empty($user)) {
-			$value = array_merge($value, array(
-				'user_id' => $user->ID,
-				'name' => $user->display_name,
-				'email' => $user->user_email,
-			));
-			error_log(print_r($value, true));
-		}
-		return $value;
+
+		// $service = new Prestations_Service($post);
+		// $service->set_prestation();
+
+		add_action(current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3);
 	}
+
+	static function sanitize_service_meta( $meta_value, $meta_key, $object_type ) {
+		switch($meta_key) {
+			case 'customer':
+			case 'guest':
+			return Prestations::get_user_info_by_info($meta_value);
+		}
+
+		return $meta_value;
+	}
+
+	static function update_metadata_filter( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
+		return $check;
+		//
+		// if(get_post_type($object_id) != 'service') return $check;
+		//
+		// switch($meta_key) {
+		// 	case 'customer':
+		// 	$prestation_id = get_post_meta($object_id, 'prestation', true);
+		// 	$prestation_info = array_filter(array(
+		// 		'id' => get_post_meta($prestation_id, 'customer_id', true),
+		// 		'name' => get_post_meta($prestation_id, 'guest_name', true),
+		// 		'email' => get_post_meta($prestation_id, 'guest_email', true),
+		// 		'phone' => get_post_meta($prestation_id, 'guest_phone', true),
+		// 	));
+		// 	$service_info = Prestations::get_user_info_by_info($meta_value);
+		// 	$meta_value = array_replace($service_info, $prestation_info);
+		// 	error_log("object $object_id user info " . print_r($meta_value, true) );
+		// 	return $meta_value;
+		// 	break;
+		//
+		// }
+		// return $check;
+	}
+
+	function set_prestation($post = NULL) {
+		$post = $this->post;
+		if( $post->post_type != 'service' ) return;
+		if( $post->post_status == 'trash' ) return; // TODO: update previously linked prestation
+
+		// // remove_action(current_action(), __CLASS__ . '::wp_insert_post_action');
+
+		$prestation_id = get_post_meta($post->ID, 'prestation_id', true);
+		$prestation = get_post($prestation_id);
+
+
+		$user_info = get_post_meta($post->ID, 'customer');
+		error_log(__FUNCTION__ . '::' . __FUNCTION__ . ' meta ' . print_r($user_info, true));
+
+		// $user_info = Prestations::get_user_info_by_info($user_info);
+		// error_log('user info ' . print_r($user_info, true));
+		// if($user) {
+		// 	$user_info = array_replace($user_info, array_filter(array(
+		// 		'name' => $user->display_name,
+		// 		'email' => $user->user_email,
+		// 		'phone' => get_user_meta($user->ID, 'billing_phone'),
+		// 	)));
+		// }
+
+		// $customer_id = get_post_meta($this->ID, '_customer_user', true);
+		// $customer = get_user_by('id', $customer_id);
+		// if($customer) {
+		// 	$customer_name = $customer->display_name;
+		// 	$customer_email = $customer->user_email;
+		// 	// error_log("customer " . print_r($customer, true));
+		// } else {
+		// 	$customer_name = trim(get_post_meta($this->ID, '_billing_first_name', true) . ' ' . get_post_meta($this->ID, '_billing_last_name', true));
+		// 	$customer_email = get_post_meta($this->ID, '_billing_email', true);
+		// }
+		//
+		// if(empty($prestation_id) || ! $prestation) {
+		// 	$args = array(
+		// 		'post_type' => 'prestation',
+		// 		'post_status__in' => [ 'pending', 'on-hold', 'deposit', 'partial', 'unpaid', 'processing' ],
+		// 		'serviceby' => 'post_date',
+		// 		'service' => 'desc',
+		// 	);
+		// 	if($customer) {
+		// 		$args['meta_query'] = array(
+		// 			array(
+		// 				'key' => 'customer_id',
+		// 				'value' => $customer_id,
+		// 			)
+		// 		);
+		// 	} else if (!empty($customer_email)) {
+		// 		$args['meta_query'] = array(
+		// 			'relation' => 'OR',
+		// 			array(
+		// 				'key' => 'customer_email',
+		// 				'value' => $customer_email,
+		// 			),
+		// 			array(
+		// 				'key' => 'guest_email',
+		// 				'value' => $customer_email,
+		// 			),
+		// 		);
+		// 	} else if (!empty($customer_name)) {
+		// 		$args['meta_query'] = array(
+		// 			'relation' => 'OR',
+		// 			array(
+		// 				'key' => 'customer_name',
+		// 				'value' => $customer_name,
+		// 			),
+		// 			array(
+		// 				'key' => 'guest_name',
+		// 				'value' => $customer_name,
+		// 			),
+		// 		);
+		// 	}
+		// 	$prestations = get_posts($args);
+		// 	if($prestations) {
+		// 		$prestation = $prestations[0];
+		// 		$prestation_id = $prestation->ID;
+		// 		// error_log("$prestation->ID $prestation->post_title " . print_r($prestation, true));
+		// 		// update_post_meta( $this->ID, 'prestation_id', $prestation_id );
+		// 	}
+		// }
+		//
+		// if(empty($prestation_id) || ! $prestation) {
+		// 	$this->postarr = array(
+		// 		'post_author' => $this->post->get_customer_id(),
+		// 		'post_date' => $this->post->get_date_created(),
+		// 		'post_date_gmt' => $this->post->post_date_gmt,
+		// 		'post_type' => 'prestation',
+		// 		'post_status' => 'publish',
+		// 		'meta_input' => array(
+		// 			'prestation_id' => $prestation_id,
+		// 			'customer_id' => $customer_id,
+		// 			'customer_name' => $customer_name,
+		// 			'customer_email' => $customer_email,
+		// 		),
+		// 	);
+		// 	$prestation_id = wp_insert_post($this->postarr);
+		// 	// update_post_meta( $this->ID, 'prestation_id', $prestation_id );
+		// 	// foreach ($this->postarr['meta_input'] as $key => $value) update_post_meta( $this->ID, $key, $value );
+		// }
+		//
+		// if(!empty($prestation_id)) {
+		// 	$meta = array(
+		// 		'prestation_id' => $prestation_id,
+		// 		'customer_id' => $customer_id,
+		// 		'customer_name' => $customer_name,
+		// 		'customer_email' => $customer_email,
+		// 	);
+		// 	// foreach ($meta as $key => $value) update_post_meta( $this->ID, $key, $value );
+		// 	// Prestations_Service::update_prestation_services($prestation_id, get_post($prestation_id), true );
+		// }
+		//
+		// // add_action(current_action(), __CLASS__ . '::wp_insert_post_action', 10, 3);
+		return;
+	}
+
+
 }
