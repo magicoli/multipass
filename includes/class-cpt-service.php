@@ -317,8 +317,8 @@ class Prestations_Service {
                 'sanitize_callback' => 'Prestations_Service::sanitize_guest',
                 'fields'            => [
                     [
-                        'name'       => __( 'User', 'prestations' ),
-                        'id'         => $prefix . 'user_id',
+                        'name'       => __( 'Existing User', 'prestations' ),
+                        'id'         => $prefix . 'id',
                         'type'       => 'user',
                         'field_type' => 'select_advanced',
                     ],
