@@ -121,7 +121,12 @@ class Prestations_Service {
 				'hook' => 'init',
 				'callback' => 'register_post_types',
 			),
+			array(
+				'hook' => 'init',
+				'callback' => 'register_taxonomies',
+			),
 		);
+
 
 		$filters = array(
 			array(
@@ -214,16 +219,16 @@ class Prestations_Service {
 			'taxonomies'          => [],
 			'rewrite'             => [
 			'with_front' => false,
-		],
-	];
+			],
+		];
 
-	register_post_type( 'service', $args );
+		register_post_type( 'service', $args );
 	}
 
 	static function register_fields( $meta_boxes ) {
 		$prefix = '';
 
-    $meta_boxes['services'] = [
+    $meta_boxes[] = [
         'title'      => __( 'Services fields', 'prestations' ),
         'id'         => 'services-fields',
         'post_types' => ['service'],
@@ -234,11 +239,19 @@ class Prestations_Service {
                 'type'     => 'custom_html',
                 'callback' => 'Prestations::title_html',
             ],
-            'source' => [
-                'name'    => __( 'Source', 'prestations' ),
-                'id'      => $prefix . 'source',
-                'type'    => 'select',
-                'options' => Prestations_Service::get_source_options(),
+            [
+                'name'          => __( 'Source', 'prestations' ),
+                'id'            => $prefix . 'source',
+                'type'          => 'taxonomy',
+                'taxonomy'      => ['service-source'],
+                'field_type'    => 'select',
+                'placeholder'   => __( 'None', 'prestations' ),
+                'admin_columns' => [
+                    'position'   => 'before date',
+                    'sort'       => true,
+                    'searchable' => true,
+                    'filterable' => true,
+                ],
             ],
             [
                 'name'    => __( 'Source ID', 'prestations' ),
@@ -293,16 +306,23 @@ class Prestations_Service {
                 'class'   => 'inline',
                 'fields'  => [
                     [
-                        'name' => __( 'Name', 'prestations' ),
-                        'id'   => $prefix . 'name',
-                        'type' => 'text',
-                        'size' => 40,
+                        'name'       => __( 'User', 'prestations' ),
+                        'id'         => $prefix . 'user_m2v82apykq',
+                        'type'       => 'user',
+                        'field_type' => 'select_advanced',
+                    ],
+                    [
+                        'name'          => __( 'Name', 'prestations' ),
+                        'id'            => $prefix . 'name',
+                        'type'          => 'text',
+                        'size'          => 30,
+                        'admin_columns' => 'after title',
                     ],
                     [
                         'name' => __( 'Email', 'prestations' ),
                         'id'   => $prefix . 'email_og3xzrqnmkm',
                         'type' => 'email',
-                        'size' => 40,
+                        'size' => 30,
                     ],
                     [
                         'name' => __( 'Phone', 'prestations' ),
@@ -316,16 +336,30 @@ class Prestations_Service {
                 ],
             ],
             [
+                'id'            => $prefix . 'client_display',
+                'type'          => 'hidden',
+                'admin_columns' => [
+                    'position'   => 'after title',
+                    'title'      => 'Client',
+                    'sort'       => true,
+                    'searchable' => true,
+                ],
+            ],
+            [
                 'id'   => $prefix . 'sep',
                 'type' => 'custom_html',
                 'std'  => '<hr>',
             ],
             [
-                'name'   => __( 'Dates', 'prestations' ),
-                'id'     => $prefix . 'dates',
-                'type'   => 'group',
-                'class'  => 'inline',
-                'fields' => [
+                'name'          => __( 'Dates', 'prestations' ),
+                'id'            => $prefix . 'dates',
+                'type'          => 'group',
+                'admin_columns' => [
+                    'position' => 'replace date',
+                    'sort'     => true,
+                ],
+                'class'         => 'inline',
+                'fields'        => [
                     [
                         'name'      => __( 'From', 'prestations' ),
                         'id'        => $prefix . 'from',
@@ -347,11 +381,15 @@ class Prestations_Service {
                 'class'  => 'inline',
                 'fields' => [
                     [
-                        'name' => __( 'Total', 'prestations' ),
-                        'id'   => $prefix . 'total',
-                        'type' => 'number',
-                        'min'  => 0,
-                        'size' => 5,
+                        'name'          => __( 'Total', 'prestations' ),
+                        'id'            => $prefix . 'total',
+                        'type'          => 'number',
+                        'min'           => 0,
+                        'size'          => 5,
+                        'admin_columns' => [
+                            'position' => 'after title',
+                            'title'    => 'Guests',
+                        ],
                     ],
                     [
                         'name' => __( 'Adults', 'prestations' ),
@@ -374,6 +412,15 @@ class Prestations_Service {
                         'min'  => 0,
                         'size' => 5,
                     ],
+                ],
+            ],
+            [
+                'id'            => $prefix . 'guests_display',
+                'type'          => 'hidden',
+                'admin_columns' => [
+                    'position' => 'after client_display',
+                    'title'    => 'Guests',
+                    'sort'     => true,
                 ],
             ],
             [
@@ -465,20 +512,25 @@ class Prestations_Service {
                 ],
             ],
             [
-                'name'     => __( 'Total', 'prestations' ),
-                'id'       => $prefix . 'total',
-                'type'     => 'number',
-                'min'      => 0,
-                'step'     => 'any',
-                'size'     => 10,
-                'readonly' => true,
+                'name'          => __( 'Total', 'prestations' ),
+                'id'            => $prefix . 'total',
+                'type'          => 'number',
+                'min'           => 0,
+                'step'          => 'any',
+                'size'          => 10,
+                'readonly'      => true,
+                'admin_columns' => [
+                    'position' => 'before dates',
+                    'sort'     => true,
+                ],
             ],
             [
-                'name'   => __( 'Deposit', 'prestations' ),
-                'id'     => $prefix . 'deposit',
-                'type'   => 'group',
-                'class'  => 'inline',
-                'fields' => [
+                'name'          => __( 'Deposit', 'prestations' ),
+                'id'            => $prefix . 'deposit',
+                'type'          => 'group',
+                'admin_columns' => 'after total',
+                'class'         => 'inline',
+                'fields'        => [
                     [
                         'id'      => $prefix . 'percent',
                         'type'    => 'number',
@@ -535,27 +587,86 @@ class Prestations_Service {
                 ],
             ],
             [
-                'name'     => __( 'Paid', 'prestations' ),
-                'id'       => $prefix . 'paid',
-                'type'     => 'number',
-                'min'      => 0,
-                'step'     => 'any',
-                'size'     => 10,
-                'readonly' => true,
+                'name'          => __( 'Paid', 'prestations' ),
+                'id'            => $prefix . 'paid',
+                'type'          => 'number',
+                'min'           => 0,
+                'step'          => 'any',
+                'size'          => 10,
+                'readonly'      => true,
+                'admin_columns' => 'after deposit',
             ],
             [
-                'name'     => __( 'Balance', 'prestations' ),
-                'id'       => $prefix . 'balance',
-                'type'     => 'number',
-                'min'      => 0,
-                'step'     => 'any',
-                'size'     => 10,
-                'readonly' => true,
+                'name'          => __( 'Balance', 'prestations' ),
+                'id'            => $prefix . 'balance',
+                'type'          => 'number',
+                'min'           => 0,
+                'step'          => 'any',
+                'size'          => 10,
+                'readonly'      => true,
+                'admin_columns' => [
+                    'position' => 'after total',
+                    'sort'     => true,
+                ],
             ],
         ],
     ];
 
     return $meta_boxes;
+	}
+
+	static function register_taxonomies() {
+		$labels = [
+			'name'                       => esc_html__( 'Service Sources', 'prestations' ),
+			'singular_name'              => esc_html__( 'Service Source', 'prestations' ),
+			'menu_name'                  => esc_html__( 'Service Sources', 'prestations' ),
+			'search_items'               => esc_html__( 'Search Service Sources', 'prestations' ),
+			'popular_items'              => esc_html__( 'Popular Service Sources', 'prestations' ),
+			'all_items'                  => esc_html__( 'All Service Sources', 'prestations' ),
+			'parent_item'                => esc_html__( 'Parent Service Source', 'prestations' ),
+			'parent_item_colon'          => esc_html__( 'Parent Service Source:', 'prestations' ),
+			'edit_item'                  => esc_html__( 'Edit Service Source', 'prestations' ),
+			'view_item'                  => esc_html__( 'View Service Source', 'prestations' ),
+			'update_item'                => esc_html__( 'Update Service Source', 'prestations' ),
+			'add_new_item'               => esc_html__( 'Add New Service Source', 'prestations' ),
+			'new_item_name'              => esc_html__( 'New Service Source Name', 'prestations' ),
+			'separate_items_with_commas' => esc_html__( 'Separate service sources with commas', 'prestations' ),
+			'add_or_remove_items'        => esc_html__( 'Add or remove service sources', 'prestations' ),
+			'choose_from_most_used'      => esc_html__( 'Choose most used service sources', 'prestations' ),
+			'not_found'                  => esc_html__( 'No service sources found.', 'prestations' ),
+			'no_terms'                   => esc_html__( 'No service sources', 'prestations' ),
+			'filter_by_item'             => esc_html__( 'Filter by service source', 'prestations' ),
+			'items_list_navigation'      => esc_html__( 'Service Sources list pagination', 'prestations' ),
+			'items_list'                 => esc_html__( 'Service Sources list', 'prestations' ),
+			'most_used'                  => esc_html__( 'Most Used', 'prestations' ),
+			'back_to_items'              => esc_html__( '&larr; Go to Service Sources', 'prestations' ),
+			'text_domain'                => esc_html__( 'prestations', 'prestations' ),
+		];
+		$args = [
+			'label'              => esc_html__( 'Service Sources', 'prestations' ),
+			'labels'             => $labels,
+			'description'        => '',
+			'public'             => false,
+			'publicly_queryable' => false,
+			'hierarchical'       => false,
+			'show_ui'            => false,
+			'show_in_menu'       => false,
+			'show_in_nav_menus'  => false,
+			'show_in_rest'       => false,
+			'show_tagcloud'      => false,
+			'show_in_quick_edit' => false,
+			'show_admin_column'  => false,
+			'query_var'          => false,
+			'sort'               => false,
+			'meta_box_cb'        => 'post_tags_meta_box',
+			'rest_base'          => '',
+			'rewrite'            => [
+				'with_front'   => false,
+				'hierarchical' => false,
+			],
+			'_builtin' => true,
+		];
+		register_taxonomy( 'service-source', ['service'], $args );
 	}
 
 	static function get_source_options() {
