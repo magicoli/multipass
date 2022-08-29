@@ -221,300 +221,347 @@ class Prestations_Service {
 	}
 
 	static function register_fields( $meta_boxes ) {
-		$prefix = 'services_';
+		$prefix = '';
 
-		$meta_boxes[] = [
-			'title'      => __( 'Services fields', 'prestations' ),
-			'id'         => 'services-fields',
-			'post_types' => ['service'],
-			'style'      => 'seamless',
-			'fields'     => [
-				[
-					'id'       => $prefix . 'title_html',
-					'type'     => 'custom_html',
-					'callback' => 'Prestations::title_html',
-				],
-				[
-					'name'       => __( 'Prestation', 'prestations' ),
-					'id'         => $prefix . 'prestation',
-					'type'       => 'post',
-					'post_type'  => ['prestation'],
-					'field_type' => 'select_advanced',
-				],
-				[
-					'name'   => __( 'Dates', 'prestations' ),
-					'id'     => $prefix . 'dates',
-					'type'   => 'group',
-					'class'  => 'inline',
-					'fields' => [
-						[
-							'name'      => __( 'From', 'prestations' ),
-							'id'        => $prefix . 'from',
-							'type'      => 'datetime',
-							'timestamp' => true,
-						],
-						[
-							'name'      => __( 'To', 'prestations' ),
-							'id'        => $prefix . 'to',
-							'type'      => 'datetime',
-							'timestamp' => true,
-						],
-					],
-				],
-				[
-					'name'   => __( 'Guests', 'prestations' ),
-					'id'     => $prefix . 'guests',
-					'type'   => 'group',
-					'class'  => 'inline',
-					'fields' => [
-						[
-							'name' => __( 'Total', 'prestations' ),
-							'id'   => $prefix . 'total',
-							'type' => 'number',
-							'min'  => 0,
-						],
-						[
-							'name' => __( 'Adults', 'prestations' ),
-							'id'   => $prefix . 'adults',
-							'type' => 'number',
-							'min'  => 0,
-						],
-						[
-							'name' => __( 'Children', 'prestations' ),
-							'id'   => $prefix . 'children',
-							'type' => 'number',
-							'min'  => 0,
-						],
-						[
-							'name' => __( 'Babies', 'prestations' ),
-							'id'   => $prefix . 'babies',
-							'type' => 'number',
-							'min'  => 0,
-						],
-					],
-				],
-				[
-					'name'   => __( 'Beds', 'prestations' ),
-					'id'     => $prefix . 'beds',
-					'type'   => 'group',
-					'class'  => 'inline',
-					'fields' => [
-						[
-							'name' => __( 'Double', 'prestations' ),
-							'id'   => $prefix . 'double',
-							'type' => 'number',
-							'min'  => 0,
-						],
-						[
-							'name' => __( 'Single', 'prestations' ),
-							'id'   => $prefix . 'single',
-							'type' => 'number',
-							'min'  => 0,
-						],
-						[
-							'name' => __( 'Baby', 'prestations' ),
-							'id'   => $prefix . 'baby',
-							'type' => 'number',
-							'min'  => 0,
-						],
-					],
-				],
-				[
-					'name'       => __( 'Item', 'prestations' ),
-					'id'         => $prefix . 'item',
-					'type'       => 'post',
-					'post_type'  => ['pr_service'],
-					'field_type' => 'select_advanced',
-				],
-				[
-					'name'   => __( 'Related Order', 'prestations' ),
-					'id'     => $prefix . 'related',
-					'type'   => 'group',
-					'class'  => 'inline',
-					'fields' => [
-						[
-							'name'       => __( 'WC order', 'prestations' ),
-							'id'         => $prefix . 'woocommerce_order',
-							'type'       => 'post',
-							'post_type'  => ['shop_order'],
-							'field_type' => 'select_advanced',
-						],
-						[
-							'name'       => __( 'WC Booking', 'prestations' ),
-							'id'         => $prefix . 'woocommerce_booking',
-							'type'       => 'post',
-							'post_type'  => ['wc_booking'],
-							'field_type' => 'select_advanced',
-						],
-						[
-							'name' => __( 'HBook', 'prestations' ),
-							'id'   => $prefix . 'hbook_booking',
-							'type' => 'select_advanced',
-						],
-						[
-							'name'    => __( 'Lodgify', 'prestations' ),
-							'id'      => $prefix . 'lodgify_booking',
-							'type'    => 'select_advanced',
-							'options' => Prestations_Lodgify::bookings_options(),
-						],
-					],
-				],
-				[
-					'name'   => __( 'URL', 'prestations' ),
-					'id'     => $prefix . 'url',
-					'type'   => 'group',
-					'class'  => 'inline',
-					'fields' => [
-						[
-							'name' => __( 'Edit', 'prestations' ),
-							'id'   => $prefix . 'edit',
-							'type' => 'url',
-							'size' => 40,
-						],
-						[
-							'name' => __( 'View', 'prestations' ),
-							'id'   => $prefix . 'view',
-							'type' => 'url',
-							'size' => 40,
-						],
-					],
-				],
-				[
-					'name'   => __( 'Price', 'prestations' ),
-					'id'     => $prefix . 'price',
-					'type'   => 'group',
-					'class'  => 'inline',
-					'fields' => [
-						[
-							'name' => __( 'Quantity', 'prestations' ),
-							'id'   => $prefix . 'quantity',
-							'type' => 'number',
-							'min'  => 0,
-							'step' => 'any',
-							'size' => 5,
-						],
-						[
-							'name' => __( 'Unit', 'prestations' ),
-							'id'   => $prefix . 'unit',
-							'type' => 'number',
-							'min'  => 0,
-							'step' => 'any',
-						],
-						[
-							'name'     => __( 'Total', 'prestations' ),
-							'id'       => $prefix . 'total',
-							'type'     => 'number',
-							'readonly' => true,
-						],
-					],
-				],
-				[
-					'name'   => __( 'Discount', 'prestations' ),
-					'id'     => $prefix . 'discount',
-					'type'   => 'group',
-					'class'  => 'inline',
-					'fields' => [
-						[
-							'id'      => $prefix . 'percent',
-							'type'    => 'number',
-							'min'     => 0,
-							'max'     => 100,
-							'step'    => 'any',
-							'prepend' => '%',
-						],
-						[
-							'id'      => $prefix . 'amount',
-							'type'    => 'number',
-							'prepend' => '€',
-						],
-					],
-				],
-				[
-					'name'     => __( 'Total', 'prestations' ),
-					'id'       => $prefix . 'total',
-					'type'     => 'number',
-					'min'      => 0,
-					'step'     => 'any',
-					'readonly' => true,
-				],
-				[
-					'name'   => __( 'Deposit', 'prestations' ),
-					'id'     => $prefix . 'deposit',
-					'type'   => 'group',
-					'class'  => 'inline',
-					'fields' => [
-						[
-							'id'      => $prefix . 'percent',
-							'type'    => 'number',
-							'min'     => 0,
-							'max'     => 100,
-							'step'    => 'any',
-							'prepend' => '%',
-						],
-						[
-							'id'      => $prefix . 'amount',
-							'type'    => 'number',
-							'prepend' => '€',
-						],
-						[
-							'id'          => $prefix . 'before',
-							'type'        => 'date',
-							'placeholder' => __( 'Before', 'prestations' ),
-							'timestamp'   => true,
-						],
-					],
-				],
-				[
-					'name'   => __( 'Payment', 'prestations' ),
-					'id'     => $prefix . 'payment',
-					'type'   => 'group',
-					'clone'  => true,
-					'class'  => 'inline',
-					'fields' => [
-						[
-							'name' => __( 'Date', 'prestations' ),
-							'id'   => $prefix . 'date',
-							'type' => 'datetime',
-						],
-						[
-							'name' => __( 'Amount', 'prestations' ),
-							'id'   => $prefix . 'amount',
-							'type' => 'number',
-							'min'  => 0,
-							'step' => 'any',
-						],
-						[
-							'name' => __( 'Method', 'prestations' ),
-							'id'   => $prefix . 'method',
-							'type' => 'text',
-						],
-						[
-							'name' => __( 'Reference', 'prestations' ),
-							'id'   => $prefix . 'reference',
-							'type' => 'text',
-						],
-					],
-				],
-				[
-					'name'     => __( 'Paid', 'prestations' ),
-					'id'       => $prefix . 'paid',
-					'type'     => 'number',
-					'min'      => 0,
-					'step'     => 'any',
-					'readonly' => true,
-				],
-				[
-					'name'     => __( 'Balance', 'prestations' ),
-					'id'       => $prefix . 'balance',
-					'type'     => 'number',
-					'min'      => 0,
-					'step'     => 'any',
-					'readonly' => true,
-				],
-			],
-		];
+    $meta_boxes['services'] = [
+        'title'      => __( 'Services fields', 'prestations' ),
+        'id'         => 'services-fields',
+        'post_types' => ['service'],
+        'style'      => 'seamless',
+        'fields'     => [
+            [
+                'id'       => $prefix . 'title_html',
+                'type'     => 'custom_html',
+                'callback' => 'Prestations::title_html',
+            ],
+            'source' => [
+                'name'    => __( 'Source', 'prestations' ),
+                'id'      => $prefix . 'source',
+                'type'    => 'select',
+                'options' => Prestations_Service::get_source_options(),
+            ],
+            [
+                'name'    => __( 'Source ID', 'prestations' ),
+                'id'      => $prefix . 'source_id',
+                'type'    => 'text',
+                'visible' => [
+                    'when'     => [['source', '!=', '']],
+                    'relation' => 'or',
+                ],
+            ],
+            [
+                'name'     => __( 'Source URL', 'prestations' ),
+                'id'       => $prefix . 'source_url',
+                'type'     => 'url',
+                'readonly' => true,
+                'class'    => 'inline',
+                'visible'  => [
+                    'when'     => [['source', '!=', '']],
+                    'relation' => 'or',
+                ],
+            ],
+            [
+                'name'    => __( 'Item ID', 'prestations' ),
+                'id'      => $prefix . 'item',
+                'type'    => 'text',
+                'class'   => 'inline',
+                'visible' => [
+                    'when'     => [['source', '!=', '']],
+                    'relation' => 'or',
+                ],
+            ],
+            [
+                'name'    => __( 'Description', 'prestations' ),
+                'id'      => $prefix . 'description',
+                'type'    => 'text',
+                'visible' => [
+                    'when'     => [['source', '=', '']],
+                    'relation' => 'or',
+                ],
+            ],
+            [
+                'name'       => __( 'Prestation', 'prestations' ),
+                'id'         => $prefix . 'prestation',
+                'type'       => 'post',
+                'post_type'  => ['prestation'],
+                'field_type' => 'select_advanced',
+            ],
+            [
+                'name'    => __( 'Guest', 'prestations' ),
+                'id'      => $prefix . 'guest',
+                'type'    => 'group',
+                'class'   => 'inline',
+                'fields'  => [
+                    [
+                        'name' => __( 'Name', 'prestations' ),
+                        'id'   => $prefix . 'name',
+                        'type' => 'text',
+                        'size' => 40,
+                    ],
+                    [
+                        'name' => __( 'Email', 'prestations' ),
+                        'id'   => $prefix . 'email_og3xzrqnmkm',
+                        'type' => 'email',
+                        'size' => 40,
+                    ],
+                    [
+                        'name' => __( 'Phone', 'prestations' ),
+                        'id'   => $prefix . 'phone',
+                        'type' => 'text',
+                    ],
+                ],
+                'visible' => [
+                    'when'     => [['prestation', '=', '']],
+                    'relation' => 'or',
+                ],
+            ],
+            [
+                'id'   => $prefix . 'sep',
+                'type' => 'custom_html',
+                'std'  => '<hr>',
+            ],
+            [
+                'name'   => __( 'Dates', 'prestations' ),
+                'id'     => $prefix . 'dates',
+                'type'   => 'group',
+                'class'  => 'inline',
+                'fields' => [
+                    [
+                        'name'      => __( 'From', 'prestations' ),
+                        'id'        => $prefix . 'from',
+                        'type'      => 'datetime',
+                        'timestamp' => true,
+                    ],
+                    [
+                        'name'      => __( 'To', 'prestations' ),
+                        'id'        => $prefix . 'to',
+                        'type'      => 'datetime',
+                        'timestamp' => true,
+                    ],
+                ],
+            ],
+            [
+                'name'   => __( 'Guests', 'prestations' ),
+                'id'     => $prefix . 'guests',
+                'type'   => 'group',
+                'class'  => 'inline',
+                'fields' => [
+                    [
+                        'name' => __( 'Total', 'prestations' ),
+                        'id'   => $prefix . 'total',
+                        'type' => 'number',
+                        'min'  => 0,
+                        'size' => 5,
+                    ],
+                    [
+                        'name' => __( 'Adults', 'prestations' ),
+                        'id'   => $prefix . 'adults',
+                        'type' => 'number',
+                        'min'  => 0,
+                        'size' => 5,
+                    ],
+                    [
+                        'name' => __( 'Children', 'prestations' ),
+                        'id'   => $prefix . 'children',
+                        'type' => 'number',
+                        'min'  => 0,
+                        'size' => 5,
+                    ],
+                    [
+                        'name' => __( 'Babies', 'prestations' ),
+                        'id'   => $prefix . 'babies',
+                        'type' => 'number',
+                        'min'  => 0,
+                        'size' => 5,
+                    ],
+                ],
+            ],
+            [
+                'name'   => __( 'Beds', 'prestations' ),
+                'id'     => $prefix . 'beds',
+                'type'   => 'group',
+                'class'  => 'inline',
+                'fields' => [
+                    [
+                        'name' => __( 'Double', 'prestations' ),
+                        'id'   => $prefix . 'double',
+                        'type' => 'number',
+                        'min'  => 0,
+                        'size' => 5,
+                    ],
+                    [
+                        'name' => __( 'Single', 'prestations' ),
+                        'id'   => $prefix . 'single',
+                        'type' => 'number',
+                        'min'  => 0,
+                        'size' => 5,
+                    ],
+                    [
+                        'name' => __( 'Baby', 'prestations' ),
+                        'id'   => $prefix . 'baby',
+                        'type' => 'number',
+                        'min'  => 0,
+                        'size' => 5,
+                    ],
+                ],
+            ],
+            [
+                'id'   => $prefix . 'sep2',
+                'type' => 'custom_html',
+                'std'  => '<hr>',
+            ],
+            [
+                'name'   => __( 'Price', 'prestations' ),
+                'id'     => $prefix . 'price',
+                'type'   => 'group',
+                'class'  => 'inline',
+                'fields' => [
+                    [
+                        'name' => __( 'Quantity', 'prestations' ),
+                        'id'   => $prefix . 'quantity',
+                        'type' => 'number',
+                        'min'  => 0,
+                        'step' => 'any',
+                        'size' => 5,
+                    ],
+                    [
+                        'name' => __( 'Unit Price', 'prestations' ),
+                        'id'   => $prefix . 'unit',
+                        'type' => 'number',
+                        'min'  => 0,
+                        'step' => 'any',
+                        'size' => 10,
+                    ],
+                    [
+                        'name'     => __( 'Subtotal', 'prestations' ),
+                        'id'       => $prefix . 'subtotal',
+                        'type'     => 'number',
+                        'size'     => 10,
+                        'readonly' => true,
+                    ],
+                ],
+            ],
+            [
+                'name'   => __( 'Discount', 'prestations' ),
+                'id'     => $prefix . 'discount',
+                'type'   => 'group',
+                'class'  => 'inline',
+                'fields' => [
+                    [
+                        'id'      => $prefix . 'percent',
+                        'type'    => 'number',
+                        'min'     => 0,
+                        'max'     => 100,
+                        'step'    => 'any',
+                        'size'    => 5,
+                        'prepend' => '%',
+                    ],
+                    [
+                        'id'      => $prefix . 'amount',
+                        'type'    => 'number',
+                        'size'    => 10,
+                        'prepend' => '€',
+                    ],
+                ],
+            ],
+            [
+                'name'     => __( 'Total', 'prestations' ),
+                'id'       => $prefix . 'total',
+                'type'     => 'number',
+                'min'      => 0,
+                'step'     => 'any',
+                'size'     => 10,
+                'readonly' => true,
+            ],
+            [
+                'name'   => __( 'Deposit', 'prestations' ),
+                'id'     => $prefix . 'deposit',
+                'type'   => 'group',
+                'class'  => 'inline',
+                'fields' => [
+                    [
+                        'id'      => $prefix . 'percent',
+                        'type'    => 'number',
+                        'min'     => 0,
+                        'max'     => 100,
+                        'step'    => 'any',
+                        'size'    => 5,
+                        'prepend' => '%',
+                    ],
+                    [
+                        'id'      => $prefix . 'amount',
+                        'type'    => 'number',
+                        'size'    => 10,
+                        'prepend' => '€',
+                    ],
+                    [
+                        'id'          => $prefix . 'before',
+                        'type'        => 'date',
+                        'placeholder' => __( 'Before', 'prestations' ),
+                        'timestamp'   => true,
+                    ],
+                ],
+            ],
+            [
+                'name'   => __( 'Payment', 'prestations' ),
+                'id'     => $prefix . 'payment',
+                'type'   => 'group',
+                'clone'  => true,
+                'class'  => 'inline',
+                'fields' => [
+                    [
+                        'name' => __( 'Date', 'prestations' ),
+                        'id'   => $prefix . 'date',
+                        'type' => 'datetime',
+                    ],
+                    [
+                        'name' => __( 'Amount', 'prestations' ),
+                        'id'   => $prefix . 'amount',
+                        'type' => 'number',
+                        'min'  => 0,
+                        'step' => 'any',
+                        'size' => 10,
+                    ],
+                    [
+                        'name' => __( 'Method', 'prestations' ),
+                        'id'   => $prefix . 'method',
+                        'type' => 'text',
+                    ],
+                    [
+                        'name' => __( 'Reference', 'prestations' ),
+                        'id'   => $prefix . 'reference',
+                        'type' => 'text',
+                    ],
+                ],
+            ],
+            [
+                'name'     => __( 'Paid', 'prestations' ),
+                'id'       => $prefix . 'paid',
+                'type'     => 'number',
+                'min'      => 0,
+                'step'     => 'any',
+                'size'     => 10,
+                'readonly' => true,
+            ],
+            [
+                'name'     => __( 'Balance', 'prestations' ),
+                'id'       => $prefix . 'balance',
+                'type'     => 'number',
+                'min'      => 0,
+                'step'     => 'any',
+                'size'     => 10,
+                'readonly' => true,
+            ],
+        ],
+    ];
 
-		return $meta_boxes;
+    return $meta_boxes;
+	}
+
+	static function get_source_options() {
+		return apply_filters('prestations_register_sources', array(
+			'' => __( 'None', 'prestations' ),
+		));
 	}
 
 	static function insert_service_data ($data, $postarr, $unsanitized_postarr, $update ) {

@@ -60,6 +60,11 @@ class Prestations_Lodgify extends Prestations_Modules {
 				'hook' => 'rwmb_meta_boxes',
 				'callback' => 'register_fields'
 			),
+
+			array(
+				'hook' => 'prestations_register_sources',
+				'callback' => 'register_sources_filter',
+			),
 		);
 
 		$defaults = array( 'component' => __CLASS__, 'priority' => 10, 'accepted_args' => 1 );
@@ -129,6 +134,11 @@ class Prestations_Lodgify extends Prestations_Modules {
 		];
 
 		return $meta_boxes;
+	}
+
+	static function register_sources_filter($sources) {
+		$sources['lodgify'] = 'Lodgify';
+		return $sources;
 	}
 
 	function get_properties() {

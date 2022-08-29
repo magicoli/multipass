@@ -84,6 +84,10 @@ class Prestations_WooCommerce extends Prestations_Modules {
 				'hook' => 'rwmb_meta_boxes',
 				'callback' => 'register_settings_fields',
 			),
+			array(
+				'hook' => 'prestations_register_sources',
+				'callback' => 'register_sources_filter',
+			),
 
 			array(
 				'hook' => 'prestations_set_association_title',
@@ -244,6 +248,11 @@ class Prestations_WooCommerce extends Prestations_Modules {
 		];
 
 		return $meta_boxes;
+	}
+
+	static function register_sources_filter($sources) {
+		$sources['woocommerce'] = 'WooCommerce';
+		return $sources;
 	}
 
 	static function wc_get_orders_handle_prestation_id( $query, $query_vars ) {
