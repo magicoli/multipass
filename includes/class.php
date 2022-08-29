@@ -446,4 +446,30 @@ class Prestations {
 		delete_transient( $transient_key );
 	}
 
+	static function format_date_range($dates = [], $long = false) {
+		if(empty($dates)) return;
+		if(!is_array($dates)) $dates = [ $dates ];
+		$dates = array_filter($dates);
+
+		$formatted = [];
+		foreach($dates as $date) {
+			$formatted[] = date_i18n(get_option( 'date_format' ), $date);
+		}
+		if(count($formatted) == 2) {
+			return sprintf(
+				// TRANSLATORS: [start date] to [end date] (without time)
+				($long) ? __('from %s to %s', 'prestations') : __('%s to %s', 'prestations'),
+				$formatted[0],
+				$formatted[1],
+			);
+		} else {
+			return join(', ', $formatted);
+		}
+	}
+
+
+	static function title_html() {
+		return preg_replace('/(#[[:alnum:]]+)/', '<code>$1</code>', the_title('<h1>', '</h1>', false));
+	}
+
 }

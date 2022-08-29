@@ -259,11 +259,6 @@ class Prestations_Prestation {
 		register_post_type( 'prestation', $args );
 	}
 
-	static function title_html() {
-		return preg_replace('/(#[[:alnum:]]+)/', '<code>$1</code>', the_title('<h1>', '</h1>', false));
-		// return the_title('<h1>', '</h1>', false);
-	}
-
 	static function register_fields( $meta_boxes ) {
 		$js_date_format_short = preg_match('/^[Fm]/', get_option('date_format')) ? 'mm-dd-yy' : 'dd-mm-yy';
 
@@ -279,7 +274,7 @@ class Prestations_Prestation {
 				[
 					'id'            => $prefix . 'title_html',
 					'type'          => 'custom_html',
-					'callback' => __CLASS__ . '::title_html',
+					'callback' => 'Prestations::title_html',
 				],
 				[
 					'name'          => __( 'Customer', 'prestations' ),
@@ -1285,32 +1280,11 @@ class Prestations_Prestation {
 		return $columns;
 	}
 
-	static function format_date_range($dates = []) {
-		if(empty($dates)) return;
-		if(!is_array($dates)) $dates = [ $dates ];
-		$dates = array_filter($dates);
-
-		$formatted = [];
-		foreach($dates as $date) {
-			$formatted[] = date_i18n(get_option( 'date_format' ), $date);
-		}
-		if(count($formatted) == 2) {
-			return sprintf(
-				// TRANSLATORS: [start date] to [end date] (without time)
-				__('%s to %s', 'prestations'),
-				$formatted[0],
-				$formatted[1],
-			);
-		} else {
-			return join(', ', $formatted);
-		}
-	}
-
 	static function admin_columns_display( $column, $post_id ) {
 	  // Image column
 	  switch($column) {
 			case 'dates':
-			echo self::format_date_range(get_post_meta($post_id, 'dates', true));
+			echo Prestations::format_date_range(get_post_meta($post_id, 'dates', true));
 			break;
 		}
 	}
