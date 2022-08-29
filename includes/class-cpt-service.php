@@ -41,12 +41,22 @@ class Prestations_Service {
 	 */
 	protected $filters;
 
+	protected $ID;
+	protected $post;
+
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct() {
+	public function __construct($post = NULL) {
+		if(is_numeric($post)) {
+			$this->ID = $post;
+			$post = get_post($this->ID);
+		} else if(isset($post->post_type) && $post->post_type == 'service') {
+			$this->post = $post;
+			$this->ID = $post->ID;
+		}
 
 		$this->actions = array();
 		$this->filters = array();
@@ -300,14 +310,15 @@ class Prestations_Service {
                 'field_type' => 'select_advanced',
             ],
             [
-                'name'    => __( 'Guest', 'prestations' ),
-                'id'      => $prefix . 'guest',
-                'type'    => 'group',
-                'class'   => 'inline',
-                'fields'  => [
+                'name'              => __( 'Customer', 'prestations' ),
+                'id'                => $prefix . 'customer',
+                'type'              => 'group',
+                'class'             => 'inline',
+                'sanitize_callback' => 'Prestations_Service::sanitize_guest',
+                'fields'            => [
                     [
                         'name'       => __( 'User', 'prestations' ),
-                        'id'         => $prefix . 'user_m2v82apykq',
+                        'id'         => $prefix . 'user_id',
                         'type'       => 'user',
                         'field_type' => 'select_advanced',
                     ],
@@ -320,7 +331,7 @@ class Prestations_Service {
                     ],
                     [
                         'name' => __( 'Email', 'prestations' ),
-                        'id'   => $prefix . 'email_og3xzrqnmkm',
+                        'id'   => $prefix . 'email',
                         'type' => 'email',
                         'size' => 30,
                     ],
@@ -330,17 +341,17 @@ class Prestations_Service {
                         'type' => 'text',
                     ],
                 ],
-                'visible' => [
+                'visible'           => [
                     'when'     => [['prestation', '=', '']],
                     'relation' => 'or',
                 ],
             ],
             [
-                'id'            => $prefix . 'client',
+                'id'            => $prefix . 'customer_display',
                 'type'          => 'hidden',
                 'admin_columns' => [
-                    'position'   => 'after source',
-                    'title'      => 'Client',
+                    'position'   => 'after title',
+                    'title'      => 'Customer',
                     'sort'       => true,
                     'searchable' => true,
                 ],
@@ -355,7 +366,7 @@ class Prestations_Service {
                 'id'            => $prefix . 'dates',
                 'type'          => 'group',
                 'admin_columns' => [
-                    'position' => 'replace date',
+                    'position' => 'before source',
                     'sort'     => true,
                 ],
                 'class'         => 'inline',
@@ -418,7 +429,7 @@ class Prestations_Service {
                 'id'            => $prefix . 'guests_display',
                 'type'          => 'hidden',
                 'admin_columns' => [
-                    'position' => 'after client',
+                    'position' => 'after customer_display',
                     'title'    => 'Guests',
                     'sort'     => true,
                 ],
@@ -520,7 +531,7 @@ class Prestations_Service {
                 'size'          => 10,
                 'readonly'      => true,
                 'admin_columns' => [
-                    'position' => 'before dates',
+                    'position' => 'after dates',
                     'sort'     => true,
                 ],
             ],
