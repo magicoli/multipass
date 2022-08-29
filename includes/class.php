@@ -474,4 +474,41 @@ class Prestations {
 		return preg_replace('/(#[[:alnum:]]+)/', '<code>$1</code>', the_title('<h1>', '</h1>', false));
 	}
 
+	static function get_user_by_info($info) {
+		if(!is_array($info)) {
+			error_log("info $info is not an array");
+			return $info;
+		}
+		$user = NULL;
+		if(isset($info['user_id'])) {
+			$user = get_user_by('id', $info['user_id']);
+		} else if(isset($info['id'])) {
+			$user = get_user_by('id', $info['id']);
+		} else if(isset($info['email'])) {
+			$user = get_user_by('email', $info['email']);
+		} else if(isset($info['name'])) {
+			// $user = get_user_by('name', $info['name']);
+			$users = get_users(array('search' => $info['name']));
+			if (!empty($users)) $user = $users[0];
+		}
+		return $user;
+	}
+
+	static function get_user_info_by_info($info) {
+		if(!is_array($info)) {
+			error_log("info $info is not an array");
+			return $info;
+		}
+		$user = self::get_user_by_info($info);
+		$info = array_replace($info, array_filter(array(
+			'name' => $user->display_name,
+			'email' => $user->user_email,
+			'phone' => join(', ', array_filter(array(
+				get_user_meta($user->ID, 'billing_phone', true),
+				get_user_meta($user->ID, 'shipping_phone', true),
+			))),
+		)));
+		return $info;
+	}
+
 }
