@@ -205,6 +205,98 @@ class Prestations_Lodgify extends Prestations_Modules {
 
 		return $value;
 	}
+
+	function get_bookings() {
+		$cache_key = sanitize_title(__CLASS__ . '-' . __METHOD__);
+		$response = wp_cache_get($cache_key);
+		if($response) return $response;
+
+		$args = array(
+			// 'size' => 10,
+			'includeCount' => 'true',
+			'includeTransactions' => 'true',
+			// 'includeExternal' => false,
+			'includeQuoteDetails' => 'true',
+			'stayFilter' => 'Upcoming', // Upcoming (default), Current, Historic, All
+		);
+
+		$response = $this->api_request('/v2/reservations/bookings', $args);
+		if(is_wp_error($response)) {
+			$error_id = sanitize_title(__CLASS__ . '-' . __METHOD__);
+			$message = sprintf( __('%s failed (%s).', 'prestations') , $error_id, $response->get_error_message() );
+			add_settings_error( $error_id, $error_id, $message, 'error' );
+			return $response;
+		}
+
+		if($response['count'] > count($response['items'])) {
+			error_log('missing some, getting them all ' . $response['count']);
+			$args['size'] = $response['count'];
+			$response = $this->api_request('/v2/reservations/bookings', $args);
+			if(is_wp_error($response)) {
+				$error_id = sanitize_title(__CLASS__ . '-' . __METHOD__);
+				$message = sprintf( __('%s failed (%s).', 'prestations') , $error_id, $response->get_error_message() );
+				add_settings_error( $error_id, $error_id, $message, 'error' );
+				return $response;
+			}
+		}
+
+		wp_cache_set($cache_key, $response);
+		return $response;
+	}
+
+	static function bookings_options() {
+		$lodgify = new Prestations_Lodgify();
+		$options = [];
+		$response = $lodgify->get_bookings();
+		if(is_wp_error($response)) return false;
+		if(!is_array($response['items'])) return false;
+
+		foreach ($response['items'] as $key => $booking) {
+			$options[$booking['id']] = sprintf(
+				'%s, %sp %s (#%s)',
+				$booking['guest']['name'],
+				$booking['rooms'][0]['people'],
+				Prestations::format_date_range(array(
+					$booking['arrival'],
+					$booking['departure'],
+				), true),
+				$booking['id'],
+			);
+		}
+
+		return $options;
+	}
+
+	static function sync_bookings($value, $field, $oldvalue) {
+		if(!$value) return;
+
+		$lodgify = new Prestations_Lodgify();
+		$response = $lodgify->get_bookings();
+		if(is_wp_error($response)) return false;
+		error_log(__CLASS__ . '::' . __METHOD__ . ' ' . $response['count'] . ' ' . count($response['items']));
+
+		$bookings = $response['items'];
+		foreach ($bookings as $key => $booking) {
+			error_log("booking $key " . print_r($booking, true));
+			break;
+		}
+
+		// if(isset($_REQUEST['lodgify_sync_bookings']) && $_REQUEST['lodgify_sync_bookings'] == true) {
+		// 	$orders = wc_get_orders( array(
+		// 		'limit'        => -1, // Query all orders
+		// 		'orderby'      => 'date',
+		// 		'order'        => 'ASC',
+		// 		// 'meta_key'     => 'prestation_id', // The postmeta key field
+		// 		// 'meta_compare' => 'NOT EXISTS', // The comparison argument
+		// 	));
+		// 	// error_log("found " . count($orders) . " order(s) without prestation");
+		// 	foreach ($orders as $key => $order) {
+		// 		$order_post = get_post($order->get_id());
+		// 		self::update_order_prestation($order_post->ID, $order_post, true);
+		// 	}
+		// }
+	}
+
 }
 
 $this->modules[] = new Prestations_Lodgify();
