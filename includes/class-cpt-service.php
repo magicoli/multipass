@@ -226,7 +226,7 @@ class Prestations_Service {
 	}
 
 	static function register_fields( $meta_boxes ) {
-		$prefix = '';
+    $prefix = '';
 
     $meta_boxes[] = [
         'title'      => __( 'Services fields', 'prestations' ),
@@ -247,7 +247,7 @@ class Prestations_Service {
                 'field_type'    => 'select',
                 'placeholder'   => __( 'None', 'prestations' ),
                 'admin_columns' => [
-                    'position'   => 'before date',
+                    'position'   => 'after title',
                     'sort'       => true,
                     'searchable' => true,
                     'filterable' => true,
@@ -336,10 +336,10 @@ class Prestations_Service {
                 ],
             ],
             [
-                'id'            => $prefix . 'client_display',
+                'id'            => $prefix . 'client',
                 'type'          => 'hidden',
                 'admin_columns' => [
-                    'position'   => 'after title',
+                    'position'   => 'after source',
                     'title'      => 'Client',
                     'sort'       => true,
                     'searchable' => true,
@@ -418,7 +418,7 @@ class Prestations_Service {
                 'id'            => $prefix . 'guests_display',
                 'type'          => 'hidden',
                 'admin_columns' => [
-                    'position' => 'after client_display',
+                    'position' => 'after client',
                     'title'    => 'Guests',
                     'sort'     => true,
                 ],
@@ -605,7 +605,17 @@ class Prestations_Service {
                 'size'          => 10,
                 'readonly'      => true,
                 'admin_columns' => [
-                    'position' => 'after total',
+                    'position' => 'after paid',
+                    'sort'     => true,
+                ],
+            ],
+            [
+                'name'          => __( 'Due', 'prestations' ),
+                'id'            => $prefix . 'due_display',
+                'type'          => 'custom_html',
+                'callback'      => 'get_past_due',
+                'admin_columns' => [
+                    'position' => 'after balance',
                     'sort'     => true,
                 ],
             ],
