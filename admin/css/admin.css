@@ -15,9 +15,25 @@
   display: none;
 }
 
-.rwmb-field.inline > .rwmb-input > div {
+.rwmb-field.inline > .rwmb-input > div,
+.rwmb-field.inline > .rwmb-input > a,
+.rwmb-field.inline .rwmb-clone > div
+{
   display: inline-block;
   margin-right: 1em;
+}
+.rwmb-field.inline .rwmb-clone,
+.rwmb-field.inline .rwmb-clone > .rwmb-field {
+  margin-bottom: 6px;
+}
+.rwmb-field.inline .rwmb-clone:after {
+  display: none;
+}
+.rwmb-field.inline .rwmb-clone > a > span {
+  margin-top: 1em;
+}
+.rwmb-field.inline .rwmb-clone:not(:first-child) > .rwmb-field > .rwmb-label {
+  display: none;
 }
 #prestation-summary .rwmb-field {
   display: grid;
