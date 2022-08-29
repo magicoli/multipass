@@ -117,7 +117,7 @@ class Prestations_HBook extends Prestations_Modules {
     ];
 
 		$meta_boxes['associations']['fields'][] = [
-			'name'       => __( 'HBook Property', 'prestations' ),
+			'name'       => __( 'HBook Accommodations', 'prestations' ),
 			'id'         => 'association_hbook_id',
 			'type'       => 'select_advanced',
 			'options'	=> $hbook->get_property_options(),
@@ -140,7 +140,8 @@ class Prestations_HBook extends Prestations_Modules {
 		$properties = wp_cache_get($transient_key);
 		if($properties) return $properties;
 
-		error_log('fetching properties');
+		global $wpdb;
+
 		$posts = get_posts(array(
 			'numberposts' => -1,
 			'post_type' => 'hb_accommodation',
@@ -150,9 +151,22 @@ class Prestations_HBook extends Prestations_Modules {
 		$properties = [];
 		foreach($posts as $key => $post) {
 			if(preg_match('/"translated/', $post->post_content)) continue;
-			$properties[$post->ID] = $post;
+			// error_log("property $post->ID $post->post_title");
+
+			$table = $wpdb->prefix . 'hb_accom_num_name';
+			$sql = "SELECT * FROM $table WHERE accom_id = $post->ID AND num_name != '1' AND num_name != ''";
+			$results = $wpdb->get_results ( $sql );
+			if($results) {
+				// error_log("$sql result " . print_r($results, true));
+				foreach($results as $result) {
+					$key = $result->accom_id . '-' . $result->accom_num;
+					$properties[$key] = $result;
+				}
+			}
+
+			// $properties[$post->ID] = $post;
 		}
-		error_log('fetching properties ' . print_r($properties, true));
+		// error_log('fetching properties ' . print_r($properties, true));
 
 		wp_cache_set($transient_key, $properties);
 		// set_transient($transient_key, $properties, 3600);
@@ -163,7 +177,7 @@ class Prestations_HBook extends Prestations_Modules {
 		$options = [];
 		$properties = $this->get_properties();
 		if($properties) foreach($properties as $id => $property) {
-			$options[$property->ID] = $property->post_title;
+			$options[$id] = $property->num_name;
 		}
 		return $options;
 	}
