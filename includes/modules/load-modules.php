@@ -63,7 +63,7 @@ class Prestations_Modules {
 	}
 
 	private function load_dependencies() {
-		if(isset($_REQUEST['submit']) && $_REQUEST['page'] == 'prestations')
+		if(isset($_REQUEST['submit']) && isset($_REQUEST['page']) && $_REQUEST['page'] == 'prestations')
 		$enabled = (isset($_REQUEST['modules_enable'])) ? $_REQUEST['modules_enable'] : [];
 		else $enabled = Prestations::get_option('modules_enable', []);
 
