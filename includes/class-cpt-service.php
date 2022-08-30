@@ -193,6 +193,29 @@ class Prestations_Service {
 		}
 	}
 
+	static function customer_html($value = NULL, $field = []) {
+		if(is_object($value)) $post = $value;
+		else global $post;
+
+		if(is_array($value)) $customer_info = $value;
+		else $customer_info = get_post_meta($post->ID, 'customer', true);
+
+		if(is_array($customer_info)) {
+			$customer_html  = join(' ', array_filter(array(
+				($customer_info['user_id'])
+				? sprintf(
+					'<a href="%s">%s</a>',
+					get_edit_profile_url($customer_info['user_id']),
+					$customer_info['name'],
+				) : $customer_info['name'],
+				(empty($customer_info['email'])) ? NULL : sprintf('<a href="mailto:%1$s">%1$s</a>', $customer_info['email']),
+				(empty($customer_info['phone'])) ? NULL : sprintf('<a href="tel:%1$s">%1$s</a>', $customer_info['phone']),
+			)));
+		}
+
+		return $customer_html;
+	}
+
 	static function register_post_types() {
 		$labels = [
 			'name'                     => esc_html__( 'Services', 'prestations' ),
@@ -332,7 +355,23 @@ class Prestations_Service {
                 'post_type'  => ['prestation'],
                 'field_type' => 'select_advanced',
             ],
-            [
+						[
+                'name'          => __( 'Customer', 'prestations' ),
+                'id'            => $prefix . 'customer_display',
+                'type'          => 'custom_html',
+                'callback'      => __CLASS__ . '::customer_html',
+                'admin_columns' => [
+                    'position'   => 'after title',
+                    'title'      => 'Customer',
+                    'sort'       => true,
+                    'searchable' => true,
+                ],
+								'visible'           => [
+                    'when'     => [['prestation', '!=', '']],
+                    'relation' => 'or',
+                ],
+            ],
+						[
                 'name'              => __( 'Customer', 'prestations' ),
                 'id'                => $prefix . 'customer',
                 'type'              => 'group',
@@ -399,16 +438,6 @@ class Prestations_Service {
                         'id'   => $prefix . 'phone',
                         'type' => 'text',
                     ],
-                ],
-            ],
-            [
-                'id'            => $prefix . 'customer_display',
-                'type'          => 'hidden',
-                'admin_columns' => [
-                    'position'   => 'after title',
-                    'title'      => 'Customer',
-                    'sort'       => true,
-                    'searchable' => true,
                 ],
             ],
             [
@@ -792,6 +821,8 @@ class Prestations_Service {
 			error_log(__FUNCTION__ . '::' . __FUNCTION__ . ' meta ' . print_r($user_info, true));
 			update_post_meta( $post_id, 'customer', $user_info );
 		}
+		$customer_html  = self::customer_html($post);
+		update_post_meta( $post_id, 'customer_display', $customer_html );
 
 		// $service = new Prestations_Service($post);
 		// $service->set_prestation();
