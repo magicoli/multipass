@@ -85,12 +85,12 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 				'callback' => 'register_settings_fields',
 			),
 			array(
-				'hook' => 'prestations_register_sources',
+				'hook' => 'multiservices_register_sources',
 				'callback' => 'register_sources_filter',
 			),
 
 			array(
-				'hook' => 'prestations_set_association_title',
+				'hook' => 'multiservices_set_association_title',
 				'callback' => 'set_association_title',
 			),
 
@@ -117,7 +117,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 			),
 
 			// array(
-			// 	'hook' => 'prestations_managed_list',
+			// 	'hook' => 'multiservices_managed_list',
 			// 	'component' => get_parent_class();
 			// 	'callback' => 'managed_list_filter',
 			// )

@@ -159,7 +159,7 @@ class MultiServices_Association {
 				'accepted_args' => 4,
 			),
 			array(
-				'hook' => 'prestations_set_association_title',
+				'hook' => 'multiservices_set_association_title',
 				'callback' => 'set_association_title',
 			),
 
@@ -304,7 +304,7 @@ class MultiServices_Association {
 		if(!$update) return $data;
 		if($data['post_type'] !== 'pr_association') return $data;
 
-		$data = apply_filters('prestations_set_association_title', $data);
+		$data = apply_filters('multiservices_set_association_title', $data);
 
 		return $data;
 	}

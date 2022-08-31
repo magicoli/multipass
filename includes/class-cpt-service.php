@@ -173,7 +173,7 @@ class MultiServices_Service {
 			),
 
 			array(
-				'hook' => 'prestations_set_service_title',
+				'hook' => 'multiservices_set_service_title',
 				'callback' => 'set_service_title',
 			),
 		);
@@ -777,7 +777,7 @@ class MultiServices_Service {
 	}
 
 	static function get_source_options() {
-		return apply_filters('prestations_register_sources', array(
+		return apply_filters('multiservices_register_sources', array(
 			'' => __( 'None', 'prestations' ),
 		));
 	}
@@ -786,7 +786,7 @@ class MultiServices_Service {
 		if(!$update) return $data;
 		if($data['post_type'] !== 'pr_service') return $data;
 
-		$data = apply_filters('prestations_set_service_title', $data);
+		$data = apply_filters('multiservices_set_service_title', $data);
 
 		return $data;
 	}

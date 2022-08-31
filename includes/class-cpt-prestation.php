@@ -761,7 +761,7 @@ class MultiServices_Prestation {
 					'callback'      => 'MultiServices_Prestation::get_summary_total',
 				],
 				[
-					'name'     => __( 'Deposit', 'prestations_html' ),
+					'name'     => __( 'Deposit', 'prestations' ),
 					'id'       => $prefix . 'deposit_amount_html',
 					'type'     => 'custom_html',
 					'callback' => 'MultiServices_Prestation::get_summary_deposit',
@@ -957,7 +957,7 @@ class MultiServices_Prestation {
 	}
 
 	static function get_managed_list($args = [], $field = []) {
-		$html = apply_filters('prestations_managed_list', NULL);
+		$html = apply_filters('multiservices_managed_list', NULL);
 
 		// if(empty($html))
 		// $html = __('No data', 'prestations');

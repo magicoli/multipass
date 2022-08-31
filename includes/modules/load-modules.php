@@ -121,7 +121,7 @@ class MultiServices_Modules {
 				'callback' => 'register_fields'
 			),
 			array(
-				'hook' => 'prestations_managed_list',
+				'hook' => 'multiservices_managed_list',
 				'callback' => 'managed_list_filter',
 			)
 		);

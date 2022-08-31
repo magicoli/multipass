@@ -394,7 +394,7 @@ class MultiServices_Payment_Product {
       break;
     }
 
-    if($value != $oldvalue) set_transient('prestations_rewrite_flush', true);
+    if($value != $oldvalue) set_transient('multiservices_rewrite_flush', true);
 
     return $value;
   }

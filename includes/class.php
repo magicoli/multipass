@@ -146,11 +146,11 @@ class MultiServices {
 		// 	$this->loaders[] = new MultiServices_Payment_Product();
 		// }
 
-		if(get_transient('prestations_rewrite_flush') || get_transient('prestations_rewrite_version') != MULTISERVICES_VERSION) {
+		if(get_transient('multiservices_rewrite_flush') || get_transient('multiservices_rewrite_version') != MULTISERVICES_VERSION) {
 		  wp_cache_flush();
 		  add_action('init', 'flush_rewrite_rules');
-			delete_transient('prestations_rewrite_flush');
-		  set_transient('prestations_rewrite_version', MULTISERVICES_VERSION);
+			delete_transient('multiservices_rewrite_flush');
+		  set_transient('multiservices_rewrite_version', MULTISERVICES_VERSION);
 		  // admin_notice( 'Rewrite rules flushed' );
 		}
 
