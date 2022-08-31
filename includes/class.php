@@ -73,6 +73,7 @@ class MultiServices {
 			$this->version = '1.0.0';
 		}
 		$this->plugin_slug = 'multiservices';
+		$this->plugin_file = plugin_basename(MULTISERVICES_FILE);
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -135,6 +136,8 @@ class MultiServices {
 		$this->loaders[] = new MultiServices_Association();
 		require_once MULTISERVICES_DIR . 'includes/class-settings.php';
 		$this->loaders[] = new MultiServices_Settings();
+		require_once MULTISERVICES_DIR . 'includes/class-plugin-info.php';
+		$this->loaders[] = new MultiServices_PluginInfo();
 
 		require_once MULTISERVICES_DIR . 'includes/modules/load-modules.php';
 		$this->loaders[] = new MultiServices_Modules();
