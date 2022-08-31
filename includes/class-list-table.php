@@ -1,7 +1,6 @@
 <?php
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
-  error_log("WP_List_Table class is not loaded yet, but we might not need it");
   require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
