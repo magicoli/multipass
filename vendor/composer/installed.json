@@ -261,6 +261,66 @@
             "install-path": "../meta-box/meta-box-conditional-logic"
         },
         {
+            "name": "meta-box/meta-box-group",
+            "version": "master",
+            "version_normalized": "dev-master",
+            "dist": {
+                "type": "zip",
+                "url": "https://metabox.io/?action=download&product=meta-box-group&api_key=42ecdf32b0e76fe7766bc340ad82046b"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "installation-source": "dist",
+            "install-path": "../meta-box/meta-box-group"
+        },
+        {
+            "name": "meta-box/meta-box-include-exclude",
+            "version": "master",
+            "version_normalized": "dev-master",
+            "dist": {
+                "type": "zip",
+                "url": "https://metabox.io/?action=download&product=meta-box-include-exclude&api_key=42ecdf32b0e76fe7766bc340ad82046b"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "installation-source": "dist",
+            "install-path": "../meta-box/meta-box-include-exclude"
+        },
+        {
+            "name": "meta-box/meta-box-show-hide",
+            "version": "master",
+            "version_normalized": "dev-master",
+            "dist": {
+                "type": "zip",
+                "url": "https://metabox.io/?action=download&product=meta-box-show-hide&api_key=42ecdf32b0e76fe7766bc340ad82046b"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "installation-source": "dist",
+            "install-path": "../meta-box/meta-box-show-hide"
+        },
+        {
+            "name": "meta-box/meta-box-tabs",
+            "version": "master",
+            "version_normalized": "dev-master",
+            "dist": {
+                "type": "zip",
+                "url": "https://metabox.io/?action=download&product=meta-box-tabs&api_key=42ecdf32b0e76fe7766bc340ad82046b"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "installation-source": "dist",
+            "install-path": "../meta-box/meta-box-tabs"
+        },
+        {
             "name": "php-imap/php-imap",
             "version": "5.0.0",
             "version_normalized": "5.0.0.0",

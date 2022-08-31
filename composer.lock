@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "613255b256c61898dbc16546af16339a",
+    "content-hash": "275f80084830a519d43a45d87a488cf6",
     "packages": [
         {
             "name": "composer/installers",
@@ -249,6 +249,54 @@
             "type": "wordpress-plugin"
         },
         {
+            "name": "meta-box/meta-box-group",
+            "version": "master",
+            "dist": {
+                "type": "zip",
+                "url": "https://metabox.io/?action=download&product=meta-box-group&api_key=42ecdf32b0e76fe7766bc340ad82046b"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin"
+        },
+        {
+            "name": "meta-box/meta-box-include-exclude",
+            "version": "master",
+            "dist": {
+                "type": "zip",
+                "url": "https://metabox.io/?action=download&product=meta-box-include-exclude&api_key=42ecdf32b0e76fe7766bc340ad82046b"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin"
+        },
+        {
+            "name": "meta-box/meta-box-show-hide",
+            "version": "master",
+            "dist": {
+                "type": "zip",
+                "url": "https://metabox.io/?action=download&product=meta-box-show-hide&api_key=42ecdf32b0e76fe7766bc340ad82046b"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin"
+        },
+        {
+            "name": "meta-box/meta-box-tabs",
+            "version": "master",
+            "dist": {
+                "type": "zip",
+                "url": "https://metabox.io/?action=download&product=meta-box-tabs&api_key=42ecdf32b0e76fe7766bc340ad82046b"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin"
+        },
+        {
             "name": "php-imap/php-imap",
             "version": "5.0.0",
             "source": {
@@ -416,10 +464,14 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "meta-box/mb-admin-columns": 20,
         "meta-box/mb-settings-page": 20,
-        "meta-box/meta-box-conditional-logic": 20,
         "meta-box/meta-box-columns": 20,
-        "meta-box/mb-admin-columns": 20
+        "meta-box/meta-box-conditional-logic": 20,
+        "meta-box/meta-box-group": 20,
+        "meta-box/meta-box-include-exclude": 20,
+        "meta-box/meta-box-show-hide": 20,
+        "meta-box/meta-box-tabs": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
