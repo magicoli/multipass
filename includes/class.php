@@ -72,7 +72,7 @@ class MultiServices {
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->plugin_slug = 'prestations';
+		$this->plugin_slug = 'multiservices';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -259,7 +259,7 @@ class MultiServices {
 			$settings_page = strstr($option, ':', true);
 			$option = trim(strstr($option, ':'), ':');
 		} else {
-			$settings_page = 'prestations';
+			$settings_page = 'multiservices';
 		}
 
 		$settings = get_option($settings_page);
@@ -302,7 +302,7 @@ class MultiServices {
 			if($i > 5) { // failed several times to find a unique slug, increase length
 				$slug_length++;
 				$i = 0;
-				MultiServices::update_option('prestations:slug_length', $slug_length);
+				MultiServices::update_option('multiservices:slug_length', $slug_length);
 			}
 
 			$chars = implode(range('a', 'z'));
@@ -330,7 +330,7 @@ class MultiServices {
 	}
 
 	static function currency_options() {
-		$options = wp_cache_get('prestations-currencies');
+		$options = wp_cache_get('multiservices-currencies');
 		if($options) return $options;
 
 		$options = [];
@@ -339,7 +339,7 @@ class MultiServices {
 			$options[$code] = "$code ($symbol)";
 		}
 
-		wp_cache_set('prestations-currencies', $options);
+		wp_cache_set('multiservices-currencies', $options);
 		return $options;
 	}
 
@@ -460,7 +460,7 @@ class MultiServices {
 		if(count($formatted) == 2) {
 			return sprintf(
 				// TRANSLATORS: [start date] to [end date] (without time)
-				($long) ? __('from %s to %s', 'prestations') : __('%s to %s', 'prestations'),
+				($long) ? __('from %s to %s', 'multiservices') : __('%s to %s', 'multiservices' ),
 				$formatted[0],
 				$formatted[1],
 			);

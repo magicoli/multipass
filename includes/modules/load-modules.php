@@ -50,7 +50,7 @@ class MultiServices_Modules {
 	 */
 	public function __construct() {
 		$this->version = MULTISERVICES_VERSION;
-		$this->plugin_slug = 'prestations';
+		$this->plugin_slug = 'multiservices';
 
 		$this->locale = $this->get_locale();
 
@@ -63,7 +63,7 @@ class MultiServices_Modules {
 	}
 
 	private function load_dependencies() {
-		if(isset($_REQUEST['submit']) && isset($_REQUEST['page']) && $_REQUEST['page'] == 'prestations')
+		if(isset($_REQUEST['submit']) && isset($_REQUEST['page']) && $_REQUEST['page'] == 'multiservices')
 		$enabled = (isset($_REQUEST['modules_enable'])) ? $_REQUEST['modules_enable'] : [];
 		else $enabled = MultiServices::get_option('modules_enable', []);
 
@@ -145,19 +145,19 @@ class MultiServices_Modules {
 
 		// Modules settings in General tab
 		$meta_boxes[] = [
-			'title'          => __( 'MultiServices Modules', 'prestations' ),
-			'id'             => 'prestations-modules',
-			'settings_pages' => ['prestations'],
+			'title'          => __('MultiServices Modules', 'multiservices' ),
+			'id'             => 'multiservices-modules',
+			'settings_pages' => ['multiservices'],
 			'tab'            => 'general',
 			'fields'         => [
 				[
-					'name'    => __( 'Modules', 'prestations' ),
+					'name'    => __('Modules', 'multiservices' ),
 					'id'      => $prefix . 'enable',
 					'type'    => 'checkbox_list',
 					'options' => [
-						'imap'    => __( 'Mail Processing', 'prestations' ),
-						'lodgify' => __( 'Lodgify', 'prestations' ),
-						'hbook' => __( 'HBook Plugin', 'prestations' ),
+						'imap'    => __('Mail Processing', 'multiservices' ),
+						'lodgify' => __('Lodgify', 'multiservices' ),
+						'hbook' => __('HBook Plugin', 'multiservices' ),
 					],
 				],
 			],
@@ -167,8 +167,8 @@ class MultiServices_Modules {
 	}
 
 	static function managed_list_filter($html = '') {
-		$title = __('External', 'prestations');
-		if(empty($list)) $list = __('Empty list', 'prestations');
+		$title = __('External', 'multiservices' );
+		if(empty($list)) $list = __('Empty list', 'multiservices' );
 
 		global $post;
 		$data = get_post_meta($post->ID, 'modules-data', true);
@@ -176,18 +176,18 @@ class MultiServices_Modules {
 		if(empty($data)) $data = [];
 		// if(is_array($data)) {
 			$data['columns'] = array(
-				'id' => __('ID', 'prestations'),
-				'created' => __('Created', 'prestations'),
-				'source' => __('Source', 'prestations'),
-				'description' => __('Description', 'prestations'),
-				'from' => __('From', 'prestations'),
-				'to' => __('To', 'prestations'),
-				'subtotal' => __('Subtotal', 'prestations'),
-				'discount' => __('Discount', 'prestations'),
-				'refunded' => __('Refunded', 'prestations'),
-				'total' => __('Total', 'prestations'),
-				'paid' => __('Paid', 'prestations'),
-				'status' => __('Status', 'prestations'),
+				'id' => __('ID', 'multiservices' ),
+				'created' => __('Created', 'multiservices' ),
+				'source' => __('Source', 'multiservices' ),
+				'description' => __('Description', 'multiservices' ),
+				'from' => __('From', 'multiservices' ),
+				'to' => __('To', 'multiservices' ),
+				'subtotal' => __('Subtotal', 'multiservices' ),
+				'discount' => __('Discount', 'multiservices' ),
+				'refunded' => __('Refunded', 'multiservices' ),
+				'total' => __('Total', 'multiservices' ),
+				'paid' => __('Paid', 'multiservices' ),
+				'status' => __('Status', 'multiservices' ),
 				'actions' => '',
 			);
 			$data['format'] = array(

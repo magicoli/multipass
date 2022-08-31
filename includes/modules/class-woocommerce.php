@@ -146,28 +146,28 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 
 		$prefix = 'woocommerce_';
 
-		$meta_boxes['prestations-settings']['fields']['currency_options'] = [
-			'name'   => __( 'Currency Options', 'prestations' ),
+		$meta_boxes['multiservices-settings']['fields']['currency_options'] = [
+			'name'   => __('Currency Options', 'multiservices' ),
 			'id'     => $prefix . 'currency',
 			'type'   => 'custom_html',
 			'std' => sprintf(
-				__('Set currency options in %sWooCommerce settings page%s', 'prestations'),
+				__('Set currency options in %sWooCommerce settings page%s', 'multiservices' ),
 				'<a href="' . get_admin_url(NULL, 'admin.php?page=wc-settings#pricing_options-description') . '">',
 				'</a>',
 			),
 		];
 
 		$meta_boxes['woocommerce_settings'] = [
-			'title'          => __( 'WooCommerce Settings', 'prestations' ),
-			'id'             => 'prestations-woocommerce',
-			'settings_pages' => ['prestations'],
+			'title'          => __('WooCommerce Settings', 'multiservices' ),
+			'id'             => 'multiservices-woocommerce',
+			'settings_pages' => ['multiservices'],
 			'tab'            => 'woocommerce',
 			'fields'         => [
 				[
-					'name'              => __( 'Sync orders', 'prestations' ),
+					'name'              => __('Sync orders', 'multiservices' ),
 					'id'                => $prefix . 'sync_orders',
 					'type'              => 'switch',
-					'desc'              => __( 'Sync orders and prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'prestations' ),
+					'desc'              => __('Sync orders and prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multiservices' ),
 					'style'             => 'rounded',
 					'sanitize_callback' => 'MultiServices_WooCommerce::sync_orders',
 					'save_field' => false,
@@ -178,13 +178,13 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		// Prestation info on WC Orders
 		$prefix = 'prestation_';
 		$meta_boxes[] = [
-			'title'      => __( 'Prestation', 'prestations' ),
+			'title'      => __('Prestation', 'multiservices' ),
 			'id'         => 'prestation-woocommerce-order',
 			'post_types' => ['shop_order'],
 			'context'    => 'side',
 			'fields'     => [
 				[
-					// 'name'       => __( 'Prestation', 'prestations' ),
+					// 'name'       => __('Prestation', 'multiservices' ),
 					'id'         => $prefix . 'id',
 					'type'       => 'post',
 					'post_type'  => ['prestation'],
@@ -200,8 +200,8 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 
 		// WC Orders on prestation
 		$prefix = 'woocommerce_';
-		$meta_boxes['prestations-extensions']['fields']['woocommerce'] = [
-			'name'    => __( 'Woocommerce Orders', 'prestations' ),
+		$meta_boxes['multiservices-extensions']['fields']['woocommerce'] = [
+			'name'    => __('Woocommerce Orders', 'multiservices' ),
 			'id'      => 'orders',
 			'type'    => 'custom_html',
 			'callback' => __CLASS__ . '::get_order_details',
@@ -213,7 +213,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 			// 'clone'  => true,
 			// 'fields' => [
 			// 	[
-			// 		'name'    => __( 'Order ID', 'prestations' ),
+			// 		'name'    => __('Order ID', 'multiservices' ),
 			// 		'id'      => 'id',
 			// 		'type'    => 'text',
 			// 		'post_type' => 'shop_order',
@@ -224,7 +224,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 			// 		// 'options' => self::get_available_items(),
 			// 	],
 			// 	[
-			// 		'name'    => __( 'Additional details', 'prestations' ),
+			// 		'name'    => __('Additional details', 'multiservices' ),
 			// 		'id'      => 'details',
 			// 		'type'    => 'custom_html',
 			// 		'callback' => __CLASS__ . '::get_order_details',
@@ -234,7 +234,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		];
 
 		$meta_boxes['associations']['fields'][] = [
-			'name'       => __( 'Product', 'prestations' ),
+			'name'       => __('Product', 'multiservices' ),
 			'id'         => 'association_product_id',
 			'type'       => 'post',
 			'post_type'  => ['product'],
@@ -271,7 +271,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		$link = get_edit_post_link($prestation_id);
 
 		if(!empty($link)) echo sprintf(
-			'<a href="%s">%s</a>', $link, __('View prestation', 'prestations'),
+			'<a href="%s">%s</a>', $link, __('View prestation', 'multiservices' ),
 		);
 	}
 
@@ -317,7 +317,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 	}
 
 	static function register_settings_pages( $settings_pages ) {
-		$settings_pages['prestations']['tabs']['woocommerce'] = 'WooCommerce';
+		$settings_pages['multiservices']['tabs']['woocommerce'] = 'WooCommerce';
 
 		return $settings_pages;
 	}
@@ -325,10 +325,10 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 	static function register_settings_fields( $meta_boxes ) {
 		$prefix = 'woocommerce_';
 
-		$meta_boxes['prestations-woocommerce-settings'] = [
-			'title'          => __( 'WooCommerce Settings', 'prestations' ),
-			'id'             => 'prestations-woocommerce-settings',
-			'settings_pages' => ['prestations'],
+		$meta_boxes['multiservices-woocommerce-settings'] = [
+			'title'          => __('WooCommerce Settings', 'multiservices' ),
+			'id'             => 'multiservices-woocommerce-settings',
+			'settings_pages' => ['multiservices'],
 			'tab'            => 'woocommerce',
 			'fields'         => [
 			],
@@ -344,7 +344,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		foreach($columns as $key => $value) {
 			$updated_columns[$key] = $value;
 			if($key == 'order_number') {
-				$updated_columns['prestation'] = __('Prestation', 'prestations');
+				$updated_columns['prestation'] = __('Prestation', 'multiservices' );
 			}
 		}
 		if(isset($updated_columns)) $columns = $updated_columns;
@@ -543,7 +543,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 			$dates[] = $p_order['to'];
 
 			$p_order['description'] = $p_order['items'][0]['product_name']
-			. ( (count($p_order['items']) > 1) ? sprintf( __(' + %s items', 'prestations'), count($p_order['items']) - 1 ) : '' );
+			. ( (count($p_order['items']) > 1) ? sprintf( __(' + %s items', 'multiservices' ), count($p_order['items']) - 1 ) : '' );
 
 			$lines[] = $p_order;
 			$p_orders[$order->get_id()] = $p_order;
@@ -645,25 +645,25 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 	}
 
 	static function managed_list_filter($html = '') {
-		$title = __('Online Shop (WooCommerce)', 'prestations');
-		if(empty($list)) $list = __('Empty list', 'prestations');
+		$title = __('Online Shop (WooCommerce)', 'multiservices' );
+		if(empty($list)) $list = __('Empty list', 'multiservices' );
 
 		global $post;
 
 		$data = get_post_meta($post->ID, 'modules-data', true);
 		$data['columns'] = array(
-			'id' => __('ID', 'prestations'),
-			'created' => __('Created', 'prestations'),
-			'source' => __('Source', 'prestations'),
-			'description' => __('Description', 'prestations'),
-			'from' => __('From', 'prestations'),
-			'to' => __('To', 'prestations'),
-			'subtotal' => __('Subtotal', 'prestations'),
-			'discount' => __('Discount', 'prestations'),
-			'refunded' => __('Refunded', 'prestations'),
-			'total' => __('Total', 'prestations'),
-			'paid' => __('Paid', 'prestations'),
-			'status' => __('Status', 'prestations'),
+			'id' => __('ID', 'multiservices' ),
+			'created' => __('Created', 'multiservices' ),
+			'source' => __('Source', 'multiservices' ),
+			'description' => __('Description', 'multiservices' ),
+			'from' => __('From', 'multiservices' ),
+			'to' => __('To', 'multiservices' ),
+			'subtotal' => __('Subtotal', 'multiservices' ),
+			'discount' => __('Discount', 'multiservices' ),
+			'refunded' => __('Refunded', 'multiservices' ),
+			'total' => __('Total', 'multiservices' ),
+			'paid' => __('Paid', 'multiservices' ),
+			'status' => __('Status', 'multiservices' ),
 			'actions' => '',
 		);
 		$data['format'] = array(

@@ -197,41 +197,41 @@ class MultiServices_Prestation {
 
 	static function register_post_types() {
 		$labels = [
-			'name'                     => esc_html__( 'Prestations', 'prestations' ),
-			'singular_name'            => esc_html__( 'Prestation', 'prestations' ),
-			'add_new'                  => esc_html__( 'Add New', 'prestations' ),
-			'add_new_item'             => esc_html__( 'Add new prestation', 'prestations' ),
-			'edit_item'                => esc_html__( 'Edit Prestation', 'prestations' ),
-			'new_item'                 => esc_html__( 'New Prestation', 'prestations' ),
-			'view_item'                => esc_html__( 'View Prestation', 'prestations' ),
-			'view_items'               => esc_html__( 'View Prestations', 'prestations' ),
-			'search_items'             => esc_html__( 'Search Prestations', 'prestations' ),
-			'not_found'                => esc_html__( 'No prestations found', 'prestations' ),
-			'not_found_in_trash'       => esc_html__( 'No prestations found in Trash', 'prestations' ),
-			'parent_item_colon'        => esc_html__( 'Parent Prestation:', 'prestations' ),
-			'all_items'                => esc_html__( 'All Prestations', 'prestations' ),
-			'archives'                 => esc_html__( 'Prestation Archives', 'prestations' ),
-			'attributes'               => esc_html__( 'Prestation Attributes', 'prestations' ),
-			'insert_into_item'         => esc_html__( 'Insert into prestation', 'prestations' ),
-			'uploaded_to_this_item'    => esc_html__( 'Uploaded to this prestation', 'prestations' ),
-			'featured_image'           => esc_html__( 'Featured image', 'prestations' ),
-			'set_featured_image'       => esc_html__( 'Set featured image', 'prestations' ),
-			'remove_featured_image'    => esc_html__( 'Remove featured image', 'prestations' ),
-			'use_featured_image'       => esc_html__( 'Use as featured image', 'prestations' ),
-			'menu_name'                => esc_html__( 'Prestations', 'prestations' ),
-			'filter_items_list'        => esc_html__( 'Filter prestations list', 'prestations' ),
-			'filter_by_date'           => esc_html__( '', 'prestations' ),
-			'items_list_navigation'    => esc_html__( 'Prestations list navigation', 'prestations' ),
-			'items_list'               => esc_html__( 'Prestations list', 'prestations' ),
-			'item_published'           => esc_html__( 'Prestation published', 'prestations' ),
-			'item_published_privately' => esc_html__( 'Prestation published privately', 'prestations' ),
-			'item_reverted_to_draft'   => esc_html__( 'Prestation reverted to draft', 'prestations' ),
-			'item_scheduled'           => esc_html__( 'Prestation scheduled', 'prestations' ),
-			'item_updated'             => esc_html__( 'Prestation updated', 'prestations' ),
-			'text_domain'              => 'prestations',
+			'name'                     => esc_html__('Prestations', 'multiservices' ),
+			'singular_name'            => esc_html__('Prestation', 'multiservices' ),
+			'add_new'                  => esc_html__('Add New', 'multiservices' ),
+			'add_new_item'             => esc_html__('Add new prestation', 'multiservices' ),
+			'edit_item'                => esc_html__('Edit Prestation', 'multiservices' ),
+			'new_item'                 => esc_html__('New Prestation', 'multiservices' ),
+			'view_item'                => esc_html__('View Prestation', 'multiservices' ),
+			'view_items'               => esc_html__('View Prestations', 'multiservices' ),
+			'search_items'             => esc_html__('Search Prestations', 'multiservices' ),
+			'not_found'                => esc_html__('No prestations found', 'multiservices' ),
+			'not_found_in_trash'       => esc_html__('No prestations found in Trash', 'multiservices' ),
+			'parent_item_colon'        => esc_html__('Parent Prestation:', 'multiservices' ),
+			'all_items'                => esc_html__('All Prestations', 'multiservices' ),
+			'archives'                 => esc_html__('Prestation Archives', 'multiservices' ),
+			'attributes'               => esc_html__('Prestation Attributes', 'multiservices' ),
+			'insert_into_item'         => esc_html__('Insert into prestation', 'multiservices' ),
+			'uploaded_to_this_item'    => esc_html__('Uploaded to this prestation', 'multiservices' ),
+			'featured_image'           => esc_html__('Featured image', 'multiservices' ),
+			'set_featured_image'       => esc_html__('Set featured image', 'multiservices' ),
+			'remove_featured_image'    => esc_html__('Remove featured image', 'multiservices' ),
+			'use_featured_image'       => esc_html__('Use as featured image', 'multiservices' ),
+			'menu_name'                => esc_html__('Prestations', 'multiservices' ),
+			'filter_items_list'        => esc_html__('Filter prestations list', 'multiservices' ),
+			'filter_by_date'           => esc_html__('', 'multiservices' ),
+			'items_list_navigation'    => esc_html__('Prestations list navigation', 'multiservices' ),
+			'items_list'               => esc_html__('Prestations list', 'multiservices' ),
+			'item_published'           => esc_html__('Prestation published', 'multiservices' ),
+			'item_published_privately' => esc_html__('Prestation published privately', 'multiservices' ),
+			'item_reverted_to_draft'   => esc_html__('Prestation reverted to draft', 'multiservices' ),
+			'item_scheduled'           => esc_html__('Prestation scheduled', 'multiservices' ),
+			'item_updated'             => esc_html__('Prestation updated', 'multiservices' ),
+			'text_domain' => 'multiservices',
 		];
 		$args = [
-			'label'               => esc_html__( 'Prestations', 'prestations' ),
+			'label'               => esc_html__('Prestations', 'multiservices' ),
 			'labels'              => $labels,
 			'description'         => '',
 			'public'              => false,
@@ -266,8 +266,8 @@ class MultiServices_Prestation {
 
 		$prefix = '';
 		$meta_boxes['prestation-cpt'] = [
-			'title'      => __( 'Prestations', 'prestations' ),
-			'id'         => 'prestations',
+			'title'      => __('Prestations', 'multiservices' ),
+			'id'         => 'multiservices',
 			'post_types' => ['prestation'],
 			'context'    => 'after_title',
 			'style'      => 'seamless',
@@ -279,7 +279,7 @@ class MultiServices_Prestation {
 					'callback' => 'MultiServices::title_html',
 				],
 				[
-					'name'          => __( 'Customer', 'prestations' ),
+					'name'          => __('Customer', 'multiservices' ),
 					'id'            => $prefix . 'customer_id',
 					'type'          => 'user',
 					'field_type'    => 'select_advanced',
@@ -290,13 +290,13 @@ class MultiServices_Prestation {
 					],
 				],
 				[
-					'name'          => __( 'Guest name', 'prestations' ),
+					'name'          => __('Guest name', 'multiservices' ),
 					'id'            => $prefix . 'guest_name',
 					'type'          => 'text',
-					'description'		=> __('Leave empty if same as customer name', 'prestations'),
+					'description'		=> __('Leave empty if same as customer name', 'multiservices' ),
 				],
 				[
-					'name'          => __( 'Guest', 'prestations' ),
+					'name'          => __('Guest', 'multiservices' ),
 					'id'            => $prefix . 'display_name',
 					'type'          => 'hidden',
 					'admin_columns' => [
@@ -306,7 +306,7 @@ class MultiServices_Prestation {
 					],
 				],
 				[
-					'name'    => __( 'Customer Email', 'prestations' ),
+					'name'    => __('Customer Email', 'multiservices' ),
 					'id'      => $prefix . 'customer_email',
 					'type'    => 'email',
 					// 'visible' => [
@@ -315,7 +315,7 @@ class MultiServices_Prestation {
 					// ],
 				],
 				[
-				  'name'   => __( 'Dates', 'prestations' ),
+				  'name'   => __('Dates', 'multiservices' ),
 				  'id'     => $prefix . 'dates',
 				  'type'   => 'group',
 					'class' => 'inline',
@@ -325,7 +325,7 @@ class MultiServices_Prestation {
 					// ],
 				  'fields' => [
 						[
-							'prepend'          => __( 'From', 'prestations' ),
+							'prepend'          => __('From', 'multiservices' ),
 							'id'            => $prefix . 'from',
 							'readonly' => true,
 							'size' => 10,
@@ -336,7 +336,7 @@ class MultiServices_Prestation {
 							],
 						],
 						[
-							'prepend'          => __( 'To', 'prestations' ),
+							'prepend'          => __('To', 'multiservices' ),
 							'id'            => $prefix . 'to',
 							'type'          => 'date',
 							'timestamp'     => true,
@@ -349,7 +349,7 @@ class MultiServices_Prestation {
 					],
 				],
 				[
-				  'name'   => __( 'Discount', 'prestations' ),
+				  'name'   => __('Discount', 'multiservices' ),
 				  'id'     => $prefix . 'discount',
 				  'type'   => 'group',
 					'class' => 'inline',
@@ -377,7 +377,7 @@ class MultiServices_Prestation {
 				  ],
 				],
 				[
-					'name'   => __( 'Deposit', 'prestations' ),
+					'name'   => __('Deposit', 'multiservices' ),
 					'id'     => $prefix . 'deposit',
 					'type'   => 'group',
 					'class'	 => 'inline',
@@ -406,7 +406,7 @@ class MultiServices_Prestation {
 							],
 						],
 						[
-								'prepend'          => __( 'Before', 'prestations' ),
+								'prepend'          => __('Before', 'multiservices' ),
 								'id'            => $prefix . 'deposit_before',
 								'type'          => 'date',
 								'visible' => [
@@ -431,7 +431,7 @@ class MultiServices_Prestation {
 			'readonly' => true,
 			'fields'     => [
 				[
-					// 'name'          => __( 'Managed Items', 'prestations' ),
+					// 'name'          => __('Managed Items', 'multiservices' ),
 					'id'            => $prefix . 'list',
 					'type'          => 'custom_html',
 					'callback'      => __CLASS__ . '::get_managed_list',
@@ -440,7 +440,7 @@ class MultiServices_Prestation {
 			],
 		];
 		// 		'items' => [
-		// 			// 'name'      => __( 'Managed orders and bookings', 'prestations' ),
+		// 			// 'name'      => __('Managed orders and bookings', 'multiservices' ),
 		// 			'id'     => $prefix . 'managed',
 		// 			'type'   => 'group',
 		// 			'clone'  => true,
@@ -449,7 +449,7 @@ class MultiServices_Prestation {
 		// 			'class' => 'low-gap',
 		// 			'fields' => [
 		// 				[
-		// 					'name'    => __( 'ID', 'prestations' ),
+		// 					'name'    => __('ID', 'multiservices' ),
 		// 					'id'      => $prefix . 'id',
 		// 					'type'    => 'text',
 		// 					'readonly' => true,
@@ -458,7 +458,7 @@ class MultiServices_Prestation {
 		// 					'readonly' => true,
 		// 				],
 		// 				[
-		// 					'name'    => __( 'Source', 'prestations' ),
+		// 					'name'    => __('Source', 'multiservices' ),
 		// 					'id'      => $prefix . 'source',
 		// 					'type'    => 'text',
 		// 					'readonly' => true,
@@ -466,28 +466,28 @@ class MultiServices_Prestation {
 		// 					'readonly' => true,
 		// 				],
 		// 				[
-		// 					'name'    => __( 'Description', 'prestations' ),
+		// 					'name'    => __('Description', 'multiservices' ),
 		// 					'id'      => $prefix . 'description',
 		// 					'type'    => 'text',
 		// 					'columns' => 3,
 		// 					'readonly' => true,
 		// 				],
 		// 				[
-		// 						'name'          => __( 'From', 'prestations' ),
+		// 						'name'          => __('From', 'multiservices' ),
 		// 						'id'            => $prefix . 'from',
 		// 						'type'          => 'date',
 		// 						'columns' => 1,
 		// 						'readonly' => true,
 		// 				],
 		// 				[
-		// 						'name'          => __( 'To', 'prestations' ),
+		// 						'name'          => __('To', 'multiservices' ),
 		// 						'id'            => $prefix . 'to',
 		// 						'type'          => 'date',
 		// 						'columns' => 1,
 		// 						'readonly' => true,
 		// 				],
 		// 				[
-		// 					'name'    => __( 'Quantity', 'prestations' ),
+		// 					'name'    => __('Quantity', 'multiservices' ),
 		// 					'id'      => $prefix . 'quantity',
 		// 					'type'    => 'text',
 		// 					'step' => 'any',
@@ -495,7 +495,7 @@ class MultiServices_Prestation {
 		// 					'readonly' => true,
 		// 				],
 		// 				[
-		// 					'name'    => __( 'Unit Price', 'prestations' ),
+		// 					'name'    => __('Unit Price', 'multiservices' ),
 		// 					'id'      => $prefix . 'unit_price',
 		// 					'type'    => 'text',
 		// 					'step' => 'any',
@@ -503,7 +503,7 @@ class MultiServices_Prestation {
 		// 					'readonly' => true,
 		// 				],
 		// 				[
-		// 					'name'    => __( 'Discount', 'prestations' ),
+		// 					'name'    => __('Discount', 'multiservices' ),
 		// 					'id'      => $prefix . 'discount',
 		// 					'type'    => 'text',
 		// 					'step' => 'any',
@@ -511,7 +511,7 @@ class MultiServices_Prestation {
 		// 					'readonly' => true,
 		// 				],
 		// 				[
-		// 					'name'    => __( 'Total', 'prestations' ),
+		// 					'name'    => __('Total', 'multiservices' ),
 		// 					'id'      => $prefix . 'total',
 		// 					'type'    => 'text',
 		// 					'step' => 'any',
@@ -519,7 +519,7 @@ class MultiServices_Prestation {
 		// 					'readonly' => true,
 		// 				],
 		// 				[
-		// 					'name'    => __( 'Paid', 'prestations' ),
+		// 					'name'    => __('Paid', 'multiservices' ),
 		// 					'id'      => $prefix . 'paid',
 		// 					'type'    => 'text',
 		// 					'step' => 'any',
@@ -539,34 +539,34 @@ class MultiServices_Prestation {
 
 			'fields'     => [
 				'items' => [
-					'name'      => __( 'Manual operations', 'prestations' ),
+					'name'      => __('Manual operations', 'multiservices' ),
 					'id'     => $prefix . 'manual_items',
 					'type'   => 'group',
 					'clone'  => true,
 					'readonly' => false,
 					'class' => 'low-gap',
-					'label_description' => '<p>' . __('Use manual operations only for items not managed by modules.', 'prestations') . '</p>',
+					'label_description' => '<p>' . __('Use manual operations only for items not managed by modules.', 'multiservices' ) . '</p>',
 					'fields' => [
 						[
-							'name'    => __( 'Type', 'prestations' ),
+							'name'    => __('Type', 'multiservices' ),
 							'id'      => $prefix . 'type',
 							'type'    => 'select',
 							'options' => [
-									'product' => __( 'Product', 'prestations' ),
-									'booking' => __( 'Booking', 'prestations' ),
-									'payment' => __( 'Payment', 'prestations' ),
+									'product' => __('Product', 'multiservices' ),
+									'booking' => __('Booking', 'multiservices' ),
+									'payment' => __('Payment', 'multiservices' ),
 							],
-							'placeholder' => __('Select a type', 'prestations'),
+							'placeholder' => __('Select a type', 'multiservices' ),
 							'columns' => 2,
 						],
 						[
-							'name'    => __( 'Description', 'prestations' ),
+							'name'    => __('Description', 'multiservices' ),
 							'id'      => $prefix . 'description',
 							'type'    => 'text',
 							'columns' => 3,
 						],
 						[
-								'name'          => __( 'Date', 'prestations' ),
+								'name'          => __('Date', 'multiservices' ),
 								'id'            => $prefix . 'from',
 								'type'          => 'date',
 								'type'          => 'date',
@@ -585,7 +585,7 @@ class MultiServices_Prestation {
 								],
 						],
 						[
-								'name'          => __( 'To', 'prestations' ),
+								'name'          => __('To', 'multiservices' ),
 								'id'            => $prefix . 'to',
 								'type'          => 'date',
 								'type'          => 'date',
@@ -603,7 +603,7 @@ class MultiServices_Prestation {
 								],
 						],
 						[
-							'name'    => __( 'Quantity', 'prestations' ),
+							'name'    => __('Quantity', 'multiservices' ),
 							'id'      => $prefix . 'quantity',
 							'type'    => 'number',
 							'class' => 'item_quantity',
@@ -618,7 +618,7 @@ class MultiServices_Prestation {
 							],
 						],
 						[
-							'name'    => __( 'Unit Price', 'prestations' ),
+							'name'    => __('Unit Price', 'multiservices' ),
 							'id'      => $prefix . 'unit_price',
 							'class' => 'item_unit_price',
 							'type'    => 'text',
@@ -633,7 +633,7 @@ class MultiServices_Prestation {
 							],
 						],
 						[
-							'name'    => __( 'Discount', 'prestations' ),
+							'name'    => __('Discount', 'multiservices' ),
 							'id'      => $prefix . 'discount',
 							'type'    => 'text',
 							'class' => 'item_discount',
@@ -648,7 +648,7 @@ class MultiServices_Prestation {
 							],
 						],
 						[
-							'name'    => __( 'Price', 'prestations' ),
+							'name'    => __('Price', 'multiservices' ),
 							'id'      => $prefix . 'price',
 							'class' => 'item_price',
 							'type'    => 'text',
@@ -664,7 +664,7 @@ class MultiServices_Prestation {
 							],
 						],
 						[
-							'name'    => __( 'Paid', 'prestations' ),
+							'name'    => __('Paid', 'multiservices' ),
 							'id'      => $prefix . 'paid',
 							'class' => 'item_paid',
 							'type'    => 'text',
@@ -684,7 +684,7 @@ class MultiServices_Prestation {
 
 		// $prefix
 		// $meta_boxes[] = [
-		// 	'title'      => __( 'Manual payments', 'prestations' ),
+		// 	'title'      => __('Manual payments', 'multiservices' ),
 		// 	'id'         => 'prestation-payments',
 		// 	'post_types' => ['prestation'],
 		// 	'class' => 'low-gap',
@@ -695,22 +695,22 @@ class MultiServices_Prestation {
 		// 			'clone'  => true,
 		// 			'fields' => [
 		// 				[
-		// 					'name'    => __( 'Type', 'prestations' ),
+		// 					'name'    => __('Type', 'multiservices' ),
 		// 					'id'      => $prefix . 'type',
 		// 					'type'    => 'select',
 		// 					'placeholder' => __('Select a payment method'),
 		// 					'options' => [
-		// 						'cash'        => __( 'Cash', 'prestations' ),
-		// 						'wire'        => __( 'Wire Transfer', 'prestations' ),
-		// 						'order'       => __( 'WooCommerce Order', 'prestations' ),
-		// 						'hbook'       => __( 'HBook Order', 'prestations' ),
-		// 						'booking_com' => __( 'Booking.com', 'prestations' ),
-		// 						'airbnb'      => __( 'Airbnb', 'prestations' ),
+		// 						'cash'        => __('Cash', 'multiservices' ),
+		// 						'wire'        => __('Wire Transfer', 'multiservices' ),
+		// 						'order'       => __('WooCommerce Order', 'multiservices' ),
+		// 						'hbook'       => __('HBook Order', 'multiservices' ),
+		// 						'booking_com' => __('Booking.com', 'multiservices' ),
+		// 						'airbnb'      => __('Airbnb', 'multiservices' ),
 		// 					],
 		// 					'columns' => 2,
 		// 				],
 		// 				[
-		// 					'name'    => __( 'Payment ID', 'prestations' ),
+		// 					'name'    => __('Payment ID', 'multiservices' ),
 		// 					'id'      => $prefix . 'payment_id',
 		// 					'type'    => 'text',
 		// 					'readonly' => true,
@@ -718,13 +718,13 @@ class MultiServices_Prestation {
 		// 					'columns' => 2,
 		// 				],
 		// 				[
-		// 					'name'    => __( 'Payment reference', 'prestations' ),
+		// 					'name'    => __('Payment reference', 'multiservices' ),
 		// 					'id'      => $prefix . 'payment_reference',
 		// 					'type'    => 'text',
 		// 					'columns' => 3,
 		// 				],
 		// 				[
-		// 					'name'    => __( 'Amount', 'prestations' ),
+		// 					'name'    => __('Amount', 'multiservices' ),
 		// 					'id'      => $prefix . 'amount',
 		// 					'type'    => 'number',
 		// 					'columns' => 2,
@@ -736,45 +736,45 @@ class MultiServices_Prestation {
 		// ];
 
 		$meta_boxes['prestation-summary'] = [
-			'title'      => __( 'Summary', 'prestations' ),
+			'title'      => __('Summary', 'multiservices' ),
 			'id'         => 'prestation-summary',
 			'post_types' => ['prestation'],
 			'context'    => 'side',
 			'fields'     => [
 				[
-					'name'          => __( 'Regular Price', 'prestations' ),
+					'name'          => __('Regular Price', 'multiservices' ),
 					'id'            => $prefix . 'price_html',
 					'type'          => 'custom_html',
 					'callback'      => 'MultiServices_Prestation::get_summary_price',
 				],
 				[
-					'name'          => __( 'Discount', 'prestations' ),
+					'name'          => __('Discount', 'multiservices' ),
 					'id'            => $prefix . 'discount_html',
 					'type'          => 'custom_html',
 					'callback'      => 'MultiServices_Prestation::get_summary_discount',
 				],
 				[
-					'name'          => __( 'Total', 'prestations' ),
+					'name'          => __('Total', 'multiservices' ),
 					'id'            => $prefix . 'total_html',
 					'type'          => 'custom_html',
 					'class'          => 'total',
 					'callback'      => 'MultiServices_Prestation::get_summary_total',
 				],
 				[
-					'name'     => __( 'Deposit', 'prestations' ),
+					'name'     => __('Deposit', 'multiservices' ),
 					'id'       => $prefix . 'deposit_amount_html',
 					'type'     => 'custom_html',
 					'callback' => 'MultiServices_Prestation::get_summary_deposit',
 				],
 				[
-					'name'          => __( 'Paid', 'prestations' ),
+					'name'          => __('Paid', 'multiservices' ),
 					'id'            => $prefix . 'paid_html',
 					'type'          => 'custom_html',
 					'callback'      => 'MultiServices_Prestation::get_summary_paid',
 					'admin_columns' => 'after total',
 				],
 				[
-					'name'          => __( 'Balance', 'prestations' ),
+					'name'          => __('Balance', 'multiservices' ),
 					'id'            => $prefix . 'balance_html',
 					'type'          => 'custom_html',
 					'class' => 'balance',
@@ -782,20 +782,20 @@ class MultiServices_Prestation {
 					'admin_columns' => 'after paid',
 				],
 				// [
-				// 	'name'          => __( 'Due', 'prestations' ),
+				// 	'name'          => __('Due', 'multiservices' ),
 				// 	'id'            => $prefix . 'due_html',
 				// 	'type'          => 'custom_html',
 				// 	'callback'      => 'MultiServices_Prestation::get_summary_due',
 				// 	'admin_columns' => 'after paid',
 				// ],
 				[
-					'name'          => __( 'Reference #', 'prestations' ),
+					'name'          => __('Reference #', 'multiservices' ),
 					'id'            => $prefix . 'reference',
 					'type'          => 'custom_html',
 					'callback'      => 'MultiServices_Prestation::get_summary_reference',
 				],
 				[
-					'name'           => __( 'Status', 'prestations' ),
+					'name'           => __('Status', 'multiservices' ),
 					'id'             => 'status',
 					'type'           => 'taxonomy',
 					'taxonomy'       => ['prestation-status'],
@@ -856,33 +856,33 @@ class MultiServices_Prestation {
 
 	static function register_taxonomies() {
 		$labels = [
-			'name'                       => esc_html__( 'Prestation statuses', 'prestations' ),
-			'singular_name'              => esc_html__( 'Prestation status', 'prestations' ),
-			'menu_name'                  => esc_html__( 'Prestation statuses', 'prestations' ),
-			'search_items'               => esc_html__( 'Search Prestation statuses', 'prestations' ),
-			'popular_items'              => esc_html__( 'Popular Prestation statuses', 'prestations' ),
-			'all_items'                  => esc_html__( 'All Prestation statuses', 'prestations' ),
-			'parent_item'                => esc_html__( 'Parent Prestation status', 'prestations' ),
-			'parent_item_colon'          => esc_html__( 'Parent Prestation status', 'prestations' ),
-			'edit_item'                  => esc_html__( 'Edit Prestation status', 'prestations' ),
-			'view_item'                  => esc_html__( 'View Prestation status', 'prestations' ),
-			'update_item'                => esc_html__( 'Update Prestation status', 'prestations' ),
-			'add_new_item'               => esc_html__( 'Add new prestation status', 'prestations' ),
-			'new_item_name'              => esc_html__( 'New prestation status name', 'prestations' ),
-			'separate_items_with_commas' => esc_html__( 'Separate prestation statuses with commas', 'prestations' ),
-			'add_or_remove_items'        => esc_html__( 'Add or remove prestation statuses', 'prestations' ),
-			'choose_from_most_used'      => esc_html__( 'Choose most used prestation statuses', 'prestations' ),
-			'not_found'                  => esc_html__( 'No prestation statuses found', 'prestations' ),
-			'no_terms'                   => esc_html__( 'No Prestation statuses', 'prestations' ),
-			'filter_by_item'             => esc_html__( 'Filter by prestation status', 'prestations' ),
-			'items_list_navigation'      => esc_html__( 'Prestation statuses list pagination', 'prestations' ),
-			'items_list'                 => esc_html__( 'Prestation statuses list', 'prestations' ),
-			'most_used'                  => esc_html__( 'Most Used', 'prestations' ),
-			'back_to_items'              => esc_html__( 'Back to prestation statuses', 'prestations' ),
-			'text_domain'                => 'prestations',
+			'name'                       => esc_html__('Prestation statuses', 'multiservices' ),
+			'singular_name'              => esc_html__('Prestation status', 'multiservices' ),
+			'menu_name'                  => esc_html__('Prestation statuses', 'multiservices' ),
+			'search_items'               => esc_html__('Search Prestation statuses', 'multiservices' ),
+			'popular_items'              => esc_html__('Popular Prestation statuses', 'multiservices' ),
+			'all_items'                  => esc_html__('All Prestation statuses', 'multiservices' ),
+			'parent_item'                => esc_html__('Parent Prestation status', 'multiservices' ),
+			'parent_item_colon'          => esc_html__('Parent Prestation status', 'multiservices' ),
+			'edit_item'                  => esc_html__('Edit Prestation status', 'multiservices' ),
+			'view_item'                  => esc_html__('View Prestation status', 'multiservices' ),
+			'update_item'                => esc_html__('Update Prestation status', 'multiservices' ),
+			'add_new_item'               => esc_html__('Add new prestation status', 'multiservices' ),
+			'new_item_name'              => esc_html__('New prestation status name', 'multiservices' ),
+			'separate_items_with_commas' => esc_html__('Separate prestation statuses with commas', 'multiservices' ),
+			'add_or_remove_items'        => esc_html__('Add or remove prestation statuses', 'multiservices' ),
+			'choose_from_most_used'      => esc_html__('Choose most used prestation statuses', 'multiservices' ),
+			'not_found'                  => esc_html__('No prestation statuses found', 'multiservices' ),
+			'no_terms'                   => esc_html__('No Prestation statuses', 'multiservices' ),
+			'filter_by_item'             => esc_html__('Filter by prestation status', 'multiservices' ),
+			'items_list_navigation'      => esc_html__('Prestation statuses list pagination', 'multiservices' ),
+			'items_list'                 => esc_html__('Prestation statuses list', 'multiservices' ),
+			'most_used'                  => esc_html__('Most Used', 'multiservices' ),
+			'back_to_items'              => esc_html__('Back to prestation statuses', 'multiservices' ),
+			'text_domain' => 'multiservices',
 		];
 		$args = [
-			'label'              => esc_html__( 'Prestation statuses', 'prestations' ),
+			'label'              => esc_html__('Prestation statuses', 'multiservices' ),
 			'labels'             => $labels,
 			'description'        => '',
 			'public'             => false,
@@ -913,24 +913,24 @@ class MultiServices_Prestation {
 		 */
 		$terms = array(
 			// Open (still modifiable, available for new order inclusion)
-			'pending' => [ 'name' => __('Pending payment', 'prestations') ],  // unpaid or paid less than deposit, not confirmed
-			'on-hold' => [ 'name' => __('On hold', 'prestations') ], // fully paid and not started
-			'processing' => [ 'name' => __('Processing', 'prestations') ], // paid and started
+			'pending' => [ 'name' => __('Pending payment', 'multiservices' ) ],  // unpaid or paid less than deposit, not confirmed
+			'on-hold' => [ 'name' => __('On hold', 'multiservices' ) ], // fully paid and not started
+			'processing' => [ 'name' => __('Processing', 'multiservices' ) ], // paid and started
 
 			// Closed (not modifiable except refunds, not available for new order inclusion)
-			'completed' => [ 'name' => __('Completed', 'prestations') ], // paid and finished
-			'cancelled' => [ 'name' => __('Cancelled', 'prestations') ],
-			'refunded' => [ 'name' => __('Refunded', 'prestations') ],
-			'failed' => [ 'name' => __('Failed', 'prestations') ], // shouldn't need that at prestation level
+			'completed' => [ 'name' => __('Completed', 'multiservices' ) ], // paid and finished
+			'cancelled' => [ 'name' => __('Cancelled', 'multiservices' ) ],
+			'refunded' => [ 'name' => __('Refunded', 'multiservices' ) ],
+			'failed' => [ 'name' => __('Failed', 'multiservices' ) ], // shouldn't need that at prestation level
 
 			// Draft (not available for new order inclusion)
-			'checkout-draft' => [ 'name' => __('Draft', 'prestations') ],
+			'checkout-draft' => [ 'name' => __('Draft', 'multiservices' ) ],
 
-			'deposit' => [ 'name' => __('Deposit paid', 'prestations'), 'parent' => 'on-hold' ],
-			'paid' => [ 'name' => __('Paid', 'prestations'), 'parent' => 'on-hold' ],
+			'deposit' => [ 'name' => __('Deposit paid', 'multiservices' ), 'parent' => 'on-hold' ],
+			'paid' => [ 'name' => __('Paid', 'multiservices' ), 'parent' => 'on-hold' ],
 
-			'unpaid' => [ 'name' => __('Unpaid', 'prestations'), 'parent' => 'pending' ],
-			'partial' => [ 'name' => __('Partially paid', 'prestations'), 'parent' => 'pending' ],
+			'unpaid' => [ 'name' => __('Unpaid', 'multiservices' ), 'parent' => 'pending' ],
+			'partial' => [ 'name' => __('Partially paid', 'multiservices' ), 'parent' => 'pending' ],
 		);
 
 		foreach($terms as $slug => $term) {
@@ -960,7 +960,7 @@ class MultiServices_Prestation {
 		$html = apply_filters('multiservices_managed_list', NULL);
 
 		// if(empty($html))
-		// $html = __('No data', 'prestations');
+		// $html = __('No data', 'multiservices' );
 
 		return $html;
 	}
@@ -1061,7 +1061,7 @@ class MultiServices_Prestation {
 					'<span class="%1$s-status-box status-%2$s">%3$s</span>',
 					$post->post_type,
 					$term->slug,
-					__($term->name, 'prestations'),
+					__($term->name, 'multiservices' ),
 				);
 			}
 			return implode(' ', $status);
@@ -1278,7 +1278,7 @@ class MultiServices_Prestation {
 	static function add_admin_columns( $columns ) {
 
 		unset($columns['date']);
-		$columns['dates'] = __('Dates', 'prestations');
+		$columns['dates'] = __('Dates', 'multiservices' );
 
 		return $columns;
 	}
@@ -1325,7 +1325,7 @@ class MultiServices_Prestation {
 		if(is_numeric($args)) {
 			$prestation = get_post($args);
 			error_log('get prestation by id: ' . $prestation->ID);
-		} else if(is_object($args) && $args->post_type == 'prestations') {
+		} else if(is_object($args) && $args->post_type == 'prestation') {
 			$prestation = $args;
 			error_log('get prestation by post: ' . $prestation->ID);
 		}

@@ -25,9 +25,9 @@ class MultiServices_Table extends WP_List_Table {
     switch ($keys[0]) {
       // case 'idprenota':
       // $columns = array (
-      //   'key' => __('key', 'prestations'),
-      //   'idprenota' => __('idprenota', 'prestations'),
-      //   'customer' => __('Customer', 'prestations'),
+      //   'key' => __('key', 'multiservices' ),
+      //   'idprenota' => __('key', 'multiservices' ),
+      //   'customer' => __('key', 'multiservices' ),
       // );
       // break;
 
@@ -119,7 +119,7 @@ class MultiServices_Table extends WP_List_Table {
         if(is_array($item) && isset($item['id'])) {
           $slug = $item['status'];
           $term = get_term_by('slug', $slug, 'prestation-status');
-          $status_name = __( (($term) ? $term->name : $slug), 'prestations');
+          $status_name = __( (($term) ? $term->name : $slug), 'multiservices');
           return $this->render_status($item['id'], $slug, $status_name);
         } else return $item;
         break;
@@ -222,7 +222,7 @@ class MultiServices_Table extends WP_List_Table {
 
   function render() {
     return sprintf(
-      '<table class="wp-list-table prestations-list">
+      '<table class="wp-list-table multiservices-list">
       <thead>%s</thead>
       <tbody>%s</tbody>
       <tfoot>%s</tfoot>

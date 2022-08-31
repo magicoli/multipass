@@ -82,7 +82,7 @@ class MultiServices_Lodgify extends MultiServices_Modules {
 	}
 
 	static function register_settings_pages( $settings_pages ) {
-		$settings_pages['prestations']['tabs']['lodgify'] = 'Lodgify';
+		$settings_pages['multiservices']['tabs']['lodgify'] = 'Lodgify';
 
 		return $settings_pages;
 	}
@@ -93,22 +93,22 @@ class MultiServices_Lodgify extends MultiServices_Modules {
 
 		// Lodify Settings tab
     $meta_boxes[] = [
-        'title'          => __( 'Lodgify Settings', 'prestations' ),
+        'title'          => __('Lodgify Settings', 'multiservices' ),
         'id'             => 'lodgify-settings',
-        'settings_pages' => ['prestations'],
+        'settings_pages' => ['multiservices'],
         'tab'            => 'lodgify',
         'fields'         => [
             [
-                'name' => __( 'API Key', 'prestations' ),
+                'name' => __('API Key', 'multiservices' ),
                 'id'   => $prefix . 'api_key',
                 'type' => 'text',
 								'sanitize_callback' => __CLASS__ . '::api_key_validation',
             ],
 						[
-							'name'              => __( 'Sync bookings', 'prestations' ),
+							'name'              => __('Sync bookings', 'multiservices' ),
 							'id'                => $prefix . 'sync_bookings',
 							'type'              => 'switch',
-							'desc'              => __( 'Sync Lodgify bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'prestations' ),
+							'desc'              => __('Sync Lodgify bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multiservices' ),
 							'style'             => 'rounded',
 							'sanitize_callback' => 'MultiServices_Lodgify::sync_bookings',
 							'save_field' => false,
@@ -121,7 +121,7 @@ class MultiServices_Lodgify extends MultiServices_Modules {
     ];
 
 		$meta_boxes['associations']['fields'][] = [
-			'name'       => __( 'Lodgify Property', 'prestations' ),
+			'name'       => __('Lodgify Property', 'multiservices' ),
 			'id'         => 'association_lodgify_id',
 			'type'       => 'select_advanced',
 			'options'	=> $lodgify->get_property_options(),
@@ -148,7 +148,7 @@ class MultiServices_Lodgify extends MultiServices_Modules {
 
 		$results = $this->api_request('/v1/properties', array());
 		if(is_wp_error($results)) {
-			$message = sprintf(__('Get properties failed (%s).', 'prestations') , $results->get_error_message(),);
+			$message = sprintf(__('Get properties failed (%s).', 'multiservices' ) , $results->get_error_message(),);
 			error_log($message);
 			// add_settings_error( $field['id'], $field['id'], $message, 'error' );
 			return [];
@@ -206,7 +206,7 @@ class MultiServices_Lodgify extends MultiServices_Modules {
 
 		if(is_wp_error($result)) {
 			$message = sprintf(
-				__('API Key verification failed (%s).', 'prestations') ,
+				__('API Key verification failed (%s).', 'multiservices' ) ,
 				$result->get_error_message(),
 			);
 			add_settings_error( $field['id'], $field['id'], $message, 'error' );
@@ -233,7 +233,7 @@ class MultiServices_Lodgify extends MultiServices_Modules {
 		$response = $this->api_request('/v2/reservations/bookings', $args);
 		if(is_wp_error($response)) {
 			$error_id = sanitize_title(__CLASS__ . '-' . __METHOD__);
-			$message = sprintf( __('%s failed (%s).', 'prestations') , $error_id, $response->get_error_message() );
+			$message = sprintf( __('%s failed (%s).', 'multiservices' ) , $error_id, $response->get_error_message() );
 			add_settings_error( $error_id, $error_id, $message, 'error' );
 			return $response;
 		}
@@ -244,7 +244,7 @@ class MultiServices_Lodgify extends MultiServices_Modules {
 			$response = $this->api_request('/v2/reservations/bookings', $args);
 			if(is_wp_error($response)) {
 				$error_id = sanitize_title(__CLASS__ . '-' . __METHOD__);
-				$message = sprintf( __('%s failed (%s).', 'prestations') , $error_id, $response->get_error_message() );
+				$message = sprintf( __('%s failed (%s).', 'multiservices' ) , $error_id, $response->get_error_message() );
 				add_settings_error( $error_id, $error_id, $message, 'error' );
 				return $response;
 			}

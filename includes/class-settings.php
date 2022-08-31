@@ -6,8 +6,8 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    prestations
- * @subpackage prestations/includes
+ * @package    multiservices
+ * @subpackage multiservices/includes
  */
 
 /**
@@ -17,8 +17,8 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    prestations
- * @subpackage prestations/includes
+ * @package    multiservices
+ * @subpackage multiservices/includes
  * @author     Your Name <email@example.com>
  */
 class MultiServices_Settings {
@@ -125,7 +125,7 @@ class MultiServices_Settings {
 				'callback' => 'register_settings_pages',
 			),
 			array(
-				'hook' => 'plugin_action_links_prestations/prestations.php',
+				'hook' => 'plugin_action_links_' . basename(MULTISERVICES_DIR) . '/' . basename(MULTISERVICES_FILE),
 				'callback' => 'plugin_action_links',
 			),
 			array (
@@ -152,8 +152,8 @@ class MultiServices_Settings {
 
 	static function register_settings_pages( $settings_pages ) {
 		// $settings_pages[] = [
-		// 	'menu_title'    => __( 'MultiServices', 'prestations' ),
-		// 	'id'            => 'prestations',
+		// 	'menu_title'    => __('MultiServices', 'multiservices' ),
+		// 	'id'            => 'multiservices',
 		// 	'position'      => 15,
 		// 	'submenu_title' => 'Settings',
 		// 	'capability'    => 'manage_options',
@@ -162,10 +162,10 @@ class MultiServices_Settings {
 		// 	'icon_url'      => 'dashicons-book',
 		// ];
 
-		$settings_pages['prestations'] = [
-			'menu_title'    => __( 'Settings', 'prestations' ),
-			'id'            => 'prestations',
-			'option_name'   => 'prestations',
+		$settings_pages['multiservices'] = [
+			'menu_title'    => __('Settings', 'multiservices' ),
+			'id'            => 'multiservices',
+			'option_name'   => 'multiservices',
 			// 'position'      => 23,
 			'submenu_title' => 'Settings',
 			'parent'        => 'edit.php?post_type=prestation',
@@ -173,7 +173,7 @@ class MultiServices_Settings {
 			'style'         => 'no-boxes',
 			'columns'       => 2,
 			'tabs'          => [
-				'general' => __('General', 'prestations'),
+				'general' => __('General', 'multiservices' ),
 			],
 			'icon_url'      => 'dashicons-book',
 		];
@@ -183,20 +183,20 @@ class MultiServices_Settings {
 	static function register_settings_fields( $meta_boxes ) {
 		$prefix = '';
 
-		$meta_boxes['prestations-settings'] = [
-			'title'          => __( 'General', 'prestations' ),
-			'id'             => 'prestations-settings-fields',
-			'settings_pages' => ['prestations'],
+		$meta_boxes['multiservices-settings'] = [
+			'title'          => __('General', 'multiservices' ),
+			'id'             => 'multiservices-settings-fields',
+			'settings_pages' => ['multiservices'],
 			'tab'            => 'general',
 			'fields'         => [
 				'currency_options' => [
-						'name'   => __( 'Currency Options', 'prestations' ),
+						'name'   => __('Currency Options', 'multiservices' ),
 						'id'     => $prefix . 'currency',
 						'type'   => 'group',
 						'class' => 'inline',
 						'fields' => [
 								[
-										'name'     => __( 'Code', 'prestations' ),
+										'name'     => __('Code', 'multiservices' ),
 										'id'       => $prefix . 'code',
 										'type'     => 'select_advanced',
 										'size'     => 3,
@@ -213,32 +213,32 @@ class MultiServices_Settings {
 // 										],
 								],
 								[
-										'name'    => __( 'Position', 'prestations' ),
+										'name'    => __('Position', 'multiservices' ),
 										'id'      => $prefix . 'pos',
 										'type'    => 'select',
 										'size' => 5,
 										'options' => [
-												'left'         => __( 'Left', 'prestations' ),
-												'right'        => __( 'Right', 'prestations' ),
-												'left_space'    => __( 'Left with space', 'prestations' ),
-												'right_spâce' => __( 'Right with space', 'prestations' ),
+												'left'         => __('Left', 'multiservices' ),
+												'right'        => __('Right', 'multiservices' ),
+												'left_space'    => __('Left with space', 'multiservices' ),
+												'right_spâce' => __('Right with space', 'multiservices' ),
 										],
 										'std'     => 'right_space',
 								],
 								// [
-								// 		'name' => __( 'Thousand separator', 'prestations' ),
+								// 		'name' => __('Thousand separator', 'multiservices' ),
 								// 		'id'   => $prefix . 'thousand_sep',
 								// 		'type' => 'text',
 								// 		'size' => 3,
 								// ],
 								// [
-								// 		'name' => __( 'Decimal Separator', 'prestations' ),
+								// 		'name' => __('Decimal Separator', 'multiservices' ),
 								// 		'id'   => $prefix . 'decimal_sep',
 								// 		'type' => 'text',
 								// 		'size' => 3,
 								// ],
 								[
-										'name' => __( 'Decimals', 'prestations' ),
+										'name' => __('Decimals', 'multiservices' ),
 										'id'   => $prefix . 'num_decimals',
 										'type' => 'number',
 										'min'  => 0,
@@ -249,10 +249,10 @@ class MultiServices_Settings {
 						],
 				],
 				// [
-				// 	'name'  => __( 'Enable Email Processing', 'prestations' ),
+				// 	'name'  => __('Enable Email Processing', 'multiservices' ),
 				// 	'id'    => $prefix . 'enable_email_processing',
 				// 	'type'  => 'switch',
-				// 	'desc_tip'  => __( 'Use IMAP to collect emails and attach them to prestations', 'prestations' ),
+				// 	'desc_tip'  => __('Use IMAP to collect emails and attach them to prestations', 'multiservices' ),
 				// 	'style' => 'rounded',
 				// ],
 			],
@@ -262,8 +262,8 @@ class MultiServices_Settings {
 	}
 
 	static function plugin_action_links( $links ) {
-		$url = esc_url( add_query_arg( 'page', 'prestations', get_admin_url() . 'admin.php' ) );
-		$links = [ 'settings' => "<a href='$url'>" . __('Settings', 'prestations') . "</a>" ] + $links;
+		$url = esc_url( add_query_arg( 'page', 'multiservices', get_admin_url() . 'admin.php' ) );
+		$links = [ 'settings' => "<a href='$url'>" . __('Settings', 'multiservices' ) . "</a>" ] + $links;
 
 		return $links;
 	}

@@ -145,60 +145,60 @@
   background: hsl(var(--hue), 75%, 75%);
 }
 
-.wp-list-table.prestations-list .column-total {
+.wp-list-table.multiservices-list .column-total {
   text-align: right;
 }
-.wp-list-table.prestations-list {
+.wp-list-table.multiservices-list {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
 }
-.wp-list-table.prestations-list thead th {
+.wp-list-table.multiservices-list thead th {
   border-bottom: solid 1px #ccc;
 }
-.wp-list-table.prestations-list tfoot th {
+.wp-list-table.multiservices-list tfoot th {
   border-top: solid 1px #ccc;
 }
 
-.wp-list-table.prestations-list .column,
-.wp-list-table.prestations-list .column {
+.wp-list-table.multiservices-list .column,
+.wp-list-table.multiservices-list .column {
   padding: 0.5em;
 }
 
-.wp-list-table.prestations-list .column:first-child,
-.wp-list-table.prestations-list .column:first-child {
+.wp-list-table.multiservices-list .column:first-child,
+.wp-list-table.multiservices-list .column:first-child {
   padding-left: 0;
 }
 
-.wp-list-table.prestations-list .column:last-child,
-.wp-list-table.prestations-list .column:last-child {
+.wp-list-table.multiservices-list .column:last-child,
+.wp-list-table.multiservices-list .column:last-child {
   padding-right: 0;
 }
 
 
-.wp-list-table.prestations-list .column {
+.wp-list-table.multiservices-list .column {
   width: auto;
   text-align: left;
 }
-.wp-list-table.prestations-list .column.column-subtotal,
-.wp-list-table.prestations-list .column.column-discount,
-.wp-list-table.prestations-list .column.column-refunded,
-.wp-list-table.prestations-list .column.column-total,
-.wp-list-table.prestations-list .column.column-paid,
-.wp-list-table.prestations-list .column.column-actions {
+.wp-list-table.multiservices-list .column.column-subtotal,
+.wp-list-table.multiservices-list .column.column-discount,
+.wp-list-table.multiservices-list .column.column-refunded,
+.wp-list-table.multiservices-list .column.column-total,
+.wp-list-table.multiservices-list .column.column-paid,
+.wp-list-table.multiservices-list .column.column-actions {
   width: 10%;
   text-align: right;
 }
-.wp-list-table.prestations-list .column.date_time {
+.wp-list-table.multiservices-list .column.date_time {
   width: 8em;
   white-space: nowrap;
 }
-.wp-list-table.prestations-list .column.date {
+.wp-list-table.multiservices-list .column.date {
   width: 5em;
   white-space: nowrap;
 }
 
-.wp-list-table.prestations-list .column.column-actions {
+.wp-list-table.multiservices-list .column.column-actions {
   width: 1%;
   /* white-space: nowrap; */
   padding-left: 1em;

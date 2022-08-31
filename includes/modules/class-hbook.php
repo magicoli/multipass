@@ -92,8 +92,8 @@ class MultiServices_HBook extends MultiServices_Modules {
 	}
 
 	static function register_settings_pages( $settings_pages ) {
-		$settings_pages['prestations']['tabs']['hbook'] = 'HBook';
-		// error_log(__CLASS__ . ' tabs ' . print_r($settings_pages['prestations']['tabs'], true));
+		$settings_pages['multiservices']['tabs']['hbook'] = 'HBook';
+		// error_log(__CLASS__ . ' tabs ' . print_r($settings_pages['multiservices']['tabs'], true));
 
 		return $settings_pages;
 	}
@@ -104,16 +104,16 @@ class MultiServices_HBook extends MultiServices_Modules {
 
 		// Lodify Settings tab
     $meta_boxes[] = [
-        'title'          => __( 'HBook Settings', 'prestations' ),
+        'title'          => __('HBook Settings', 'multiservices' ),
         'id'             => 'hbook-settings',
-        'settings_pages' => ['prestations'],
+        'settings_pages' => ['multiservices'],
         'tab'            => 'hbook',
         'fields'         => [
 						[
-							'name'              => __( 'Sync bookings', 'prestations' ),
+							'name'              => __('Sync bookings', 'multiservices' ),
 							'id'                => $prefix . 'sync_bookings',
 							'type'              => 'switch',
-							'desc'              => __( 'Sync HBook bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'prestations' ),
+							'desc'              => __('Sync HBook bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multiservices' ),
 							'style'             => 'rounded',
 							'sanitize_callback' => 'MultiServices_HBook::sync_bookings',
 							'save_field' => false,
@@ -122,7 +122,7 @@ class MultiServices_HBook extends MultiServices_Modules {
     ];
 
 		$meta_boxes['associations']['fields'][] = [
-			'name'       => __( 'HBook Accommodations', 'prestations' ),
+			'name'       => __('HBook Accommodations', 'multiservices' ),
 			'id'         => 'association_hbook_id',
 			'type'       => 'select_advanced',
 			'options'	=> $hbook->get_property_options(),

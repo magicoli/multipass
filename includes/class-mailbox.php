@@ -95,7 +95,7 @@ class MultiServices_Mailbox {
 	}
 
 	static function register_settings_pages( $settings_pages ) {
-		$settings_pages['prestations']['tabs']['imap'] = 'IMAP';
+		$settings_pages['multiservices']['tabs']['imap'] = 'IMAP';
 
 		return $settings_pages;
 	}
@@ -104,56 +104,56 @@ class MultiServices_Mailbox {
 		$prefix = 'imap_';
 
 		$meta_boxes[] = [
-			'title'          => __( 'IMAP Settings', 'prestations' ),
-			'id'             => 'prestations-mail-settings',
-			'settings_pages' => ['prestations'],
+			'title'          => __('IMAP Settings', 'multiservices' ),
+			'id'             => 'multiservices-mail-settings',
+			'settings_pages' => ['multiservices'],
 			'tab'            => 'imap',
 			'fields'         => [
 				[
-					'name'        => __( 'IMAP Server', 'prestations' ),
+					'name'        => __('IMAP Server', 'multiservices' ),
 					'id'          => $prefix . 'server',
 					'type'        => 'text',
-					'placeholder' => __( 'mail.example.org', 'prestations' ),
+					'placeholder' => __('mail.example.org', 'multiservices' ),
 					'size'        => 40,
 					'required'    => false,
 				],
 				[
-					'name'     => __( 'Port', 'prestations' ),
+					'name'     => __('Port', 'multiservices' ),
 					'id'       => $prefix . 'port',
 					'type'     => 'button_group',
 					'options'  => [
-						143 => __( '143', 'prestations' ),
-						993 => __( '993', 'prestations' ),
+						143 => __('143', 'multiservices' ),
+						993 => __('993', 'multiservices' ),
 					],
 					'std'      => 993,
 					'required' => false,
 				],
 				[
-					'name'     => __( 'Encryption', 'prestations' ),
+					'name'     => __('Encryption', 'multiservices' ),
 					'id'       => $prefix . 'encryption',
 					'type'     => 'button_group',
 					'options'  => [
-						'TLS/SSL' => __( 'TLS/SSL', 'prestations' ),
+						'TLS/SSL' => __('TLS/SSL', 'multiservices' ),
 					],
 					'std'      => 'TLS/SSL',
 					'required' => false,
 				],
 				[
-					'name'     => __( 'Username', 'prestations' ),
+					'name'     => __('Username', 'multiservices' ),
 					'id'       => $prefix . 'username',
 					'type'     => 'text',
 					'size'     => 40,
 					'required' => false,
 				],
 				[
-					'name'     => __( 'Password', 'prestations' ),
+					'name'     => __('Password', 'multiservices' ),
 					'id'       => $prefix . 'password',
 					'type'     => 'text',
 					'size'     => 40,
 					'required' => false,
 				],
 				[
-					'name' => __( 'Save Attachments', 'prestations' ),
+					'name' => __('Save Attachments', 'multiservices' ),
 					'id'   => $prefix . 'attachments',
 					'type' => 'switch',
 				],
