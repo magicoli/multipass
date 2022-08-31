@@ -6,8 +6,8 @@
  * @link       http://example.com
  * @since      0.1.0
  *
- * @package    Prestations
- * @subpackage Prestations/admin
+ * @package    MultiServices
+ * @subpackage MultiServices/admin
  */
 
 /**
@@ -16,11 +16,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Prestations
- * @subpackage Prestations/admin
+ * @package    MultiServices
+ * @subpackage MultiServices/admin
  * @author     Your Name <email@example.com>
  */
-class Prestations_Admin {
+class MultiServices_Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -65,10 +65,10 @@ class Prestations_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Prestations_Loader as all of the hooks are defined
+		 * defined in MultiServices_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Prestations_Loader will then create the relationship
+		 * The MultiServices_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
@@ -88,10 +88,10 @@ class Prestations_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Prestations_Loader as all of the hooks are defined
+		 * defined in MultiServices_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Prestations_Loader will then create the relationship
+		 * The MultiServices_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */

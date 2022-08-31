@@ -6,8 +6,8 @@
  * @link       http://example.com
  * @since      0.1.0
  *
- * @package    Prestations
- * @subpackage Prestations/includes
+ * @package    MultiServices
+ * @subpackage MultiServices/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Prestations
- * @subpackage Prestations/includes
+ * @package    MultiServices
+ * @subpackage MultiServices/includes
  * @author     Your Name <email@example.com>
  */
-class Prestations_WooCommerce extends Prestations_Modules {
+class MultiServices_WooCommerce extends MultiServices_Modules {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -47,8 +47,8 @@ class Prestations_WooCommerce extends Prestations_Modules {
 	 * @since    0.1.0
 	 */
 	public function __construct() {
-		register_activation_hook( PRESTATIONS_FILE, __CLASS__ . '::activate' );
-		// register_deactivation_hook( PRESTATIONS_FILE, __CLASS__ . '::deactivate' );
+		register_activation_hook( MULTISERVICES_FILE, __CLASS__ . '::activate' );
+		// register_deactivation_hook( MULTISERVICES_FILE, __CLASS__ . '::deactivate' );
 	}
 
 	/**
@@ -169,7 +169,7 @@ class Prestations_WooCommerce extends Prestations_Modules {
 					'type'              => 'switch',
 					'desc'              => __( 'Sync orders and prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'prestations' ),
 					'style'             => 'rounded',
-					'sanitize_callback' => 'Prestations_WooCommerce::sync_orders',
+					'sanitize_callback' => 'MultiServices_WooCommerce::sync_orders',
 					'save_field' => false,
 				],
 			],
@@ -383,20 +383,20 @@ class Prestations_WooCommerce extends Prestations_Modules {
 	}
 
 	function background_process() {
-		$this->background_queue = new Prestations_WooCommerce_Process();
+		$this->background_queue = new MultiServices_WooCommerce_Process();
 
  		// $action = __CLASS__ . '::fetch_mails';
-		// if(get_transient('Prestations_WooCommerce_wait')) return;
-		// set_transient('Prestations_WooCommerce_wait', true, 30);
+		// if(get_transient('MultiServices_WooCommerce_wait')) return;
+		// set_transient('MultiServices_WooCommerce_wait', true, 30);
 		//
-		// if(Prestations::get_option('email_processing', false))
+		// if(MultiServices::get_option('email_processing', false))
 		// $this->background_queue->push_to_queue(__CLASS__ . '::fetch_mails');
 		//
 		// $this->background_queue->save()->dispatch();
 
 		// One-off task:
 		//
-		// $this->background_request = new Prestations_WooCommerce_Request();
+		// $this->background_request = new MultiServices_WooCommerce_Request();
 		// $this->background_request->data( array( 'value1' => $value1, 'value2' => $value2 ) );
 		// $this->background_request->dispatch();
 	}
@@ -425,7 +425,7 @@ class Prestations_WooCommerce extends Prestations_Modules {
 
 	static function wp_insert_post_action($post_id, $post, $update ) {
 		if( !$update ) return;
-		if( Prestations::is_new_post() ) return; // new posts are empty
+		if( MultiServices::is_new_post() ) return; // new posts are empty
 
 		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
 		switch($post->post_type) {
@@ -460,7 +460,7 @@ class Prestations_WooCommerce extends Prestations_Modules {
 		$p_orders_refunded = 0;
 		$p_orders_subtotal = 0;
 
-		$payment_products = Prestations_Payment_Product::get_payment_products();
+		$payment_products = MultiServices_Payment_Product::get_payment_products();
 		if(!is_array($payment_products)) $payment_products = [ $payment_products ];
 		$excl_tax = false;
 
@@ -526,7 +526,7 @@ class Prestations_WooCommerce extends Prestations_Modules {
 				);
 
 				// if(in_array($item->get_product_id(), $payment_products)) {
-				if(Prestations_Payment_Product::is_payment_product($product)) {
+				if(MultiServices_Payment_Product::is_payment_product($product)) {
 
 					$p_order['subtotal'] -= $item->get_subtotal();
 					$p_order['refunded'] -= $order->get_total_refunded_for_item($item_id);
@@ -572,7 +572,7 @@ class Prestations_WooCommerce extends Prestations_Modules {
 
 		$prestation = get_post($prestation_id);
 		if(is_object($prestation))
-		Prestations_Prestation::update_prestation_amounts($prestation_id, get_post($prestation_id), true );
+		MultiServices_Prestation::update_prestation_amounts($prestation_id, get_post($prestation_id), true );
 
 		// $metas = get_post_meta($prestation_id, 'modules-data');
 		// error_log(print_r($metas, true));
@@ -609,7 +609,7 @@ class Prestations_WooCommerce extends Prestations_Modules {
 			$customer_email = get_post_meta($order_id, '_billing_email', true);
 		}
 
-		$prestation = new Prestations_Prestation(array(
+		$prestation = new MultiServices_Prestation(array(
 			'prestation_id' => $prestation_id,
 			'customer_id' => $customer_id,
 			'customer_name' => $customer_name,
@@ -620,7 +620,7 @@ class Prestations_WooCommerce extends Prestations_Modules {
 
 		if($prestation) {
 			update_post_meta( $order_id, 'prestation_id', $prestation->ID );
-			Prestations_WooCommerce::update_prestation_orders($prestation->ID, $prestation, true );
+			MultiServices_WooCommerce::update_prestation_orders($prestation->ID, $prestation, true );
 		}
 
 		// add_action(current_action(), __CLASS__ . '::wp_insert_post_action', 10, 3);
@@ -678,7 +678,7 @@ class Prestations_WooCommerce extends Prestations_Modules {
 			'status' => 'status',
 		);
 
-		$list = new Prestations_Table($data);
+		$list = new MultiServices_Table($data);
 
 		$html .= sprintf('
 		<div class="managed-list managed-list-woocommerce">
@@ -693,4 +693,4 @@ class Prestations_WooCommerce extends Prestations_Modules {
 
 }
 
-$this->modules[] = new Prestations_WooCommerce();
+$this->modules[] = new MultiServices_WooCommerce();

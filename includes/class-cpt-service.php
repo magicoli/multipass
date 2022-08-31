@@ -21,7 +21,7 @@
  * @subpackage W4OS/includes
  * @author     Your Name <email@example.com>
  */
-class Prestations_Service {
+class MultiServices_Service {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -293,7 +293,7 @@ class Prestations_Service {
             [
                 'id'       => $prefix . 'title_html',
                 'type'     => 'custom_html',
-                'callback' => 'Prestations::title_html',
+                'callback' => 'MultiServices::title_html',
             ],
             [
                 'name'          => __( 'Source', 'prestations' ),
@@ -824,7 +824,7 @@ class Prestations_Service {
 		$customer_html  = self::customer_html($post);
 		update_post_meta( $post_id, 'customer_display', $customer_html );
 
-		// $service = new Prestations_Service($post);
+		// $service = new MultiServices_Service($post);
 		// $service->set_prestation();
 
 		add_action(current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3);
@@ -834,7 +834,7 @@ class Prestations_Service {
 		switch($meta_key) {
 			case 'customer':
 			case 'guest':
-			return Prestations::get_user_info_by_info($meta_value);
+			return MultiServices::get_user_info_by_info($meta_value);
 		}
 
 		return $meta_value;
@@ -854,7 +854,7 @@ class Prestations_Service {
 		// 		'email' => get_post_meta($prestation_id, 'guest_email', true),
 		// 		'phone' => get_post_meta($prestation_id, 'guest_phone', true),
 		// 	));
-		// 	$service_info = Prestations::get_user_info_by_info($meta_value);
+		// 	$service_info = MultiServices::get_user_info_by_info($meta_value);
 		// 	$meta_value = array_replace($service_info, $prestation_info);
 		// 	error_log("object $object_id user info " . print_r($meta_value, true) );
 		// 	return $meta_value;
@@ -878,7 +878,7 @@ class Prestations_Service {
 		$user_info = get_post_meta($post->ID, 'customer');
 		error_log(__FUNCTION__ . '::' . __FUNCTION__ . ' meta ' . print_r($user_info, true));
 
-		// $user_info = Prestations::get_user_info_by_info($user_info);
+		// $user_info = MultiServices::get_user_info_by_info($user_info);
 		// error_log('user info ' . print_r($user_info, true));
 		// if($user) {
 		// 	$user_info = array_replace($user_info, array_filter(array(
@@ -974,7 +974,7 @@ class Prestations_Service {
 		// 		'customer_email' => $customer_email,
 		// 	);
 		// 	// foreach ($meta as $key => $value) update_post_meta( $this->ID, $key, $value );
-		// 	// Prestations_Service::update_prestation_services($prestation_id, get_post($prestation_id), true );
+		// 	// MultiServices_Service::update_prestation_services($prestation_id, get_post($prestation_id), true );
 		// }
 		//
 		// // add_action(current_action(), __CLASS__ . '::wp_insert_post_action', 10, 3);

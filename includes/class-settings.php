@@ -21,7 +21,7 @@
  * @subpackage prestations/includes
  * @author     Your Name <email@example.com>
  */
-class Prestations_Settings {
+class MultiServices_Settings {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -152,7 +152,7 @@ class Prestations_Settings {
 
 	static function register_settings_pages( $settings_pages ) {
 		// $settings_pages[] = [
-		// 	'menu_title'    => __( 'Prestations', 'prestations' ),
+		// 	'menu_title'    => __( 'MultiServices', 'prestations' ),
 		// 	'id'            => 'prestations',
 		// 	'position'      => 15,
 		// 	'submenu_title' => 'Settings',
@@ -200,7 +200,7 @@ class Prestations_Settings {
 										'id'       => $prefix . 'code',
 										'type'     => 'select_advanced',
 										'size'     => 3,
-										'options' => Prestations::currency_options(),
+										'options' => MultiServices::currency_options(),
 // 										'datalist' => [
 // 												'id'      => '630532931670c',
 // 												'options' => [

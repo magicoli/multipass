@@ -1,11 +1,11 @@
 <?php
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
+  error_log("WP_List_Table class is not loaded yet, but we might not need it");
   require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
-  error_log("Had to force load WP_List_Table class");
 }
 
-class Prestations_Table extends WP_List_Table {
+class MultiServices_Table extends WP_List_Table {
   var $data = [];
   var $rows = [];
 
@@ -92,7 +92,7 @@ class Prestations_Table extends WP_List_Table {
       switch ($this->data['format'][$column_id]) {
         case 'price':
         if(empty($value)) $value = NULL;
-        else $value = Prestations::price($value);
+        else $value = MultiServices::price($value);
         break;
 
         case 'date';

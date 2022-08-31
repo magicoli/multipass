@@ -6,8 +6,8 @@
  * @link       http://example.com
  * @since      0.1.0
  *
- * @package    Prestations
- * @subpackage Prestations/includes
+ * @package    MultiServices
+ * @subpackage MultiServices/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Prestations
- * @subpackage Prestations/includes
+ * @package    MultiServices
+ * @subpackage MultiServices/includes
  * @author     Your Name <email@example.com>
  */
-class Prestations_Lodgify extends Prestations_Modules {
+class MultiServices_Lodgify extends MultiServices_Modules {
 
 	protected $api_url;
 	protected $api_key;
@@ -33,12 +33,12 @@ class Prestations_Lodgify extends Prestations_Modules {
 	 */
 	public function __construct() {
 		$this->api_url = 'https://api.lodgify.com';
-		$this->api_key = Prestations::get_option('lodgify_api_key');
+		$this->api_key = MultiServices::get_option('lodgify_api_key');
 
 		$this->locale = $this->get_locale();
 
-		// register_activation_hook( PRESTATIONS_FILE, __CLASS__ . '::activate' );
-		// register_deactivation_hook( PRESTATIONS_FILE, __CLASS__ . '::deactivate' );
+		// register_activation_hook( MULTISERVICES_FILE, __CLASS__ . '::activate' );
+		// register_deactivation_hook( MULTISERVICES_FILE, __CLASS__ . '::deactivate' );
 	}
 
 	/**
@@ -89,7 +89,7 @@ class Prestations_Lodgify extends Prestations_Modules {
 
 	static function register_fields( $meta_boxes ) {
 		$prefix = 'lodgify_';
-		$lodgify = new Prestations_Lodgify();
+		$lodgify = new MultiServices_Lodgify();
 
 		// Lodify Settings tab
     $meta_boxes[] = [
@@ -110,7 +110,7 @@ class Prestations_Lodgify extends Prestations_Modules {
 							'type'              => 'switch',
 							'desc'              => __( 'Sync Lodgify bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'prestations' ),
 							'style'             => 'rounded',
-							'sanitize_callback' => 'Prestations_Lodgify::sync_bookings',
+							'sanitize_callback' => 'MultiServices_Lodgify::sync_bookings',
 							'save_field' => false,
 							'visible' => [
 									'when'     => [['api_key', '!=', '']],
@@ -199,7 +199,7 @@ class Prestations_Lodgify extends Prestations_Modules {
 		if(empty($value)) return false;
 		if($value == $oldvalue) return $value; // we assume it has already been checked
 
-		$lodgify = new Prestations_Lodgify();
+		$lodgify = new MultiServices_Lodgify();
 		$lodgify->api_key = $value;
 
 		$result = $lodgify->api_request('/v1/properties', array());
@@ -255,7 +255,7 @@ class Prestations_Lodgify extends Prestations_Modules {
 	}
 
 	static function bookings_options() {
-		$lodgify = new Prestations_Lodgify();
+		$lodgify = new MultiServices_Lodgify();
 		$options = [];
 		$response = $lodgify->get_bookings();
 		if(is_wp_error($response)) return false;
@@ -266,7 +266,7 @@ class Prestations_Lodgify extends Prestations_Modules {
 				'%s, %sp %s (#%s)',
 				$booking['guest']['name'],
 				$booking['rooms'][0]['people'],
-				Prestations::format_date_range(array(
+				MultiServices::format_date_range(array(
 					$booking['arrival'],
 					$booking['departure'],
 				), true),
@@ -280,7 +280,7 @@ class Prestations_Lodgify extends Prestations_Modules {
 	static function sync_bookings($value, $field, $oldvalue) {
 		if(!$value) return;
 
-		$lodgify = new Prestations_Lodgify();
+		$lodgify = new MultiServices_Lodgify();
 		$response = $lodgify->get_bookings();
 		if(is_wp_error($response)) return false;
 		error_log(__CLASS__ . '::' . __METHOD__ . ' ' . $response['count'] . ' ' . count($response['items']));
@@ -309,4 +309,4 @@ class Prestations_Lodgify extends Prestations_Modules {
 
 }
 
-$this->modules[] = new Prestations_Lodgify();
+$this->modules[] = new MultiServices_Lodgify();

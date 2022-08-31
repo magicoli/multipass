@@ -1,6 +1,6 @@
-=== Prestations (dev) ===
+=== MultiServices (dev) ===
 Contributors: magicoli69
-Donate link: https://magiiic.com/support/Prestations+Plugin
+Donate link: https://magiiic.com/support/MultiServices+Plugin
 Tags: hotel, booking, multi-prestations, multi-services, woocommerce
 Requires at least: 3.0.1
 Tested up to: 6.0.1

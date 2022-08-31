@@ -21,7 +21,7 @@
  * @subpackage W4OS/includes
  * @author     Your Name <email@example.com>
  */
-class Prestations_Prestation {
+class MultiServices_Prestation {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -276,7 +276,7 @@ class Prestations_Prestation {
 				[
 					'id'            => $prefix . 'title_html',
 					'type'          => 'custom_html',
-					'callback' => 'Prestations::title_html',
+					'callback' => 'MultiServices::title_html',
 				],
 				[
 					'name'          => __( 'Customer', 'prestations' ),
@@ -368,7 +368,7 @@ class Prestations_Prestation {
 							'pattern'  => '[0-9]+([,\.][0-9]+)?',
 				      'min'     => 0,
 				      'size'    => 10,
-				      'prepend' => Prestations::get_currency_symbol(),
+				      'prepend' => MultiServices::get_currency_symbol(),
 				      'visible' => [
 				        'when'     => [['discount_percent', '=', '']],
 				        'relation' => 'or',
@@ -398,7 +398,7 @@ class Prestations_Prestation {
 							'min'     => 0,
 							'step'    => 'any',
 							'size'    => 10,
-							'prepend' => Prestations::get_currency_symbol(),
+							'prepend' => MultiServices::get_currency_symbol(),
 							'class' => 'amount class',
 							'visible' => [
 								'when'     => [['deposit_percent', '=', '']],
@@ -745,32 +745,32 @@ class Prestations_Prestation {
 					'name'          => __( 'Regular Price', 'prestations' ),
 					'id'            => $prefix . 'price_html',
 					'type'          => 'custom_html',
-					'callback'      => 'Prestations_Prestation::get_summary_price',
+					'callback'      => 'MultiServices_Prestation::get_summary_price',
 				],
 				[
 					'name'          => __( 'Discount', 'prestations' ),
 					'id'            => $prefix . 'discount_html',
 					'type'          => 'custom_html',
-					'callback'      => 'Prestations_Prestation::get_summary_discount',
+					'callback'      => 'MultiServices_Prestation::get_summary_discount',
 				],
 				[
 					'name'          => __( 'Total', 'prestations' ),
 					'id'            => $prefix . 'total_html',
 					'type'          => 'custom_html',
 					'class'          => 'total',
-					'callback'      => 'Prestations_Prestation::get_summary_total',
+					'callback'      => 'MultiServices_Prestation::get_summary_total',
 				],
 				[
 					'name'     => __( 'Deposit', 'prestations_html' ),
 					'id'       => $prefix . 'deposit_amount_html',
 					'type'     => 'custom_html',
-					'callback' => 'Prestations_Prestation::get_summary_deposit',
+					'callback' => 'MultiServices_Prestation::get_summary_deposit',
 				],
 				[
 					'name'          => __( 'Paid', 'prestations' ),
 					'id'            => $prefix . 'paid_html',
 					'type'          => 'custom_html',
-					'callback'      => 'Prestations_Prestation::get_summary_paid',
+					'callback'      => 'MultiServices_Prestation::get_summary_paid',
 					'admin_columns' => 'after total',
 				],
 				[
@@ -778,21 +778,21 @@ class Prestations_Prestation {
 					'id'            => $prefix . 'balance_html',
 					'type'          => 'custom_html',
 					'class' => 'balance',
-					'callback'      => 'Prestations_Prestation::get_summary_balance',
+					'callback'      => 'MultiServices_Prestation::get_summary_balance',
 					'admin_columns' => 'after paid',
 				],
 				// [
 				// 	'name'          => __( 'Due', 'prestations' ),
 				// 	'id'            => $prefix . 'due_html',
 				// 	'type'          => 'custom_html',
-				// 	'callback'      => 'Prestations_Prestation::get_summary_due',
+				// 	'callback'      => 'MultiServices_Prestation::get_summary_due',
 				// 	'admin_columns' => 'after paid',
 				// ],
 				[
 					'name'          => __( 'Reference #', 'prestations' ),
 					'id'            => $prefix . 'reference',
 					'type'          => 'custom_html',
-					'callback'      => 'Prestations_Prestation::get_summary_reference',
+					'callback'      => 'MultiServices_Prestation::get_summary_reference',
 				],
 				[
 					'name'           => __( 'Status', 'prestations' ),
@@ -969,21 +969,21 @@ class Prestations_Prestation {
 		global $post;
 		$amount = get_post_meta($post->ID, 'price', true);
 		if(empty($amount)) $amount = 0;
-		return Prestations::price($amount);
+		return MultiServices::price($amount);
 	}
 
 	static function get_summary_discount($args = []) {
 		global $post;
 		$discount = get_post_meta($post->ID, 'discount', true);
 		$amount = (isset($discount['total'])) ? $discount['total'] : NULL;
-		if( $amount > 0) return Prestations::price($amount);
+		if( $amount > 0) return MultiServices::price($amount);
 	}
 
 	static function get_summary_total($args = []) {
 		global $post;
 		$amount = get_post_meta($post->ID, 'total', true);
 		if(empty($amount)) $amount = 0;
-		return Prestations::price($amount);
+		return MultiServices::price($amount);
 	}
 
 	static function get_summary_deposit_percent($args = []) {
@@ -997,13 +997,13 @@ class Prestations_Prestation {
 		global $post;
 		$deposit = get_post_meta($post->ID, 'deposit', true);
 		$amount = (isset($deposit['total'])) ? $deposit['total'] : NULL;
-		if($amount > 0) return Prestations::price($amount);
+		if($amount > 0) return MultiServices::price($amount);
 	}
 
 	static function get_summary_paid($args = []) {
 		global $post;
 		$amount = get_post_meta($post->ID, 'paid', true);
-		return Prestations::price($amount);
+		return MultiServices::price($amount);
 	}
 
 	static function get_balance($args = []) {
@@ -1016,13 +1016,13 @@ class Prestations_Prestation {
 		// global $post;
 		// $amount = get_post_meta($post->ID, 'balance', true);
 		$amount = self::get_balance();
-		return Prestations::price($amount);
+		return MultiServices::price($amount);
 	}
 
 	static function get_summary_reference($args = []) {
 		global $post;
 		if ($post->post_type != 'prestation') return;
-		if( Prestations::is_new_post() ) return; // triggered when opened new post page, empty
+		if( MultiServices::is_new_post() ) return; // triggered when opened new post page, empty
 
 		if(is_post_type_viewable( $post->post_type )) {
 			return sprintf(
@@ -1077,7 +1077,7 @@ class Prestations_Prestation {
 
 	static function update_prestation_amounts($post_id, $post, $update ) {
 		if( !$update ) return;
-		if( Prestations::is_new_post() ) return; // triggered when opened new post page, empty
+		if( MultiServices::is_new_post() ) return; // triggered when opened new post page, empty
 		if( is_object($post) && $post->post_type != 'prestation' ) return;
 		if( isset($_REQUEST['action']) && $_REQUEST['action'] == 'trash' ) return;
 
@@ -1287,7 +1287,7 @@ class Prestations_Prestation {
 	  // Image column
 	  switch($column) {
 			case 'dates':
-			echo Prestations::format_date_range(get_post_meta($post_id, 'dates', true));
+			echo MultiServices::format_date_range(get_post_meta($post_id, 'dates', true));
 			break;
 		}
 	}
@@ -1314,7 +1314,7 @@ class Prestations_Prestation {
 		if ( ! in_array( $data['post_type'], [ 'prestation' ], true ) )  return $data;
 
 		if( empty( $postarr['ID'] ) || empty($postarr['post_name']) ) {
-			$data['post_name'] = Prestations::unique_random_slug();
+			$data['post_name'] = MultiServices::unique_random_slug();
 		}
 
 		return $data;
@@ -1406,7 +1406,7 @@ class Prestations_Prestation {
 
 		// if(!empty($prestation_id)) {
 			// foreach ($meta as $key => $value) update_post_meta( $order_id, $key, $value );
-			// Prestations_WooCommerce::update_prestation_orders($prestation_id, get_post($prestation_id), true );
+			// MultiServices_WooCommerce::update_prestation_orders($prestation_id, get_post($prestation_id), true );
 		// }
 
 		$prestation = get_post($prestation_id);

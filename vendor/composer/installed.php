@@ -5,7 +5,7 @@
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '6e53459ca0f4aeaed13a60bef3fd05261bd388d9',
+        'reference' => '056f09f343aa0bbc544b2b03d435cefd6d8459f2',
         'name' => 'magicoli/prestations',
         'dev' => true,
     ),
@@ -34,7 +34,7 @@
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '6e53459ca0f4aeaed13a60bef3fd05261bd388d9',
+            'reference' => '056f09f343aa0bbc544b2b03d435cefd6d8459f2',
             'dev_requirement' => false,
         ),
         'meta-box/mb-admin-columns' => array(

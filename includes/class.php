@@ -9,8 +9,8 @@
  * @link       http://example.com
  * @since      0.1.0
  *
- * @package    Prestations
- * @subpackage Prestations/includes
+ * @package    MultiServices
+ * @subpackage MultiServices/includes
  */
 
 /**
@@ -23,11 +23,11 @@
  * version of the plugin.
  *
  * @since      0.1.0
- * @package    Prestations
- * @subpackage Prestations/includes
+ * @package    MultiServices
+ * @subpackage MultiServices/includes
  * @author     Your Name <email@example.com>
  */
-class Prestations {
+class MultiServices {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -35,7 +35,7 @@ class Prestations {
 	 *
 	 * @since    0.1.0
 	 * @access   protected
-	 * @var      Prestations_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      MultiServices_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -67,8 +67,8 @@ class Prestations {
 	 * @since    0.1.0
 	 */
 	public function __construct() {
-		if ( defined( 'PRESTATIONS_VERSION' ) ) {
-			$this->version = PRESTATIONS_VERSION;
+		if ( defined( 'MULTISERVICES_VERSION' ) ) {
+			$this->version = MULTISERVICES_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
@@ -86,10 +86,10 @@ class Prestations {
 	 *
 	 * Include the following files that make up the plugin:
 	 *
-	 * - Prestations_Loader. Orchestrates the hooks of the plugin.
-	 * - Prestations_i18n. Defines internationalization functionality.
-	 * - Prestations_Admin. Defines all hooks for the admin area.
-	 * - Prestations_Public. Defines all hooks for the public side of the site.
+	 * - MultiServices_Loader. Orchestrates the hooks of the plugin.
+	 * - MultiServices_i18n. Defines internationalization functionality.
+	 * - MultiServices_Admin. Defines all hooks for the admin area.
+	 * - MultiServices_Public. Defines all hooks for the public side of the site.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
@@ -103,54 +103,54 @@ class Prestations {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once PRESTATIONS_DIR . 'includes/class-loader.php';
+		require_once MULTISERVICES_DIR . 'includes/class-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once PRESTATIONS_DIR . 'includes/class-i18n.php';
+		require_once MULTISERVICES_DIR . 'includes/class-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once PRESTATIONS_DIR . 'admin/class-admin.php';
+		require_once MULTISERVICES_DIR . 'admin/class-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once PRESTATIONS_DIR . 'public/class-public.php';
+		require_once MULTISERVICES_DIR . 'public/class-public.php';
 
-		$this->loader = new Prestations_Loader();
+		$this->loader = new MultiServices_Loader();
 
-		require_once PRESTATIONS_DIR . 'vendor/autoload.php';
-		require_once PRESTATIONS_DIR . 'includes/class-list-table.php';
+		require_once MULTISERVICES_DIR . 'vendor/autoload.php';
+		require_once MULTISERVICES_DIR . 'includes/class-list-table.php';
 
-		require_once PRESTATIONS_DIR . 'includes/class-cpt-prestation.php';
-		$this->loaders[] = new Prestations_Prestation();
-		require_once PRESTATIONS_DIR . 'includes/class-cpt-service.php';
-		$this->loaders[] = new Prestations_Service();
-		require_once PRESTATIONS_DIR . 'includes/class-cpt-association.php';
-		$this->loaders[] = new Prestations_Association();
-		require_once PRESTATIONS_DIR . 'includes/class-settings.php';
-		$this->loaders[] = new Prestations_Settings();
+		require_once MULTISERVICES_DIR . 'includes/class-cpt-prestation.php';
+		$this->loaders[] = new MultiServices_Prestation();
+		require_once MULTISERVICES_DIR . 'includes/class-cpt-service.php';
+		$this->loaders[] = new MultiServices_Service();
+		require_once MULTISERVICES_DIR . 'includes/class-cpt-association.php';
+		$this->loaders[] = new MultiServices_Association();
+		require_once MULTISERVICES_DIR . 'includes/class-settings.php';
+		$this->loaders[] = new MultiServices_Settings();
 
-		require_once PRESTATIONS_DIR . 'includes/modules/load-modules.php';
-		$this->loaders[] = new Prestations_Modules();
+		require_once MULTISERVICES_DIR . 'includes/modules/load-modules.php';
+		$this->loaders[] = new MultiServices_Modules();
 		// if(is_plugin_active('woocommerce/woocommerce.php')) {
-		// 	require_once PRESTATIONS_DIR . 'includes/modules/class-woocommerce.php';
-		// 	$this->loaders[] = new Prestations_WooCommerce();
+		// 	require_once MULTISERVICES_DIR . 'includes/modules/class-woocommerce.php';
+		// 	$this->loaders[] = new MultiServices_WooCommerce();
 		//
-		// 	require_once PRESTATIONS_DIR . 'includes/modules/class-woocommerce-payment-product.php';
-		// 	$this->loaders[] = new Prestations_Payment_Product();
+		// 	require_once MULTISERVICES_DIR . 'includes/modules/class-woocommerce-payment-product.php';
+		// 	$this->loaders[] = new MultiServices_Payment_Product();
 		// }
 
-		if(get_transient('prestations_rewrite_flush') || get_transient('prestations_rewrite_version') != PRESTATIONS_VERSION) {
+		if(get_transient('prestations_rewrite_flush') || get_transient('prestations_rewrite_version') != MULTISERVICES_VERSION) {
 		  wp_cache_flush();
 		  add_action('init', 'flush_rewrite_rules');
 			delete_transient('prestations_rewrite_flush');
-		  set_transient('prestations_rewrite_version', PRESTATIONS_VERSION);
+		  set_transient('prestations_rewrite_version', MULTISERVICES_VERSION);
 		  // admin_notice( 'Rewrite rules flushed' );
 		}
 
@@ -159,7 +159,7 @@ class Prestations {
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Prestations_i18n class in order to set the domain and to register the hook
+	 * Uses the MultiServices_i18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    0.1.0
@@ -167,7 +167,7 @@ class Prestations {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Prestations_i18n();
+		$plugin_i18n = new MultiServices_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -182,7 +182,7 @@ class Prestations {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Prestations_Admin( $this->get_plugin_slug(), $this->get_version() );
+		$plugin_admin = new MultiServices_Admin( $this->get_plugin_slug(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -198,7 +198,7 @@ class Prestations {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Prestations_Public( $this->get_plugin_slug(), $this->get_version() );
+		$plugin_public = new MultiServices_Public( $this->get_plugin_slug(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
@@ -236,7 +236,7 @@ class Prestations {
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @since     0.1.0
-	 * @return    Prestations_Loader    Orchestrates the hooks of the plugin.
+	 * @return    MultiServices_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 		return $this->loader;
@@ -295,14 +295,14 @@ class Prestations {
 	static function unique_random_slug($slug_size = NULL) {
 		global $wpdb;
 
-		if(empty($slug_length)) $slug_length = Prestations::get_option('slug_length', 4);
+		if(empty($slug_length)) $slug_length = MultiServices::get_option('slug_length', 4);
 
 		$i = 0; do {
 			$i++;
 			if($i > 5) { // failed several times to find a unique slug, increase length
 				$slug_length++;
 				$i = 0;
-				Prestations::update_option('prestations:slug_length', $slug_length);
+				MultiServices::update_option('prestations:slug_length', $slug_length);
 			}
 
 			$chars = implode(range('a', 'z'));
@@ -351,7 +351,7 @@ class Prestations {
 			$symbol = get_woocommerce_currency_symbol($currency);
 		} else {
 			if(empty($currency)) {
-				$options = Prestations::get_option('currency');
+				$options = MultiServices::get_option('currency');
 				if(isset($options['code'])) {
 					$search_currency = $options['code'];
 				}
@@ -375,7 +375,7 @@ class Prestations {
 		$after = '';
 
 		$options = wp_parse_args(
-			Prestations::get_option('currency'),
+			MultiServices::get_option('currency'),
 			array(
 				'code'   => null,
 				'pos' => null,
@@ -388,7 +388,7 @@ class Prestations {
 
 		if(!empty($args['code'])) {
 			$currency = $args['code'];
-			$symbol = Prestations::get_currency_symbol();
+			$symbol = MultiServices::get_currency_symbol();
 			switch($args['pos']) {
 				case 'left': $before = $symbol; break;
 				case 'left_space': $before = "$symbol "; break;
@@ -415,7 +415,7 @@ class Prestations {
 			add_action( 'admin_notices', function() use ($notice, $class, $is_dismissible) {
 				?>
 				<div class="notice notice-<?=$class?> <?=$is_dismissible?>">
-					<p><strong><?php echo PRESTATIONS_PLUGIN_NAME; ?></strong>: <?php _e( $notice, 'band-tools' ); ?></p>
+					<p><strong><?php echo MULTISERVICES_PLUGIN_NAME; ?></strong>: <?php _e( $notice, 'band-tools' ); ?></p>
 				</div>
 				<?php
 			} );

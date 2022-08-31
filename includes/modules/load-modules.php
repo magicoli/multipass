@@ -6,8 +6,8 @@
  * @link       http://example.com
  * @since      0.1.0
  *
- * @package    Prestations
- * @subpackage Prestations/includes
+ * @package    MultiServices
+ * @subpackage MultiServices/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Prestations
- * @subpackage Prestations/includes
+ * @package    MultiServices
+ * @subpackage MultiServices/includes
  * @author     Your Name <email@example.com>
  */
-class Prestations_Modules {
+class MultiServices_Modules {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -49,7 +49,7 @@ class Prestations_Modules {
 	 * @since    0.1.0
 	 */
 	public function __construct() {
-		$this->version = PRESTATIONS_VERSION;
+		$this->version = MULTISERVICES_VERSION;
 		$this->plugin_slug = 'prestations';
 
 		$this->locale = $this->get_locale();
@@ -58,32 +58,32 @@ class Prestations_Modules {
 		// $this->define_admin_hooks();
 		// $this->define_public_hooks();
 
-		// register_activation_hook( PRESTATIONS_FILE, __CLASS__ . '::activate' );
-		// register_deactivation_hook( PRESTATIONS_FILE, __CLASS__ . '::deactivate' );
+		// register_activation_hook( MULTISERVICES_FILE, __CLASS__ . '::activate' );
+		// register_deactivation_hook( MULTISERVICES_FILE, __CLASS__ . '::deactivate' );
 	}
 
 	private function load_dependencies() {
 		if(isset($_REQUEST['submit']) && isset($_REQUEST['page']) && $_REQUEST['page'] == 'prestations')
 		$enabled = (isset($_REQUEST['modules_enable'])) ? $_REQUEST['modules_enable'] : [];
-		else $enabled = Prestations::get_option('modules_enable', []);
+		else $enabled = MultiServices::get_option('modules_enable', []);
 
 		$this->modules = [];
 
 		if(is_plugin_active('woocommerce/woocommerce.php')) {
-			require_once PRESTATIONS_DIR . 'includes/modules/class-woocommerce.php';
-			require_once PRESTATIONS_DIR . 'includes/modules/class-woocommerce-payment-product.php';
+			require_once MULTISERVICES_DIR . 'includes/modules/class-woocommerce.php';
+			require_once MULTISERVICES_DIR . 'includes/modules/class-woocommerce-payment-product.php';
 		}
 
 		if(in_array('imap', $enabled)) {
-			require_once PRESTATIONS_DIR . 'includes/class-mailbox.php';
+			require_once MULTISERVICES_DIR . 'includes/class-mailbox.php';
 		}
 
 		if(in_array('lodgify', $enabled)) {
-			require_once PRESTATIONS_DIR . 'includes/modules/class-lodgify.php';
+			require_once MULTISERVICES_DIR . 'includes/modules/class-lodgify.php';
 		}
 
 		if(in_array('hbook', $enabled)) {
-			require_once PRESTATIONS_DIR . 'includes/modules/class-hbook.php';
+			require_once MULTISERVICES_DIR . 'includes/modules/class-hbook.php';
 		}
 
 	}
@@ -145,7 +145,7 @@ class Prestations_Modules {
 
 		// Modules settings in General tab
 		$meta_boxes[] = [
-			'title'          => __( 'Prestations Modules', 'prestations' ),
+			'title'          => __( 'MultiServices Modules', 'prestations' ),
 			'id'             => 'prestations-modules',
 			'settings_pages' => ['prestations'],
 			'tab'            => 'general',
@@ -202,7 +202,7 @@ class Prestations_Modules {
 				'status' => 'status',
 			);
 
-			$list = new Prestations_Table($data);
+			$list = new MultiServices_Table($data);
 
 			$html .= sprintf(
 				'<div class="managed-list managed-list-external">

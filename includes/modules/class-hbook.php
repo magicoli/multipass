@@ -6,8 +6,8 @@
  * @link       http://example.com
  * @since      0.1.0
  *
- * @package    Prestations
- * @subpackage Prestations/includes
+ * @package    MultiServices
+ * @subpackage MultiServices/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Prestations
- * @subpackage Prestations/includes
+ * @package    MultiServices
+ * @subpackage MultiServices/includes
  * @author     Your Name <email@example.com>
  */
-class Prestations_HBook extends Prestations_Modules {
+class MultiServices_HBook extends MultiServices_Modules {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -47,8 +47,8 @@ class Prestations_HBook extends Prestations_Modules {
 	 * @since    0.1.0
 	 */
 	public function __construct() {
-		// register_activation_hook( PRESTATIONS_FILE, __CLASS__ . '::activate' );
-		// register_deactivation_hook( PRESTATIONS_FILE, __CLASS__ . '::deactivate' );
+		// register_activation_hook( MULTISERVICES_FILE, __CLASS__ . '::activate' );
+		// register_deactivation_hook( MULTISERVICES_FILE, __CLASS__ . '::deactivate' );
 	}
 
 	/**
@@ -100,7 +100,7 @@ class Prestations_HBook extends Prestations_Modules {
 
 	static function register_fields( $meta_boxes ) {
 		$prefix = 'hbook_';
-		$hbook = new Prestations_HBook();
+		$hbook = new MultiServices_HBook();
 
 		// Lodify Settings tab
     $meta_boxes[] = [
@@ -115,7 +115,7 @@ class Prestations_HBook extends Prestations_Modules {
 							'type'              => 'switch',
 							'desc'              => __( 'Sync HBook bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'prestations' ),
 							'style'             => 'rounded',
-							'sanitize_callback' => 'Prestations_HBook::sync_bookings',
+							'sanitize_callback' => 'MultiServices_HBook::sync_bookings',
 							'save_field' => false,
 						],
         ],
@@ -193,4 +193,4 @@ class Prestations_HBook extends Prestations_Modules {
 	}
 }
 
-$this->modules[] = new Prestations_HBook();
+$this->modules[] = new MultiServices_HBook();

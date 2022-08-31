@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name:       Prestations (dev)
+ * Plugin Name:       MultiServices (dev)
  * Plugin URI:        https://magiiic.com/wordpress/plugins/prestations/
  * Description:       Group orders from different sources (WooCommerce, OTA, booking engines...) to get the global picture of a set of services.
  * Version:           0.1.1.x-dev
@@ -14,7 +14,7 @@
  *
  * @link              http://example.com
  * @since             0.1.0
- * @package           Prestations
+ * @package           MultiServices
  *
  * @wordpress-plugin
  */
@@ -29,18 +29,18 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'PRESTATIONS_VERSION', '0.1.1.x-dev' . '-' . time() );
-define( 'PRESTATIONS_FILE', __FILE__ );
-define( 'PRESTATIONS_DIR', plugin_dir_path(__FILE__) );
-define( 'PRESTATIONS_PLUGIN_NAME', 'Prestations' );
+define( 'MULTISERVICES_VERSION', '0.1.1.x-dev' . '-' . time() );
+define( 'MULTISERVICES_FILE', __FILE__ );
+define( 'MULTISERVICES_DIR', plugin_dir_path(__FILE__) );
+define( 'MULTISERVICES_PLUGIN_NAME', 'MultiServices' );
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-activator.php
  */
 function activate_prestations() {
-	require_once PRESTATIONS_DIR . 'includes/class-activator.php';
-	Prestations_Activator::activate();
+	require_once MULTISERVICES_DIR . 'includes/class-activator.php';
+	MultiServices_Activator::activate();
 }
 
 /**
@@ -48,8 +48,8 @@ function activate_prestations() {
  * This action is documented in includes/class-deactivator.php
  */
 function deactivate_prestations() {
-	require_once PRESTATIONS_DIR . 'includes/class-deactivator.php';
-	Prestations_Deactivator::deactivate();
+	require_once MULTISERVICES_DIR . 'includes/class-deactivator.php';
+	MultiServices_Deactivator::deactivate();
 }
 
 register_activation_hook( __FILE__, 'activate_prestations' );
@@ -59,7 +59,7 @@ register_deactivation_hook( __FILE__, 'deactivate_prestations' );
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require PRESTATIONS_DIR . 'includes/class.php';
+require MULTISERVICES_DIR . 'includes/class.php';
 
 /**
  * Begins execution of the plugin.
@@ -72,7 +72,7 @@ require PRESTATIONS_DIR . 'includes/class.php';
  */
 function run_prestations() {
 
-	$plugin = new Prestations();
+	$plugin = new MultiServices();
 	$plugin->run();
 
 }

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * [Prestations_Payment_Product description]
+ * [MultiServices_Payment_Product description]
  */
-class Prestations_Payment_Product {
+class MultiServices_Payment_Product {
 
   /*
   * Bootstraps the class and hooks required actions & filters.
@@ -65,7 +65,7 @@ class Prestations_Payment_Product {
 							'<br/>', array(
 								__('To enable a product as payment, check the "Payment Only" option on product edit page and set its price to 0 (zero).', 'prestations'),
 								__('Enabling Payment Only will disable fixed product price and add amount and reference fields to product page.', 'prestations'),
-								__('Only one Payment Only product is needed by Prestations plugin.', 'prestations'),
+								__('Only one Payment Only product is needed by MultiServices plugin.', 'prestations'),
 							),
 						),
 					),
@@ -98,7 +98,7 @@ class Prestations_Payment_Product {
       'id'            => $prefix . 'payment_link',
       'type'          => 'custom_html',
       'class' => 'payment-link',
-      'callback'      => 'Prestations_Payment_Product::get_payment_link',
+      'callback'      => 'MultiServices_Payment_Product::get_payment_link',
       // 'admin_columns' => 'after paid',
     ];
 
@@ -332,7 +332,7 @@ class Prestations_Payment_Product {
 
 	static function get_price_html( $price_html, $product ) {
     if($product->get_meta( '_prpay' ) == 'yes') {
-      $price = max($product->get_price(), Prestations::get_option('woocommerce_payment_minimum_price', 0));
+      $price = max($product->get_price(), MultiServices::get_option('woocommerce_payment_minimum_price', 0));
       if( $price == 0 ) {
         $price_html = apply_filters( 'woocommerce_empty_price_html', '', $product );
       } else {
@@ -402,13 +402,13 @@ class Prestations_Payment_Product {
   static function get_payment_link() {
     global $post;
 
-    // $product_id = Prestations::get_option('woocommerce_default_product');
+    // $product_id = MultiServices::get_option('woocommerce_default_product');
     $reference = $post->post_name;
     $balance = get_post_meta($post->ID, 'balance', true);
     $paid = (float)get_post_meta($post->ID, 'paid', true);
     $deposit = (float)get_post_meta($post->ID, 'deposit', true)['total'];
 
-    $slug = __(Prestations::get_option('woocommerce_rewrite_slug'), 'prestations');
+    $slug = __(MultiServices::get_option('woocommerce_rewrite_slug'), 'prestations');
 
     if($deposit > $paid) {
       $deposit_due = $deposit - $paid;
@@ -431,13 +431,13 @@ class Prestations_Payment_Product {
     $pattern_ref = '([^&/]+)';
     $pattern_price = '([^&/]+)';
 
-    $product_id = Prestations::get_option('woocommerce_default_product');
+    $product_id = MultiServices::get_option('woocommerce_default_product');
     $cart_id = wc_get_page_id('cart');
 
     // add_rewrite_tag('%reference%', $pattern_ref, 'reference=');
     // add_rewrite_tag('%amount%', $pattern_price, 'amount=');
 
-    $slugs[] = Prestations::get_option('woocommerce_rewrite_slug');
+    $slugs[] = MultiServices::get_option('woocommerce_rewrite_slug');
     $slugs[] = __($slugs[0], 'prestations');
     $slugs = array_unique($slugs);
     foreach($slugs as $slug) {
@@ -495,4 +495,4 @@ class Prestations_Payment_Product {
   }
 }
 
-$this->modules[] = new Prestations_Payment_Product();
+$this->modules[] = new MultiServices_Payment_Product();

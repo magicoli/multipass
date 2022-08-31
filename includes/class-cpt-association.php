@@ -21,7 +21,7 @@
  * @subpackage W4OS/includes
  * @author     Your Name <email@example.com>
  */
-class Prestations_Association {
+class MultiServices_Association {
 
 	/**
 	 * The array of actions registered with WordPress.

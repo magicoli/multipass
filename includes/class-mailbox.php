@@ -6,8 +6,8 @@
  * @link       http://example.com
  * @since      0.1.0
  *
- * @package    Prestations
- * @subpackage Prestations/includes
+ * @package    MultiServices
+ * @subpackage MultiServices/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Prestations
- * @subpackage Prestations/includes
+ * @package    MultiServices
+ * @subpackage MultiServices/includes
  * @author     Your Name <email@example.com>
  */
-class Prestations_Mailbox {
+class MultiServices_Mailbox {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -176,13 +176,13 @@ class Prestations_Mailbox {
 		// if(get_transient($transient_key)) return;
 		// set_transient($transient_key, 'processing', get_option('imap_interval', 300));
 
-		// $server = Prestations::get_option(__CLASS__ . '::)
-		$server = Prestations::get_option('imap_server');
-		$username = Prestations::get_option('imap_username');
-		$port = Prestations::get_option('imap_port');
-		$enc = 'ssl'; // Prestations::get_option('imap_encryption');
+		// $server = MultiServices::get_option(__CLASS__ . '::)
+		$server = MultiServices::get_option('imap_server');
+		$username = MultiServices::get_option('imap_username');
+		$port = MultiServices::get_option('imap_port');
+		$enc = 'ssl'; // MultiServices::get_option('imap_encryption');
 		$protocol = 'imap';
-		$password = Prestations::get_option('imap_password');
+		$password = MultiServices::get_option('imap_password');
 		$folder = ''; // INBOX
 
 		// TODO: better sanitization, as PhpImap\Mailbox is not forgiving
@@ -278,27 +278,27 @@ class Prestations_Mailbox {
 	}
 
 	function background_process() {
-		$this->background_queue = new Prestations_Mailbox_Process();
+		$this->background_queue = new MultiServices_Mailbox_Process();
 
  		$action = __CLASS__ . '::fetch_mails';
-		if(get_transient('Prestations_Mailbox_wait')) return;
-		set_transient('Prestations_Mailbox_wait', true, 30);
+		if(get_transient('MultiServices_Mailbox_wait')) return;
+		set_transient('MultiServices_Mailbox_wait', true, 30);
 
-		if(Prestations::get_option('email_processing', false))
+		if(MultiServices::get_option('email_processing', false))
 		$this->background_queue->push_to_queue(__CLASS__ . '::fetch_mails');
 
 		$this->background_queue->save()->dispatch();
 
 		// One-off task:
 		//
-		// $this->background_request = new Prestations_Mailbox_Request();
+		// $this->background_request = new MultiServices_Mailbox_Request();
 		// $this->background_request->data( array( 'value1' => $value1, 'value2' => $value2 ) );
 		// $this->background_request->dispatch();
 	}
 
 }
 
-class Prestations_Mailbox_Request extends WP_Async_Request {
+class MultiServices_Mailbox_Request extends WP_Async_Request {
 
 	/**
 	 * @var string
@@ -317,7 +317,7 @@ class Prestations_Mailbox_Request extends WP_Async_Request {
 
 }
 
-class Prestations_Mailbox_Process extends WP_Background_Process {
+class MultiServices_Mailbox_Process extends WP_Background_Process {
 
 	/**
 	 * @var string
@@ -337,12 +337,12 @@ class Prestations_Mailbox_Process extends WP_Background_Process {
 	 * @return mixed
 	 */
 	protected function task( $item ) {
-		set_transient('Prestations_Mailbox_wait', true, 0);
+		set_transient('MultiServices_Mailbox_wait', true, 0);
 
 		error_log(__CLASS__ . ' ' . __FUNCTION__ . "($item)");
 		call_user_func($item);
 
-		set_transient('Prestations_Mailbox_wait', true, 30);
+		set_transient('MultiServices_Mailbox_wait', true, 30);
 
 		return false; // Don't change this, false prevents running it forever
 	}
@@ -362,4 +362,4 @@ class Prestations_Mailbox_Process extends WP_Background_Process {
 
 }
 
-$this->modules[] = new Prestations_Mailbox();
+$this->modules[] = new MultiServices_Mailbox();
