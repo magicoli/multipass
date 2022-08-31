@@ -1,169 +1,36 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Prestations for WC\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/multiservices\n"
-"POT-Creation-Date: 2022-08-31T11:40:34-04:00\n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: MultiServices\n"
+"Language: fr\n"
 
 #. Plugin Name of the plugin
-msgid "MultiServices (dev)"
-msgstr "MultiServices (dev)"
+#: 
+msgid "Prestations (dev)"
+msgstr "Prestations (dev)"
 
 #. Plugin URI of the plugin
-#| msgid "https://magiiic.com/wordpress/plugins/prestations/"
-msgid "https://magiiic.com/wordpress/plugins/multiservices/"
-msgstr "https://magiiic.com/wordpress/plugins/multiservices/"
+#: 
+msgid "https://magiiic.com/wordpress/plugins/prestations/"
+msgstr "https://magiiic.com/wordpress/plugins/prestations/"
 
 #. Description of the plugin
-msgid ""
-"Group orders from different sources (WooCommerce, OTA, booking engines...) "
-"to get the global picture of a set of services."
-msgstr ""
-"Regroupez les commandes de différentes sources (WooCommerce, OTA, moteurs de "
-"réservation...) pour avoir une vue d'ensemble d'un ensemble de services."
+#: 
+msgid "Group orders from different sources (WooCommerce, OTA, booking engines...) to get the global picture of a set of services."
+msgstr "Regroupez les commandes de différentes sources (WooCommerce, OTA, moteurs de réservation...) pour avoir une vue d'ensemble d'un ensemble de services."
 
 #. Author of the plugin
+#: 
 msgid "Magiiic"
 msgstr "Magiiic"
 
 #. Author URI of the plugin
+#: 
 msgid "https://magiiic.com/"
 msgstr "https://magiiic.com/"
-
-#: includes/class-cpt-association.php:206
-#: includes/class-cpt-association.php:218
-#: includes/class-cpt-association.php:227
-#: includes/class-cpt-association.php:240
-#: includes/class-cpt-association.php:274
-#| msgid "Prestations"
-msgid "Associations"
-msgstr "Associations"
-
-#: includes/class-cpt-association.php:207
-#| msgid "Description"
-msgid "Association"
-msgstr "Association"
-
-#: includes/class-cpt-association.php:208 includes/class-cpt-prestation.php:202
-#: includes/class-cpt-service.php:223
-msgid "Add New"
-msgstr "Ajouter"
-
-#: includes/class-cpt-association.php:209
-msgid "Add New Association"
-msgstr "Ajouter une nouvelle association"
-
-#: includes/class-cpt-association.php:210
-msgid "Edit Association"
-msgstr "Modifier l'association"
-
-#: includes/class-cpt-association.php:211
-msgid "New Association"
-msgstr "Nouvelle association"
-
-#: includes/class-cpt-association.php:212
-msgid "View Association"
-msgstr "Voir l'association"
-
-#: includes/class-cpt-association.php:213
-msgid "View Associations"
-msgstr "Voir les associations"
-
-#: includes/class-cpt-association.php:214
-msgid "Search Associations"
-msgstr "Rechercher dans les associations"
-
-#: includes/class-cpt-association.php:215
-msgid "No associations found."
-msgstr "Aucune association trouvée"
-
-#: includes/class-cpt-association.php:216
-msgid "No associations found in Trash."
-msgstr "Aucune association trouvée dans la corbeille"
-
-#: includes/class-cpt-association.php:217
-msgid "Parent Association:"
-msgstr "Association parente :"
-
-#: includes/class-cpt-association.php:219
-msgid "Association Archives"
-msgstr "Archives des associations"
-
-#: includes/class-cpt-association.php:220
-msgid "Association Attributes"
-msgstr "Attributs d'association"
-
-#: includes/class-cpt-association.php:221
-msgid "Insert into association"
-msgstr "Insérer dans l'association"
-
-#: includes/class-cpt-association.php:222
-msgid "Uploaded to this association"
-msgstr "Téléchargé sur cette association"
-
-#: includes/class-cpt-association.php:223 includes/class-cpt-prestation.php:217
-#: includes/class-cpt-service.php:238
-msgid "Featured image"
-msgstr "Image mise en avant"
-
-#: includes/class-cpt-association.php:224 includes/class-cpt-prestation.php:218
-#: includes/class-cpt-service.php:239
-msgid "Set featured image"
-msgstr "Définir l'image mise en avant"
-
-#: includes/class-cpt-association.php:225 includes/class-cpt-prestation.php:219
-#: includes/class-cpt-service.php:240
-msgid "Remove featured image"
-msgstr "Supprimer l'image mise en avant"
-
-#: includes/class-cpt-association.php:226 includes/class-cpt-prestation.php:220
-#: includes/class-cpt-service.php:241
-msgid "Use as featured image"
-msgstr "Utiliser comme image mise en avant"
-
-#: includes/class-cpt-association.php:228
-msgid "Filter associations list"
-msgstr "Filtrer la liste des associations"
-
-#: includes/class-cpt-association.php:230
-msgid "Associations list navigation"
-msgstr "Navigation dans la liste des associations"
-
-#: includes/class-cpt-association.php:231
-msgid "Associations list"
-msgstr "Liste des associations"
-
-#: includes/class-cpt-association.php:232
-msgid "Association published."
-msgstr "Associaiton publiée"
-
-#: includes/class-cpt-association.php:233
-msgid "Association published privately."
-msgstr "Associaiton publiée en privé"
-
-#: includes/class-cpt-association.php:234
-msgid "Association reverted to draft."
-msgstr "Association remise en brouillon"
-
-#: includes/class-cpt-association.php:235
-msgid "Association scheduled."
-msgstr "Association planifiée"
-
-#: includes/class-cpt-association.php:236
-msgid "Association updated."
-msgstr "Association mise à jour"
-
-#: includes/class-cpt-association.php:280
-msgid "Page"
-msgstr "Page"
 
 #: includes/class-cpt-prestation.php:200 includes/class-cpt-prestation.php:221
 #: includes/class-cpt-prestation.php:234 includes/class-cpt-prestation.php:269
@@ -175,6 +42,11 @@ msgstr "Prestations"
 #: includes/modules/class-woocommerce.php:347
 msgid "Prestation"
 msgstr "Prestation"
+
+#: includes/class-cpt-association.php:208 includes/class-cpt-prestation.php:202
+#: includes/class-cpt-service.php:223
+msgid "Add New"
+msgstr "Ajouter"
 
 #: includes/class-cpt-prestation.php:203
 msgid "Add new prestation"
@@ -231,6 +103,26 @@ msgstr "Insérer dans la prestation"
 #: includes/class-cpt-prestation.php:216
 msgid "Uploaded to this prestation"
 msgstr "Téléchargé sur cette prestation"
+
+#: includes/class-cpt-association.php:223 includes/class-cpt-prestation.php:217
+#: includes/class-cpt-service.php:238
+msgid "Featured image"
+msgstr "Image mise en avant"
+
+#: includes/class-cpt-association.php:224 includes/class-cpt-prestation.php:218
+#: includes/class-cpt-service.php:239
+msgid "Set featured image"
+msgstr "Définir l'image mise en avant"
+
+#: includes/class-cpt-association.php:225 includes/class-cpt-prestation.php:219
+#: includes/class-cpt-service.php:240
+msgid "Remove featured image"
+msgstr "Supprimer l'image mise en avant"
+
+#: includes/class-cpt-association.php:226 includes/class-cpt-prestation.php:220
+#: includes/class-cpt-service.php:241
+msgid "Use as featured image"
+msgstr "Utiliser comme image mise en avant"
 
 #: includes/class-cpt-prestation.php:222
 msgid "Filter prestations list"
@@ -321,15 +213,9 @@ msgstr "Acompte"
 msgid "Before"
 msgstr "Avant"
 
-#: includes/class-cpt-prestation.php:542
-msgid "Manual operations"
-msgstr "Opérations manuelles"
-
-#: includes/class-cpt-prestation.php:548
-msgid "Use manual operations only for items not managed by modules."
-msgstr ""
-"Utilisez les opérations manuelles uniquement pour les services non gérés par "
-"les modules."
+#: includes/class-cpt-prestation.php:545
+msgid "Unmanaged Items"
+msgstr "Éléments non gérés"
 
 #: includes/class-cpt-prestation.php:551
 msgid "Type"
@@ -542,6 +428,290 @@ msgstr "Non payé"
 msgid "Partially paid"
 msgstr "Partiellement payé"
 
+#: includes/class-cpt-prestation.php:965
+msgid "No data"
+msgstr "Aucune donnée"
+
+#: includes/class-cpt-prestation.php:1291
+msgid "%s to %s"
+msgstr "%s à %s"
+
+#: includes/class-list-table.php:23
+msgid "Not an array"
+msgstr "Pas un tableau"
+
+#: includes/class-list-table.php:24
+msgid "Empty table"
+msgstr "Tableau vide"
+
+#: includes/class-mailbox.php:107
+msgid "IMAP Settings"
+msgstr "Paramètres IMAP"
+
+#: includes/class-mailbox.php:113
+msgid "IMAP Server"
+msgstr "Serveur IMAP"
+
+#: includes/class-mailbox.php:116
+msgid "mail.example.org"
+msgstr "mail.example.org"
+
+#: includes/class-mailbox.php:121
+msgid "Port"
+msgstr "Port"
+
+#: includes/class-mailbox.php:125
+msgid "143"
+msgstr "143"
+
+#: includes/class-mailbox.php:126
+msgid "993"
+msgstr "993"
+
+#: includes/class-mailbox.php:132
+msgid "Encryption"
+msgstr "Chiffrement"
+
+#: includes/class-mailbox.php:136
+msgid "TLS/SSL"
+msgstr "TLS/SSL"
+
+#: includes/class-mailbox.php:142
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: includes/class-mailbox.php:149
+msgid "Password"
+msgstr "Mot de passe"
+
+#: includes/class-mailbox.php:156
+msgid "Save Attachments"
+msgstr "Enregistrer les pièces jointes"
+
+#: includes/class-settings.php:166 includes/class-settings.php:267
+msgid "Settings"
+msgstr "Réglages"
+
+#: includes/class-settings.php:188
+msgid "General"
+msgstr "Général"
+
+#: includes/class-settings.php:194
+#: includes/third-party/class-woocommerce.php:135
+msgid "Currency Options"
+msgstr "Options de devise"
+
+#: includes/class-settings.php:200
+msgid "Code"
+msgstr "Code"
+
+#: includes/class-settings.php:217
+msgid "Position"
+msgstr "Position"
+
+#: includes/class-settings.php:222
+msgid "Left"
+msgstr "Gauche"
+
+#: includes/class-settings.php:223
+msgid "Right"
+msgstr "Droite"
+
+#: includes/class-settings.php:224
+msgid "Left with space"
+msgstr "Gauche avec espace"
+
+#: includes/class-settings.php:225
+msgid "Right with space"
+msgstr "Droite avec espace"
+
+#: includes/class-settings.php:242
+msgid "Decimals"
+msgstr "Décimales"
+
+#: includes/class-settings.php:253
+msgid "Enable Email Processing"
+msgstr "Activer le traitement des e-mails"
+
+#: includes/class-settings.php:256
+msgid "Use IMAP to collect emails and attach them to prestations"
+msgstr "Utilisez IMAP pour collecter les emails et les joindre aux prestations"
+
+#: includes/third-party/class-woocommerce.php:139
+msgid "Set currency options in %sWooCommerce settings page%s"
+msgstr "Définissez les options de devise sur la %spage des paramètres WooCommerce%s"
+
+#: includes/third-party/class-woocommerce.php:146
+#: includes/third-party/class-woocommerce.php:306
+msgid "WooCommerce Settings"
+msgstr "Paramètres WooCommerce"
+
+#: includes/third-party/class-woocommerce.php:152
+msgid "Sync orders"
+msgstr "Synchroniser les commandes"
+
+#: includes/third-party/class-woocommerce.php:155
+msgid "Sync orders and prestations, create prestation if none exist. Only needed at plugin activation or if out of sync."
+msgstr "Synchroniser les commandes et les prestations, créer des prestations si aucune n'existe. Nécessaire uniquement lors de l'activation du plugin ou en cas de désynchronisation."
+
+#: includes/third-party/class-woocommerce.php:161
+msgid "Payment products"
+msgstr "Produits de paiement"
+
+#: includes/third-party/class-woocommerce.php:164
+msgid "Products to handle as payment only (price is used only for payment calculation, not for prestation cost)"
+msgstr "Produits à traiter comme paiement uniquement (le prix est utilisé uniquement pour le calcul du paiement, pas pour le coût de la prestation)"
+
+#: includes/third-party/class-woocommerce.php:198
+msgid "Woocommerce Orders"
+msgstr "Commandes Woocommerce"
+
+#: includes/third-party/class-woocommerce.php:250
+msgid "View prestation"
+msgstr "Voir les prestations"
+
+#: includes/third-party/class-woocommerce.php:509
+msgid " + %s items"
+msgstr " + %s éléments"
+
+#: includes/third-party/class-woocommerce.php:673
+msgid "Online Shop (WooCommerce)"
+msgstr "Boutique en ligne (WooCommerce)"
+
+#: includes/third-party/class-woocommerce.php:674
+msgid "Empty list"
+msgstr "Liste vide"
+
+#: includes/third-party/class-woocommerce.php:680
+msgid "ID"
+msgstr "ID"
+
+#: includes/third-party/class-woocommerce.php:681
+msgid "Created"
+msgstr "Créé"
+
+#: includes/third-party/class-woocommerce.php:685
+msgid "Subtotal"
+msgstr "Sous-total"
+
+#. Plugin Name of the plugin
+#: 
+msgid "MultiServices (dev)"
+msgstr "MultiServices (dev)"
+
+#. Plugin URI of the plugin
+#: 
+msgid "https://magiiic.com/wordpress/plugins/multiservices/"
+msgstr "https://magiiic.com/wordpress/plugins/multiservices/"
+
+#: includes/class-cpt-association.php:206
+#: includes/class-cpt-association.php:218
+#: includes/class-cpt-association.php:227
+#: includes/class-cpt-association.php:240
+#: includes/class-cpt-association.php:274
+msgid "Associations"
+msgstr "Associations"
+
+#: includes/class-cpt-association.php:207
+msgid "Association"
+msgstr "Association"
+
+#: includes/class-cpt-association.php:209
+msgid "Add New Association"
+msgstr "Ajouter une nouvelle association"
+
+#: includes/class-cpt-association.php:210
+msgid "Edit Association"
+msgstr "Modifier l'association"
+
+#: includes/class-cpt-association.php:211
+msgid "New Association"
+msgstr "Nouvelle association"
+
+#: includes/class-cpt-association.php:212
+msgid "View Association"
+msgstr "Voir l'association"
+
+#: includes/class-cpt-association.php:213
+msgid "View Associations"
+msgstr "Voir les associations"
+
+#: includes/class-cpt-association.php:214
+msgid "Search Associations"
+msgstr "Rechercher dans les associations"
+
+#: includes/class-cpt-association.php:215
+msgid "No associations found."
+msgstr "Aucune association trouvée"
+
+#: includes/class-cpt-association.php:216
+msgid "No associations found in Trash."
+msgstr "Aucune association trouvée dans la corbeille"
+
+#: includes/class-cpt-association.php:217
+msgid "Parent Association:"
+msgstr "Association parente :"
+
+#: includes/class-cpt-association.php:219
+msgid "Association Archives"
+msgstr "Archives des associations"
+
+#: includes/class-cpt-association.php:220
+msgid "Association Attributes"
+msgstr "Attributs d'association"
+
+#: includes/class-cpt-association.php:221
+msgid "Insert into association"
+msgstr "Insérer dans l'association"
+
+#: includes/class-cpt-association.php:222
+msgid "Uploaded to this association"
+msgstr "Téléchargé sur cette association"
+
+#: includes/class-cpt-association.php:228
+msgid "Filter associations list"
+msgstr "Filtrer la liste des associations"
+
+#: includes/class-cpt-association.php:230
+msgid "Associations list navigation"
+msgstr "Navigation dans la liste des associations"
+
+#: includes/class-cpt-association.php:231
+msgid "Associations list"
+msgstr "Liste des associations"
+
+#: includes/class-cpt-association.php:232
+msgid "Association published."
+msgstr "Associaiton publiée"
+
+#: includes/class-cpt-association.php:233
+msgid "Association published privately."
+msgstr "Associaiton publiée en privé"
+
+#: includes/class-cpt-association.php:234
+msgid "Association reverted to draft."
+msgstr "Association remise en brouillon"
+
+#: includes/class-cpt-association.php:235
+msgid "Association scheduled."
+msgstr "Association planifiée"
+
+#: includes/class-cpt-association.php:236
+msgid "Association updated."
+msgstr "Association mise à jour"
+
+#: includes/class-cpt-association.php:280
+msgid "Page"
+msgstr "Page"
+
+#: includes/class-cpt-prestation.php:542
+msgid "Manual operations"
+msgstr "Opérations manuelles"
+
+#: includes/class-cpt-prestation.php:548
+msgid "Use manual operations only for items not managed by modules."
+msgstr "Utilisez les opérations manuelles uniquement pour les services non gérés par les modules."
+
 #: includes/class-cpt-service.php:221 includes/class-cpt-service.php:233
 #: includes/class-cpt-service.php:242 includes/class-cpt-service.php:255
 msgid "Services"
@@ -649,583 +819,3 @@ msgstr "Source"
 msgid "None"
 msgstr "Aucun"
 
-#: includes/class-cpt-service.php:313
-msgid "Source ID"
-msgstr "ID source"
-
-#: includes/class-cpt-service.php:322
-msgid "Source URL"
-msgstr "URL de la source"
-
-#: includes/class-cpt-service.php:333
-msgid "Item ID"
-msgstr "ID élément"
-
-#: includes/class-cpt-service.php:381 includes/class-cpt-service.php:418
-msgid "Existing User"
-msgstr "Utilisateur existant"
-
-#: includes/class-cpt-service.php:387 includes/class-cpt-service.php:424
-msgid "Name"
-msgstr "Nom"
-
-#: includes/class-cpt-service.php:394 includes/class-cpt-service.php:431
-msgid "Email"
-msgstr ""
-
-#: includes/class-cpt-service.php:400 includes/class-cpt-service.php:437
-msgid "Phone"
-msgstr ""
-
-#: includes/class-cpt-service.php:415
-msgid "Fill only if different from customer."
-msgstr ""
-
-#: includes/class-cpt-service.php:473
-#, fuzzy
-#| msgid "Guest"
-msgid "Guests"
-msgstr "Invité"
-
-#: includes/class-cpt-service.php:490
-msgid "Adults"
-msgstr ""
-
-#: includes/class-cpt-service.php:497
-msgid "Children"
-msgstr ""
-
-#: includes/class-cpt-service.php:504
-msgid "Babies"
-msgstr ""
-
-#: includes/class-cpt-service.php:522
-msgid "Beds"
-msgstr ""
-
-#: includes/class-cpt-service.php:528
-msgid "Double"
-msgstr ""
-
-#: includes/class-cpt-service.php:535
-msgid "Single"
-msgstr ""
-
-#: includes/class-cpt-service.php:542
-msgid "Baby"
-msgstr ""
-
-#: includes/class-cpt-service.php:578
-#: includes/modules/class-woocommerce.php:661
-#: includes/modules/load-modules.php:185
-msgid "Subtotal"
-msgstr "Sous-total"
-
-#: includes/class-cpt-service.php:665
-#: includes/modules/class-woocommerce-payment-product.php:199
-msgid "Amount"
-msgstr "Montant"
-
-#: includes/class-cpt-service.php:673
-msgid "Method"
-msgstr ""
-
-#: includes/class-cpt-service.php:678
-#, fuzzy
-#| msgid "Reference #"
-msgid "Reference"
-msgstr "Référence #"
-
-#: includes/class-cpt-service.php:727 includes/class-cpt-service.php:729
-#: includes/class-cpt-service.php:753
-msgid "Service Sources"
-msgstr ""
-
-#: includes/class-cpt-service.php:728
-msgid "Service Source"
-msgstr ""
-
-#: includes/class-cpt-service.php:730
-msgid "Search Service Sources"
-msgstr ""
-
-#: includes/class-cpt-service.php:731
-msgid "Popular Service Sources"
-msgstr ""
-
-#: includes/class-cpt-service.php:732
-msgid "All Service Sources"
-msgstr ""
-
-#: includes/class-cpt-service.php:733
-msgid "Parent Service Source"
-msgstr ""
-
-#: includes/class-cpt-service.php:734
-msgid "Parent Service Source:"
-msgstr ""
-
-#: includes/class-cpt-service.php:735
-msgid "Edit Service Source"
-msgstr ""
-
-#: includes/class-cpt-service.php:736
-msgid "View Service Source"
-msgstr ""
-
-#: includes/class-cpt-service.php:737
-msgid "Update Service Source"
-msgstr ""
-
-#: includes/class-cpt-service.php:738
-msgid "Add New Service Source"
-msgstr ""
-
-#: includes/class-cpt-service.php:739
-msgid "New Service Source Name"
-msgstr ""
-
-#: includes/class-cpt-service.php:740
-#, fuzzy
-#| msgid "Separate prestation statuses with commas"
-msgid "Separate service sources with commas"
-msgstr "Séparez les statuts de prestation par des virgules"
-
-#: includes/class-cpt-service.php:741
-#, fuzzy
-#| msgid "Add or remove prestation statuses"
-msgid "Add or remove service sources"
-msgstr "Ajouter ou supprimer des statuts de prestation"
-
-#: includes/class-cpt-service.php:742
-#, fuzzy
-#| msgid "Choose most used prestation statuses"
-msgid "Choose most used service sources"
-msgstr "Choisissez parmi les statuts de prestation les plus utilisés"
-
-#: includes/class-cpt-service.php:743
-#, fuzzy
-#| msgid "No prestations found"
-msgid "No service sources found."
-msgstr "Aucune prestation trouvée"
-
-#: includes/class-cpt-service.php:744
-msgid "No service sources"
-msgstr ""
-
-#: includes/class-cpt-service.php:745
-msgid "Filter by service source"
-msgstr ""
-
-#: includes/class-cpt-service.php:746
-#, fuzzy
-#| msgid "Prestation statuses list pagination"
-msgid "Service Sources list pagination"
-msgstr "Pagination de la liste des statuts de prestation"
-
-#: includes/class-cpt-service.php:747
-msgid "Service Sources list"
-msgstr ""
-
-#: includes/class-cpt-service.php:749
-msgid "&larr; Go to Service Sources"
-msgstr ""
-
-#: includes/class-list-table.php:20
-msgid "Not an array"
-msgstr "Pas un tableau"
-
-#: includes/class-list-table.php:21
-msgid "Empty table"
-msgstr "Tableau vide"
-
-#: includes/class-mailbox.php:107
-msgid "IMAP Settings"
-msgstr "Paramètres IMAP"
-
-#: includes/class-mailbox.php:113
-msgid "IMAP Server"
-msgstr "Serveur IMAP"
-
-#: includes/class-mailbox.php:116
-msgid "mail.example.org"
-msgstr "mail.example.org"
-
-#: includes/class-mailbox.php:121
-msgid "Port"
-msgstr "Port"
-
-#: includes/class-mailbox.php:125
-msgid "143"
-msgstr "143"
-
-#: includes/class-mailbox.php:126
-msgid "993"
-msgstr "993"
-
-#: includes/class-mailbox.php:132
-msgid "Encryption"
-msgstr "Chiffrement"
-
-#: includes/class-mailbox.php:136
-msgid "TLS/SSL"
-msgstr "TLS/SSL"
-
-#: includes/class-mailbox.php:142
-msgid "Username"
-msgstr "Nom d'utilisateur"
-
-#: includes/class-mailbox.php:149
-msgid "Password"
-msgstr "Mot de passe"
-
-#: includes/class-mailbox.php:156
-msgid "Save Attachments"
-msgstr "Enregistrer les pièces jointes"
-
-#: includes/class-settings.php:166 includes/class-settings.php:266
-msgid "Settings"
-msgstr "Réglages"
-
-#: includes/class-settings.php:176 includes/class-settings.php:187
-msgid "General"
-msgstr "Général"
-
-#: includes/class-settings.php:193 includes/modules/class-woocommerce.php:150
-msgid "Currency Options"
-msgstr "Options de devise"
-
-#: includes/class-settings.php:199
-msgid "Code"
-msgstr "Code"
-
-#: includes/class-settings.php:216
-msgid "Position"
-msgstr "Position"
-
-#: includes/class-settings.php:221
-msgid "Left"
-msgstr "Gauche"
-
-#: includes/class-settings.php:222
-msgid "Right"
-msgstr "Droite"
-
-#: includes/class-settings.php:223
-msgid "Left with space"
-msgstr "Gauche avec espace"
-
-#: includes/class-settings.php:224
-msgid "Right with space"
-msgstr "Droite avec espace"
-
-#: includes/class-settings.php:241
-msgid "Decimals"
-msgstr "Décimales"
-
-#: includes/class.php:463
-#: includes/modules/class-woocommerce-payment-product.php:295
-msgid "from %s to %s"
-msgstr "du %s au %s"
-
-#: includes/class.php:463
-msgid "%s to %s"
-msgstr "%s à %s"
-
-#: includes/modules/class-hbook.php:107
-#, fuzzy
-#| msgid "Settings"
-msgid "HBook Settings"
-msgstr "Réglages"
-
-#: includes/modules/class-hbook.php:113 includes/modules/class-lodgify.php:108
-#, fuzzy
-#| msgid "Booking"
-msgid "Sync bookings"
-msgstr "Réservation"
-
-#: includes/modules/class-hbook.php:116
-#, fuzzy
-#| msgid ""
-#| "Sync orders and prestations, create prestation if none exist. Only useful "
-#| "after plugin activation or if out of sync."
-msgid ""
-"Sync HBook bookings with prestations, create prestation if none exist. Only "
-"useful after plugin activation or if out of sync."
-msgstr ""
-"Synchroniser les commandes et les prestations, créer une prestation si "
-"aucune n'existe. Utile uniquement après l'activation de l'extension ou en "
-"cas de désynchronisation."
-
-#: includes/modules/class-hbook.php:125
-msgid "HBook Accommodations"
-msgstr ""
-
-#: includes/modules/class-lodgify.php:96
-#, fuzzy
-#| msgid "Settings"
-msgid "Lodgify Settings"
-msgstr "Réglages"
-
-#: includes/modules/class-lodgify.php:102
-msgid "API Key"
-msgstr ""
-
-#: includes/modules/class-lodgify.php:111
-#, fuzzy
-#| msgid ""
-#| "Sync orders and prestations, create prestation if none exist. Only useful "
-#| "after plugin activation or if out of sync."
-msgid ""
-"Sync Lodgify bookings with prestations, create prestation if none exist. "
-"Only useful after plugin activation or if out of sync."
-msgstr ""
-"Synchroniser les commandes et les prestations, créer une prestation si "
-"aucune n'existe. Utile uniquement après l'activation de l'extension ou en "
-"cas de désynchronisation."
-
-#: includes/modules/class-lodgify.php:124
-msgid "Lodgify Property"
-msgstr ""
-
-#: includes/modules/class-lodgify.php:151
-msgid "Get properties failed (%s)."
-msgstr ""
-
-#: includes/modules/class-lodgify.php:209
-msgid "API Key verification failed (%s)."
-msgstr ""
-
-#: includes/modules/class-lodgify.php:236
-#: includes/modules/class-lodgify.php:247
-msgid "%s failed (%s)."
-msgstr ""
-
-#: includes/modules/class-woocommerce-payment-product.php:51
-msgid "Payment Products"
-msgstr "Produits de paiement"
-
-#: includes/modules/class-woocommerce-payment-product.php:57
-msgid "Payment products"
-msgstr "Produits de paiement"
-
-#: includes/modules/class-woocommerce-payment-product.php:63
-msgid ""
-"Payment products are used to provide a payment gateway for prestation not "
-"handled by WooCommerce (like deposits, custom items or services handled by "
-"an external website)."
-msgstr ""
-"Les produits de paiement permettent de fournir une passerelle de paiement "
-"aux prestations non gérées par WooCommerce (comme les accomptes, les "
-"éléments personnalisés ou les services gérés par des sites externes)."
-
-#: includes/modules/class-woocommerce-payment-product.php:66
-msgid ""
-"To enable a product as payment, check the \"Payment Only\" option on product "
-"edit page and set its price to 0 (zero)."
-msgstr ""
-"Pour définir un produit comme produit de paiement, cocher la case \"Paiement "
-"seulement\" sur la page de modification du produit et réglez son prix sur 0 "
-"(zéro)."
-
-#: includes/modules/class-woocommerce-payment-product.php:67
-msgid ""
-"Enabling Payment Only will disable fixed product price and add amount and "
-"reference fields to product page."
-msgstr ""
-"Activer \"Paiement seulement\" désactivera le prix fixe du produit et "
-"ajoutera les champs montant et référence à la page produit."
-
-#: includes/modules/class-woocommerce-payment-product.php:68
-#, fuzzy
-#| msgid "Only one Payment Only product is needed by Prestations plugin."
-msgid "Only one Payment Only product is needed by MultiServices plugin."
-msgstr "Seul un produit de paiement est requis par l'extension Prestations."
-
-#: includes/modules/class-woocommerce-payment-product.php:74
-msgid "Default product"
-msgstr "Produit par défaut"
-
-#: includes/modules/class-woocommerce-payment-product.php:77
-msgid "Create a payment product first"
-msgstr "Créez un produits de paiement d'abord"
-
-#: includes/modules/class-woocommerce-payment-product.php:79
-msgid "Select a product"
-msgstr "Sélectionnez un produit"
-
-#: includes/modules/class-woocommerce-payment-product.php:80
-msgid "Used to generate payment links."
-msgstr "Utilisé pour générer les liens de paiement."
-
-#: includes/modules/class-woocommerce-payment-product.php:84
-msgid "Payment link slug"
-msgstr "Slug des liens de paiement"
-
-#: includes/modules/class-woocommerce-payment-product.php:89
-msgid "pay"
-msgstr "payer"
-
-#: includes/modules/class-woocommerce-payment-product.php:97
-msgid "Payment link"
-msgstr "Lien de paiement"
-
-#: includes/modules/class-woocommerce-payment-product.php:142
-msgid "%s product enabled: %s"
-msgid_plural "%s products enabled: %s"
-msgstr[0] "%s produit activé: %s"
-msgstr[1] "%s produits activés: %s"
-
-#: includes/modules/class-woocommerce-payment-product.php:150
-#: includes/modules/class-woocommerce-payment-product.php:155
-msgid "Pay prestation"
-msgstr "Payer la prestation"
-
-#: includes/modules/class-woocommerce-payment-product.php:169
-msgid "Prestation Payment"
-msgstr "Paiement seulement"
-
-#: includes/modules/class-woocommerce-payment-product.php:170
-msgid "Check to use product as custom Prestation Payment."
-msgstr "Cocher pour utilser le produit uniquement pour les paiements."
-
-#: includes/modules/class-woocommerce-payment-product.php:202
-msgid "Amount to pay"
-msgstr "Montant à payer"
-
-#: includes/modules/class-woocommerce-payment-product.php:213
-msgid "Prestation reference"
-msgstr "Référence de la prestation"
-
-#: includes/modules/class-woocommerce-payment-product.php:217
-msgid "Enter a prestation id"
-msgstr "Entrez un ID de prestation"
-
-#: includes/modules/class-woocommerce-payment-product.php:218
-msgid "Use the reference number received during order."
-msgstr "Utilisez le numéro de référence reçu lors de la commande."
-
-#: includes/modules/class-woocommerce-payment-product.php:245
-msgid ""
-"\"%s\" could not be added to the cart. Please provide a valid amount to pay."
-msgstr ""
-"\"%s\" n'a pas pu être ajouté au panier. Merci de fournir un montant à payer "
-"valide."
-
-#: includes/modules/class-woocommerce-payment-product.php:254
-msgid "\"%s\" could not be added to the cart. Please provide a prestation id."
-msgstr ""
-"\"%s\" n'a pas pu être ajouté au panier. Merci de fournir une référence de "
-"prestation."
-
-#: includes/modules/class-woocommerce-payment-product.php:313
-msgid "Reference #%s"
-msgstr "Référence #%s"
-
-#: includes/modules/class-woocommerce.php:154
-msgid "Set currency options in %sWooCommerce settings page%s"
-msgstr ""
-"Définissez les options de devise sur la %spage des paramètres WooCommerce%s"
-
-#: includes/modules/class-woocommerce.php:161
-#: includes/modules/class-woocommerce.php:329
-msgid "WooCommerce Settings"
-msgstr "Paramètres WooCommerce"
-
-#: includes/modules/class-woocommerce.php:167
-msgid "Sync orders"
-msgstr "Synchroniser les commandes"
-
-#: includes/modules/class-woocommerce.php:170
-msgid ""
-"Sync orders and prestations, create prestation if none exist. Only useful "
-"after plugin activation or if out of sync."
-msgstr ""
-"Synchroniser les commandes et les prestations, créer une prestation si "
-"aucune n'existe. Utile uniquement après l'activation de l'extension ou en "
-"cas de désynchronisation."
-
-#: includes/modules/class-woocommerce.php:204
-msgid "Woocommerce Orders"
-msgstr "Commandes Woocommerce"
-
-#: includes/modules/class-woocommerce.php:274
-msgid "View prestation"
-msgstr "Voir les prestations"
-
-#: includes/modules/class-woocommerce.php:546
-msgid " + %s items"
-msgstr " + %s éléments"
-
-#: includes/modules/class-woocommerce.php:648
-msgid "Online Shop (WooCommerce)"
-msgstr "Boutique en ligne (WooCommerce)"
-
-#: includes/modules/class-woocommerce.php:649
-#: includes/modules/load-modules.php:171
-msgid "Empty list"
-msgstr "Liste vide"
-
-#: includes/modules/class-woocommerce.php:655
-#: includes/modules/load-modules.php:179
-msgid "ID"
-msgstr "ID"
-
-#: includes/modules/class-woocommerce.php:656
-#: includes/modules/load-modules.php:180
-msgid "Created"
-msgstr "Créé"
-
-#: includes/modules/load-modules.php:148
-msgid "MultiServices Modules"
-msgstr ""
-
-#: includes/modules/load-modules.php:154
-msgid "Modules"
-msgstr ""
-
-#: includes/modules/load-modules.php:158
-#, fuzzy
-#| msgid "Processing"
-msgid "Mail Processing"
-msgstr "En cours"
-
-#: includes/modules/load-modules.php:159
-msgid "Lodgify"
-msgstr ""
-
-#: includes/modules/load-modules.php:160
-#, fuzzy
-#| msgid "Booking"
-msgid "HBook Plugin"
-msgstr "Réservation"
-
-#: includes/modules/load-modules.php:170
-msgid "External"
-msgstr ""
-
-#~ msgid "Prestations (dev)"
-#~ msgstr "Prestations (dev)"
-
-#~ msgid "Unmanaged Items"
-#~ msgstr "Éléments non gérés"
-
-#~ msgid "No data"
-#~ msgstr "Aucune donnée"
-
-#~ msgid "Enable Email Processing"
-#~ msgstr "Activer le traitement des e-mails"
-
-#~ msgid "Use IMAP to collect emails and attach them to prestations"
-#~ msgstr ""
-#~ "Utilisez IMAP pour collecter les emails et les joindre aux prestations"
-
-#~ msgid "Payment for prestation #"
-#~ msgstr "Paiement pour la prestation #"
-
-#~ msgid ""
-#~ "Products to handle as payment only (price is used only for payment "
-#~ "calculation, not for prestation cost)"
-#~ msgstr ""
-#~ "Produits à traiter comme paiement uniquement (le prix est utilisé "
-#~ "uniquement pour le calcul du paiement, pas pour le coût de la prestation)"
