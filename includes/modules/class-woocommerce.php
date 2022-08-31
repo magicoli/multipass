@@ -442,6 +442,7 @@ class Prestations_WooCommerce extends Prestations_Modules {
 
 	static function update_prestation_orders($prestation_id, $prestation, $update ) {
 		if( wp_cache_get(__CLASS__ . '-' . __FUNCTION__ . '-' . $prestation_id) ) return;
+		if(isset($prestation->post)) $prestation = $prestation->post;
 		if( $prestation->post_type != 'prestation' ) return;
 		if( $prestation->post_status == 'trash' ) return; // TODO: remove prestation reference from orders
 
@@ -569,6 +570,8 @@ class Prestations_WooCommerce extends Prestations_Modules {
 			'rows' => $lines,
 		) );
 
+		$prestation = get_post($prestation_id);
+		if(is_object($prestation))
 		Prestations_Prestation::update_prestation_amounts($prestation_id, get_post($prestation_id), true );
 
 		// $metas = get_post_meta($prestation_id, 'modules-data');
@@ -606,82 +609,18 @@ class Prestations_WooCommerce extends Prestations_Modules {
 			$customer_email = get_post_meta($order_id, '_billing_email', true);
 		}
 
-		if(empty($prestation_id) || ! $prestation) {
-			$args = array(
-				'post_type' => 'prestation',
-				'post_status__in' => [ 'pending', 'on-hold', 'deposit', 'partial', 'unpaid', 'processing' ],
-				'orderby' => 'post_date',
-				'order' => 'desc',
-			);
-			if($customer) {
-				$args['meta_query'] = array(
-					array(
-						'key' => 'customer_id',
-						'value' => $customer_id,
-					)
-				);
-			} else if (!empty($customer_email)) {
-				$args['meta_query'] = array(
-					'relation' => 'OR',
-					array(
-						'key' => 'customer_email',
-						'value' => $customer_email,
-					),
-					array(
-						'key' => 'guest_email',
-						'value' => $customer_email,
-					),
-				);
-			} else if (!empty($customer_name)) {
-				$args['meta_query'] = array(
-					'relation' => 'OR',
-					array(
-						'key' => 'customer_name',
-						'value' => $customer_name,
-					),
-					array(
-						'key' => 'guest_name',
-						'value' => $customer_name,
-					),
-				);
-			}
-			$prestations = get_posts($args);
-			if($prestations) {
-				$prestation = $prestations[0];
-				$prestation_id = $prestation->ID;
-				// error_log("$prestation->ID $prestation->post_title " . print_r($prestation, true));
-				// update_post_meta( $order_id, 'prestation_id', $prestation_id );
-			}
-		}
+		$prestation = new Prestations_Prestation(array(
+			'prestation_id' => $prestation_id,
+			'customer_id' => $customer_id,
+			'customer_name' => $customer_name,
+			'customer_email' => $customer_email,
+			'date' => esc_attr($order->post_date),
+			'date_gmt' => esc_attr($order->post_date_gmt),
+		));
 
-		if(empty($prestation_id) || ! $prestation) {
-			$postarr = array(
-				'post_author' => $order->get_customer_id(),
-				'post_date' => $order->get_date_created(),
-				'post_date_gmt' => $order->post_date_gmt,
-				'post_type' => 'prestation',
-				'post_status' => 'publish',
-				'meta_input' => array(
-					'prestation_id' => $prestation_id,
-					'customer_id' => $customer_id,
-					'customer_name' => $customer_name,
-					'customer_email' => $customer_email,
-				),
-			);
-			$prestation_id = wp_insert_post($postarr);
-			// update_post_meta( $order_id, 'prestation_id', $prestation_id );
-			// foreach ($postarr['meta_input'] as $key => $value) update_post_meta( $order_id, $key, $value );
-		}
-
-		if(!empty($prestation_id)) {
-			$meta = array(
-				'prestation_id' => $prestation_id,
-				'customer_id' => $customer_id,
-				'customer_name' => $customer_name,
-				'customer_email' => $customer_email,
-			);
-			foreach ($meta as $key => $value) update_post_meta( $order_id, $key, $value );
-			Prestations_WooCommerce::update_prestation_orders($prestation_id, get_post($prestation_id), true );
+		if($prestation) {
+			update_post_meta( $order_id, 'prestation_id', $prestation->ID );
+			Prestations_WooCommerce::update_prestation_orders($prestation->ID, $prestation, true );
 		}
 
 		// add_action(current_action(), __CLASS__ . '::wp_insert_post_action', 10, 3);

@@ -46,7 +46,9 @@ class Prestations_Prestation {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct() {
+	public function __construct($args = NULL) {
+		$this->post = $this->get($args);
+		$this->ID = ($this->post) ? $this->post->ID : false;
 
 		$this->actions = array();
 		$this->filters = array();
@@ -1198,6 +1200,7 @@ class Prestations_Prestation {
 
 		$updates['balance'] = ($updates['total'] - $updates['paid'] == 0) ? NULL : $updates['total'] - $updates['paid'];
 
+		if(!is_object($post)) error_log("this should be a post " . print_r($post, true));
 		$post_status = $post->post_status;
 
 		switch($post->post_status) {
@@ -1316,4 +1319,98 @@ class Prestations_Prestation {
 
 		return $data;
 	}
+
+	function get($args) {
+		if(empty($args)) return $args;
+		if(is_numeric($args)) {
+			$prestation = get_post($args);
+			error_log('get prestation by id: ' . $prestation->ID);
+		} else if(is_object($args) && $args->post_type == 'prestations') {
+			$prestation = $args;
+			error_log('get prestation by post: ' . $prestation->ID);
+		}
+		if(isset($prestation)) return $prestation;
+
+		$prestation_id = $args['prestation_id'];
+		$customer_id = $args['customer_id'];
+		$customer_name= $args['customer_name'];
+		$customer_email = $args['customer_email'];
+
+		// Check by customer id, email or name
+		$query_args = array(
+			'post_type' => 'prestation',
+			'post_status__in' => [ 'pending', 'on-hold', 'deposit', 'partial', 'unpaid', 'processing' ],
+			'orderby' => 'post_date',
+			'order' => 'desc',
+		);
+		if(!empty($customer_id)) {
+			$query_args['meta_query'] = array(
+				array(
+					'key' => 'customer_id',
+					'value' => esc_attr($customer_id),
+				)
+			);
+		} else if (!empty($customer_email)) {
+			$query_args['meta_query'] = array(
+				'relation' => 'OR',
+				array(
+					'key' => 'customer_email',
+					'value' => esc_attr($customer_email),
+				),
+				array(
+					'key' => 'guest_email',
+					'value' => esc_attr($customer_email),
+				),
+			);
+		} else if (!empty($customer_name)) {
+			$query_args['meta_query'] = array(
+				'relation' => 'OR',
+				array(
+					'key' => 'customer_name',
+					'value' => esc_attr($customer_name),
+				),
+				array(
+					'key' => 'guest_name',
+					'value' => esc_attr($customer_name),
+				),
+			);
+		}
+		$prestations = get_posts($query_args);
+		$prestation = false;
+		if($prestations) {
+			$prestation = $prestations[0];
+			$prestation_id = $prestation->ID;
+			// error_log("$prestation->ID $prestation->post_title " . print_r($prestation, true));
+			// update_post_meta( $order_id, 'prestation_id', $prestation_id );
+		}
+		if($prestation) return $prestation;
+
+		// Nothing worked so far, create one
+		$meta = array(
+			// 'prestation_id' => $prestation_id,
+			'customer_id' => $customer_id,
+			'customer_name' => $customer_name,
+			'customer_email' => $customer_email,
+		);
+		$postarr = array(
+			'post_author' => $customer_id,
+			'post_date' => esc_attr($args['date']),
+			'post_date_gmt' => esc_attr($args['date_gmt']),
+			'post_type' => 'prestation',
+			'post_status' => 'publish',
+			'meta_input' => $meta,
+		);
+		$prestation_id = wp_insert_post($postarr);
+		// update_post_meta( $order_id, 'prestation_id', $prestation_id );
+		// foreach ($postarr['meta_input'] as $key => $value) update_post_meta( $order_id, $key, $value );
+
+		// if(!empty($prestation_id)) {
+			// foreach ($meta as $key => $value) update_post_meta( $order_id, $key, $value );
+			// Prestations_WooCommerce::update_prestation_orders($prestation_id, get_post($prestation_id), true );
+		// }
+
+		$prestation = get_post($prestation_id);
+		return $prestation;
+	}
+
 }
