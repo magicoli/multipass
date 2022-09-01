@@ -96,15 +96,10 @@ class MultiServices_PluginInfo {
 		$this->icons['high'] = plugin_dir_url(MULTISERVICES_FILE) . 'assets/icon-256x256.jpg';
 		if(file_exists(MULTISERVICES_DIR . 'assets/icon-128x128.jpg'))
 		$this->icons['low'] = plugin_dir_url(MULTISERVICES_FILE) . 'assets/icon-128x128.jpg';
-
 		// 'tested', 'upgrade_notice', 'downloaded', 'active_installs', 'last_updated',
 
-		error_log(
-			'plugin_data ' . print_r(get_plugin_data(MULTISERVICES_FILE), true)
-			. 'metadata ' . print_r($this, true)
-		);
+		$this->parse_readme();
 
-		// error_log("pluginInfo " . print_r($pluginInfo, true));
 		return $this;
 	}
 
@@ -210,7 +205,7 @@ class MultiServices_PluginInfo {
 		if(isset($this->download_url)) $info->download_link = $this->download_url;
 		$info->author = $this->getFormattedAuthor();
 		if(empty($this->sections)) $this->sections = [];
-		$info->sections = array_merge(array('description' => $this->description), $this->sections);
+		$info->sections = array_merge(array('Description' => $this->description), $this->sections);
 
 		if ( !empty($this->banners) ) {
 			//WP expects an array with two keys: "high" and "low". Both are optional.
@@ -230,4 +225,47 @@ class MultiServices_PluginInfo {
 		return $this->author;
 	}
 
+	function parse_readme() {
+		if(!file_exists(MULTISERVICES_DIR . 'readme.txt')) return;
+		$this->source = file_get_contents( MULTISERVICES_DIR . 'readme.txt' );
+		if(!$this->source) return false;
+
+		$syntax_ok = preg_match( '/^=== (.+?) ===\r?\n(.+?)\r?\n\r?\n(.+?)\r?\n(.+)/s', $this->source, $matches );
+		if ( ! $syntax_ok ) return false;
+
+		$this->title = $matches[1];
+		$this->short_description = $matches[3];
+		$readme_txt_rest = $matches[4];
+		$this->metadata = array_fill_keys( array( 'Contributors', 'Tags', 'Requires at least', 'Tested up to', 'Stable tag', 'License', 'License URI' ), null );
+		foreach ( explode( "\n", $matches[2] ) as $metadatum ) {
+			if ( ! preg_match( '/^(.+?):\s+(.+)$/', $metadatum, $metadataum_matches ) ) {
+				throw new Exception( "Parse error in $metadatum" );
+			}
+			list( $name, $value )  = array_slice( $metadataum_matches, 1, 2 );
+			$this->metadata[ $name ] = trim( $value );
+		}
+		$this->metadata['Contributors'] = array_filter( preg_split( '/\s*,\s*/', $this->metadata['Contributors'] ) );
+		$this->metadata['Tags'] = array_filter( preg_split( '/\s*,\s*/', $this->metadata['Tags'] ) );
+
+		$Parsedown = new Parsedown();
+		$syntax_ok = preg_match_all( '/(?:^|\r?\n)== (.+?) ==\r?\n(.+?)(?=\r?\n== |$)/s', $readme_txt_rest, $section_matches, PREG_SET_ORDER );
+		if ( $syntax_ok ) {
+			foreach ( $section_matches as $section_match ) {
+				array_shift( $section_match );
+				$heading     = array_shift( $section_match );
+				$body        = trim( array_shift( $section_match ) );
+				$body = preg_replace('/(?:^|\r?\n)= *(.+?) *=(\r?\n|$)/', '### $1$2', $body );
+				$body = preg_replace('/\[x\]/', '&#9745;', $body);
+				$body = $Parsedown->text( $body );
+				$this->sections[$heading] = $body . $subsections;
+			}
+		}
+
+		// error_log('got readme');
+		$this->source = NULL;
+
+		// error_log(
+		// 	'metadata ' . print_r($this, true)
+		// );
+	}
 }
