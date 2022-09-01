@@ -5,8 +5,8 @@
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '0db377294b114b3392389acb8dd9f58c3f7e2da0',
-        'name' => 'magicoli/prestations',
+        'reference' => 'b5cf48d8086170abebb82c27c609fbbd087ee7ce',
+        'name' => 'magicoli/multiservices',
         'dev' => true,
     ),
     'versions' => array(
@@ -28,13 +28,22 @@
             'reference' => '2cbee1abd1b49e1133cd8f611df4d4fc5a8b9800',
             'dev_requirement' => false,
         ),
-        'magicoli/prestations' => array(
+        'erusev/parsedown' => array(
+            'pretty_version' => '1.7.4',
+            'version' => '1.7.4.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../erusev/parsedown',
+            'aliases' => array(),
+            'reference' => 'cb17b6477dfff935958ba01325f2e8a2bfa6dab3',
+            'dev_requirement' => false,
+        ),
+        'magicoli/multiservices' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '0db377294b114b3392389acb8dd9f58c3f7e2da0',
+            'reference' => 'b5cf48d8086170abebb82c27c609fbbd087ee7ce',
             'dev_requirement' => false,
         ),
         'meta-box/mb-admin-columns' => array(
