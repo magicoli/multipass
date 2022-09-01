@@ -254,10 +254,10 @@ class MultiServices_PluginInfo {
 				array_shift( $section_match );
 				$heading     = array_shift( $section_match );
 				$body        = trim( array_shift( $section_match ) );
-				$body = preg_replace('/(?:^|\r?\n)= *(.+?) *=(\r?\n|$)/', '### $1$2', $body );
+				$body = preg_replace('/(?:^|\r?\n)= *(.+?) *=(\r?\n|$)/', "\n### $1\n", $body );
 				$body = preg_replace('/\[x\]/', '&#9745;', $body);
 				$body = $Parsedown->text( $body );
-				$this->sections[$heading] = $body . $subsections;
+				$this->sections[$heading] = $body;
 			}
 		}
 
