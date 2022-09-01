@@ -503,15 +503,26 @@ class MultiServices {
 			return $info;
 		}
 		$user = self::get_user_by_info($info);
-		$info = array_replace($info, array_filter(array(
-			'user_id' => $user->ID,
-			'name' => trim($user->first_name) . ' ' . $user->last_name,
-			'email' => $user->user_email,
-			'phone' => join(', ', array_filter(array(
-				get_user_meta($user->ID, 'billing_phone', true),
-				get_user_meta($user->ID, 'shipping_phone', true),
-			))),
-		)));
+		if($user) {
+			$info = array(
+				'user_id' => $user->ID,
+				'name' => trim($user->first_name) . ' ' . $user->last_name,
+				'email' => $user->user_email,
+				'phone' => join(', ', array_filter(array(
+					get_user_meta($user->ID, 'billing_phone', true),
+					get_user_meta($user->ID, 'shipping_phone', true),
+				))),
+			);
+		}
+		// $info = array_replace($info, array_filter(array(
+		// 	'user_id' => $user->ID,
+		// 	'name' => trim($user->first_name) . ' ' . $user->last_name,
+		// 	'email' => $user->user_email,
+		// 	'phone' => join(', ', array_filter(array(
+		// 		get_user_meta($user->ID, 'billing_phone', true),
+		// 		get_user_meta($user->ID, 'shipping_phone', true),
+		// 	))),
+		// )));
 		return $info;
 	}
 

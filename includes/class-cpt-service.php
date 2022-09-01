@@ -200,9 +200,10 @@ class MultiServices_Service {
 		if(is_array($value)) $customer_info = $value;
 		else $customer_info = get_post_meta($post->ID, 'customer', true);
 
+		$customer_html = '';
 		if(is_array($customer_info)) {
 			$customer_html  = join(' ', array_filter(array(
-				($customer_info['user_id'])
+				(!empty($customer_info['user_id']))
 				? sprintf(
 					'<a href="%s">%s</a>',
 					get_edit_profile_url($customer_info['user_id']),
@@ -808,17 +809,20 @@ class MultiServices_Service {
 
 		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
 
-		$service_info = get_post_meta($post->ID, 'customer', true);
 		$prestation_id = get_post_meta($post_id, 'prestation', true);
-		$prestation_info = array_filter(array(
-			'user_id' => get_post_meta($prestation_id, 'customer_id', true),
-			'name' => get_post_meta($prestation_id, 'guest_name', true),
-			'email' => get_post_meta($prestation_id, 'guest_email', true),
-			'phone' => get_post_meta($prestation_id, 'guest_phone', true),
-		));
-		$user_info = array_replace($service_info, $prestation_info);
+		$service_info = get_post_meta($post->ID, 'customer', true);
+		if($prestation_id) {
+			$user_info = array_filter(array(
+				'user_id' => get_post_meta($prestation_id, 'customer_id', true),
+				'name' => get_post_meta($prestation_id, 'guest_name', true),
+				'email' => get_post_meta($prestation_id, 'guest_email', true),
+				'phone' => get_post_meta($prestation_id, 'guest_phone', true),
+			));
+		} else {
+			$user_info = $service_info;
+		}
 		if($user_info != $service_info) {
-			error_log(__FUNCTION__ . '::' . __FUNCTION__ . ' meta ' . print_r($user_info, true));
+			// error_log(__FUNCTION__ . '::' . __FUNCTION__ . ' meta ' . print_r($user_info, true));
 			update_post_meta( $post_id, 'customer', $user_info );
 		}
 		$customer_html  = self::customer_html($post);
