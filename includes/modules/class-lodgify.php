@@ -105,6 +105,18 @@ class MultiServices_Lodgify extends MultiServices_Modules {
 								'sanitize_callback' => __CLASS__ . '::api_key_validation',
             ],
 						[
+							'id' => $prefix . 'api_key_required',
+							'save_field' => false,
+							'type' => 'custom_html',
+							'std' => sprintf(
+								'%s <a href="%s" target="_blank">%s</a>',
+								__('An API key is required to connect to Lodgify.', 'multiservices'),
+								'https://app.lodgify.com/#/reservation/settings/publicApiToken',
+								__('Get your API key from Logdify Settings page > Public API', 'multiservices'),
+							),
+							'visible' => ['api_key', '=', ''],
+						],
+						[
 							'name'              => __('Sync bookings', 'multiservices' ),
 							'id'                => $prefix . 'sync_bookings',
 							'type'              => 'switch',
