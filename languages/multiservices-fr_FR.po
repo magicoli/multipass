@@ -874,15 +874,15 @@ msgstr "Bébés"
 
 #: includes/class-cpt-service.php:523
 msgid "Beds"
-msgstr "Des lits"
+msgstr "Lits"
 
 #: includes/class-cpt-service.php:529
 msgid "Double"
-msgstr "Double"
+msgstr "Doubles"
 
 #: includes/class-cpt-service.php:536
 msgid "Single"
-msgstr "Seul"
+msgstr "Simples"
 
 #: includes/class-cpt-service.php:543
 msgid "Baby"
@@ -948,7 +948,7 @@ msgstr "Ajouter une nouvelle source de service"
 
 #: includes/class-cpt-service.php:740
 msgid "New Service Source Name"
-msgstr "Nouveau nom de source de service"
+msgstr "Nom de la nouvelle source de service"
 
 #: includes/class-cpt-service.php:741
 msgid "Separate service sources with commas"
