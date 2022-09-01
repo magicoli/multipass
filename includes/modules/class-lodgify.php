@@ -146,11 +146,12 @@ class MultiServices_Lodgify extends MultiServices_Modules {
 		$properties = get_transient($transient_key);
 		if($properties) return $properties;
 
+		if(empty($this->api_key)) return [];
 		$results = $this->api_request('/v1/properties', array());
 		if(is_wp_error($results)) {
 			$message = sprintf(
 				'%s failed ("%s") for %s',
-				__CLASS__ .'::' __METHOD__,
+				__CLASS__ .'::' . __METHOD__,
 				$results->get_error_message(),
 			 	print_r($this, true),
 			);
