@@ -48,8 +48,9 @@ class MultiServices_PluginInfo {
 	 */
 	public function __construct() {
 		$this->plugin_file = plugin_basename(MULTISERVICES_FILE);
+		$this->plugin_name = MULTISERVICES_PLUGIN_NAME;
 		$this->slug = basename(MULTISERVICES_DIR);
-		$this->installed_version = MULTISERVICES_VERSION;
+		// $this->version = MULTISERVICES_VERSION;
 	}
 
 
@@ -66,15 +67,45 @@ class MultiServices_PluginInfo {
 	}
 
 	public function requestInfo($queryArgs = array()) {
-		list($pluginInfo, $result) = $this->requestMetadata('Puc_v4p9_Plugin_Info', 'request_info', $queryArgs);
 
-		if ( $pluginInfo !== null ) {
-			$pluginInfo->filename = $this->plugin_file;
-			$pluginInfo->slug = $this->slug;
-		}
+		// if ( $pluginInfo !== null ) {
+			$this->filename = $this->plugin_file;
+			// $this->slug = $this->slug;
+		// }
 
-		error_log("pluginInfo " . print_r($pluginInfo, true));
-		return $pluginInfo;
+		$plugin_data = get_plugin_data(MULTISERVICES_FILE);
+		// $plugin_data = get_plugin_data(MULTISERVICES_DIR . 'readme.txt');
+
+		$this->name = MULTISERVICES_PLUGIN_NAME;
+		$this->version = $plugin_data['Version'];
+		$this->rating = 100; // just kidding
+		$this->num_ratings = 1; // just kidding
+		$this->homepage = $plugin_data['PluginURI'];
+		$this->homepage = $plugin_data['PluginURI'];
+		// $this->download_url = 'https://github.com/magicoli/multiservices/archive/refs/heads/master.zip';
+		$this->author = $plugin_data['AuthorName'];
+		$this->author_homepage = $plugin_data['AuthorURI'];
+		$this->description = $plugin_data['Description'];
+		$this->requires = $plugin_data['RequiresWP'];
+
+		if(file_exists(MULTISERVICES_DIR . 'assets/banner-1544x500.jpg'))
+		$this->banners['high'] = plugin_dir_url(MULTISERVICES_FILE) . 'assets/banner-1544x500.jpg';
+		if(file_exists(MULTISERVICES_DIR . 'assets/banner-772x250.jpg'))
+		$this->banners['low'] = plugin_dir_url(MULTISERVICES_FILE) . 'assets/banner-772x250.jpg';
+		if(file_exists(MULTISERVICES_DIR . 'assets/icon-256x256.jpg'))
+		$this->icons['high'] = plugin_dir_url(MULTISERVICES_FILE) . 'assets/icon-256x256.jpg';
+		if(file_exists(MULTISERVICES_DIR . 'assets/icon-128x128.jpg'))
+		$this->icons['low'] = plugin_dir_url(MULTISERVICES_FILE) . 'assets/icon-128x128.jpg';
+
+		// 'tested', 'upgrade_notice', 'downloaded', 'active_installs', 'last_updated',
+
+		error_log(
+			'plugin_data ' . print_r(get_plugin_data(MULTISERVICES_FILE), true)
+			. 'metadata ' . print_r($this, true)
+		);
+
+		// error_log("pluginInfo " . print_r($pluginInfo, true));
+		return $this;
 	}
 
 	public function injectInfo($result, $action = null, $args = null){
@@ -151,17 +182,52 @@ class MultiServices_PluginInfo {
 		return $plugin_meta;
 	}
 
-	protected function requestMetadata($metaClass, $filterRoot, $queryArgs = array()) {
-		$metadata = [];
-		$result = true;
-		return array($metadata, $result);
-	}
-
 	public function unique_name($name) {
 		return join('_', array_filter(array(
 			$this->slug,
 			$name,
 		)));
+	}
+
+	public function toWpFormat(){
+		$info = new stdClass;
+
+		//The custom update API is built so that many fields have the same name and format
+		//as those returned by the native WordPress.org API. These can be assigned directly.
+		$sameFormat = array(
+			'name', 'slug', 'version', 'requires', 'tested', 'rating', 'upgrade_notice',
+			'num_ratings', 'downloaded', 'active_installs', 'homepage', 'last_updated',
+		);
+		foreach($sameFormat as $field){
+			if ( isset($this->$field) ) {
+				$info->$field = $this->$field;
+			} else {
+				$info->$field = null;
+			}
+		}
+
+		//Other fields need to be renamed and/or transformed.
+		if(isset($this->download_url)) $info->download_link = $this->download_url;
+		$info->author = $this->getFormattedAuthor();
+		if(empty($this->sections)) $this->sections = [];
+		$info->sections = array_merge(array('description' => $this->description), $this->sections);
+
+		if ( !empty($this->banners) ) {
+			//WP expects an array with two keys: "high" and "low". Both are optional.
+			//Docs: https://wordpress.org/plugins/about/faq/#banners
+			$info->banners = is_object($this->banners) ? get_object_vars($this->banners) : $this->banners;
+			$info->banners = array_intersect_key($info->banners, array('high' => true, 'low' => true));
+		}
+
+		return $info;
+	}
+
+	protected function getFormattedAuthor() {
+		if ( !empty($this->author_homepage) ){
+			/** @noinspection HtmlUnknownTarget */
+			return sprintf('<a href="%s">%s</a>', $this->author_homepage, $this->author);
+		}
+		return $this->author;
 	}
 
 }

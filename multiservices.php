@@ -7,10 +7,14 @@
  * Version:           0.1.1.x-dev
  * Author:            Magiiic
  * Author URI:        https://magiiic.com/
+ * GitHubURL:					https://github.com/magicoli/multiservices/
  * License:           AGPLv3
  * License URI:       http://www.gnu.org/licenses/agpl-3.0.txt
  * Text Domain:       multiservices
  * Domain Path:       /languages
+ * Requires at least: 3.0.1
+ * Tested up to:			6.0.2
+ * Requires PHP:			7.0
  *
  * @link              http://example.com
  * @since             0.1.0
