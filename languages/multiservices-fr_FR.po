@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MultiServices\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/multiservices\n"
-"POT-Creation-Date: 2022-09-01T07:56:12-04:00\n"
+"POT-Creation-Date: 2022-09-01T08:21:53-04:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -80,11 +80,11 @@ msgstr "Rechercher dans les associations"
 
 #: includes/class-cpt-association.php:215
 msgid "No associations found."
-msgstr "Aucune association trouvée"
+msgstr "Aucune association trouvée."
 
 #: includes/class-cpt-association.php:216
 msgid "No associations found in Trash."
-msgstr "Aucune association trouvée dans la corbeille"
+msgstr "Aucune association trouvée dans la corbeille."
 
 #: includes/class-cpt-association.php:217
 msgid "Parent Association:"
@@ -140,23 +140,23 @@ msgstr "Liste des associations"
 
 #: includes/class-cpt-association.php:232
 msgid "Association published."
-msgstr "Associaiton publiée"
+msgstr "Associaiton publiée."
 
 #: includes/class-cpt-association.php:233
 msgid "Association published privately."
-msgstr "Associaiton publiée en privé"
+msgstr "Associaiton publiée en privé."
 
 #: includes/class-cpt-association.php:234
 msgid "Association reverted to draft."
-msgstr "Association remise en brouillon"
+msgstr "Association remise en brouillon."
 
 #: includes/class-cpt-association.php:235
 msgid "Association scheduled."
-msgstr "Association planifiée"
+msgstr "Association planifiée."
 
 #: includes/class-cpt-association.php:236
 msgid "Association updated."
-msgstr "Association mise à jour"
+msgstr "Association mise à jour."
 
 #: includes/class-cpt-association.php:280
 msgid "Page"
@@ -574,11 +574,11 @@ msgstr "Rechercher dans les services"
 
 #: includes/class-cpt-service.php:231
 msgid "No services found."
-msgstr "Aucun service trouvé"
+msgstr "Aucun service trouvé."
 
 #: includes/class-cpt-service.php:232
 msgid "No services found in Trash."
-msgstr "Aucun service trouvé dans la corbeille"
+msgstr "Aucun service trouvé dans la corbeille."
 
 #: includes/class-cpt-service.php:233
 msgid "Parent Service:"
@@ -614,19 +614,19 @@ msgstr "Liste des services"
 
 #: includes/class-cpt-service.php:248
 msgid "Service published."
-msgstr "Service publié"
+msgstr "Service publié."
 
 #: includes/class-cpt-service.php:249
 msgid "Service published privately."
-msgstr "Service publié en privé"
+msgstr "Service publié en privé."
 
 #: includes/class-cpt-service.php:250
 msgid "Service reverted to draft."
-msgstr "Service remis en brouillon"
+msgstr "Service remis en brouillon."
 
 #: includes/class-cpt-service.php:251
 msgid "Service scheduled."
-msgstr "Service planifié"
+msgstr "Service planifié."
 
 #: includes/class-cpt-service.php:252
 msgid "Service updated."
@@ -648,7 +648,7 @@ msgstr "Aucun"
 
 #: includes/class-cpt-service.php:314
 msgid "Source ID"
-msgstr "ID source"
+msgstr "Identifiant source"
 
 #: includes/class-cpt-service.php:323
 msgid "Source URL"
@@ -656,11 +656,11 @@ msgstr "URL source"
 
 #: includes/class-cpt-service.php:334
 msgid "Item ID"
-msgstr "ID élément"
+msgstr "ID de l'article"
 
 #: includes/class-cpt-service.php:382 includes/class-cpt-service.php:419
 msgid "Existing User"
-msgstr "Client existant"
+msgstr "Utilisateur existant"
 
 #: includes/class-cpt-service.php:388 includes/class-cpt-service.php:425
 msgid "Name"
@@ -672,11 +672,11 @@ msgstr "E-mail"
 
 #: includes/class-cpt-service.php:401 includes/class-cpt-service.php:438
 msgid "Phone"
-msgstr "Téléphone"
+msgstr "Téléphoner"
 
 #: includes/class-cpt-service.php:416
 msgid "Fill only if different from customer."
-msgstr ""
+msgstr "Remplir uniquement si différent du client."
 
 #: includes/class-cpt-service.php:474
 msgid "Guests"
@@ -684,31 +684,31 @@ msgstr "Invités"
 
 #: includes/class-cpt-service.php:491
 msgid "Adults"
-msgstr ""
+msgstr "Adultes"
 
 #: includes/class-cpt-service.php:498
 msgid "Children"
-msgstr ""
+msgstr "Enfants"
 
 #: includes/class-cpt-service.php:505
 msgid "Babies"
-msgstr ""
+msgstr "Bébés"
 
 #: includes/class-cpt-service.php:523
 msgid "Beds"
-msgstr ""
+msgstr "Lits"
 
 #: includes/class-cpt-service.php:529
 msgid "Double"
-msgstr ""
+msgstr "Doubles"
 
 #: includes/class-cpt-service.php:536
 msgid "Single"
-msgstr ""
+msgstr "Simples"
 
 #: includes/class-cpt-service.php:543
 msgid "Baby"
-msgstr ""
+msgstr "Bébé"
 
 #: includes/class-cpt-service.php:579
 #: includes/modules/class-woocommerce.php:661
@@ -719,142 +719,100 @@ msgstr "Sous-total"
 #: includes/class-cpt-service.php:666
 #: includes/modules/class-woocommerce-payment-product.php:199
 msgid "Amount"
-msgstr ""
+msgstr "Montant"
 
 #: includes/class-cpt-service.php:674
 msgid "Method"
-msgstr ""
+msgstr "Méthode"
 
 #: includes/class-cpt-service.php:679
-#, fuzzy
-#| msgid "Reference #"
 msgid "Reference"
-msgstr "Référence #"
+msgstr "Référence"
 
 #: includes/class-cpt-service.php:728 includes/class-cpt-service.php:730
 #: includes/class-cpt-service.php:754
-#, fuzzy
-#| msgid "Service Archives"
 msgid "Service Sources"
-msgstr "Archives des services"
+msgstr "Sources de services"
 
 #: includes/class-cpt-service.php:729
-#, fuzzy
-#| msgid "Service Archives"
 msgid "Service Source"
-msgstr "Archives des services"
+msgstr "Source de service"
 
 #: includes/class-cpt-service.php:731
-#, fuzzy
-#| msgid "Search Services"
 msgid "Search Service Sources"
-msgstr "Rechercher dans les services"
+msgstr "Rechercher des sources de services"
 
 #: includes/class-cpt-service.php:732
-#, fuzzy
-#| msgid "Service Archives"
 msgid "Popular Service Sources"
-msgstr "Archives des services"
+msgstr "Sources de services populaires"
 
 #: includes/class-cpt-service.php:733
-#, fuzzy
-#| msgid "Service Archives"
 msgid "All Service Sources"
-msgstr "Archives des services"
+msgstr "Toutes les sources de services"
 
 #: includes/class-cpt-service.php:734
-#, fuzzy
-#| msgid "Parent Service:"
 msgid "Parent Service Source"
-msgstr "Service parent :"
+msgstr "Source de service parent"
 
 #: includes/class-cpt-service.php:735
-#, fuzzy
-#| msgid "Parent Service:"
 msgid "Parent Service Source:"
-msgstr "Service parent :"
+msgstr "Source du service parente :"
 
 #: includes/class-cpt-service.php:736
-#, fuzzy
-#| msgid "Edit Service"
 msgid "Edit Service Source"
-msgstr "Modifier le service"
+msgstr "Modifier la source de service"
 
 #: includes/class-cpt-service.php:737
-#, fuzzy
-#| msgid "View Service"
 msgid "View Service Source"
-msgstr "Voir le service"
+msgstr "Afficher la source de service"
 
 #: includes/class-cpt-service.php:738
-#, fuzzy
-#| msgid "Edit Service"
 msgid "Update Service Source"
-msgstr "Modifier le service"
+msgstr "Mettre à jour la source de service"
 
 #: includes/class-cpt-service.php:739
-#, fuzzy
-#| msgid "Add New Service"
 msgid "Add New Service Source"
-msgstr "Ajouter"
+msgstr "Ajouter une nouvelle source de service"
 
 #: includes/class-cpt-service.php:740
-#, fuzzy
-#| msgid "New Service"
 msgid "New Service Source Name"
-msgstr "Nouveau service"
+msgstr "Nom de la nouvelle source de service"
 
 #: includes/class-cpt-service.php:741
-#, fuzzy
-#| msgid "Separate prestation statuses with commas"
 msgid "Separate service sources with commas"
-msgstr "Séparez les statuts de prestation par des virgules"
+msgstr "Séparez les sources de service par des virgules"
 
 #: includes/class-cpt-service.php:742
-#, fuzzy
-#| msgid "Add or remove prestation statuses"
 msgid "Add or remove service sources"
-msgstr "Ajouter ou supprimer des statuts de prestation"
+msgstr "Ajouter ou supprimer des sources de service"
 
 #: includes/class-cpt-service.php:743
-#, fuzzy
-#| msgid "Choose most used prestation statuses"
 msgid "Choose most used service sources"
-msgstr "Choisissez parmi les statuts de prestation les plus utilisés"
+msgstr "Choisissez les sources de service les plus utilisées"
 
 #: includes/class-cpt-service.php:744
-#, fuzzy
-#| msgid "No services found."
 msgid "No service sources found."
-msgstr "Aucun service trouvé"
+msgstr "Aucune source de service trouvée."
 
 #: includes/class-cpt-service.php:745
-#, fuzzy
-#| msgid "No services found."
 msgid "No service sources"
-msgstr "Aucun service trouvé"
+msgstr "Aucune source de service"
 
 #: includes/class-cpt-service.php:746
-#, fuzzy
-#| msgid "Filter services list"
 msgid "Filter by service source"
-msgstr "Filtrer la liste des services"
+msgstr "Filtrer par source de service"
 
 #: includes/class-cpt-service.php:747
-#, fuzzy
-#| msgid "Services list navigation"
 msgid "Service Sources list pagination"
-msgstr "Navigation dans la liste des services"
+msgstr "Pagination de la liste des sources de service"
 
 #: includes/class-cpt-service.php:748
-#, fuzzy
-#| msgid "Services list"
 msgid "Service Sources list"
-msgstr "Liste des services"
+msgstr "Liste des sources de service"
 
 #: includes/class-cpt-service.php:750
 msgid "&larr; Go to Service Sources"
-msgstr ""
+msgstr "&larr; Aller aux sources de services"
 
 #: includes/class-list-table.php:20
 msgid "Not an array"
@@ -909,14 +867,12 @@ msgid "Save Attachments"
 msgstr "Enregistrer les pièces jointes"
 
 #: includes/class-plugin-info.php:107 includes/class-plugin-info.php:132
-#, fuzzy
-#| msgid "View Prestations"
 msgid "View details"
-msgstr "Voir les prestations"
+msgstr "Voir les détails"
 
 #: includes/class-plugin-info.php:130
 msgid "More information about %s"
-msgstr ""
+msgstr "Plus d'informations sur% s"
 
 #: includes/class-settings.php:166 includes/class-settings.php:266
 msgid "Settings"
@@ -960,87 +916,69 @@ msgstr "Décimales"
 
 #: includes/class.php:466
 #: includes/modules/class-woocommerce-payment-product.php:295
-#, fuzzy
-#| msgid "%s to %s"
 msgid "from %s to %s"
-msgstr "%s à %s"
+msgstr "du %s au %s"
 
 #: includes/class.php:466
 msgid "%s to %s"
 msgstr "%s à %s"
 
 #: includes/modules/class-hbook.php:107
-#, fuzzy
-#| msgid "Settings"
 msgid "HBook Settings"
-msgstr "Réglages"
+msgstr "Paramètres HBook"
 
 #: includes/modules/class-hbook.php:113 includes/modules/class-lodgify.php:108
-#, fuzzy
-#| msgid "Booking"
 msgid "Sync bookings"
-msgstr "Réservation"
+msgstr "Synchroniser les réservations"
 
 #: includes/modules/class-hbook.php:116
-#, fuzzy
-#| msgid ""
-#| "Sync orders and prestations, create prestation if none exist. Only needed "
-#| "at plugin activation or if out of sync."
 msgid ""
 "Sync HBook bookings with prestations, create prestation if none exist. Only "
 "useful after plugin activation or if out of sync."
 msgstr ""
-"Synchroniser les commandes et les prestations, créer des prestations si "
-"aucune n'existe. Nécessaire uniquement lors de l'activation du plugin ou en "
-"cas de désynchronisation."
+"Synchronisez les réservations HBook avec les prestations, créez des "
+"prestations si aucune n'existe. Uniquement utile après l'activation du "
+"plugin ou en cas de désynchronisation."
 
 #: includes/modules/class-hbook.php:125
 msgid "HBook Accommodations"
-msgstr ""
+msgstr "Hébergements HBook"
 
 #: includes/modules/class-lodgify.php:96
-#, fuzzy
-#| msgid "Settings"
 msgid "Lodgify Settings"
-msgstr "Réglages"
+msgstr "Paramètres Lodgify"
 
 #: includes/modules/class-lodgify.php:102
 msgid "API Key"
-msgstr ""
+msgstr "Clé API"
 
 #: includes/modules/class-lodgify.php:111
-#, fuzzy
-#| msgid ""
-#| "Sync orders and prestations, create prestation if none exist. Only needed "
-#| "at plugin activation or if out of sync."
 msgid ""
 "Sync Lodgify bookings with prestations, create prestation if none exist. "
 "Only useful after plugin activation or if out of sync."
 msgstr ""
-"Synchroniser les commandes et les prestations, créer des prestations si "
-"aucune n'existe. Nécessaire uniquement lors de l'activation du plugin ou en "
-"cas de désynchronisation."
+"Synchronisez les réservations Lodgify avec les prestations, créez des "
+"prestations si aucune n'existe. Uniquement utile après l'activation du "
+"plugin ou en cas de désynchronisation."
 
 #: includes/modules/class-lodgify.php:124
 msgid "Lodgify Property"
-msgstr ""
+msgstr "Propriété Lodgify"
 
 #: includes/modules/class-lodgify.php:151
 msgid "Get properties failed (%s)."
-msgstr ""
+msgstr "Échec de l'obtention des propriétés (%s)."
 
 #: includes/modules/class-lodgify.php:209
 msgid "API Key verification failed (%s)."
-msgstr ""
+msgstr "La vérification de la clé API a échoué (%s)."
 
 #: includes/modules/class-lodgify.php:236
 #: includes/modules/class-lodgify.php:247
 msgid "%s failed (%s)."
-msgstr ""
+msgstr "%s a échoué (%s)."
 
 #: includes/modules/class-woocommerce-payment-product.php:51
-#, fuzzy
-#| msgid "Payment products"
 msgid "Payment Products"
 msgstr "Produits de paiement"
 
@@ -1054,116 +992,113 @@ msgid ""
 "handled by WooCommerce (like deposits, custom items or services handled by "
 "an external website)."
 msgstr ""
+"Les produits de paiement sont utilisés pour fournir une passerelle de "
+"paiement pour des prestations non gérées par WooCommerce (comme les dépôts, "
+"les articles personnalisés ou les services gérés par un site Web externe)."
 
 #: includes/modules/class-woocommerce-payment-product.php:66
 msgid ""
 "To enable a product as payment, check the \"Payment Only\" option on product "
 "edit page and set its price to 0 (zero)."
 msgstr ""
+"Pour activer un produit en tant que paiement, cochez l'option \"Paiement "
+"uniquement\" sur la page d'édition du produit et définissez son prix sur 0 "
+"(zéro)."
 
 #: includes/modules/class-woocommerce-payment-product.php:67
 msgid ""
 "Enabling Payment Only will disable fixed product price and add amount and "
 "reference fields to product page."
 msgstr ""
+"L'activation du paiement uniquement désactivera le prix fixe du produit et "
+"ajoutera des champs de montant et de référence à la page du produit."
 
 #: includes/modules/class-woocommerce-payment-product.php:68
 msgid "Only one Payment Only product is needed by MultiServices plugin."
 msgstr ""
+"Un seul produit de paiement uniquement est requis par le plug-in "
+"MultiServices."
 
 #: includes/modules/class-woocommerce-payment-product.php:74
-#, fuzzy
-#| msgid "Payment products"
 msgid "Default product"
-msgstr "Produits de paiement"
+msgstr "Produit par défaut"
 
 #: includes/modules/class-woocommerce-payment-product.php:77
-#, fuzzy
-#| msgid "Payment products"
 msgid "Create a payment product first"
-msgstr "Produits de paiement"
+msgstr "Créez d'abord un produit de paiement"
 
 #: includes/modules/class-woocommerce-payment-product.php:79
-#, fuzzy
-#| msgid "Select a type"
 msgid "Select a product"
-msgstr "Sélectionnez un type"
+msgstr "Sélectionnez un produit"
 
 #: includes/modules/class-woocommerce-payment-product.php:80
 msgid "Used to generate payment links."
-msgstr ""
+msgstr "Utilisé pour générer des liens de paiement."
 
 #: includes/modules/class-woocommerce-payment-product.php:84
 msgid "Payment link slug"
-msgstr ""
+msgstr "Slug de lien de paiement"
 
 #: includes/modules/class-woocommerce-payment-product.php:89
 msgid "pay"
-msgstr ""
+msgstr "payer"
 
 #: includes/modules/class-woocommerce-payment-product.php:97
-#, fuzzy
-#| msgid "Payment"
 msgid "Payment link"
-msgstr "Paiement"
+msgstr "Lien de paiement"
 
 #: includes/modules/class-woocommerce-payment-product.php:142
 msgid "%s product enabled: %s"
 msgid_plural "%s products enabled: %s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s produit activé : %s"
+msgstr[1] "%s produits activés : %s"
 
 #: includes/modules/class-woocommerce-payment-product.php:150
 #: includes/modules/class-woocommerce-payment-product.php:155
-#, fuzzy
-#| msgid "Prestation"
 msgid "Pay prestation"
-msgstr "Prestation"
+msgstr "Prestations payantes"
 
 #: includes/modules/class-woocommerce-payment-product.php:169
-#, fuzzy
-#| msgid "Prestation status"
 msgid "Prestation Payment"
-msgstr "Statut de la prestation"
+msgstr "Paiement de la prestation"
 
 #: includes/modules/class-woocommerce-payment-product.php:170
 msgid "Check to use product as custom Prestation Payment."
 msgstr ""
+"Cochez pour utiliser le produit comme paiement Prestation personnalisé."
 
 #: includes/modules/class-woocommerce-payment-product.php:202
 msgid "Amount to pay"
-msgstr ""
+msgstr "Montant à payer"
 
 #: includes/modules/class-woocommerce-payment-product.php:213
-#, fuzzy
-#| msgid "Prestation Archives"
 msgid "Prestation reference"
-msgstr "Archives des prestations"
+msgstr "Référence de la prestation"
 
 #: includes/modules/class-woocommerce-payment-product.php:217
-#, fuzzy
-#| msgid "Filter prestations list"
 msgid "Enter a prestation id"
-msgstr "Filtrer la liste des prestations"
+msgstr "Saisissez un identifiant de prestation"
 
 #: includes/modules/class-woocommerce-payment-product.php:218
 msgid "Use the reference number received during order."
-msgstr ""
+msgstr "Utilisez le numéro de référence reçu lors de la commande."
 
 #: includes/modules/class-woocommerce-payment-product.php:245
 msgid ""
 "\"%s\" could not be added to the cart. Please provide a valid amount to pay."
 msgstr ""
+"\"%s\" n'a pas pu être ajouté au panier. Veuillez fournir un montant valide "
+"à payer."
 
 #: includes/modules/class-woocommerce-payment-product.php:254
 msgid "\"%s\" could not be added to the cart. Please provide a prestation id."
 msgstr ""
+"\"%s\" n'a pas pu être ajouté au panier. Veuillez fournir un identifiant de "
+"prestation."
 
 #: includes/modules/class-woocommerce-payment-product.php:313
-#, fuzzy
-#| msgid "Reference #"
 msgid "Reference #%s"
-msgstr "Référence #"
+msgstr "Références"
 
 #: includes/modules/class-woocommerce.php:154
 msgid "Set currency options in %sWooCommerce settings page%s"
@@ -1180,17 +1115,13 @@ msgid "Sync orders"
 msgstr "Synchroniser les commandes"
 
 #: includes/modules/class-woocommerce.php:170
-#, fuzzy
-#| msgid ""
-#| "Sync orders and prestations, create prestation if none exist. Only needed "
-#| "at plugin activation or if out of sync."
 msgid ""
 "Sync orders and prestations, create prestation if none exist. Only useful "
 "after plugin activation or if out of sync."
 msgstr ""
 "Synchroniser les commandes et les prestations, créer des prestations si "
-"aucune n'existe. Nécessaire uniquement lors de l'activation du plugin ou en "
-"cas de désynchronisation."
+"aucune n'existe. Uniquement utile après l'activation du plugin ou en cas de "
+"désynchronisation."
 
 #: includes/modules/class-woocommerce.php:204
 msgid "Woocommerce Orders"
@@ -1224,34 +1155,28 @@ msgid "Created"
 msgstr "Créé"
 
 #: includes/modules/load-modules.php:148
-#, fuzzy
-#| msgid "MultiServices (dev)"
 msgid "MultiServices Modules"
-msgstr "MultiServices (dev)"
+msgstr "Modules Multiservices"
 
 #: includes/modules/load-modules.php:154
 msgid "Modules"
-msgstr ""
+msgstr "Modules"
 
 #: includes/modules/load-modules.php:158
-#, fuzzy
-#| msgid "Processing"
 msgid "Mail Processing"
-msgstr "En cours"
+msgstr "Traitement du courrier"
 
 #: includes/modules/load-modules.php:159
 msgid "Lodgify"
-msgstr ""
+msgstr "Lodgify"
 
 #: includes/modules/load-modules.php:160
-#, fuzzy
-#| msgid "Booking"
 msgid "HBook Plugin"
-msgstr "Réservation"
+msgstr "Extension HBook"
 
 #: includes/modules/load-modules.php:170
 msgid "External"
-msgstr ""
+msgstr "Externe"
 
 #~ msgid "Prestations (dev)"
 #~ msgstr "Prestations (dev)"
@@ -1271,6 +1196,14 @@ msgstr ""
 #~ msgid "Use IMAP to collect emails and attach them to prestations"
 #~ msgstr ""
 #~ "Utilisez IMAP pour collecter les emails et les joindre aux prestations"
+
+#~ msgid ""
+#~ "Sync orders and prestations, create prestation if none exist. Only needed "
+#~ "at plugin activation or if out of sync."
+#~ msgstr ""
+#~ "Synchroniser les commandes et les prestations, créer des prestations si "
+#~ "aucune n'existe. Nécessaire uniquement lors de l'activation du plugin ou "
+#~ "en cas de désynchronisation."
 
 #~ msgid ""
 #~ "Products to handle as payment only (price is used only for payment "
