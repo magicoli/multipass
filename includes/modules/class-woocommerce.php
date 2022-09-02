@@ -600,7 +600,6 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		// remove_action(current_action(), __CLASS__ . '::wp_insert_post_action');
 
 		$prestation_id = get_post_meta($order_id, 'prestation_id', true);
-		$prestation = get_post($prestation_id);
 		$customer_id = get_post_meta($order_id, '_customer_user', true);
 		$customer = get_user_by('id', $customer_id);
 		if($customer) {
