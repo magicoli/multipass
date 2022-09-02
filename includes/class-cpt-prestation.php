@@ -267,7 +267,7 @@ class MultiServices_Prestation {
 		$prefix = '';
 		$meta_boxes['prestation-cpt'] = [
 			'title'      => __('Prestations', 'multiservices' ),
-			'id'         => 'multiservices',
+			'id'         => 'prestation-fields',
 			'post_types' => ['prestation'],
 			'context'    => 'after_title',
 			'style'      => 'seamless',
