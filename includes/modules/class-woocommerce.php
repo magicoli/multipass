@@ -138,7 +138,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 	}
 
 	static function activate() {
-		self::sync_orders(true);
+		self::sync_orders();
 	}
 
 	static function register_fields( $meta_boxes ) {
@@ -169,7 +169,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 					'type'              => 'switch',
 					'desc'              => __('Sync orders and prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multiservices' ),
 					'style'             => 'rounded',
-					'sanitize_callback' => 'MultiServices_WooCommerce::sync_orders',
+					'sanitize_callback' => 'MultiServices_WooCommerce::sync_orders_validation',
 					'save_field' => false,
 				],
 			],
@@ -630,21 +630,24 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		return;
 	}
 
-	static function sync_orders($value = NULL, $field = NULL, $oldvalue = NULL) {
-		if($value) {
-			$orders = wc_get_orders( array(
-				'limit'        => -1, // Query all orders
-				'orderby'      => 'date',
-				'order'        => 'ASC',
-				// 'meta_key'     => 'prestation_id', // The postmeta key field
-				// 'meta_compare' => 'NOT EXISTS', // The comparison argument
-			));
-			foreach ($orders as $key => $order) {
-				$order_post = get_post($order->get_id());
-				self::update_order_prestation($order_post->ID, $order_post, true);
-			}
+	static function sync_orders_validation($value, $field, $oldvalue) {
+		if($value == true) self::sync_orders();
+
+		return false; // sync_order field should never be saved
+	}
+
+	static function sync_orders() {
+		$orders = wc_get_orders( array(
+			'limit'        => -1, // Query all orders
+			'orderby'      => 'date',
+			'order'        => 'ASC',
+			// 'meta_key'     => 'prestation_id', // The postmeta key field
+			// 'meta_compare' => 'NOT EXISTS', // The comparison argument
+		));
+		foreach ($orders as $key => $order) {
+			$order_post = get_post($order->get_id());
+			self::update_order_prestation($order_post->ID, $order_post, true);
 		}
-		return false; // sync_order field sshould never be saved
 	}
 
 	static function managed_list_filter($html = '') {
