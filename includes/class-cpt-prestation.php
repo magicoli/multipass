@@ -1075,11 +1075,29 @@ class MultiServices_Prestation {
 		}
 	}
 
+	static function get_post($object) {
+		if(self::is_prestation_post($object)) return $object;
+		if(get_class($object) == __CLASS__ ) $post = $object->post;
+		else if(is_numeric($object)) $post = get_post($object);
+		else return false;
+
+		return (self::is_prestation_post($post)) ? $post : false;
+	}
+
+	static function is_prestation_post($object) {
+		if(!is_object($object)) return false;
+		if( get_class($object) != 'WP_Post' ) return false;
+		if( $object->post_type != 'prestation') return false;
+
+		return true;
+	}
+
 	static function update_prestation_amounts($post_id, $post, $update ) {
 		if( !$update ) return;
 		if( MultiServices::is_new_post() ) return; // triggered when opened new post page, empty
-		if( is_object($post) && $post->post_type != 'prestation' ) return;
-		if( isset($_REQUEST['action']) && $_REQUEST['action'] == 'trash' ) return;
+		if( ! self::is_prestation_post($post) ) return;
+		if( $post->post_status == 'trash' ) return; // TODO: remove prestation reference from other post types
+		if( isset($_REQUEST['action']) && $_REQUEST['action'] == 'trash' ) return; // maybe redundant?
 
 		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
 
@@ -1200,7 +1218,6 @@ class MultiServices_Prestation {
 
 		$updates['balance'] = ($updates['total'] - $updates['paid'] == 0) ? NULL : $updates['total'] - $updates['paid'];
 
-		if(!is_object($post)) error_log("this should be a post " . print_r($post, true));
 		$post_status = $post->post_status;
 
 		switch($post->post_status) {

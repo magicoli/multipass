@@ -138,7 +138,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 	}
 
 	static function activate() {
-		self::sync_orders();
+		self::sync_orders(true);
 	}
 
 	static function register_fields( $meta_boxes ) {
@@ -442,8 +442,11 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 
 	static function update_prestation_orders($prestation_id, $prestation, $update ) {
 		if( wp_cache_get(__CLASS__ . '-' . __FUNCTION__ . '-' . $prestation_id) ) return;
-		if(isset($prestation->post)) $prestation = $prestation->post;
-		if( $prestation->post_type != 'prestation' ) return;
+		$prestation = MultiServices_Prestation::get_post($prestation);
+		if(!$prestation) return;
+		// if(! MultiServices_Prestation::is_prestation_post($prestation) && isset($prestation->post)) $prestation = $prestation->post;
+		// if(! MultiServices_Prestation::is_prestation_post($prestation)) return;
+		// if( $prestation->post_type != 'prestation' ) return;
 		if( $prestation->post_status == 'trash' ) return; // TODO: remove prestation reference from orders
 
 		$orders = wc_get_orders( array(
@@ -570,9 +573,9 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 			'rows' => $lines,
 		) );
 
-		$prestation = get_post($prestation_id);
-		if(is_object($prestation))
-		MultiServices_Prestation::update_prestation_amounts($prestation_id, get_post($prestation_id), true );
+		$prestation_post = get_post($prestation_id);
+		if(is_object($prestation) && $prestation->post_type == 'prestation')
+		MultiServices_Prestation::update_prestation_amounts($prestation_id, $prestation, true );
 
 		// $metas = get_post_meta($prestation_id, 'modules-data');
 		// error_log(print_r($metas, true));
@@ -627,8 +630,8 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		return;
 	}
 
-	static function sync_orders($one = NULL, $two = NULL, $three = NULL) {
-		if(isset($_REQUEST['woocommerce_sync_orders']) && $_REQUEST['woocommerce_sync_orders'] == true) {
+	static function sync_orders($value = NULL, $field = NULL, $oldvalue) {
+		if($value) {
 			$orders = wc_get_orders( array(
 				'limit'        => -1, // Query all orders
 				'orderby'      => 'date',
@@ -636,12 +639,12 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 				// 'meta_key'     => 'prestation_id', // The postmeta key field
 				// 'meta_compare' => 'NOT EXISTS', // The comparison argument
 			));
-			// error_log("found " . count($orders) . " order(s) without prestation");
 			foreach ($orders as $key => $order) {
 				$order_post = get_post($order->get_id());
 				self::update_order_prestation($order_post->ID, $order_post, true);
 			}
 		}
+		return false; // sync_order field sshould never be saved
 	}
 
 	static function managed_list_filter($html = '') {
