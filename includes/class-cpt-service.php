@@ -283,6 +283,8 @@ class MultiServices_Service {
 	}
 
 	static function register_fields( $meta_boxes ) {
+		$js_date_format_short = preg_match('/^[Fm]/', get_option('date_format')) ? 'mm-dd-yy' : 'dd-mm-yy';
+
     $prefix = '';
 
     $meta_boxes[] = [
@@ -460,13 +462,19 @@ class MultiServices_Service {
                         'name'      => __('From', 'multiservices' ),
                         'id'        => $prefix . 'from',
                         'type'      => 'datetime',
-                        'timestamp' => true,
+												'timestamp'     => true,
+												'js_options'    => [
+														'dateFormat' => $js_date_format_short,
+												],
                     ],
                     [
                         'name'      => __('To', 'multiservices' ),
                         'id'        => $prefix . 'to',
                         'type'      => 'datetime',
-                        'timestamp' => true,
+												'timestamp'     => true,
+												'js_options'    => [
+														'dateFormat' => $js_date_format_short,
+												],
                     ],
                 ],
             ],
@@ -646,7 +654,10 @@ class MultiServices_Service {
                         'id'          => $prefix . 'before',
                         'type'        => 'date',
                         'placeholder' => __('Before', 'multiservices' ),
-                        'timestamp'   => true,
+												'timestamp'     => true,
+												'js_options'    => [
+														'dateFormat' => $js_date_format_short,
+												],
                     ],
                 ],
             ],
@@ -661,6 +672,10 @@ class MultiServices_Service {
                         'name' => __('Date', 'multiservices' ),
                         'id'   => $prefix . 'date',
                         'type' => 'datetime',
+												'timestamp'     => true,
+												'js_options'    => [
+														'dateFormat' => $js_date_format_short,
+												],
                     ],
                     [
                         'name' => __('Amount', 'multiservices' ),
