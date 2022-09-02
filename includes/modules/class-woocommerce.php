@@ -630,7 +630,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		return;
 	}
 
-	static function sync_orders($value = NULL, $field = NULL, $oldvalue) {
+	static function sync_orders($value = NULL, $field = NULL, $oldvalue = NULL) {
 		if($value) {
 			$orders = wc_get_orders( array(
 				'limit'        => -1, // Query all orders
