@@ -137,12 +137,11 @@ class MultiServices_Service {
 			),
 
 			array (
-				'hook' => 'save_post',
+				'hook' => 'save_post', // use save_post because save_post_service is fired before actual save and meta values are not yet updated
 				'callback' => 'save_post_action',
 				'accepted_args' => 3,
 			),
 		);
-
 
 		$filters = array(
 			array(
@@ -819,13 +818,14 @@ class MultiServices_Service {
 	}
 
 	static function save_post_action($post_id, $post, $update ) {
+		error_log(__CLASS__ . '::' . __FUNCTION__);
 		if( !$update ) return;
 		if( 'service' !== $post->post_type) return;
 
 		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
 
 		$prestation_id = get_post_meta($post_id, 'prestation', true);
-		$service_info = get_post_meta($post->ID, 'customer', true);
+		$service_info = get_post_meta($post_id, 'customer', true);
 		if($prestation_id) {
 			$user_info = array_filter(array(
 				'user_id' => get_post_meta($prestation_id, 'customer_id', true),
@@ -843,6 +843,74 @@ class MultiServices_Service {
 		$customer_html  = self::customer_html($post);
 		update_post_meta( $post_id, 'customer_display', $customer_html );
 
+		$updates = [];
+		$price = get_post_meta($post_id, 'price', true);
+		if($price) {
+			error_log('price ' . print_r($price, true));
+			$unit_price = isset($price['unit']) ? $price['unit']: NULL;
+			$qty = isset($price['quantity']) ? $price['quantity'] : ( isset($price['unit']) ? 1 : NULL);
+			$sub_total = $qty * $unit_price;
+			$updates['price'] = array_merge($price, array(
+				'subtotal' => $sub_total,
+			));
+
+			$discount = get_post_meta($post_id, 'discount', true);
+			$discount_percent = isset($discount['percent']) ? $discount['percent']: NULL;
+			if(isset($discount['percent'])) {
+				$discount_amount = $sub_total * $discount_percent / 100;
+			} else {
+				$discount['amount'] = ( isset($discount['amount']) ? $discount['amount'] : NULL);
+			}
+			$updates['discount'] = array_merge($discount, array(
+				'amount' => $discount_amount,
+			));
+
+			$updates['total'] = $total = $sub_total - $discount_amount;
+
+			$deposit = get_post_meta($post_id, 'deposit', true);
+			$deposit_percent = isset($deposit['percent']) ? $deposit['percent']: NULL;
+			if(isset($deposit['percent'])) {
+				$deposit_amount = $total * $deposit_percent / 100;
+			} else {
+				$deposit['amount'] = ( isset($deposit['amount']) ? $deposit['amount'] : NULL);
+			}
+			$updates['deposit'] = array_merge($deposit, array(
+				'amount' => $deposit_amount,
+			));
+
+			$payments = get_post_meta($post_id, 'payment', true);
+			$paid = NULL;
+			foreach ($payments as $key => $payment) {
+				if(isset($payment['amount'])) $paid += $payment['amount'];
+				// code...
+			}
+			error_log("payment " . print_r($payment, true));
+			$updates['paid'] = $paid;
+			$updates['balance'] = $total - $paid;
+		}
+		error_log("updates " . print_r($updates, true));
+
+		if(!empty($updates)) {
+			$post_update = array(
+				'ID' => $post_id,
+				// 'post_title' => trim($display_name . ' ' . "#" . ((empty($post->post_name)) ? $post_id : $post->post_name)),
+				// 'post_status' => $post_status,
+				'meta_input' => $updates,
+				// 'tax_input' => array(
+				// 	'prestation-status' => $paid_status,
+				// ),
+			);
+
+			wp_update_post($post_update);
+			/*
+			* TODO: get why metadata and taxonomies are not saved with wp_update_post
+			* In the meantime, we force the update
+			*/
+			// foreach ($updates as $key => $value) update_post_meta( $post_id, $key, $value );
+			// wp_set_object_terms( $post_id, $paid_status, 'prestation-status');
+			//
+		}
+		// $metas['subtotal'] = get_post_meta($post_id, 'prestation', true);
 		// $service = new MultiServices_Service($post);
 		// $service->set_prestation();
 

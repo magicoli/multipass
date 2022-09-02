@@ -75,6 +75,8 @@ class MultiServices {
 		$this->plugin_slug = 'multiservices';
 		$this->plugin_file = plugin_basename(MULTISERVICES_FILE);
 
+		$this->js_date_format_short = preg_match('/^[Fm]/', get_option('date_format')) ? 'mm-dd-yy' : 'dd-mm-yy';
+
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
