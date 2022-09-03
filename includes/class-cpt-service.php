@@ -312,7 +312,7 @@ class MultiServices_Service {
                 'type'          => 'taxonomy',
                 'taxonomy'      => ['service-source'],
                 'field_type'    => 'select',
-                'placeholder'   => __('None', 'multiservices' ),
+                'placeholder'   => _x('None', '(service) source', 'multiservices' ),
                 'admin_columns' => [
                     'position'   => 'replace date',
                     'sort'       => true,
@@ -530,7 +530,7 @@ class MultiServices_Service {
                 ],
             ],
             [
-							'name'   => __('Numbe of guests', 'multiservices' ),
+							'name'   => __('Number of guests', 'multiservices' ),
                 'id'            => $prefix . 'guests_display',
                 'type'          => 'hidden',
 								'disabled' => true,
@@ -820,7 +820,7 @@ class MultiServices_Service {
 
 	static function get_source_options() {
 		return apply_filters('multiservices_register_sources', array(
-			'' => __('None', 'multiservices' ),
+			'' => _x('None', '(service) source', 'multiservices' ),
 		));
 	}
 
@@ -1001,7 +1001,6 @@ class MultiServices_Service {
 
 		$prestation_id = get_post_meta($post->ID, 'prestation_id', true);
 		$prestation = get_post($prestation_id);
-
 
 		$user_info = get_post_meta($post->ID, 'customer');
 		error_log(__FUNCTION__ . '::' . __FUNCTION__ . ' meta ' . print_r($user_info, true));

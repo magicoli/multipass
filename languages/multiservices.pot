@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-09-02T21:20:26-04:00\n"
+"POT-Creation-Date: 2022-09-03T09:14:57-04:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 
@@ -291,12 +291,12 @@ msgstr ""
 #: includes/class-cpt-prestation.php:318
 #: includes/class-cpt-prestation.php:1298
 #: includes/class-cpt-service.php:460
-#: includes/class-cpt-service.php:469
+#: includes/class-cpt-service.php:470
 msgid "Dates"
 msgstr ""
 
 #: includes/class-cpt-prestation.php:328
-#: includes/class-cpt-service.php:475
+#: includes/class-cpt-service.php:476
 #: includes/modules/class-woocommerce-payment-product.php:345
 #: includes/modules/class-woocommerce.php:664
 #: includes/modules/load-modules.php:183
@@ -305,7 +305,7 @@ msgstr ""
 
 #: includes/class-cpt-prestation.php:339
 #: includes/class-cpt-prestation.php:588
-#: includes/class-cpt-service.php:484
+#: includes/class-cpt-service.php:485
 #: includes/modules/class-woocommerce.php:665
 #: includes/modules/load-modules.php:184
 msgid "To"
@@ -314,7 +314,7 @@ msgstr ""
 #: includes/class-cpt-prestation.php:352
 #: includes/class-cpt-prestation.php:636
 #: includes/class-cpt-prestation.php:751
-#: includes/class-cpt-service.php:605
+#: includes/class-cpt-service.php:608
 #: includes/modules/class-woocommerce.php:667
 #: includes/modules/load-modules.php:186
 msgid "Discount"
@@ -322,14 +322,14 @@ msgstr ""
 
 #: includes/class-cpt-prestation.php:380
 #: includes/class-cpt-prestation.php:764
-#: includes/class-cpt-service.php:641
-#: includes/class-cpt-service.php:710
+#: includes/class-cpt-service.php:644
+#: includes/class-cpt-service.php:713
 #: includes/modules/class-woocommerce-payment-product.php:415
 msgid "Deposit"
 msgstr ""
 
 #: includes/class-cpt-prestation.php:409
-#: includes/class-cpt-service.php:665
+#: includes/class-cpt-service.php:668
 msgid "Before"
 msgstr ""
 
@@ -355,7 +355,7 @@ msgid "Booking"
 msgstr ""
 
 #: includes/class-cpt-prestation.php:557
-#: includes/class-cpt-service.php:674
+#: includes/class-cpt-service.php:677
 msgid "Payment"
 msgstr ""
 
@@ -371,29 +371,29 @@ msgid "Description"
 msgstr ""
 
 #: includes/class-cpt-prestation.php:569
-#: includes/class-cpt-service.php:681
+#: includes/class-cpt-service.php:684
 msgid "Date"
 msgstr ""
 
 #: includes/class-cpt-prestation.php:606
-#: includes/class-cpt-service.php:580
+#: includes/class-cpt-service.php:583
 msgid "Quantity"
 msgstr ""
 
 #: includes/class-cpt-prestation.php:621
-#: includes/class-cpt-service.php:588
+#: includes/class-cpt-service.php:591
 msgid "Unit Price"
 msgstr ""
 
 #: includes/class-cpt-prestation.php:651
-#: includes/class-cpt-service.php:574
+#: includes/class-cpt-service.php:577
 msgid "Price"
 msgstr ""
 
 #: includes/class-cpt-prestation.php:667
 #: includes/class-cpt-prestation.php:770
 #: includes/class-cpt-prestation.php:930
-#: includes/class-cpt-service.php:719
+#: includes/class-cpt-service.php:723
 #: includes/modules/class-woocommerce.php:670
 #: includes/modules/load-modules.php:189
 msgid "Paid"
@@ -408,15 +408,15 @@ msgid "Regular Price"
 msgstr ""
 
 #: includes/class-cpt-prestation.php:757
-#: includes/class-cpt-service.php:501
-#: includes/class-cpt-service.php:628
+#: includes/class-cpt-service.php:502
+#: includes/class-cpt-service.php:631
 #: includes/modules/class-woocommerce.php:669
 #: includes/modules/load-modules.php:188
 msgid "Total"
 msgstr ""
 
 #: includes/class-cpt-prestation.php:777
-#: includes/class-cpt-service.php:729
+#: includes/class-cpt-service.php:733
 #: includes/modules/class-woocommerce-payment-product.php:417
 msgid "Balance"
 msgstr ""
@@ -426,7 +426,7 @@ msgid "Reference #"
 msgstr ""
 
 #: includes/class-cpt-prestation.php:798
-#: includes/class-cpt-service.php:742
+#: includes/class-cpt-service.php:746
 #: includes/modules/class-woocommerce.php:671
 #: includes/modules/load-modules.php:190
 msgid "Status"
@@ -512,7 +512,7 @@ msgid "Prestation statuses list"
 msgstr ""
 
 #: includes/class-cpt-prestation.php:880
-#: includes/class-cpt-service.php:786
+#: includes/class-cpt-service.php:790
 msgid "Most Used"
 msgstr ""
 
@@ -672,7 +672,8 @@ msgid "Source"
 msgstr ""
 
 #: includes/class-cpt-service.php:315
-#: includes/class-cpt-service.php:819
+#: includes/class-cpt-service.php:823
+msgctxt "(service) source"
 msgid "None"
 msgstr ""
 
@@ -712,141 +713,144 @@ msgstr ""
 msgid "Fill only if different from customer."
 msgstr ""
 
-#: includes/class-cpt-service.php:495
-#: includes/class-cpt-service.php:531
+#: includes/class-cpt-service.php:496
 msgid "Guests"
 msgstr ""
 
-#: includes/class-cpt-service.php:508
+#: includes/class-cpt-service.php:510
 msgid "Adults"
 msgstr ""
 
-#: includes/class-cpt-service.php:515
+#: includes/class-cpt-service.php:517
 msgid "Children"
 msgstr ""
 
-#: includes/class-cpt-service.php:522
+#: includes/class-cpt-service.php:524
 msgid "Babies"
 msgstr ""
 
-#: includes/class-cpt-service.php:540
+#: includes/class-cpt-service.php:533
+msgid "Number of guests"
+msgstr ""
+
+#: includes/class-cpt-service.php:543
 msgid "Beds"
 msgstr ""
 
-#: includes/class-cpt-service.php:546
+#: includes/class-cpt-service.php:549
 msgid "Double"
 msgstr ""
 
-#: includes/class-cpt-service.php:553
+#: includes/class-cpt-service.php:556
 msgid "Single"
 msgstr ""
 
-#: includes/class-cpt-service.php:560
+#: includes/class-cpt-service.php:563
 msgid "Baby"
 msgstr ""
 
-#: includes/class-cpt-service.php:596
+#: includes/class-cpt-service.php:599
 #: includes/modules/class-woocommerce.php:666
 #: includes/modules/load-modules.php:185
 msgid "Subtotal"
 msgstr ""
 
-#: includes/class-cpt-service.php:690
+#: includes/class-cpt-service.php:693
 #: includes/modules/class-woocommerce-payment-product.php:199
 msgid "Amount"
 msgstr ""
 
-#: includes/class-cpt-service.php:698
+#: includes/class-cpt-service.php:701
 msgid "Method"
 msgstr ""
 
-#: includes/class-cpt-service.php:703
+#: includes/class-cpt-service.php:706
 msgid "Reference"
 msgstr ""
 
-#: includes/class-cpt-service.php:765
-#: includes/class-cpt-service.php:767
-#: includes/class-cpt-service.php:791
+#: includes/class-cpt-service.php:769
+#: includes/class-cpt-service.php:771
+#: includes/class-cpt-service.php:795
 msgid "Service Sources"
 msgstr ""
 
-#: includes/class-cpt-service.php:766
+#: includes/class-cpt-service.php:770
 msgid "Service Source"
 msgstr ""
 
-#: includes/class-cpt-service.php:768
+#: includes/class-cpt-service.php:772
 msgid "Search Service Sources"
 msgstr ""
 
-#: includes/class-cpt-service.php:769
+#: includes/class-cpt-service.php:773
 msgid "Popular Service Sources"
 msgstr ""
 
-#: includes/class-cpt-service.php:770
+#: includes/class-cpt-service.php:774
 msgid "All Service Sources"
 msgstr ""
 
-#: includes/class-cpt-service.php:771
+#: includes/class-cpt-service.php:775
 msgid "Parent Service Source"
 msgstr ""
 
-#: includes/class-cpt-service.php:772
+#: includes/class-cpt-service.php:776
 msgid "Parent Service Source:"
 msgstr ""
 
-#: includes/class-cpt-service.php:773
+#: includes/class-cpt-service.php:777
 msgid "Edit Service Source"
 msgstr ""
 
-#: includes/class-cpt-service.php:774
+#: includes/class-cpt-service.php:778
 msgid "View Service Source"
 msgstr ""
 
-#: includes/class-cpt-service.php:775
+#: includes/class-cpt-service.php:779
 msgid "Update Service Source"
 msgstr ""
 
-#: includes/class-cpt-service.php:776
+#: includes/class-cpt-service.php:780
 msgid "Add New Service Source"
 msgstr ""
 
-#: includes/class-cpt-service.php:777
+#: includes/class-cpt-service.php:781
 msgid "New Service Source Name"
 msgstr ""
 
-#: includes/class-cpt-service.php:778
+#: includes/class-cpt-service.php:782
 msgid "Separate service sources with commas"
 msgstr ""
 
-#: includes/class-cpt-service.php:779
+#: includes/class-cpt-service.php:783
 msgid "Add or remove service sources"
 msgstr ""
 
-#: includes/class-cpt-service.php:780
+#: includes/class-cpt-service.php:784
 msgid "Choose most used service sources"
 msgstr ""
 
-#: includes/class-cpt-service.php:781
+#: includes/class-cpt-service.php:785
 msgid "No service sources found."
 msgstr ""
 
-#: includes/class-cpt-service.php:782
+#: includes/class-cpt-service.php:786
 msgid "No service sources"
 msgstr ""
 
-#: includes/class-cpt-service.php:783
+#: includes/class-cpt-service.php:787
 msgid "Filter by service source"
 msgstr ""
 
-#: includes/class-cpt-service.php:784
+#: includes/class-cpt-service.php:788
 msgid "Service Sources list pagination"
 msgstr ""
 
-#: includes/class-cpt-service.php:785
+#: includes/class-cpt-service.php:789
 msgid "Service Sources list"
 msgstr ""
 
-#: includes/class-cpt-service.php:787
+#: includes/class-cpt-service.php:791
 msgid "&larr; Go to Service Sources"
 msgstr ""
 
