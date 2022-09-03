@@ -320,34 +320,24 @@ class MultiServices_Service {
                     'filterable' => true,
                 ],
             ],
-            'source_id' => [
+            [
                 'name'    => __('Source ID', 'multiservices' ),
                 'id'      => $prefix . 'source_id',
-                'type'    => 'text',
+                'type'    => 'hidden',
+								// 'readonly' => true,
+                // 'visible' => [
+                //     'when'     => [['source', '!=', '']],
+                //     'relation' => 'and',
+                // ],
+            ],
+            'source_details' => [
+                'name'    => __('Source Details', 'multiservices' ),
+                'id'      => $prefix . 'source_details',
+                'type'    => 'group',
+								'class' => 'inline',
                 'visible' => [
                     'when'     => [['source', '!=', '']],
                     'relation' => 'and',
-                ],
-            ],
-            [
-                'name'     => __('Source URL', 'multiservices' ),
-                'id'       => $prefix . 'source_url',
-                'type'     => 'url',
-                'readonly' => true,
-                'class'    => 'inline',
-                'visible'  => [
-                    'when'     => [['source', '!=', '']],
-                    'relation' => 'or',
-                ],
-            ],
-            [
-                'name'    => __('Item ID', 'multiservices' ),
-                'id'      => $prefix . 'item',
-                'type'    => 'text',
-                'class'   => 'inline',
-                'visible' => [
-                    'when'     => [['source', '!=', '']],
-                    'relation' => 'or',
                 ],
             ],
             [
