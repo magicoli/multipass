@@ -171,7 +171,7 @@ class MultiServices_Service {
 				'accepted_args' => 3,
 			),
 			array(
-				'hook' => 'sanitize_post_meta_guest_for_service',
+				'hook' => 'sanitize_post_meta_attendee_for_service',
 				'callback' => 'sanitize_service_meta',
 				'accepted_args' => 3,
 			),
@@ -409,8 +409,8 @@ class MultiServices_Service {
                 ],
             ],
 						[
-                'name'              => __('Guest', 'multiservices' ),
-                'id'                => $prefix . 'guest',
+                'name'              => __('Attendee', 'multiservices' ),
+                'id'                => $prefix . 'attendee',
                 'type'              => 'group',
                 'class'             => 'inline',
 								'desc'              => __('Fill only if different from customer.', 'multiservices' ),
@@ -483,8 +483,8 @@ class MultiServices_Service {
                 ],
             ],
             [
-                'name'   => __('Guests', 'multiservices' ),
-                'id'     => $prefix . 'guests',
+                'name'   => __('Number of Attendees', 'multiservices' ),
+                'id'     => $prefix . 'attendees',
                 'type'   => 'group',
                 'class'  => 'inline',
                 'fields' => [
@@ -520,8 +520,8 @@ class MultiServices_Service {
                 ],
             ],
             [
-							'name'   => __('Number of guests', 'multiservices' ),
-                'id'            => $prefix . 'guests_display',
+							'name'   => __('# Attendees', 'multiservices' ),
+                'id'            => $prefix . 'attendees_display',
                 'type'          => 'hidden',
 								'disabled' => true,
                 'admin_columns' => [
@@ -853,9 +853,9 @@ class MultiServices_Service {
 		if($prestation_id) {
 			$user_info = array_filter(array(
 				'user_id' => get_post_meta($prestation_id, 'customer_id', true),
-				'name' => get_post_meta($prestation_id, 'guest_name', true),
-				'email' => get_post_meta($prestation_id, 'guest_email', true),
-				'phone' => get_post_meta($prestation_id, 'guest_phone', true),
+				'name' => get_post_meta($prestation_id, 'attendee_name', true),
+				'email' => get_post_meta($prestation_id, 'attendee_email', true),
+				'phone' => get_post_meta($prestation_id, 'attendee_phone', true),
 			));
 		} else {
 			$user_info = $service_info;
@@ -911,21 +911,21 @@ class MultiServices_Service {
 			$updates['balance'] = $total - $paid;
 		}
 
-		$guests = get_post_meta($post_id, 'guests', true);
-		if($guests) {
-			$guests = array_replace(array(
+		$attendees = get_post_meta($post_id, 'attendees', true);
+		if($attendees) {
+			$attendees = array_replace(array(
 				'total' => NULL,
-			), $guests );
+			), $attendees );
 			$count = array_replace(array(
 				'adults' => 0,
 				'children' => 0,
 				'babies' => 0,
-			), $guests );
-			$total_guests = $count['adults'] + $count['children'] + $count['babies'];
-			if($total_guests == 0) $total_guests = NULL;
-			if($total_guests != $guests['total']) {
-				$guests['total'] = $total_guests;
-				$updates['guests'] = $guests;
+			), $attendees );
+			$total_attendees = $count['adults'] + $count['children'] + $count['babies'];
+			if($total_attendees == 0) $total_attendees = NULL;
+			if($total_attendees != $attendees['total']) {
+				$attendees['total'] = $total_attendees;
+				$updates['attendees'] = $attendees;
 			}
 		}
 
@@ -959,7 +959,7 @@ class MultiServices_Service {
 	static function sanitize_service_meta( $meta_value, $meta_key, $object_type ) {
 		switch($meta_key) {
 			case 'customer':
-			case 'guest':
+			case 'attendee':
 			return MultiServices::get_user_info_by_info($meta_value);
 		}
 
@@ -976,9 +976,9 @@ class MultiServices_Service {
 		// 	$prestation_id = get_post_meta($object_id, 'prestation', true);
 		// 	$prestation_info = array_filter(array(
 		// 		'id' => get_post_meta($prestation_id, 'customer_id', true),
-		// 		'name' => get_post_meta($prestation_id, 'guest_name', true),
-		// 		'email' => get_post_meta($prestation_id, 'guest_email', true),
-		// 		'phone' => get_post_meta($prestation_id, 'guest_phone', true),
+		// 		'name' => get_post_meta($prestation_id, 'attendee_name', true),
+		// 		'email' => get_post_meta($prestation_id, 'attendee_email', true),
+		// 		'phone' => get_post_meta($prestation_id, 'attendee_phone', true),
 		// 	));
 		// 	$service_info = MultiServices::get_user_info_by_info($meta_value);
 		// 	$meta_value = array_replace($service_info, $prestation_info);
@@ -1046,7 +1046,7 @@ class MultiServices_Service {
 		// 				'value' => $customer_email,
 		// 			),
 		// 			array(
-		// 				'key' => 'guest_email',
+		// 				'key' => 'attendee_email',
 		// 				'value' => $customer_email,
 		// 			),
 		// 		);
@@ -1058,7 +1058,7 @@ class MultiServices_Service {
 		// 				'value' => $customer_name,
 		// 			),
 		// 			array(
-		// 				'key' => 'guest_name',
+		// 				'key' => 'attendee_name',
 		// 				'value' => $customer_name,
 		// 			),
 		// 		);
@@ -1125,9 +1125,9 @@ class MultiServices_Service_Admin_Columns extends \MBAC\Post {
 					echo MultiServices::format_date_range(get_post_meta($post_id, 'dates', true));
 					break;
 
-					case 'guests_display';
-					$guests = get_post_meta($post_id, 'guests', true);
-					if(is_array($guests) && isset($guests['total'])) echo $guests['total'];
+					case 'attendees_display';
+					$attendees = get_post_meta($post_id, 'attendees', true);
+					if(is_array($attendees) && isset($attendees['total'])) echo $attendees['total'];
 					break;
 
 					case 'deposit_amount';

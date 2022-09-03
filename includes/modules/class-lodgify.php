@@ -282,7 +282,7 @@ class MultiServices_Lodgify extends MultiServices_Modules {
 		foreach ($response['items'] as $key => $booking) {
 			$options[$booking['id']] = sprintf(
 				'%s, %sp %s (#%s)',
-				$booking['guest']['name'],
+				$booking['attendee']['name'],
 				$booking['rooms'][0]['people'],
 				MultiServices::format_date_range(array(
 					$booking['arrival'],

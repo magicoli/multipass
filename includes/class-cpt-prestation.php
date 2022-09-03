@@ -290,13 +290,13 @@ class MultiServices_Prestation {
 					],
 				],
 				[
-					'name'          => __('Guest name', 'multiservices' ),
-					'id'            => $prefix . 'guest_name',
+					'name'          => __('Attendee name', 'multiservices' ),
+					'id'            => $prefix . 'attendee_name',
 					'type'          => 'text',
 					'description'		=> __('Leave empty if same as customer name', 'multiservices' ),
 				],
 				[
-					'name'          => __('Guest', 'multiservices' ),
+					'name'          => __('Attendee', 'multiservices' ),
 					'id'            => $prefix . 'display_name',
 					'type'          => 'hidden',
 					'admin_columns' => [
@@ -1104,7 +1104,7 @@ class MultiServices_Prestation {
 		$updates['customer_id'] = get_post_meta($post_id, 'customer_id', true);
 		$updates['customer_email'] = get_post_meta($post_id, 'customer_email', true);
 		$updates['customer_name'] = get_post_meta($post_id, 'customer_name', true);
-		$updates['guest_name'] = get_post_meta($post_id, 'guest_name', true);
+		$updates['attendee_name'] = get_post_meta($post_id, 'attendee_name', true);
 
 		$amounts['items'] = get_post_meta($post_id, 'manual_items', true);
 		$amounts['managed'] = get_post_meta($post_id, 'managed', true);
@@ -1257,10 +1257,10 @@ class MultiServices_Prestation {
 			$updates['customer_email'] = get_userdata($updates['customer_id'])->user_email;
 		}
 
-		if(empty($updates['guest_name'])) $updates['guest_name'] = $updates['customer_name'];
-		$display_name = trim($updates['guest_name']);
+		if(empty($updates['attendee_name'])) $updates['attendee_name'] = $updates['customer_name'];
+		$display_name = trim($updates['attendee_name']);
 
-		if(empty($updates['guest_email'])) $updates['guest_email'] = $updates['customer_email'];
+		if(empty($updates['attendee_email'])) $updates['attendee_email'] = $updates['customer_email'];
 
 		$updates['sort_date'] = (isset($updates['dates']) && isset($updates['dates']['from'])) ? $updates['dates']['from'] : '';
 		$updates['display_name'] = $display_name;
@@ -1311,7 +1311,7 @@ class MultiServices_Prestation {
 
 	static function sortable_columns($columns) {
 		$columns['dates'] = 'dates';
-		// $columns['guest'] = 'guest';
+		// $columns['attendee'] = 'attendee';
 		return $columns;
 	}
 
@@ -1375,7 +1375,7 @@ class MultiServices_Prestation {
 					'value' => esc_attr($customer_email),
 				),
 				array(
-					'key' => 'guest_email',
+					'key' => 'attendee_email',
 					'value' => esc_attr($customer_email),
 				),
 			);
@@ -1387,7 +1387,7 @@ class MultiServices_Prestation {
 					'value' => esc_attr($customer_name),
 				),
 				array(
-					'key' => 'guest_name',
+					'key' => 'attendee_name',
 					'value' => esc_attr($customer_name),
 				),
 			);
