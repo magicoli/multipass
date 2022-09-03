@@ -845,7 +845,6 @@ class MultiServices_Service {
 	}
 
 	static function save_post_action($post_id, $post, $update ) {
-		error_log(__CLASS__ . '::' . __FUNCTION__);
 		if( !$update ) return;
 		if( 'service' !== $post->post_type) return;
 
@@ -915,7 +914,24 @@ class MultiServices_Service {
 			$updates['paid'] = $paid;
 			$updates['balance'] = $total - $paid;
 		}
-		error_log("updates " . print_r($updates, true));
+
+		$guests = get_post_meta($post_id, 'guests', true);
+		if($guests) {
+			$guests = array_replace(array(
+				'total' => NULL,
+			), $guests );
+			$count = array_replace(array(
+				'adults' => 0,
+				'children' => 0,
+				'babies' => 0,
+			), $guests );
+			$total_guests = $count['adults'] + $count['children'] + $count['babies'];
+			if($total_guests == 0) $total_guests = NULL;
+			if($total_guests != $guests['total']) {
+				$guests['total'] = $total_guests;
+				$updates['guests'] = $guests;
+			}
+		}
 
 		if(!empty($updates)) {
 			$post_update = array(
