@@ -295,7 +295,7 @@ class MultiServices_Service {
 
     $prefix = '';
 
-    $meta_boxes[] = [
+    $meta_boxes['service-fields'] = [
         'title'      => __('Services fields', 'multiservices' ),
         'id'         => 'services-fields',
         'post_types' => ['service'],
@@ -320,13 +320,13 @@ class MultiServices_Service {
                     'filterable' => true,
                 ],
             ],
-            [
+            'source_id' => [
                 'name'    => __('Source ID', 'multiservices' ),
                 'id'      => $prefix . 'source_id',
                 'type'    => 'text',
                 'visible' => [
                     'when'     => [['source', '!=', '']],
-                    'relation' => 'or',
+                    'relation' => 'and',
                 ],
             ],
             [
@@ -798,7 +798,7 @@ class MultiServices_Service {
 			'public'             => false,
 			'publicly_queryable' => false,
 			'hierarchical'       => false,
-			'show_ui'            => false,
+			'show_ui'            => true, // false,
 			'show_in_menu'       => false,
 			'show_in_nav_menus'  => false,
 			'show_in_rest'       => false,
@@ -816,13 +816,21 @@ class MultiServices_Service {
 			'_builtin' => true,
 		];
 		register_taxonomy( 'service-source', ['service'], $args );
+
+		$terms = apply_filters( 'multiservices_register_sources', [] );
+		foreach($terms as $slug => $name) {
+			if(empty($slug)) continue;
+			if(get_term_by('slug', $slug, 'service-source')) continue;
+			wp_insert_term( $name, 'service-source', [ 'slug' => $slug ] );
+		}
+
 	}
 
-	static function get_source_options() {
-		return apply_filters('multiservices_register_sources', array(
-			'' => _x('None', '(service) source', 'multiservices' ),
-		));
-	}
+	// static function get_source_options() {
+	// 	return apply_filters('multiservices_register_sources', array(
+	// 		'' => _x('None', '(service) source', 'multiservices' ),
+	// 	));
+	// }
 
 	static function insert_service_data ($data, $postarr, $unsanitized_postarr, $update ) {
 		if(!$update) return $data;
