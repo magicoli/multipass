@@ -872,7 +872,6 @@ class MultiServices_Service {
 		$updates = [];
 		$price = get_post_meta($post_id, 'price', true);
 		if($price) {
-			error_log('price ' . print_r($price, true));
 			$unit_price = isset($price['unit']) ? $price['unit']: NULL;
 			$qty = isset($price['quantity']) ? $price['quantity'] : ( isset($price['unit']) ? 1 : NULL);
 			$sub_total = $qty * $unit_price;
@@ -910,7 +909,6 @@ class MultiServices_Service {
 				if(isset($payment['amount'])) $paid += $payment['amount'];
 				// code...
 			}
-			error_log("payment " . print_r($payment, true));
 			$updates['paid'] = $paid;
 			$updates['balance'] = $total - $paid;
 		}
