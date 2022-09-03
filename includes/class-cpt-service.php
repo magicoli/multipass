@@ -459,7 +459,8 @@ class MultiServices_Service {
 						[
                 'name'          => __('Dates', 'multiservices' ),
                 'id'            => $prefix . 'dates_admin_list',
-                'type'          => 'admin_list_column',
+                'type'          => 'hidden',
+								'disabled' => true,
                 'admin_columns' => [
                     'position'   => 'before source',
                     'sort'       => true,
@@ -503,6 +504,7 @@ class MultiServices_Service {
                         'type'          => 'number',
                         'min'           => 0,
                         'size'          => 5,
+												'readonly' => true,
                     ],
                     [
                         'name' => __('Adults', 'multiservices' ),
@@ -528,9 +530,10 @@ class MultiServices_Service {
                 ],
             ],
             [
-							'name'   => __('Guests', 'multiservices' ),
+							'name'   => __('Numbe of guests', 'multiservices' ),
                 'id'            => $prefix . 'guests_display',
-                'type'          => 'admin_list_column',
+                'type'          => 'hidden',
+								'disabled' => true,
                 'admin_columns' => [
                     'position' => 'after customer_display',
                     'sort'     => true,
@@ -709,7 +712,8 @@ class MultiServices_Service {
 						[
                 'name'          => __('Deposit', 'multiservices' ),
                 'id'            => $prefix . 'deposit_amount',
-                'type'          => 'admin_list_column',
+                'type'          => 'hidden',
+								'disabled' => true,
                 'admin_columns' => [
                     'position'   => 'before source',
                     'sort'       => true,
