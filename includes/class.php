@@ -460,9 +460,17 @@ class MultiServices {
 
 		$formatted = [];
 		foreach($dates as $date) {
-			$formatted[] = date_i18n(get_option( 'date_format' ), $date);
+			$formatted[] = date_i18n(get_option( 'date_format' ), $date['timestamp']);
+			$year[] = date_i18n('Y', $date['timestamp']);
+			// $month[] = date_i18n('m', $date['timestamp']);
 		}
 		if(count($formatted) == 2) {
+			if($year[0] === $year[1]) {
+				$formatted[0] = preg_replace("/.$year[0]$/", '', $formatted[0]);
+				// if($month[0] === $month[1]) {
+				// 	$formatted[0] = preg_replace("/.$month[0]$/", '', $formatted[0]);
+				// }
+			}
 			return sprintf(
 				// TRANSLATORS: [start date] to [end date] (without time)
 				($long) ? __('from %s to %s', 'multiservices') : __('%s to %s', 'multiservices' ),
