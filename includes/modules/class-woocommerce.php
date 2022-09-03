@@ -178,11 +178,11 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		$wc_term_id = get_term_by('slug', 'woocommerce', 'service-source')->term_id;
 		// Order info on service
 		$meta_boxes['service-fields']['fields']['source_details']['fields'][] =[
-			'name' => __('Order ID', 'multiservices'),
+			'name'       => __( 'Order ID', 'multiservices' ),
 			'id' => 'wc_order_id',
-			'type' => 'post',
-			'post_type' => 'shop_order',
-			'style' => 'text',
+			'type'       => 'post',
+			'post_type'  => ['shop_order'],
+			'field_type' => 'select_advanced',
 			'visible' => [
 				'when'     => [ ['source', '=', $wc_term_id] ],
 			],
