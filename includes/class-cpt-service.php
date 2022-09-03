@@ -135,6 +135,11 @@ class MultiServices_Service {
 				'hook' => 'init',
 				'callback' => 'register_taxonomies',
 			),
+			array(
+				'hook' => 'admin_init',
+				'callback' => 'add_custom_columns',
+				'priority' => 20,
+			),
 
 			array (
 				'hook' => 'save_post', // use save_post because save_post_service is fired before actual save and meta values are not yet updated
@@ -190,6 +195,10 @@ class MultiServices_Service {
 			(empty($hook['accepted_args'])) && $hook['accepted_args'] = 1;
 			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
+	}
+
+	static function dates_html($value = NULL, $field = []) {
+		return "dates";
 	}
 
 	static function customer_html($value = NULL, $field = []) {
@@ -364,7 +373,7 @@ class MultiServices_Service {
                 'callback'      => __CLASS__ . '::customer_html',
                 'admin_columns' => [
                     'position'   => 'after title',
-                    'title'      => 'Customer',
+                    // 'title'      => 'Customer',
                     'sort'       => true,
                     'searchable' => true,
                 ],
@@ -427,7 +436,7 @@ class MultiServices_Service {
                         'id'            => $prefix . 'name',
                         'type'          => 'text',
                         'size'          => 30,
-                        'admin_columns' => 'after title',
+                        // 'admin_columns' => 'after title',
                     ],
                     [
                         'name' => __('Email', 'multiservices' ),
@@ -447,14 +456,19 @@ class MultiServices_Service {
                 'type' => 'custom_html',
                 'std'  => '<hr>',
             ],
+						[
+                'name'          => __('Dates', 'multiservices' ),
+                'id'            => $prefix . 'dates_admin_list',
+                'type'          => 'admin_list_column',
+                'admin_columns' => [
+                    'position'   => 'before source',
+                    'sort'       => true,
+                ],
+            ],
             [
                 'name'          => __('Dates', 'multiservices' ),
                 'id'            => $prefix . 'dates',
                 'type'          => 'group',
-                'admin_columns' => [
-                    'position' => 'before source',
-                    'sort'     => true,
-                ],
                 'class'         => 'inline',
                 'fields'        => [
                     [
@@ -489,10 +503,6 @@ class MultiServices_Service {
                         'type'          => 'number',
                         'min'           => 0,
                         'size'          => 5,
-                        'admin_columns' => [
-                            'position' => 'after title',
-                            'title'    => 'Guests',
-                        ],
                     ],
                     [
                         'name' => __('Adults', 'multiservices' ),
@@ -518,11 +528,11 @@ class MultiServices_Service {
                 ],
             ],
             [
+							'name'   => __('Guests', 'multiservices' ),
                 'id'            => $prefix . 'guests_display',
-                'type'          => 'hidden',
+                'type'          => 'admin_list_column',
                 'admin_columns' => [
                     'position' => 'after customer_display',
-                    'title'    => 'Guests',
                     'sort'     => true,
                 ],
             ],
@@ -623,7 +633,7 @@ class MultiServices_Service {
                 'size'          => 10,
                 'readonly'      => true,
                 'admin_columns' => [
-                    'position' => 'after dates',
+                    'position' => 'before source',
                     'sort'     => true,
                 ],
             ],
@@ -631,7 +641,7 @@ class MultiServices_Service {
                 'name'          => __('Deposit', 'multiservices' ),
                 'id'            => $prefix . 'deposit',
                 'type'          => 'group',
-                'admin_columns' => 'after total',
+                // 'admin_columns' => 'after total',
                 'class'         => 'inline',
                 'fields'        => [
                     [
@@ -696,6 +706,15 @@ class MultiServices_Service {
                     ],
                 ],
             ],
+						[
+                'name'          => __('Deposit', 'multiservices' ),
+                'id'            => $prefix . 'deposit_amount',
+                'type'          => 'admin_list_column',
+                'admin_columns' => [
+                    'position'   => 'before source',
+                    'sort'       => true,
+                ],
+            ],
             [
                 'name'          => __('Paid', 'multiservices' ),
                 'id'            => $prefix . 'paid',
@@ -704,7 +723,7 @@ class MultiServices_Service {
                 'step'          => 'any',
                 'size'          => 10,
                 'readonly'      => true,
-                'admin_columns' => 'after deposit',
+                'admin_columns' => 'after deposit_amount',
             ],
             [
                 'name'          => __('Balance', 'multiservices' ),
@@ -735,6 +754,10 @@ class MultiServices_Service {
     ];
 
     return $meta_boxes;
+	}
+
+	static function add_custom_columns() {
+		new MultiServices_Service_Admin_Columns( 'service', array() );
 	}
 
 	static function register_taxonomies() {
@@ -1069,4 +1092,33 @@ class MultiServices_Service {
 	}
 
 
+}
+
+class MultiServices_Service_Admin_Columns extends \MBAC\Post {
+    // public function columns( $columns ) {
+    //     $columns  = parent::columns( $columns );
+    //     $position = '';
+    //     $target   = '';
+    //     $this->add( $columns, 'deposit', __('Deposit', 'multiservices'), $position, $target );
+    //     // Add more if you want
+    //     return $columns;
+    // }
+
+    public function show( $column, $post_id ) {
+        switch ( $column ) {
+					case 'dates_admin_list':
+					echo MultiServices::format_date_range(get_post_meta($post_id, 'dates', true));
+					break;
+
+					case 'guests_display';
+					$guests = get_post_meta($post_id, 'guests', true);
+					if(is_array($guests) && isset($guests['total'])) echo $guests['total'];
+					break;
+
+					case 'deposit_amount';
+					$deposit = get_post_meta($post_id, 'deposit', true);
+					if(is_array($deposit) && isset($deposit['amount'])) echo $deposit['amount'];
+					break;
+        }
+    }
 }
