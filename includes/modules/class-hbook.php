@@ -72,7 +72,7 @@ class MultiServices_HBook extends MultiServices_Modules {
 			),
 
 			array(
-				'hook' => 'multiservices_register_sources',
+				'hook' => 'multiservices_register_terms_prestation-source',
 				'callback' => 'register_sources_filter',
 			),
 		);

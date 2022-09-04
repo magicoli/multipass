@@ -85,7 +85,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 				'callback' => 'register_settings_fields',
 			),
 			array(
-				'hook' => 'multiservices_register_sources',
+				'hook' => 'multiservices_register_terms_prestation-source',
 				'callback' => 'register_sources_filter',
 			),
 

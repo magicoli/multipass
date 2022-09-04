@@ -908,11 +908,11 @@ class MultiServices_Prestation {
 		];
 		register_taxonomy( 'prestation-type', ['prestation', 'product', 'pr_association', 'prestation-part'], $args );
 
-		$terms = array(
+		$terms = apply_filters( 'multiservices_register_terms_prestation-type', array(
 			// 'rental' => __('Rental', 'multiservices'),
 			'booking' => __('Booking', 'multiservices'),
 			// 'payment' => __('Payment', 'multiservices'),
-		);
+		));
 
 		foreach($terms as $slug => $name) {
 			if(empty($slug)) continue;

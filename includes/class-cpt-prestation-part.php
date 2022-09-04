@@ -803,7 +803,7 @@ class MultiServices_PrPart {
 		];
 		register_taxonomy( 'prestation-part-source', ['prestation-part'], $args );
 
-		$terms = apply_filters( 'multiservices_register_sources', [] );
+		$terms = apply_filters( 'multiservices_register_terms_prestation-source', [] );
 		foreach($terms as $slug => $name) {
 			if(empty($slug)) continue;
 			if(get_term_by('slug', $slug, 'prestation-part-source')) continue;
@@ -813,7 +813,7 @@ class MultiServices_PrPart {
 	}
 
 	// static function get_source_options() {
-	// 	return apply_filters('multiservices_register_sources', array(
+	// 	return apply_filters('multiservices_register_terms_prestation-source', array(
 	// 		'' => _x('None', '(prestation part) source', 'multiservices' ),
 	// 	));
 	// }
