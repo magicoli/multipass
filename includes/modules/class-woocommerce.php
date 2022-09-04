@@ -175,9 +175,9 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 			],
 		];
 
-		$wc_term_id = get_term_by('slug', 'woocommerce', 'service-source')->term_id;
-		// Order info on service
-		$meta_boxes['service-fields']['fields']['source_details']['fields'][] =[
+		$wc_term_id = get_term_by('slug', 'woocommerce', 'prestation-part-source')->term_id;
+		// Order info on prestation part
+		$meta_boxes['prestation-part']['fields']['source_details']['fields'][] =[
 			'name'       => __( 'Order ID', 'multiservices' ),
 			'id' => 'wc_order_id',
 			'type'       => 'post',
@@ -187,7 +187,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 				'when'     => [ ['source', '=', $wc_term_id] ],
 			],
 		];
-		$meta_boxes['service-fields']['fields']['source_details']['fields'][] = [
+		$meta_boxes['prestation-part']['fields']['source_details']['fields'][] = [
 			// Translators: Each line in a woocommerce order, usually related to a product, but is not a product. The actual product appears right next to this field, avoid any ambiguity
 			'name' => __('Order Item ID', 'multiservices'),
 			'id' => 'wc_order_item_id',
@@ -195,7 +195,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 				'when'     => [ ['source', '=', $wc_term_id] ],
 			],
 		];
-		$meta_boxes['service-fields']['fields']['source_details']['fields'][] =[
+		$meta_boxes['prestation-part']['fields']['source_details']['fields'][] =[
 			'name' => __('Product ID', 'multiservices'),
 			'id' => 'wc_order_product_id',
 			'visible' => [

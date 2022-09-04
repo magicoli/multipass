@@ -21,7 +21,7 @@
  * @subpackage W4OS/includes
  * @author     Your Name <email@example.com>
  */
-class MultiServices_Service {
+class MultiServices_PrPart {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -53,7 +53,7 @@ class MultiServices_Service {
 		if(is_numeric($post)) {
 			$this->ID = $post;
 			$post = get_post($this->ID);
-		} else if(isset($post->post_type) && $post->post_type == 'service') {
+		} else if(isset($post->post_type) && $post->post_type == 'prestation-part') {
 			$this->post = $post;
 			$this->ID = $post->ID;
 		}
@@ -142,7 +142,7 @@ class MultiServices_Service {
 			),
 
 			array (
-				'hook' => 'save_post', // use save_post because save_post_service is fired before actual save and meta values are not yet updated
+				'hook' => 'save_post', // use save_post because save_post_prestation_part is fired before actual save and meta values are not yet updated
 				'callback' => 'save_post_action',
 				'accepted_args' => 3,
 			),
@@ -156,7 +156,7 @@ class MultiServices_Service {
 
 			array(
 				'hook' => 'wp_insert_post_data',
-				'callback' => 'insert_service_data',
+				'callback' => 'insert_prestation_part_data',
 				'accepted_args' => 4,
 			),
 			// array(
@@ -166,19 +166,19 @@ class MultiServices_Service {
 			// ),
 
 			array(
-				'hook' => 'sanitize_post_meta_customer_for_service',
-				'callback' => 'sanitize_service_meta',
+				'hook' => 'sanitize_post_meta_customer_for_prestation-part',
+				'callback' => 'sanitize_prestation_part_meta',
 				'accepted_args' => 3,
 			),
 			array(
-				'hook' => 'sanitize_post_meta_attendee_for_service',
-				'callback' => 'sanitize_service_meta',
+				'hook' => 'sanitize_post_meta_attendee_for_prestation-part',
+				'callback' => 'sanitize_prestation_part_meta',
 				'accepted_args' => 3,
 			),
 
 			array(
-				'hook' => 'multiservices_set_service_title',
-				'callback' => 'set_service_title',
+				'hook' => 'multiservices_set_prestation-part_title',
+				'callback' => 'set_prestation_part_title',
 			),
 		);
 
@@ -195,10 +195,6 @@ class MultiServices_Service {
 			(empty($hook['accepted_args'])) && $hook['accepted_args'] = 1;
 			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
-	}
-
-	static function dates_html($value = NULL, $field = []) {
-		return "dates";
 	}
 
 	static function customer_html($value = NULL, $field = []) {
@@ -227,41 +223,41 @@ class MultiServices_Service {
 
 	static function register_post_types() {
 		$labels = [
-			'name'                     => esc_html__('Services', 'multiservices' ),
-			'singular_name'            => esc_html__('Service', 'multiservices' ),
+			'name'                     => esc_html__('Parts', 'multiservices' ),
+			'singular_name'            => esc_html__('Part', 'multiservices' ),
 			'add_new'                  => esc_html__('Add New', 'multiservices' ),
-			'add_new_item'             => esc_html__('Add New Service', 'multiservices' ),
-			'edit_item'                => esc_html__('Edit Service', 'multiservices' ),
-			'new_item'                 => esc_html__('New Service', 'multiservices' ),
-			'view_item'                => esc_html__('View Service', 'multiservices' ),
-			'view_items'               => esc_html__('View Services', 'multiservices' ),
-			'search_items'             => esc_html__('Search Services', 'multiservices' ),
-			'not_found'                => esc_html__('No services found.', 'multiservices' ),
-			'not_found_in_trash'       => esc_html__('No services found in Trash.', 'multiservices' ),
-			'parent_item_colon'        => esc_html__('Parent Service:', 'multiservices' ),
-			'all_items'                => esc_html__('Services', 'multiservices' ),
-			'archives'                 => esc_html__('Service Archives', 'multiservices' ),
-			'attributes'               => esc_html__('Service Attributes', 'multiservices' ),
-			'insert_into_item'         => esc_html__('Insert into service', 'multiservices' ),
-			'uploaded_to_this_item'    => esc_html__('Uploaded to this service', 'multiservices' ),
+			'add_new_item'             => esc_html__('Add New Part', 'multiservices' ),
+			'edit_item'                => esc_html__('Edit Part', 'multiservices' ),
+			'new_item'                 => esc_html__('New Part', 'multiservices' ),
+			'view_item'                => esc_html__('View Part', 'multiservices' ),
+			'view_items'               => esc_html__('View Parts', 'multiservices' ),
+			'search_items'             => esc_html__('Search Parts', 'multiservices' ),
+			'not_found'                => esc_html__('No prestation parts found.', 'multiservices' ),
+			'not_found_in_trash'       => esc_html__('No prestation parts found in Trash.', 'multiservices' ),
+			'parent_item_colon'        => esc_html__('Parent Part:', 'multiservices' ),
+			'all_items'                => esc_html__('Parts', 'multiservices' ),
+			'archives'                 => esc_html__('Part Archives', 'multiservices' ),
+			'attributes'               => esc_html__('Part Attributes', 'multiservices' ),
+			'insert_into_item'         => esc_html__('Insert into prestation part', 'multiservices' ),
+			'uploaded_to_this_item'    => esc_html__('Uploaded to this prestation part', 'multiservices' ),
 			'featured_image'           => esc_html__('Featured image', 'multiservices' ),
 			'set_featured_image'       => esc_html__('Set featured image', 'multiservices' ),
 			'remove_featured_image'    => esc_html__('Remove featured image', 'multiservices' ),
 			'use_featured_image'       => esc_html__('Use as featured image', 'multiservices' ),
-			'menu_name'                => esc_html__('Services', 'multiservices' ),
-			'filter_items_list'        => esc_html__('Filter services list', 'multiservices' ),
+			'menu_name'                => esc_html__('Parts', 'multiservices' ),
+			'filter_items_list'        => esc_html__('Filter prestation parts list', 'multiservices' ),
 			'filter_by_date'           => esc_html__('', 'multiservices' ),
-			'items_list_navigation'    => esc_html__('Services list navigation', 'multiservices' ),
-			'items_list'               => esc_html__('Services list', 'multiservices' ),
-			'item_published'           => esc_html__('Service published.', 'multiservices' ),
-			'item_published_privately' => esc_html__('Service published privately.', 'multiservices' ),
-			'item_reverted_to_draft'   => esc_html__('Service reverted to draft.', 'multiservices' ),
-			'item_scheduled'           => esc_html__('Service scheduled.', 'multiservices' ),
-			'item_updated'             => esc_html__('Service updated.', 'multiservices' ),
+			'items_list_navigation'    => esc_html__('Parts list navigation', 'multiservices' ),
+			'items_list'               => esc_html__('Parts list', 'multiservices' ),
+			'item_published'           => esc_html__('Part published.', 'multiservices' ),
+			'item_published_privately' => esc_html__('Part published privately.', 'multiservices' ),
+			'item_reverted_to_draft'   => esc_html__('Part reverted to draft.', 'multiservices' ),
+			'item_scheduled'           => esc_html__('Part scheduled.', 'multiservices' ),
+			'item_updated'             => esc_html__('Part updated.', 'multiservices' ),
 			'text_domain' => 'multiservices',
 		];
 		$args = [
-			'label'               => esc_html__('Services', 'multiservices' ),
+			'label'               => esc_html__('Parts', 'multiservices' ),
 			'labels'              => $labels,
 			'description'         => '',
 			'public'              => true,
@@ -287,7 +283,7 @@ class MultiServices_Service {
 			],
 		];
 
-		register_post_type( 'service', $args );
+		register_post_type( 'prestation-part', $args );
 	}
 
 	static function register_fields( $meta_boxes ) {
@@ -295,10 +291,10 @@ class MultiServices_Service {
 
     $prefix = '';
 
-		$meta_boxes['service-fields'] = [
-			'title'      => __('Services fields', 'multiservices' ),
-			'id'         => 'services-fields',
-			'post_types' => ['service'],
+		$meta_boxes['prestation-part'] = [
+			'title'      => __('Parts fields', 'multiservices' ),
+			'id'         => 'prestation-part',
+			'post_types' => ['prestation-part'],
 			'style'      => 'seamless',
 			'fields'     => [
 				[
@@ -310,9 +306,9 @@ class MultiServices_Service {
 					'name'          => __('Source', 'multiservices' ),
 					'id'            => $prefix . 'source',
 					'type'          => 'taxonomy',
-					'taxonomy'      => ['service-source'],
+					'taxonomy'      => ['prestation-part-source'],
 					'field_type'    => 'select',
-					'placeholder'   => _x('None', '(service) source', 'multiservices' ),
+					'placeholder'   => _x('None', '(prestation part) source', 'multiservices' ),
 					'admin_columns' => [
 						'position'   => 'replace date',
 						'sort'       => true,
@@ -751,38 +747,38 @@ class MultiServices_Service {
 	}
 
 	static function add_custom_columns() {
-		new MultiServices_Service_Admin_Columns( 'service', array() );
+		new MultiServices_PrPart_Admin_Columns( 'prestation-part', array() );
 	}
 
 	static function register_taxonomies() {
 		$labels = [
-			'name'                       => esc_html__('Service Sources', 'multiservices' ),
-			'singular_name'              => esc_html__('Service Source', 'multiservices' ),
-			'menu_name'                  => esc_html__('Service Sources', 'multiservices' ),
-			'search_items'               => esc_html__('Search Service Sources', 'multiservices' ),
-			'popular_items'              => esc_html__('Popular Service Sources', 'multiservices' ),
-			'all_items'                  => esc_html__('All Service Sources', 'multiservices' ),
-			'parent_item'                => esc_html__('Parent Service Source', 'multiservices' ),
-			'parent_item_colon'          => esc_html__('Parent Service Source:', 'multiservices' ),
-			'edit_item'                  => esc_html__('Edit Service Source', 'multiservices' ),
-			'view_item'                  => esc_html__('View Service Source', 'multiservices' ),
-			'update_item'                => esc_html__('Update Service Source', 'multiservices' ),
-			'add_new_item'               => esc_html__('Add New Service Source', 'multiservices' ),
-			'new_item_name'              => esc_html__('New Service Source Name', 'multiservices' ),
-			'separate_items_with_commas' => esc_html__('Separate service sources with commas', 'multiservices' ),
-			'add_or_remove_items'        => esc_html__('Add or remove service sources', 'multiservices' ),
-			'choose_from_most_used'      => esc_html__('Choose most used service sources', 'multiservices' ),
-			'not_found'                  => esc_html__('No service sources found.', 'multiservices' ),
-			'no_terms'                   => esc_html__('No service sources', 'multiservices' ),
-			'filter_by_item'             => esc_html__('Filter by service source', 'multiservices' ),
-			'items_list_navigation'      => esc_html__('Service Sources list pagination', 'multiservices' ),
-			'items_list'                 => esc_html__('Service Sources list', 'multiservices' ),
+			'name'                       => esc_html__('Part Sources', 'multiservices' ),
+			'singular_name'              => esc_html__('Part Source', 'multiservices' ),
+			'menu_name'                  => esc_html__('Part Sources', 'multiservices' ),
+			'search_items'               => esc_html__('Search Part Sources', 'multiservices' ),
+			'popular_items'              => esc_html__('Popular Part Sources', 'multiservices' ),
+			'all_items'                  => esc_html__('All Part Sources', 'multiservices' ),
+			'parent_item'                => esc_html__('Parent Part Source', 'multiservices' ),
+			'parent_item_colon'          => esc_html__('Parent Part Source:', 'multiservices' ),
+			'edit_item'                  => esc_html__('Edit Part Source', 'multiservices' ),
+			'view_item'                  => esc_html__('View Part Source', 'multiservices' ),
+			'update_item'                => esc_html__('Update Part Source', 'multiservices' ),
+			'add_new_item'               => esc_html__('Add New Part Source', 'multiservices' ),
+			'new_item_name'              => esc_html__('New Part Source Name', 'multiservices' ),
+			'separate_items_with_commas' => esc_html__('Separate prestation part sources with commas', 'multiservices' ),
+			'add_or_remove_items'        => esc_html__('Add or remove prestation part sources', 'multiservices' ),
+			'choose_from_most_used'      => esc_html__('Choose most used prestation part sources', 'multiservices' ),
+			'not_found'                  => esc_html__('No prestation part sources found.', 'multiservices' ),
+			'no_terms'                   => esc_html__('No prestation part sources', 'multiservices' ),
+			'filter_by_item'             => esc_html__('Filter by prestation part source', 'multiservices' ),
+			'items_list_navigation'      => esc_html__('Part Sources list pagination', 'multiservices' ),
+			'items_list'                 => esc_html__('Part Sources list', 'multiservices' ),
 			'most_used'                  => esc_html__('Most Used', 'multiservices' ),
-			'back_to_items'              => esc_html__('&larr; Go to Service Sources', 'multiservices' ),
+			'back_to_items'              => esc_html__('&larr; Go to Part Sources', 'multiservices' ),
 			'text_domain' => 'multiservices',
 		];
 		$args = [
-			'label'              => esc_html__('Service Sources', 'multiservices' ),
+			'label'              => esc_html__('Part Sources', 'multiservices' ),
 			'labels'             => $labels,
 			'description'        => '',
 			'public'             => false,
@@ -805,38 +801,38 @@ class MultiServices_Service {
 			],
 			'_builtin' => true,
 		];
-		register_taxonomy( 'service-source', ['service'], $args );
+		register_taxonomy( 'prestation-part-source', ['prestation-part'], $args );
 
 		$terms = apply_filters( 'multiservices_register_sources', [] );
 		foreach($terms as $slug => $name) {
 			if(empty($slug)) continue;
-			if(get_term_by('slug', $slug, 'service-source')) continue;
-			wp_insert_term( $name, 'service-source', [ 'slug' => $slug ] );
+			if(get_term_by('slug', $slug, 'prestation-part-source')) continue;
+			wp_insert_term( $name, 'prestation-part-source', [ 'slug' => $slug ] );
 		}
 
 	}
 
 	// static function get_source_options() {
 	// 	return apply_filters('multiservices_register_sources', array(
-	// 		'' => _x('None', '(service) source', 'multiservices' ),
+	// 		'' => _x('None', '(prestation part) source', 'multiservices' ),
 	// 	));
 	// }
 
-	static function insert_service_data ($data, $postarr, $unsanitized_postarr, $update ) {
+	static function insert_prestation_part_data ($data, $postarr, $unsanitized_postarr, $update ) {
 		if(!$update) return $data;
-		if($data['post_type'] !== 'pr_service') return $data;
+		if($data['post_type'] !== 'prestation-part') return $data;
 
-		$data = apply_filters('multiservices_set_service_title', $data);
+		$data = apply_filters('multiservices_set_prestation-part_title', $data);
 
 		return $data;
 	}
 
-	static function set_service_title ($data ) {
+	static function set_prestation_part_title ($data ) {
 		// error_log(__CLASS__ . '::' . __FUNCTION__);
-		// if(empty($_REQUEST['service_page_id'])) return $data;
+		// if(empty($_REQUEST['prestation_part_page_id'])) return $data;
 		//
 		// if(empty($data['post_title'])) {
-		// 	$data['post_title'] = get_the_title($_REQUEST['service_page_id']);
+		// 	$data['post_title'] = get_the_title($_REQUEST['prestation_part_page_id']);
 		// 	$data['post_name'] = sanitize_title($data['post_title']);
 		// }
 		return $data;
@@ -844,12 +840,12 @@ class MultiServices_Service {
 
 	static function save_post_action($post_id, $post, $update ) {
 		if( !$update ) return;
-		if( 'service' !== $post->post_type) return;
+		if( 'prestation-part' !== $post->post_type) return;
 
 		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
 
 		$prestation_id = get_post_meta($post_id, 'prestation', true);
-		$service_info = get_post_meta($post_id, 'customer', true);
+		$prestation_part_info = get_post_meta($post_id, 'customer', true);
 		if($prestation_id) {
 			$user_info = array_filter(array(
 				'user_id' => get_post_meta($prestation_id, 'customer_id', true),
@@ -858,9 +854,9 @@ class MultiServices_Service {
 				'phone' => get_post_meta($prestation_id, 'attendee_phone', true),
 			));
 		} else {
-			$user_info = $service_info;
+			$user_info = $prestation_part_info;
 		}
-		if($user_info != $service_info) {
+		if($user_info != $prestation_part_info) {
 			// error_log(__FUNCTION__ . '::' . __FUNCTION__ . ' meta ' . print_r($user_info, true));
 			update_post_meta( $post_id, 'customer', $user_info );
 		}
@@ -950,13 +946,13 @@ class MultiServices_Service {
 			//
 		}
 		// $metas['subtotal'] = get_post_meta($post_id, 'prestation', true);
-		// $service = new MultiServices_Service($post);
-		// $service->set_prestation();
+		// $part = new MultiServices_PrPart($post);
+		// $prestation-part->set_prestation();
 
 		add_action(current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3);
 	}
 
-	static function sanitize_service_meta( $meta_value, $meta_key, $object_type ) {
+	static function sanitize_prestation_part_meta( $meta_value, $meta_key, $object_type ) {
 		switch($meta_key) {
 			case 'customer':
 			case 'attendee':
@@ -969,7 +965,7 @@ class MultiServices_Service {
 	static function update_metadata_filter( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
 		return $check;
 		//
-		// if(get_post_type($object_id) != 'service') return $check;
+		// if(get_post_type($object_id) != 'prestation-part') return $check;
 		//
 		// switch($meta_key) {
 		// 	case 'customer':
@@ -980,8 +976,8 @@ class MultiServices_Service {
 		// 		'email' => get_post_meta($prestation_id, 'attendee_email', true),
 		// 		'phone' => get_post_meta($prestation_id, 'attendee_phone', true),
 		// 	));
-		// 	$service_info = MultiServices::get_user_info_by_info($meta_value);
-		// 	$meta_value = array_replace($service_info, $prestation_info);
+		// 	$prestation_part_info = MultiServices::get_user_info_by_info($meta_value);
+		// 	$meta_value = array_replace($prestation_part_info, $prestation_info);
 		// 	error_log("object $object_id user info " . print_r($meta_value, true) );
 		// 	return $meta_value;
 		// 	break;
@@ -992,7 +988,7 @@ class MultiServices_Service {
 
 	function set_prestation($post = NULL) {
 		$post = $this->post;
-		if( $post->post_type != 'service' ) return;
+		if( $post->post_type != 'prestation-part' ) return;
 		if( $post->post_status == 'trash' ) return; // TODO: update previously linked prestation
 
 		// // remove_action(current_action(), __CLASS__ . '::wp_insert_post_action');
@@ -1028,8 +1024,8 @@ class MultiServices_Service {
 		// 	$args = array(
 		// 		'post_type' => 'prestation',
 		// 		'post_status__in' => [ 'pending', 'on-hold', 'deposit', 'partial', 'unpaid', 'processing' ],
-		// 		'serviceby' => 'post_date',
-		// 		'service' => 'desc',
+		// 		'prestation partby' => 'post_date',
+		// 		'prestation-part' => 'desc',
 		// 	);
 		// 	if($customer) {
 		// 		$args['meta_query'] = array(
@@ -1099,7 +1095,7 @@ class MultiServices_Service {
 		// 		'customer_email' => $customer_email,
 		// 	);
 		// 	// foreach ($meta as $key => $value) update_post_meta( $this->ID, $key, $value );
-		// 	// MultiServices_Service::update_prestation_services($prestation_id, get_post($prestation_id), true );
+		// 	// MultiServices_PrPart::update_prestation_prestation_parts($prestation_id, get_post($prestation_id), true );
 		// }
 		//
 		// // add_action(current_action(), __CLASS__ . '::wp_insert_post_action', 10, 3);
@@ -1109,7 +1105,7 @@ class MultiServices_Service {
 
 }
 
-class MultiServices_Service_Admin_Columns extends \MBAC\Post {
+class MultiServices_PrPart_Admin_Columns extends \MBAC\Post {
     // public function columns( $columns ) {
     //     $columns  = parent::columns( $columns );
     //     $position = '';
