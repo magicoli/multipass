@@ -855,6 +855,71 @@ class MultiServices_Prestation {
 	// }
 
 	static function register_taxonomies() {
+		$desc_required = sprintf(__('(required by %s)', 'multiservices'), MULTISERVICES_PLUGIN_NAME);
+
+		$labels = [
+			'name'                       => esc_html__( 'Prestation Types', 'multiservices' ),
+			'singular_name'              => esc_html__( 'Prestation Type', 'multiservices' ),
+			'menu_name'                  => esc_html__( 'Prestation Types', 'multiservices' ),
+			'search_items'               => esc_html__( 'Search Prestation Types', 'multiservices' ),
+			'popular_items'              => esc_html__( 'Popular Prestation Types', 'multiservices' ),
+			'all_items'                  => esc_html__( 'All Prestation Types', 'multiservices' ),
+			'parent_item'                => esc_html__( 'Parent Prestation Type', 'multiservices' ),
+			'parent_item_colon'          => esc_html__( 'Parent Prestation Type:', 'multiservices' ),
+			'edit_item'                  => esc_html__( 'Edit Prestation Type', 'multiservices' ),
+			'view_item'                  => esc_html__( 'View Prestation Type', 'multiservices' ),
+			'update_item'                => esc_html__( 'Update Prestation Type', 'multiservices' ),
+			'add_new_item'               => esc_html__( 'Add New Prestation Type', 'multiservices' ),
+			'new_item_name'              => esc_html__( 'New Prestation Type Name', 'multiservices' ),
+			'separate_items_with_commas' => esc_html__( 'Separate prestation types with commas', 'multiservices' ),
+			'add_or_remove_items'        => esc_html__( 'Add or remove prestation types', 'multiservices' ),
+			'choose_from_most_used'      => esc_html__( 'Choose most used prestation types', 'multiservices' ),
+			'not_found'                  => esc_html__( 'No prestation types found.', 'multiservices' ),
+			'no_terms'                   => esc_html__( 'No prestation types', 'multiservices' ),
+			'filter_by_item'             => esc_html__( 'Filter by prestation type', 'multiservices' ),
+			'items_list_navigation'      => esc_html__( 'Prestation Types list pagination', 'multiservices' ),
+			'items_list'                 => esc_html__( 'Prestation Types list', 'multiservices' ),
+			'most_used'                  => esc_html__( 'Most Used', 'multiservices' ),
+			'back_to_items'              => esc_html__( '&larr; Go to Prestation Types', 'multiservices' ),
+			'text_domain'                => esc_html__( 'multiservices', 'multiservices' ),
+		];
+		$args = [
+			'label'              => esc_html__( 'Prestation Types', 'multiservices' ),
+			'labels'             => $labels,
+			'description'        => '',
+			'public'             => true,
+			'publicly_queryable' => true,
+			'hierarchical'       => false,
+			'show_ui'            => true,
+			'show_in_menu'       => true,
+			'show_in_nav_menus'  => true,
+			'show_in_rest'       => true,
+			'show_tagcloud'      => false,
+			'show_in_quick_edit' => true,
+			'show_admin_column'  => true,
+			'query_var'          => true,
+			'sort'               => false,
+			'meta_box_cb'        => 'post_tags_meta_box',
+			'rest_base'          => '',
+			'rewrite'            => [
+				'with_front'   => false,
+				'hierarchical' => false,
+			],
+		];
+		register_taxonomy( 'prestation-type', ['prestation', 'product', 'pr_association', 'prestation-part'], $args );
+
+		$terms = array(
+			// 'rental' => __('Rental', 'multiservices'),
+			'booking' => __('Booking', 'multiservices'),
+			// 'payment' => __('Payment', 'multiservices'),
+		);
+
+		foreach($terms as $slug => $name) {
+			if(empty($slug)) continue;
+			if(get_term_by('slug', $slug, 'prestation-type')) continue;
+			wp_insert_term( $name, 'prestation-type', [ 'slug' => $slug, 'description' => $desc_required ] );
+		}
+
 		$labels = [
 			'name'                       => esc_html__('Prestation statuses', 'multiservices' ),
 			'singular_name'              => esc_html__('Prestation status', 'multiservices' ),
@@ -934,6 +999,7 @@ class MultiServices_Prestation {
 		);
 
 		foreach($terms as $slug => $term) {
+			if(get_term_by('slug', $slug, 'prestation-status')) continue;
 			$targs = array_merge( $term, [ 'slug' => $slug ] );
 			if(isset($targs['parent'])) {
 				$parent = term_exists( $targs['parent'], 'prestation-status' );
@@ -942,6 +1008,7 @@ class MultiServices_Prestation {
 				}
 				else unset($targs['parent']);
 			}
+			if(!isset($targs['description'])) $targs['description'] = $desc_required;
 			unset($targs['name']);
 			wp_insert_term( $term['name'], 'prestation-status', $targs );
 		}
