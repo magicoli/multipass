@@ -547,6 +547,15 @@ class MultiServices {
 				'name' => $slug,
 				'description' => $desc_required,
 			), $args, $term);
+
+			if(!empty($term['parent'])) {
+				$parent = term_exists( $term['parent'], 'prestation-status' );
+				if( $parent && isset($parent['term_id']) ) {
+					$term['parent'] = $parent['term_id'];
+				}
+				else unset($term['parent']);
+			}
+
 			$name = $term['name'];
 			unset($term['name']);
 			if(get_term_by('slug', $slug, $taxonomy_slug)) continue;
