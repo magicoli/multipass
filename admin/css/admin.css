@@ -22,6 +22,16 @@
   display: inline-block;
   margin-right: 1em;
 }
+.rwmb-field.inline > .rwmb-input > div,
+.rwmb-field.inline .rwmb-clone > div
+{
+  vertical-align: top;
+  margin-top: 0;
+  padding-top: 0;
+}
+.rwmb-field.inline > .rwmb-input > a.add-clone {
+  vertical-align: bottom;
+}
 .rwmb-field.inline  .rwmb-field > .rwmb-label {
   width: initial;
 }
