@@ -908,17 +908,9 @@ class MultiServices_Prestation {
 		];
 		register_taxonomy( 'prestation-type', ['prestation', 'product', 'pr_association', 'prestation-part'], $args );
 
-		$terms = apply_filters( 'multiservices_register_terms_prestation-type', array(
-			// 'rental' => __('Rental', 'multiservices'),
+		MultiServices::register_terms('prestation-type', array(
 			'booking' => __('Booking', 'multiservices'),
-			// 'payment' => __('Payment', 'multiservices'),
 		));
-
-		foreach($terms as $slug => $name) {
-			if(empty($slug)) continue;
-			if(get_term_by('slug', $slug, 'prestation-type')) continue;
-			wp_insert_term( $name, 'prestation-type', [ 'slug' => $slug, 'description' => $desc_required ] );
-		}
 
 		$labels = [
 			'name'                       => esc_html__('Prestation statuses', 'multiservices' ),
@@ -976,7 +968,7 @@ class MultiServices_Prestation {
 		 * Prestation statuses, we use basically the same terminology as
 		 * WooCommerce, but it is not mandatory.
 		 */
-		$terms = array(
+		MultiServices::register_terms('prestation-status', array(
 			// Open (still modifiable, available for new order inclusion)
 			'pending' => [ 'name' => __('Pending payment', 'multiservices' ) ],  // unpaid or paid less than deposit, not confirmed
 			'on-hold' => [ 'name' => __('On hold', 'multiservices' ) ], // fully paid and not started
@@ -996,23 +988,7 @@ class MultiServices_Prestation {
 
 			'unpaid' => [ 'name' => __('Unpaid', 'multiservices' ), 'parent' => 'pending' ],
 			'partial' => [ 'name' => __('Partially paid', 'multiservices' ), 'parent' => 'pending' ],
-		);
-
-		foreach($terms as $slug => $term) {
-			if(get_term_by('slug', $slug, 'prestation-status')) continue;
-			$targs = array_merge( $term, [ 'slug' => $slug ] );
-			if(isset($targs['parent'])) {
-				$parent = term_exists( $targs['parent'], 'prestation-status' );
-    		if( $parent && isset($parent['term_id']) ) {
-					$targs['parent'] = $parent['term_id'];
-				}
-				else unset($targs['parent']);
-			}
-			if(!isset($targs['description'])) $targs['description'] = $desc_required;
-			unset($targs['name']);
-			wp_insert_term( $term['name'], 'prestation-status', $targs );
-		}
-
+		));
 	}
 
 	static function get_available_items() {

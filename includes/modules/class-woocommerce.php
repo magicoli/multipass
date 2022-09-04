@@ -85,7 +85,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 				'callback' => 'register_settings_fields',
 			),
 			array(
-				'hook' => 'multiservices_register_terms_prestation-source',
+				'hook' => 'multiservices_register_terms_prestation-part-source',
 				'callback' => 'register_sources_filter',
 			),
 
@@ -175,7 +175,8 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 			],
 		];
 
-		$wc_term_id = get_term_by('slug', 'woocommerce', 'prestation-part-source')->term_id;
+		$wc_term = get_term_by('slug', 'woocommerce', 'prestation-part-source');
+		$wc_term_id = ($wc_term) ? get_term_by('slug', 'woocommerce', 'prestation-part-source')->term_id : 'woocommerce';
 		// Order info on prestation part
 		$meta_boxes['prestation-part']['fields']['source_details']['fields'][] =[
 			'name'       => __( 'Order ID', 'multiservices' ),

@@ -803,20 +803,9 @@ class MultiServices_PrPart {
 		];
 		register_taxonomy( 'prestation-part-source', ['prestation-part'], $args );
 
-		$terms = apply_filters( 'multiservices_register_terms_prestation-source', [] );
-		foreach($terms as $slug => $name) {
-			if(empty($slug)) continue;
-			if(get_term_by('slug', $slug, 'prestation-part-source')) continue;
-			wp_insert_term( $name, 'prestation-part-source', [ 'slug' => $slug ] );
-		}
+		MultiServices::register_terms('prestation-part-source');
 
 	}
-
-	// static function get_source_options() {
-	// 	return apply_filters('multiservices_register_terms_prestation-source', array(
-	// 		'' => _x('None', '(prestation part) source', 'multiservices' ),
-	// 	));
-	// }
 
 	static function insert_prestation_part_data ($data, $postarr, $unsanitized_postarr, $update ) {
 		if(!$update) return $data;
