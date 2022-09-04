@@ -425,7 +425,7 @@ class MultiServices {
 				<?php
 			} );
 		} else {
-			delay_admin_notice($notice, $class, $dismissible, __FUNCTION__);
+			self::delay_admin_notice($notice, $class, $dismissible, __FUNCTION__);
 		}
 	}
 
@@ -448,7 +448,7 @@ class MultiServices {
 		if(!is_array($queue)) $queue = array($queue);
 		foreach($queue as $key => $notice) {
 			if(!is_array($notice)) continue;
-			admin_notice($notice['notice'], $notice['class'], $notice['dismissible'] );
+			self::admin_notice($notice['notice'], $notice['class'], $notice['dismissible'] );
 		}
 		delete_transient( $transient_key );
 	}
@@ -561,7 +561,45 @@ class MultiServices {
 			$name = $term['name'];
 			unset($term['name']);
 			if(get_term_by('slug', $slug, $taxonomy_slug)) continue;
-			wp_insert_term( $name, $taxonomy_slug, $term );
+			$term_id = wp_insert_term( $name, $taxonomy_slug, $term )['term_id'];
+			add_term_meta($term_id, 'multiservices_generated', true, true);
+		}
+		add_filter( $taxonomy_slug . '_row_actions', 'MultiServices::unset_taxonomy_row_actions', 10, 2 );
+		add_action( $taxonomy_slug . '_edit_form', 'MultiServices::remove_delete_edit_term_form', 10, 2 );
+		add_action ('pre_delete_term', 'MultiServices::taxonomy_delete_protection', 10, 1 );
+	}
+
+	static function unset_taxonomy_row_actions ($actions, $term)
+	{
+		$delete_protected = get_term_meta ($term->term_id, 'multiservices_generated', true);
+		if ($delete_protected)
+		unset ($actions['delete']);
+
+		return $actions;
+	}
+
+	static function remove_delete_edit_term_form ($term, $taxonomy) {
+		$delete_protected = get_term_meta ($term->term_id, 'multiservices_generated', true);
+		if ($delete_protected)
+		echo '<style type="text/css">#delete-link {display: none !important;}</style>';
+	}
+
+	static function taxonomy_delete_protection ( $term_id )
+	{
+
+		$delete_protected = get_term_meta ($term_id, 'multiservices_generated', true);
+
+		if ($delete_protected)
+		{
+			$term = get_term ($term_id);
+			$message = sprintf( __('%s is required by %s, it cannot be deleted'), $term->name, MULTISERVICES_PLUGIN_NAME );
+
+			$error = new WP_Error ();
+			$error->add (1, $message);
+
+			if(is_ajax()) wp_die (-1);
+			else wp_die($message);
 		}
 	}
+
 }
