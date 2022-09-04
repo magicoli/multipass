@@ -190,71 +190,42 @@ class MultiServices_Settings {
 			'tab'            => 'general',
 			'fields'         => [
 				'currency_options' => [
-						'name'   => __('Currency Options', 'multiservices' ),
-						'id'     => $prefix . 'currency',
-						'type'   => 'group',
-						'class' => 'inline',
-						'fields' => [
-								[
-										'name'     => __('Code', 'multiservices' ),
-										'id'       => $prefix . 'code',
-										'type'     => 'select_advanced',
-										'size'     => 3,
-										'options' => MultiServices::currency_options(),
-// 										'datalist' => [
-// 												'id'      => '630532931670c',
-// 												'options' => [
-// 														'EUR
-// ',
-// 														'USD
-// ',
-// 														'GBP',
-// 												],
-// 										],
-								],
-								[
-										'name'    => __('Position', 'multiservices' ),
-										'id'      => $prefix . 'pos',
-										'type'    => 'select',
-										'size' => 5,
-										'options' => [
-												'left'         => __('Left', 'multiservices' ),
-												'right'        => __('Right', 'multiservices' ),
-												'left_space'    => __('Left with space', 'multiservices' ),
-												'right_spâce' => __('Right with space', 'multiservices' ),
-										],
-										'std'     => 'right_space',
-								],
-								// [
-								// 		'name' => __('Thousand separator', 'multiservices' ),
-								// 		'id'   => $prefix . 'thousand_sep',
-								// 		'type' => 'text',
-								// 		'size' => 3,
-								// ],
-								// [
-								// 		'name' => __('Decimal Separator', 'multiservices' ),
-								// 		'id'   => $prefix . 'decimal_sep',
-								// 		'type' => 'text',
-								// 		'size' => 3,
-								// ],
-								[
-										'name' => __('Decimals', 'multiservices' ),
-										'id'   => $prefix . 'num_decimals',
-										'type' => 'number',
-										'min'  => 0,
-										'step' => 1,
-										'std'  => 2,
-										'size' => 3,
-								],
+					'name'   => __('Currency Options', 'multiservices' ),
+					'id'     => $prefix . 'currency',
+					'type'   => 'group',
+					'class' => 'inline',
+					'fields' => [
+						[
+							'name'     => __('Code', 'multiservices' ),
+							'id'       => $prefix . 'code',
+							'type'     => 'select_advanced',
+							'size'     => 3,
+							'options' => MultiServices::currency_options(),
 						],
+						[
+							'name'    => __('Position', 'multiservices' ),
+							'id'      => $prefix . 'pos',
+							'type'    => 'select',
+							'size' => 5,
+							'options' => [
+								'left'         => __('Left', 'multiservices' ),
+								'right'        => __('Right', 'multiservices' ),
+								'left_space'    => __('Left with space', 'multiservices' ),
+								'right_spâce' => __('Right with space', 'multiservices' ),
+							],
+							'std'     => 'right_space',
+						],
+						[
+							'name' => __('Decimals', 'multiservices' ),
+							'id'   => $prefix . 'num_decimals',
+							'type' => 'number',
+							'min'  => 0,
+							'step' => 1,
+							'std'  => 2,
+							'size' => 3,
+						],
+					],
 				],
-				// [
-				// 	'name'  => __('Enable Email Processing', 'multiservices' ),
-				// 	'id'    => $prefix . 'enable_email_processing',
-				// 	'type'  => 'switch',
-				// 	'desc_tip'  => __('Use IMAP to collect emails and attach them to prestations', 'multiservices' ),
-				// 	'style' => 'rounded',
-				// ],
 			],
 		];
 
