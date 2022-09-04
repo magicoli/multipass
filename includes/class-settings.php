@@ -174,6 +174,7 @@ class MultiServices_Settings {
 			'columns'       => 2,
 			'tabs'          => [
 				'general' => __('General', 'multiservices' ),
+				'tos' => __('Terms of Service', 'multiservices' ),
 			],
 			'icon_url'      => 'dashicons-book',
 		];
