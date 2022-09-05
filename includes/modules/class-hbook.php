@@ -121,9 +121,9 @@ class MultiServices_HBook extends MultiServices_Modules {
         ],
     ];
 
-		$meta_boxes['associations']['fields'][] = [
+		$meta_boxes['services']['fields'][] = [
 			'name'       => __('HBook Accommodations', 'multiservices' ),
-			'id'         => 'association_hbook_id',
+			'id'         => 'service_hbook_id',
 			'type'       => 'select_advanced',
 			'options'	=> $hbook->get_property_options(),
 			'admin_columns' => [

@@ -132,9 +132,9 @@ class MultiServices_Lodgify extends MultiServices_Modules {
         ],
     ];
 
-		$meta_boxes['associations']['fields'][] = [
+		$meta_boxes['services']['fields'][] = [
 			'name'       => __('Lodgify Property', 'multiservices' ),
-			'id'         => 'association_lodgify_id',
+			'id'         => 'service_lodgify_id',
 			'type'       => 'select_advanced',
 			'options'	=> $lodgify->get_property_options(),
 			'admin_columns' => [

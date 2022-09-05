@@ -90,8 +90,8 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 			),
 
 			array(
-				'hook' => 'multiservices_set_association_title',
-				'callback' => 'set_association_title',
+				'hook' => 'multiservices_set_service_title',
+				'callback' => 'set_service_title',
 			),
 
 			array(
@@ -262,9 +262,9 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 			// ],
 		];
 
-		$meta_boxes['associations']['fields'][] = [
+		$meta_boxes['services']['fields'][] = [
 			'name'       => __('Product', 'multiservices' ),
-			'id'         => 'association_product_id',
+			'id'         => 'service_product_id',
 			'type'       => 'post',
 			'post_type'  => ['product'],
 			'field_type' => 'select_advanced',
@@ -430,11 +430,11 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		// $this->background_request->dispatch();
 	}
 
-	static function set_association_title ($data ) {
-		if(empty($_REQUEST['association_product_id'])) return $data;
+	static function set_service_title ($data ) {
+		if(empty($_REQUEST['service_product_id'])) return $data;
 
 		if(empty($data['post_title'])) {
-			$data['post_title'] = get_the_title($_REQUEST['association_product_id']);
+			$data['post_title'] = get_the_title($_REQUEST['service_product_id']);
 			$data['post_name'] = sanitize_title($data['post_title']);
 		}
 

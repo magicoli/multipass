@@ -21,7 +21,7 @@
  * @subpackage W4OS/includes
  * @author     Your Name <email@example.com>
  */
-class MultiServices_Association {
+class MultiServices_Service {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -126,11 +126,11 @@ class MultiServices_Association {
 				'callback' => 'register_taxonomies',
 			),
 
-			array (
-				'hook' => 'save_post_association',
-				'callback' => 'save_post',
-				'accepted_args' => 3,
-			),
+			// array (
+			// 	'hook' => 'save_post_service',
+			// 	'callback' => 'save_post',
+			// 	'accepted_args' => 3,
+			// ),
 
 			// array(
 			// 	'hook' => 'pre_get_posts',
@@ -151,11 +151,11 @@ class MultiServices_Association {
 				'callback' => 'register_fields'
 			),
 			// array(
-			// 	'hook' => 'updated_pr_association_meta',
+			// 	'hook' => 'updated_service_meta',
 			// 	'callback' => 'updated_meta',
 			// )
 			array(
-				'hook' => 'manage_pr_association_posts_columns',
+				'hook' => 'manage_service_posts_columns',
 				'callback' => 'add_admin_columns',
 			),
 			array(
@@ -166,12 +166,12 @@ class MultiServices_Association {
 
 			array(
 				'hook' => 'wp_insert_post_data',
-				'callback' => 'insert_association_data',
+				'callback' => 'insert_service_data',
 				'accepted_args' => 4,
 			),
 			array(
-				'hook' => 'multiservices_set_association_title',
-				'callback' => 'set_association_title',
+				'hook' => 'multiservices_set_service_title',
+				'callback' => 'set_service_title',
 			),
 
 			// array(
@@ -181,17 +181,17 @@ class MultiServices_Association {
 			// ),
 			//
 			// array(
-			// 	'hook' => 'manage_association_posts_columns',
+			// 	'hook' => 'manage_service_posts_columns',
 			// 	'callback' => 'add_admin_columns',
 			// ),
 			// array(
-			// 	'hook' => 'manage_association_posts_custom_column',
+			// 	'hook' => 'manage_service_posts_custom_column',
 			// 	'callback' => 'admin_columns_display',
 			// 	'priority' => 99,
 			// 	'accepted_args' => 2,
 			// ),
 			// array(
-			// 	'hook' => 'manage_edit-association_sortable_columns',
+			// 	'hook' => 'manage_edit-service_sortable_columns',
 			// 	'callback' => 'sortable_columns',
 			// ),
 		);
@@ -214,41 +214,41 @@ class MultiServices_Association {
 
 	static function register_post_types() {
 		$labels = [
-			'name'                     => esc_html__('Associations', 'multiservices' ),
-			'singular_name'            => esc_html__('Association', 'multiservices' ),
+			'name'                     => esc_html__('Services', 'multiservices' ),
+			'singular_name'            => esc_html__('Service', 'multiservices' ),
 			'add_new'                  => esc_html__('Add New', 'multiservices' ),
-			'add_new_item'             => esc_html__('Add New Association', 'multiservices' ),
-			'edit_item'                => esc_html__('Edit Association', 'multiservices' ),
-			'new_item'                 => esc_html__('New Association', 'multiservices' ),
-			'view_item'                => esc_html__('View Association', 'multiservices' ),
-			'view_items'               => esc_html__('View Associations', 'multiservices' ),
-			'search_items'             => esc_html__('Search Associations', 'multiservices' ),
-			'not_found'                => esc_html__('No associations found.', 'multiservices' ),
-			'not_found_in_trash'       => esc_html__('No associations found in Trash.', 'multiservices' ),
-			'parent_item_colon'        => esc_html__('Parent Association:', 'multiservices' ),
-			'all_items'                => esc_html__('Associations', 'multiservices' ),
-			'archives'                 => esc_html__('Association Archives', 'multiservices' ),
-			'attributes'               => esc_html__('Association Attributes', 'multiservices' ),
-			'insert_into_item'         => esc_html__('Insert into association', 'multiservices' ),
-			'uploaded_to_this_item'    => esc_html__('Uploaded to this association', 'multiservices' ),
+			'add_new_item'             => esc_html__('Add New Service', 'multiservices' ),
+			'edit_item'                => esc_html__('Edit Service', 'multiservices' ),
+			'new_item'                 => esc_html__('New Service', 'multiservices' ),
+			'view_item'                => esc_html__('View Service', 'multiservices' ),
+			'view_items'               => esc_html__('View Services', 'multiservices' ),
+			'search_items'             => esc_html__('Search Services', 'multiservices' ),
+			'not_found'                => esc_html__('No services found.', 'multiservices' ),
+			'not_found_in_trash'       => esc_html__('No services found in Trash.', 'multiservices' ),
+			'parent_item_colon'        => esc_html__('Parent Service:', 'multiservices' ),
+			'all_items'                => esc_html__('Services', 'multiservices' ),
+			'archives'                 => esc_html__('Service Archives', 'multiservices' ),
+			'attributes'               => esc_html__('Service Attributes', 'multiservices' ),
+			'insert_into_item'         => esc_html__('Insert into service', 'multiservices' ),
+			'uploaded_to_this_item'    => esc_html__('Uploaded to this service', 'multiservices' ),
 			'featured_image'           => esc_html__('Featured image', 'multiservices' ),
 			'set_featured_image'       => esc_html__('Set featured image', 'multiservices' ),
 			'remove_featured_image'    => esc_html__('Remove featured image', 'multiservices' ),
 			'use_featured_image'       => esc_html__('Use as featured image', 'multiservices' ),
-			'menu_name'                => esc_html__('Associations', 'multiservices' ),
-			'filter_items_list'        => esc_html__('Filter associations list', 'multiservices' ),
+			'menu_name'                => esc_html__('Services', 'multiservices' ),
+			'filter_items_list'        => esc_html__('Filter services list', 'multiservices' ),
 			'filter_by_date'           => esc_html__('', 'multiservices' ),
-			'items_list_navigation'    => esc_html__('Associations list navigation', 'multiservices' ),
-			'items_list'               => esc_html__('Associations list', 'multiservices' ),
-			'item_published'           => esc_html__('Association published.', 'multiservices' ),
-			'item_published_privately' => esc_html__('Association published privately.', 'multiservices' ),
-			'item_reverted_to_draft'   => esc_html__('Association reverted to draft.', 'multiservices' ),
-			'item_scheduled'           => esc_html__('Association scheduled.', 'multiservices' ),
-			'item_updated'             => esc_html__('Association updated.', 'multiservices' ),
+			'items_list_navigation'    => esc_html__('Services list navigation', 'multiservices' ),
+			'items_list'               => esc_html__('Services list', 'multiservices' ),
+			'item_published'           => esc_html__('Service published.', 'multiservices' ),
+			'item_published_privately' => esc_html__('Service published privately.', 'multiservices' ),
+			'item_reverted_to_draft'   => esc_html__('Service reverted to draft.', 'multiservices' ),
+			'item_scheduled'           => esc_html__('Service scheduled.', 'multiservices' ),
+			'item_updated'             => esc_html__('Service updated.', 'multiservices' ),
 			'text_domain' => 'multiservices',
 		];
 		$args = [
-			'label'               => esc_html__('Associations', 'multiservices' ),
+			'label'               => esc_html__('Services', 'multiservices' ),
 			'labels'              => $labels,
 			'description'         => '',
 			'public'              => true,
@@ -270,26 +270,26 @@ class MultiServices_Association {
 			'supports'            => [ 'title' ],
 			'taxonomies'          => [],
 			'rewrite'             => [
-				'slug'       => 'association',
+				'slug'       => 'service',
 				'with_front' => false,
 			],
 		];
 
-		register_post_type( 'pr_association', $args );
+		register_post_type( 'service', $args );
 	}
 
 	static function register_fields( $meta_boxes ) {
-		$prefix = 'association_';
+		$prefix = 'service_';
 
-    $meta_boxes['associations'] = [
-        'title'      => __('Associations', 'multiservices' ),
-        'post_types' => ['pr_association'],
+    $meta_boxes['services'] = [
+        'title'      => __('Services', 'multiservices' ),
+        'post_types' => ['service'],
         'autosave'   => true,
 				'style' => 'seamless',
         'fields'     => [
             [
                 'name'          => __('Page', 'multiservices' ),
-                'id'         => 'association_page_id',
+                'id'         => 'service_page_id',
                 'type'          => 'post',
                 'post_type'     => ['page'],
                 'field_type'    => 'select_advanced',
@@ -311,21 +311,21 @@ class MultiServices_Association {
 	//
 	// }
 
-	static function insert_association_data ($data, $postarr, $unsanitized_postarr, $update ) {
+	static function insert_service_data ($data, $postarr, $unsanitized_postarr, $update ) {
 		if(!$update) return $data;
-		if($data['post_type'] !== 'pr_association') return $data;
+		if($data['post_type'] !== 'service') return $data;
 
-		$data = apply_filters('multiservices_set_association_title', $data);
+		$data = apply_filters('multiservices_set_service_title', $data);
 
 		return $data;
 	}
 
-	static function set_association_title ($data ) {
+	static function set_service_title ($data ) {
 		// error_log(__CLASS__ . '::' . __FUNCTION__);
-		if(empty($_REQUEST['association_page_id'])) return $data;
+		if(empty($_REQUEST['service_page_id'])) return $data;
 
 		if(empty($data['post_title'])) {
-			$data['post_title'] = get_the_title($_REQUEST['association_page_id']);
+			$data['post_title'] = get_the_title($_REQUEST['service_page_id']);
 			$data['post_name'] = sanitize_title($data['post_title']);
 		}
 		return $data;
@@ -381,7 +381,7 @@ class MultiServices_Association {
 				'hierarchical' => false,
 			],
 		];
-		register_taxonomy( 'service-type', ['prestation', 'product', 'pr_association', 'prestation-part'], $args );
+		register_taxonomy( 'service-type', ['prestation', 'product', 'service', 'prestation-part'], $args );
 
 		MultiServices::register_terms('service-type', array(
 			'booking' => __('Booking', 'multiservices'),

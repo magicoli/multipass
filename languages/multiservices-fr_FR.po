@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MultiServices\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/multiservices\n"
-"POT-Creation-Date: 2022-09-03T17:53:03-04:00\n"
+"POT-Creation-Date: 2022-09-05T13:47:45-04:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -23,8 +23,8 @@ msgstr "https://magiiic.com/wordpress/plugins/multiservices/"
 
 #. Description of the plugin
 msgid ""
-"Group prestation parts from different sources (WooCommerce, OTA, booking engines...) "
-"and manage them as a whole."
+"Group prestation parts from different sources (WooCommerce, OTA, booking "
+"engines...) and manage them as a whole."
 msgstr ""
 "Regrouper les commandes de différentes sources (WooCommerce, OTA, moteurs de "
 "réservation...) et les gérer comme un tout."
@@ -37,141 +37,443 @@ msgstr "Magiiic"
 msgid "https://magiiic.com/"
 msgstr "https://magiiic.com/"
 
-#: includes/class-cpt-association.php:206
-#: includes/class-cpt-association.php:218
-#: includes/class-cpt-association.php:227
-#: includes/class-cpt-association.php:240
-#: includes/class-cpt-association.php:274
-msgid "Associations"
-msgstr "Associations"
+#: includes/class-cpt-prestation-part.php:226
+#: includes/class-cpt-prestation-part.php:238
+#: includes/class-cpt-prestation-part.php:247
+#: includes/class-cpt-prestation-part.php:260
+msgid "Parts"
+msgstr "Parts"
 
-#: includes/class-cpt-association.php:207
-msgid "Association"
-msgstr "Association"
+#: includes/class-cpt-prestation-part.php:227
+msgid "Part"
+msgstr "Part"
 
-#: includes/class-cpt-association.php:208 includes/class-cpt-prestation.php:202
-#: includes/class-cpt-prestation-part.php:232
+#: includes/class-cpt-prestation-part.php:228
+#: includes/class-cpt-prestation.php:202 includes/class-cpt-service.php:219
 msgid "Add New"
 msgstr "Ajouter"
 
-#: includes/class-cpt-association.php:209
-msgid "Add New Association"
-msgstr "Ajouter une nouvelle association"
+#: includes/class-cpt-prestation-part.php:229
+msgid "Add New Part"
+msgstr "Ajouter"
 
-#: includes/class-cpt-association.php:210
-msgid "Edit Association"
-msgstr "Modifier l'association"
+#: includes/class-cpt-prestation-part.php:230
+msgid "Edit Part"
+msgstr "Modifier le prestation part"
 
-#: includes/class-cpt-association.php:211
-msgid "New Association"
-msgstr "Nouvelle association"
+#: includes/class-cpt-prestation-part.php:231
+msgid "New Part"
+msgstr "Nouveau prestation part"
 
-#: includes/class-cpt-association.php:212
-msgid "View Association"
-msgstr "Voir l'association"
+#: includes/class-cpt-prestation-part.php:232
+msgid "View Part"
+msgstr "Voir le prestation part"
 
-#: includes/class-cpt-association.php:213
-msgid "View Associations"
-msgstr "Voir les associations"
+#: includes/class-cpt-prestation-part.php:233
+msgid "View Parts"
+msgstr "Voir les prestation parts"
 
-#: includes/class-cpt-association.php:214
-msgid "Search Associations"
-msgstr "Rechercher dans les associations"
+#: includes/class-cpt-prestation-part.php:234
+msgid "Search Parts"
+msgstr "Rechercher dans les prestation parts"
 
-#: includes/class-cpt-association.php:215
-msgid "No associations found."
-msgstr "Aucune association trouvée."
+#: includes/class-cpt-prestation-part.php:235
+msgid "No prestation parts found."
+msgstr "Aucun prestation part trouvé."
 
-#: includes/class-cpt-association.php:216
-msgid "No associations found in Trash."
-msgstr "Aucune association trouvée dans la corbeille."
+#: includes/class-cpt-prestation-part.php:236
+msgid "No prestation parts found in Trash."
+msgstr "Aucun prestation part trouvé dans la corbeille."
 
-#: includes/class-cpt-association.php:217
-msgid "Parent Association:"
-msgstr "Association parente :"
+#: includes/class-cpt-prestation-part.php:237
+msgid "Parent Part:"
+msgstr "Part parent :"
 
-#: includes/class-cpt-association.php:219
-msgid "Association Archives"
-msgstr "Archives des associations"
+#: includes/class-cpt-prestation-part.php:239
+msgid "Part Archives"
+msgstr "Archives des prestation parts"
 
-#: includes/class-cpt-association.php:220
-msgid "Association Attributes"
-msgstr "Attributs d'association"
+#: includes/class-cpt-prestation-part.php:240
+msgid "Part Attributes"
+msgstr "Attributs de prestation part"
 
-#: includes/class-cpt-association.php:221
-msgid "Insert into association"
-msgstr "Insérer dans l'association"
+#: includes/class-cpt-prestation-part.php:241
+msgid "Insert into prestation part"
+msgstr "Insérer dans le prestation part"
 
-#: includes/class-cpt-association.php:222
-msgid "Uploaded to this association"
-msgstr "Téléchargé sur cette association"
+#: includes/class-cpt-prestation-part.php:242
+msgid "Uploaded to this prestation part"
+msgstr "Téléchargé sur ce prestation part"
 
-#: includes/class-cpt-association.php:223 includes/class-cpt-prestation.php:217
-#: includes/class-cpt-prestation-part.php:247
+#: includes/class-cpt-prestation-part.php:243
+#: includes/class-cpt-prestation.php:217 includes/class-cpt-service.php:234
 msgid "Featured image"
 msgstr "Image mise en avant"
 
-#: includes/class-cpt-association.php:224 includes/class-cpt-prestation.php:218
-#: includes/class-cpt-prestation-part.php:248
+#: includes/class-cpt-prestation-part.php:244
+#: includes/class-cpt-prestation.php:218 includes/class-cpt-service.php:235
 msgid "Set featured image"
 msgstr "Définir l'image mise en avant"
 
-#: includes/class-cpt-association.php:225 includes/class-cpt-prestation.php:219
-#: includes/class-cpt-prestation-part.php:249
+#: includes/class-cpt-prestation-part.php:245
+#: includes/class-cpt-prestation.php:219 includes/class-cpt-service.php:236
 msgid "Remove featured image"
 msgstr "Supprimer l'image mise en avant"
 
-#: includes/class-cpt-association.php:226 includes/class-cpt-prestation.php:220
-#: includes/class-cpt-prestation-part.php:250
+#: includes/class-cpt-prestation-part.php:246
+#: includes/class-cpt-prestation.php:220 includes/class-cpt-service.php:237
 msgid "Use as featured image"
 msgstr "Utiliser comme image mise en avant"
 
-#: includes/class-cpt-association.php:228
-msgid "Filter associations list"
-msgstr "Filtrer la liste des associations"
+#: includes/class-cpt-prestation-part.php:248
+msgid "Filter prestation parts list"
+msgstr "Filtrer la liste des prestation parts"
 
-#: includes/class-cpt-association.php:230
-msgid "Associations list navigation"
-msgstr "Navigation dans la liste des associations"
+#: includes/class-cpt-prestation-part.php:250
+msgid "Parts list navigation"
+msgstr "Navigation dans la liste des prestation parts"
 
-#: includes/class-cpt-association.php:231
-msgid "Associations list"
-msgstr "Liste des associations"
+#: includes/class-cpt-prestation-part.php:251
+msgid "Parts list"
+msgstr "Liste des prestation parts"
 
-#: includes/class-cpt-association.php:232
-msgid "Association published."
-msgstr "Associaiton publiée."
+#: includes/class-cpt-prestation-part.php:252
+msgid "Part published."
+msgstr "Part publié."
 
-#: includes/class-cpt-association.php:233
-msgid "Association published privately."
-msgstr "Associaiton publiée en privé."
+#: includes/class-cpt-prestation-part.php:253
+msgid "Part published privately."
+msgstr "Part publié en privé."
 
-#: includes/class-cpt-association.php:234
-msgid "Association reverted to draft."
-msgstr "Association remise en brouillon."
+#: includes/class-cpt-prestation-part.php:254
+msgid "Part reverted to draft."
+msgstr "Part remis en brouillon."
 
-#: includes/class-cpt-association.php:235
-msgid "Association scheduled."
-msgstr "Association planifiée."
+#: includes/class-cpt-prestation-part.php:255
+msgid "Part scheduled."
+msgstr "Part planifié."
 
-#: includes/class-cpt-association.php:236
-msgid "Association updated."
-msgstr "Association mise à jour."
+#: includes/class-cpt-prestation-part.php:256
+msgid "Part updated."
+msgstr "Part mis à jour."
 
-#: includes/class-cpt-association.php:280
-msgid "Page"
-msgstr "Page"
+#: includes/class-cpt-prestation-part.php:295
+msgid "Parts fields"
+msgstr "Champs des prestation parts"
+
+#: includes/class-cpt-prestation-part.php:306
+#: includes/modules/class-woocommerce.php:691
+#: includes/modules/load-modules.php:181
+msgid "Source"
+msgstr "Source"
+
+#: includes/class-cpt-prestation-part.php:311
+msgctxt "(prestation part) source"
+msgid "None"
+msgstr "Aucune"
+
+#: includes/class-cpt-prestation-part.php:320
+msgid "Source ID"
+msgstr "Identifiant source"
+
+#: includes/class-cpt-prestation-part.php:330
+msgid "Source Details"
+msgstr "Détails source"
+
+#: includes/class-cpt-prestation-part.php:340
+#: includes/class-cpt-prestation.php:563
+#: includes/modules/class-woocommerce.php:692
+#: includes/modules/load-modules.php:182
+msgid "Description"
+msgstr "Description"
+
+#: includes/class-cpt-prestation-part.php:349
+#: includes/class-cpt-prestation.php:201
+#: includes/modules/class-woocommerce.php:210
+#: includes/modules/class-woocommerce.php:376
+msgid "Prestation"
+msgstr "Prestation"
+
+#: includes/class-cpt-prestation-part.php:356
+#: includes/class-cpt-prestation-part.php:372
+#: includes/class-cpt-prestation.php:282
+msgid "Customer"
+msgstr "Client"
+
+#: includes/class-cpt-prestation-part.php:378
+#: includes/class-cpt-prestation-part.php:415
+msgid "Existing User"
+msgstr "Utilisateur existant"
+
+#: includes/class-cpt-prestation-part.php:384
+#: includes/class-cpt-prestation-part.php:421
+msgid "Name"
+msgstr "Nom"
+
+#: includes/class-cpt-prestation-part.php:391
+#: includes/class-cpt-prestation-part.php:428
+msgid "Email"
+msgstr "E-mail"
+
+#: includes/class-cpt-prestation-part.php:397
+#: includes/class-cpt-prestation-part.php:434
+msgid "Phone"
+msgstr "Téléphoner"
+
+#: includes/class-cpt-prestation-part.php:408
+#: includes/class-cpt-prestation.php:299
+msgid "Attendee"
+msgstr "Participant"
+
+#: includes/class-cpt-prestation-part.php:412
+msgid "Fill only if different from customer."
+msgstr "Remplir uniquement si différent du client."
+
+#: includes/class-cpt-prestation-part.php:446
+#: includes/class-cpt-prestation-part.php:456
+#: includes/class-cpt-prestation.php:318 includes/class-cpt-prestation.php:1284
+msgid "Dates"
+msgstr "Dates"
+
+#: includes/class-cpt-prestation-part.php:462
+#: includes/class-cpt-prestation.php:328
+#: includes/modules/class-woocommerce-payment-product.php:345
+#: includes/modules/class-woocommerce.php:693
+#: includes/modules/load-modules.php:183
+msgid "From"
+msgstr "Du"
+
+#: includes/class-cpt-prestation-part.php:471
+#: includes/class-cpt-prestation.php:339 includes/class-cpt-prestation.php:588
+#: includes/modules/class-woocommerce.php:694
+#: includes/modules/load-modules.php:184
+msgid "To"
+msgstr "Au"
+
+#: includes/class-cpt-prestation-part.php:482
+msgid "Number of Attendees"
+msgstr "Nombre de participants"
+
+#: includes/class-cpt-prestation-part.php:488
+#: includes/class-cpt-prestation-part.php:617
+#: includes/class-cpt-prestation.php:757
+#: includes/modules/class-woocommerce.php:698
+#: includes/modules/load-modules.php:188
+msgid "Total"
+msgstr "Total"
+
+#: includes/class-cpt-prestation-part.php:496
+msgid "Adults"
+msgstr "Adultes"
+
+#: includes/class-cpt-prestation-part.php:503
+msgid "Children"
+msgstr "Enfants"
+
+#: includes/class-cpt-prestation-part.php:510
+msgid "Babies"
+msgstr "Bébés"
+
+#: includes/class-cpt-prestation-part.php:519
+msgid "# Attendees"
+msgstr "# Participants"
+
+#: includes/class-cpt-prestation-part.php:529
+msgid "Beds"
+msgstr "Lits"
+
+#: includes/class-cpt-prestation-part.php:535
+msgid "Double"
+msgstr "Doubles"
+
+#: includes/class-cpt-prestation-part.php:542
+msgid "Single"
+msgstr "Simples"
+
+#: includes/class-cpt-prestation-part.php:549
+msgid "Baby"
+msgstr "Bébé"
+
+#: includes/class-cpt-prestation-part.php:563
+#: includes/class-cpt-prestation.php:651
+msgid "Price"
+msgstr "Prix"
+
+#: includes/class-cpt-prestation-part.php:569
+#: includes/class-cpt-prestation.php:606
+msgid "Quantity"
+msgstr "Quantité"
+
+#: includes/class-cpt-prestation-part.php:577
+#: includes/class-cpt-prestation.php:621
+msgid "Unit Price"
+msgstr "Prix unitaire"
+
+#: includes/class-cpt-prestation-part.php:585
+#: includes/modules/class-woocommerce.php:695
+#: includes/modules/load-modules.php:185
+msgid "Subtotal"
+msgstr "Sous-total"
+
+#: includes/class-cpt-prestation-part.php:594
+#: includes/class-cpt-prestation.php:352 includes/class-cpt-prestation.php:636
+#: includes/class-cpt-prestation.php:751
+#: includes/modules/class-woocommerce.php:696
+#: includes/modules/load-modules.php:186
+msgid "Discount"
+msgstr "Remise"
+
+#: includes/class-cpt-prestation-part.php:630
+#: includes/class-cpt-prestation-part.php:699
+#: includes/class-cpt-prestation.php:380 includes/class-cpt-prestation.php:764
+#: includes/modules/class-woocommerce-payment-product.php:415
+msgid "Deposit"
+msgstr "Acompte"
+
+#: includes/class-cpt-prestation-part.php:654
+#: includes/class-cpt-prestation.php:409
+msgid "Before"
+msgstr "Avant"
+
+#: includes/class-cpt-prestation-part.php:663
+#: includes/class-cpt-prestation.php:557
+msgid "Payment"
+msgstr "Paiement"
+
+#: includes/class-cpt-prestation-part.php:670
+#: includes/class-cpt-prestation.php:569
+msgid "Date"
+msgstr "Date"
+
+#: includes/class-cpt-prestation-part.php:679
+#: includes/modules/class-woocommerce-payment-product.php:199
+msgid "Amount"
+msgstr "Montant"
+
+#: includes/class-cpt-prestation-part.php:687
+msgid "Method"
+msgstr "Méthode"
+
+#: includes/class-cpt-prestation-part.php:692
+msgid "Reference"
+msgstr "Référence"
+
+#: includes/class-cpt-prestation-part.php:709
+#: includes/class-cpt-prestation.php:667 includes/class-cpt-prestation.php:770
+#: includes/class-cpt-prestation.php:930
+#: includes/modules/class-woocommerce.php:699
+#: includes/modules/load-modules.php:189
+msgid "Paid"
+msgstr "Payé"
+
+#: includes/class-cpt-prestation-part.php:719
+#: includes/class-cpt-prestation.php:777
+#: includes/modules/class-woocommerce-payment-product.php:417
+msgid "Balance"
+msgstr "Solde"
+
+#: includes/class-cpt-prestation-part.php:732
+#: includes/class-cpt-prestation.php:798
+#: includes/modules/class-woocommerce.php:700
+#: includes/modules/load-modules.php:190
+msgid "Status"
+msgstr "Statut"
+
+#: includes/class-cpt-prestation-part.php:755
+#: includes/class-cpt-prestation-part.php:757
+#: includes/class-cpt-prestation-part.php:781
+msgid "Part Sources"
+msgstr "Sources de prestation parts"
+
+#: includes/class-cpt-prestation-part.php:756
+msgid "Part Source"
+msgstr "Source de prestation part"
+
+#: includes/class-cpt-prestation-part.php:758
+msgid "Search Part Sources"
+msgstr "Rechercher des sources de prestation parts"
+
+#: includes/class-cpt-prestation-part.php:759
+msgid "Popular Part Sources"
+msgstr "Sources de prestation parts populaires"
+
+#: includes/class-cpt-prestation-part.php:760
+msgid "All Part Sources"
+msgstr "Toutes les sources de prestation parts"
+
+#: includes/class-cpt-prestation-part.php:761
+msgid "Parent Part Source"
+msgstr "Source de prestation part parent"
+
+#: includes/class-cpt-prestation-part.php:762
+msgid "Parent Part Source:"
+msgstr "Source du prestation part parente :"
+
+#: includes/class-cpt-prestation-part.php:763
+msgid "Edit Part Source"
+msgstr "Modifier la source de prestation part"
+
+#: includes/class-cpt-prestation-part.php:764
+msgid "View Part Source"
+msgstr "Afficher la source de prestation part"
+
+#: includes/class-cpt-prestation-part.php:765
+msgid "Update Part Source"
+msgstr "Mettre à jour la source de prestation part"
+
+#: includes/class-cpt-prestation-part.php:766
+msgid "Add New Part Source"
+msgstr "Ajouter une nouvelle source de prestation part"
+
+#: includes/class-cpt-prestation-part.php:767
+msgid "New Part Source Name"
+msgstr "Nom de la nouvelle source de prestation part"
+
+#: includes/class-cpt-prestation-part.php:768
+msgid "Separate prestation part sources with commas"
+msgstr "Séparez les sources de prestation part par des virgules"
+
+#: includes/class-cpt-prestation-part.php:769
+msgid "Add or remove prestation part sources"
+msgstr "Ajouter ou supprimer des sources de prestation part"
+
+#: includes/class-cpt-prestation-part.php:770
+msgid "Choose most used prestation part sources"
+msgstr "Choisissez les sources de prestation part les plus utilisées"
+
+#: includes/class-cpt-prestation-part.php:771
+msgid "No prestation part sources found."
+msgstr "Aucune source de prestation part trouvée."
+
+#: includes/class-cpt-prestation-part.php:772
+msgid "No prestation part sources"
+msgstr "Aucune source de prestation part"
+
+#: includes/class-cpt-prestation-part.php:773
+msgid "Filter by prestation part source"
+msgstr "Filtrer par source de prestation part"
+
+#: includes/class-cpt-prestation-part.php:774
+msgid "Part Sources list pagination"
+msgstr "Pagination de la liste des sources de prestation part"
+
+#: includes/class-cpt-prestation-part.php:775
+msgid "Part Sources list"
+msgstr "Liste des sources de prestation part"
+
+#: includes/class-cpt-prestation-part.php:776
+#: includes/class-cpt-prestation.php:880 includes/class-cpt-service.php:357
+msgid "Most Used"
+msgstr "Les plus utilisés"
+
+#: includes/class-cpt-prestation-part.php:777
+msgid "&larr; Go to Part Sources"
+msgstr "&larr; Aller aux sources de prestation parts"
 
 #: includes/class-cpt-prestation.php:200 includes/class-cpt-prestation.php:221
 #: includes/class-cpt-prestation.php:234 includes/class-cpt-prestation.php:269
 msgid "Prestations"
 msgstr "Prestations"
-
-#: includes/class-cpt-prestation.php:201 includes/class-cpt-prestation-part.php:353
-#: includes/modules/class-woocommerce.php:209
-#: includes/modules/class-woocommerce.php:375
-msgid "Prestation"
-msgstr "Prestation"
 
 #: includes/class-cpt-prestation.php:203
 msgid "Add new prestation"
@@ -261,11 +563,6 @@ msgstr "Prestation planifiée"
 msgid "Prestation updated"
 msgstr "Prestation mise à jour"
 
-#: includes/class-cpt-prestation.php:282 includes/class-cpt-prestation-part.php:360
-#: includes/class-cpt-prestation-part.php:376
-msgid "Customer"
-msgstr "Client"
-
 #: includes/class-cpt-prestation.php:293
 msgid "Attendee name"
 msgstr "Nom du participant"
@@ -274,49 +571,9 @@ msgstr "Nom du participant"
 msgid "Leave empty if same as customer name"
 msgstr "Laisser vide si identique au nom du client"
 
-#: includes/class-cpt-prestation.php:299 includes/class-cpt-prestation-part.php:412
-msgid "Attendee"
-msgstr "Participant"
-
 #: includes/class-cpt-prestation.php:309
 msgid "Customer Email"
 msgstr "Email client"
-
-#: includes/class-cpt-prestation.php:318 includes/class-cpt-prestation.php:1298
-#: includes/class-cpt-prestation-part.php:450 includes/class-cpt-prestation-part.php:460
-msgid "Dates"
-msgstr "Dates"
-
-#: includes/class-cpt-prestation.php:328 includes/class-cpt-prestation-part.php:466
-#: includes/modules/class-woocommerce-payment-product.php:345
-#: includes/modules/class-woocommerce.php:692
-#: includes/modules/load-modules.php:183
-msgid "From"
-msgstr "Du"
-
-#: includes/class-cpt-prestation.php:339 includes/class-cpt-prestation.php:588
-#: includes/class-cpt-prestation-part.php:475
-#: includes/modules/class-woocommerce.php:693
-#: includes/modules/load-modules.php:184
-msgid "To"
-msgstr "Au"
-
-#: includes/class-cpt-prestation.php:352 includes/class-cpt-prestation.php:636
-#: includes/class-cpt-prestation.php:751 includes/class-cpt-prestation-part.php:598
-#: includes/modules/class-woocommerce.php:695
-#: includes/modules/load-modules.php:186
-msgid "Discount"
-msgstr "Remise"
-
-#: includes/class-cpt-prestation.php:380 includes/class-cpt-prestation.php:764
-#: includes/class-cpt-prestation-part.php:634 includes/class-cpt-prestation-part.php:703
-#: includes/modules/class-woocommerce-payment-product.php:415
-msgid "Deposit"
-msgstr "Acompte"
-
-#: includes/class-cpt-prestation.php:409 includes/class-cpt-prestation-part.php:658
-msgid "Before"
-msgstr "Avant"
 
 #: includes/class-cpt-prestation.php:542
 msgid "Manual operations"
@@ -325,58 +582,25 @@ msgstr "Opérations manuelles"
 #: includes/class-cpt-prestation.php:548
 msgid "Use manual operations only for items not managed by modules."
 msgstr ""
-"Utilisez les opérations manuelles uniquement pour les prestation parts non gérés par "
-"les modules."
+"Utilisez les opérations manuelles uniquement pour les prestation parts non "
+"gérés par les modules."
 
 #: includes/class-cpt-prestation.php:551
 msgid "Type"
 msgstr "Type"
 
 #: includes/class-cpt-prestation.php:555
-#: includes/modules/class-woocommerce.php:265
+#: includes/modules/class-woocommerce.php:266
 msgid "Product"
 msgstr "Produit"
 
-#: includes/class-cpt-prestation.php:556
+#: includes/class-cpt-prestation.php:556 includes/class-cpt-service.php:387
 msgid "Booking"
 msgstr "Réservation"
-
-#: includes/class-cpt-prestation.php:557 includes/class-cpt-prestation-part.php:667
-msgid "Payment"
-msgstr "Paiement"
 
 #: includes/class-cpt-prestation.php:559
 msgid "Select a type"
 msgstr "Sélectionnez un type"
-
-#: includes/class-cpt-prestation.php:563 includes/class-cpt-prestation-part.php:344
-#: includes/modules/class-woocommerce.php:691
-#: includes/modules/load-modules.php:182
-msgid "Description"
-msgstr "Description"
-
-#: includes/class-cpt-prestation.php:569 includes/class-cpt-prestation-part.php:674
-msgid "Date"
-msgstr "Date"
-
-#: includes/class-cpt-prestation.php:606 includes/class-cpt-prestation-part.php:573
-msgid "Quantity"
-msgstr "Quantité"
-
-#: includes/class-cpt-prestation.php:621 includes/class-cpt-prestation-part.php:581
-msgid "Unit Price"
-msgstr "Prix unitaire"
-
-#: includes/class-cpt-prestation.php:651 includes/class-cpt-prestation-part.php:567
-msgid "Price"
-msgstr "Prix"
-
-#: includes/class-cpt-prestation.php:667 includes/class-cpt-prestation.php:770
-#: includes/class-cpt-prestation.php:930 includes/class-cpt-prestation-part.php:713
-#: includes/modules/class-woocommerce.php:698
-#: includes/modules/load-modules.php:189
-msgid "Paid"
-msgstr "Payé"
 
 #: includes/class-cpt-prestation.php:739
 msgid "Summary"
@@ -386,27 +610,9 @@ msgstr "Résumé"
 msgid "Regular Price"
 msgstr "Prix de base"
 
-#: includes/class-cpt-prestation.php:757 includes/class-cpt-prestation-part.php:492
-#: includes/class-cpt-prestation-part.php:621
-#: includes/modules/class-woocommerce.php:697
-#: includes/modules/load-modules.php:188
-msgid "Total"
-msgstr "Total"
-
-#: includes/class-cpt-prestation.php:777 includes/class-cpt-prestation-part.php:723
-#: includes/modules/class-woocommerce-payment-product.php:417
-msgid "Balance"
-msgstr "Solde"
-
 #: includes/class-cpt-prestation.php:792
 msgid "Reference #"
 msgstr "Référence #"
-
-#: includes/class-cpt-prestation.php:798 includes/class-cpt-prestation-part.php:736
-#: includes/modules/class-woocommerce.php:699
-#: includes/modules/load-modules.php:190
-msgid "Status"
-msgstr "Statut"
 
 #: includes/class-cpt-prestation.php:859 includes/class-cpt-prestation.php:861
 #: includes/class-cpt-prestation.php:885
@@ -485,10 +691,6 @@ msgstr "Pagination de la liste des statuts de prestation"
 msgid "Prestation statuses list"
 msgstr "Liste des statuts de prestation"
 
-#: includes/class-cpt-prestation.php:880 includes/class-cpt-prestation-part.php:780
-msgid "Most Used"
-msgstr "Les plus utilisés"
-
 #: includes/class-cpt-prestation.php:881
 msgid "Back to prestation statuses"
 msgstr "Retour aux statuts de prestation"
@@ -514,7 +716,7 @@ msgid "Cancelled"
 msgstr "Annulé"
 
 #: includes/class-cpt-prestation.php:923
-#: includes/modules/class-woocommerce.php:696
+#: includes/modules/class-woocommerce.php:697
 #: includes/modules/load-modules.php:187
 msgid "Refunded"
 msgstr "Remboursé"
@@ -539,281 +741,192 @@ msgstr "Non payé"
 msgid "Partially paid"
 msgstr "Partiellement payé"
 
-#: includes/class-cpt-prestation-part.php:230 includes/class-cpt-prestation-part.php:242
-#: includes/class-cpt-prestation-part.php:251 includes/class-cpt-prestation-part.php:264
-msgid "Parts"
-msgstr "Parts"
-
-#: includes/class-cpt-prestation-part.php:231
-msgid "Part"
-msgstr "Part"
-
-#: includes/class-cpt-prestation-part.php:233
-msgid "Add New Part"
-msgstr "Ajouter"
-
-#: includes/class-cpt-prestation-part.php:234
-msgid "Edit Part"
-msgstr "Modifier le prestation part"
-
-#: includes/class-cpt-prestation-part.php:235
-msgid "New Part"
-msgstr "Nouveau prestation part"
-
-#: includes/class-cpt-prestation-part.php:236
-msgid "View Part"
-msgstr "Voir le prestation part"
-
-#: includes/class-cpt-prestation-part.php:237
-msgid "View Parts"
-msgstr "Voir les prestation parts"
-
-#: includes/class-cpt-prestation-part.php:238
-msgid "Search Parts"
-msgstr "Rechercher dans les prestation parts"
-
-#: includes/class-cpt-prestation-part.php:239
-msgid "No prestation parts found."
-msgstr "Aucun prestation part trouvé."
-
-#: includes/class-cpt-prestation-part.php:240
-msgid "No prestation parts found in Trash."
-msgstr "Aucun prestation part trouvé dans la corbeille."
-
-#: includes/class-cpt-prestation-part.php:241
-msgid "Parent Part:"
-msgstr "Part parent :"
-
-#: includes/class-cpt-prestation-part.php:243
-msgid "Part Archives"
-msgstr "Archives des prestation parts"
-
-#: includes/class-cpt-prestation-part.php:244
-msgid "Part Attributes"
-msgstr "Attributs de prestation part"
-
-#: includes/class-cpt-prestation-part.php:245
-msgid "Insert into prestation part"
-msgstr "Insérer dans le prestation part"
-
-#: includes/class-cpt-prestation-part.php:246
-msgid "Uploaded to this prestation part"
-msgstr "Téléchargé sur ce prestation part"
-
-#: includes/class-cpt-prestation-part.php:252
-msgid "Filter prestation parts list"
-msgstr "Filtrer la liste des prestation parts"
-
-#: includes/class-cpt-prestation-part.php:254
-msgid "Parts list navigation"
-msgstr "Navigation dans la liste des prestation parts"
-
-#: includes/class-cpt-prestation-part.php:255
-msgid "Parts list"
-msgstr "Liste des prestation parts"
-
-#: includes/class-cpt-prestation-part.php:256
-msgid "Part published."
-msgstr "Part publié."
-
-#: includes/class-cpt-prestation-part.php:257
-msgid "Part published privately."
-msgstr "Part publié en privé."
-
-#: includes/class-cpt-prestation-part.php:258
-msgid "Part reverted to draft."
-msgstr "Part remis en brouillon."
-
-#: includes/class-cpt-prestation-part.php:259
-msgid "Part scheduled."
-msgstr "Part planifié."
-
-#: includes/class-cpt-prestation-part.php:260
-msgid "Part updated."
-msgstr "Part mis à jour."
-
-#: includes/class-cpt-prestation-part.php:299
-msgid "Parts fields"
-msgstr "Champs des prestation parts"
-
-#: includes/class-cpt-prestation-part.php:310
-#: includes/modules/class-woocommerce.php:690
-#: includes/modules/load-modules.php:181
-msgid "Source"
-msgstr "Source"
-
-#: includes/class-cpt-prestation-part.php:315
-msgctxt "(prestation part) source"
-msgid "None"
-msgstr "Aucune"
-
-#: includes/class-cpt-prestation-part.php:324
-msgid "Source ID"
-msgstr "Identifiant source"
-
-#: includes/class-cpt-prestation-part.php:334
-msgid "Source Details"
-msgstr "Détails source"
-
-#: includes/class-cpt-prestation-part.php:382 includes/class-cpt-prestation-part.php:419
-msgid "Existing User"
-msgstr "Utilisateur existant"
-
-#: includes/class-cpt-prestation-part.php:388 includes/class-cpt-prestation-part.php:425
-msgid "Name"
-msgstr "Nom"
-
-#: includes/class-cpt-prestation-part.php:395 includes/class-cpt-prestation-part.php:432
-msgid "Email"
-msgstr "E-mail"
-
-#: includes/class-cpt-prestation-part.php:401 includes/class-cpt-prestation-part.php:438
-msgid "Phone"
-msgstr "Téléphoner"
-
-#: includes/class-cpt-prestation-part.php:416
-msgid "Fill only if different from customer."
-msgstr "Remplir uniquement si différent du client."
-
-#: includes/class-cpt-prestation-part.php:486
-msgid "Number of Attendees"
-msgstr "Nombre de participants"
-
-#: includes/class-cpt-prestation-part.php:500
-msgid "Adults"
-msgstr "Adultes"
-
-#: includes/class-cpt-prestation-part.php:507
-msgid "Children"
-msgstr "Enfants"
-
-#: includes/class-cpt-prestation-part.php:514
-msgid "Babies"
-msgstr "Bébés"
-
-#: includes/class-cpt-prestation-part.php:523
-msgid "# Attendees"
-msgstr "# Participants"
-
-#: includes/class-cpt-prestation-part.php:533
-msgid "Beds"
-msgstr "Lits"
-
-#: includes/class-cpt-prestation-part.php:539
-msgid "Double"
-msgstr "Doubles"
-
-#: includes/class-cpt-prestation-part.php:546
-msgid "Single"
-msgstr "Simples"
-
-#: includes/class-cpt-prestation-part.php:553
-msgid "Baby"
-msgstr "Bébé"
-
-#: includes/class-cpt-prestation-part.php:589
-#: includes/modules/class-woocommerce.php:694
-#: includes/modules/load-modules.php:185
-msgid "Subtotal"
-msgstr "Sous-total"
-
-#: includes/class-cpt-prestation-part.php:683
-#: includes/modules/class-woocommerce-payment-product.php:199
-msgid "Amount"
-msgstr "Montant"
-
-#: includes/class-cpt-prestation-part.php:691
-msgid "Method"
-msgstr "Méthode"
-
-#: includes/class-cpt-prestation-part.php:696
-msgid "Reference"
-msgstr "Référence"
-
-#: includes/class-cpt-prestation-part.php:759 includes/class-cpt-prestation-part.php:761
-#: includes/class-cpt-prestation-part.php:785
-msgid "Part Sources"
-msgstr "Sources de prestation parts"
-
-#: includes/class-cpt-prestation-part.php:760
-msgid "Part Source"
-msgstr "Source de prestation part"
-
-#: includes/class-cpt-prestation-part.php:762
-msgid "Search Part Sources"
-msgstr "Rechercher des sources de prestation parts"
-
-#: includes/class-cpt-prestation-part.php:763
-msgid "Popular Part Sources"
-msgstr "Sources de prestation parts populaires"
-
-#: includes/class-cpt-prestation-part.php:764
-msgid "All Part Sources"
-msgstr "Toutes les sources de prestation parts"
-
-#: includes/class-cpt-prestation-part.php:765
-msgid "Parent Part Source"
-msgstr "Source de prestation part parent"
-
-#: includes/class-cpt-prestation-part.php:766
-msgid "Parent Part Source:"
-msgstr "Source du prestation part parente :"
-
-#: includes/class-cpt-prestation-part.php:767
-msgid "Edit Part Source"
-msgstr "Modifier la source de prestation part"
-
-#: includes/class-cpt-prestation-part.php:768
-msgid "View Part Source"
-msgstr "Afficher la source de prestation part"
-
-#: includes/class-cpt-prestation-part.php:769
-msgid "Update Part Source"
-msgstr "Mettre à jour la source de prestation part"
-
-#: includes/class-cpt-prestation-part.php:770
-msgid "Add New Part Source"
-msgstr "Ajouter une nouvelle source de prestation part"
-
-#: includes/class-cpt-prestation-part.php:771
-msgid "New Part Source Name"
-msgstr "Nom de la nouvelle source de prestation part"
-
-#: includes/class-cpt-prestation-part.php:772
-msgid "Separate prestation part sources with commas"
-msgstr "Séparez les sources de prestation part par des virgules"
-
-#: includes/class-cpt-prestation-part.php:773
-msgid "Add or remove prestation part sources"
-msgstr "Ajouter ou supprimer des sources de prestation part"
-
-#: includes/class-cpt-prestation-part.php:774
-msgid "Choose most used prestation part sources"
-msgstr "Choisissez les sources de prestation part les plus utilisées"
-
-#: includes/class-cpt-prestation-part.php:775
-msgid "No prestation part sources found."
-msgstr "Aucune source de prestation part trouvée."
-
-#: includes/class-cpt-prestation-part.php:776
-msgid "No prestation part sources"
-msgstr "Aucune source de prestation part"
-
-#: includes/class-cpt-prestation-part.php:777
-msgid "Filter by prestation part source"
-msgstr "Filtrer par source de prestation part"
-
-#: includes/class-cpt-prestation-part.php:778
-msgid "Part Sources list pagination"
-msgstr "Pagination de la liste des sources de prestation part"
-
-#: includes/class-cpt-prestation-part.php:779
-msgid "Part Sources list"
-msgstr "Liste des sources de prestation part"
-
-#: includes/class-cpt-prestation-part.php:781
-msgid "&larr; Go to Part Sources"
-msgstr "&larr; Aller aux sources de prestation parts"
+#: includes/class-cpt-service.php:217 includes/class-cpt-service.php:229
+#: includes/class-cpt-service.php:238 includes/class-cpt-service.php:251
+#: includes/class-cpt-service.php:285
+msgid "Services"
+msgstr "Services"
+
+#: includes/class-cpt-service.php:218
+msgid "Service"
+msgstr "Service"
+
+#: includes/class-cpt-service.php:220
+msgid "Add New Service"
+msgstr "Ajouter un nouveau service"
+
+#: includes/class-cpt-service.php:221
+msgid "Edit Service"
+msgstr "Modifier me service"
+
+#: includes/class-cpt-service.php:222
+msgid "New Service"
+msgstr "Nouveau service"
+
+#: includes/class-cpt-service.php:223
+msgid "View Service"
+msgstr "Voir me service"
+
+#: includes/class-cpt-service.php:224
+msgid "View Services"
+msgstr "Voir les services"
+
+#: includes/class-cpt-service.php:225
+msgid "Search Services"
+msgstr "Rechercher dans les services"
+
+#: includes/class-cpt-service.php:226
+msgid "No services found."
+msgstr "Aucun service trouvé."
+
+#: includes/class-cpt-service.php:227
+msgid "No services found in Trash."
+msgstr "Aucun service trouvé dans la corbeille."
+
+#: includes/class-cpt-service.php:228
+msgid "Parent Service:"
+msgstr "Service parente :"
+
+#: includes/class-cpt-service.php:230
+msgid "Service Archives"
+msgstr "Archives des services"
+
+#: includes/class-cpt-service.php:231
+msgid "Service Attributes"
+msgstr "Attributs d'service"
+
+#: includes/class-cpt-service.php:232
+msgid "Insert into service"
+msgstr "Insérer dans me service"
+
+#: includes/class-cpt-service.php:233
+msgid "Uploaded to this service"
+msgstr "Téléchargé sur ce service"
+
+#: includes/class-cpt-service.php:239
+msgid "Filter services list"
+msgstr "Filtrer la liste des services"
+
+#: includes/class-cpt-service.php:241
+msgid "Services list navigation"
+msgstr "Navigation dans la liste des services"
+
+#: includes/class-cpt-service.php:242
+msgid "Services list"
+msgstr "Liste des services"
+
+#: includes/class-cpt-service.php:243
+msgid "Service published."
+msgstr "Associaiton publiée."
+
+#: includes/class-cpt-service.php:244
+msgid "Service published privately."
+msgstr "Associaiton publiée en privé."
+
+#: includes/class-cpt-service.php:245
+msgid "Service reverted to draft."
+msgstr "Service remise en brouillon."
+
+#: includes/class-cpt-service.php:246
+msgid "Service scheduled."
+msgstr "Service planifiée."
+
+#: includes/class-cpt-service.php:247
+msgid "Service updated."
+msgstr "Service mise à jour."
+
+#: includes/class-cpt-service.php:291
+msgid "Page"
+msgstr "Page"
+
+#: includes/class-cpt-service.php:336 includes/class-cpt-service.php:338
+#: includes/class-cpt-service.php:362
+msgid "Service Types"
+msgstr "Types de services"
+
+#: includes/class-cpt-service.php:337 includes/class-cpt-service.php:393
+msgid "Service Type"
+msgstr "Type de service"
+
+#: includes/class-cpt-service.php:339
+msgid "Search Service Types"
+msgstr "Rechercher dans les types de services"
+
+#: includes/class-cpt-service.php:340
+msgid "Popular Service Types"
+msgstr "Types de services populaires"
+
+#: includes/class-cpt-service.php:341
+msgid "All Service Types"
+msgstr "Tous les types de service"
+
+#: includes/class-cpt-service.php:342
+msgid "Parent Service Type"
+msgstr "Type de service parent"
+
+#: includes/class-cpt-service.php:343
+msgid "Parent Service Type:"
+msgstr "Type de service parent :"
+
+#: includes/class-cpt-service.php:344
+msgid "Edit Service Type"
+msgstr "Modifier le type de service"
+
+#: includes/class-cpt-service.php:345
+msgid "View Service Type"
+msgstr "Voir le type de service"
+
+#: includes/class-cpt-service.php:346
+msgid "Update Service Type"
+msgstr "Mettre à jour le type de service"
+
+#: includes/class-cpt-service.php:347
+msgid "Add New Service Type"
+msgstr "Ajouter un nouveau type de service"
+
+#: includes/class-cpt-service.php:348
+msgid "New Service Type Name"
+msgstr "Nom du nouveau type de service"
+
+#: includes/class-cpt-service.php:349
+msgid "Separate service types with commas"
+msgstr "Séparez les types de service avec des virgules"
+
+#: includes/class-cpt-service.php:350
+msgid "Add or remove service types"
+msgstr "Ajouter ou enlever des types de service"
+
+#: includes/class-cpt-service.php:351
+msgid "Choose most used service types"
+msgstr "Choisissez les types les plus utilisés"
+
+#: includes/class-cpt-service.php:352
+msgid "No service types found."
+msgstr "Aucun type de service trouvé."
+
+#: includes/class-cpt-service.php:353
+msgid "No service types"
+msgstr "Aucun type de service"
+
+#: includes/class-cpt-service.php:354
+msgid "Filter by service type"
+msgstr "Filtrer par type de service"
+
+#: includes/class-cpt-service.php:355
+msgid "Service Types list pagination"
+msgstr "Pagination des types de service"
+
+#: includes/class-cpt-service.php:356
+msgid "Service Types list"
+msgstr "Liste des types de service"
+
+#: includes/class-cpt-service.php:358
+msgid "&larr; Go to Service Types"
+msgstr "&larr; Aller aux types de service"
+
+#: includes/class-cpt-service.php:359
+msgid "multiservices"
+msgstr "multiservices"
 
 #: includes/class-list-table.php:20
 msgid "Not an array"
@@ -875,43 +988,47 @@ msgstr "Voir les détails"
 msgid "More information about %s"
 msgstr "Plus d'informations sur% s"
 
-#: includes/class-settings.php:166 includes/class-settings.php:266
+#: includes/class-settings.php:166 includes/class-settings.php:238
 msgid "Settings"
 msgstr "Réglages"
 
-#: includes/class-settings.php:176 includes/class-settings.php:187
+#: includes/class-settings.php:176 includes/class-settings.php:188
 msgid "General"
 msgstr "Général"
 
-#: includes/class-settings.php:193 includes/modules/class-woocommerce.php:150
+#: includes/class-settings.php:177
+msgid "Terms of Service"
+msgstr "Conditions d'utilisation"
+
+#: includes/class-settings.php:194 includes/modules/class-woocommerce.php:150
 msgid "Currency Options"
 msgstr "Options de devise"
 
-#: includes/class-settings.php:199
+#: includes/class-settings.php:200
 msgid "Code"
 msgstr "Code"
 
-#: includes/class-settings.php:216
+#: includes/class-settings.php:207
 msgid "Position"
 msgstr "Position"
 
-#: includes/class-settings.php:221
+#: includes/class-settings.php:212
 msgid "Left"
 msgstr "Gauche"
 
-#: includes/class-settings.php:222
+#: includes/class-settings.php:213
 msgid "Right"
 msgstr "Droite"
 
-#: includes/class-settings.php:223
+#: includes/class-settings.php:214
 msgid "Left with space"
 msgstr "Gauche avec espace"
 
-#: includes/class-settings.php:224
+#: includes/class-settings.php:215
 msgid "Right with space"
 msgstr "Droite avec espace"
 
-#: includes/class-settings.php:241
+#: includes/class-settings.php:220
 msgid "Decimals"
 msgstr "Décimales"
 
@@ -923,6 +1040,14 @@ msgstr "du %s au %s"
 #: includes/class.php:476
 msgid "%s to %s"
 msgstr "%s au %s"
+
+#: includes/class.php:543
+msgid "(generated by %s)"
+msgstr "(généré par %s)"
+
+#: includes/class.php:595
+msgid "%s is required by %s, it cannot be deleted"
+msgstr "%s est requis par %s, il ne peut pas être supprimé"
 
 #: includes/modules/class-hbook.php:107
 msgid "HBook Settings"
@@ -994,12 +1119,13 @@ msgstr "Produits de paiement"
 #: includes/modules/class-woocommerce-payment-product.php:63
 msgid ""
 "Payment products are used to provide a payment gateway for prestation not "
-"handled by WooCommerce (like deposits, custom items or prestation parts handled by "
-"an external website)."
+"handled by WooCommerce (like deposits, custom items or prestation parts "
+"handled by an external website)."
 msgstr ""
 "Les produits de paiement sont utilisés pour fournir une passerelle de "
 "paiement pour des prestations non gérées par WooCommerce (comme les dépôts, "
-"les articles personnalisés ou les prestation parts gérés par un site Web externe)."
+"les articles personnalisés ou les prestation parts gérés par un site Web "
+"externe)."
 
 #: includes/modules/class-woocommerce-payment-product.php:66
 msgid ""
@@ -1111,7 +1237,7 @@ msgstr ""
 "Définissez les options de devise sur la %spage des paramètres WooCommerce%s"
 
 #: includes/modules/class-woocommerce.php:161
-#: includes/modules/class-woocommerce.php:357
+#: includes/modules/class-woocommerce.php:358
 msgid "WooCommerce Settings"
 msgstr "Paramètres WooCommerce"
 
@@ -1128,46 +1254,46 @@ msgstr ""
 "aucune n'existe. Uniquement utile après l'activation du plugin ou en cas de "
 "désynchronisation."
 
-#: includes/modules/class-woocommerce.php:181
+#: includes/modules/class-woocommerce.php:182
 msgid "Order ID"
 msgstr "ID commande"
 
 #. Translators: Each line in a woocommerce order, usually related to a product, but is not a product. The actual product appears right next to this field, avoid any ambiguity
-#: includes/modules/class-woocommerce.php:192
+#: includes/modules/class-woocommerce.php:193
 msgid "Order Item ID"
 msgstr "ID élément de commande"
 
-#: includes/modules/class-woocommerce.php:199
+#: includes/modules/class-woocommerce.php:200
 msgid "Product ID"
 msgstr "ID Produit"
 
-#: includes/modules/class-woocommerce.php:232
+#: includes/modules/class-woocommerce.php:233
 msgid "Woocommerce Orders"
 msgstr "Commandes Woocommerce"
 
-#: includes/modules/class-woocommerce.php:302
+#: includes/modules/class-woocommerce.php:303
 msgid "View prestation"
 msgstr "Voir les prestations"
 
-#: includes/modules/class-woocommerce.php:577
+#: includes/modules/class-woocommerce.php:578
 msgid " + %s items"
 msgstr " + %s éléments"
 
-#: includes/modules/class-woocommerce.php:681
+#: includes/modules/class-woocommerce.php:682
 msgid "Online Shop (WooCommerce)"
 msgstr "Boutique en ligne (WooCommerce)"
 
-#: includes/modules/class-woocommerce.php:682
+#: includes/modules/class-woocommerce.php:683
 #: includes/modules/load-modules.php:171
 msgid "Empty list"
 msgstr "Liste vide"
 
-#: includes/modules/class-woocommerce.php:688
+#: includes/modules/class-woocommerce.php:689
 #: includes/modules/load-modules.php:179
 msgid "ID"
 msgstr "ID"
 
-#: includes/modules/class-woocommerce.php:689
+#: includes/modules/class-woocommerce.php:690
 #: includes/modules/load-modules.php:180
 msgid "Created"
 msgstr "Créé"
