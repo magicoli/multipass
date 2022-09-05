@@ -855,41 +855,39 @@ class MultiServices_Prestation {
 	// }
 
 	static function register_taxonomies() {
-		$desc_required = sprintf(__('(required by %s)', 'multiservices'), MULTISERVICES_PLUGIN_NAME);
-
 		$labels = [
-			'name'                       => esc_html__( 'Prestation Types', 'multiservices' ),
-			'singular_name'              => esc_html__( 'Prestation Type', 'multiservices' ),
-			'menu_name'                  => esc_html__( 'Prestation Types', 'multiservices' ),
-			'search_items'               => esc_html__( 'Search Prestation Types', 'multiservices' ),
-			'popular_items'              => esc_html__( 'Popular Prestation Types', 'multiservices' ),
-			'all_items'                  => esc_html__( 'All Prestation Types', 'multiservices' ),
-			'parent_item'                => esc_html__( 'Parent Prestation Type', 'multiservices' ),
-			'parent_item_colon'          => esc_html__( 'Parent Prestation Type:', 'multiservices' ),
-			'edit_item'                  => esc_html__( 'Edit Prestation Type', 'multiservices' ),
-			'view_item'                  => esc_html__( 'View Prestation Type', 'multiservices' ),
-			'update_item'                => esc_html__( 'Update Prestation Type', 'multiservices' ),
-			'add_new_item'               => esc_html__( 'Add New Prestation Type', 'multiservices' ),
-			'new_item_name'              => esc_html__( 'New Prestation Type Name', 'multiservices' ),
-			'separate_items_with_commas' => esc_html__( 'Separate prestation types with commas', 'multiservices' ),
-			'add_or_remove_items'        => esc_html__( 'Add or remove prestation types', 'multiservices' ),
-			'choose_from_most_used'      => esc_html__( 'Choose most used prestation types', 'multiservices' ),
-			'not_found'                  => esc_html__( 'No prestation types found.', 'multiservices' ),
-			'no_terms'                   => esc_html__( 'No prestation types', 'multiservices' ),
-			'filter_by_item'             => esc_html__( 'Filter by prestation type', 'multiservices' ),
-			'items_list_navigation'      => esc_html__( 'Prestation Types list pagination', 'multiservices' ),
-			'items_list'                 => esc_html__( 'Prestation Types list', 'multiservices' ),
+			'name'                       => esc_html__( 'Service Types', 'multiservices' ),
+			'singular_name'              => esc_html__( 'Service Type', 'multiservices' ),
+			'menu_name'                  => esc_html__( 'Service Types', 'multiservices' ),
+			'search_items'               => esc_html__( 'Search Service Types', 'multiservices' ),
+			'popular_items'              => esc_html__( 'Popular Service Types', 'multiservices' ),
+			'all_items'                  => esc_html__( 'All Service Types', 'multiservices' ),
+			'parent_item'                => esc_html__( 'Parent Service Type', 'multiservices' ),
+			'parent_item_colon'          => esc_html__( 'Parent Service Type:', 'multiservices' ),
+			'edit_item'                  => esc_html__( 'Edit Service Type', 'multiservices' ),
+			'view_item'                  => esc_html__( 'View Service Type', 'multiservices' ),
+			'update_item'                => esc_html__( 'Update Service Type', 'multiservices' ),
+			'add_new_item'               => esc_html__( 'Add New Service Type', 'multiservices' ),
+			'new_item_name'              => esc_html__( 'New Service Type Name', 'multiservices' ),
+			'separate_items_with_commas' => esc_html__( 'Separate service types with commas', 'multiservices' ),
+			'add_or_remove_items'        => esc_html__( 'Add or remove service types', 'multiservices' ),
+			'choose_from_most_used'      => esc_html__( 'Choose most used service types', 'multiservices' ),
+			'not_found'                  => esc_html__( 'No service types found.', 'multiservices' ),
+			'no_terms'                   => esc_html__( 'No service types', 'multiservices' ),
+			'filter_by_item'             => esc_html__( 'Filter by service type', 'multiservices' ),
+			'items_list_navigation'      => esc_html__( 'Service Types list pagination', 'multiservices' ),
+			'items_list'                 => esc_html__( 'Service Types list', 'multiservices' ),
 			'most_used'                  => esc_html__( 'Most Used', 'multiservices' ),
-			'back_to_items'              => esc_html__( '&larr; Go to Prestation Types', 'multiservices' ),
+			'back_to_items'              => esc_html__( '&larr; Go to Service Types', 'multiservices' ),
 			'text_domain'                => esc_html__( 'multiservices', 'multiservices' ),
 		];
 		$args = [
-			'label'              => esc_html__( 'Prestation Types', 'multiservices' ),
+			'label'              => esc_html__( 'Service Types', 'multiservices' ),
 			'labels'             => $labels,
 			'description'        => '',
-			'public'             => true,
-			'publicly_queryable' => true,
-			'hierarchical'       => false,
+			'public'             => false,
+			'publicly_queryable' => false,
+			'hierarchical'       => true,
 			'show_ui'            => true,
 			'show_in_menu'       => true,
 			'show_in_nav_menus'  => true,
@@ -899,16 +897,16 @@ class MultiServices_Prestation {
 			'show_admin_column'  => true,
 			'query_var'          => true,
 			'sort'               => false,
-			'meta_box_cb'        => 'post_tags_meta_box',
+			'meta_box_cb'        => 'post_categories_meta_box',
 			'rest_base'          => '',
 			'rewrite'            => [
 				'with_front'   => false,
 				'hierarchical' => false,
 			],
 		];
-		register_taxonomy( 'prestation-type', ['prestation', 'product', 'pr_association', 'prestation-part'], $args );
+		register_taxonomy( 'service-type', ['prestation', 'product', 'pr_association', 'prestation-part'], $args );
 
-		MultiServices::register_terms('prestation-type', array(
+		MultiServices::register_terms('service-type', array(
 			'booking' => __('Booking', 'multiservices'),
 		));
 
