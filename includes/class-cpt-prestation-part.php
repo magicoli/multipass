@@ -223,8 +223,8 @@ class MultiServices_PrPart {
 
 	static function register_post_types() {
 		$labels = [
-			'name'                     => esc_html__('Parts', 'multiservices' ),
-			'singular_name'            => esc_html__('Part', 'multiservices' ),
+			'name'                     => esc_html__('Prestations Parts', 'multiservices' ),
+			'singular_name'            => esc_html__('Prestation Part', 'multiservices' ),
 			'add_new'                  => esc_html__('Add New', 'multiservices' ),
 			'add_new_item'             => esc_html__('Add New Part', 'multiservices' ),
 			'edit_item'                => esc_html__('Edit Part', 'multiservices' ),
@@ -235,8 +235,8 @@ class MultiServices_PrPart {
 			'not_found'                => esc_html__('No prestation parts found.', 'multiservices' ),
 			'not_found_in_trash'       => esc_html__('No prestation parts found in Trash.', 'multiservices' ),
 			'parent_item_colon'        => esc_html__('Parent Part:', 'multiservices' ),
-			'all_items'                => esc_html__('Parts', 'multiservices' ),
-			'archives'                 => esc_html__('Part Archives', 'multiservices' ),
+			'all_items'                => esc_html__('Prestations Parts', 'multiservices' ),
+			'archives'                 => esc_html__('Parts Archives', 'multiservices' ),
 			'attributes'               => esc_html__('Part Attributes', 'multiservices' ),
 			'insert_into_item'         => esc_html__('Insert into prestation part', 'multiservices' ),
 			'uploaded_to_this_item'    => esc_html__('Uploaded to this prestation part', 'multiservices' ),
@@ -244,7 +244,7 @@ class MultiServices_PrPart {
 			'set_featured_image'       => esc_html__('Set featured image', 'multiservices' ),
 			'remove_featured_image'    => esc_html__('Remove featured image', 'multiservices' ),
 			'use_featured_image'       => esc_html__('Use as featured image', 'multiservices' ),
-			'menu_name'                => esc_html__('Parts', 'multiservices' ),
+			'menu_name'                => esc_html__('Prestations Parts', 'multiservices' ),
 			'filter_items_list'        => esc_html__('Filter prestation parts list', 'multiservices' ),
 			'filter_by_date'           => esc_html__('', 'multiservices' ),
 			'items_list_navigation'    => esc_html__('Parts list navigation', 'multiservices' ),
