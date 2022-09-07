@@ -453,20 +453,28 @@ class MultiServices {
 		delete_transient( $transient_key );
 	}
 
-	static function format_date_range($dates = [], $long = false) {
+	static function format_date_range($dates = [], $datetype = 'RELATIVE_MEDIUM', $timetype = 'NONE') {
 		if(empty($dates)) return;
 		if(!is_array($dates)) $dates = [ $dates ];
 		$dates = array_filter($dates);
+
 		if(count($dates) == 2) {
+			$DateType = constant("IntlDateFormatter::" . preg_replace('/RELATIVE_/', '', $datetype));
+			$TimeType = constant("IntlDateFormatter::" . preg_replace('/RELATIVE_/', '', $timetype));
 			$ranger = new OpenPsa\Ranger\Ranger(get_locale());
-			$from = date_i18n('Y-m-d', $dates['from']['timestamp']);
-			$to = date_i18n('Y-m-d', $dates['to']['timestamp']);
-			return $ranger->format($from, $to);
+			$ranger->setDateType($DateType)->setTimeType($TimeType);
+			return $ranger->format(
+				intval($dates['from']['timestamp']),
+				intval($dates['to']['timestamp']),
+			);;
 		}
 
+		$DateType = constant("IntlDateFormatter::$datetype");
+		$TimeType = constant("IntlDateFormatter::$timetype");
 		$formatted = [];
 		foreach($dates as $date) {
-			$formatted[] = date_i18n(get_option( 'date_format' ), $date['timestamp']);
+			$formatter = new IntlDateFormatter(get_locale(), $DateType, $TimeType);
+			$formatted[] = $formatter->format($date['timestamp']);
 		}
 		return join(', ', $formatted);
 	}
