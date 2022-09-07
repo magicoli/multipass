@@ -234,13 +234,13 @@ class Ranger
         if ($input instanceof DateTime) {
             return $input;
         }
+        if (is_numeric($input)) {
+            $date = new Datetime;
+            $date->setTimestamp(intval($input));
+            return $date;
+        }
         if (is_string($input)) {
             return new Datetime($input);
-        }
-        if (is_int($input)) {
-            $date = new Datetime;
-            $date->setTimestamp($input);
-            return $date;
         }
         if ($input === null) {
             return new Datetime;
