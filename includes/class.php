@@ -457,29 +457,18 @@ class MultiServices {
 		if(empty($dates)) return;
 		if(!is_array($dates)) $dates = [ $dates ];
 		$dates = array_filter($dates);
+		if(count($dates) == 2) {
+			$ranger = new OpenPsa\Ranger\Ranger(get_locale());
+			$from = date_i18n('Y-m-d', $dates['from']['timestamp']);
+			$to = date_i18n('Y-m-d', $dates['to']['timestamp']);
+			return $ranger->format($from, $to);
+		}
 
 		$formatted = [];
 		foreach($dates as $date) {
 			$formatted[] = date_i18n(get_option( 'date_format' ), $date['timestamp']);
-			$year[] = date_i18n('Y', $date['timestamp']);
-			// $month[] = date_i18n('m', $date['timestamp']);
 		}
-		if(count($formatted) == 2) {
-			if($year[0] === $year[1]) {
-				$formatted[0] = preg_replace("/.$year[0]$/", '', $formatted[0]);
-				// if($month[0] === $month[1]) {
-				// 	$formatted[0] = preg_replace("/.$month[0]$/", '', $formatted[0]);
-				// }
-			}
-			return sprintf(
-				// TRANSLATORS: [start date] to [end date] (without time)
-				($long) ? __('from %s to %s', 'multiservices') : __('%s to %s', 'multiservices' ),
-				$formatted[0],
-				$formatted[1],
-			);
-		} else {
-			return join(', ', $formatted);
-		}
+		return join(', ', $formatted);
 	}
 
 

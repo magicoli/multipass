@@ -23,7 +23,8 @@
         "meta-box/meta-box-tabs": "dev-master",
         "deliciousbrains/wp-background-processing": "^1.0",
         "terdia/currency-util": "^1.0",
-        "erusev/parsedown": "^1.7"
+        "erusev/parsedown": "^1.7",
+        "openpsa/ranger": "^0.5.4"
     },
     "autoload": {
       "files": [

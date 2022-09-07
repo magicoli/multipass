@@ -19,9 +19,17 @@ class ComposerStaticInitfe6292387e56d846764579a2c23c0495
     );
 
     public static $prefixLengthsPsr4 = array (
+        'S' => 
+        array (
+            'Symfony\\Component\\Intl\\' => 23,
+        ),
         'P' => 
         array (
             'PhpImap\\' => 8,
+        ),
+        'O' => 
+        array (
+            'OpenPsa\\Ranger\\' => 15,
         ),
         'C' => 
         array (
@@ -31,9 +39,17 @@ class ComposerStaticInitfe6292387e56d846764579a2c23c0495
     );
 
     public static $prefixDirsPsr4 = array (
+        'Symfony\\Component\\Intl\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/intl',
+        ),
         'PhpImap\\' => 
         array (
             0 => __DIR__ . '/..' . '/php-imap/php-imap/src/PhpImap',
+        ),
+        'OpenPsa\\Ranger\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/openpsa/ranger/src',
         ),
         'Currency\\Util\\' => 
         array (

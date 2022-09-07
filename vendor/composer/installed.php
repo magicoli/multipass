@@ -1,11 +1,11 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'b5cf48d8086170abebb82c27c609fbbd087ee7ce',
+        'reference' => NULL,
         'name' => 'magicoli/multiservices',
         'dev' => true,
     ),
@@ -38,12 +38,12 @@
             'dev_requirement' => false,
         ),
         'magicoli/multiservices' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'b5cf48d8086170abebb82c27c609fbbd087ee7ce',
+            'reference' => NULL,
             'dev_requirement' => false,
         ),
         'meta-box/mb-admin-columns' => array(
@@ -118,6 +118,15 @@
             'reference' => NULL,
             'dev_requirement' => false,
         ),
+        'openpsa/ranger' => array(
+            'pretty_version' => 'v0.5.4',
+            'version' => '0.5.4.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../openpsa/ranger',
+            'aliases' => array(),
+            'reference' => '3e61e8bb35f8c244c3b71e58acb79fb29e6eddeb',
+            'dev_requirement' => false,
+        ),
         'php-imap/php-imap' => array(
             'pretty_version' => '5.0.0',
             'version' => '5.0.0.0',
@@ -138,6 +147,15 @@
             'replaced' => array(
                 0 => '*',
             ),
+        ),
+        'symfony/intl' => array(
+            'pretty_version' => 'v6.1.0',
+            'version' => '6.1.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/intl',
+            'aliases' => array(),
+            'reference' => '9fc07ba57eb33d44c6b3b86b4e1ef927620d1a39',
+            'dev_requirement' => false,
         ),
         'terdia/currency-util' => array(
             'pretty_version' => 'v1.0.1',
