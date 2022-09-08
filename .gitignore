@@ -4,3 +4,4 @@ vendor/*
 vendor/composer/*
 !vendor/composer/autoload_*
 !vendor/composer/ClassLoader.php
+.phpunit.result.cache
