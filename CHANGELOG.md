@@ -2,7 +2,7 @@
 
 ### Unreleased
 
-### 0.1.1
+### 0.1.x-dev
 
 - Centralized view of prestations (sets of services, ordered as parts of a common project).
 - Prestations admin list, showing service dates and payment status.
@@ -15,6 +15,3 @@
   - include WC orders costs in prestation summmary count
   - include payments made via WooCommerce in prestation summmary count
   - allow defining payment-only products to count only payment in stat, not cost
-
-### 0.1.0
-Initial dev version

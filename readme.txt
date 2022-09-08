@@ -4,7 +4,7 @@ Donate link: https://magiiic.com/support/MultiServices+Plugin
 Tags: hotel, booking, multi-prestations, multi-services, woocommerce
 Requires at least: 3.0.1
 Tested up to: 6.0.2
-Stable tag: 0.1.1
+Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,6 +17,8 @@ Bring orders from several sources together and see them as a single provision of
 Particularly useful in lodging facilities, if your business offers other kinds of services (meals, vehicule rentals, merchandising, local products...) that are not or poorly handled by the main booking engine.
 
 This should also fit well for other kind of services, needing a more fluid approach than usual e-commerce solutions.
+
+Disclaimer: this is a development version, updates might include breaking changes before 1.0 release.
 
 = Use cases =
 
@@ -61,7 +63,7 @@ This should also fit well for other kind of services, needing a more fluid appro
 
 = Unreleased =
 
-= 0.1.1 =
+= 0.1.x-dev =
 
 * Centralized view of prestations (sets of services, ordered as parts of a common project).
 * Prestations admin list, showing service dates and payment status.
@@ -74,6 +76,3 @@ This should also fit well for other kind of services, needing a more fluid appro
   * include WC orders costs in prestation summmary count
   * include payments made via WooCommerce in prestation summmary count
   * allow defining payment-only products to count only payment in stat, not cost
-
-= 0.1.0 =
-Initial dev version
