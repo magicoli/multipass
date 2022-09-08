@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitfe6292387e56d846764579a2c23c0495
+class ComposerStaticInitec4876878b33d70c1e692488e97ab078
 {
     public static $files = array (
         '9bd0cf17b06adaa58f5a0aafca7afea6' => __DIR__ . '/..' . '/meta-box/meta-box/meta-box.php',
@@ -80,10 +80,10 @@ class ComposerStaticInitfe6292387e56d846764579a2c23c0495
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitfe6292387e56d846764579a2c23c0495::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitfe6292387e56d846764579a2c23c0495::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitfe6292387e56d846764579a2c23c0495::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitfe6292387e56d846764579a2c23c0495::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitec4876878b33d70c1e692488e97ab078::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitec4876878b33d70c1e692488e97ab078::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitec4876878b33d70c1e692488e97ab078::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitec4876878b33d70c1e692488e97ab078::$classMap;
 
         }, null, ClassLoader::class);
     }

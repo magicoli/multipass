@@ -1,11 +1,11 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => 'b171d5dc6a37f473b2e101cea5e866dd57b57bbc',
         'name' => 'magicoli/multiservices',
         'dev' => true,
     ),
@@ -38,12 +38,12 @@
             'dev_requirement' => false,
         ),
         'magicoli/multiservices' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => 'b171d5dc6a37f473b2e101cea5e866dd57b57bbc',
             'dev_requirement' => false,
         ),
         'meta-box/mb-admin-columns' => array(
@@ -119,12 +119,12 @@
             'dev_requirement' => false,
         ),
         'openpsa/ranger' => array(
-            'pretty_version' => 'v0.5.4',
-            'version' => '0.5.4.0',
+            'pretty_version' => 'v0.5.5',
+            'version' => '0.5.5.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../openpsa/ranger',
             'aliases' => array(),
-            'reference' => '3e61e8bb35f8c244c3b71e58acb79fb29e6eddeb',
+            'reference' => '3333620a67bc74746f2e07874c09dae307efe812',
             'dev_requirement' => false,
         ),
         'php-imap/php-imap' => array(

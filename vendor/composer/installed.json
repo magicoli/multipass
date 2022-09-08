@@ -375,17 +375,17 @@
         },
         {
             "name": "openpsa/ranger",
-            "version": "v0.5.4",
-            "version_normalized": "0.5.4.0",
+            "version": "v0.5.5",
+            "version_normalized": "0.5.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/flack/ranger.git",
-                "reference": "3e61e8bb35f8c244c3b71e58acb79fb29e6eddeb"
+                "reference": "3333620a67bc74746f2e07874c09dae307efe812"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flack/ranger/zipball/3e61e8bb35f8c244c3b71e58acb79fb29e6eddeb",
-                "reference": "3e61e8bb35f8c244c3b71e58acb79fb29e6eddeb",
+                "url": "https://api.github.com/repos/flack/ranger/zipball/3333620a67bc74746f2e07874c09dae307efe812",
+                "reference": "3333620a67bc74746f2e07874c09dae307efe812",
                 "shasum": ""
             },
             "require": {
@@ -398,7 +398,7 @@
             "suggest": {
                 "ext-intl": "Needed for usage with other locales than 'en'"
             },
-            "time": "2022-05-24T13:35:53+00:00",
+            "time": "2022-09-08T09:01:35+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -424,7 +424,7 @@
             ],
             "support": {
                 "issues": "https://github.com/flack/ranger/issues",
-                "source": "https://github.com/flack/ranger/tree/v0.5.4"
+                "source": "https://github.com/flack/ranger/tree/v0.5.5"
             },
             "install-path": "../openpsa/ranger"
         },
