@@ -1,0 +1,749 @@
+{
+    "packages": [
+        {
+            "name": "composer/installers",
+            "version": "v1.12.0",
+            "version_normalized": "1.12.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/installers.git",
+                "reference": "d20a64ed3c94748397ff5973488761b22f6d3f19"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/installers/zipball/d20a64ed3c94748397ff5973488761b22f6d3f19",
+                "reference": "d20a64ed3c94748397ff5973488761b22f6d3f19",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0 || ^2.0"
+            },
+            "replace": {
+                "roundcube/plugin-installer": "*",
+                "shama/baton": "*"
+            },
+            "require-dev": {
+                "composer/composer": "1.6.* || ^2.0",
+                "composer/semver": "^1 || ^3",
+                "phpstan/phpstan": "^0.12.55",
+                "phpstan/phpstan-phpunit": "^0.12.16",
+                "symfony/phpunit-bridge": "^4.2 || ^5",
+                "symfony/process": "^2.3"
+            },
+            "time": "2021-09-13T08:19:44+00:00",
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Composer\\Installers\\Plugin",
+                "branch-alias": {
+                    "dev-main": "1.x-dev"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Composer\\Installers\\": "src/Composer/Installers"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kyle Robinson Young",
+                    "email": "kyle@dontkry.com",
+                    "homepage": "https://github.com/shama"
+                }
+            ],
+            "description": "A multi-framework Composer library installer",
+            "homepage": "https://composer.github.io/installers/",
+            "keywords": [
+                "Craft",
+                "Dolibarr",
+                "Eliasis",
+                "Hurad",
+                "ImageCMS",
+                "Kanboard",
+                "Lan Management System",
+                "MODX Evo",
+                "MantisBT",
+                "Mautic",
+                "Maya",
+                "OXID",
+                "Plentymarkets",
+                "Porto",
+                "RadPHP",
+                "SMF",
+                "Starbug",
+                "Thelia",
+                "Whmcs",
+                "WolfCMS",
+                "agl",
+                "aimeos",
+                "annotatecms",
+                "attogram",
+                "bitrix",
+                "cakephp",
+                "chef",
+                "cockpit",
+                "codeigniter",
+                "concrete5",
+                "croogo",
+                "dokuwiki",
+                "drupal",
+                "eZ Platform",
+                "elgg",
+                "expressionengine",
+                "fuelphp",
+                "grav",
+                "installer",
+                "itop",
+                "joomla",
+                "known",
+                "kohana",
+                "laravel",
+                "lavalite",
+                "lithium",
+                "magento",
+                "majima",
+                "mako",
+                "mediawiki",
+                "miaoxing",
+                "modulework",
+                "modx",
+                "moodle",
+                "osclass",
+                "pantheon",
+                "phpbb",
+                "piwik",
+                "ppi",
+                "processwire",
+                "puppet",
+                "pxcms",
+                "reindex",
+                "roundcube",
+                "shopware",
+                "silverstripe",
+                "sydes",
+                "sylius",
+                "symfony",
+                "tastyigniter",
+                "typo3",
+                "wordpress",
+                "yawik",
+                "zend",
+                "zikula"
+            ],
+            "support": {
+                "issues": "https://github.com/composer/installers/issues",
+                "source": "https://github.com/composer/installers/tree/v1.12.0"
+            },
+            "funding": [
+                {
+                    "url": "https://packagist.com",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/composer",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
+                    "type": "tidelift"
+                }
+            ],
+            "install-path": "./installers"
+        },
+        {
+            "name": "deliciousbrains/wp-background-processing",
+            "version": "1.0.2",
+            "version_normalized": "1.0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/deliciousbrains/wp-background-processing.git",
+                "reference": "2cbee1abd1b49e1133cd8f611df4d4fc5a8b9800"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/deliciousbrains/wp-background-processing/zipball/2cbee1abd1b49e1133cd8f611df4d4fc5a8b9800",
+                "reference": "2cbee1abd1b49e1133cd8f611df4d4fc5a8b9800",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2"
+            },
+            "suggest": {
+                "coenjacobs/mozart": "Easily wrap this library with your own prefix, to prevent collisions when multiple plugins use this library"
+            },
+            "time": "2020-07-31T07:00:11+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "classes/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Delicious Brains",
+                    "email": "nom@deliciousbrains.com"
+                }
+            ],
+            "description": "WP Background Processing can be used to fire off non-blocking asynchronous requests or as a background processing tool, allowing you to queue tasks.",
+            "support": {
+                "issues": "https://github.com/deliciousbrains/wp-background-processing/issues",
+                "source": "https://github.com/deliciousbrains/wp-background-processing/tree/master"
+            },
+            "install-path": "../../lib/deliciousbrains/wp-background-processing"
+        },
+        {
+            "name": "erusev/parsedown",
+            "version": "1.7.4",
+            "version_normalized": "1.7.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/erusev/parsedown.git",
+                "reference": "cb17b6477dfff935958ba01325f2e8a2bfa6dab3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/cb17b6477dfff935958ba01325f2e8a2bfa6dab3",
+                "reference": "cb17b6477dfff935958ba01325f2e8a2bfa6dab3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.35"
+            },
+            "time": "2019-12-30T22:54:17+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-0": {
+                    "Parsedown": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Emanuil Rusev",
+                    "email": "hello@erusev.com",
+                    "homepage": "http://erusev.com"
+                }
+            ],
+            "description": "Parser for Markdown.",
+            "homepage": "http://parsedown.org",
+            "keywords": [
+                "markdown",
+                "parser"
+            ],
+            "support": {
+                "issues": "https://github.com/erusev/parsedown/issues",
+                "source": "https://github.com/erusev/parsedown/tree/1.7.x"
+            },
+            "install-path": "../../lib/erusev/parsedown"
+        },
+        {
+            "name": "meta-box/mb-admin-columns",
+            "version": "master",
+            "version_normalized": "dev-master",
+            "dist": {
+                "type": "zip",
+                "url": "https://metabox.io/?action=download&product=mb-admin-columns&api_key=42ecdf32b0e76fe7766bc340ad82046b"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "installation-source": "dist",
+            "install-path": "../../lib/meta-box/mb-admin-columns"
+        },
+        {
+            "name": "meta-box/mb-settings-page",
+            "version": "master",
+            "version_normalized": "dev-master",
+            "dist": {
+                "type": "zip",
+                "url": "https://metabox.io/?action=download&product=mb-settings-page&api_key=42ecdf32b0e76fe7766bc340ad82046b"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "installation-source": "dist",
+            "install-path": "../../lib/meta-box/mb-settings-page"
+        },
+        {
+            "name": "meta-box/meta-box-columns",
+            "version": "master",
+            "version_normalized": "dev-master",
+            "dist": {
+                "type": "zip",
+                "url": "https://metabox.io/?action=download&product=meta-box-columns&api_key=42ecdf32b0e76fe7766bc340ad82046b"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "installation-source": "dist",
+            "install-path": "../../lib/meta-box/meta-box-columns"
+        },
+        {
+            "name": "meta-box/meta-box-conditional-logic",
+            "version": "master",
+            "version_normalized": "dev-master",
+            "dist": {
+                "type": "zip",
+                "url": "https://metabox.io/?action=download&product=meta-box-conditional-logic&api_key=42ecdf32b0e76fe7766bc340ad82046b"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "installation-source": "dist",
+            "install-path": "../../lib/meta-box/meta-box-conditional-logic"
+        },
+        {
+            "name": "meta-box/meta-box-group",
+            "version": "master",
+            "version_normalized": "dev-master",
+            "dist": {
+                "type": "zip",
+                "url": "https://metabox.io/?action=download&product=meta-box-group&api_key=42ecdf32b0e76fe7766bc340ad82046b"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "installation-source": "dist",
+            "install-path": "../../lib/meta-box/meta-box-group"
+        },
+        {
+            "name": "meta-box/meta-box-include-exclude",
+            "version": "master",
+            "version_normalized": "dev-master",
+            "dist": {
+                "type": "zip",
+                "url": "https://metabox.io/?action=download&product=meta-box-include-exclude&api_key=42ecdf32b0e76fe7766bc340ad82046b"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "installation-source": "dist",
+            "install-path": "../../lib/meta-box/meta-box-include-exclude"
+        },
+        {
+            "name": "meta-box/meta-box-show-hide",
+            "version": "master",
+            "version_normalized": "dev-master",
+            "dist": {
+                "type": "zip",
+                "url": "https://metabox.io/?action=download&product=meta-box-show-hide&api_key=42ecdf32b0e76fe7766bc340ad82046b"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "installation-source": "dist",
+            "install-path": "../../lib/meta-box/meta-box-show-hide"
+        },
+        {
+            "name": "meta-box/meta-box-tabs",
+            "version": "master",
+            "version_normalized": "dev-master",
+            "dist": {
+                "type": "zip",
+                "url": "https://metabox.io/?action=download&product=meta-box-tabs&api_key=42ecdf32b0e76fe7766bc340ad82046b"
+            },
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "installation-source": "dist",
+            "install-path": "../../lib/meta-box/meta-box-tabs"
+        },
+        {
+            "name": "oomphinc/composer-installers-extender",
+            "version": "2.0.1",
+            "version_normalized": "2.0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/oomphinc/composer-installers-extender.git",
+                "reference": "cbf4b6f9a24153b785d09eee755b995ba87bd5f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/oomphinc/composer-installers-extender/zipball/cbf4b6f9a24153b785d09eee755b995ba87bd5f9",
+                "reference": "cbf4b6f9a24153b785d09eee755b995ba87bd5f9",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.1 || ^2.0",
+                "composer/installers": "^1.0 || ^2.0",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "composer/composer": "^2.0",
+                "phpunit/phpunit": "^7.2",
+                "squizlabs/php_codesniffer": "^3.3"
+            },
+            "time": "2021-12-15T12:32:42+00:00",
+            "type": "composer-plugin",
+            "extra": {
+                "class": "OomphInc\\ComposerInstallersExtender\\Plugin"
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "OomphInc\\ComposerInstallersExtender\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stephen Beemsterboer",
+                    "email": "stephen@oomphinc.com",
+                    "homepage": "https://github.com/balbuf"
+                },
+                {
+                    "name": "Nathan Dentzau",
+                    "email": "nate@oomphinc.com",
+                    "homepage": "http://oomph.is/ndentzau"
+                }
+            ],
+            "description": "Extend the composer/installers plugin to accept any arbitrary package type.",
+            "homepage": "http://www.oomphinc.com/",
+            "support": {
+                "issues": "https://github.com/oomphinc/composer-installers-extender/issues",
+                "source": "https://github.com/oomphinc/composer-installers-extender/tree/2.0.1"
+            },
+            "install-path": "../oomphinc/composer-installers-extender"
+        },
+        {
+            "name": "openpsa/ranger",
+            "version": "v0.5.5",
+            "version_normalized": "0.5.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/flack/ranger.git",
+                "reference": "3333620a67bc74746f2e07874c09dae307efe812"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/flack/ranger/zipball/3333620a67bc74746f2e07874c09dae307efe812",
+                "reference": "3333620a67bc74746f2e07874c09dae307efe812",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0",
+                "symfony/intl": "~2.6|~3.4|~4.0|~5.0|~6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=4.8"
+            },
+            "suggest": {
+                "ext-intl": "Needed for usage with other locales than 'en'"
+            },
+            "time": "2022-09-08T09:01:35+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "OpenPsa\\Ranger\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andreas Flack",
+                    "email": "flack@contentcontrol-berlin.de",
+                    "homepage": "http://www.contentcontrol-berlin.de/"
+                }
+            ],
+            "description": "Formatter for date and time ranges with i18n support",
+            "keywords": [
+                "date range",
+                "time range"
+            ],
+            "support": {
+                "issues": "https://github.com/flack/ranger/issues",
+                "source": "https://github.com/flack/ranger/tree/v0.5.5"
+            },
+            "install-path": "../../lib/openpsa/ranger"
+        },
+        {
+            "name": "php-imap/php-imap",
+            "version": "5.0.0",
+            "version_normalized": "5.0.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/barbushin/php-imap.git",
+                "reference": "13bdfa9a6f541798253e24e2d8f44332c8be098c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/barbushin/php-imap/zipball/13bdfa9a6f541798253e24e2d8f44332c8be098c",
+                "reference": "13bdfa9a6f541798253e24e2d8f44332c8be098c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "ext-iconv": "*",
+                "ext-imap": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.4",
+                "maglnet/composer-require-checker": "^2.0|^3.2",
+                "nikic/php-parser": "^4.3,<4.7|^4.10",
+                "paragonie/hidden-string": "^1.0",
+                "php-parallel-lint/php-parallel-lint": "^1.3",
+                "phpunit/phpunit": "^8.5|^9.5",
+                "povils/phpmnd": "^2.2",
+                "psalm/plugin-phpunit": "^0.10.0|^0.15.1",
+                "roave/security-advisories": "dev-master",
+                "sebastian/phpcpd": "^4.1|^6.0"
+            },
+            "suggest": {
+                "ext-fileinfo": "To facilitate IncomingMailAttachment::getFileInfo() auto-detection"
+            },
+            "time": "2022-03-12T14:39:59+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "PhpImap\\": "src/PhpImap"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sergey Barbushin",
+                    "email": "barbushin@gmail.com",
+                    "homepage": "http://linkedin.com/in/barbushin"
+                }
+            ],
+            "description": "Manage mailboxes, filter/get/delete emails in PHP (supports IMAP/POP3/NNTP)",
+            "homepage": "https://github.com/barbushin/php-imap",
+            "keywords": [
+                "imap",
+                "mail",
+                "mailbox",
+                "php",
+                "pop3",
+                "receive emails"
+            ],
+            "support": {
+                "issues": "https://github.com/barbushin/php-imap/issues",
+                "source": "https://github.com/barbushin/php-imap/tree/5.0.0"
+            },
+            "install-path": "../../lib/php-imap/php-imap"
+        },
+        {
+            "name": "symfony/intl",
+            "version": "v6.1.0",
+            "version_normalized": "6.1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/intl.git",
+                "reference": "9fc07ba57eb33d44c6b3b86b4e1ef927620d1a39"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/intl/zipball/9fc07ba57eb33d44c6b3b86b4e1ef927620d1a39",
+                "reference": "9fc07ba57eb33d44c6b3b86b4e1ef927620d1a39",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "symfony/filesystem": "^5.4|^6.0"
+            },
+            "time": "2022-04-12T16:22:53+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Intl\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bernhard Schussek",
+                    "email": "bschussek@gmail.com"
+                },
+                {
+                    "name": "Eriksen Costa",
+                    "email": "eriksen.costa@infranology.com.br"
+                },
+                {
+                    "name": "Igor Wiedler",
+                    "email": "igor@wiedler.ch"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Provides a PHP replacement layer for the C intl extension that includes additional data from the ICU library",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "i18n",
+                "icu",
+                "internationalization",
+                "intl",
+                "l10n",
+                "localization"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/intl/tree/v6.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "install-path": "../../lib/symfony/intl"
+        },
+        {
+            "name": "terdia/currency-util",
+            "version": "v1.0.1",
+            "version_normalized": "1.0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/terdia/currency-util.git",
+                "reference": "ea23ad9d3d29744d104066a00d0b46f2ea4badc8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/terdia/currency-util/zipball/ea23ad9d3d29744d104066a00d0b46f2ea4badc8",
+                "reference": "ea23ad9d3d29744d104066a00d0b46f2ea4badc8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.5"
+            },
+            "time": "2022-03-20T15:55:12+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Currency\\Util\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "terdia",
+                    "email": "support@devscreencast.com",
+                    "homepage": "https://devscreencast.com"
+                }
+            ],
+            "description": "A simple library to lookup the currency symbol for a given currency code.",
+            "keywords": [
+                "currency",
+                "mapping",
+                "php currency map"
+            ],
+            "support": {
+                "issues": "https://github.com/terdia/currency-util/issues",
+                "source": "https://github.com/terdia/currency-util/tree/v1.0.1"
+            },
+            "install-path": "../../lib/terdia/currency-util"
+        },
+        {
+            "name": "wpmetabox/meta-box",
+            "version": "5.6.6",
+            "version_normalized": "5.6.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wpmetabox/meta-box.git",
+                "reference": "2c49a50ca1e1b3a3aef57c1c81d6be5d659d0b5f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wpmetabox/meta-box/zipball/2c49a50ca1e1b3a3aef57c1c81d6be5d659d0b5f",
+                "reference": "2c49a50ca1e1b3a3aef57c1c81d6be5d659d0b5f",
+                "shasum": ""
+            },
+            "time": "2022-08-05T04:16:39+00:00",
+            "type": "wordpress-plugin",
+            "installation-source": "dist",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Tran Ngoc Tuan Anh",
+                    "email": "anhtnt@elightup.com",
+                    "homepage": "https://metabox.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A powerful, professional developer toolkit to create custom meta boxes and custom fields for WordPress websites.",
+            "homepage": "https://metabox.io",
+            "keywords": [
+                "custom-field",
+                "meta-box",
+                "select2",
+                "ui",
+                "wordpress",
+                "wordpress-plugin",
+                "wp-admin"
+            ],
+            "support": {
+                "issues": "https://github.com/wpmetabox/meta-box/issues",
+                "source": "https://github.com/wpmetabox/meta-box/tree/5.6.6"
+            },
+            "install-path": "../../lib/meta-box/meta-box"
+        }
+    ],
+    "dev": false,
+    "dev-package-names": []
+}

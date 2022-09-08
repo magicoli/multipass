@@ -6,8 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'ec07570ca5a812141189b1fa81503674' => $vendorDir . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
-    '6124b4c8570aa390c21fafd04a26c69f' => $vendorDir . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
     'd7f24cb579c8a7bde59523bea5f411e0' => $baseDir . '/lib/meta-box/meta-box/meta-box.php',
     'bb309644ec1b2501102d5fa03fa3587c' => $baseDir . '/lib/meta-box/meta-box-columns/meta-box-columns.php',
     '8c5e4d8447c1f29fa06cf94702881813' => $baseDir . '/lib/meta-box/meta-box-conditional-logic/meta-box-conditional-logic.php',

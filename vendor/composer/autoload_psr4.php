@@ -7,12 +7,9 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Symfony\\Component\\Intl\\' => array($baseDir . '/lib/symfony/intl'),
-    'PhpParser\\' => array($vendorDir . '/nikic/php-parser/lib/PhpParser'),
     'PhpImap\\' => array($baseDir . '/lib/php-imap/php-imap/src/PhpImap'),
     'OpenPsa\\Ranger\\' => array($baseDir . '/lib/openpsa/ranger/src'),
     'OomphInc\\ComposerInstallersExtender\\' => array($vendorDir . '/oomphinc/composer-installers-extender/src'),
-    'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
-    'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
     'Currency\\Util\\' => array($baseDir . '/lib/terdia/currency-util/src'),
     'Composer\\Installers\\' => array($vendorDir . '/composer/installers/src/Composer/Installers'),
 );
