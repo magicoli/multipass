@@ -6,13 +6,13 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    '9bd0cf17b06adaa58f5a0aafca7afea6' => $vendorDir . '/meta-box/meta-box/meta-box.php',
-    '4761637543bf9121b55aed900268edc6' => $vendorDir . '/meta-box/meta-box-columns/meta-box-columns.php',
-    'c1a007b99bb63e0ea66318c23ded6001' => $vendorDir . '/meta-box/meta-box-conditional-logic/meta-box-conditional-logic.php',
-    'bb1e93a24d225eee726715cc159684dc' => $vendorDir . '/meta-box/meta-box-group/meta-box-group.php',
-    'e7b8c8043f4ddab60982d96acd5114b8' => $vendorDir . '/meta-box/meta-box-include-exclude/meta-box-include-exclude.php',
-    '0729ae7846c87a66922a8bac6df71721' => $vendorDir . '/meta-box/meta-box-show-hide/meta-box-show-hide.php',
-    '801c867b7c408ccbf3300d4408d3846b' => $vendorDir . '/meta-box/mb-admin-columns/mb-admin-columns.php',
-    '97ba4b46a2a0e222b53cf2854130ff94' => $vendorDir . '/meta-box/mb-settings-page/mb-settings-page.php',
-    'dfb3da98d626879ccf88ac3751694e10' => $vendorDir . '/meta-box/meta-box-tabs/meta-box-tabs.php',
+    'd7f24cb579c8a7bde59523bea5f411e0' => $baseDir . '/lib/meta-box/meta-box/meta-box.php',
+    'bb309644ec1b2501102d5fa03fa3587c' => $baseDir . '/lib/meta-box/meta-box-columns/meta-box-columns.php',
+    '8c5e4d8447c1f29fa06cf94702881813' => $baseDir . '/lib/meta-box/meta-box-conditional-logic/meta-box-conditional-logic.php',
+    '3739c1c4dddab926dfbbe8f0eefeba3a' => $baseDir . '/lib/meta-box/meta-box-group/meta-box-group.php',
+    '5e513d0ad03e810e0feaf178d4c1f4e6' => $baseDir . '/lib/meta-box/meta-box-include-exclude/meta-box-include-exclude.php',
+    'baaaf135e96da299813e044881d114b2' => $baseDir . '/lib/meta-box/meta-box-show-hide/meta-box-show-hide.php',
+    '1fce0ac18ed249dfd8c3b571e57cccd2' => $baseDir . '/lib/meta-box/mb-admin-columns/mb-admin-columns.php',
+    '0138789e867783f94474378f46ccc18f' => $baseDir . '/lib/meta-box/mb-settings-page/mb-settings-page.php',
+    '70b36f6324ec2de5f10b8f7d3bc0a04e' => $baseDir . '/lib/meta-box/meta-box-tabs/meta-box-tabs.php',
 );

@@ -6,9 +6,10 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Symfony\\Component\\Intl\\' => array($vendorDir . '/symfony/intl'),
-    'PhpImap\\' => array($vendorDir . '/php-imap/php-imap/src/PhpImap'),
-    'OpenPsa\\Ranger\\' => array($vendorDir . '/openpsa/ranger/src'),
-    'Currency\\Util\\' => array($vendorDir . '/terdia/currency-util/src'),
+    'Symfony\\Component\\Intl\\' => array($baseDir . '/lib/symfony/intl'),
+    'PhpImap\\' => array($baseDir . '/lib/php-imap/php-imap/src/PhpImap'),
+    'OpenPsa\\Ranger\\' => array($baseDir . '/lib/openpsa/ranger/src'),
+    'OomphInc\\ComposerInstallersExtender\\' => array($vendorDir . '/oomphinc/composer-installers-extender/src'),
+    'Currency\\Util\\' => array($baseDir . '/lib/terdia/currency-util/src'),
     'Composer\\Installers\\' => array($vendorDir . '/composer/installers/src/Composer/Installers'),
 );

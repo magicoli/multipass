@@ -1,1 +1,6 @@
 sources/
+vendor/*
+!vendor/autoload.php
+vendor/composer/*
+!vendor/composer/autoload_*
+!vendor/composer/ClassLoader.php
