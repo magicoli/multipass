@@ -519,6 +519,8 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 			// $p_order['paid'] = ($order->get_date_paid()) ? $p_order['total'] : 0;
 			$p_order['paid'] = (in_array($order->get_status(), [ 'completed', 'processing' ])) ? $p_order['total'] : 0;
 
+			// TODO: mark parts related to this order as review in progress
+
 			foreach ( $order->get_items() as $item_id => $item ) {
 				$product = $item->get_product();
 				$product_id = $product->get_id();
@@ -557,14 +559,66 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 					'item_type' => $item->get_type(), // e.g. "line_item"
 				);
 
-				// if(in_array($item->get_product_id(), $payment_products)) {
-				if(MultiServices_Payment_Product::is_payment_product($product)) {
+				// TODO: insert prestation_parts instead of updating row field array
+				// TODO: add prestation_part for order discount, deposit, paid
+					// 	'source' => 'woocommerce';
+					// 	'source_id' =>
+					// 	'description' => $product_name,
+					// 'id'         => $prefix . 'prestation_id',
+					// 'id'                => $prefix . 'customer',
+					// 	'id'         => $prefix . 'user_id',
+					// 	'id'            => $prefix . 'name',
+					// 	'id'   => $prefix . 'email',
+					// 	'id'   => $prefix . 'phone',
+					// 'id'                => $prefix . 'attendee',
+					// 	'id'         => $prefix . 'user_id',
+					// 	'id'            => $prefix . 'name',
+					// 	'id'   => $prefix . 'email',
+					// 	'id'   => $prefix . 'phone',
+					// 'id'            => $prefix . 'dates',
+					// 	'id'        => $prefix . 'from',
+					// 	'id'        => $prefix . 'to',
+					// 'id'     => $prefix . 'attendees',
+					// 	'id'            => $prefix . 'total',
+					// 	'id'   => $prefix . 'adults',
+					// 	'id'   => $prefix . 'children',
+					// 	'id'   => $prefix . 'babies',
+					// 'id'     => $prefix . 'beds',
+					// 	'id'   => $prefix . 'double',
+					// 	'id'   => $prefix . 'single',
+					// 	'id'   => $prefix . 'baby',
+					// 'id'     => $prefix . 'price',
+					// 	'id'   => $prefix . 'quantity',
+					// 	'id'   => $prefix . 'unit',
+					// 	'id'       => $prefix . 'subtotal',
+					// 'id'     => $prefix . 'discount',
+					// 	'id'      => $prefix . 'percent',
+					// 	'id'      => $prefix . 'amount',
+					// 'id'            => $prefix . 'total',
+					// 'id'            => $prefix . 'deposit',
+					// 		'id'      => $prefix . 'percent',
+					// 		'id'      => $prefix . 'amount',
+					// 		'id'          => $prefix . 'before',
+					// 'id'     => $prefix . 'payment',
+					// 	'id'   => $prefix . 'date',
+					// 	'id'   => $prefix . 'amount',
+					// 	'id'   => $prefix . 'method',
+					// 	'id'   => $prefix . 'reference',
+					// 'id'            => $prefix . 'deposit_amount',
+					// 'id'            => $prefix . 'paid',
+					// 'id'            => $prefix . 'balance',
+					// 'id'            => $prefix . 'status',
 
+
+				if(MultiServices_Payment_Product::is_payment_product($product)) {
 					$p_order['subtotal'] -= $item->get_subtotal();
 					$p_order['refunded'] -= $order->get_total_refunded_for_item($item_id);
 					$p_order['total'] = $p_order['total'] - $item->get_total() + $order->get_total_refunded_for_item($item_id);
 				}
 			}
+
+			// TODO: delete remaining "review in progress" parts
+
 			$order_dates = array_filter($order_dates);
 
 			$p_order['from'] = (!empty($order_dates)) ? min($order_dates) : NULL;
@@ -578,6 +632,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 			. ( (count($p_order['items']) > 1) ? sprintf( __(' + %s items', 'multiservices' ), count($p_order['items']) - 1 ) : '' );
 
 			$lines[] = $p_order;
+
 			$p_orders[$order->get_id()] = $p_order;
 
 			$p_orders_subtotal += $p_order['subtotal'];
@@ -594,9 +649,9 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		update_post_meta( $prestation_id, 'modules-data', array(
 			'subtotal' => $p_orders_subtotal,
 			'discount' => $p_orders_discount,
-			'refunded' => $p_orders_refunded,
 			'total' => $p_orders_total,
 			'paid' => $p_orders_paid,
+			'refunded' => $p_orders_refunded,
 			'dates' => $dates,
 			// 'orders' => $p_orders,
 			'rows' => $lines,
