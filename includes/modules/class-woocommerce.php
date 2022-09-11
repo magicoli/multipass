@@ -470,57 +470,158 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 	}
 
 	static function update_prestation_orders($prestation_id, $prestation, $update ) {
-		if( wp_cache_get(__CLASS__ . '-' . __FUNCTION__ . '-' . $prestation_id) ) return;
-		$prestation = MultiServices_Prestation::get_post($prestation);
-		if(!$prestation) return;
-		// if(! MultiServices_Prestation::is_prestation_post($prestation) && isset($prestation->post)) $prestation = $prestation->post;
-		// if(! MultiServices_Prestation::is_prestation_post($prestation)) return;
-		// if( $prestation->post_type != 'prestation' ) return;
-		if( $prestation->post_status == 'trash' ) return; // TODO: remove prestation reference from orders
+		return;
 
-		$orders = wc_get_orders( array(
-			'limit'        => -1, // Query all orders
-			'orderby'      => 'date',
-			'order'        => 'ASC',
-			'meta_key'     => 'prestation_id',
-			'meta_value' => $prestation_id,
-		) );
+		// if( wp_cache_get(__CLASS__ . '-' . __FUNCTION__ . '-' . $prestation_id) ) return;
+		// $prestation = MultiServices_Prestation::get_post($prestation);
+		// if(!$prestation) return;
+		// // if(! MultiServices_Prestation::is_prestation_post($prestation) && isset($prestation->post)) $prestation = $prestation->post;
+		// // if(! MultiServices_Prestation::is_prestation_post($prestation)) return;
+		// // if( $prestation->post_type != 'prestation' ) return;
+		// if( $prestation->post_status == 'trash' ) return; // TODO: remove prestation reference from orders
+		//
+		// $orders = wc_get_orders( array(
+		// 	'limit'        => -1, // Query all orders
+		// 	'orderby'      => 'date',
+		// 	'order'        => 'ASC',
+		// 	'meta_key'     => 'prestation_id',
+		// 	'meta_value' => $prestation_id,
+		// ) );
+		//
+		// $p_orders_total = 0;
+		// $p_orders_paid = 0;
+		// $p_orders_discount = 0;
+		// $p_orders_refunded = 0;
+		// $p_orders_subtotal = 0;
+		//
+		// $payment_products = MultiServices_Payment_Product::get_payment_products();
+		// if(!is_array($payment_products)) $payment_products = [ $payment_products ];
+		// $excl_tax = false;
+		//
+		// $dates = [];
+		// $lines = [];
+		// foreach ($orders as $key => $order) {
+		// 	$order_dates = [];
+		// 	// $excl_tax = ($order->prices_include_tax == true) ? false : true;
+		//
+		// 	$p_order = array(
+		// 		'id' => $order->get_id(),
+		// 		'source' => 'WooCommerce',
+		// 		'object' => __CLASS__,
+		// 		'created' => $order->get_date_created(),
+		// 		'subtotal' => ($excl_tax == true) ? $order->get_subtotal() : (float)wp_strip_all_tags(preg_replace('/"woocommerce-Price-currencySymbol">[^<]*</', '><', $order->get_subtotal_to_display())),
+		// 		'discount' => $order->get_total_discount($excl_tax),
+		// 		'refunded' => $order->get_total_refunded(),
+		// 		'total' => $order->get_total() - $order->get_total_refunded(),
+		// 		'paid' => NULL,
+		// 		'status' =>  $order->get_status(),
+		// 		'view_url' => $order->get_view_order_url(),
+		// 		'edit_url' => $order->get_edit_order_url(),
+		// 	);
+		// 	// $p_order['paid'] = ($order->get_date_paid()) ? $p_order['total'] : 0;
+		// 	$p_order['paid'] = (in_array($order->get_status(), [ 'completed', 'processing' ])) ? $p_order['total'] : 0;
+		//
+		//
+		// 	$order_dates = array_filter($order_dates);
+		//
+		// 	$p_order['from'] = (!empty($order_dates)) ? min($order_dates) : NULL;
+		// 	$p_order['to'] = (!empty($order_dates)) ? max($order_dates) : NULL;
+		// 	if($p_order['to'] == $p_order['from']) $p_order['to'] = NULL;
+		//
+		// 	$dates[] = $p_order['from'];
+		// 	$dates[] = $p_order['to'];
+		//
+		// 	$p_order['description'] = $p_order['items'][0]['product_name']
+		// 	. ( (count($p_order['items']) > 1) ? sprintf( __(' + %s items', 'multiservices' ), count($p_order['items']) - 1 ) : '' );
+		//
+		// 	$lines[] = $p_order;
+		//
+		// 	$p_orders[$order->get_id()] = $p_order;
+		//
+		// 	$p_orders_subtotal += $p_order['subtotal'];
+		// 	$p_orders_discount += $p_order['discount'];
+		// 	$p_orders_refunded += $p_order['refunded'];
+		// 	$p_orders_total += $p_order['total'];
+		// 	$p_orders_paid += $p_order['paid'];
+		// }
+		//
+		// $dates = array_filter($dates);
+		// if(!empty($dates)) {
+		// 	$dates = array_unique(array(min($dates), max($dates)));
+		// }
+		// update_post_meta( $prestation_id, 'modules-data', array(
+		// 	'subtotal' => $p_orders_subtotal,
+		// 	'discount' => $p_orders_discount,
+		// 	'total' => $p_orders_total,
+		// 	'paid' => $p_orders_paid,
+		// 	'refunded' => $p_orders_refunded,
+		// 	'dates' => $dates,
+		// 	// 'orders' => $p_orders,
+		// 	'rows' => $lines,
+		// ) );
+		//
+		// $prestation_post = get_post($prestation_id);
+		// if(is_object($prestation) && $prestation->post_type == 'prestation')
+		// MultiServices_Prestation::update_prestation_amounts($prestation_id, $prestation, true );
+		//
+		// // $metas = get_post_meta($prestation_id, 'modules-data');
+		// // error_log(print_r($metas, true));
+		// // $metas['woocommerce'] = $lines;
+		// // foreach($metas as $key => $meta) {
+		// // 	if(!isset($meta['source']) || $meta['source'] == 'woocommerce') {
+		// // 		unset($meta[$key]);
+		// // 	}
+		// // }
+		// // // $metas = array_merge($metas, $p_orders);
+		// // $metas = $lines;
+		//
+		// // update_post_meta($prestation_id, 'managed', $metas);
+		//
+		// wp_cache_set(__CLASS__ . '-' . __FUNCTION__ . '-' . $prestation_id, true);
+	}
 
-		$p_orders_total = 0;
-		$p_orders_paid = 0;
-		$p_orders_discount = 0;
-		$p_orders_refunded = 0;
-		$p_orders_subtotal = 0;
+	static function update_order_prestation($post_id, $post, $update ) {
+		if( $post->post_type != 'shop_order' ) return;
+		if( $post->post_status == 'trash' ) return; // TODO: update previously linked prestation
 
-		$payment_products = MultiServices_Payment_Product::get_payment_products();
-		if(!is_array($payment_products)) $payment_products = [ $payment_products ];
-		$excl_tax = false;
+		// remove_action(current_action(), __CLASS__ . '::wp_insert_post_action');
 
-		$dates = [];
-		$lines = [];
-		foreach ($orders as $key => $order) {
-			$order_dates = [];
-			// $excl_tax = ($order->prices_include_tax == true) ? false : true;
+		$prestation_id = get_post_meta($post_id, 'prestation_id', true);
+		$customer_id = get_post_meta($post_id, '_customer_user', true);
+		$customer = get_user_by('id', $customer_id);
+		if($customer) {
+			$customer_name = $customer->display_name;
+			$customer_email = $customer->user_email;
+			$customer_phone = array_unique(array_filter(array(
+				get_user_meta( $customer_id, 'billing_phone', true ),
+				get_user_meta( $customer_id, 'shipping_phone', true ),
+			)));
+			// $customer_phone = trim(get_post_meta($post_id, '_billing_phone', true);
+			// error_log("customer " . print_r($customer, true));
+		} else {
+			$customer_name = trim(get_post_meta($post_id, '_billing_first_name', true) . ' ' . get_post_meta($post_id, '_billing_last_name', true));
+			$customer_email = get_post_meta($post_id, '_billing_email', true);
+			$customer_phone = array_unique(array_filter(array(
+				get_post_meta($post_id, '_billing_phone', true),
+				get_post_meta($post_id, '_shipping_phone', true),
+			)));
+		}
 
-			$p_order = array(
-				'id' => $order->get_id(),
-				'source' => 'WooCommerce',
-				'object' => __CLASS__,
-				'created' => $order->get_date_created(),
-				'subtotal' => ($excl_tax == true) ? $order->get_subtotal() : (float)wp_strip_all_tags(preg_replace('/"woocommerce-Price-currencySymbol">[^<]*</', '><', $order->get_subtotal_to_display())),
-				'discount' => $order->get_total_discount($excl_tax),
-				'refunded' => $order->get_total_refunded(),
-				'total' => $order->get_total() - $order->get_total_refunded(),
-				'paid' => NULL,
-				'status' =>  $order->get_status(),
-				'view_url' => $order->get_view_order_url(),
-				'edit_url' => $order->get_edit_order_url(),
-			);
-			// $p_order['paid'] = ($order->get_date_paid()) ? $p_order['total'] : 0;
-			$p_order['paid'] = (in_array($order->get_status(), [ 'completed', 'processing' ])) ? $p_order['total'] : 0;
+		$prestation = new MultiServices_Prestation(array(
+			'prestation_id' => $prestation_id,
+			'customer_id' => $customer_id,
+			'customer_name' => $customer_name,
+			'customer_email' => $customer_email,
+			'date' => esc_attr($post->post_date),
+			'date_gmt' => esc_attr($post->post_date_gmt),
+		));
+		if($prestation) {
+			update_post_meta( $post_id, 'prestation_id', $prestation->ID );
+			MultiServices_WooCommerce::update_prestation_orders($prestation->ID, $prestation, true );
 
 			// TODO: mark parts related to this order as review in progress
 
+			$order = wc_get_order( $post_id ); // make sure it is a wc object, not only a post
 			foreach ( $order->get_items() as $item_id => $item ) {
 				$product = $item->get_product();
 				$product_id = $product->get_id();
@@ -534,179 +635,105 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 					isset($variation) ? $variation->get_formatted_name() : '',
 				)));
 
+				$dates = [];
+				// $attendees = [];
 				if ( $product->is_type('booking') ) {
 					$booking_ids = WC_Booking_Data_Store::get_booking_ids_from_order_item_id( $item_id );
 					foreach ( $booking_ids as $booking_id ) {
 						$booking = get_wc_booking( $booking_id );
 						// $datetimes[] = esc_html( apply_filters( 'wc_bookings_summary_list_date', date_i18n( $date_format, $booking->get_start() ), $booking->get_start(), $booking->get_end() ) );
-						$order_dates[] = $booking->get_start();
-						$order_dates[] = $booking->get_end();
+						$dates[] = $booking->get_start();
+						$dates[] = $booking->get_end();
 					}
-				}
 
-				$p_order['items'][] = array(
-					'product_id' => $product_id,
-					'variation_id' => $item->get_variation_id(),
-					'product_name' => $product_name,
-					'quantity' => $item->get_quantity(),
-					'subtotal' => $item->get_subtotal(),
-					'total' => $item->get_total(),
-					'tax' => $item->get_subtotal_tax(),
-					'tax_class' => $item->get_tax_class(),
-					'tax_status' => $item->get_tax_status(),
-					// 'allmeta' => $item->get_meta_data(),
-					// 'somemeta' => $item->get_meta( '_whatever', true ),
-					'item_type' => $item->get_type(), // e.g. "line_item"
-				);
-
-				// TODO: insert prestation_parts instead of updating row field array
-				// TODO: add prestation_part for order discount, deposit, paid
-					// 	'source' => 'woocommerce';
-					// 	'source_id' =>
-					// 	'description' => $product_name,
-					// 'id'         => $prefix . 'prestation_id',
-					// 'id'                => $prefix . 'customer',
-					// 	'id'         => $prefix . 'user_id',
-					// 	'id'            => $prefix . 'name',
-					// 	'id'   => $prefix . 'email',
-					// 	'id'   => $prefix . 'phone',
-					// 'id'                => $prefix . 'attendee',
-					// 	'id'         => $prefix . 'user_id',
-					// 	'id'            => $prefix . 'name',
-					// 	'id'   => $prefix . 'email',
-					// 	'id'   => $prefix . 'phone',
-					// 'id'            => $prefix . 'dates',
-					// 	'id'        => $prefix . 'from',
-					// 	'id'        => $prefix . 'to',
+					// TODO: get attendees and beds counts
+					//
 					// 'id'     => $prefix . 'attendees',
 					// 	'id'            => $prefix . 'total',
 					// 	'id'   => $prefix . 'adults',
 					// 	'id'   => $prefix . 'children',
 					// 	'id'   => $prefix . 'babies',
+					//
 					// 'id'     => $prefix . 'beds',
 					// 	'id'   => $prefix . 'double',
 					// 	'id'   => $prefix . 'single',
 					// 	'id'   => $prefix . 'baby',
-					// 'id'     => $prefix . 'price',
-					// 	'id'   => $prefix . 'quantity',
-					// 	'id'   => $prefix . 'unit',
-					// 	'id'       => $prefix . 'subtotal',
-					// 'id'     => $prefix . 'discount',
-					// 	'id'      => $prefix . 'percent',
-					// 	'id'      => $prefix . 'amount',
-					// 'id'            => $prefix . 'total',
-					// 'id'            => $prefix . 'deposit',
-					// 		'id'      => $prefix . 'percent',
-					// 		'id'      => $prefix . 'amount',
-					// 		'id'          => $prefix . 'before',
-					// 'id'     => $prefix . 'payment',
-					// 	'id'   => $prefix . 'date',
-					// 	'id'   => $prefix . 'amount',
-					// 	'id'   => $prefix . 'method',
-					// 	'id'   => $prefix . 'reference',
-					// 'id'            => $prefix . 'deposit_amount',
-					// 'id'            => $prefix . 'paid',
-					// 'id'            => $prefix . 'balance',
-					// 'id'            => $prefix . 'status',
-
-
-				if(MultiServices_Payment_Product::is_payment_product($product)) {
-					$p_order['subtotal'] -= $item->get_subtotal();
-					$p_order['refunded'] -= $order->get_total_refunded_for_item($item_id);
-					$p_order['total'] = $p_order['total'] - $item->get_total() + $order->get_total_refunded_for_item($item_id);
 				}
+
+				$sub_total = $item->get_subtotal_tax();
+				$quantity = $item->get_quantity();
+				$unit_price = $sub_total / $quantity;
+				$total = $item->get_total() + $item->get_total_tax();
+				$discount = ($total != $sub_total) ? [ 'amount' => $sub_total - $total ] : [];
+
+				$part = array(
+					'source' => 'woocommerce',
+					'source_details' => array(
+						'wc_order_item_id' => $item_id,
+						'wc_order_id' => $post_id,
+						'wc_product_id' => $product_id,
+						'wc_variation_id' => $item->get_variation_id(),
+					),
+					'description' => $product_name,
+					'prestation_id' => $prestation->ID,
+
+					'customer' => array(
+						'user_id' => $customer_id,
+						'name' => $customer_name,
+						'email' => $customer_email,
+						'phone' => join(', ', $customer_phone),
+					),
+					// 'attendee' => array(
+					// 	'user_id' => $customer_id,
+					// 	'name' => $customer_name,
+					// 	'email' => $customer_email,
+					// 	'phone' => join(', ', $customer_phone),
+					// ),
+					'dates' => $dates,
+					// 'attendees' => $attendees;
+					// 'beds' => $beds;
+
+					'price' => array(
+						'quantity' => $quantity,
+						'unit' => $unit_price,
+						'sub_total' => $sub_total,
+					),
+					'discount' => $discount,
+					'total' => $total,
+					'paid' => (in_array($order->get_status(), [ 'completed', 'processing' ])) ? $total : 0,
+				);
+
+				error_log ("item " . print_r($part, true));
+
+				$lock = array_keys($part); // TODO: prevent modifications of locked fields
+
+		//
+		// 		// TODO: insert prestation_parts instead of updating row field array
+		// 		// TODO: add prestation_part for order discount, deposit, paid
+		// 			// 'id'            => $prefix . 'deposit',
+		// 			// 		'id'      => $prefix . 'percent',
+		// 			// 		'id'      => $prefix . 'amount',
+		// 			// 		'id'          => $prefix . 'before',
+		// 			// 'id'     => $prefix . 'payment',
+		// 			// 	'id'   => $prefix . 'date',
+		// 			// 	'id'   => $prefix . 'amount',
+		// 			// 	'id'   => $prefix . 'method',
+		// 			// 	'id'   => $prefix . 'reference',
+		// 			// 'id'            => $prefix . 'deposit_amount',
+		// 			// 'id'            => $prefix . 'paid',
+		// 			// 'id'            => $prefix . 'balance',
+		// 			// 'id'            => $prefix . 'status',
+		//
+		//
+		// 		if(MultiServices_Payment_Product::is_payment_product($product)) {
+		// 			$p_order['subtotal'] -= $item->get_subtotal();
+		// 			$p_order['refunded'] -= $post->get_total_refunded_for_item($item_id);
+		// 			$p_order['total'] = $p_order['total'] - $item->get_total() + $post->get_total_refunded_for_item($item_id);
+		// 		}
 			}
+		//
+		// 	// TODO: delete remaining "review in progress" parts
 
-			// TODO: delete remaining "review in progress" parts
-
-			$order_dates = array_filter($order_dates);
-
-			$p_order['from'] = (!empty($order_dates)) ? min($order_dates) : NULL;
-			$p_order['to'] = (!empty($order_dates)) ? max($order_dates) : NULL;
-			if($p_order['to'] == $p_order['from']) $p_order['to'] = NULL;
-
-			$dates[] = $p_order['from'];
-			$dates[] = $p_order['to'];
-
-			$p_order['description'] = $p_order['items'][0]['product_name']
-			. ( (count($p_order['items']) > 1) ? sprintf( __(' + %s items', 'multiservices' ), count($p_order['items']) - 1 ) : '' );
-
-			$lines[] = $p_order;
-
-			$p_orders[$order->get_id()] = $p_order;
-
-			$p_orders_subtotal += $p_order['subtotal'];
-			$p_orders_discount += $p_order['discount'];
-			$p_orders_refunded += $p_order['refunded'];
-			$p_orders_total += $p_order['total'];
-			$p_orders_paid += $p_order['paid'];
-		}
-
-		$dates = array_filter($dates);
-		if(!empty($dates)) {
-			$dates = array_unique(array(min($dates), max($dates)));
-		}
-		update_post_meta( $prestation_id, 'modules-data', array(
-			'subtotal' => $p_orders_subtotal,
-			'discount' => $p_orders_discount,
-			'total' => $p_orders_total,
-			'paid' => $p_orders_paid,
-			'refunded' => $p_orders_refunded,
-			'dates' => $dates,
-			// 'orders' => $p_orders,
-			'rows' => $lines,
-		) );
-
-		$prestation_post = get_post($prestation_id);
-		if(is_object($prestation) && $prestation->post_type == 'prestation')
-		MultiServices_Prestation::update_prestation_amounts($prestation_id, $prestation, true );
-
-		// $metas = get_post_meta($prestation_id, 'modules-data');
-		// error_log(print_r($metas, true));
-		// $metas['woocommerce'] = $lines;
-		// foreach($metas as $key => $meta) {
-		// 	if(!isset($meta['source']) || $meta['source'] == 'woocommerce') {
-		// 		unset($meta[$key]);
-		// 	}
-		// }
-		// // $metas = array_merge($metas, $p_orders);
-		// $metas = $lines;
-
-		// update_post_meta($prestation_id, 'managed', $metas);
-
-		wp_cache_set(__CLASS__ . '-' . __FUNCTION__ . '-' . $prestation_id, true);
-	}
-
-	static function update_order_prestation($order_id, $order, $update ) {
-		if( $order->post_type != 'shop_order' ) return;
-		if( $order->post_status == 'trash' ) return; // TODO: update previously linked prestation
-
-		// remove_action(current_action(), __CLASS__ . '::wp_insert_post_action');
-
-		$prestation_id = get_post_meta($order_id, 'prestation_id', true);
-		$customer_id = get_post_meta($order_id, '_customer_user', true);
-		$customer = get_user_by('id', $customer_id);
-		if($customer) {
-			$customer_name = $customer->display_name;
-			$customer_email = $customer->user_email;
-			// error_log("customer " . print_r($customer, true));
-		} else {
-			$customer_name = trim(get_post_meta($order_id, '_billing_first_name', true) . ' ' . get_post_meta($order_id, '_billing_last_name', true));
-			$customer_email = get_post_meta($order_id, '_billing_email', true);
-		}
-
-		$prestation = new MultiServices_Prestation(array(
-			'prestation_id' => $prestation_id,
-			'customer_id' => $customer_id,
-			'customer_name' => $customer_name,
-			'customer_email' => $customer_email,
-			'date' => esc_attr($order->post_date),
-			'date_gmt' => esc_attr($order->post_date_gmt),
-		));
-
-		if($prestation) {
-			update_post_meta( $order_id, 'prestation_id', $prestation->ID );
-			MultiServices_WooCommerce::update_prestation_orders($prestation->ID, $prestation, true );
 		}
 
 		// add_action(current_action(), __CLASS__ . '::wp_insert_post_action', 10, 3);
