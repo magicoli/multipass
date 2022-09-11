@@ -642,9 +642,10 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 					foreach ( $booking_ids as $booking_id ) {
 						$booking = get_wc_booking( $booking_id );
 						// $datetimes[] = esc_html( apply_filters( 'wc_bookings_summary_list_date', date_i18n( $date_format, $booking->get_start() ), $booking->get_start(), $booking->get_end() ) );
-						$dates[] = $booking->get_start();
-						$dates[] = $booking->get_end();
+						$dates['from'] = $booking->get_start();
+						$dates['to'] = $booking->get_end();
 					}
+					$product_name .= ' ' . MultiServices::format_date_range($dates, 'SHORT');
 
 					// TODO: get attendees and beds counts
 					//
@@ -660,9 +661,9 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 					// 	'id'   => $prefix . 'baby',
 				}
 
-				$sub_total = $item->get_subtotal_tax();
+				$sub_total = $item->get_subtotal() + $item->get_subtotal_tax();
 				$quantity = $item->get_quantity();
-				$unit_price = $sub_total / $quantity;
+				$unit_price = (empty($quantity)) ? $sub_total : $sub_total / $quantity;
 				$total = $item->get_total() + $item->get_total_tax();
 				$discount = ($total != $sub_total) ? [ 'amount' => $sub_total - $total ] : [];
 
@@ -700,6 +701,8 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 					),
 					'discount' => $discount,
 					'total' => $total,
+					// TODO: ensure paid status is updated immediatly, not after second time save
+					//
 					'paid' => (in_array($order->get_status(), [ 'completed', 'processing' ])) ? $total : 0,
 				);
 
@@ -707,9 +710,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 
 				$lock = array_keys($part); // TODO: prevent modifications of locked fields
 
-		//
-		// 		// TODO: insert prestation_parts instead of updating row field array
-		// 		// TODO: add prestation_part for order discount, deposit, paid
+		// 		// TODO: add lines for order discount, deposit, paid
 		// 			// 'id'            => $prefix . 'deposit',
 		// 			// 		'id'      => $prefix . 'percent',
 		// 			// 		'id'      => $prefix . 'amount',
