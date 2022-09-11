@@ -18,7 +18,7 @@ Particularly useful in lodging facilities, if your business offers other kinds o
 
 This should also fit well for other kind of services, needing a more fluid approach than usual e-commerce solutions.
 
-Disclaimer: this is a development version, updates might include breaking changes before 1.0 release.
+DISCLAIMER: this is an early-stage development version, updates might include breaking changes until 1.0 release.
 
 = Use cases =
 
