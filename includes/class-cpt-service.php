@@ -170,8 +170,8 @@ class MultiServices_Service {
 				'accepted_args' => 4,
 			),
 			array(
-				'hook' => 'multiservices_set_service_title',
-				'callback' => 'set_service_title',
+				'hook' => 'multiservices_update_service_title',
+				'callback' => 'update_service_title',
 			),
 
 			// array(
@@ -315,12 +315,12 @@ class MultiServices_Service {
 		if(!$update) return $data;
 		if($data['post_type'] !== 'service') return $data;
 
-		$data = apply_filters('multiservices_set_service_title', $data);
+		$data = apply_filters('multiservices_update_service_title', $data);
 
 		return $data;
 	}
 
-	static function set_service_title ($data ) {
+	static function update_service_title ($data ) {
 		// error_log(__CLASS__ . '::' . __FUNCTION__);
 		if(empty($_REQUEST['service_page_id'])) return $data;
 

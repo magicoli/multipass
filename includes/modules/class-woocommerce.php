@@ -90,8 +90,8 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 			),
 
 			array(
-				'hook' => 'multiservices_set_service_title',
-				'callback' => 'set_service_title',
+				'hook' => 'multiservices_update_service_title',
+				'callback' => 'update_service_title',
 			),
 
 			array(
@@ -430,7 +430,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		// $this->background_request->dispatch();
 	}
 
-	static function set_service_title ($data ) {
+	static function update_service_title ($data ) {
 		if(empty($_REQUEST['service_product_id'])) return $data;
 
 		if(empty($data['post_title'])) {
