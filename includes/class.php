@@ -463,9 +463,11 @@ class MultiServices {
 			$TimeType = constant("IntlDateFormatter::" . preg_replace('/RELATIVE_/', '', $timetype));
 			$ranger = new OpenPsa\Ranger\Ranger(get_locale());
 			$ranger->setDateType($DateType)->setTimeType($TimeType);
+			$from = (is_array($dates['from'])) ? $dates['from']['timestamp'] : $dates['from'];
+			$to = (is_array($dates['to'])) ? $dates['to']['timestamp'] : $dates['to'];
 			return $ranger->format(
-				intval($dates['from']['timestamp']),
-				intval($dates['to']['timestamp']),
+				intval($from),
+				intval($to),
 			);;
 		}
 
