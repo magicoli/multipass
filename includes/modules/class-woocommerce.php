@@ -85,7 +85,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 				'callback' => 'register_settings_fields',
 			),
 			array(
-				'hook' => 'multiservices_register_terms_prestation-part-source',
+				'hook' => 'multiservices_register_terms_prestation-item-source',
 				'callback' => 'register_sources_filter',
 			),
 
@@ -175,9 +175,9 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 			],
 		];
 
-		$wc_term = get_term_by('slug', 'woocommerce', 'prestation-part-source');
-		$wc_term_id = ($wc_term) ? get_term_by('slug', 'woocommerce', 'prestation-part-source')->term_id : 'woocommerce';
-		// Order info on prestation part
+		$wc_term = get_term_by('slug', 'woocommerce', 'prestation-item-source');
+		$wc_term_id = ($wc_term) ? get_term_by('slug', 'woocommerce', 'prestation-item-source')->term_id : 'woocommerce';
+		// Order info on prestation-item
 
 		// Prestation info on WC Orders
 		$prefix = 'prestation_';
@@ -702,9 +702,9 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 					'edit_url' => $order->get_edit_order_url(),
 				);
 
-				$prestation_part = new MultiServices_PrPart($args);
-				// $prestation_part->update($args);
-				// error_log ("prestation_part " . print_r($prestation_part->ID, true));
+				$prestation_item = new MultiServices_Item($args);
+				// $prestation_item->update($args);
+				// error_log ("prestation-item " . print_r($prestation_item->ID, true));
 
 				// $lock = array_keys($part); // TODO: prevent modifications of locked fields
 

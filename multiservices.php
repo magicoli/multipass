@@ -3,7 +3,7 @@
 /**
  * Plugin Name:       MultiServices (dev)
  * Plugin URI:        https://magiiic.com/wordpress/plugins/multiservices/
- * Description:       Group prestation parts from different sources (WooCommerce, OTA, booking engines...) and manage them as a whole.
+ * Description:       Group prestation items from different sources (WooCommerce, OTA, booking engines...) and manage them as a whole.
  * Version:           0.1.1.x-dev
  * Author:            Magiiic
  * Author URI:        https://magiiic.com/

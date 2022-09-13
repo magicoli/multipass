@@ -553,6 +553,7 @@ class MultiServices_Prestation {
 							'type'    => 'select',
 							'options' => [
 									'product' => __('Product', 'multiservices' ),
+									'service' => __('Service', 'multiservices' ),
 									'booking' => __('Booking', 'multiservices' ),
 									'payment' => __('Payment', 'multiservices' ),
 							],

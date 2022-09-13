@@ -381,7 +381,7 @@ class MultiServices_Service {
 				'hierarchical' => false,
 			],
 		];
-		register_taxonomy( 'service-type', ['prestation', 'product', 'service', 'prestation-part'], $args );
+		register_taxonomy( 'service-type', ['prestation', 'product', 'service', 'prestation-item'], $args );
 
 		MultiServices::register_terms('service-type', array(
 			'booking' => __('Booking', 'multiservices'),

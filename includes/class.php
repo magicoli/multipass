@@ -132,8 +132,8 @@ class MultiServices {
 
 		require_once MULTISERVICES_DIR . 'includes/class-cpt-prestation.php';
 		$this->loaders[] = new MultiServices_Prestation();
-		require_once MULTISERVICES_DIR . 'includes/class-cpt-prestation-part.php';
-		$this->loaders[] = new MultiServices_PrPart();
+		require_once MULTISERVICES_DIR . 'includes/class-cpt-prestation-item.php';
+		$this->loaders[] = new MultiServices_Item();
 		require_once MULTISERVICES_DIR . 'includes/class-cpt-service.php';
 		$this->loaders[] = new MultiServices_Service();
 		require_once MULTISERVICES_DIR . 'includes/class-settings.php';

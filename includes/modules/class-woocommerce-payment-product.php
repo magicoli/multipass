@@ -60,7 +60,7 @@ class MultiServices_Payment_Product {
 					'callback' => __CLASS__ . '::payment_products_list',
 					'desc' => sprintf(
 						'<p>%s</p><p>%s</p>',
-						__('Payment products are used to provide a payment gateway for prestation not handled by WooCommerce (like deposits, custom items or prestation parts handled by an external website).', 'multiservices' ),
+						__('Payment products are used to provide a payment gateway for prestation not handled by WooCommerce (like deposits, custom items or prestation items handled by an external website).', 'multiservices' ),
 						join(
 							'<br/>', array(
 								__('To enable a product as payment, check the "Payment Only" option on product edit page and set its price to 0 (zero).', 'multiservices' ),

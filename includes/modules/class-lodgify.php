@@ -62,7 +62,7 @@ class MultiServices_Lodgify extends MultiServices_Modules {
 			),
 
 			array(
-				'hook' => 'multiservices_register_terms_prestation-part-source',
+				'hook' => 'multiservices_register_terms_prestation-item-source',
 				'callback' => 'register_sources_filter',
 			),
 		);

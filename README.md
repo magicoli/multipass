@@ -9,7 +9,7 @@ Stable tag: 1.0
 License: GPLv2 or later
 License URI: http: //www.gnu.org/licenses/gpl-2.0.html
 
-Group prestation parts from different sources (WooCommerce, OTA, booking engines...) and manage them as a whole.
+Group prestation items from different sources (WooCommerce, OTA, booking engines...) and manage them as a whole.
 
 ## Description
 
