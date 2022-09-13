@@ -483,7 +483,7 @@ class MultiServices {
 
 
 	static function title_html() {
-		return preg_replace('/(#[[:alnum:]]+)/', '<code>$1</code>', the_title('<h1>', '</h1>', false));
+		return preg_replace('/(#[[:alnum:]_-]+)/', '<code>$1</code>', the_title('<h1>', '</h1>', false));
 	}
 
 	static function get_user_by_info($info) {
