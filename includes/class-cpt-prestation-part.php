@@ -311,21 +311,21 @@ class MultiServices_PrPart {
 				[
 					'name'    => __('Source ID', 'multiservices' ),
 					'id'      => $prefix . 'source_id',
-					'type'    => 'hidden',
-					// 'readonly' => true,
-					// 'visible' => [
-					//     'when'     => [['source', '!=', '']],
-					//     'relation' => 'and',
-					// ],
-				],
-				'source_details' => [
-					'name'    => __('Source Details', 'multiservices' ),
-					'id'      => $prefix . 'source_details',
-					'type'    => 'group',
-					'class' => 'inline',
+					'type'    => 'text',
+					'readonly' => true,
 					'visible' => [
-						'when'     => [['source', '!=', '']],
-						'relation' => 'and',
+					    'when'     => [['source', '!=', '']],
+					    'relation' => 'and',
+					],
+				],
+				[
+					'name'    => __('Source Item ID', 'multiservices' ),
+					'id'      => $prefix . 'source_item_id',
+					'type'    => 'text',
+					'readonly' => true,
+					'visible' => [
+					    'when'     => [['source', '!=', '']],
+					    'relation' => 'and',
 					],
 				],
 				[
@@ -822,6 +822,7 @@ class MultiServices_PrPart {
 	static function save_post_action($post_id, $post, $update ) {
 		if( !$update ) return;
 		if( 'prestation-part' !== $post->post_type) return;
+		if( 'trash' == $post->post_status) return;
 
 		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
 
@@ -1099,31 +1100,55 @@ class MultiServices_PrPart {
 			break;
 
 			case 'array':
+			$source_term_id = (empty($args['source'])) ? NULL : get_term_by('slug', $args['source'], 'prestation-part-source');
 			$query_args = array(
-				'post_type' => 'prestation_part',
-				'post_status__in' => [ 'publish' ],
+				'post_type' => 'prestation-part',
+				'post_status' => 'publish',
+				'numberposts' => 1,
 				'orderby' => 'post_date',
-				'order' => 'desc',
+				'order' => 'asc',
+				'tax_query' => array(array(
+					'taxonomy' => 'prestation-part-source',
+					'field' => 'slug',
+					'terms' => [ $args['source'] ],
+					'operator' => 'IN',
+				)),
 				'meta_query' => array(
 					'relation' => 'AND',
-					array(
-						'key' => 'source',
-						'value' => $args['source'],
-					),
 					array(
 						'key' => 'source_id',
 						'value' => $args['source_id'],
 					),
 					array(
-						'key' => 'source_part',
-						'value' => $args['source_part'],
+						'key' => 'source_item_id',
+						'value' => $args['source_item_id'],
 					),
 				),
 			);
 			$prestation_parts = get_posts($query_args);
 			if($prestation_parts) {
 				$prestation_part = reset($prestation_parts);
-				error_log('found prestation_part ' . print_r($prestation_part, true));
+			} else {
+				$postarr = array(
+					'post_author' => $args['customer']['user_id'],
+					'post_title' => sprintf(
+						'#%s-%s %s',
+						$args['source_id'],
+						$args['source_item_id'],
+						$args['description'],
+					),
+					// 'post_date' => esc_attr($args['date']),
+					// 'post_date_gmt' => esc_attr($args['date_gmt']),
+					'post_type' => 'prestation-part',
+					'post_status' => 'publish',
+					'meta_input' => $args,
+					'tax_input' => array(
+						'prestation-part-source' => $args['source'],
+					),
+				);
+
+				$prestation_part_id = wp_insert_post($postarr);
+				$prestation_part = get_post($prestation_part_id);
 			}
 			break;
 
