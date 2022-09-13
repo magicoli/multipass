@@ -406,7 +406,8 @@ class MultiServices_Payment_Product {
     $reference = $post->post_name;
     $balance = get_post_meta($post->ID, 'balance', true);
     $paid = (float)get_post_meta($post->ID, 'paid', true);
-    $deposit = (float)get_post_meta($post->ID, 'deposit', true)['total'];
+    $deposit_array = get_post_meta($post->ID, 'deposit', true);
+    $deposit = (is_array($deposit_array)) ? (float)get_post_meta($post->ID, 'deposit', true)['total'] : NULL;
 
     $slug = __(MultiServices::get_option('woocommerce_rewrite_slug'), 'multiservices' );
 
