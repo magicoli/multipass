@@ -178,31 +178,6 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		$wc_term = get_term_by('slug', 'woocommerce', 'prestation-part-source');
 		$wc_term_id = ($wc_term) ? get_term_by('slug', 'woocommerce', 'prestation-part-source')->term_id : 'woocommerce';
 		// Order info on prestation part
-		$meta_boxes['prestation-part']['fields']['source_details']['fields'][] =[
-			'name'       => __( 'Order ID', 'multiservices' ),
-			'id' => 'wc_order_id',
-			'type'       => 'post',
-			'post_type'  => ['shop_order'],
-			'field_type' => 'select_advanced',
-			'visible' => [
-				'when'     => [ ['source', '=', $wc_term_id] ],
-			],
-		];
-		$meta_boxes['prestation-part']['fields']['source_details']['fields'][] = [
-			// Translators: Each line in a woocommerce order, usually related to a product, but is not a product. The actual product appears right next to this field, avoid any ambiguity
-			'name' => __('Order Item ID', 'multiservices'),
-			'id' => 'wc_order_item_id',
-			'visible' => [
-				'when'     => [ ['source', '=', $wc_term_id] ],
-			],
-		];
-		$meta_boxes['prestation-part']['fields']['source_details']['fields'][] =[
-			'name' => __('Product ID', 'multiservices'),
-			'id' => 'wc_order_product_id',
-			'visible' => [
-				'when'     => [ ['source', '=', $wc_term_id] ],
-			],
-		];
 
 		// Prestation info on WC Orders
 		$prefix = 'prestation_';
@@ -683,16 +658,16 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 				$args = array(
 					'source' => 'woocommerce',
 					'source_id' => "$post_id",
-					'source_part' => "$item_id",
+					'source_item_id' => "$item_id",
 					// 'source_details' => array(
 					// 	'wc_order_id' => $post_id,
 					// 	'wc_order_item_id' => $item_id,
 					// 	'wc_product_id' => $product_id,
 					// 	'wc_variation_id' => $item->get_variation_id(),
 					// ),
-					'description' => "#$post_id $description",
+					'description' => "$description",
 
-					'prestation_id' => $prestation->ID,
+					'prestation' => $prestation->ID,
 
 					'customer' => array(
 						'user_id' => $customer_id,
@@ -729,7 +704,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 
 				$prestation_part = new MultiServices_PrPart($args);
 				// $prestation_part->update($args);
-				error_log ("prestation_part " . print_r($prestation_part, true));
+				// error_log ("prestation_part " . print_r($prestation_part->ID, true));
 
 				// $lock = array_keys($part); // TODO: prevent modifications of locked fields
 
