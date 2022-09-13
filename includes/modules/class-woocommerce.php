@@ -629,7 +629,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 				$terms = get_the_terms( $product_id, 'product_cat' );
 				if($terms) $category = $terms[0]->name;
 
-				$product_name = join(' ', array_filter(array(
+				$description = join(' ', array_filter(array(
 					isset($category) ? $category : '',
 					$item->get_name(),
 					isset($variation) ? $variation->get_formatted_name() : '',
@@ -645,7 +645,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 						$dates['from'] = $booking->get_start();
 						$dates['to'] = $booking->get_end();
 					}
-					$product_name .= ' ' . MultiServices::format_date_range($dates, 'SHORT');
+					$description .= ' ' . MultiServices::format_date_range($dates, 'SHORT');
 
 					// TODO: get attendees and beds counts
 					//
@@ -666,16 +666,32 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 				$unit_price = (empty($quantity)) ? $sub_total : $sub_total / $quantity;
 				$total = $item->get_total() + $item->get_total_tax();
 				$discount = ($total != $sub_total) ? [ 'amount' => $sub_total - $total ] : [];
+				$paid = (in_array($order->get_status(), [ 'completed', 'processing' ])) ? $total : 0;
+				$balance = $total - $paid;
 
-				$part = array(
+				$type = (MultiServices_Payment_Product::is_payment_product($product)) ? 'payment' : $product->get_type();
+				switch($type) {
+					case 'booking':
+					$description = '[' . __('Booking', 'multiservices') . '] ' . $description;
+					break;
+
+					case 'payment':
+					$description = '[' . __('Payment', 'multiservices') . '] ' . $description;
+					break;
+				}
+
+				$args = array(
 					'source' => 'woocommerce',
-					'source_details' => array(
-						'wc_order_item_id' => $item_id,
-						'wc_order_id' => $post_id,
-						'wc_product_id' => $product_id,
-						'wc_variation_id' => $item->get_variation_id(),
-					),
-					'description' => $product_name,
+					'source_id' => "$post_id",
+					'source_part' => "$item_id",
+					// 'source_details' => array(
+					// 	'wc_order_id' => $post_id,
+					// 	'wc_order_item_id' => $item_id,
+					// 	'wc_product_id' => $product_id,
+					// 	'wc_variation_id' => $item->get_variation_id(),
+					// ),
+					'description' => "#$post_id $description",
+
 					'prestation_id' => $prestation->ID,
 
 					'customer' => array(
@@ -703,12 +719,19 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 					'total' => $total,
 					// TODO: ensure paid status is updated immediatly, not after second time save
 					//
-					'paid' => (in_array($order->get_status(), [ 'completed', 'processing' ])) ? $total : 0,
+					'paid' => $paid,
+					'balance' => $balance,
+					'type' => $type,
+
+					'view_url' => $order->get_view_order_url(),
+					'edit_url' => $order->get_edit_order_url(),
 				);
 
-				error_log ("item " . print_r($part, true));
+				$prestation_part = new MultiServices_PrPart($args);
+				// $prestation_part->update($args);
+				error_log ("prestation_part " . print_r($prestation_part, true));
 
-				$lock = array_keys($part); // TODO: prevent modifications of locked fields
+				// $lock = array_keys($part); // TODO: prevent modifications of locked fields
 
 		// 		// TODO: add lines for order discount, deposit, paid
 		// 			// 'id'            => $prefix . 'deposit',

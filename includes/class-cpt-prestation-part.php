@@ -30,7 +30,7 @@ class MultiServices_PrPart {
 	 * @access   protected
 	 * @var      array    $actions    The actions registered with WordPress to fire when the plugin loads.
 	 */
-	protected $actions;
+	// protected $actions;
 
 	/**
 	 * The array of filters registered with WordPress.
@@ -39,27 +39,19 @@ class MultiServices_PrPart {
 	 * @access   protected
 	 * @var      array    $filters    The filters registered with WordPress to fire when the plugin loads.
 	 */
-	protected $filters;
+	// protected $filters;
 
-	protected $ID;
-	protected $post;
+	// protected $ID;
+	// protected $post;
 
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct($post = NULL) {
-		if(is_numeric($post)) {
-			$this->ID = $post;
-			$post = get_post($this->ID);
-		} else if(isset($post->post_type) && $post->post_type == 'prestation-part') {
-			$this->post = $post;
-			$this->ID = $post->ID;
-		}
-
-		$this->actions = array();
-		$this->filters = array();
+	public function __construct($args = NULL) {
+		$this->post = $this->get($args);
+		if($this->post) $this->ID = $this->post->ID;
 
 	}
 
@@ -1091,7 +1083,58 @@ class MultiServices_PrPart {
 		return;
 	}
 
+	function get($args) {
+		$prestation_part = NULL;
+		switch(gettype($args)) {
+			case 'object':
+			$post = $args;
+			if(isset($post->post_type) && $post->post_type == 'prestation-part')
+			$prestation_part = $args;
+			break;
 
+			case 'integer':
+			$post = get_post($args);
+			if(isset($post->post_type) && $post->post_type == 'prestation-part')
+			$prestation_part = $post;
+			break;
+
+			case 'array':
+			$query_args = array(
+				'post_type' => 'prestation_part',
+				'post_status__in' => [ 'publish' ],
+				'orderby' => 'post_date',
+				'order' => 'desc',
+				'meta_query' => array(
+					'relation' => 'AND',
+					array(
+						'key' => 'source',
+						'value' => $args['source'],
+					),
+					array(
+						'key' => 'source_id',
+						'value' => $args['source_id'],
+					),
+					array(
+						'key' => 'source_part',
+						'value' => $args['source_part'],
+					),
+				),
+			);
+			$prestation_parts = get_posts($query_args);
+			if($prestation_parts) {
+				$prestation_part = reset($prestation_parts);
+				error_log('found prestation_part ' . print_r($prestation_part, true));
+			}
+			break;
+
+		}
+
+		// if(!empty($prestation_part)) {
+		// 	$this->post = $prestation_part;
+		// 	$this->ID = $prestation_part->ID;
+		// }
+		return $prestation_part;
+	}
 }
 
 class MultiServices_PrPart_Admin_Columns extends \MBAC\Post {
