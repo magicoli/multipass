@@ -164,7 +164,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 			'tab'            => 'woocommerce',
 			'fields'         => [
 				[
-					'name'              => __('Sync orders', 'multiservices' ),
+					'name'              => __('Synchronize now', 'multiservices' ),
 					'id'                => $prefix . 'sync_orders',
 					'type'              => 'switch',
 					'desc'              => __('Sync orders and prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multiservices' ),
