@@ -348,7 +348,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		foreach($columns as $key => $value) {
 			$updated_columns[$key] = $value;
 			if($key == 'order_number') {
-				$updated_columns['prestation'] = __('Prestation', 'multiservices' );
+				$updated_columns['prestation_id'] = __('Prestation', 'multiservices' );
 			}
 		}
 		if(isset($updated_columns)) $columns = $updated_columns;
@@ -373,7 +373,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 
 	static function shop_orders_columns_display( $column, $post_id ) {
 		switch($column) {
-			case 'prestation':
+			case 'prestation_id':
 			$prestation_id = get_post_meta($post_id, 'prestation_id', true);
 			if(!empty($prestation_id)) {
 				echo sprintf(
@@ -669,7 +669,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 					// ),
 					'description' => "$description",
 
-					'prestation' => $prestation->ID,
+					'prestation_id' => $prestation->ID,
 
 					'customer' => array(
 						'user_id' => $customer_id,

@@ -371,7 +371,7 @@ class MultiServices_Item {
 				],
 				[
 					'name'       => __('Prestation', 'multiservices' ),
-					'id'         => $prefix . 'prestation',
+					'id'         => $prefix . 'prestation_id',
 					'type'       => 'post',
 					'post_type'  => ['prestation'],
 					'field_type' => 'select_advanced',
@@ -388,7 +388,7 @@ class MultiServices_Item {
 						'searchable' => true,
 					],
 					'visible'           => [
-						'when'     => [['prestation', '!=', '']],
+						'when'     => [['prestation_id', '!=', '']],
 						'relation' => 'or',
 					],
 				],
@@ -424,7 +424,7 @@ class MultiServices_Item {
 						],
 					],
 					'visible'           => [
-						'when'     => [['prestation', '=', '']],
+						'when'     => [['prestation_id', '=', '']],
 						'relation' => 'or',
 					],
 				],
@@ -860,7 +860,7 @@ class MultiServices_Item {
 
 		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
 
-		$prestation_id = get_post_meta($post_id, 'prestation', true);
+		$prestation_id = get_post_meta($post_id, 'prestation_id', true);
 		$prestation_item_info = get_post_meta($post_id, 'customer', true);
 		if($prestation_id) {
 			$user_info = array_filter(array(
@@ -960,7 +960,7 @@ class MultiServices_Item {
 			// wp_set_object_terms( $post_id, $paid_status, 'prestation-status');
 			//
 		}
-		// $metas['subtotal'] = get_post_meta($post_id, 'prestation', true);
+		// $metas['subtotal'] = get_post_meta($post_id, 'prestation_id', true);
 		// $part = new MultiServices_Item($post);
 		// $prestation_item->set_prestation();
 
@@ -984,7 +984,7 @@ class MultiServices_Item {
 		//
 		// switch($meta_key) {
 		// 	case 'customer':
-		// 	$prestation_id = get_post_meta($object_id, 'prestation', true);
+		// 	$prestation_id = get_post_meta($object_id, 'prestation_id', true);
 		// 	$prestation_info = array_filter(array(
 		// 		'id' => get_post_meta($prestation_id, 'customer_id', true),
 		// 		'name' => get_post_meta($prestation_id, 'attendee_name', true),
