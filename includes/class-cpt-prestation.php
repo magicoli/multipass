@@ -129,8 +129,8 @@ class MultiServices_Prestation {
 			),
 
 			array (
-				'hook' => 'save_post_prestation',
-				'callback' => 'update_prestation_amounts',
+				'hook' => 'save_post', // use save_post because save_post_prestation_item is fired before actual save and meta values are not yet updated
+				'callback' => 'save_post_action',
 				'accepted_args' => 3,
 			),
 
@@ -1079,12 +1079,13 @@ class MultiServices_Prestation {
 		return true;
 	}
 
-	static function update_prestation_amounts($post_id, $post, $update ) {
-		if( !$update ) return;
-		if( MultiServices::is_new_post() ) return; // triggered when opened new post page, empty
+	static function save_post_action($post_id, $post, $update ) {
+		// if( !$update ) return; // update is not true when created by plugin
 		if( ! self::is_prestation_post($post) ) return;
+		if(!$post) return;
 		if( $post->post_status == 'trash' ) return; // TODO: remove prestation reference from other post types
 		if( isset($_REQUEST['action']) && $_REQUEST['action'] == 'trash' ) return; // maybe redundant?
+		if( MultiServices::is_new_post() ) return; // triggered when opened new post page, empty
 
 		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
 
@@ -1104,7 +1105,6 @@ class MultiServices_Prestation {
 		$updates['price'] = 0; // get_post_meta($post_id, 'price', true);
 		$updates['paid'] = 0; // Will be overridden // get_post_meta($post_id, 'paid', true);
 		$dates = [];
-
 
 		if(is_array($_REQUEST)) {
 		  foreach ($updates as $key => $value) {
