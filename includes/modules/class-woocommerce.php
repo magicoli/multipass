@@ -659,6 +659,8 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 					'source' => 'woocommerce',
 					'source_id' => "$post_id",
 					'source_item_id' => "$item_id",
+					'view_url' => $order->get_view_order_url(),
+					'edit_url' => $order->get_edit_order_url(),
 					// 'source_details' => array(
 					// 	'wc_order_id' => $post_id,
 					// 	'wc_order_item_id' => $item_id,
@@ -698,8 +700,6 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 					'balance' => $balance,
 					'type' => $type,
 
-					'view_url' => $order->get_view_order_url(),
-					'edit_url' => $order->get_edit_order_url(),
 				);
 
 				$prestation_item = new MultiServices_Item($args);

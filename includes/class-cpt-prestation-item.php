@@ -189,6 +189,29 @@ class MultiServices_Item {
 		}
 	}
 
+	static function item_links_html($value = NULL, $field = []) {
+		if(is_object($value)) $post = $value;
+		else global $post;
+		if(!$post) return;
+
+		$source = get_post_meta($post->ID, 'source', true);
+		$term = get_term_by('slug', $source, 'prestation-item-source');
+		$source_name = $term->name;
+		$links = array_filter(array(
+			__('View %s item', 'multiservices') => get_post_meta($post->ID, 'view_url', true),
+			__('Edit %s item', 'multiservices') => get_post_meta($post->ID, 'edit_url', true),
+		));
+		$links_html = [];
+		foreach($links as $label => $link) {
+			$links_html[] = sprintf(
+				'<a href="%s">%s</a>',
+				$link,
+				sprintf($label, $source_name),
+			);
+		}
+		return join(' ', $links_html);
+	}
+
 	static function customer_html($value = NULL, $field = []) {
 		if(is_object($value)) $post = $value;
 		else global $post;
@@ -280,7 +303,6 @@ class MultiServices_Item {
 
 	static function register_fields( $meta_boxes ) {
 		$js_date_format_short = preg_match('/^[Fm]/', get_option('date_format')) ? 'mm-dd-yy' : 'dd-mm-yy';
-
     $prefix = '';
 
 		$meta_boxes['prestation_item'] = [
@@ -298,7 +320,7 @@ class MultiServices_Item {
 					'name'          => __('Source', 'multiservices' ),
 					'id'            => $prefix . 'source',
 					'type'          => 'taxonomy',
-					'taxonomy'      => ['prestation_item-source'],
+					'taxonomy'      => ['prestation-item-source'],
 					'field_type'    => 'select',
 					'placeholder'   => _x('None', '(prestation_item) source', 'multiservices' ),
 					'admin_columns' => [
@@ -326,6 +348,16 @@ class MultiServices_Item {
 					'visible' => [
 					    'when'     => [['source', '!=', '']],
 					    'relation' => 'and',
+					],
+				],
+				[
+					'name'    => __('Links', 'multiservices' ),
+					'id'      => $prefix . 'links',
+					'type'          => 'custom_html',
+					'callback'      => __CLASS__ . '::item_links_html',
+					'visible' => [
+						'when'     => [['source', '!=', '']],
+						'relation' => 'and',
 					],
 				],
 				[
@@ -577,6 +609,7 @@ class MultiServices_Item {
 							'name'     => __('Subtotal', 'multiservices' ),
 							'id'       => $prefix . 'subtotal',
 							'type'     => 'number',
+							'step' => 'any',
 							'size'     => 10,
 							'readonly' => true,
 						],
@@ -601,6 +634,7 @@ class MultiServices_Item {
 							'id'      => $prefix . 'amount',
 							'type'    => 'number',
 							'size'    => 10,
+							'step'    => 'any',
 							'prepend' => '€',
 						],
 					],
@@ -793,9 +827,9 @@ class MultiServices_Item {
 			],
 			'_builtin' => true,
 		];
-		register_taxonomy( 'prestation_item-source', ['prestation-item'], $args );
+		register_taxonomy( 'prestation-item-source', ['prestation-item'], $args );
 
-		MultiServices::register_terms('prestation_item-source');
+		MultiServices::register_terms('prestation-item-source');
 
 	}
 
@@ -856,11 +890,10 @@ class MultiServices_Item {
 			));
 
 			$discount = get_post_meta($post_id, 'discount', true);
+			if(!is_array($discount)) $discount = [ 'amount' => NULL ];
 			$discount_percent = isset($discount['percent']) ? $discount['percent']: NULL;
 			if(isset($discount['percent'])) {
 				$discount_amount = $sub_total * $discount_percent / 100;
-			} else {
-				$discount['amount'] = ( isset($discount['amount']) ? $discount['amount'] : NULL);
 			}
 			$updates['discount'] = array_merge($discount, array(
 				'amount' => $discount_amount,
@@ -869,11 +902,11 @@ class MultiServices_Item {
 			$updates['total'] = $total = $sub_total - $discount_amount;
 
 			$deposit = get_post_meta($post_id, 'deposit', true);
+			if(!is_array($deposit)) $deposit = [ 'amount' => NULL ];
+
 			$deposit_percent = isset($deposit['percent']) ? $deposit['percent']: NULL;
 			if(isset($deposit['percent'])) {
 				$deposit_amount = $total * $deposit_percent / 100;
-			} else {
-				$deposit['amount'] = ( isset($deposit['amount']) ? $deposit['amount'] : NULL);
 			}
 			$updates['deposit'] = array_merge($deposit, array(
 				'amount' => $deposit_amount,
@@ -1100,7 +1133,7 @@ class MultiServices_Item {
 			break;
 
 			case 'array':
-			$source_term_id = (empty($args['source'])) ? NULL : get_term_by('slug', $args['source'], 'prestation_item-source');
+			$source_term_id = (empty($args['source'])) ? NULL : get_term_by('slug', $args['source'], 'prestation-item-source');
 			$query_args = array(
 				'post_type' => 'prestation-item',
 				'post_status' => 'publish',
@@ -1108,7 +1141,7 @@ class MultiServices_Item {
 				'orderby' => 'post_date',
 				'order' => 'asc',
 				'tax_query' => array(array(
-					'taxonomy' => 'prestation_item-source',
+					'taxonomy' => 'prestation-item-source',
 					'field' => 'slug',
 					'terms' => [ $args['source'] ],
 					'operator' => 'IN',
@@ -1143,7 +1176,7 @@ class MultiServices_Item {
 					'post_status' => 'publish',
 					'meta_input' => $args,
 					'tax_input' => array(
-						'prestation_item-source' => $args['source'],
+						'prestation-item-source' => $args['source'],
 					),
 				);
 
