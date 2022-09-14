@@ -197,10 +197,17 @@ class MultiServices_Item {
 		$source = get_post_meta($post->ID, 'source', true);
 		$term = get_term_by('slug', $source, 'prestation-item-source');
 		$source_name = $term->name;
-		$links = array_filter(array(
-			__('View %s item', 'multiservices') => get_post_meta($post->ID, 'view_url', true),
-			__('Edit %s item', 'multiservices') => get_post_meta($post->ID, 'edit_url', true),
-		));
+		if($field['format'] == 'icon') {
+			$links = array_filter(array(
+				'<a class="dashicons dashicons-visibility" href="%s"></a>' => get_post_meta($post->ID, 'view_url', true),
+				'<a class="dashicons dashicons-edit" href="%s"></a>' => get_post_meta($post->ID, 'edit_url', true),
+			));
+		} else {
+			$links = array_filter(array(
+				__('View %s item', 'multiservices') => get_post_meta($post->ID, 'view_url', true),
+				__('Edit %s item', 'multiservices') => get_post_meta($post->ID, 'edit_url', true),
+			));
+		}
 		$links_html = [];
 		foreach($links as $label => $link) {
 			$links_html[] = sprintf(

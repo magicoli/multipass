@@ -17,10 +17,11 @@ class MultiServices_Table extends WP_List_Table {
 
   function get_columns() {
     $rows = $this->rows;
-    if(!is_array($rows)) return [ 'error' => __('Not an array') ];
-    if(empty($rows)) return [ 'error' => __('Empty table') ];
+    if(!is_array($rows)) return [ 'error' => __('Not an array', 'multiservices') ];
+    if(empty($rows)) return [ 'error' => __('Empty table', 'multiservices') ];
 
-    // $first_row = ;
+    $first_row = reset($rows);
+    if(!is_array($first_row)) return  [ 'error' => __('Wrong table format', 'multiservices') ];
     $keys = array_keys(array_shift($rows));
     switch ($keys[0]) {
       // case 'idprenota':

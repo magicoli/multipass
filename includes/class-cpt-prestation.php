@@ -431,12 +431,19 @@ class MultiServices_Prestation {
 			'readonly' => true,
 			'fields'     => [
 				[
-					// 'name'          => __('Managed Items', 'multiservices' ),
-					'id'            => $prefix . 'list',
+					'name' => __('Items', 'multiservices'),
+					'id'            => $prefix . 'items',
 					'type'          => 'custom_html',
-					'callback'      => __CLASS__ . '::get_managed_list',
+					'callback'      => __CLASS__ . '::items_list',
 					'columns' => 12,
 				],
+				// [
+				// 	// 'name'          => __('Managed Items', 'multiservices' ),
+				// 	'id'            => $prefix . 'list',
+				// 	'type'          => 'custom_html',
+				// 	'callback'      => __CLASS__ . '::get_managed_list',
+				// 	'columns' => 12,
+				// ],
 			],
 		];
 		// 		'items' => [
@@ -943,6 +950,61 @@ class MultiServices_Prestation {
 		return [];
 	}
 
+	function get_items() {
+		$query_args = array(
+			'post_type' => 'prestation-item',
+			'post_status' => 'publish',
+			'numberposts' => -1,
+			'orderby' => 'post_date',
+			'order' => 'asc',
+			'meta_query' => array(
+				'relation' => 'AND',
+				array(
+					'key' => 'prestation_id',
+					'value' => $this->ID,
+				),
+			),
+		);
+		$prestation_items = get_posts($query_args);
+		$items = [];
+		foreach($prestation_items as $prestation_item) {
+			$meta = get_post_meta($prestation_item->ID);
+			$price = get_post_meta($prestation_item->ID, 'price', true);
+			$dates = MultiServices::format_date_range(get_post_meta($prestation_item->ID, 'dates', true), 'SHORT');
+			$discount = get_post_meta($prestation_item->ID, 'discount', true);
+			// $deposit = get_post_meta($prestation_item->ID, 'deposit', true);
+			$items[] = array(
+				'ID' => $prestation_item->ID,
+				'date' => $prestation_item->post_date,
+				'description' => reset($meta['description']),
+				'type' => reset($meta['type']),
+				'dates' => $dates,
+				'subtotal' => MultiServices::price($price['sub_total']),
+				'discount' => MultiServices::price($discount['amount']),
+				'total' => MultiServices::price(reset($meta['total'])),
+				// 'deposit' => $deposit['amount'],
+				'paid' => MultiServices::price(reset($meta['paid'])),
+				'balance' => MultiServices::price(reset($meta['balance'])),
+				'source' => reset($meta['source']),
+				'links' => MultiServices_Item::item_links_html($prestation_item, ['format' => 'icon']),
+			);
+		}
+
+		return $items;
+	}
+
+	static function items_list($args = [], $field = []) {
+		if(is_object($args)) $post = $args;
+		else global $post;
+		if(!self::is_prestation_post($post)) return "nope";
+
+		$prestation = new MultiServices_Prestation($post);
+		$items = $prestation->get_items();
+		$list = new MultiServices_Table( [ 'rows' => $items ] );
+		// error_log(print_r($list, true));
+		return $list->render();
+	}
+
 	static function get_managed_list($args = [], $field = []) {
 		$html = apply_filters('multiservices_managed_list', NULL);
 
@@ -1328,10 +1390,8 @@ class MultiServices_Prestation {
 		if(empty($args)) return $args;
 		if(is_numeric($args)) {
 			$prestation = get_post($args);
-			error_log('get prestation by id: ' . $prestation->ID);
 		} else if(is_object($args) && $args->post_type == 'prestation') {
 			$prestation = $args;
-			error_log('get prestation by post: ' . $prestation->ID);
 		}
 		if(isset($prestation)) return $prestation;
 
