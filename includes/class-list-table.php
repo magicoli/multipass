@@ -95,6 +95,12 @@ class MultiServices_Table extends WP_List_Table {
         else $value = MultiServices::price($value);
         break;
 
+        case 'date_range';
+        if(!empty($value) && is_array($value)) {
+          $value = MultiServices::format_date_range($value);
+        }
+        break;
+
         case 'date';
         if(!empty($value)) {
           if(!is_numeric($value)) $value = strtotime($value);

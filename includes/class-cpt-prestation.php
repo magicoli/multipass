@@ -769,7 +769,7 @@ class MultiServices_Prestation {
 		foreach($prestation_items as $prestation_item) {
 			$meta = get_post_meta($prestation_item->ID);
 			$price = get_post_meta($prestation_item->ID, 'price', true);
-			$dates = MultiServices::format_date_range(get_post_meta($prestation_item->ID, 'dates', true), 'SHORT');
+			$dates = get_post_meta($prestation_item->ID, 'dates', true);
 			$discount = get_post_meta($prestation_item->ID, 'discount', true);
 			// $deposit = get_post_meta($prestation_item->ID, 'deposit', true);
 			$items[] = array(
@@ -778,18 +778,44 @@ class MultiServices_Prestation {
 				'description' => reset($meta['description']),
 				'type' => reset($meta['type']),
 				'dates' => $dates,
-				'subtotal' => MultiServices::price($price['sub_total']),
-				'discount' => MultiServices::price($discount['amount']),
-				'total' => MultiServices::price(reset($meta['total'])),
+				'subtotal' => $price['sub_total'],
+				'discount' => $discount['amount'],
+				'total' => reset($meta['total']),
 				// 'deposit' => $deposit['amount'],
-				'paid' => MultiServices::price(reset($meta['paid'])),
-				'balance' => MultiServices::price(reset($meta['balance'])),
+				'paid' => reset($meta['paid']),
+				'balance' => reset($meta['balance']),
 				'source' => reset($meta['source']),
 				'links' => MultiServices_Item::item_links_html($prestation_item, ['format' => 'icon']),
+				// 'subtotal' => MultiServices::price($price['sub_total']),
+				// 'discount' => MultiServices::price($discount['amount']),
+				// 'total' => MultiServices::price(reset($meta['total'])),
+				// // 'deposit' => $deposit['amount'],
+				// 'paid' => MultiServices::price(reset($meta['paid'])),
+				// 'balance' => MultiServices::price(reset($meta['balance'])),
+				// 'source' => reset($meta['source']),
+				// 'links' => MultiServices_Item::item_links_html($prestation_item, ['format' => 'icon']),
 			);
 		}
 
 		return $items;
+	}
+
+	function get_columns() {
+		return array(
+			// 'ID' => __('ID', 'multiservices'),
+			// 'date' => __('Date', 'multiservices'),
+			'type' => __('Type', 'multiservices'),
+			'description' => __('Description', 'multiservices'),
+			'dates' => __('Dates', 'multiservices'),
+			'subtotal' => __('Subtotal', 'multiservices'),
+			'discount' => __('Discount', 'multiservices'),
+			'total' => __('Total', 'multiservices'),
+			// 'deposit' => __('deposit', 'multiservices'),
+			'paid' => __('Paid', 'multiservices'),
+			'balance' => __('Balance', 'multiservices'),
+			'source' => __('Source', 'multiservices'),
+			'links' => __('Actions', 'multiservices'),
+		);
 	}
 
 	static function items_list($args = [], $field = []) {
@@ -799,7 +825,16 @@ class MultiServices_Prestation {
 
 		$prestation = new MultiServices_Prestation($post);
 		$items = $prestation->get_items();
-		$list = new MultiServices_Table( [ 'rows' => $items ] );
+		$list = new MultiServices_Table( [ 'columns' => $prestation->get_columns(), 'format' => array(
+			'dates' => 'date_range',
+			'subtotal' => 'price',
+			'discount' => 'price',
+			'refunded' => 'price',
+			'total' => 'price',
+			'paid' => 'price',
+			'balance' => 'price',
+			'status' => 'status',
+		), 'rows' => $items ] );
 		// error_log(print_r($list, true));
 		return $list->render();
 	}
