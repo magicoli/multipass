@@ -202,41 +202,6 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 			],
 		];
 
-		// WC Orders on prestation
-		$prefix = 'woocommerce_';
-		$meta_boxes['multiservices-extensions']['fields']['woocommerce'] = [
-			'name'    => __('Woocommerce Orders', 'multiservices' ),
-			'id'      => 'orders',
-			'type'    => 'custom_html',
-			'callback' => __CLASS__ . '::get_order_details',
-			// 'columns' => 6,
-
-			// 'name' => 'WooCommerce',
-			// 'id'     => $prefix . 'wc_order',
-			// 'type'   => 'group',
-			// 'clone'  => true,
-			// 'fields' => [
-			// 	[
-			// 		'name'    => __('Order ID', 'multiservices' ),
-			// 		'id'      => 'id',
-			// 		'type'    => 'text',
-			// 		'post_type' => 'shop_order',
-			// 		'callback' => __CLASS__ . '::get_order_details',
-			// 		// 'std' => self::get_order_details(),
-			// 		// 'readonly' => true,
-			// 		'columns' => 3,
-			// 		// 'options' => self::get_available_items(),
-			// 	],
-			// 	[
-			// 		'name'    => __('Additional details', 'multiservices' ),
-			// 		'id'      => 'details',
-			// 		'type'    => 'custom_html',
-			// 		'callback' => __CLASS__ . '::get_order_details',
-			// 		'columns' => 6,
-			// 	],
-			// ],
-		];
-
 		$meta_boxes['services']['fields'][] = [
 			'name'       => __('Product', 'multiservices' ),
 			'id'         => 'service_product_id',
@@ -277,47 +242,6 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		if(!empty($link)) echo sprintf(
 			'<a href="%s">%s</a>', $link, __('View prestation', 'multiservices' ),
 		);
-	}
-
-	static function get_order_details($arg = NULL, $field = NULL) {
-		global $post;
-		$orders = wc_get_orders([ 'prestation_id' => $post->ID ]);
-		$rows = [];
-		foreach ($orders as $key => $order) {
-			$row = sprintf(
-				'<div class="prestation-order">
-				<a href="%s">%s</a>
-				%s - <strong>%s</strong> - %s
-				</div>',
-				get_edit_post_link($order->get_id()),
-				"#" . $order->get_id(),
-				$order->get_date_created()->date(get_option('date_format')),
-				wc_price($order->get_remaining_refund_amount()),
-				$order->get_status(),
-				// $order->get_date_paid()->date(get_option('date_format')),
-			);
-			$items = [];
-			foreach ( $order->get_items() as $item_id => $item ) {
-				// $product_id = $item->get_product_id();
-				// $variation_id = $item->get_variation_id();
-				// $product = $item->get_product(); // see link above to get $product info
-				$product_name = $item->get_name();
-				$quantity = $item->get_quantity();
-				$subtotal = $item->get_subtotal();
-				$total = $item->get_total();
-				// $tax = $item->get_subtotal_tax();
-				// $tax_class = $item->get_tax_class();
-				// $tax_status = $item->get_tax_status();
-				// $allmeta = $item->get_meta_data();
-				// $somemeta = $item->get_meta( );
-				// $item_type = $item->get_type(); // e.g. "line_item"
-				$items[] = '<li>' . "$product_name $quantity x $subtotal = $total " . '</li>';
-			}
-			if(!empty($items)) $row .= '<ol>' . implode($items) . '</ol>';
-
-			$rows[] = $row;
-		}
-		return implode($rows);
 	}
 
 	static function register_settings_pages( $settings_pages ) {

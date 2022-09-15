@@ -437,106 +437,8 @@ class MultiServices_Prestation {
 					'callback'      => __CLASS__ . '::items_list',
 					'columns' => 12,
 				],
-				// [
-				// 	// 'name'          => __('Managed Items', 'multiservices' ),
-				// 	'id'            => $prefix . 'list',
-				// 	'type'          => 'custom_html',
-				// 	'callback'      => __CLASS__ . '::get_managed_list',
-				// 	'columns' => 12,
-				// ],
 			],
 		];
-		// 		'items' => [
-		// 			// 'name'      => __('Managed orders and bookings', 'multiservices' ),
-		// 			'id'     => $prefix . 'managed',
-		// 			'type'   => 'group',
-		// 			'clone'  => true,
-		// 			'readonly' => true,
-		// 			// 'multiple'  => true,
-		// 			'class' => 'low-gap',
-		// 			'fields' => [
-		// 				[
-		// 					'name'    => __('ID', 'multiservices' ),
-		// 					'id'      => $prefix . 'id',
-		// 					'type'    => 'text',
-		// 					'readonly' => true,
-		// 					'columns' => 1,
-		// 					'options' => self::get_available_items(),
-		// 					'readonly' => true,
-		// 				],
-		// 				[
-		// 					'name'    => __('Source', 'multiservices' ),
-		// 					'id'      => $prefix . 'source',
-		// 					'type'    => 'text',
-		// 					'readonly' => true,
-		// 					'columns' => 1,
-		// 					'readonly' => true,
-		// 				],
-		// 				[
-		// 					'name'    => __('Description', 'multiservices' ),
-		// 					'id'      => $prefix . 'description',
-		// 					'type'    => 'text',
-		// 					'columns' => 3,
-		// 					'readonly' => true,
-		// 				],
-		// 				[
-		// 						'name'          => __('From', 'multiservices' ),
-		// 						'id'            => $prefix . 'from',
-		// 						'type'          => 'date',
-		// 						'columns' => 1,
-		// 						'readonly' => true,
-		// 				],
-		// 				[
-		// 						'name'          => __('To', 'multiservices' ),
-		// 						'id'            => $prefix . 'to',
-		// 						'type'          => 'date',
-		// 						'columns' => 1,
-		// 						'readonly' => true,
-		// 				],
-		// 				[
-		// 					'name'    => __('Quantity', 'multiservices' ),
-		// 					'id'      => $prefix . 'quantity',
-		// 					'type'    => 'text',
-		// 					'step' => 'any',
-		// 					'columns' => 1,
-		// 					'readonly' => true,
-		// 				],
-		// 				[
-		// 					'name'    => __('Unit Price', 'multiservices' ),
-		// 					'id'      => $prefix . 'unit_price',
-		// 					'type'    => 'text',
-		// 					'step' => 'any',
-		// 					'columns' => 1,
-		// 					'readonly' => true,
-		// 				],
-		// 				[
-		// 					'name'    => __('Discount', 'multiservices' ),
-		// 					'id'      => $prefix . 'discount',
-		// 					'type'    => 'text',
-		// 					'step' => 'any',
-		// 					'columns' => 1,
-		// 					'readonly' => true,
-		// 				],
-		// 				[
-		// 					'name'    => __('Total', 'multiservices' ),
-		// 					'id'      => $prefix . 'total',
-		// 					'type'    => 'text',
-		// 					'step' => 'any',
-		// 					'columns' => 1,
-		// 					'readonly' => true,
-		// 				],
-		// 				[
-		// 					'name'    => __('Paid', 'multiservices' ),
-		// 					'id'      => $prefix . 'paid',
-		// 					'type'    => 'text',
-		// 					'step' => 'any',
-		// 					'columns' => 1,
-		// 					'readonly' => true,
-		// 				],
-		// 			],
-		// 		],
-		// 	],
-		// ];
 
 		$prefix = '';
 		$meta_boxes[] = [
@@ -690,59 +592,6 @@ class MultiServices_Prestation {
 			],
 		];
 
-		// $prefix
-		// $meta_boxes[] = [
-		// 	'title'      => __('Manual payments', 'multiservices' ),
-		// 	'id'         => 'prestation-payments',
-		// 	'post_types' => ['prestation'],
-		// 	'class' => 'low-gap',
-		// 	'fields'     => [
-		// 		[
-		// 			'id'     => $prefix . 'payments',
-		// 			'type'   => 'group',
-		// 			'clone'  => true,
-		// 			'fields' => [
-		// 				[
-		// 					'name'    => __('Type', 'multiservices' ),
-		// 					'id'      => $prefix . 'type',
-		// 					'type'    => 'select',
-		// 					'placeholder' => __('Select a payment method'),
-		// 					'options' => [
-		// 						'cash'        => __('Cash', 'multiservices' ),
-		// 						'wire'        => __('Wire Transfer', 'multiservices' ),
-		// 						'order'       => __('WooCommerce Order', 'multiservices' ),
-		// 						'hbook'       => __('HBook Order', 'multiservices' ),
-		// 						'booking_com' => __('Booking.com', 'multiservices' ),
-		// 						'airbnb'      => __('Airbnb', 'multiservices' ),
-		// 					],
-		// 					'columns' => 2,
-		// 				],
-		// 				[
-		// 					'name'    => __('Payment ID', 'multiservices' ),
-		// 					'id'      => $prefix . 'payment_id',
-		// 					'type'    => 'text',
-		// 					'readonly' => true,
-		// 					'options' => self::get_available_payments(),
-		// 					'columns' => 2,
-		// 				],
-		// 				[
-		// 					'name'    => __('Payment reference', 'multiservices' ),
-		// 					'id'      => $prefix . 'payment_reference',
-		// 					'type'    => 'text',
-		// 					'columns' => 3,
-		// 				],
-		// 				[
-		// 					'name'    => __('Amount', 'multiservices' ),
-		// 					'id'      => $prefix . 'amount',
-		// 					'type'    => 'number',
-		// 					'columns' => 2,
-		// 					'step' => 'any',
-		// 				],
-		// 			],
-		// 		],
-		// 	],
-		// ];
-
 		$meta_boxes['prestation-summary'] = [
 			'title'      => __('Summary', 'multiservices' ),
 			'id'         => 'prestation-summary',
@@ -789,13 +638,6 @@ class MultiServices_Prestation {
 					'callback'      => 'MultiServices_Prestation::get_summary_balance',
 					'admin_columns' => 'after paid',
 				],
-				// [
-				// 	'name'          => __('Due', 'multiservices' ),
-				// 	'id'            => $prefix . 'due_html',
-				// 	'type'          => 'custom_html',
-				// 	'callback'      => 'MultiServices_Prestation::get_summary_due',
-				// 	'admin_columns' => 'after paid',
-				// ],
 				[
 					'name'          => __('Reference #', 'multiservices' ),
 					'id'            => $prefix . 'reference',
@@ -826,41 +668,6 @@ class MultiServices_Prestation {
 
 		return $meta_boxes;
 	}
-
-	// static function register_relationships() {
-	// 	MB_Relationships_API::register( [
-	// 		'id'   => 'prestations-orders',
-	// 		'from' => [
-	// 			'object_type'  => 'post',
-	// 			'post_type'    => 'prestation',
-	// 			'admin_column' => [
-	// 				'position' => 'after title',
-	// 				'link'     => 'view',
-	// 			],
-	// 			'meta_box'     => [
-	// 				'title'    => 'Bookings',
-	// 				'context'  => 'normal',
-	// 				'priority' => 'high',
-	// 				// 'style'    => 'seamless',
-	// 			],
-	// 			'field'        => [
-	// 				'max_clone' => '1',
-	// 			],
-	// 		],
-	// 		'to'   => [
-	// 			'object_type'  => 'post',
-	// 			'post_type'    => 'wc_booking',
-	// 			// 'admin_column' => [
-	// 			// 	'position' => 'replace title',
-	// 			// 	'link'     => 'edit',
-	// 			// ],
-	// 			'meta_box'     => [
-	// 				'title' => 'Prestation',
-	// 				// 'style' => 'seamless',
-	// 			],
-	// 		],
-	// 	]);
-	// }
 
 	static function register_taxonomies() {
 		$labels = [
@@ -940,14 +747,6 @@ class MultiServices_Prestation {
 			'unpaid' => [ 'name' => __('Unpaid', 'multiservices' ), 'parent' => 'pending' ],
 			'partial' => [ 'name' => __('Partially paid', 'multiservices' ), 'parent' => 'pending' ],
 		));
-	}
-
-	static function get_available_items() {
-		return [];
-	}
-
-	static function get_available_payments() {
-		return [];
 	}
 
 	function get_items() {
