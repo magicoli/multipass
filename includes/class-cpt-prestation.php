@@ -990,7 +990,7 @@ class MultiServices_Prestation {
 		$updates['customer_name'] = get_post_meta($post_id, 'customer_name', true);
 		$updates['attendee_name'] = get_post_meta($post_id, 'attendee_name', true);
 
-		$amounts['items'] = get_post_meta($post_id, 'manual_items', true);
+		$manual_items = get_post_meta($post_id, 'manual_items', true);
 		$amounts['managed'] = get_post_meta($post_id, 'managed', true);
 		$amounts['payments'] = get_post_meta($post_id, 'payments', true);
 		$updates['deposit'] = get_post_meta($post_id, 'deposit', true);
@@ -1000,6 +1000,8 @@ class MultiServices_Prestation {
 
 		$updates['price'] = 0; // get_post_meta($post_id, 'price', true);
 		$updates['paid'] = 0; // Will be overridden // get_post_meta($post_id, 'paid', true);
+		$updates['total'] = 0; // Will be overridden // get_post_meta($post_id, 'paid', true);
+		// $updates['balance'] = 0; // Will be overridden // get_post_meta($post_id, 'paid', true);
 		$dates = [];
 
 		if(is_array($_REQUEST)) {
@@ -1025,8 +1027,23 @@ class MultiServices_Prestation {
 		$updates['refunded'] = 0;
 		$updates['discount']['total'] = 0;
 
-		if(is_array($amounts['items'])) {
-		  foreach($amounts['items'] as $item) {
+		$prestation = new MultiServices_Prestation($post);
+		$prestation_items = $prestation->get_items();
+		foreach($prestation_items as $item) {
+			error_log("prestation $prestation->ID items " . print_r($item, true));
+			$updates['discount']['total'] += $item['discount'];
+			$updates['price'] += $item['subtotal'];
+			$updates['total'] += $item['total'];
+			$updates['paid'] += $item['paid'];
+			// $updates['balance'] += $item['balance'];
+			//
+			// if(!empty($item['from']['timestamp'])) $dates[] = $item['from']['timestamp'];
+			if(!empty($item['dates'])) $dates += array_values($item['dates']);
+		}
+		// error_log("items " . print_r($prestation_items, true));
+
+		if(is_array($manual_items)) {
+		  foreach($manual_items as $item) {
 				if(isset($item['paid'])) $updates['paid'] += (float)$item['paid'];
 
 				if(isset($item['discount']))
@@ -1050,8 +1067,9 @@ class MultiServices_Prestation {
 			$updates['discount']['amount'] = (empty($updates['discount']['amount'])) ? NULL : $updates['discount']['amount'];
 		}
 		// if($updates['discount']['amount'] > $updates['price']) $updates['discount']['amount'] = $updates['price'];
+		$updates['total'] -= $updates['discount']['amount'];
 
-		$updates['total'] = $updates['price'] - $updates['discount']['amount'];
+		// $updates['total'] = $updates['price'] - $updates['discount']['amount'];
 
 		if(is_array($amounts['payments'])) {
 		  foreach($amounts['payments'] as $payment) {
@@ -1061,23 +1079,23 @@ class MultiServices_Prestation {
 		  }
 		}
 
-		foreach(get_post_meta($post_id) as $key => $serialized) {
-			if(preg_match('/^managed-/', $key)) {
-				$managed = unserialize($serialized[0]);
-				// error_log("$key = " . print_r($managed, true));
-				// continue;
-				$updates['price'] += @$managed['subtotal'];
-				$updates['deposit']['managed'] += @$managed['deposit'];
-				$updates['discount']['managed'] += @$managed['discount'];
-				$updates['refunded'] += @$managed['refunded'];
-				$updates['total'] += @$managed['total'];
-				$updates['paid'] += @$managed['paid'];
-				if(is_array(@$managed['dates']) &! empty($managed['dates'])) {
-					$dates[] = min($managed['dates']);
-					$dates[] = max($managed['dates']);
-				}
-			}
-		}
+		// foreach(get_post_meta($post_id) as $key => $serialized) {
+		// 	if(preg_match('/^managed-/', $key)) {
+		// 		$managed = unserialize($serialized[0]);
+		// 		// error_log("$key = " . print_r($managed, true));
+		// 		// continue;
+		// 		$updates['price'] += @$managed['subtotal'];
+		// 		$updates['deposit']['managed'] += @$managed['deposit'];
+		// 		$updates['discount']['managed'] += @$managed['discount'];
+		// 		$updates['refunded'] += @$managed['refunded'];
+		// 		$updates['total'] += @$managed['total'];
+		// 		$updates['paid'] += @$managed['paid'];
+		// 		if(is_array(@$managed['dates']) &! empty($managed['dates'])) {
+		// 			$dates[] = min($managed['dates']);
+		// 			$dates[] = max($managed['dates']);
+		// 		}
+		// 	}
+		// }
 
 		$dates = array_unique(array_filter($dates));
 		if(!empty($dates)) {
