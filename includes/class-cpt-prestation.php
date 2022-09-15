@@ -283,46 +283,33 @@ class MultiServices_Prestation {
 					'id'            => $prefix . 'customer_id',
 					'type'          => 'user',
 					'field_type'    => 'select_advanced',
-					'admin_columns' => [
-						'position'   => 'after title',
-						'sort'       => true,
-						'searchable' => true,
-					],
 				],
 				[
-					'name'          => __('Attendee name', 'multiservices' ),
-					'id'            => $prefix . 'attendee_name',
+					'name'          => __('Contact name', 'multiservices' ),
+					'id'            => $prefix . 'contact_name',
 					'type'          => 'text',
 					'description'		=> __('Leave empty if same as customer name', 'multiservices' ),
 				],
 				[
-					'name'          => __('Attendee', 'multiservices' ),
+					'name'          => __('Contact', 'multiservices' ),
 					'id'            => $prefix . 'display_name',
 					'type'          => 'hidden',
-					'admin_columns' => [
-						'position'   => 'after customer_id',
-						'sort'       => true,
-						'searchable' => true,
-					],
 				],
 				[
-					'name'    => __('Customer Email', 'multiservices' ),
-					'id'      => $prefix . 'customer_email',
+					'name'    => __('Contact Email', 'multiservices' ),
+					'id'      => $prefix . 'contact_email',
 					'type'    => 'email',
-					// 'visible' => [
-					// 	'when'     => [['customer_id', '=', '']],
-					// 	'relation' => 'or',
-					// ],
+				],
+				[
+					'name'    => __('Contact Phone', 'multiservices' ),
+					'id'      => $prefix . 'contact_phone',
+					'type'    => 'text',
 				],
 				[
 				  'name'   => __('Dates', 'multiservices' ),
 				  'id'     => $prefix . 'dates',
 				  'type'   => 'group',
 					'class' => 'inline',
-					// 'admin_columns' => [
-					// 	'position' => 'replace date',
-					// 	'sort'     => true,
-					// ],
 				  'fields' => [
 						[
 							'prepend'          => __('From', 'multiservices' ),
@@ -628,7 +615,6 @@ class MultiServices_Prestation {
 					'id'            => $prefix . 'paid_html',
 					'type'          => 'custom_html',
 					'callback'      => 'MultiServices_Prestation::get_summary_paid',
-					'admin_columns' => 'after total',
 				],
 				[
 					'name'          => __('Balance', 'multiservices' ),
@@ -636,7 +622,6 @@ class MultiServices_Prestation {
 					'type'          => 'custom_html',
 					'class' => 'balance',
 					'callback'      => 'MultiServices_Prestation::get_summary_balance',
-					'admin_columns' => 'after paid',
 				],
 				[
 					'name'          => __('Reference #', 'multiservices' ),
@@ -658,7 +643,7 @@ class MultiServices_Prestation {
 					// 'placeholder' => ' ',
 					'remove_default' => true,
 					'admin_columns'  => [
-						'position' => 'after dates',
+						// 'position' => 'after balance',
 						// 'sort'       => true,
 						'filterable' => true,
 					],
@@ -988,7 +973,7 @@ class MultiServices_Prestation {
 		$updates['customer_id'] = get_post_meta($post_id, 'customer_id', true);
 		$updates['customer_email'] = get_post_meta($post_id, 'customer_email', true);
 		$updates['customer_name'] = get_post_meta($post_id, 'customer_name', true);
-		$updates['attendee_name'] = get_post_meta($post_id, 'attendee_name', true);
+		$updates['contact_name'] = get_post_meta($post_id, 'contact_name', true);
 
 		$manual_items = get_post_meta($post_id, 'manual_items', true);
 		$amounts['managed'] = get_post_meta($post_id, 'managed', true);
@@ -1160,8 +1145,8 @@ class MultiServices_Prestation {
 			$updates['customer_email'] = get_userdata($updates['customer_id'])->user_email;
 		}
 
-		if(empty($updates['attendee_name'])) $updates['attendee_name'] = $updates['customer_name'];
-		$display_name = trim($updates['attendee_name']);
+		if(empty($updates['contact_name'])) $updates['contact_name'] = $updates['customer_name'];
+		$display_name = trim($updates['contact_name']);
 
 		if(empty($updates['attendee_email'])) $updates['attendee_email'] = $updates['customer_email'];
 
@@ -1190,16 +1175,37 @@ class MultiServices_Prestation {
 		return;
 	}
 
-	static function dates_column_callback() {
-		echo "echo";
-		return "return";
+	static function add_admin_columns( $columns ) {
+		$columns = array(
+			'title' => __('Title', 'multiservices'),
+			'customer' => __('Customer', 'multiservices'),
+			'contact' => __('Contact', 'multiservices'),
+			'services' => __('Services', 'multiservices'),
+			'dates' => __('Dates', 'multiservices'),
+			'total' => __('Total', 'multiservices'),
+			'discount' => __('Discount', 'multiservices'),
+			'paid' => __('Paid', 'multiservices'),
+			'balance' => __('Balance', 'multiservices'),
+		);
+
+		// unset($columns['paid']);
+		// $columns['paid'] = __('Paid', 'multiservices' );
+
+		return $columns;
 	}
 
-	static function add_admin_columns( $columns ) {
-
-		unset($columns['date']);
-		$columns['dates'] = __('Dates', 'multiservices' );
-
+	static function sortable_columns($columns) {
+		$columns = array_merge($columns, array(
+			'dates' => 'dates',
+			'contact' => 'contact_name',
+			'customer' => 'customer',
+			// 'total' => 'total',
+			// 'discount' => 'discount_total',
+			// 'paid' => 'paid',
+			// 'balance' => 'balance',
+		));
+		// $columns['dates'] = 'dates';
+		// $columns['contact'] = 'contact';
 		return $columns;
 	}
 
@@ -1209,13 +1215,53 @@ class MultiServices_Prestation {
 			case 'dates':
 			echo MultiServices::format_date_range(get_post_meta($post_id, 'dates', true));
 			break;
-		}
-	}
 
-	static function sortable_columns($columns) {
-		$columns['dates'] = 'dates';
-		// $columns['attendee'] = 'attendee';
-		return $columns;
+			case 'customer':
+			$customer = array(
+				'user_id' => get_post_meta($post_id, 'customer_id', true),
+				'name' => get_post_meta($post_id, 'customer_name', true),
+				// 'email' => get_post_meta($post_id, 'customer_email', true),
+			);
+			echo MultiServices_Item::customer_html($customer);
+			break;
+
+			case 'contact':
+			// if(get_post_meta($post_id, 'contact_name', true) != get_post_meta($post_id, 'customer_name', true)) {
+				$contact = array_merge(
+					array(
+						// 'user_id' => get_post_meta($post_id, 'customer_id', true),
+						'name' => get_post_meta($post_id, 'customer_name', true),
+						'email' => get_post_meta($post_id, 'customer_email', true),
+						'phone' => get_post_meta($post_id, 'customer_phone', true),
+					),
+					array_filter(array(
+						'name' => get_post_meta($post_id, 'contact_name', true),
+						'email' => get_post_meta($post_id, 'contact_email', true),
+						'phone' => get_post_meta($post_id, 'contact_phone', true),
+					)),
+				);
+				echo MultiServices_Item::customer_html($contact);
+			// }
+			break;
+
+			case 'discount':
+			case 'deposit':
+			$values = get_post_meta($post_id, $column, true);
+			if(!empty($values['total']))
+			echo MultiServices::price($values['total']);
+			break;
+
+			case 'total':
+			case 'paid':
+			case 'balance':
+			$value = get_post_meta($post_id, $column, true);
+			// if(empty($value) ) $value = 0;
+			echo MultiServices::price(get_post_meta($post_id, $column, true));
+			break;
+
+			default:
+			echo get_post_meta($post_id, $column, true);
+		}
 	}
 
 	static function sortable_columns_order($query) {
@@ -1288,7 +1334,7 @@ class MultiServices_Prestation {
 					'value' => esc_attr($customer_name),
 				),
 				array(
-					'key' => 'attendee_name',
+					'key' => 'contact_name',
 					'value' => esc_attr($customer_name),
 				),
 			);
