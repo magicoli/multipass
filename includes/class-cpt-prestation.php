@@ -1130,8 +1130,10 @@ class MultiServices_Prestation {
 					$post_status = 'publish';
 					if($updates['deposit']['total'] > 0) {
 						$paid_status = 'deposit';
-					} else {
+					} else if ($updates['paid'] > 0) {
 						$paid_status = 'partial';
+					} else {
+						$paid_status = 'unpaid';
 					}
 				} else {
 					$post_status = 'pending';
