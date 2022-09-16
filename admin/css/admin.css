@@ -122,6 +122,20 @@
   width: auto;
 }
 
+.column-contact a,
+.column-status a {
+  white-space: nowrap;
+}
+.column-deposit,
+.column-total,
+.column-discount,
+.column-paid,
+.column-balance
+{
+  width: 5em;
+  white-space: nowrap;
+}
+
 .prestation-status-box.status-pending,
 .column-status a[href*="prestation-status=pending"],
 .prestation-status-box.status-unpaid,
