@@ -99,7 +99,10 @@ class MultiServices_Payment_Product {
       'type'          => 'custom_html',
       'class' => 'payment-link',
       'callback'      => 'MultiServices_Payment_Product::get_payment_link',
-      // 'admin_columns' => 'after paid',
+      // 'visible' => [
+      //     'when'     => [['balance', '>', 0]],
+      //     'relation' => 'or',
+      // ],
     ];
 
 		return $meta_boxes;
@@ -399,6 +402,11 @@ class MultiServices_Payment_Product {
     return $value;
   }
 
+  static function payment_link($reference, $amount = NULL) {
+    $slug = __(MultiServices::get_option('woocommerce_rewrite_slug'), 'multiservices' );
+    return get_home_url(NULL, "$slug/$reference/" . $amount);
+  }
+
   static function get_payment_link() {
     global $post;
 
@@ -410,7 +418,6 @@ class MultiServices_Payment_Product {
     $deposit_array = get_post_meta($post->ID, 'deposit', true);
     $deposit = (is_array($deposit_array)) ? (float)get_post_meta($post->ID, 'deposit', true)['total'] : NULL;
 
-    $slug = __(MultiServices::get_option('woocommerce_rewrite_slug'), 'multiservices' );
     $deposit = round($deposit, 2);
     $paid = round($paid, 2);
     $balance = round($balance, 2);
@@ -418,20 +425,21 @@ class MultiServices_Payment_Product {
     $links = [];
     if($deposit > $paid) {
       $deposit_due = $deposit - $paid;
-      $links[__('Deposit', 'multiservices' )] = get_home_url(NULL, "$slug/$reference/" . $deposit_due);
-    }
-    if($balance > 0) {
-      $links[__('Balance', 'multiservices' )] = get_home_url(NULL, "$slug/$reference/$balance");
-    }
-    $output = '';
-    foreach($links as $key=>$link) {
-      $output .= sprintf(
-        '<li>%1$s: <a href="%2$s" target="blank">%2$s</a></li>',
-        $key,
-        $link,
+      $links[] = sprintf(
+        '<a class=button href="%2$s" target="blank">%1$s</a> ',
+        sprintf(__('Pay deposit (%s)', 'multiservices' ), MultiServices::price($deposit_due)),
+        self::payment_link($reference, $deposit_due),
       );
     }
-    return (!empty($output)) ? '<ul>' . $output . '</ul>' : NULL;
+    if($balance > 0) {
+      $links[] = sprintf(
+        '<a class=button href="%2$s" target="blank">%1$s</a> ',
+        sprintf(__('Pay balance (%s)', 'multiservices' ), MultiServices::price($balance)),
+        self::payment_link($reference, $deposit_due),
+      );
+    }
+    $output = join(' ', $links);
+    return $output;
   }
 
   static function rewrite_rules() {
