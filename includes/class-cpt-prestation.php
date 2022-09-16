@@ -764,7 +764,7 @@ class MultiServices_Prestation {
 				'type' => reset($meta['type']),
 				'dates' => $dates,
 				'subtotal' => $price['sub_total'],
-				'discount' => $discount['amount'],
+				'discount' => isset($discount['amount']) ? $discount['amount'] : NULL,
 				'total' => reset($meta['total']),
 				// 'deposit' => $deposit['amount'],
 				'paid' => reset($meta['paid']),
