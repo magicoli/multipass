@@ -1182,8 +1182,9 @@ class MultiServices_Prestation {
 			'contact' => __('Contact', 'multiservices'),
 			'services' => __('Services', 'multiservices'),
 			'dates' => __('Dates', 'multiservices'),
-			'total' => __('Total', 'multiservices'),
 			'discount' => __('Discount', 'multiservices'),
+			'total' => __('Total', 'multiservices'),
+			'deposit' => __('Deposit', 'multiservices'),
 			'paid' => __('Paid', 'multiservices'),
 			'balance' => __('Balance', 'multiservices'),
 		);
