@@ -404,18 +404,25 @@ class MultiServices_Payment_Product {
 
     // $product_id = MultiServices::get_option('woocommerce_default_product');
     $reference = $post->post_name;
-    $balance = get_post_meta($post->ID, 'balance', true);
+
+    $balance = (float)get_post_meta($post->ID, 'balance', true);
     $paid = (float)get_post_meta($post->ID, 'paid', true);
     $deposit_array = get_post_meta($post->ID, 'deposit', true);
     $deposit = (is_array($deposit_array)) ? (float)get_post_meta($post->ID, 'deposit', true)['total'] : NULL;
 
     $slug = __(MultiServices::get_option('woocommerce_rewrite_slug'), 'multiservices' );
+    $deposit = round($deposit, 2);
+    $paid = round($paid, 2);
+    $balance = round($balance, 2);
 
+    $links = [];
     if($deposit > $paid) {
       $deposit_due = $deposit - $paid;
       $links[__('Deposit', 'multiservices' )] = get_home_url(NULL, "$slug/$reference/" . $deposit_due);
     }
-    $links[__('Balance', 'multiservices' )] = get_home_url(NULL, "$slug/$reference/$balance");
+    if($balance > 0) {
+      $links[__('Balance', 'multiservices' )] = get_home_url(NULL, "$slug/$reference/$balance");
+    }
     $output = '';
     foreach($links as $key=>$link) {
       $output .= sprintf(
