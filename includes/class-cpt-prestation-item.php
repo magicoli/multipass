@@ -245,7 +245,7 @@ class Mltp_Item {
 
 	static function register_post_types() {
 		$labels = [
-			'name'                     => esc_html__('Prestations Parts', 'multiservices' ),
+			'name'                     => esc_html__('Prestations Items', 'multiservices' ),
 			'singular_name'            => esc_html__('Prestation Item', 'multiservices' ),
 			'add_new'                  => esc_html__('Add New', 'multiservices' ),
 			'add_new_item'             => esc_html__('Add New Part', 'multiservices' ),
@@ -257,7 +257,7 @@ class Mltp_Item {
 			'not_found'                => esc_html__('No prestation_items found.', 'multiservices' ),
 			'not_found_in_trash'       => esc_html__('No prestation_items found in Trash.', 'multiservices' ),
 			'parent_item_colon'        => esc_html__('Parent Part:', 'multiservices' ),
-			'all_items'                => esc_html__('Prestations Parts', 'multiservices' ),
+			'all_items'                => esc_html__('Prestations Items', 'multiservices' ),
 			'archives'                 => esc_html__('Parts Archives', 'multiservices' ),
 			'attributes'               => esc_html__('Part Attributes', 'multiservices' ),
 			'insert_into_item'         => esc_html__('Insert into prestation_item', 'multiservices' ),
@@ -266,7 +266,7 @@ class Mltp_Item {
 			'set_featured_image'       => esc_html__('Set featured image', 'multiservices' ),
 			'remove_featured_image'    => esc_html__('Remove featured image', 'multiservices' ),
 			'use_featured_image'       => esc_html__('Use as featured image', 'multiservices' ),
-			'menu_name'                => esc_html__('Prestations Parts', 'multiservices' ),
+			'menu_name'                => esc_html__('Prestations Items', 'multiservices' ),
 			'filter_items_list'        => esc_html__('Filter prestation_items list', 'multiservices' ),
 			'filter_by_date'           => esc_html__('', 'multiservices' ),
 			'items_list_navigation'    => esc_html__('Parts list navigation', 'multiservices' ),

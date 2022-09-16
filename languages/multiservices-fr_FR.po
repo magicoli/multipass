@@ -48,7 +48,7 @@ msgstr "Modifier l'élément %s"
 #: includes/class-cpt-prestation-item.php:241
 #: includes/class-cpt-prestation-item.php:253
 #: includes/class-cpt-prestation-item.php:262
-msgid "Prestations Parts"
+msgid "Prestations Items"
 msgstr "Éléments de prestation"
 
 #: includes/class-cpt-prestation-item.php:242
