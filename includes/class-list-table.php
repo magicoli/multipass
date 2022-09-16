@@ -96,9 +96,7 @@ class MultiServices_Table extends WP_List_Table {
         break;
 
         case 'date_range';
-        if(!empty($value) && is_array($value)) {
-          $value = MultiServices::format_date_range($value);
-        }
+        $value = MultiServices::format_date_range($value);
         break;
 
         case 'date';
