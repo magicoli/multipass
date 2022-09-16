@@ -1,6 +1,6 @@
-=== MultiServices (dev) ===
+=== MultiPass (dev) ===
 Contributors: magicoli69
-Donate link: https://magiiic.com/support/MultiServices+Plugin
+Donate link: https://magiiic.com/support/MultiPass+Plugin
 Tags: hotel, booking, multi-prestations, multi-services, woocommerce
 Requires at least: 3.0.1
 Tested up to: 6.0.2

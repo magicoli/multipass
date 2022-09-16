@@ -4,7 +4,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
   require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
-class MultiServices_Table extends WP_List_Table {
+class Mltp_Table extends WP_List_Table {
   var $data = [];
   var $rows = [];
 
@@ -92,11 +92,11 @@ class MultiServices_Table extends WP_List_Table {
       switch ($this->data['format'][$column_id]) {
         case 'price':
         if(empty($value)) $value = NULL;
-        else $value = MultiServices::price($value);
+        else $value = MultiPass::price($value);
         break;
 
         case 'date_range';
-        $value = MultiServices::format_date_range($value);
+        $value = MultiPass::format_date_range($value);
         break;
 
         case 'date';

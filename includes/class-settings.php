@@ -21,7 +21,7 @@
  * @subpackage multiservices/includes
  * @author     Your Name <email@example.com>
  */
-class MultiServices_Settings {
+class Mltp_Settings {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -152,7 +152,7 @@ class MultiServices_Settings {
 
 	static function register_settings_pages( $settings_pages ) {
 		// $settings_pages[] = [
-		// 	'menu_title'    => __('MultiServices', 'multiservices' ),
+		// 	'menu_title'    => __('MultiPass', 'multiservices' ),
 		// 	'id'            => 'multiservices',
 		// 	'position'      => 15,
 		// 	'submenu_title' => 'Settings',
@@ -201,7 +201,7 @@ class MultiServices_Settings {
 							'id'       => $prefix . 'code',
 							'type'     => 'select_advanced',
 							'size'     => 3,
-							'options' => MultiServices::currency_options(),
+							'options' => MultiPass::currency_options(),
 						],
 						[
 							'name'    => __('Position', 'multiservices' ),

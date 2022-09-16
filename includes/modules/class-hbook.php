@@ -6,8 +6,8 @@
  * @link       http://example.com
  * @since      0.1.0
  *
- * @package    MultiServices
- * @subpackage MultiServices/includes
+ * @package    MultiPass
+ * @subpackage MultiPass/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    MultiServices
- * @subpackage MultiServices/includes
+ * @package    MultiPass
+ * @subpackage MultiPass/includes
  * @author     Your Name <email@example.com>
  */
-class MultiServices_HBook extends MultiServices_Modules {
+class Mltp_HBook extends Mltp_Modules {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -100,7 +100,7 @@ class MultiServices_HBook extends MultiServices_Modules {
 
 	static function register_fields( $meta_boxes ) {
 		$prefix = 'hbook_';
-		$hbook = new MultiServices_HBook();
+		$hbook = new Mltp_HBook();
 
 		// Lodify Settings tab
     $meta_boxes[] = [
@@ -110,12 +110,12 @@ class MultiServices_HBook extends MultiServices_Modules {
         'tab'            => 'hbook',
         'fields'         => [
 						[
-							'name'              => __('Sync bookings', 'multiservices' ),
+							'name'              => __('Synchronize now', 'multiservices' ),
 							'id'                => $prefix . 'sync_bookings',
 							'type'              => 'switch',
 							'desc'              => __('Sync HBook bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multiservices' ),
 							'style'             => 'rounded',
-							'sanitize_callback' => 'MultiServices_HBook::sync_bookings',
+							'sanitize_callback' => 'Mltp_HBook::sync_bookings',
 							'save_field' => false,
 						],
         ],
@@ -193,4 +193,4 @@ class MultiServices_HBook extends MultiServices_Modules {
 	}
 }
 
-$this->modules[] = new MultiServices_HBook();
+$this->modules[] = new Mltp_HBook();

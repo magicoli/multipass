@@ -1,9 +1,9 @@
 <?php
 
 /**
- * [MultiServices_Payment_Product description]
+ * [Mltp_Payment_Product description]
  */
-class MultiServices_Payment_Product {
+class Mltp_Payment_Product {
 
   /*
   * Bootstraps the class and hooks required actions & filters.
@@ -65,7 +65,7 @@ class MultiServices_Payment_Product {
 							'<br/>', array(
 								__('To enable a product as payment, check the "Payment Only" option on product edit page and set its price to 0 (zero).', 'multiservices' ),
 								__('Enabling Payment Only will disable fixed product price and add amount and reference fields to product page.', 'multiservices' ),
-								__('Only one Payment Only product is needed by MultiServices plugin.', 'multiservices' ),
+								__('Only one Payment Only product is needed by MultiPass plugin.', 'multiservices' ),
 							),
 						),
 					),
@@ -98,7 +98,7 @@ class MultiServices_Payment_Product {
       'id'            => $prefix . 'payment_link',
       'type'          => 'custom_html',
       'class' => 'payment-link',
-      'callback'      => 'MultiServices_Payment_Product::get_payment_link',
+      'callback'      => 'Mltp_Payment_Product::get_payment_link',
       // 'visible' => [
       //     'when'     => [['balance', '>', 0]],
       //     'relation' => 'or',
@@ -335,7 +335,7 @@ class MultiServices_Payment_Product {
 
 	static function get_price_html( $price_html, $product ) {
     if($product->get_meta( '_prpay' ) == 'yes') {
-      $price = max($product->get_price(), MultiServices::get_option('woocommerce_payment_minimum_price', 0));
+      $price = max($product->get_price(), MultiPass::get_option('woocommerce_payment_minimum_price', 0));
       if( $price == 0 ) {
         $price_html = apply_filters( 'woocommerce_empty_price_html', '', $product );
       } else {
@@ -403,14 +403,14 @@ class MultiServices_Payment_Product {
   }
 
   static function payment_link($reference, $amount = NULL) {
-    $slug = __(MultiServices::get_option('woocommerce_rewrite_slug'), 'multiservices' );
+    $slug = __(MultiPass::get_option('woocommerce_rewrite_slug'), 'multiservices' );
     return get_home_url(NULL, "$slug/$reference/" . $amount);
   }
 
   static function get_payment_link() {
     global $post;
 
-    // $product_id = MultiServices::get_option('woocommerce_default_product');
+    // $product_id = MultiPass::get_option('woocommerce_default_product');
     $reference = $post->post_name;
 
     $balance = (float)get_post_meta($post->ID, 'balance', true);
@@ -427,14 +427,14 @@ class MultiServices_Payment_Product {
       $deposit_due = $deposit - $paid;
       $links[] = sprintf(
         '<a class=button href="%2$s" target="blank">%1$s</a> ',
-        sprintf(__('Pay deposit (%s)', 'multiservices' ), MultiServices::price($deposit_due)),
+        sprintf(__('Pay deposit (%s)', 'multiservices' ), MultiPass::price($deposit_due)),
         self::payment_link($reference, $deposit_due),
       );
     }
     if($balance > 0) {
       $links[] = sprintf(
         '<a class=button href="%2$s" target="blank">%1$s</a> ',
-        sprintf(__('Pay balance (%s)', 'multiservices' ), MultiServices::price($balance)),
+        sprintf(__('Pay balance (%s)', 'multiservices' ), MultiPass::price($balance)),
         self::payment_link($reference, $deposit_due),
       );
     }
@@ -447,13 +447,13 @@ class MultiServices_Payment_Product {
     $pattern_ref = '([^&/]+)';
     $pattern_price = '([^&/]+)';
 
-    $product_id = MultiServices::get_option('woocommerce_default_product');
+    $product_id = MultiPass::get_option('woocommerce_default_product');
     $cart_id = wc_get_page_id('cart');
 
     // add_rewrite_tag('%reference%', $pattern_ref, 'reference=');
     // add_rewrite_tag('%amount%', $pattern_price, 'amount=');
 
-    $slugs[] = MultiServices::get_option('woocommerce_rewrite_slug');
+    $slugs[] = MultiPass::get_option('woocommerce_rewrite_slug');
     $slugs[] = __($slugs[0], 'multiservices' );
     $slugs = array_unique($slugs);
     foreach($slugs as $slug) {
@@ -511,4 +511,4 @@ class MultiServices_Payment_Product {
   }
 }
 
-$this->modules[] = new MultiServices_Payment_Product();
+$this->modules[] = new Mltp_Payment_Product();

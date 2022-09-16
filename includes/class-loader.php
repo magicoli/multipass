@@ -6,8 +6,8 @@
  * @link       http://example.com
  * @since      0.1.0
  *
- * @package    MultiServices
- * @subpackage MultiServices/includes
+ * @package    MultiPass
+ * @subpackage MultiPass/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    MultiServices
- * @subpackage MultiServices/includes
+ * @package    MultiPass
+ * @subpackage MultiPass/includes
  * @author     Your Name <email@example.com>
  */
-class MultiServices_Loader {
+class Mltp_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name:       MultiServices (dev)
+ * Plugin Name:       MultiPass (dev)
  * Plugin URI:        https://magiiic.com/wordpress/plugins/multiservices/
  * Description:       Group prestation items from different sources (WooCommerce, OTA, booking engines...) and manage them as a whole.
  * Version:           0.1.1.x-dev
@@ -18,7 +18,7 @@
  *
  * @link              http://example.com
  * @since             0.1.0
- * @package           MultiServices
+ * @package           MultiPass
  *
  * @wordpress-plugin
  */
@@ -36,7 +36,7 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'MULTISERVICES_VERSION', '0.1.1.x-dev' . '-' . time() );
 define( 'MULTISERVICES_FILE', __FILE__ );
 define( 'MULTISERVICES_DIR', plugin_dir_path(__FILE__) );
-define( 'MULTISERVICES_PLUGIN_NAME', 'MultiServices' );
+define( 'MULTISERVICES_PLUGIN_NAME', 'MultiPass' );
 
 /**
  * The code that runs during plugin activation.
@@ -44,7 +44,7 @@ define( 'MULTISERVICES_PLUGIN_NAME', 'MultiServices' );
  */
 function activate_multiservices() {
 	require_once MULTISERVICES_DIR . 'includes/class-activator.php';
-	MultiServices_Activator::activate();
+	Mltp_Activator::activate();
 }
 
 /**
@@ -53,7 +53,7 @@ function activate_multiservices() {
  */
 function deactivate_multiservices() {
 	require_once MULTISERVICES_DIR . 'includes/class-deactivator.php';
-	MultiServices_Deactivator::deactivate();
+	Mltp_Deactivator::deactivate();
 }
 
 register_activation_hook( __FILE__, 'activate_multiservices' );
@@ -76,7 +76,7 @@ require MULTISERVICES_DIR . 'includes/class.php';
  */
 function run_multiservices() {
 
-	$plugin = new MultiServices();
+	$plugin = new MultiPass();
 	$plugin->run();
 
 }

@@ -8,8 +8,8 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    MultiServices
- * @subpackage MultiServices/public/partials
+ * @package    MultiPass
+ * @subpackage MultiPass/public/partials
  */
 ?>
 

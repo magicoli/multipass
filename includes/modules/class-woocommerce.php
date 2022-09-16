@@ -6,8 +6,8 @@
  * @link       http://example.com
  * @since      0.1.0
  *
- * @package    MultiServices
- * @subpackage MultiServices/includes
+ * @package    MultiPass
+ * @subpackage MultiPass/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    MultiServices
- * @subpackage MultiServices/includes
+ * @package    MultiPass
+ * @subpackage MultiPass/includes
  * @author     Your Name <email@example.com>
  */
-class MultiServices_WooCommerce extends MultiServices_Modules {
+class Mltp_WooCommerce extends Mltp_Modules {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -169,7 +169,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 					'type'              => 'switch',
 					'desc'              => __('Sync orders and prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multiservices' ),
 					'style'             => 'rounded',
-					'sanitize_callback' => 'MultiServices_WooCommerce::sync_orders_validation',
+					'sanitize_callback' => 'Mltp_WooCommerce::sync_orders_validation',
 					'save_field' => false,
 				],
 			],
@@ -311,20 +311,20 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 	}
 
 	function background_process() {
-		$this->background_queue = new MultiServices_WooCommerce_Process();
+		$this->background_queue = new Mltp_WooCommerce_Process();
 
  		// $action = __CLASS__ . '::fetch_mails';
-		// if(get_transient('MultiServices_WooCommerce_wait')) return;
-		// set_transient('MultiServices_WooCommerce_wait', true, 30);
+		// if(get_transient('Mltp_WooCommerce_wait')) return;
+		// set_transient('Mltp_WooCommerce_wait', true, 30);
 		//
-		// if(MultiServices::get_option('email_processing', false))
+		// if(MultiPass::get_option('email_processing', false))
 		// $this->background_queue->push_to_queue(__CLASS__ . '::fetch_mails');
 		//
 		// $this->background_queue->save()->dispatch();
 
 		// One-off task:
 		//
-		// $this->background_request = new MultiServices_WooCommerce_Request();
+		// $this->background_request = new Mltp_WooCommerce_Request();
 		// $this->background_request->data( array( 'value1' => $value1, 'value2' => $value2 ) );
 		// $this->background_request->dispatch();
 	}
@@ -353,7 +353,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 
 	static function wp_insert_post_action($post_id, $post, $update ) {
 		if( !$update ) return;
-		if( MultiServices::is_new_post() ) return; // new posts are empty
+		if( MultiPass::is_new_post() ) return; // new posts are empty
 
 		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
 		switch($post->post_type) {
@@ -372,10 +372,10 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		return;
 
 		// if( wp_cache_get(__CLASS__ . '-' . __FUNCTION__ . '-' . $prestation_id) ) return;
-		// $prestation = MultiServices_Prestation::get_post($prestation);
+		// $prestation = Mltp_Prestation::get_post($prestation);
 		// if(!$prestation) return;
-		// // if(! MultiServices_Prestation::is_prestation_post($prestation) && isset($prestation->post)) $prestation = $prestation->post;
-		// // if(! MultiServices_Prestation::is_prestation_post($prestation)) return;
+		// // if(! Mltp_Prestation::is_prestation_post($prestation) && isset($prestation->post)) $prestation = $prestation->post;
+		// // if(! Mltp_Prestation::is_prestation_post($prestation)) return;
 		// // if( $prestation->post_type != 'prestation' ) return;
 		// if( $prestation->post_status == 'trash' ) return; // TODO: remove prestation reference from orders
 		//
@@ -393,7 +393,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		// $p_orders_refunded = 0;
 		// $p_orders_subtotal = 0;
 		//
-		// $payment_products = MultiServices_Payment_Product::get_payment_products();
+		// $payment_products = Mltp_Payment_Product::get_payment_products();
 		// if(!is_array($payment_products)) $payment_products = [ $payment_products ];
 		// $excl_tax = false;
 		//
@@ -461,7 +461,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		//
 		// $prestation_post = get_post($prestation_id);
 		// if(is_object($prestation) && $prestation->post_type == 'prestation')
-		// MultiServices_Prestation::update_prestation_amounts($prestation_id, $prestation, true );
+		// Mltp_Prestation::update_prestation_amounts($prestation_id, $prestation, true );
 		//
 		// // $metas = get_post_meta($prestation_id, 'modules-data');
 		// // error_log(print_r($metas, true));
@@ -506,7 +506,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 			)));
 		}
 
-		$prestation = new MultiServices_Prestation(array(
+		$prestation = new Mltp_Prestation(array(
 			'prestation_id' => $prestation_id,
 			'customer_id' => $customer_id,
 			'customer_name' => $customer_name,
@@ -516,7 +516,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		));
 		if($prestation) {
 			update_post_meta( $post_id, 'prestation_id', $prestation->ID );
-			MultiServices_WooCommerce::update_prestation_orders($prestation->ID, $prestation, true );
+			Mltp_WooCommerce::update_prestation_orders($prestation->ID, $prestation, true );
 
 			// TODO: mark parts related to this order as review in progress
 
@@ -544,7 +544,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 						$dates['from'] = $booking->get_start();
 						$dates['to'] = $booking->get_end();
 					}
-					$description .= ' ' . MultiServices::format_date_range($dates, 'SHORT');
+					$description .= ' ' . MultiPass::format_date_range($dates, 'SHORT');
 
 					// TODO: get attendees and beds counts
 					//
@@ -568,7 +568,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 				$paid = (in_array($order->get_status(), [ 'completed', 'processing' ])) ? $total : 0;
 				$balance = $total - $paid;
 
-				$type = (MultiServices_Payment_Product::is_payment_product($product)) ? 'payment' : $product->get_type();
+				$type = (Mltp_Payment_Product::is_payment_product($product)) ? 'payment' : $product->get_type();
 				switch($type) {
 					case 'booking':
 					$description = '[' . __('Booking', 'multiservices') . '] ' . $description;
@@ -626,7 +626,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 
 				);
 
-				$prestation_item = new MultiServices_Item($args);
+				$prestation_item = new Mltp_Item($args);
 				// $prestation_item->update($args);
 				// error_log ("prestation-item " . print_r($prestation_item->ID, true));
 
@@ -648,7 +648,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 		// 			// 'id'            => $prefix . 'status',
 		//
 		//
-		// 		if(MultiServices_Payment_Product::is_payment_product($product)) {
+		// 		if(Mltp_Payment_Product::is_payment_product($product)) {
 		// 			$p_order['subtotal'] -= $item->get_subtotal();
 		// 			$p_order['refunded'] -= $post->get_total_refunded_for_item($item_id);
 		// 			$p_order['total'] = $p_order['total'] - $item->get_total() + $post->get_total_refunded_for_item($item_id);
@@ -717,7 +717,7 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 			'status' => 'status',
 		);
 
-		$list = new MultiServices_Table($data);
+		$list = new Mltp_Table($data);
 
 		$html .= sprintf('
 		<div class="managed-list managed-list-woocommerce">
@@ -732,4 +732,4 @@ class MultiServices_WooCommerce extends MultiServices_Modules {
 
 }
 
-$this->modules[] = new MultiServices_WooCommerce();
+$this->modules[] = new Mltp_WooCommerce();

@@ -9,8 +9,8 @@
  * @link       http://example.com
  * @since      0.1.0
  *
- * @package    MultiServices
- * @subpackage MultiServices/includes
+ * @package    MultiPass
+ * @subpackage MultiPass/includes
  */
 
 /**
@@ -23,11 +23,11 @@
  * version of the plugin.
  *
  * @since      0.1.0
- * @package    MultiServices
- * @subpackage MultiServices/includes
+ * @package    MultiPass
+ * @subpackage MultiPass/includes
  * @author     Your Name <email@example.com>
  */
-class MultiServices {
+class MultiPass {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -35,7 +35,7 @@ class MultiServices {
 	 *
 	 * @since    0.1.0
 	 * @access   protected
-	 * @var      MultiServices_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Mltp_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -89,10 +89,10 @@ class MultiServices {
 	 *
 	 * Include the following files that make up the plugin:
 	 *
-	 * - MultiServices_Loader. Orchestrates the hooks of the plugin.
-	 * - MultiServices_i18n. Defines internationalization functionality.
-	 * - MultiServices_Admin. Defines all hooks for the admin area.
-	 * - MultiServices_Public. Defines all hooks for the public side of the site.
+	 * - Mltp_Loader. Orchestrates the hooks of the plugin.
+	 * - Mltp_i18n. Defines internationalization functionality.
+	 * - Mltp_Admin. Defines all hooks for the admin area.
+	 * - Mltp_Public. Defines all hooks for the public side of the site.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
@@ -125,30 +125,30 @@ class MultiServices {
 		 */
 		require_once MULTISERVICES_DIR . 'public/class-public.php';
 
-		$this->loader = new MultiServices_Loader();
+		$this->loader = new Mltp_Loader();
 
 		require_once MULTISERVICES_DIR . 'vendor/autoload.php';
 		require_once MULTISERVICES_DIR . 'includes/class-list-table.php';
 
 		require_once MULTISERVICES_DIR . 'includes/class-cpt-prestation.php';
-		$this->loaders[] = new MultiServices_Prestation();
+		$this->loaders[] = new Mltp_Prestation();
 		require_once MULTISERVICES_DIR . 'includes/class-cpt-prestation-item.php';
-		$this->loaders[] = new MultiServices_Item();
+		$this->loaders[] = new Mltp_Item();
 		require_once MULTISERVICES_DIR . 'includes/class-cpt-service.php';
-		$this->loaders[] = new MultiServices_Service();
+		$this->loaders[] = new Mltp_Service();
 		require_once MULTISERVICES_DIR . 'includes/class-settings.php';
-		$this->loaders[] = new MultiServices_Settings();
+		$this->loaders[] = new Mltp_Settings();
 		require_once MULTISERVICES_DIR . 'includes/class-plugin-info.php';
-		$this->loaders[] = new MultiServices_PluginInfo();
+		$this->loaders[] = new Mltp_PluginInfo();
 
 		require_once MULTISERVICES_DIR . 'includes/modules/load-modules.php';
-		$this->loaders[] = new MultiServices_Modules();
+		$this->loaders[] = new Mltp_Modules();
 		// if(is_plugin_active('woocommerce/woocommerce.php')) {
 		// 	require_once MULTISERVICES_DIR . 'includes/modules/class-woocommerce.php';
-		// 	$this->loaders[] = new MultiServices_WooCommerce();
+		// 	$this->loaders[] = new Mltp_WooCommerce();
 		//
 		// 	require_once MULTISERVICES_DIR . 'includes/modules/class-woocommerce-payment-product.php';
-		// 	$this->loaders[] = new MultiServices_Payment_Product();
+		// 	$this->loaders[] = new Mltp_Payment_Product();
 		// }
 
 		if(get_transient('multiservices_rewrite_flush') || get_transient('multiservices_rewrite_version') != MULTISERVICES_VERSION) {
@@ -164,7 +164,7 @@ class MultiServices {
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the MultiServices_i18n class in order to set the domain and to register the hook
+	 * Uses the Mltp_i18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    0.1.0
@@ -172,7 +172,7 @@ class MultiServices {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new MultiServices_i18n();
+		$plugin_i18n = new Mltp_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -187,7 +187,7 @@ class MultiServices {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new MultiServices_Admin( $this->get_plugin_slug(), $this->get_version() );
+		$plugin_admin = new Mltp_Admin( $this->get_plugin_slug(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -203,7 +203,7 @@ class MultiServices {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new MultiServices_Public( $this->get_plugin_slug(), $this->get_version() );
+		$plugin_public = new Mltp_Public( $this->get_plugin_slug(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
@@ -241,7 +241,7 @@ class MultiServices {
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @since     0.1.0
-	 * @return    MultiServices_Loader    Orchestrates the hooks of the plugin.
+	 * @return    Mltp_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 		return $this->loader;
@@ -300,14 +300,14 @@ class MultiServices {
 	static function unique_random_slug($slug_size = NULL) {
 		global $wpdb;
 
-		if(empty($slug_length)) $slug_length = MultiServices::get_option('slug_length', 4);
+		if(empty($slug_length)) $slug_length = MultiPass::get_option('slug_length', 4);
 
 		$i = 0; do {
 			$i++;
 			if($i > 5) { // failed several times to find a unique slug, increase length
 				$slug_length++;
 				$i = 0;
-				MultiServices::update_option('multiservices:slug_length', $slug_length);
+				MultiPass::update_option('multiservices:slug_length', $slug_length);
 			}
 
 			$chars = implode(range('a', 'z'));
@@ -356,7 +356,7 @@ class MultiServices {
 			$symbol = get_woocommerce_currency_symbol($currency);
 		} else {
 			if(empty($currency)) {
-				$options = MultiServices::get_option('currency');
+				$options = MultiPass::get_option('currency');
 				if(isset($options['code'])) {
 					$search_currency = $options['code'];
 				}
@@ -380,7 +380,7 @@ class MultiServices {
 		$after = '';
 
 		$options = wp_parse_args(
-			MultiServices::get_option('currency'),
+			MultiPass::get_option('currency'),
 			array(
 				'code'   => null,
 				'pos' => null,
@@ -393,7 +393,7 @@ class MultiServices {
 
 		if(!empty($args['code'])) {
 			$currency = $args['code'];
-			$symbol = MultiServices::get_currency_symbol();
+			$symbol = MultiPass::get_currency_symbol();
 			switch($args['pos']) {
 				case 'left': $before = $symbol; break;
 				case 'left_space': $before = "$symbol "; break;
@@ -563,9 +563,9 @@ class MultiServices {
 			$term_id = wp_insert_term( $name, $taxonomy_slug, $term )['term_id'];
 			add_term_meta($term_id, 'multiservices_generated', true, true);
 		}
-		add_filter( $taxonomy_slug . '_row_actions', 'MultiServices::unset_taxonomy_row_actions', 10, 2 );
-		add_action( $taxonomy_slug . '_edit_form', 'MultiServices::remove_delete_edit_term_form', 10, 2 );
-		add_action ('pre_delete_term', 'MultiServices::taxonomy_delete_protection', 10, 1 );
+		add_filter( $taxonomy_slug . '_row_actions', 'MultiPass::unset_taxonomy_row_actions', 10, 2 );
+		add_action( $taxonomy_slug . '_edit_form', 'MultiPass::remove_delete_edit_term_form', 10, 2 );
+		add_action ('pre_delete_term', 'MultiPass::taxonomy_delete_protection', 10, 1 );
 	}
 
 	static function unset_taxonomy_row_actions ($actions, $term)

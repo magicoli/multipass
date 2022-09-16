@@ -21,7 +21,7 @@
  * @subpackage W4OS/includes
  * @author     Your Name <email@example.com>
  */
-class MultiServices_Service {
+class Mltp_Service {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -383,7 +383,7 @@ class MultiServices_Service {
 		];
 		register_taxonomy( 'service-type', ['prestation', 'product', 'service', 'prestation-item'], $args );
 
-		MultiServices::register_terms('service-type', array(
+		MultiPass::register_terms('service-type', array(
 			'booking' => __('Booking', 'multiservices'),
 		));
 

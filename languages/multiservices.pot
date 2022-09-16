@@ -2,7 +2,7 @@
 # This file is distributed under the AGPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: MultiServices (dev) 0.1.1.x-dev\n"
+"Project-Id-Version: MultiPass (dev) 0.1.1.x-dev\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/multiservices\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "X-Generator: WP-CLI 2.6.0\n"
 
 #. Plugin Name of the plugin
-msgid "MultiServices (dev)"
+msgid "MultiPass (dev)"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -1151,7 +1151,7 @@ msgid "Enabling Payment Only will disable fixed product price and add amount and
 msgstr ""
 
 #: includes/modules/class-woocommerce-payment-product.php:68
-msgid "Only one Payment Only product is needed by MultiServices plugin."
+msgid "Only one Payment Only product is needed by MultiPass plugin."
 msgstr ""
 
 #: includes/modules/class-woocommerce-payment-product.php:74
@@ -1278,7 +1278,7 @@ msgid "Created"
 msgstr ""
 
 #: includes/modules/load-modules.php:148
-msgid "MultiServices Modules"
+msgid "MultiPass Modules"
 msgstr ""
 
 #: includes/modules/load-modules.php:154

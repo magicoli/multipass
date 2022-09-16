@@ -21,7 +21,7 @@
  * @subpackage multiservices/includes
  * @author     Your Name <email@example.com>
  */
-class MultiServices_PluginInfo {
+class Mltp_PluginInfo {
 
 	/**
 	 * The array of actions registered with WordPress.

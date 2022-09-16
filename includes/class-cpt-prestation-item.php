@@ -21,7 +21,7 @@
  * @subpackage W4OS/includes
  * @author     Your Name <email@example.com>
  */
-class MultiServices_Item {
+class Mltp_Item {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -321,7 +321,7 @@ class MultiServices_Item {
 				[
 					'id'       => $prefix . 'title_html',
 					'type'     => 'custom_html',
-					'callback' => 'MultiServices::title_html',
+					'callback' => 'MultiPass::title_html',
 				],
 				[
 					'name'          => __('Source', 'multiservices' ),
@@ -780,7 +780,7 @@ class MultiServices_Item {
 	}
 
 	static function add_custom_columns() {
-		new MultiServices_Item_Admin_Columns( 'prestation_item', array() );
+		new Mltp_Item_Admin_Columns( 'prestation_item', array() );
 	}
 
 	static function register_taxonomies() {
@@ -836,7 +836,7 @@ class MultiServices_Item {
 		];
 		register_taxonomy( 'prestation-item-source', ['prestation-item'], $args );
 
-		MultiServices::register_terms('prestation-item-source');
+		MultiPass::register_terms('prestation-item-source');
 
 	}
 
@@ -968,7 +968,7 @@ class MultiServices_Item {
 			//
 		}
 		// $metas['subtotal'] = get_post_meta($post_id, 'prestation_id', true);
-		// $part = new MultiServices_Item($post);
+		// $part = new Mltp_Item($post);
 		// $prestation_item->set_prestation();
 
 		add_action(current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3);
@@ -978,7 +978,7 @@ class MultiServices_Item {
 		switch($meta_key) {
 			case 'customer':
 			case 'attendee':
-			return MultiServices::get_user_info_by_info($meta_value);
+			return MultiPass::get_user_info_by_info($meta_value);
 		}
 
 		return $meta_value;
@@ -998,7 +998,7 @@ class MultiServices_Item {
 		// 		'email' => get_post_meta($prestation_id, 'attendee_email', true),
 		// 		'phone' => get_post_meta($prestation_id, 'attendee_phone', true),
 		// 	));
-		// 	$prestation_item_info = MultiServices::get_user_info_by_info($meta_value);
+		// 	$prestation_item_info = MultiPass::get_user_info_by_info($meta_value);
 		// 	$meta_value = array_replace($prestation_item_info, $prestation_info);
 		// 	error_log("object $object_id user info " . print_r($meta_value, true) );
 		// 	return $meta_value;
@@ -1021,7 +1021,7 @@ class MultiServices_Item {
 		$user_info = get_post_meta($post->ID, 'customer');
 		error_log(__FUNCTION__ . '::' . __FUNCTION__ . ' meta ' . print_r($user_info, true));
 
-		// $user_info = MultiServices::get_user_info_by_info($user_info);
+		// $user_info = MultiPass::get_user_info_by_info($user_info);
 		// error_log('user info ' . print_r($user_info, true));
 		// if($user) {
 		// 	$user_info = array_replace($user_info, array_filter(array(
@@ -1117,7 +1117,7 @@ class MultiServices_Item {
 		// 		'customer_email' => $customer_email,
 		// 	);
 		// 	// foreach ($meta as $key => $value) update_post_meta( $this->ID, $key, $value );
-		// 	// MultiServices_Item::update_prestation_prestation_items($prestation_id, get_post($prestation_id), true );
+		// 	// Mltp_Item::update_prestation_prestation_items($prestation_id, get_post($prestation_id), true );
 		// }
 		//
 		// // add_action(current_action(), __CLASS__ . '::wp_insert_post_action', 10, 3);
@@ -1202,7 +1202,7 @@ class MultiServices_Item {
 	}
 }
 
-class MultiServices_Item_Admin_Columns extends \MBAC\Post {
+class Mltp_Item_Admin_Columns extends \MBAC\Post {
     // public function columns( $columns ) {
     //     $columns  = parent::columns( $columns );
     //     $position = '';
@@ -1215,7 +1215,7 @@ class MultiServices_Item_Admin_Columns extends \MBAC\Post {
     public function show( $column, $post_id ) {
         switch ( $column ) {
 					case 'dates_admin_list':
-					echo MultiServices::format_date_range(get_post_meta($post_id, 'dates', true));
+					echo MultiPass::format_date_range(get_post_meta($post_id, 'dates', true));
 					break;
 
 					case 'attendees_display';

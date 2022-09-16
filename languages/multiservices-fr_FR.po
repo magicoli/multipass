@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: MultiServices\n"
+"Project-Id-Version: MultiPass\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/multiservices\n"
 "POT-Creation-Date: 2022-09-14T11:25:27-04:00\n"
 "PO-Revision-Date: \n"
@@ -14,8 +14,8 @@ msgstr ""
 "X-Generator: Poedit 3.0.1\n"
 
 #. Plugin Name of the plugin
-msgid "MultiServices (dev)"
-msgstr "MultiServices (dev)"
+msgid "MultiPass (dev)"
+msgstr "MultiPass (dev)"
 
 #. Plugin URI of the plugin
 msgid "https://magiiic.com/wordpress/plugins/multiservices/"
@@ -1157,10 +1157,10 @@ msgstr ""
 "ajoutera des champs de montant et de référence à la page du produit."
 
 #: includes/modules/class-woocommerce-payment-product.php:68
-msgid "Only one Payment Only product is needed by MultiServices plugin."
+msgid "Only one Payment Only product is needed by MultiPass plugin."
 msgstr ""
 "Un seul produit de paiement uniquement est requis par le plug-in "
-"MultiServices."
+"MultiPass."
 
 #: includes/modules/class-woocommerce-payment-product.php:74
 msgid "Default product"
@@ -1298,8 +1298,8 @@ msgid "Created"
 msgstr "Créé"
 
 #: includes/modules/load-modules.php:148
-msgid "MultiServices Modules"
-msgstr "Modules Multiservices"
+msgid "MultiPass Modules"
+msgstr "Modules MultiPass"
 
 #: includes/modules/load-modules.php:154
 msgid "Modules"

@@ -22,7 +22,7 @@
  * @link       http://example.com
  * @since      0.1.0
  *
- * @package    MultiServices
+ * @package    MultiPass
  */
 
 // If uninstall not called from WordPress, then exit.

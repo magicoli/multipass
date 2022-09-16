@@ -21,7 +21,7 @@
  * @subpackage W4OS/includes
  * @author     Your Name <email@example.com>
  */
-class MultiServices_Prestation {
+class Mltp_Prestation {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -218,7 +218,7 @@ class MultiServices_Prestation {
 			'set_featured_image'       => esc_html__('Set featured image', 'multiservices' ),
 			'remove_featured_image'    => esc_html__('Remove featured image', 'multiservices' ),
 			'use_featured_image'       => esc_html__('Use as featured image', 'multiservices' ),
-			'menu_name'                => esc_html__('Prestations', 'multiservices' ),
+			'menu_name'                => esc_html__('MultiPass', 'multiservices' ),
 			'filter_items_list'        => esc_html__('Filter prestations list', 'multiservices' ),
 			'filter_by_date'           => esc_html__('', 'multiservices' ),
 			'items_list_navigation'    => esc_html__('Prestations list navigation', 'multiservices' ),
@@ -276,7 +276,7 @@ class MultiServices_Prestation {
 				[
 					'id'            => $prefix . 'title_html',
 					'type'          => 'custom_html',
-					'callback' => 'MultiServices::title_html',
+					'callback' => 'MultiPass::title_html',
 				],
 				[
 					'name'          => __('Customer', 'multiservices' ),
@@ -355,7 +355,7 @@ class MultiServices_Prestation {
 							'pattern'  => '[0-9]+([,\.][0-9]+)?',
 				      'min'     => 0,
 				      'size'    => 10,
-				      'prepend' => MultiServices::get_currency_symbol(),
+				      'prepend' => MultiPass::get_currency_symbol(),
 				      'visible' => [
 				        'when'     => [['discount_percent', '=', '']],
 				        'relation' => 'or',
@@ -385,7 +385,7 @@ class MultiServices_Prestation {
 							'min'     => 0,
 							'step'    => 'any',
 							'size'    => 10,
-							'prepend' => MultiServices::get_currency_symbol(),
+							'prepend' => MultiPass::get_currency_symbol(),
 							'class' => 'amount class',
 							'visible' => [
 								'when'     => [['deposit_percent', '=', '']],
@@ -589,45 +589,45 @@ class MultiServices_Prestation {
 					'name'          => __('Regular Price', 'multiservices' ),
 					'id'            => $prefix . 'price_html',
 					'type'          => 'custom_html',
-					'callback'      => 'MultiServices_Prestation::get_summary_price',
+					'callback'      => 'Mltp_Prestation::get_summary_price',
 				],
 				[
 					'name'          => __('Discount', 'multiservices' ),
 					'id'            => $prefix . 'discount_html',
 					'type'          => 'custom_html',
-					'callback'      => 'MultiServices_Prestation::get_summary_discount',
+					'callback'      => 'Mltp_Prestation::get_summary_discount',
 				],
 				[
 					'name'          => __('Total', 'multiservices' ),
 					'id'            => $prefix . 'total_html',
 					'type'          => 'custom_html',
 					'class'          => 'total',
-					'callback'      => 'MultiServices_Prestation::get_summary_total',
+					'callback'      => 'Mltp_Prestation::get_summary_total',
 				],
 				[
 					'name'     => __('Deposit', 'multiservices' ),
 					'id'       => $prefix . 'deposit_amount_html',
 					'type'     => 'custom_html',
-					'callback' => 'MultiServices_Prestation::get_summary_deposit',
+					'callback' => 'Mltp_Prestation::get_summary_deposit',
 				],
 				[
 					'name'          => __('Paid', 'multiservices' ),
 					'id'            => $prefix . 'paid_html',
 					'type'          => 'custom_html',
-					'callback'      => 'MultiServices_Prestation::get_summary_paid',
+					'callback'      => 'Mltp_Prestation::get_summary_paid',
 				],
 				[
 					'name'          => __('Balance', 'multiservices' ),
 					'id'            => $prefix . 'balance_html',
 					'type'          => 'custom_html',
 					'class' => 'balance',
-					'callback'      => 'MultiServices_Prestation::get_summary_balance',
+					'callback'      => 'Mltp_Prestation::get_summary_balance',
 				],
 				[
 					'name'          => __('Reference #', 'multiservices' ),
 					'id'            => $prefix . 'reference',
 					'type'          => 'custom_html',
-					'callback'      => 'MultiServices_Prestation::get_summary_reference',
+					'callback'      => 'Mltp_Prestation::get_summary_reference',
 				],
 				[
 					'name'           => __('Status', 'multiservices' ),
@@ -711,7 +711,7 @@ class MultiServices_Prestation {
 		 * Prestation statuses, we use basically the same terminology as
 		 * WooCommerce, but it is not mandatory.
 		 */
-		MultiServices::register_terms('prestation-status', array(
+		MultiPass::register_terms('prestation-status', array(
 			// Open (still modifiable, available for new order inclusion)
 			'pending' => [ 'name' => __('Pending payment', 'multiservices' ) ],  // unpaid or paid less than deposit, not confirmed
 			'on-hold' => [ 'name' => __('On hold', 'multiservices' ) ], // fully paid and not started
@@ -770,15 +770,15 @@ class MultiServices_Prestation {
 				'paid' => reset($meta['paid']),
 				'balance' => reset($meta['balance']),
 				'source' => reset($meta['source']),
-				'links' => MultiServices_Item::item_links_html($prestation_item, ['format' => 'icon']),
-				// 'subtotal' => MultiServices::price($price['sub_total']),
-				// 'discount' => MultiServices::price($discount['amount']),
-				// 'total' => MultiServices::price(reset($meta['total'])),
+				'links' => Mltp_Item::item_links_html($prestation_item, ['format' => 'icon']),
+				// 'subtotal' => MultiPass::price($price['sub_total']),
+				// 'discount' => MultiPass::price($discount['amount']),
+				// 'total' => MultiPass::price(reset($meta['total'])),
 				// // 'deposit' => $deposit['amount'],
-				// 'paid' => MultiServices::price(reset($meta['paid'])),
-				// 'balance' => MultiServices::price(reset($meta['balance'])),
+				// 'paid' => MultiPass::price(reset($meta['paid'])),
+				// 'balance' => MultiPass::price(reset($meta['balance'])),
 				// 'source' => reset($meta['source']),
-				// 'links' => MultiServices_Item::item_links_html($prestation_item, ['format' => 'icon']),
+				// 'links' => Mltp_Item::item_links_html($prestation_item, ['format' => 'icon']),
 			);
 		}
 
@@ -808,9 +808,9 @@ class MultiServices_Prestation {
 		else global $post;
 		if(!self::is_prestation_post($post)) return "nope";
 
-		$prestation = new MultiServices_Prestation($post);
+		$prestation = new Mltp_Prestation($post);
 		$items = $prestation->get_items();
-		$list = new MultiServices_Table( [ 'columns' => $prestation->get_columns(), 'format' => array(
+		$list = new Mltp_Table( [ 'columns' => $prestation->get_columns(), 'format' => array(
 			'dates' => 'date_range',
 			'subtotal' => 'price',
 			'discount' => 'price',
@@ -837,21 +837,21 @@ class MultiServices_Prestation {
 		global $post;
 		$amount = get_post_meta($post->ID, 'price', true);
 		if(empty($amount)) $amount = 0;
-		return MultiServices::price($amount);
+		return MultiPass::price($amount);
 	}
 
 	static function get_summary_discount($args = []) {
 		global $post;
 		$discount = get_post_meta($post->ID, 'discount', true);
 		$amount = (isset($discount['total'])) ? $discount['total'] : NULL;
-		if( $amount > 0) return MultiServices::price($amount);
+		if( $amount > 0) return MultiPass::price($amount);
 	}
 
 	static function get_summary_total($args = []) {
 		global $post;
 		$amount = get_post_meta($post->ID, 'total', true);
 		if(empty($amount)) $amount = 0;
-		return MultiServices::price($amount);
+		return MultiPass::price($amount);
 	}
 
 	static function get_summary_deposit_percent($args = []) {
@@ -865,13 +865,13 @@ class MultiServices_Prestation {
 		global $post;
 		$deposit = get_post_meta($post->ID, 'deposit', true);
 		$amount = (isset($deposit['total'])) ? $deposit['total'] : NULL;
-		if($amount > 0) return MultiServices::price($amount);
+		if($amount > 0) return MultiPass::price($amount);
 	}
 
 	static function get_summary_paid($args = []) {
 		global $post;
 		$amount = get_post_meta($post->ID, 'paid', true);
-		return MultiServices::price($amount);
+		return MultiPass::price($amount);
 	}
 
 	static function get_balance($args = []) {
@@ -884,13 +884,13 @@ class MultiServices_Prestation {
 		// global $post;
 		// $amount = get_post_meta($post->ID, 'balance', true);
 		$amount = self::get_balance();
-		return MultiServices::price($amount);
+		return MultiPass::price($amount);
 	}
 
 	static function get_summary_reference($args = []) {
 		global $post;
 		if ($post->post_type != 'prestation') return;
-		if( MultiServices::is_new_post() ) return; // triggered when opened new post page, empty
+		if( MultiPass::is_new_post() ) return; // triggered when opened new post page, empty
 
 		if(is_post_type_viewable( $post->post_type )) {
 			return sprintf(
@@ -966,7 +966,7 @@ class MultiServices_Prestation {
 		if(!$post) return;
 		if( $post->post_status == 'trash' ) return; // TODO: remove prestation reference from other post types
 		if( isset($_REQUEST['action']) && $_REQUEST['action'] == 'trash' ) return; // maybe redundant?
-		if( MultiServices::is_new_post() ) return; // triggered when opened new post page, empty
+		if( MultiPass::is_new_post() ) return; // triggered when opened new post page, empty
 
 		remove_action(current_action(), __CLASS__ . '::' . __FUNCTION__);
 
@@ -1012,7 +1012,7 @@ class MultiServices_Prestation {
 		$updates['refunded'] = 0;
 		$updates['discount']['total'] = 0;
 
-		$prestation = new MultiServices_Prestation($post);
+		$prestation = new Mltp_Prestation($post);
 		$prestation_items = $prestation->get_items();
 		foreach($prestation_items as $item) {
 			error_log("prestation $prestation->ID items " . print_r($item, true));
@@ -1214,7 +1214,7 @@ class MultiServices_Prestation {
 	  // Image column
 	  switch($column) {
 			case 'dates':
-			echo MultiServices::format_date_range(get_post_meta($post_id, 'dates', true));
+			echo MultiPass::format_date_range(get_post_meta($post_id, 'dates', true));
 			break;
 
 			case 'customer':
@@ -1223,7 +1223,7 @@ class MultiServices_Prestation {
 				'name' => get_post_meta($post_id, 'customer_name', true),
 				// 'email' => get_post_meta($post_id, 'customer_email', true),
 			);
-			echo MultiServices_Item::customer_html($customer);
+			echo Mltp_Item::customer_html($customer);
 			break;
 
 			case 'contact':
@@ -1241,7 +1241,7 @@ class MultiServices_Prestation {
 						'phone' => get_post_meta($post_id, 'contact_phone', true),
 					)),
 				);
-				echo MultiServices_Item::customer_html($contact);
+				echo Mltp_Item::customer_html($contact);
 			// }
 			break;
 
@@ -1249,7 +1249,7 @@ class MultiServices_Prestation {
 			case 'deposit':
 			$values = get_post_meta($post_id, $column, true);
 			if(!empty($values['total']))
-			echo MultiServices::price($values['total']);
+			echo MultiPass::price($values['total']);
 			break;
 
 			case 'total':
@@ -1257,7 +1257,7 @@ class MultiServices_Prestation {
 			case 'balance':
 			$value = get_post_meta($post_id, $column, true);
 			// if(empty($value) ) $value = 0;
-			echo MultiServices::price(get_post_meta($post_id, $column, true));
+			echo MultiPass::price(get_post_meta($post_id, $column, true));
 			break;
 
 			default:
@@ -1281,7 +1281,7 @@ class MultiServices_Prestation {
 		if ( ! in_array( $data['post_type'], [ 'prestation' ], true ) )  return $data;
 
 		if( empty( $postarr['ID'] ) || empty($postarr['post_name']) ) {
-			$data['post_name'] = MultiServices::unique_random_slug();
+			$data['post_name'] = MultiPass::unique_random_slug();
 		}
 
 		return $data;
@@ -1371,7 +1371,7 @@ class MultiServices_Prestation {
 
 		// if(!empty($prestation_id)) {
 			// foreach ($meta as $key => $value) update_post_meta( $order_id, $key, $value );
-			// MultiServices_WooCommerce::update_prestation_orders($prestation_id, get_post($prestation_id), true );
+			// Mltp_WooCommerce::update_prestation_orders($prestation_id, get_post($prestation_id), true );
 		// }
 
 		$prestation = get_post($prestation_id);

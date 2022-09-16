@@ -6,8 +6,8 @@
  * @link       http://example.com
  * @since      0.1.0
  *
- * @package    MultiServices
- * @subpackage MultiServices/includes
+ * @package    MultiPass
+ * @subpackage MultiPass/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    MultiServices
- * @subpackage MultiServices/includes
+ * @package    MultiPass
+ * @subpackage MultiPass/includes
  * @author     Your Name <email@example.com>
  */
-class MultiServices_Modules {
+class Mltp_Modules {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -65,7 +65,7 @@ class MultiServices_Modules {
 	private function load_dependencies() {
 		if(isset($_REQUEST['submit']) && isset($_REQUEST['page']) && $_REQUEST['page'] == 'multiservices')
 		$enabled = (isset($_REQUEST['modules_enable'])) ? $_REQUEST['modules_enable'] : [];
-		else $enabled = MultiServices::get_option('modules_enable', []);
+		else $enabled = MultiPass::get_option('modules_enable', []);
 
 		$this->modules = [];
 
@@ -145,7 +145,7 @@ class MultiServices_Modules {
 
 		// Modules settings in General tab
 		$meta_boxes[] = [
-			'title'          => __('MultiServices Modules', 'multiservices' ),
+			'title'          => __('MultiPass Modules', 'multiservices' ),
 			'id'             => 'multiservices-modules',
 			'settings_pages' => ['multiservices'],
 			'tab'            => 'general',
@@ -202,7 +202,7 @@ class MultiServices_Modules {
 				'status' => 'status',
 			);
 
-			$list = new MultiServices_Table($data);
+			$list = new Mltp_Table($data);
 
 			$html .= sprintf(
 				'<div class="managed-list managed-list-external">
