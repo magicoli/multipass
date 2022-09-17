@@ -50,7 +50,7 @@ DISCLAIMER: this is an early-stage development version, updates might include br
 * Lodgify
 * HBook by Maestrel
 * HotelDruid (probably import only)
-* Email processing (access your mailbox and show messages related to each prestation)
+* Email processing (access your mailbox and link messages to related prestations)
 
 == Installation ==
 

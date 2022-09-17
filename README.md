@@ -9,7 +9,7 @@ Stable tag: 1.0
 License: GPLv2 or later
 License URI: http: //www.gnu.org/licenses/gpl-2.0.html
 
-Group prestation items from different sources (WooCommerce, OTA, booking engines...) and manage them as a whole.
+Group services from different sources (WooCommerce, OTA, booking engines...) and manage them as a whole.
 
 ## Description
 
@@ -19,7 +19,7 @@ Particularly useful in lodging facilities, if your business offers other kinds o
 
 This should also fit well for other kind of services, needing a more fluid approach than usual e-commerce solutions.
 
-Disclaimer: this is a development version, updates might include breaking changes before 1.0 release.
+DISCLAIMER: this is an early-stage development version, updates might include breaking changes until 1.0 release.
 
 ### Use cases
 
@@ -51,5 +51,5 @@ Disclaimer: this is a development version, updates might include breaking change
 - Lodgify
 - HBook by Maestrel
 - HotelDruid (probably import only)
-- Email processing (access your mailbox and show messages related to each prestation)
+- Email processing (access your mailbox and link messages to related prestations)
 
