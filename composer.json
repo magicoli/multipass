@@ -62,7 +62,8 @@
     "config": {
         "allow-plugins": {
             "composer/installers": true,
-            "oomphinc/composer-installers-extender": true
+            "oomphinc/composer-installers-extender": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
     "require-dev": {
@@ -70,7 +71,7 @@
     },
     "scripts": {
       "remove-git-submodules" : "find vendor/ -mindepth 2 -type d -name .git | xargs rm -rf; rmdir vendor/* 2>/dev/null; echo cleaned",
-      "post-update-cmd": "@remove-git-submodules",
-      "post-install-cmd": "@remove-git-submodules"
+      "post-install-cmd": "@remove-git-submodules",
+      "post-update-cmd" : "@remove-git-submodules"
     }
 }

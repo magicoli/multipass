@@ -698,20 +698,20 @@
         },
         {
             "name": "wpmetabox/meta-box",
-            "version": "5.6.6",
-            "version_normalized": "5.6.6.0",
+            "version": "5.6.7",
+            "version_normalized": "5.6.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wpmetabox/meta-box.git",
-                "reference": "2c49a50ca1e1b3a3aef57c1c81d6be5d659d0b5f"
+                "reference": "80d328c89d4a899b2210e8b9ecd14ba9c8fbe689"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wpmetabox/meta-box/zipball/2c49a50ca1e1b3a3aef57c1c81d6be5d659d0b5f",
-                "reference": "2c49a50ca1e1b3a3aef57c1c81d6be5d659d0b5f",
+                "url": "https://api.github.com/repos/wpmetabox/meta-box/zipball/80d328c89d4a899b2210e8b9ecd14ba9c8fbe689",
+                "reference": "80d328c89d4a899b2210e8b9ecd14ba9c8fbe689",
                 "shasum": ""
             },
-            "time": "2022-08-05T04:16:39+00:00",
+            "time": "2022-09-16T08:53:18+00:00",
             "type": "wordpress-plugin",
             "installation-source": "dist",
             "notification-url": "https://packagist.org/downloads/",
@@ -739,7 +739,7 @@
             ],
             "support": {
                 "issues": "https://github.com/wpmetabox/meta-box/issues",
-                "source": "https://github.com/wpmetabox/meta-box/tree/5.6.6"
+                "source": "https://github.com/wpmetabox/meta-box/tree/5.6.7"
             },
             "install-path": "../../lib/meta-box/meta-box"
         }
