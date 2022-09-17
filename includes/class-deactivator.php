@@ -1,9 +1,8 @@
 <?php
-
 /**
  * Fired during plugin deactivation
  *
- * @link       http://example.com
+ * @link       https://github.com/magicoli/multipass
  * @since      0.1.0
  *
  * @package    MultiPass
@@ -30,7 +29,7 @@ class Mltp_Deactivator {
 	 * @since    0.1.0
 	 */
 	public static function deactivate() {
-    flush_rewrite_rules();
+		flush_rewrite_rules();
 	}
 
 }

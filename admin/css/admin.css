@@ -67,30 +67,30 @@
 
 @media screen and (min-width: 768px) {
   :root {
-    --low-width: 7.5%;
-    --low-gap: calc( (100% - 12 * var(--low-width) ) / 11 );
+	--low-width: 7.5%;
+	--low-gap: calc( (100% - 12 * var(--low-width) ) / 11 );
   }
   .low-gap .rwmb-column {
-    margin-right: 0.9%;
+	margin-right: 0.9%;
   }
   .low-gap .rwmb-column-1 {
-    width: calc(1 * var(--low-width) + 0 * var(--low-gap));
+	width: calc(1 * var(--low-width) + 0 * var(--low-gap));
   }
   .low-gap .rwmb-column-2 {
-    width: calc(2 * var(--low-width) + 1 * var(--low-gap));
+	width: calc(2 * var(--low-width) + 1 * var(--low-gap));
   }
   .low-gap .rwmb-column-3 {
-    width: calc(3 * var(--low-width) + 2 * var(--low-gap));
+	width: calc(3 * var(--low-width) + 2 * var(--low-gap));
   }
 }
 
 @media screen and (max-width: 960px) {
   :root {
-    --low-width: 15%;
-    --low-gap: calc( (100% - 12 * var(--low-width) ) / 11 );
+	--low-width: 15%;
+	--low-gap: calc( (100% - 12 * var(--low-width) ) / 11 );
   }
   .post-php.post-type-prestation .rwmb-group-clone:not(:first-child) label {
-    display: block;
+	display: block;
   }
 
 }

@@ -1,240 +1,266 @@
 <?php
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
-  require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
 class Mltp_Table extends WP_List_Table {
-  var $data = [];
-  var $rows = [];
+	var $data = array();
+	var $rows = array();
 
-  public function __construct($data = [])
-  {
-    $this->data = $data;
-    $this->rows = isset($data['rows']) ? $data['rows'] : [];
-    $this->prepare_items();
-  }
+	public function __construct( $data = array() ) {
+		$this->data = $data;
+		$this->rows = isset( $data['rows'] ) ? $data['rows'] : array();
+		$this->prepare_items();
+	}
 
-  function get_columns() {
-    $rows = $this->rows;
-    if(!is_array($rows)) return [ 'error' => __('Not an array', 'multipass') ];
-    if(empty($rows)) return [ 'error' => __('Empty table', 'multipass') ];
+	function get_columns() {
+		$rows = $this->rows;
+		if ( ! is_array( $rows ) ) {
+			return array( 'error' => __( 'Not an array', 'multipass' ) );
+		}
+		if ( empty( $rows ) ) {
+			return array( 'error' => __( 'Empty table', 'multipass' ) );
+		}
 
-    $first_row = reset($rows);
-    if(!is_array($first_row)) return  [ 'error' => __('Wrong table format', 'multipass') ];
-    $keys = array_keys(array_shift($rows));
-    switch ($keys[0]) {
-      // case 'idprenota':
-      // $columns = array (
-      //   'key' => __('key', 'multipass' ),
-      //   'idprenota' => __('key', 'multipass' ),
-      //   'customer' => __('key', 'multipass' ),
-      // );
-      // break;
+		$first_row = reset( $rows );
+		if ( ! is_array( $first_row ) ) {
+			return array( 'error' => __( 'Wrong table format', 'multipass' ) );
+		}
+		$keys = array_keys( array_shift( $rows ) );
+		switch ( $keys[0] ) {
+			// case 'idprenota':
+			// $columns = array (
+			// 'key' => __('key', 'multipass' ),
+			// 'idprenota' => __('key', 'multipass' ),
+			// 'customer' => __('key', 'multipass' ),
+			// );
+			// break;
 
-      default:
-      if(!empty($this->data['columns'])) $columns = $this->data['columns'];
-      else $columns = array_combine($keys, $keys);
-      // error_log(print_r($columns, true));
-    }
+			default:
+				if ( ! empty( $this->data['columns'] ) ) {
+					$columns = $this->data['columns'];
+				} else {
+					$columns = array_combine( $keys, $keys );
+				}
+				// error_log(print_r($columns, true));
+		}
 
-    return $columns;
-  }
+		return $columns;
+	}
 
-  function column_default( $item, $column_id ) {
-    if(!is_array($item)) $item = array(
-      $column_id => $item,
-    );
+	function column_default( $item, $column_id ) {
+		if ( ! is_array( $item ) ) {
+			$item = array(
+				$column_id => $item,
+			);
+		}
 
-    switch( $column_id ) {
-      case 'actions':
-      $actions = [];
-      if(isset($item['external_url'])) {
-        $actions[] = sprintf(
-          '<a class="dashicons dashicons-external" href="%s"></a>',
-          $item['external_url'],
-          'edit',
-        );
-      }
-      else if(isset($item['edit_url'])) {
-        $actions[] = sprintf(
-          '<a class="dashicons dashicons-edit" href="%s"></a>',
-          $item['edit_url'],
-          'edit',
-        );
-      }
-      else if(isset($item['view_url'])) {
-        $actions[] = sprintf(
-          '<a class="dashicons dashicons-visibility" href="%s"></a>',
-          $item['view_url'],
-          'edit',
-        );
-      }
-      $value = '<nobr>' . join('', $actions) . '</nobr>';
-      break;
+		switch ( $column_id ) {
+			case 'actions':
+				$actions = array();
+				if ( isset( $item['external_url'] ) ) {
+					$actions[] = sprintf(
+						'<a class="dashicons dashicons-external" href="%s"></a>',
+						$item['external_url'],
+						'edit',
+					);
+				} elseif ( isset( $item['edit_url'] ) ) {
+					$actions[] = sprintf(
+						'<a class="dashicons dashicons-edit" href="%s"></a>',
+						$item['edit_url'],
+						'edit',
+					);
+				} elseif ( isset( $item['view_url'] ) ) {
+					$actions[] = sprintf(
+						'<a class="dashicons dashicons-visibility" href="%s"></a>',
+						$item['view_url'],
+						'edit',
+					);
+				}
+				$value = '<nobr>' . join( '', $actions ) . '</nobr>';
+				break;
 
-      // case 'idclienti':
-      // if(isset($item['idprenota'])) {
-      //   // todo return link to wp user if set
-      //   return "client " . $item['idclienti'];
-      // }
-      // return $item['idclienti'];
-      // break;
+			// case 'idclienti':
+			// if(isset($item['idprenota'])) {
+			// todo return link to wp user if set
+			// return "client " . $item['idclienti'];
+			// }
+			// return $item['idclienti'];
+			// break;
 
-      default:
-      $value = isset($item[ $column_id ]) ? $item[ $column_id ] : NULL;
-      // else $value = $item;
-    }
+			default:
+				$value = isset( $item[ $column_id ] ) ? $item[ $column_id ] : null;
+				// else $value = $item;
+		}
 
-    if(isset($this->data['format'][$column_id])) {
-      $date_format = get_option( 'date_format', 'd/m/Y' );
-      $time_format = get_option( 'time_format' );
-      switch ($this->data['format'][$column_id]) {
-        case 'price':
-        if(empty($value)) $value = NULL;
-        else $value = MultiPass::price($value);
-        break;
+		if ( isset( $this->data['format'][ $column_id ] ) ) {
+			$date_format = get_option( 'date_format', 'd/m/Y' );
+			$time_format = get_option( 'time_format' );
+			switch ( $this->data['format'][ $column_id ] ) {
+				case 'price':
+					if ( empty( $value ) ) {
+						$value = null;
+					} else {
+						$value = MultiPass::price( $value );
+					}
+					break;
 
-        case 'date_range';
-        $value = MultiPass::format_date_range($value);
-        break;
+				case 'date_range';
+					$value = MultiPass::format_date_range( $value );
+			  break;
 
-        case 'date';
-        if(!empty($value)) {
-          if(!is_numeric($value)) $value = strtotime($value);
-          $value = date_i18n( $date_format, $value);
-        }
-        break;
+				case 'date';
+					if ( ! empty( $value ) ) {
+						if ( ! is_numeric( $value ) ) {
+							$value = strtotime( $value );
+						}
+						$value = date_i18n( $date_format, $value );
+					}
+			break;
 
-        case 'time';
-        if(!empty($value)) {
-          if(!is_numeric($value)) $value = strtotime($value);
-          $value = date_i18n( $time_format, $value);
-        }
-        break;
+				case 'time';
+					if ( ! empty( $value ) ) {
+						if ( ! is_numeric( $value ) ) {
+							$value = strtotime( $value );
+						}
+						$value = date_i18n( $time_format, $value );
+					}
+			break;
 
-        case 'date_time';
-        if(!empty($value)) {
-          if(!is_numeric($value)) $value = strtotime($value);
-          $value = date_i18n( "$date_format $time_format", $value);
-        }
-        break;
+				case 'date_time';
+					if ( ! empty( $value ) ) {
+						if ( ! is_numeric( $value ) ) {
+							$value = strtotime( $value );
+						}
+						$value = date_i18n( "$date_format $time_format", $value );
+					}
+			break;
 
-        case 'status':
-        if(is_array($item) && isset($item['id'])) {
-          $slug = $item['status'];
-          $term = get_term_by('slug', $slug, 'prestation-status');
-          $status_name = __( (($term) ? $term->name : $slug), 'multipass');
-          return $this->render_status($item['id'], $slug, $status_name);
-        } else return $item;
-        break;
+				case 'status':
+					if ( is_array( $item ) && isset( $item['id'] ) ) {
+						  $slug        = $item['status'];
+						  $term        = get_term_by( 'slug', $slug, 'prestation-status' );
+						  $status_name = __( ( ( $term ) ? $term->name : $slug ), 'multipass' );
+						  return $this->render_status( $item['id'], $slug, $status_name );
+					} else {
+						return $item;
+					}
+					break;
 
-      }
-    }
-    return $value;
-  }
+			}
+		}
+		return $value;
+	}
 
-  function render_status($post_id = NULL, $slug = NULL, $name = NULL) {
-    if(empty($slug)) return;
+	function render_status( $post_id = null, $slug = null, $name = null ) {
+		if ( empty( $slug ) ) {
+			return;
+		}
 
-    $post = get_post($post_id);
-    if($post) $post_type = $post->post_type;
+		$post = get_post( $post_id );
+		if ( $post ) {
+			$post_type = $post->post_type;
+		}
 
-    if(empty($name)) $name = $slug;
+		if ( empty( $name ) ) {
+			$name = $slug;
+		}
 
-    $html = sprintf(
-      '<span class="prestation-status-box %1$s-status status-%2$s">%3$s</span>',
-      $post_type,
-      $slug,
-      $name,
-    );
+		$html = sprintf(
+			'<span class="prestation-status-box %1$s-status status-%2$s">%3$s</span>',
+			$post_type,
+			$slug,
+			$name,
+		);
 
-    return $html;
-  }
+		return $html;
+	}
 
-  function prepare_items() {
+	function prepare_items() {
 
-    $columns = $this->get_columns();
-    $hidden = array();
-    $sortable = $this->get_sortable_columns();
-    $this->_column_headers = array($columns, $hidden, $sortable);
-    // usort( $this->data, array( &$this, 'usort_reorder' ) );
-    $this->items = $this->data;
-  }
+		$columns               = $this->get_columns();
+		$hidden                = array();
+		$sortable              = $this->get_sortable_columns();
+		$this->_column_headers = array( $columns, $hidden, $sortable );
+		// usort( $this->data, array( &$this, 'usort_reorder' ) );
+		$this->items = $this->data;
+	}
 
-  /**
-   * Sort doesn't seem work in tabbed settings page context
-   * It's not a big deal in this case, so I won't fix it
-  **/
+	/**
+	 * Sort doesn't seem work in tabbed settings page context
+	 * It's not a big deal in this case, so I won't fix it
+	 **/
 
-  function get_sortable_columns() {
-    $sortable_columns = [];
-  //   $sortable_columns = array(
-  //     'idclienti'  => array('idclienti',false),
-  //     'idappartamenti'  => array('idappartamenti',false),
-  //     'name'  => array('name',false),
-  //   );
-    return $sortable_columns;
-  }
-  //
-  function usort_reorder( $a, $b ) {
-  //   // If no sort, default to title
-  //   $orderby = ( ! empty( $_GET['orderby'] ) ) ? $_GET['orderby'] : 'name';
-  //   // If no order, default to asc
-  //   $order = ( ! empty($_GET['order'] ) ) ? $_GET['order'] : 'asc';
-  //   // Determine sort order
-  //   $result = strcmp( $a[$orderby], $b[$orderby] );
-  //   // Send final sort direction to usort
-  //   return ( $order === 'asc' ) ? $result : -$result;
-  }
+	function get_sortable_columns() {
+		$sortable_columns = array();
+		// $sortable_columns = array(
+		// 'idclienti'  => array('idclienti',false),
+		// 'idappartamenti'  => array('idappartamenti',false),
+		// 'name'  => array('name',false),
+		// );
+		return $sortable_columns;
+	}
+	function usort_reorder( $a, $b ) {
+		// If no sort, default to title
+		// $orderby = ( ! empty( $_GET['orderby'] ) ) ? $_GET['orderby'] : 'name';
+		// If no order, default to asc
+		// $order = ( ! empty($_GET['order'] ) ) ? $_GET['order'] : 'asc';
+		// Determine sort order
+		// $result = strcmp( $a[$orderby], $b[$orderby] );
+		// Send final sort direction to usort
+		// return ( $order === 'asc' ) ? $result : -$result;
+	}
 
-  function get_columns_headers() {
-    $headers = '';
-    foreach($this->get_columns() as $column_id => $column_name) {
-      $headers .= "<th class='column column-$column_id'>$column_name</th>";
-    }
-    return $headers;
-  }
+	function get_columns_headers() {
+		$headers = '';
+		foreach ( $this->get_columns() as $column_id => $column_name ) {
+			$headers .= "<th class='column column-$column_id'>$column_name</th>";
+		}
+		return $headers;
+	}
 
-  function get_rows() {
-    $rows = '';
-    $columns = $this->get_columns();
-    foreach ($this->rows as $key => $row) {
-      $rows .= '<tr>';
-      foreach ($columns as $column_id => $column_name) {
-        $format = (isset($this->data['format'][$column_id])) ? $this->data['format'][$column_id] : '';
-        $value = $this->column_default($row, $column_id);
-        $rows .= "<td class='column column-$column_id $format'>$value</td>";
-      }
-      $rows .= '</tr>';
+	function get_rows() {
+		$rows    = '';
+		$columns = $this->get_columns();
+		foreach ( $this->rows as $key => $row ) {
+			$rows .= '<tr>';
+			foreach ( $columns as $column_id => $column_name ) {
+				$format = ( isset( $this->data['format'][ $column_id ] ) ) ? $this->data['format'][ $column_id ] : '';
+				$value  = $this->column_default( $row, $column_id );
+				$rows  .= "<td class='column column-$column_id $format'>$value</td>";
+			}
+			$rows .= '</tr>';
 
-      // code...
-    }
-    return $rows;
-  }
+			// code...
+		}
+		return $rows;
+	}
 
-  function get_columns_footers() {
-    $footers = '';
-    foreach($this->get_columns() as $column_id => $column_name) {
-      $value = (isset($this->data[$column_id])) ? $this->data[$column_id] : '';
-      $value = $this->column_default($value, $column_id);
-      if(is_array($value)) $value = implode($value);
+	function get_columns_footers() {
+		$footers = '';
+		foreach ( $this->get_columns() as $column_id => $column_name ) {
+			$value = ( isset( $this->data[ $column_id ] ) ) ? $this->data[ $column_id ] : '';
+			$value = $this->column_default( $value, $column_id );
+			if ( is_array( $value ) ) {
+				$value = implode( $value );
+			}
 
-      $footers .= "<th class='column column-$column_id'>$value</th>";
-    }
-    return $footers;
-  }
+			$footers .= "<th class='column column-$column_id'>$value</th>";
+		}
+		return $footers;
+	}
 
-  function render() {
-    return sprintf(
-      '<table class="wp-list-table multipass-list">
+	function render() {
+		return sprintf(
+			'<table class="wp-list-table multipass-list">
       <thead>%s</thead>
       <tbody>%s</tbody>
       <tfoot>%s</tfoot>
       </table>',
-      $this->get_columns_headers(),
-      $this->get_rows(),
-      $this->get_columns_footers(),
-    );
-  }
+			$this->get_columns_headers(),
+			$this->get_rows(),
+			$this->get_columns_footers(),
+		);
+	}
 }

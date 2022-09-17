@@ -3,7 +3,7 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       http://example.com
+ * @link       https://github.com/magicoli/multipass
  * @since      0.1.0
  *
  * @package    MultiPass
@@ -44,13 +44,13 @@ class Mltp_Public {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.1.0
-	 * @param      string    $plugin_slug       The name of the plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param      string $plugin_slug       The name of the plugin.
+	 * @param      string $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_slug, $version ) {
 
 		$this->plugin_slug = $plugin_slug;
-		$this->version = $version;
+		$this->version     = $version;
 
 	}
 

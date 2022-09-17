@@ -1,12 +1,11 @@
 <?php
-
 /**
  * Define the internationalization functionality
  *
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
  *
- * @link       http://example.com
+ * @link       https://github.com/magicoli/multipass
  * @since      0.1.0
  *
  * @package    MultiPass
@@ -24,7 +23,7 @@
  * @subpackage MultiPass/includes
  * @author     Your Name <email@example.com>
  */
-class Mltp_i18n {
+class Mltp_I18n {
 
 
 	/**

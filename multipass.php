@@ -15,7 +15,7 @@
  * Tested up to:      6.0.2
  * Requires PHP:      7.4
  *
- * @link              http://example.com
+ * @link              https://github.com/magicoli/multipass
  * @since             0.1.0
  * @package           MultiPass
  *

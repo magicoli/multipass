@@ -30,26 +30,25 @@
 	 */
 
 	 // $('#discount_percent').change(function() {
-		//   alert( "Changed." );
-		//  if (this.value == '') {
-		// 	 $("#discount_amount").prop("readonly",false);
-		//  }
-		//  else{
-		// 	 $("#discount_amount").prop("readonly",true);
-		// 	 $("#discount_amount").val(NULL);
-		//  }
+		// alert( "Changed." );
+		// if (this.value == '') {
+		// $("#discount_amount").prop("readonly",false);
+		// }
+		// else{
+		// $("#discount_amount").prop("readonly",true);
+		// $("#discount_amount").val(NULL);
+		// }
 	 // });
 
 	 // $('body').on('keyup', '.item_quantity, .item_unit_price', function() {
-		//  alert( "Handler for .keyup() called." );
-		//  // var quantity = $('.item_quantity').val();
-		//  // var unit_price = $('.item_unit_price').val();
-		//  // var price = quantity * unit_price;
-		//  // $('.item_price').val(price);
+		// alert( "Handler for .keyup() called." );
+		// var quantity = $('.item_quantity').val();
+		// var unit_price = $('.item_unit_price').val();
+		// var price = quantity * unit_price;
+		// $('.item_price').val(price);
 	 // });
 
 	 // $( ".item_quantity" ).on('keyup', 'quantity',  function() {
-	 //   alert( "Handler for .keyup() called." );
+	 // alert( "Handler for .keyup() called." );
 	 // });
-
 })( jQuery );

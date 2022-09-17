@@ -3,7 +3,7 @@
 /**
  * Register all actions and filters for the plugin
  *
- * @link       http://example.com
+ * @link       https://github.com/magicoli/multipass
  * @since      0.1.0
  *
  * @package    MultiPass
@@ -60,18 +60,18 @@ class Mltp_Mailbox {
 
 		$this->actions = array(
 			array(
-				'hook' => 'init',
+				'hook'     => 'init',
 				'callback' => 'self::background_process',
 			),
 		);
 
 		$this->filters = array(
-			array (
-				'hook' => 'mb_settings_pages',
+			array(
+				'hook'     => 'mb_settings_pages',
 				'callback' => 'register_settings_pages',
 			),
 			array(
-				'hook' => 'rwmb_meta_boxes',
+				'hook'     => 'rwmb_meta_boxes',
 				'callback' => 'register_settings_fields',
 			),
 		);
@@ -83,12 +83,12 @@ class Mltp_Mailbox {
 		);
 
 		foreach ( $this->filters as $hook ) {
-			$hook = array_merge($defaults, $hook);
+			$hook = array_merge( $defaults, $hook );
 			add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
 
 		foreach ( $this->actions as $hook ) {
-			$hook = array_merge($defaults, $hook);
+			$hook = array_merge( $defaults, $hook );
 			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
 
@@ -103,62 +103,62 @@ class Mltp_Mailbox {
 	static function register_settings_fields( $meta_boxes ) {
 		$prefix = 'imap_';
 
-		$meta_boxes[] = [
-			'title'          => __('IMAP Settings', 'multipass' ),
+		$meta_boxes[] = array(
+			'title'          => __( 'IMAP Settings', 'multipass' ),
 			'id'             => 'multipass-mail-settings',
-			'settings_pages' => ['multipass'],
+			'settings_pages' => array( 'multipass' ),
 			'tab'            => 'imap',
-			'fields'         => [
-				[
-					'name'        => __('IMAP Server', 'multipass' ),
+			'fields'         => array(
+				array(
+					'name'        => __( 'IMAP Server', 'multipass' ),
 					'id'          => $prefix . 'server',
 					'type'        => 'text',
-					'placeholder' => __('mail.example.org', 'multipass' ),
+					'placeholder' => __( 'mail.example.org', 'multipass' ),
 					'size'        => 40,
 					'required'    => false,
-				],
-				[
-					'name'     => __('Port', 'multipass' ),
+				),
+				array(
+					'name'     => __( 'Port', 'multipass' ),
 					'id'       => $prefix . 'port',
 					'type'     => 'button_group',
-					'options'  => [
-						143 => __('143', 'multipass' ),
-						993 => __('993', 'multipass' ),
-					],
+					'options'  => array(
+						143 => __( '143', 'multipass' ),
+						993 => __( '993', 'multipass' ),
+					),
 					'std'      => 993,
 					'required' => false,
-				],
-				[
-					'name'     => __('Encryption', 'multipass' ),
+				),
+				array(
+					'name'     => __( 'Encryption', 'multipass' ),
 					'id'       => $prefix . 'encryption',
 					'type'     => 'button_group',
-					'options'  => [
-						'TLS/SSL' => __('TLS/SSL', 'multipass' ),
-					],
+					'options'  => array(
+						'TLS/SSL' => __( 'TLS/SSL', 'multipass' ),
+					),
 					'std'      => 'TLS/SSL',
 					'required' => false,
-				],
-				[
-					'name'     => __('Username', 'multipass' ),
+				),
+				array(
+					'name'     => __( 'Username', 'multipass' ),
 					'id'       => $prefix . 'username',
 					'type'     => 'text',
 					'size'     => 40,
 					'required' => false,
-				],
-				[
-					'name'     => __('Password', 'multipass' ),
+				),
+				array(
+					'name'     => __( 'Password', 'multipass' ),
 					'id'       => $prefix . 'password',
 					'type'     => 'text',
 					'size'     => 40,
 					'required' => false,
-				],
-				[
-					'name' => __('Save Attachments', 'multipass' ),
+				),
+				array(
+					'name' => __( 'Save Attachments', 'multipass' ),
 					'id'   => $prefix . 'attachments',
 					'type' => 'switch',
-				],
-			],
-		];
+				),
+			),
+		);
 
 		return $meta_boxes;
 	}
@@ -171,30 +171,36 @@ class Mltp_Mailbox {
 	 * @return [type] [description]
 	 */
 	static function fetch_mails() {
-		error_log(__CLASS__ . ' ' . __FUNCTION__ . "()");
+		error_log( __CLASS__ . ' ' . __FUNCTION__ . '()' );
 		// $transient_key = sanitize_title(__CLASS__ . ' ' . __FUNCTION__);
 		// if(get_transient($transient_key)) return;
 		// set_transient($transient_key, 'processing', get_option('imap_interval', 300));
 
 		// $server = MultiPass::get_option(__CLASS__ . '::)
-		$server = MultiPass::get_option('imap_server');
-		$username = MultiPass::get_option('imap_username');
-		$port = MultiPass::get_option('imap_port');
-		$enc = 'ssl'; // MultiPass::get_option('imap_encryption');
+		$server   = MultiPass::get_option( 'imap_server' );
+		$username = MultiPass::get_option( 'imap_username' );
+		$port     = MultiPass::get_option( 'imap_port' );
+		$enc      = 'ssl'; // MultiPass::get_option('imap_encryption');
 		$protocol = 'imap';
-		$password = MultiPass::get_option('imap_password');
-		$folder = ''; // INBOX
+		$password = MultiPass::get_option( 'imap_password' );
+		$folder   = ''; // INBOX
 
 		// TODO: better sanitization, as PhpImap\Mailbox is not forgiving
-		if(empty($server)) return;
-		if(empty($username)) return;
-		if(empty($password)) return;
+		if ( empty( $server ) ) {
+			return;
+		}
+		if ( empty( $username ) ) {
+			return;
+		}
+		if ( empty( $password ) ) {
+			return;
+		}
 
 		$mailbox = new PhpImap\Mailbox(
 			"{{$server}:$port/$protocol/$enc}$folder", // IMAP server and mailbox folder
 			$username, // Username for the before configured mailbox
 			$password, // Password for the before configured username
-			NULL, // Directory, where attachments will be saved (optional)
+			null, // Directory, where attachments will be saved (optional)
 			'UTF-8', // Server encoding (optional)
 			true, // Trim leading/ending whitespaces of IMAP path (optional)
 			false // Attachment filename mode (optional; false = random filename; true = original filename)
@@ -214,53 +220,53 @@ class Mltp_Mailbox {
 			// $mail_ids = $mailbox->searchMailbox('ALL');
 
 			// On a regular basis, we only check unseen mails
-			$mail_ids = $mailbox->searchMailbox('UNSEEN');
+			$mail_ids = $mailbox->searchMailbox( 'UNSEEN' );
 
 			// $mail_ids = $mailbox->searchMailbox('SUBJECT "part of the subject"');
 			//
-		} catch (PhpImap\Exceptions\ConnectionException $ex) {
-			error_log('IMAP connection failed: '.$ex->getMessage());
+		} catch ( PhpImap\Exceptions\ConnectionException $ex ) {
+			error_log( 'IMAP connection failed: ' . $ex->getMessage() );
 			return;
-		} catch (PhpImap\Exceptions\Exception $ex) {
-			error_log('An error occured: '.$ex->getMessage());
+		} catch ( PhpImap\Exceptions\Exception $ex ) {
+			error_log( 'An error occured: ' . $ex->getMessage() );
 			return;
-		} catch (Exception $ex) {
-			error_log('An error occured, not cached by PhpImap: '.$ex->getMessage());
+		} catch ( Exception $ex ) {
+			error_log( 'An error occured, not cached by PhpImap: ' . $ex->getMessage() );
 			return;
 		}
 
 		$message = sprintf(
 			'Mailbox connected (%d mails)',
-			count($mail_ids),
+			count( $mail_ids ),
 		) . "\n";
 		// If $mail_ids is empty, no emails could be found
-		if($mail_ids) {
+		if ( $mail_ids ) {
 			// Get the first message
 			// If '__DIR__' was defined in the first line, it will automatically
 			// save all attachments to the specified directory
-			foreach($mail_ids as $mail_id) {
-				$mail = $mailbox->getMail($mail_id);
+			foreach ( $mail_ids as $mail_id ) {
+				$mail = $mailbox->getMail( $mail_id );
 
-				if (!empty($email->autoSubmitted)) {
-            // Mark email as "read" / "seen"
-            $mailbox->markMailAsRead($mail_id);
-            echo "+------ IGNORING: Auto-Reply ------+\n";
+				if ( ! empty( $email->autoSubmitted ) ) {
+					// Mark email as "read" / "seen"
+					$mailbox->markMailAsRead( $mail_id );
+					echo "+------ IGNORING: Auto-Reply ------+\n";
 						continue;
-        }
+				}
 
-        if (!empty($email_content->precedence)) {
-            // Mark email as "read" / "seen"
-            $mailbox->markMailAsRead($mail_id);
-            echo "+------ IGNORING: Non-Delivery Report/Receipt ------+\n";
+				if ( ! empty( $email_content->precedence ) ) {
+					// Mark email as "read" / "seen"
+					$mailbox->markMailAsRead( $mail_id );
+					echo "+------ IGNORING: Non-Delivery Report/Receipt ------+\n";
 						continue;
-        }
+				}
 
 				// Show, if $mail has one or more attachments
 				// $message =  "\nMail has attachments? ";
 				// if($mail->hasAttachments()) {
-				// 	$message .= "Yes\n";
+				// $message .= "Yes\n";
 				// } else {
-				// 	$message .= "No\n";
+				// $message .= "No\n";
 				// }
 				//
 				// // Print all information of $mail
@@ -272,7 +278,7 @@ class Mltp_Mailbox {
 				// $message .= print_r($mail->getAttachments(), true);
 				//
 			}
-			error_log($message);
+			error_log( $message );
 		}
 
 	}
@@ -280,12 +286,15 @@ class Mltp_Mailbox {
 	function background_process() {
 		$this->background_queue = new Mltp_Mailbox_Process();
 
- 		$action = __CLASS__ . '::fetch_mails';
-		if(get_transient('Mltp_Mailbox_wait')) return;
-		set_transient('Mltp_Mailbox_wait', true, 30);
+		$action = __CLASS__ . '::fetch_mails';
+		if ( get_transient( 'Mltp_Mailbox_wait' ) ) {
+			return;
+		}
+		set_transient( 'Mltp_Mailbox_wait', true, 30 );
 
-		if(MultiPass::get_option('email_processing', false))
-		$this->background_queue->push_to_queue(__CLASS__ . '::fetch_mails');
+		if ( MultiPass::get_option( 'email_processing', false ) ) {
+			$this->background_queue->push_to_queue( __CLASS__ . '::fetch_mails' );
+		}
 
 		$this->background_queue->save()->dispatch();
 
@@ -337,12 +346,12 @@ class Mltp_Mailbox_Process extends WP_Background_Process {
 	 * @return mixed
 	 */
 	protected function task( $item ) {
-		set_transient('Mltp_Mailbox_wait', true, 0);
+		set_transient( 'Mltp_Mailbox_wait', true, 0 );
 
-		error_log(__CLASS__ . ' ' . __FUNCTION__ . "($item)");
-		call_user_func($item);
+		error_log( __CLASS__ . ' ' . __FUNCTION__ . "($item)" );
+		call_user_func( $item );
 
-		set_transient('Mltp_Mailbox_wait', true, 30);
+		set_transient( 'Mltp_Mailbox_wait', true, 30 );
 
 		return false; // Don't change this, false prevents running it forever
 	}
@@ -356,7 +365,7 @@ class Mltp_Mailbox_Process extends WP_Background_Process {
 	protected function complete() {
 		parent::complete();
 
-		error_log(__CLASS__ . ' ' . __FUNCTION__ . "() " . print_r($this, true));
+		error_log( __CLASS__ . ' ' . __FUNCTION__ . '() ' . print_r( $this, true ) );
 		// Show notice to user or perform some other arbitrary task...
 	}
 

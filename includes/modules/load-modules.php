@@ -3,7 +3,7 @@
 /**
  * Register all actions and filters for the plugin
  *
- * @link       http://example.com
+ * @link       https://github.com/magicoli/multipass
  * @since      0.1.0
  *
  * @package    MultiPass
@@ -49,7 +49,7 @@ class Mltp_Modules {
 	 * @since    0.1.0
 	 */
 	public function __construct() {
-		$this->version = MULTIPASS_VERSION;
+		$this->version     = MULTIPASS_VERSION;
 		$this->plugin_slug = 'multipass';
 
 		$this->locale = $this->get_locale();
@@ -63,36 +63,42 @@ class Mltp_Modules {
 	}
 
 	private function load_dependencies() {
-		if(isset($_REQUEST['submit']) && isset($_REQUEST['page']) && $_REQUEST['page'] == 'multipass')
-		$enabled = (isset($_REQUEST['modules_enable'])) ? $_REQUEST['modules_enable'] : [];
-		else $enabled = MultiPass::get_option('modules_enable', []);
+		if ( isset( $_REQUEST['submit'] ) && isset( $_REQUEST['page'] ) && $_REQUEST['page'] == 'multipass' ) {
+			$enabled = ( isset( $_REQUEST['modules_enable'] ) ) ? $_REQUEST['modules_enable'] : array();
+		} else {
+			$enabled = MultiPass::get_option( 'modules_enable', array() );
+		}
 
-		$this->modules = [];
+		$this->modules = array();
 
-		if(is_plugin_active('woocommerce/woocommerce.php')) {
+		if ( is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 			require_once MULTIPASS_DIR . 'includes/modules/class-woocommerce.php';
 			require_once MULTIPASS_DIR . 'includes/modules/class-woocommerce-payment-product.php';
 		}
 
-		if(in_array('imap', $enabled)) {
+		if ( in_array( 'imap', $enabled ) ) {
 			require_once MULTIPASS_DIR . 'includes/class-mailbox.php';
 		}
 
-		if(in_array('lodgify', $enabled)) {
+		if ( in_array( 'lodgify', $enabled ) ) {
 			require_once MULTIPASS_DIR . 'includes/modules/class-lodgify.php';
 		}
 
-		if(in_array('hbook', $enabled)) {
+		if ( in_array( 'hbook', $enabled ) ) {
 			require_once MULTIPASS_DIR . 'includes/modules/class-hbook.php';
 		}
 
 	}
 
 	public function get_locale() {
-		if(!empty($this->locale)) return $this->locale;
+		if ( ! empty( $this->locale ) ) {
+			return $this->locale;
+		}
 
-		$locale = preg_replace('/_.*/', '', get_locale());
-		if(empty($locale)) $locale = 'en';
+		$locale = preg_replace( '/_.*/', '', get_locale() );
+		if ( empty( $locale ) ) {
+			$locale = 'en';
+		}
 
 		return $locale;
 	}
@@ -102,39 +108,42 @@ class Mltp_Modules {
 	 * @since    0.1.0
 	 */
 	public function run() {
-		if(!empty($this->modules) && is_array($this->modules)) {
-			foreach($this->modules as $key => $loader) {
-				$this->modules[$key]->run();
+		if ( ! empty( $this->modules ) && is_array( $this->modules ) ) {
+			foreach ( $this->modules as $key => $loader ) {
+				$this->modules[ $key ]->run();
 			}
 		}
 
-		$this->actions = array(
-		);
+		$this->actions = array();
 
 		$this->filters = array(
 			// array (
-			// 	'hook' => 'mb_settings_pages',
-			// 	'callback' => 'register_settings_pages',
+			// 'hook' => 'mb_settings_pages',
+			// 'callback' => 'register_settings_pages',
 			// ),
 			array(
-				'hook' => 'rwmb_meta_boxes',
-				'callback' => 'register_fields'
+				'hook'     => 'rwmb_meta_boxes',
+				'callback' => 'register_fields',
 			),
 			array(
-				'hook' => 'multipass_managed_list',
+				'hook'     => 'multipass_managed_list',
 				'callback' => 'managed_list_filter',
-			)
+			),
 		);
 
-		$defaults = array( 'component' => __CLASS__, 'priority' => 10, 'accepted_args' => 1 );
+		$defaults = array(
+			'component'     => __CLASS__,
+			'priority'      => 10,
+			'accepted_args' => 1,
+		);
 
 		foreach ( $this->filters as $hook ) {
-			$hook = array_merge($defaults, $hook);
+			$hook = array_merge( $defaults, $hook );
 			add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
 
 		foreach ( $this->actions as $hook ) {
-			$hook = array_merge($defaults, $hook);
+			$hook = array_merge( $defaults, $hook );
 			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
 
@@ -144,65 +153,69 @@ class Mltp_Modules {
 		$prefix = 'modules_';
 
 		// Modules settings in General tab
-		$meta_boxes[] = [
-			'title'          => __('MultiPass Modules', 'multipass' ),
+		$meta_boxes[] = array(
+			'title'          => __( 'MultiPass Modules', 'multipass' ),
 			'id'             => 'multipass-modules',
-			'settings_pages' => ['multipass'],
+			'settings_pages' => array( 'multipass' ),
 			'tab'            => 'general',
-			'fields'         => [
-				[
-					'name'    => __('Modules', 'multipass' ),
+			'fields'         => array(
+				array(
+					'name'    => __( 'Modules', 'multipass' ),
 					'id'      => $prefix . 'enable',
 					'type'    => 'checkbox_list',
-					'options' => [
-						'imap'    => __('Mail Processing', 'multipass' ),
-						'lodgify' => __('Lodgify', 'multipass' ),
-						'hbook' => __('HBook Plugin', 'multipass' ),
-					],
-				],
-			],
-		];
+					'options' => array(
+						'imap'    => __( 'Mail Processing', 'multipass' ),
+						'lodgify' => __( 'Lodgify', 'multipass' ),
+						'hbook'   => __( 'HBook Plugin', 'multipass' ),
+					),
+				),
+			),
+		);
 
-    return $meta_boxes;
+		return $meta_boxes;
 	}
 
-	static function managed_list_filter($html = '') {
-		$title = __('External', 'multipass' );
-		if(empty($list)) $list = __('Empty list', 'multipass' );
+	static function managed_list_filter( $html = '' ) {
+		$title = __( 'External', 'multipass' );
+		if ( empty( $list ) ) {
+			$list = __( 'Empty list', 'multipass' );
+		}
 
 		global $post;
-		$data = get_post_meta($post->ID, 'modules-data', true);
+		$data = get_post_meta( $post->ID, 'modules-data', true );
 
-		if(empty($data)) $data = [];
+		if ( empty( $data ) ) {
+			$data = array();
+		}
 		// if(is_array($data)) {
 			$data['columns'] = array(
-				'id' => __('ID', 'multipass' ),
-				'created' => __('Created', 'multipass' ),
-				'source' => __('Source', 'multipass' ),
-				'description' => __('Description', 'multipass' ),
-				'from' => __('From', 'multipass' ),
-				'to' => __('To', 'multipass' ),
-				'subtotal' => __('Subtotal', 'multipass' ),
-				'discount' => __('Discount', 'multipass' ),
-				'refunded' => __('Refunded', 'multipass' ),
-				'total' => __('Total', 'multipass' ),
-				'paid' => __('Paid', 'multipass' ),
-				'status' => __('Status', 'multipass' ),
-				'actions' => '',
+				'id'          => __( 'ID', 'multipass' ),
+				'created'     => __( 'Created', 'multipass' ),
+				'source'      => __( 'Source', 'multipass' ),
+				'description' => __( 'Description', 'multipass' ),
+				'from'        => __( 'From', 'multipass' ),
+				'to'          => __( 'To', 'multipass' ),
+				'subtotal'    => __( 'Subtotal', 'multipass' ),
+				'discount'    => __( 'Discount', 'multipass' ),
+				'refunded'    => __( 'Refunded', 'multipass' ),
+				'total'       => __( 'Total', 'multipass' ),
+				'paid'        => __( 'Paid', 'multipass' ),
+				'status'      => __( 'Status', 'multipass' ),
+				'actions'     => '',
 			);
-			$data['format'] = array(
-				'created' => 'date_time',
-				'from' => 'date',
-				'to' => 'date',
+			$data['format']  = array(
+				'created'  => 'date_time',
+				'from'     => 'date',
+				'to'       => 'date',
 				'subtotal' => 'price',
 				'discount' => 'price',
 				'refunded' => 'price',
-				'total' => 'price',
-				'paid' => 'price',
-				'status' => 'status',
+				'total'    => 'price',
+				'paid'     => 'price',
+				'status'   => 'status',
 			);
 
-			$list = new Mltp_Table($data);
+			$list = new Mltp_Table( $data );
 
 			$html .= sprintf(
 				'<div class="managed-list managed-list-external">

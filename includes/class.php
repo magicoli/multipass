@@ -1,12 +1,11 @@
 <?php
-
 /**
  * The file that defines the core plugin class
  *
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       http://example.com
+ * @link       https://github.com/magicoli/multipass
  * @since      0.1.0
  *
  * @package    MultiPass
@@ -73,9 +72,9 @@ class MultiPass {
 			$this->version = '1.0.0';
 		}
 		$this->plugin_slug = 'multipass';
-		$this->plugin_file = plugin_basename(MULTIPASS_FILE);
+		$this->plugin_file = plugin_basename( MULTIPASS_FILE );
 
-		$this->js_date_format_short = preg_match('/^[Fm]/', get_option('date_format')) ? 'mm-dd-yy' : 'dd-mm-yy';
+		$this->js_date_format_short = preg_match( '/^[Fm]/', get_option( 'date_format' ) ) ? 'mm-dd-yy' : 'dd-mm-yy';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -90,7 +89,7 @@ class MultiPass {
 	 * Include the following files that make up the plugin:
 	 *
 	 * - Mltp_Loader. Orchestrates the hooks of the plugin.
-	 * - Mltp_i18n. Defines internationalization functionality.
+	 * - Mltp_I18n. Defines internationalization functionality.
 	 * - Mltp_Admin. Defines all hooks for the admin area.
 	 * - Mltp_Public. Defines all hooks for the public side of the site.
 	 *
@@ -144,19 +143,19 @@ class MultiPass {
 		require_once MULTIPASS_DIR . 'includes/modules/load-modules.php';
 		$this->loaders[] = new Mltp_Modules();
 		// if(is_plugin_active('woocommerce/woocommerce.php')) {
-		// 	require_once MULTIPASS_DIR . 'includes/modules/class-woocommerce.php';
-		// 	$this->loaders[] = new Mltp_WooCommerce();
+		// require_once MULTIPASS_DIR . 'includes/modules/class-woocommerce.php';
+		// $this->loaders[] = new Mltp_WooCommerce();
 		//
-		// 	require_once MULTIPASS_DIR . 'includes/modules/class-woocommerce-payment-product.php';
-		// 	$this->loaders[] = new Mltp_Payment_Product();
+		// require_once MULTIPASS_DIR . 'includes/modules/class-woocommerce-payment-product.php';
+		// $this->loaders[] = new Mltp_Payment_Product();
 		// }
 
-		if(get_transient('multipass_rewrite_flush') || get_transient('multipass_rewrite_version') != MULTIPASS_VERSION) {
-		  wp_cache_flush();
-		  add_action('init', 'flush_rewrite_rules');
-			delete_transient('multipass_rewrite_flush');
-		  set_transient('multipass_rewrite_version', MULTIPASS_VERSION);
-		  // admin_notice( 'Rewrite rules flushed' );
+		if ( get_transient( 'multipass_rewrite_flush' ) || get_transient( 'multipass_rewrite_version' ) != MULTIPASS_VERSION ) {
+			wp_cache_flush();
+			add_action( 'init', 'flush_rewrite_rules' );
+			delete_transient( 'multipass_rewrite_flush' );
+			set_transient( 'multipass_rewrite_version', MULTIPASS_VERSION );
+			// admin_notice( 'Rewrite rules flushed' );
 		}
 
 	}
@@ -164,7 +163,7 @@ class MultiPass {
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Mltp_i18n class in order to set the domain and to register the hook
+	 * Uses the Mltp_I18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    0.1.0
@@ -172,7 +171,7 @@ class MultiPass {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Mltp_i18n();
+		$plugin_i18n = new Mltp_I18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -217,13 +216,13 @@ class MultiPass {
 	 */
 	public function run() {
 		$this->loader->run();
-		if(!empty($this->loaders) && is_array($this->loaders)) {
-			foreach($this->loaders as $key => $loader) {
-				$this->loaders[$key]->run();
+		if ( ! empty( $this->loaders ) && is_array( $this->loaders ) ) {
+			foreach ( $this->loaders as $key => $loader ) {
+				$this->loaders[ $key ]->run();
 			}
 		}
 
-		add_action('admin_head', __CLASS__ . '::get_admin_notices_queue');
+		add_action( 'admin_head', __CLASS__ . '::get_admin_notices_queue' );
 	}
 
 	/**
@@ -257,74 +256,76 @@ class MultiPass {
 		return $this->version;
 	}
 
-	static function get_option($option, $default = false) {
-		$settings_page = NULL;
-		$result = $default;
-		if(preg_match('/:/', $option)) {
-			$settings_page = strstr($option, ':', true);
-			$option = trim(strstr($option, ':'), ':');
+	static function get_option( $option, $default = false ) {
+		$settings_page = null;
+		$result        = $default;
+		if ( preg_match( '/:/', $option ) ) {
+			$settings_page = strstr( $option, ':', true );
+			$option        = trim( strstr( $option, ':' ), ':' );
 		} else {
 			$settings_page = 'multipass';
 		}
 
-		$settings = get_option($settings_page);
-		if($settings && isset($settings[$option])) {
-			$result = $settings[$option];
+		$settings = get_option( $settings_page );
+		if ( $settings && isset( $settings[ $option ] ) ) {
+			$result = $settings[ $option ];
 		}
 
 		// } else {
-		// 	$result = get_option($option, $default);
+		// $result = get_option($option, $default);
 		// }
 		return $result;
 	}
 
-	static function update_option($option, $value, $autoload = null) {
-		$settings_page = NULL;
-		if(preg_match('/:/', $option)) {
-			$settings_page = strstr($option, ':', true);
-			$option = trim(strstr($option, ':'), ':');
-			$settings = get_option($settings_page);
-			$settings[$option] = $value;
-			$result = update_option($settings_page, $settings, $autoload);
+	static function update_option( $option, $value, $autoload = null ) {
+		$settings_page = null;
+		if ( preg_match( '/:/', $option ) ) {
+			$settings_page       = strstr( $option, ':', true );
+			$option              = trim( strstr( $option, ':' ), ':' );
+			$settings            = get_option( $settings_page );
+			$settings[ $option ] = $value;
+			$result              = update_option( $settings_page, $settings, $autoload );
 		} else {
-			$result = update_option($option, $value, $autoload);
+			$result = update_option( $option, $value, $autoload );
 		}
 		return $result;
 	}
 
-	static function is_new_post($args = null){
-	    global $pagenow;
-	    return ( is_admin() && in_array( $pagenow, array( 'post-new.php' ) ));
+	static function is_new_post( $args = null ) {
+		global $pagenow;
+		return ( is_admin() && in_array( $pagenow, array( 'post-new.php' ) ) );
 	}
 
-	static function unique_random_slug($slug_size = NULL) {
+	static function unique_random_slug( $slug_size = null ) {
 		global $wpdb;
 
-		if(empty($slug_length)) $slug_length = MultiPass::get_option('slug_length', 4);
+		if ( empty( $slug_length ) ) {
+			$slug_length = self::get_option( 'slug_length', 4 );
+		}
 
 		$i = 0; do {
 			$i++;
-			if($i > 5) { // failed several times to find a unique slug, increase length
+			if ( $i > 5 ) { // failed several times to find a unique slug, increase length
 				$slug_length++;
 				$i = 0;
-				MultiPass::update_option('multipass:slug_length', $slug_length);
+				self::update_option( 'multipass:slug_length', $slug_length );
 			}
 
-			$chars = implode(range('a', 'z'));
+			$chars = implode( range( 'a', 'z' ) );
 			// $chars = implode('', range('a', 'z')) . implode('', range('A', 'Z')) . implode('', range('0', '9')); // more characters allowed
 
-			# Basic method: does not allow duplicate characters, less enthropy, slug length limited to $chars length
-			$slug = substr(str_shuffle($chars), 0, $slug_length);
+			// Basic method: does not allow duplicate characters, less enthropy, slug length limited to $chars length
+			$slug = substr( str_shuffle( $chars ), 0, $slug_length );
 
-			# Alternative: more enthropy, length not limited, might be slower
+			// Alternative: more enthropy, length not limited, might be slower
 			// $chars_length = strlen($chars);
 			// $slug = '';
 			// for($i = 0; $i < $slug_length; $i++) {
-			// 	$random_character = $chars[mt_rand(0, $chars_length - 1)];
-			// 	$slug .= $random_character;
+			// $random_character = $chars[mt_rand(0, $chars_length - 1)];
+			// $slug .= $random_character;
 			// }
 
-			# hexadecimal alternative
+			// hexadecimal alternative
 			// $slug = bin2hex(random_bytes( $slug_length / 2));
 
 			// Check uniqueness.
@@ -335,29 +336,33 @@ class MultiPass {
 	}
 
 	static function currency_options() {
-		$options = wp_cache_get('multipass-currencies');
-		if($options) return $options;
-
-		$options = [];
-		$symbols = Currency\Util\CurrencySymbolMapping::values();
-		foreach($symbols as $code => $symbol) {
-			$options[$code] = "$code ($symbol)";
+		$options = wp_cache_get( 'multipass-currencies' );
+		if ( $options ) {
+			return $options;
 		}
 
-		wp_cache_set('multipass-currencies', $options);
+		$options = array();
+		$symbols = Currency\Util\CurrencySymbolMapping::values();
+		foreach ( $symbols as $code => $symbol ) {
+			$options[ $code ] = "$code ($symbol)";
+		}
+
+		wp_cache_set( 'multipass-currencies', $options );
 		return $options;
 	}
 
-	static function get_currency_symbol($currency = '') {
-		$symbol = wp_cache_get('get_currency_symbol-' . $currency);
-		if($symbol) return $symbol;
+	static function get_currency_symbol( $currency = '' ) {
+		$symbol = wp_cache_get( 'get_currency_symbol-' . $currency );
+		if ( $symbol ) {
+			return $symbol;
+		}
 
-		if(function_exists('get_woocommerce_currency_symbol')) {
-			$symbol = get_woocommerce_currency_symbol($currency);
+		if ( function_exists( 'get_woocommerce_currency_symbol' ) ) {
+			$symbol = get_woocommerce_currency_symbol( $currency );
 		} else {
-			if(empty($currency)) {
-				$options = MultiPass::get_option('currency');
-				if(isset($options['code'])) {
+			if ( empty( $currency ) ) {
+				$options = self::get_option( 'currency' );
+				if ( isset( $options['code'] ) ) {
 					$search_currency = $options['code'];
 				}
 			} else {
@@ -365,239 +370,296 @@ class MultiPass {
 			}
 
 			$symbols = Currency\Util\CurrencySymbolMapping::values();
-			$symbol = (!empty($symbols[$search_currency])) ? $symbols[$search_currency] : $currency;
+			$symbol  = ( ! empty( $symbols[ $search_currency ] ) ) ? $symbols[ $search_currency ] : $currency;
 		}
 
-		wp_cache_set('get_currency_symbol-' . $currency, $symbol);
+		wp_cache_set( 'get_currency_symbol-' . $currency, $symbol );
 		return $symbol;
 	}
 
-	static function price($price, $args = []) {
-		if(empty($price)&& $price !== 0) return;
-		if(function_exists('wc_price')) return wc_price($price, $args);
+	static function price( $price, $args = array() ) {
+		if ( empty( $price ) && $price !== 0 ) {
+			return;
+		}
+		if ( function_exists( 'wc_price' ) ) {
+			return wc_price( $price, $args );
+		}
 
 		$before = '';
-		$after = '';
+		$after  = '';
 
 		$options = wp_parse_args(
-			MultiPass::get_option('currency'),
+			self::get_option( 'currency' ),
 			array(
-				'code'   => null,
-				'pos' => null,
-				'thousand_sep'     => null,
-				'decimal_sep'   => null,
-				'num_decimals'   => null,
+				'code'         => null,
+				'pos'          => null,
+				'thousand_sep' => null,
+				'decimal_sep'  => null,
+				'num_decimals' => null,
 			)
 		);
-		$args = wp_parse_args($args, $options);
+		$args    = wp_parse_args( $args, $options );
 
-		if(!empty($args['code'])) {
+		if ( ! empty( $args['code'] ) ) {
 			$currency = $args['code'];
-			$symbol = MultiPass::get_currency_symbol();
-			switch($args['pos']) {
-				case 'left': $before = $symbol; break;
-				case 'left_space': $before = "$symbol "; break;
-				case 'right': $after = $symbol; break;
+			$symbol   = self::get_currency_symbol();
+			switch ( $args['pos'] ) {
+				case 'left':
+					$before = $symbol;
+					break;
+				case 'left_space':
+					$before = "$symbol ";
+					break;
+				case 'right':
+					$after = $symbol;
+					break;
 				case 'right_space':
-				default: $after = " $symbol"; break;
+				default:
+					$after = " $symbol";
+					break;
 			}
 		}
 
-		if(isset($args['num_decimals']) &! empty($price)) {
-			$price = number_format_i18n($price, $args['num_decimals']);
+		if ( isset( $args['num_decimals'] ) & ! empty( $price ) ) {
+			$price = number_format_i18n( $price, $args['num_decimals'] );
 		} else {
-			$price = number_format_i18n($price);
+			$price = number_format_i18n( $price );
 		}
 		$price = $before . $price . $after;
 
 		return $price;
 	}
 
-	static function admin_notice($notice, $class='info', $dismissible=true ) {
-		if(empty($notice)) return;
-		if($dismissible) $is_dismissible = 'is-dismissible';
-		if(is_admin()) {
-			add_action( 'admin_notices', function() use ($notice, $class, $is_dismissible) {
-				?>
-				<div class="notice notice-<?=$class?> <?=$is_dismissible?>">
+	static function admin_notice( $notice, $class = 'info', $dismissible = true ) {
+		if ( empty( $notice ) ) {
+			return;
+		}
+		if ( $dismissible ) {
+			$is_dismissible = 'is-dismissible';
+		}
+		if ( is_admin() ) {
+			add_action(
+				'admin_notices',
+				function() use ( $notice, $class, $is_dismissible ) {
+					?>
+				<div class="notice notice-<?php echo $class; ?> <?php echo $is_dismissible; ?>">
 					<p><strong><?php echo MULTIPASS_PLUGIN_NAME; ?></strong>: <?php _e( $notice, 'band-tools' ); ?></p>
 				</div>
-				<?php
-			} );
+					<?php
+				}
+			);
 		} else {
-			self::delay_admin_notice($notice, $class, $dismissible, __FUNCTION__);
+			self::delay_admin_notice( $notice, $class, $dismissible, __FUNCTION__ );
 		}
 	}
 
-	static function delay_admin_notice( $notice, $class='info', $dismissible=true, $key = NULL ) {
-		$transient_key = sanitize_title(__CLASS__ . '-admin_notices_queue');
+	static function delay_admin_notice( $notice, $class = 'info', $dismissible = true, $key = null ) {
+		$transient_key = sanitize_title( __CLASS__ . '-admin_notices_queue' );
 
 		$queue = get_transient( $transient_key );
-		if(!is_array($queue)) $queue = array($queue);
+		if ( ! is_array( $queue ) ) {
+			$queue = array( $queue );
+		}
 
-		$hash = hash('md5', $notice);
-		$queue[$hash] = array('notice' => $notice, 'class' => $class, 'dismissible' => $dismissible);
+		$hash           = hash( 'md5', $notice );
+		$queue[ $hash ] = array(
+			'notice'      => $notice,
+			'class'       => $class,
+			'dismissible' => $dismissible,
+		);
 		set_transient( $transient_key, $queue );
 	}
 
 	static function get_admin_notices_queue() {
-		if(!is_admin()) return;
-		$transient_key = sanitize_title(__CLASS__ . '-admin_notices_queue');
+		if ( ! is_admin() ) {
+			return;
+		}
+		$transient_key = sanitize_title( __CLASS__ . '-admin_notices_queue' );
 
 		$queue = get_transient( $transient_key );
-		if(!is_array($queue)) $queue = array($queue);
-		foreach($queue as $key => $notice) {
-			if(!is_array($notice)) continue;
-			self::admin_notice($notice['notice'], $notice['class'], $notice['dismissible'] );
+		if ( ! is_array( $queue ) ) {
+			$queue = array( $queue );
+		}
+		foreach ( $queue as $key => $notice ) {
+			if ( ! is_array( $notice ) ) {
+				continue;
+			}
+			self::admin_notice( $notice['notice'], $notice['class'], $notice['dismissible'] );
 		}
 		delete_transient( $transient_key );
 	}
 
-	static function format_date_range($dates = [], $datetype = 'RELATIVE_MEDIUM', $timetype = 'NONE') {
-		if(empty($dates)) return;
-		if(!is_array($dates)) $dates = [ $dates ];
-		$dates = array_filter($dates);
+	static function format_date_range( $dates = array(), $datetype = 'RELATIVE_MEDIUM', $timetype = 'NONE' ) {
+		if ( empty( $dates ) ) {
+			return;
+		}
+		if ( ! is_array( $dates ) ) {
+			$dates = array( $dates );
+		}
+		$dates = array_filter( $dates );
 
-		if(count($dates) == 2) {
-			$DateType = constant("IntlDateFormatter::" . preg_replace('/RELATIVE_/', '', $datetype));
-			$TimeType = constant("IntlDateFormatter::" . preg_replace('/RELATIVE_/', '', $timetype));
-			$ranger = new OpenPsa\Ranger\Ranger(get_locale());
-			$ranger->setDateType($DateType)->setTimeType($TimeType);
-			$from = (is_array($dates['from'])) ? $dates['from']['timestamp'] : $dates['from'];
-			$to = (is_array($dates['to'])) ? $dates['to']['timestamp'] : $dates['to'];
+		if ( count( $dates ) == 2 ) {
+			$DateType = constant( 'IntlDateFormatter::' . preg_replace( '/RELATIVE_/', '', $datetype ) );
+			$TimeType = constant( 'IntlDateFormatter::' . preg_replace( '/RELATIVE_/', '', $timetype ) );
+			$ranger   = new OpenPsa\Ranger\Ranger( get_locale() );
+			$ranger->setDateType( $DateType )->setTimeType( $TimeType );
+			$from = ( is_array( $dates['from'] ) ) ? $dates['from']['timestamp'] : $dates['from'];
+			$to   = ( is_array( $dates['to'] ) ) ? $dates['to']['timestamp'] : $dates['to'];
 			return $ranger->format(
-				intval($from),
-				intval($to),
-			);;
+				intval( $from ),
+				intval( $to ),
+			);
+
 		}
 
-		$DateType = constant("IntlDateFormatter::$datetype");
-		$TimeType = constant("IntlDateFormatter::$timetype");
-		$formatted = [];
-		foreach($dates as $date) {
-			$formatter = new IntlDateFormatter(get_locale(), $DateType, $TimeType);
-			$formatted[] = $formatter->format($date['timestamp']);
+		$DateType  = constant( "IntlDateFormatter::$datetype" );
+		$TimeType  = constant( "IntlDateFormatter::$timetype" );
+		$formatted = array();
+		foreach ( $dates as $date ) {
+			$formatter   = new IntlDateFormatter( get_locale(), $DateType, $TimeType );
+			$formatted[] = $formatter->format( $date['timestamp'] );
 		}
-		return join(', ', $formatted);
+		return join( ', ', $formatted );
 	}
 
 
 	static function title_html() {
-		return preg_replace('/(#[[:alnum:]_-]+)/', '<code>$1</code>', the_title('<h1>', '</h1>', false));
+		return preg_replace( '/(#[[:alnum:]_-]+)/', '<code>$1</code>', the_title( '<h1>', '</h1>', false ) );
 	}
 
-	static function get_user_by_info($info) {
-		if(!is_array($info)) {
-			error_log("info $info is not an array");
+	static function get_user_by_info( $info ) {
+		if ( ! is_array( $info ) ) {
+			error_log( "info $info is not an array" );
 			return $info;
 		}
-		$user = NULL;
-		if(isset($info['user_id'])) {
-			$user = get_user_by('id', $info['user_id']);
-		} else if(isset($info['id'])) {
-			$user = get_user_by('id', $info['id']);
-		} else if(isset($info['email'])) {
-			$user = get_user_by('email', $info['email']);
-		} else if(isset($info['name'])) {
+		$user = null;
+		if ( isset( $info['user_id'] ) ) {
+			$user = get_user_by( 'id', $info['user_id'] );
+		} elseif ( isset( $info['id'] ) ) {
+			$user = get_user_by( 'id', $info['id'] );
+		} elseif ( isset( $info['email'] ) ) {
+			$user = get_user_by( 'email', $info['email'] );
+		} elseif ( isset( $info['name'] ) ) {
 			// $user = get_user_by('name', $info['name']);
-			$users = get_users(array('search' => $info['name']));
-			if (!empty($users)) $user = $users[0];
+			$users = get_users( array( 'search' => $info['name'] ) );
+			if ( ! empty( $users ) ) {
+				$user = $users[0];
+			}
 		}
 		return $user;
 	}
 
-	static function get_user_info_by_info($info) {
-		if(!is_array($info)) {
-			error_log("info $info is not an array");
+	static function get_user_info_by_info( $info ) {
+		if ( ! is_array( $info ) ) {
+			error_log( "info $info is not an array" );
 			return $info;
 		}
-		$user = self::get_user_by_info($info);
-		if($user) {
+		$user = self::get_user_by_info( $info );
+		if ( $user ) {
 			$info = array(
 				'user_id' => $user->ID,
-				'name' => trim($user->first_name) . ' ' . $user->last_name,
-				'email' => $user->user_email,
-				'phone' => join(', ', array_filter(array(
-					get_user_meta($user->ID, 'billing_phone', true),
-					get_user_meta($user->ID, 'shipping_phone', true),
-				))),
+				'name'    => trim( $user->first_name ) . ' ' . $user->last_name,
+				'email'   => $user->user_email,
+				'phone'   => join(
+					', ',
+					array_filter(
+						array(
+							get_user_meta( $user->ID, 'billing_phone', true ),
+							get_user_meta( $user->ID, 'shipping_phone', true ),
+						)
+					)
+				),
 			);
 		}
 		// $info = array_replace($info, array_filter(array(
-		// 	'user_id' => $user->ID,
-		// 	'name' => trim($user->first_name) . ' ' . $user->last_name,
-		// 	'email' => $user->user_email,
-		// 	'phone' => join(', ', array_filter(array(
-		// 		get_user_meta($user->ID, 'billing_phone', true),
-		// 		get_user_meta($user->ID, 'shipping_phone', true),
-		// 	))),
+		// 'user_id' => $user->ID,
+		// 'name' => trim($user->first_name) . ' ' . $user->last_name,
+		// 'email' => $user->user_email,
+		// 'phone' => join(', ', array_filter(array(
+		// get_user_meta($user->ID, 'billing_phone', true),
+		// get_user_meta($user->ID, 'shipping_phone', true),
+		// ))),
 		// )));
 		return $info;
 	}
 
-	static function register_terms($taxonomy_slug, $terms = [], $args = []) {
+	static function register_terms( $taxonomy_slug, $terms = array(), $args = array() ) {
 		$terms = apply_filters( 'multipass_register_terms_' . $taxonomy_slug, $terms );
-		if(empty($terms)) return;
+		if ( empty( $terms ) ) {
+			return;
+		}
 
-		$desc_required = sprintf(__('(generated by %s)', 'multipass'), MULTIPASS_PLUGIN_NAME);
-		foreach($terms as $slug => $term) {
-			if(empty($slug)) continue;
-			if(is_string($term)) $term = [ 'name' => $term ];
-			$term = array_replace(array(
-				'slug' => $slug,
-				'name' => $slug,
-				'description' => $desc_required,
-			), $args, $term);
+		$desc_required = sprintf( __( '(generated by %s)', 'multipass' ), MULTIPASS_PLUGIN_NAME );
+		foreach ( $terms as $slug => $term ) {
+			if ( empty( $slug ) ) {
+				continue;
+			}
+			if ( is_string( $term ) ) {
+				$term = array( 'name' => $term );
+			}
+			$term = array_replace(
+				array(
+					'slug'        => $slug,
+					'name'        => $slug,
+					'description' => $desc_required,
+				),
+				$args,
+				$term
+			);
 
-			if(!empty($term['parent'])) {
+			if ( ! empty( $term['parent'] ) ) {
 				$parent = term_exists( $term['parent'], 'prestation-status' );
-				if( $parent && isset($parent['term_id']) ) {
+				if ( $parent && isset( $parent['term_id'] ) ) {
 					$term['parent'] = $parent['term_id'];
+				} else {
+					unset( $term['parent'] );
 				}
-				else unset($term['parent']);
 			}
 
 			$name = $term['name'];
-			unset($term['name']);
-			if(get_term_by('slug', $slug, $taxonomy_slug)) continue;
+			unset( $term['name'] );
+			if ( get_term_by( 'slug', $slug, $taxonomy_slug ) ) {
+				continue;
+			}
 			$term_id = wp_insert_term( $name, $taxonomy_slug, $term )['term_id'];
-			add_term_meta($term_id, 'multipass_generated', true, true);
+			add_term_meta( $term_id, 'multipass_generated', true, true );
 		}
 		add_filter( $taxonomy_slug . '_row_actions', 'MultiPass::unset_taxonomy_row_actions', 10, 2 );
 		add_action( $taxonomy_slug . '_edit_form', 'MultiPass::remove_delete_edit_term_form', 10, 2 );
-		add_action ('pre_delete_term', 'MultiPass::taxonomy_delete_protection', 10, 1 );
+		add_action( 'pre_delete_term', 'MultiPass::taxonomy_delete_protection', 10, 1 );
 	}
 
-	static function unset_taxonomy_row_actions ($actions, $term)
-	{
-		$delete_protected = get_term_meta ($term->term_id, 'multipass_generated', true);
-		if ($delete_protected)
-		unset ($actions['delete']);
+	static function unset_taxonomy_row_actions( $actions, $term ) {
+		$delete_protected = get_term_meta( $term->term_id, 'multipass_generated', true );
+		if ( $delete_protected ) {
+			unset( $actions['delete'] );
+		}
 
 		return $actions;
 	}
 
-	static function remove_delete_edit_term_form ($term, $taxonomy) {
-		$delete_protected = get_term_meta ($term->term_id, 'multipass_generated', true);
-		if ($delete_protected)
-		echo '<style type="text/css">#delete-link {display: none !important;}</style>';
+	static function remove_delete_edit_term_form( $term, $taxonomy ) {
+		$delete_protected = get_term_meta( $term->term_id, 'multipass_generated', true );
+		if ( $delete_protected ) {
+			echo '<style type="text/css">#delete-link {display: none !important;}</style>';
+		}
 	}
 
-	static function taxonomy_delete_protection ( $term_id )
-	{
+	static function taxonomy_delete_protection( $term_id ) {
+		$delete_protected = get_term_meta( $term_id, 'multipass_generated', true );
 
-		$delete_protected = get_term_meta ($term_id, 'multipass_generated', true);
+		if ( $delete_protected ) {
+			$term    = get_term( $term_id );
+			$message = sprintf( __( '%1$s is required by %2$s, it cannot be deleted' ), $term->name, MULTIPASS_PLUGIN_NAME );
 
-		if ($delete_protected)
-		{
-			$term = get_term ($term_id);
-			$message = sprintf( __('%s is required by %s, it cannot be deleted'), $term->name, MULTIPASS_PLUGIN_NAME );
+			$error = new WP_Error();
+			$error->add( 1, $message );
 
-			$error = new WP_Error ();
-			$error->add (1, $message);
-
-			if(is_ajax()) wp_die (-1);
-			else wp_die($message);
+			if ( is_ajax() ) {
+				wp_die( -1 );
+			} else {
+				wp_die( $message );
+			}
 		}
 	}
 
