@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Plugin Name:       MultiPass (dev)
  * Plugin URI:        https://magiiic.com/wordpress/plugins/multipass/
@@ -7,14 +6,14 @@
  * Version:           0.1.1.x-dev
  * Author:            Magiiic
  * Author URI:        https://magiiic.com/
- * GitHubURL:					https://github.com/magicoli/multipass/
+ * GitHubURL:         https://github.com/magicoli/multipass/
  * License:           AGPLv3
  * License URI:       http://www.gnu.org/licenses/agpl-3.0.txt
  * Text Domain:       multipass
  * Domain Path:       /languages
- * Requires at least: 3.0.1
- * Tested up to:			6.0.2
- * Requires PHP:			7.0
+ * Requires at least: 5.9.0
+ * Tested up to:      6.0.2
+ * Requires PHP:      7.4
  *
  * @link              http://example.com
  * @since             0.1.0
@@ -33,9 +32,9 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'MULTIPASS_VERSION', '0.1.1.x-dev' . '-' . time() );
+define( 'MULTIPASS_VERSION', '0.1.1.x-dev' . time() );
 define( 'MULTIPASS_FILE', __FILE__ );
-define( 'MULTIPASS_DIR', plugin_dir_path(__FILE__) );
+define( 'MULTIPASS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MULTIPASS_PLUGIN_NAME', 'MultiPass' );
 
 /**
