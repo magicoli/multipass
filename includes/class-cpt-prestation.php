@@ -1177,6 +1177,7 @@ class Mltp_Prestation {
 
 	static function add_admin_columns( $columns ) {
 		$columns = array(
+			'cb' => $columns['cb'],
 			'title' => __('Title', 'multipass'),
 			'customer' => __('Customer', 'multipass'),
 			'contact' => __('Contact', 'multipass'),
