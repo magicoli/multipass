@@ -6,8 +6,8 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    multiservices
- * @subpackage multiservices/includes
+ * @package    multipass
+ * @subpackage multipass/includes
  */
 
 /**
@@ -17,8 +17,8 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    multiservices
- * @subpackage multiservices/includes
+ * @package    multipass
+ * @subpackage multipass/includes
  * @author     Your Name <email@example.com>
  */
 class Mltp_PluginInfo {
@@ -47,10 +47,10 @@ class Mltp_PluginInfo {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		$this->plugin_file = plugin_basename(MULTISERVICES_FILE);
-		$this->plugin_name = MULTISERVICES_PLUGIN_NAME;
-		$this->slug = basename(MULTISERVICES_DIR);
-		// $this->version = MULTISERVICES_VERSION;
+		$this->plugin_file = plugin_basename(MULTIPASS_FILE);
+		$this->plugin_name = MULTIPASS_PLUGIN_NAME;
+		$this->slug = basename(MULTIPASS_DIR);
+		// $this->version = MULTIPASS_VERSION;
 	}
 
 
@@ -73,29 +73,29 @@ class Mltp_PluginInfo {
 			// $this->slug = $this->slug;
 		// }
 
-		$plugin_data = get_plugin_data(MULTISERVICES_FILE);
-		// $plugin_data = get_plugin_data(MULTISERVICES_DIR . 'readme.txt');
+		$plugin_data = get_plugin_data(MULTIPASS_FILE);
+		// $plugin_data = get_plugin_data(MULTIPASS_DIR . 'readme.txt');
 
-		$this->name = MULTISERVICES_PLUGIN_NAME;
+		$this->name = MULTIPASS_PLUGIN_NAME;
 		$this->version = $plugin_data['Version'];
 		$this->rating = 100; // just kidding
 		$this->num_ratings = 1; // just kidding
 		$this->homepage = $plugin_data['PluginURI'];
 		$this->homepage = $plugin_data['PluginURI'];
-		// $this->download_url = 'https://github.com/magicoli/multiservices/archive/refs/heads/master.zip';
+		// $this->download_url = 'https://github.com/magicoli/multipass/archive/refs/heads/master.zip';
 		$this->author = $plugin_data['AuthorName'];
 		$this->author_homepage = $plugin_data['AuthorURI'];
 		$this->description = $plugin_data['Description'];
 		$this->requires = $plugin_data['RequiresWP'];
 
-		if(file_exists(MULTISERVICES_DIR . 'assets/banner-1544x500.jpg'))
-		$this->banners['high'] = plugin_dir_url(MULTISERVICES_FILE) . 'assets/banner-1544x500.jpg';
-		if(file_exists(MULTISERVICES_DIR . 'assets/banner-772x250.jpg'))
-		$this->banners['low'] = plugin_dir_url(MULTISERVICES_FILE) . 'assets/banner-772x250.jpg';
-		if(file_exists(MULTISERVICES_DIR . 'assets/icon-256x256.jpg'))
-		$this->icons['high'] = plugin_dir_url(MULTISERVICES_FILE) . 'assets/icon-256x256.jpg';
-		if(file_exists(MULTISERVICES_DIR . 'assets/icon-128x128.jpg'))
-		$this->icons['low'] = plugin_dir_url(MULTISERVICES_FILE) . 'assets/icon-128x128.jpg';
+		if(file_exists(MULTIPASS_DIR . 'assets/banner-1544x500.jpg'))
+		$this->banners['high'] = plugin_dir_url(MULTIPASS_FILE) . 'assets/banner-1544x500.jpg';
+		if(file_exists(MULTIPASS_DIR . 'assets/banner-772x250.jpg'))
+		$this->banners['low'] = plugin_dir_url(MULTIPASS_FILE) . 'assets/banner-772x250.jpg';
+		if(file_exists(MULTIPASS_DIR . 'assets/icon-256x256.jpg'))
+		$this->icons['high'] = plugin_dir_url(MULTIPASS_FILE) . 'assets/icon-256x256.jpg';
+		if(file_exists(MULTIPASS_DIR . 'assets/icon-128x128.jpg'))
+		$this->icons['low'] = plugin_dir_url(MULTIPASS_FILE) . 'assets/icon-128x128.jpg';
 		// 'tested', 'upgrade_notice', 'downloaded', 'active_installs', 'last_updated',
 
 		$this->parse_readme();
@@ -123,9 +123,9 @@ class Mltp_PluginInfo {
 	}
 
 	function plugin_row_meta( $plugin_meta, $plugin_file, $plugin_data, $status ) {
-		// if($plugin_file != basename(MULTISERVICES_DIR) . '/' . basename(MULTISERVICES_FILE)) return;
+		// if($plugin_file != basename(MULTIPASS_DIR) . '/' . basename(MULTIPASS_FILE)) return;
 		if( $plugin_file != $this->plugin_file ) return $plugin_meta;
-		// error_log("plugin data " . print_r(get_plugin_data(MULTISERVICES_FILE), true));
+		// error_log("plugin data " . print_r(get_plugin_data(MULTIPASS_FILE), true));
 		// error_log($plugin_file);
 		// return $plugin_meta;
 
@@ -226,8 +226,8 @@ class Mltp_PluginInfo {
 	}
 
 	function parse_readme() {
-		if(!file_exists(MULTISERVICES_DIR . 'readme.txt')) return;
-		$this->source = file_get_contents( MULTISERVICES_DIR . 'readme.txt' );
+		if(!file_exists(MULTIPASS_DIR . 'readme.txt')) return;
+		$this->source = file_get_contents( MULTIPASS_DIR . 'readme.txt' );
 		if(!$this->source) return false;
 
 		$syntax_ok = preg_match( '/^=== (.+?) ===\r?\n(.+?)\r?\n\r?\n(.+?)\r?\n(.+)/s', $this->source, $matches );

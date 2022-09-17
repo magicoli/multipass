@@ -6,7 +6,7 @@
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'reference' => '4370ec5ee6a075e7680e990d1c3b70a432d289ba',
-        'name' => 'magicoli/multiservices',
+        'name' => 'magicoli/multipass',
         'dev' => false,
     ),
     'versions' => array(
@@ -37,7 +37,7 @@
             'reference' => 'cb17b6477dfff935958ba01325f2e8a2bfa6dab3',
             'dev_requirement' => false,
         ),
-        'magicoli/multiservices' => array(
+        'magicoli/multipass' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
             'type' => 'wordpress-plugin',

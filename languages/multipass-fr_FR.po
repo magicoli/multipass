@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MultiPass\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/multiservices\n"
-"POT-Creation-Date: 2022-09-16T18:09:28-04:00\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/multipass\n"
+"POT-Creation-Date: 2022-09-17T07:55:25-04:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,15 +18,15 @@ msgid "MultiPass (dev)"
 msgstr "MultiPass (dev)"
 
 #. Plugin URI of the plugin
-msgid "https://magiiic.com/wordpress/plugins/multiservices/"
-msgstr "https://magiiic.com/wordpress/plugins/multiservices/"
+msgid "https://magiiic.com/wordpress/plugins/multipass/"
+msgstr "https://magiiic.com/wordpress/plugins/multipass/"
 
 #. Description of the plugin
 msgid ""
-"Group prestation items from different sources (WooCommerce, OTA, booking "
-"engines...) and manage them as a whole."
+"Group services from different sources (WooCommerce, OTA, booking engines...) "
+"and manage them as a whole."
 msgstr ""
-"Regrouper les commandes de différentes sources (WooCommerce, OTA, moteurs de "
+"Grouper les services de différentes sources (WooCommerce, OTA, moteurs de "
 "réservation...) et les gérer comme un tout."
 
 #. Author of the plugin
@@ -971,8 +971,8 @@ msgid "&larr; Go to Service Types"
 msgstr "&larr; Aller aux types de service"
 
 #: includes/class-cpt-service.php:359
-msgid "multiservices"
-msgstr "multiservices"
+msgid "multipass"
+msgstr "multipass"
 
 #: includes/class-list-table.php:20
 msgid "Not an array"

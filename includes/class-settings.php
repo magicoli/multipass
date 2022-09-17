@@ -6,8 +6,8 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    multiservices
- * @subpackage multiservices/includes
+ * @package    multipass
+ * @subpackage multipass/includes
  */
 
 /**
@@ -17,8 +17,8 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    multiservices
- * @subpackage multiservices/includes
+ * @package    multipass
+ * @subpackage multipass/includes
  * @author     Your Name <email@example.com>
  */
 class Mltp_Settings {
@@ -125,7 +125,7 @@ class Mltp_Settings {
 				'callback' => 'register_settings_pages',
 			),
 			array(
-				'hook' => 'plugin_action_links_' . basename(MULTISERVICES_DIR) . '/' . basename(MULTISERVICES_FILE),
+				'hook' => 'plugin_action_links_' . basename(MULTIPASS_DIR) . '/' . basename(MULTIPASS_FILE),
 				'callback' => 'plugin_action_links',
 			),
 			array (
@@ -152,8 +152,8 @@ class Mltp_Settings {
 
 	static function register_settings_pages( $settings_pages ) {
 		// $settings_pages[] = [
-		// 	'menu_title'    => __('MultiPass', 'multiservices' ),
-		// 	'id'            => 'multiservices',
+		// 	'menu_title'    => __('MultiPass', 'multipass' ),
+		// 	'id'            => 'multipass',
 		// 	'position'      => 15,
 		// 	'submenu_title' => 'Settings',
 		// 	'capability'    => 'manage_options',
@@ -162,10 +162,10 @@ class Mltp_Settings {
 		// 	'icon_url'      => 'dashicons-book',
 		// ];
 
-		$settings_pages['multiservices'] = [
-			'menu_title'    => __('Settings', 'multiservices' ),
-			'id'            => 'multiservices',
-			'option_name'   => 'multiservices',
+		$settings_pages['multipass'] = [
+			'menu_title'    => __('Settings', 'multipass' ),
+			'id'            => 'multipass',
+			'option_name'   => 'multipass',
 			// 'position'      => 23,
 			'submenu_title' => 'Settings',
 			'parent'        => 'edit.php?post_type=prestation',
@@ -173,8 +173,8 @@ class Mltp_Settings {
 			'style'         => 'no-boxes',
 			'columns'       => 2,
 			'tabs'          => [
-				'general' => __('General', 'multiservices' ),
-				'tos' => __('Terms of Service', 'multiservices' ),
+				'general' => __('General', 'multipass' ),
+				'tos' => __('Terms of Service', 'multipass' ),
 			],
 			'icon_url'      => 'dashicons-book',
 		];
@@ -184,40 +184,40 @@ class Mltp_Settings {
 	static function register_settings_fields( $meta_boxes ) {
 		$prefix = '';
 
-		$meta_boxes['multiservices-settings'] = [
-			'title'          => __('General', 'multiservices' ),
-			'id'             => 'multiservices-settings-fields',
-			'settings_pages' => ['multiservices'],
+		$meta_boxes['multipass-settings'] = [
+			'title'          => __('General', 'multipass' ),
+			'id'             => 'multipass-settings-fields',
+			'settings_pages' => ['multipass'],
 			'tab'            => 'general',
 			'fields'         => [
 				'currency_options' => [
-					'name'   => __('Currency Options', 'multiservices' ),
+					'name'   => __('Currency Options', 'multipass' ),
 					'id'     => $prefix . 'currency',
 					'type'   => 'group',
 					'class' => 'inline',
 					'fields' => [
 						[
-							'name'     => __('Code', 'multiservices' ),
+							'name'     => __('Code', 'multipass' ),
 							'id'       => $prefix . 'code',
 							'type'     => 'select_advanced',
 							'size'     => 3,
 							'options' => MultiPass::currency_options(),
 						],
 						[
-							'name'    => __('Position', 'multiservices' ),
+							'name'    => __('Position', 'multipass' ),
 							'id'      => $prefix . 'pos',
 							'type'    => 'select',
 							'size' => 5,
 							'options' => [
-								'left'         => __('Left', 'multiservices' ),
-								'right'        => __('Right', 'multiservices' ),
-								'left_space'    => __('Left with space', 'multiservices' ),
-								'right_spâce' => __('Right with space', 'multiservices' ),
+								'left'         => __('Left', 'multipass' ),
+								'right'        => __('Right', 'multipass' ),
+								'left_space'    => __('Left with space', 'multipass' ),
+								'right_spâce' => __('Right with space', 'multipass' ),
 							],
 							'std'     => 'right_space',
 						],
 						[
-							'name' => __('Decimals', 'multiservices' ),
+							'name' => __('Decimals', 'multipass' ),
 							'id'   => $prefix . 'num_decimals',
 							'type' => 'number',
 							'min'  => 0,
@@ -234,8 +234,8 @@ class Mltp_Settings {
 	}
 
 	static function plugin_action_links( $links ) {
-		$url = esc_url( add_query_arg( 'page', 'multiservices', get_admin_url() . 'admin.php' ) );
-		$links = [ 'settings' => "<a href='$url'>" . __('Settings', 'multiservices' ) . "</a>" ] + $links;
+		$url = esc_url( add_query_arg( 'page', 'multipass', get_admin_url() . 'admin.php' ) );
+		$links = [ 'settings' => "<a href='$url'>" . __('Settings', 'multipass' ) . "</a>" ] + $links;
 
 		return $links;
 	}

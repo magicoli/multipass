@@ -47,8 +47,8 @@ class Mltp_WooCommerce extends Mltp_Modules {
 	 * @since    0.1.0
 	 */
 	public function __construct() {
-		register_activation_hook( MULTISERVICES_FILE, __CLASS__ . '::activate' );
-		// register_deactivation_hook( MULTISERVICES_FILE, __CLASS__ . '::deactivate' );
+		register_activation_hook( MULTIPASS_FILE, __CLASS__ . '::activate' );
+		// register_deactivation_hook( MULTIPASS_FILE, __CLASS__ . '::deactivate' );
 	}
 
 	/**
@@ -85,12 +85,12 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				'callback' => 'register_settings_fields',
 			),
 			array(
-				'hook' => 'multiservices_register_terms_prestation-item-source',
+				'hook' => 'multipass_register_terms_prestation-item-source',
 				'callback' => 'register_sources_filter',
 			),
 
 			array(
-				'hook' => 'multiservices_update_service_title',
+				'hook' => 'multipass_update_service_title',
 				'callback' => 'update_service_title',
 			),
 
@@ -117,7 +117,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			),
 
 			// array(
-			// 	'hook' => 'multiservices_managed_list',
+			// 	'hook' => 'multipass_managed_list',
 			// 	'component' => get_parent_class();
 			// 	'callback' => 'managed_list_filter',
 			// )
@@ -146,28 +146,28 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 		$prefix = 'woocommerce_';
 
-		$meta_boxes['multiservices-settings']['fields']['currency_options'] = [
-			'name'   => __('Currency Options', 'multiservices' ),
+		$meta_boxes['multipass-settings']['fields']['currency_options'] = [
+			'name'   => __('Currency Options', 'multipass' ),
 			'id'     => $prefix . 'currency',
 			'type'   => 'custom_html',
 			'std' => sprintf(
-				__('Set currency options in %sWooCommerce settings page%s', 'multiservices' ),
+				__('Set currency options in %sWooCommerce settings page%s', 'multipass' ),
 				'<a href="' . get_admin_url(NULL, 'admin.php?page=wc-settings#pricing_options-description') . '">',
 				'</a>',
 			),
 		];
 
 		$meta_boxes['woocommerce_settings'] = [
-			'title'          => __('WooCommerce Settings', 'multiservices' ),
-			'id'             => 'multiservices-woocommerce',
-			'settings_pages' => ['multiservices'],
+			'title'          => __('WooCommerce Settings', 'multipass' ),
+			'id'             => 'multipass-woocommerce',
+			'settings_pages' => ['multipass'],
 			'tab'            => 'woocommerce',
 			'fields'         => [
 				[
-					'name'              => __('Synchronize now', 'multiservices' ),
+					'name'              => __('Synchronize now', 'multipass' ),
 					'id'                => $prefix . 'sync_orders',
 					'type'              => 'switch',
-					'desc'              => __('Sync orders and prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multiservices' ),
+					'desc'              => __('Sync orders and prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multipass' ),
 					'style'             => 'rounded',
 					'sanitize_callback' => 'Mltp_WooCommerce::sync_orders_validation',
 					'save_field' => false,
@@ -182,13 +182,13 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		// Prestation info on WC Orders
 		$prefix = 'prestation_';
 		$meta_boxes[] = [
-			'title'      => __('Prestation', 'multiservices' ),
+			'title'      => __('Prestation', 'multipass' ),
 			'id'         => 'prestation-woocommerce-order',
 			'post_types' => ['shop_order'],
 			'context'    => 'side',
 			'fields'     => [
 				[
-					// 'name'       => __('Prestation', 'multiservices' ),
+					// 'name'       => __('Prestation', 'multipass' ),
 					'id'         => $prefix . 'id',
 					'type'       => 'post',
 					'post_type'  => ['prestation'],
@@ -203,7 +203,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		];
 
 		$meta_boxes['services']['fields'][] = [
-			'name'       => __('Product', 'multiservices' ),
+			'name'       => __('Product', 'multipass' ),
 			'id'         => 'service_product_id',
 			'type'       => 'post',
 			'post_type'  => ['product'],
@@ -240,12 +240,12 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		$link = get_edit_post_link($prestation_id);
 
 		if(!empty($link)) echo sprintf(
-			'<a href="%s">%s</a>', $link, __('View prestation', 'multiservices' ),
+			'<a href="%s">%s</a>', $link, __('View prestation', 'multipass' ),
 		);
 	}
 
 	static function register_settings_pages( $settings_pages ) {
-		$settings_pages['multiservices']['tabs']['woocommerce'] = 'WooCommerce';
+		$settings_pages['multipass']['tabs']['woocommerce'] = 'WooCommerce';
 
 		return $settings_pages;
 	}
@@ -253,10 +253,10 @@ class Mltp_WooCommerce extends Mltp_Modules {
 	static function register_settings_fields( $meta_boxes ) {
 		$prefix = 'woocommerce_';
 
-		$meta_boxes['multiservices-woocommerce-settings'] = [
-			'title'          => __('WooCommerce Settings', 'multiservices' ),
-			'id'             => 'multiservices-woocommerce-settings',
-			'settings_pages' => ['multiservices'],
+		$meta_boxes['multipass-woocommerce-settings'] = [
+			'title'          => __('WooCommerce Settings', 'multipass' ),
+			'id'             => 'multipass-woocommerce-settings',
+			'settings_pages' => ['multipass'],
 			'tab'            => 'woocommerce',
 			'fields'         => [
 			],
@@ -272,7 +272,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		foreach($columns as $key => $value) {
 			$updated_columns[$key] = $value;
 			if($key == 'order_number') {
-				$updated_columns['prestation_id'] = __('Prestation', 'multiservices' );
+				$updated_columns['prestation_id'] = __('Prestation', 'multipass' );
 			}
 		}
 		if(isset($updated_columns)) $columns = $updated_columns;
@@ -431,7 +431,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		// 	$dates[] = $p_order['to'];
 		//
 		// 	$p_order['description'] = $p_order['items'][0]['product_name']
-		// 	. ( (count($p_order['items']) > 1) ? sprintf( __(' + %s items', 'multiservices' ), count($p_order['items']) - 1 ) : '' );
+		// 	. ( (count($p_order['items']) > 1) ? sprintf( __(' + %s items', 'multipass' ), count($p_order['items']) - 1 ) : '' );
 		//
 		// 	$lines[] = $p_order;
 		//
@@ -571,11 +571,11 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				$type = (Mltp_Payment_Product::is_payment_product($product)) ? 'payment' : $product->get_type();
 				switch($type) {
 					case 'booking':
-					$description = '[' . __('Booking', 'multiservices') . '] ' . $description;
+					$description = '[' . __('Booking', 'multipass') . '] ' . $description;
 					break;
 
 					case 'payment':
-					$description = '[' . __('Payment', 'multiservices') . '] ' . $description;
+					$description = '[' . __('Payment', 'multipass') . '] ' . $description;
 					break;
 				}
 
@@ -684,25 +684,25 @@ class Mltp_WooCommerce extends Mltp_Modules {
 	}
 
 	static function managed_list_filter($html = '') {
-		$title = __('Online Shop (WooCommerce)', 'multiservices' );
-		if(empty($list)) $list = __('Empty list', 'multiservices' );
+		$title = __('Online Shop (WooCommerce)', 'multipass' );
+		if(empty($list)) $list = __('Empty list', 'multipass' );
 
 		global $post;
 
 		$data = get_post_meta($post->ID, 'modules-data', true);
 		$data['columns'] = array(
-			'id' => __('ID', 'multiservices' ),
-			'created' => __('Created', 'multiservices' ),
-			'source' => __('Source', 'multiservices' ),
-			'description' => __('Description', 'multiservices' ),
-			'from' => __('From', 'multiservices' ),
-			'to' => __('To', 'multiservices' ),
-			'subtotal' => __('Subtotal', 'multiservices' ),
-			'discount' => __('Discount', 'multiservices' ),
-			'refunded' => __('Refunded', 'multiservices' ),
-			'total' => __('Total', 'multiservices' ),
-			'paid' => __('Paid', 'multiservices' ),
-			'status' => __('Status', 'multiservices' ),
+			'id' => __('ID', 'multipass' ),
+			'created' => __('Created', 'multipass' ),
+			'source' => __('Source', 'multipass' ),
+			'description' => __('Description', 'multipass' ),
+			'from' => __('From', 'multipass' ),
+			'to' => __('To', 'multipass' ),
+			'subtotal' => __('Subtotal', 'multipass' ),
+			'discount' => __('Discount', 'multipass' ),
+			'refunded' => __('Refunded', 'multipass' ),
+			'total' => __('Total', 'multipass' ),
+			'paid' => __('Paid', 'multipass' ),
+			'status' => __('Status', 'multipass' ),
 			'actions' => '',
 		);
 		$data['format'] = array(

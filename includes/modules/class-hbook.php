@@ -47,8 +47,8 @@ class Mltp_HBook extends Mltp_Modules {
 	 * @since    0.1.0
 	 */
 	public function __construct() {
-		// register_activation_hook( MULTISERVICES_FILE, __CLASS__ . '::activate' );
-		// register_deactivation_hook( MULTISERVICES_FILE, __CLASS__ . '::deactivate' );
+		// register_activation_hook( MULTIPASS_FILE, __CLASS__ . '::activate' );
+		// register_deactivation_hook( MULTIPASS_FILE, __CLASS__ . '::deactivate' );
 	}
 
 	/**
@@ -72,7 +72,7 @@ class Mltp_HBook extends Mltp_Modules {
 			),
 
 			array(
-				'hook' => 'multiservices_register_terms_prestation-item-source',
+				'hook' => 'multipass_register_terms_prestation-item-source',
 				'callback' => 'register_sources_filter',
 			),
 		);
@@ -92,8 +92,8 @@ class Mltp_HBook extends Mltp_Modules {
 	}
 
 	static function register_settings_pages( $settings_pages ) {
-		$settings_pages['multiservices']['tabs']['hbook'] = 'HBook';
-		// error_log(__CLASS__ . ' tabs ' . print_r($settings_pages['multiservices']['tabs'], true));
+		$settings_pages['multipass']['tabs']['hbook'] = 'HBook';
+		// error_log(__CLASS__ . ' tabs ' . print_r($settings_pages['multipass']['tabs'], true));
 
 		return $settings_pages;
 	}
@@ -104,16 +104,16 @@ class Mltp_HBook extends Mltp_Modules {
 
 		// Lodify Settings tab
     $meta_boxes[] = [
-        'title'          => __('HBook Settings', 'multiservices' ),
+        'title'          => __('HBook Settings', 'multipass' ),
         'id'             => 'hbook-settings',
-        'settings_pages' => ['multiservices'],
+        'settings_pages' => ['multipass'],
         'tab'            => 'hbook',
         'fields'         => [
 						[
-							'name'              => __('Synchronize now', 'multiservices' ),
+							'name'              => __('Synchronize now', 'multipass' ),
 							'id'                => $prefix . 'sync_bookings',
 							'type'              => 'switch',
-							'desc'              => __('Sync HBook bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multiservices' ),
+							'desc'              => __('Sync HBook bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multipass' ),
 							'style'             => 'rounded',
 							'sanitize_callback' => 'Mltp_HBook::sync_bookings',
 							'save_field' => false,
@@ -122,7 +122,7 @@ class Mltp_HBook extends Mltp_Modules {
     ];
 
 		$meta_boxes['services']['fields'][] = [
-			'name'       => __('HBook Accommodations', 'multiservices' ),
+			'name'       => __('HBook Accommodations', 'multipass' ),
 			'id'         => 'service_hbook_id',
 			'type'       => 'select_advanced',
 			'options'	=> $hbook->get_property_options(),

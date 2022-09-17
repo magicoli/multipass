@@ -197,41 +197,41 @@ class Mltp_Prestation {
 
 	static function register_post_types() {
 		$labels = [
-			'name'                     => esc_html__('Prestations', 'multiservices' ),
-			'singular_name'            => esc_html__('Prestation', 'multiservices' ),
-			'add_new'                  => esc_html__('Add New', 'multiservices' ),
-			'add_new_item'             => esc_html__('Add new prestation', 'multiservices' ),
-			'edit_item'                => esc_html__('Edit Prestation', 'multiservices' ),
-			'new_item'                 => esc_html__('New Prestation', 'multiservices' ),
-			'view_item'                => esc_html__('View Prestation', 'multiservices' ),
-			'view_items'               => esc_html__('View Prestations', 'multiservices' ),
-			'search_items'             => esc_html__('Search Prestations', 'multiservices' ),
-			'not_found'                => esc_html__('No prestations found', 'multiservices' ),
-			'not_found_in_trash'       => esc_html__('No prestations found in Trash', 'multiservices' ),
-			'parent_item_colon'        => esc_html__('Parent Prestation:', 'multiservices' ),
-			'all_items'                => esc_html__('All Prestations', 'multiservices' ),
-			'archives'                 => esc_html__('Prestation Archives', 'multiservices' ),
-			'attributes'               => esc_html__('Prestation Attributes', 'multiservices' ),
-			'insert_into_item'         => esc_html__('Insert into prestation', 'multiservices' ),
-			'uploaded_to_this_item'    => esc_html__('Uploaded to this prestation', 'multiservices' ),
-			'featured_image'           => esc_html__('Featured image', 'multiservices' ),
-			'set_featured_image'       => esc_html__('Set featured image', 'multiservices' ),
-			'remove_featured_image'    => esc_html__('Remove featured image', 'multiservices' ),
-			'use_featured_image'       => esc_html__('Use as featured image', 'multiservices' ),
-			'menu_name'                => esc_html__('MultiPass', 'multiservices' ),
-			'filter_items_list'        => esc_html__('Filter prestations list', 'multiservices' ),
-			'filter_by_date'           => esc_html__('', 'multiservices' ),
-			'items_list_navigation'    => esc_html__('Prestations list navigation', 'multiservices' ),
-			'items_list'               => esc_html__('Prestations list', 'multiservices' ),
-			'item_published'           => esc_html__('Prestation published', 'multiservices' ),
-			'item_published_privately' => esc_html__('Prestation published privately', 'multiservices' ),
-			'item_reverted_to_draft'   => esc_html__('Prestation reverted to draft', 'multiservices' ),
-			'item_scheduled'           => esc_html__('Prestation scheduled', 'multiservices' ),
-			'item_updated'             => esc_html__('Prestation updated', 'multiservices' ),
-			'text_domain' => 'multiservices',
+			'name'                     => esc_html__('Prestations', 'multipass' ),
+			'singular_name'            => esc_html__('Prestation', 'multipass' ),
+			'add_new'                  => esc_html__('Add New', 'multipass' ),
+			'add_new_item'             => esc_html__('Add new prestation', 'multipass' ),
+			'edit_item'                => esc_html__('Edit Prestation', 'multipass' ),
+			'new_item'                 => esc_html__('New Prestation', 'multipass' ),
+			'view_item'                => esc_html__('View Prestation', 'multipass' ),
+			'view_items'               => esc_html__('View Prestations', 'multipass' ),
+			'search_items'             => esc_html__('Search Prestations', 'multipass' ),
+			'not_found'                => esc_html__('No prestations found', 'multipass' ),
+			'not_found_in_trash'       => esc_html__('No prestations found in Trash', 'multipass' ),
+			'parent_item_colon'        => esc_html__('Parent Prestation:', 'multipass' ),
+			'all_items'                => esc_html__('All Prestations', 'multipass' ),
+			'archives'                 => esc_html__('Prestation Archives', 'multipass' ),
+			'attributes'               => esc_html__('Prestation Attributes', 'multipass' ),
+			'insert_into_item'         => esc_html__('Insert into prestation', 'multipass' ),
+			'uploaded_to_this_item'    => esc_html__('Uploaded to this prestation', 'multipass' ),
+			'featured_image'           => esc_html__('Featured image', 'multipass' ),
+			'set_featured_image'       => esc_html__('Set featured image', 'multipass' ),
+			'remove_featured_image'    => esc_html__('Remove featured image', 'multipass' ),
+			'use_featured_image'       => esc_html__('Use as featured image', 'multipass' ),
+			'menu_name'                => esc_html__('MultiPass', 'multipass' ),
+			'filter_items_list'        => esc_html__('Filter prestations list', 'multipass' ),
+			'filter_by_date'           => esc_html__('', 'multipass' ),
+			'items_list_navigation'    => esc_html__('Prestations list navigation', 'multipass' ),
+			'items_list'               => esc_html__('Prestations list', 'multipass' ),
+			'item_published'           => esc_html__('Prestation published', 'multipass' ),
+			'item_published_privately' => esc_html__('Prestation published privately', 'multipass' ),
+			'item_reverted_to_draft'   => esc_html__('Prestation reverted to draft', 'multipass' ),
+			'item_scheduled'           => esc_html__('Prestation scheduled', 'multipass' ),
+			'item_updated'             => esc_html__('Prestation updated', 'multipass' ),
+			'text_domain' => 'multipass',
 		];
 		$args = [
-			'label'               => esc_html__('Prestations', 'multiservices' ),
+			'label'               => esc_html__('Prestations', 'multipass' ),
 			'labels'              => $labels,
 			'description'         => '',
 			'public'              => false,
@@ -266,7 +266,7 @@ class Mltp_Prestation {
 
 		$prefix = '';
 		$meta_boxes['prestation-cpt'] = [
-			'title'      => __('Prestations', 'multiservices' ),
+			'title'      => __('Prestations', 'multipass' ),
 			'id'         => 'prestation-fields',
 			'post_types' => ['prestation'],
 			'context'    => 'after_title',
@@ -279,40 +279,40 @@ class Mltp_Prestation {
 					'callback' => 'MultiPass::title_html',
 				],
 				[
-					'name'          => __('Customer', 'multiservices' ),
+					'name'          => __('Customer', 'multipass' ),
 					'id'            => $prefix . 'customer_id',
 					'type'          => 'user',
 					'field_type'    => 'select_advanced',
 				],
 				[
-					'name'          => __('Contact name', 'multiservices' ),
+					'name'          => __('Contact name', 'multipass' ),
 					'id'            => $prefix . 'contact_name',
 					'type'          => 'text',
-					'description'		=> __('Leave empty if same as customer name', 'multiservices' ),
+					'description'		=> __('Leave empty if same as customer name', 'multipass' ),
 				],
 				[
-					'name'          => __('Contact', 'multiservices' ),
+					'name'          => __('Contact', 'multipass' ),
 					'id'            => $prefix . 'display_name',
 					'type'          => 'hidden',
 				],
 				[
-					'name'    => __('Contact Email', 'multiservices' ),
+					'name'    => __('Contact Email', 'multipass' ),
 					'id'      => $prefix . 'contact_email',
 					'type'    => 'email',
 				],
 				[
-					'name'    => __('Contact Phone', 'multiservices' ),
+					'name'    => __('Contact Phone', 'multipass' ),
 					'id'      => $prefix . 'contact_phone',
 					'type'    => 'text',
 				],
 				[
-				  'name'   => __('Dates', 'multiservices' ),
+				  'name'   => __('Dates', 'multipass' ),
 				  'id'     => $prefix . 'dates',
 				  'type'   => 'group',
 					'class' => 'inline',
 				  'fields' => [
 						[
-							'prepend'          => __('From', 'multiservices' ),
+							'prepend'          => __('From', 'multipass' ),
 							'id'            => $prefix . 'from',
 							'readonly' => true,
 							'size' => 10,
@@ -323,7 +323,7 @@ class Mltp_Prestation {
 							],
 						],
 						[
-							'prepend'          => __('To', 'multiservices' ),
+							'prepend'          => __('To', 'multipass' ),
 							'id'            => $prefix . 'to',
 							'type'          => 'date',
 							'timestamp'     => true,
@@ -336,7 +336,7 @@ class Mltp_Prestation {
 					],
 				],
 				[
-				  'name'   => __('Discount', 'multiservices' ),
+				  'name'   => __('Discount', 'multipass' ),
 				  'id'     => $prefix . 'discount',
 				  'type'   => 'group',
 					'class' => 'inline',
@@ -364,7 +364,7 @@ class Mltp_Prestation {
 				  ],
 				],
 				[
-					'name'   => __('Deposit', 'multiservices' ),
+					'name'   => __('Deposit', 'multipass' ),
 					'id'     => $prefix . 'deposit',
 					'type'   => 'group',
 					'class'	 => 'inline',
@@ -393,7 +393,7 @@ class Mltp_Prestation {
 							],
 						],
 						[
-								'prepend'          => __('Before', 'multiservices' ),
+								'prepend'          => __('Before', 'multipass' ),
 								'id'            => $prefix . 'deposit_before',
 								'type'          => 'date',
 								'visible' => [
@@ -418,7 +418,7 @@ class Mltp_Prestation {
 			'readonly' => true,
 			'fields'     => [
 				[
-					'name' => __('Items', 'multiservices'),
+					'name' => __('Items', 'multipass'),
 					'id'            => $prefix . 'items',
 					'type'          => 'custom_html',
 					'callback'      => __CLASS__ . '::items_list',
@@ -435,35 +435,35 @@ class Mltp_Prestation {
 
 			'fields'     => [
 				'items' => [
-					'name'      => __('Manual operations', 'multiservices' ),
+					'name'      => __('Manual operations', 'multipass' ),
 					'id'     => $prefix . 'manual_items',
 					'type'   => 'group',
 					'clone'  => true,
 					'readonly' => false,
 					'class' => 'low-gap',
-					'label_description' => '<p>' . __('Use manual operations only for items not managed by modules.', 'multiservices' ) . '</p>',
+					'label_description' => '<p>' . __('Use manual operations only for items not managed by modules.', 'multipass' ) . '</p>',
 					'fields' => [
 						[
-							'name'    => __('Type', 'multiservices' ),
+							'name'    => __('Type', 'multipass' ),
 							'id'      => $prefix . 'type',
 							'type'    => 'select',
 							'options' => [
-									'product' => __('Product', 'multiservices' ),
-									'service' => __('Service', 'multiservices' ),
-									'booking' => __('Booking', 'multiservices' ),
-									'payment' => __('Payment', 'multiservices' ),
+									'product' => __('Product', 'multipass' ),
+									'service' => __('Service', 'multipass' ),
+									'booking' => __('Booking', 'multipass' ),
+									'payment' => __('Payment', 'multipass' ),
 							],
-							'placeholder' => __('Select a type', 'multiservices' ),
+							'placeholder' => __('Select a type', 'multipass' ),
 							'columns' => 2,
 						],
 						[
-							'name'    => __('Description', 'multiservices' ),
+							'name'    => __('Description', 'multipass' ),
 							'id'      => $prefix . 'description',
 							'type'    => 'text',
 							'columns' => 3,
 						],
 						[
-								'name'          => __('Date', 'multiservices' ),
+								'name'          => __('Date', 'multipass' ),
 								'id'            => $prefix . 'from',
 								'type'          => 'date',
 								'type'          => 'date',
@@ -482,7 +482,7 @@ class Mltp_Prestation {
 								],
 						],
 						[
-								'name'          => __('To', 'multiservices' ),
+								'name'          => __('To', 'multipass' ),
 								'id'            => $prefix . 'to',
 								'type'          => 'date',
 								'type'          => 'date',
@@ -500,7 +500,7 @@ class Mltp_Prestation {
 								],
 						],
 						[
-							'name'    => __('Quantity', 'multiservices' ),
+							'name'    => __('Quantity', 'multipass' ),
 							'id'      => $prefix . 'quantity',
 							'type'    => 'number',
 							'class' => 'item_quantity',
@@ -515,7 +515,7 @@ class Mltp_Prestation {
 							],
 						],
 						[
-							'name'    => __('Unit Price', 'multiservices' ),
+							'name'    => __('Unit Price', 'multipass' ),
 							'id'      => $prefix . 'unit_price',
 							'class' => 'item_unit_price',
 							'type'    => 'text',
@@ -530,7 +530,7 @@ class Mltp_Prestation {
 							],
 						],
 						[
-							'name'    => __('Discount', 'multiservices' ),
+							'name'    => __('Discount', 'multipass' ),
 							'id'      => $prefix . 'discount',
 							'type'    => 'text',
 							'class' => 'item_discount',
@@ -545,7 +545,7 @@ class Mltp_Prestation {
 							],
 						],
 						[
-							'name'    => __('Price', 'multiservices' ),
+							'name'    => __('Price', 'multipass' ),
 							'id'      => $prefix . 'price',
 							'class' => 'item_price',
 							'type'    => 'text',
@@ -561,7 +561,7 @@ class Mltp_Prestation {
 							],
 						],
 						[
-							'name'    => __('Paid', 'multiservices' ),
+							'name'    => __('Paid', 'multipass' ),
 							'id'      => $prefix . 'paid',
 							'class' => 'item_paid',
 							'type'    => 'text',
@@ -580,57 +580,57 @@ class Mltp_Prestation {
 		];
 
 		$meta_boxes['prestation-summary'] = [
-			'title'      => __('Summary', 'multiservices' ),
+			'title'      => __('Summary', 'multipass' ),
 			'id'         => 'prestation-summary',
 			'post_types' => ['prestation'],
 			'context'    => 'side',
 			'fields'     => [
 				[
-					'name'          => __('Regular Price', 'multiservices' ),
+					'name'          => __('Regular Price', 'multipass' ),
 					'id'            => $prefix . 'price_html',
 					'type'          => 'custom_html',
 					'callback'      => 'Mltp_Prestation::get_summary_price',
 				],
 				[
-					'name'          => __('Discount', 'multiservices' ),
+					'name'          => __('Discount', 'multipass' ),
 					'id'            => $prefix . 'discount_html',
 					'type'          => 'custom_html',
 					'callback'      => 'Mltp_Prestation::get_summary_discount',
 				],
 				[
-					'name'          => __('Total', 'multiservices' ),
+					'name'          => __('Total', 'multipass' ),
 					'id'            => $prefix . 'total_html',
 					'type'          => 'custom_html',
 					'class'          => 'total',
 					'callback'      => 'Mltp_Prestation::get_summary_total',
 				],
 				[
-					'name'     => __('Deposit', 'multiservices' ),
+					'name'     => __('Deposit', 'multipass' ),
 					'id'       => $prefix . 'deposit_amount_html',
 					'type'     => 'custom_html',
 					'callback' => 'Mltp_Prestation::get_summary_deposit',
 				],
 				[
-					'name'          => __('Paid', 'multiservices' ),
+					'name'          => __('Paid', 'multipass' ),
 					'id'            => $prefix . 'paid_html',
 					'type'          => 'custom_html',
 					'callback'      => 'Mltp_Prestation::get_summary_paid',
 				],
 				[
-					'name'          => __('Balance', 'multiservices' ),
+					'name'          => __('Balance', 'multipass' ),
 					'id'            => $prefix . 'balance_html',
 					'type'          => 'custom_html',
 					'class' => 'balance',
 					'callback'      => 'Mltp_Prestation::get_summary_balance',
 				],
 				[
-					'name'          => __('Reference #', 'multiservices' ),
+					'name'          => __('Reference #', 'multipass' ),
 					'id'            => $prefix . 'reference',
 					'type'          => 'custom_html',
 					'callback'      => 'Mltp_Prestation::get_summary_reference',
 				],
 				[
-					'name'           => __('Status', 'multiservices' ),
+					'name'           => __('Status', 'multipass' ),
 					'id'             => 'status',
 					'type'           => 'taxonomy',
 					'taxonomy'       => ['prestation-status'],
@@ -656,33 +656,33 @@ class Mltp_Prestation {
 
 	static function register_taxonomies() {
 		$labels = [
-			'name'                       => esc_html__('Prestation statuses', 'multiservices' ),
-			'singular_name'              => esc_html__('Prestation status', 'multiservices' ),
-			'menu_name'                  => esc_html__('Prestation statuses', 'multiservices' ),
-			'search_items'               => esc_html__('Search Prestation statuses', 'multiservices' ),
-			'popular_items'              => esc_html__('Popular Prestation statuses', 'multiservices' ),
-			'all_items'                  => esc_html__('All Prestation statuses', 'multiservices' ),
-			'parent_item'                => esc_html__('Parent Prestation status', 'multiservices' ),
-			'parent_item_colon'          => esc_html__('Parent Prestation status', 'multiservices' ),
-			'edit_item'                  => esc_html__('Edit Prestation status', 'multiservices' ),
-			'view_item'                  => esc_html__('View Prestation status', 'multiservices' ),
-			'update_item'                => esc_html__('Update Prestation status', 'multiservices' ),
-			'add_new_item'               => esc_html__('Add new prestation status', 'multiservices' ),
-			'new_item_name'              => esc_html__('New prestation status name', 'multiservices' ),
-			'separate_items_with_commas' => esc_html__('Separate prestation statuses with commas', 'multiservices' ),
-			'add_or_remove_items'        => esc_html__('Add or remove prestation statuses', 'multiservices' ),
-			'choose_from_most_used'      => esc_html__('Choose most used prestation statuses', 'multiservices' ),
-			'not_found'                  => esc_html__('No prestation statuses found', 'multiservices' ),
-			'no_terms'                   => esc_html__('No Prestation statuses', 'multiservices' ),
-			'filter_by_item'             => esc_html__('Filter by prestation status', 'multiservices' ),
-			'items_list_navigation'      => esc_html__('Prestation statuses list pagination', 'multiservices' ),
-			'items_list'                 => esc_html__('Prestation statuses list', 'multiservices' ),
-			'most_used'                  => esc_html__('Most Used', 'multiservices' ),
-			'back_to_items'              => esc_html__('Back to prestation statuses', 'multiservices' ),
-			'text_domain' => 'multiservices',
+			'name'                       => esc_html__('Prestation statuses', 'multipass' ),
+			'singular_name'              => esc_html__('Prestation status', 'multipass' ),
+			'menu_name'                  => esc_html__('Prestation statuses', 'multipass' ),
+			'search_items'               => esc_html__('Search Prestation statuses', 'multipass' ),
+			'popular_items'              => esc_html__('Popular Prestation statuses', 'multipass' ),
+			'all_items'                  => esc_html__('All Prestation statuses', 'multipass' ),
+			'parent_item'                => esc_html__('Parent Prestation status', 'multipass' ),
+			'parent_item_colon'          => esc_html__('Parent Prestation status', 'multipass' ),
+			'edit_item'                  => esc_html__('Edit Prestation status', 'multipass' ),
+			'view_item'                  => esc_html__('View Prestation status', 'multipass' ),
+			'update_item'                => esc_html__('Update Prestation status', 'multipass' ),
+			'add_new_item'               => esc_html__('Add new prestation status', 'multipass' ),
+			'new_item_name'              => esc_html__('New prestation status name', 'multipass' ),
+			'separate_items_with_commas' => esc_html__('Separate prestation statuses with commas', 'multipass' ),
+			'add_or_remove_items'        => esc_html__('Add or remove prestation statuses', 'multipass' ),
+			'choose_from_most_used'      => esc_html__('Choose most used prestation statuses', 'multipass' ),
+			'not_found'                  => esc_html__('No prestation statuses found', 'multipass' ),
+			'no_terms'                   => esc_html__('No Prestation statuses', 'multipass' ),
+			'filter_by_item'             => esc_html__('Filter by prestation status', 'multipass' ),
+			'items_list_navigation'      => esc_html__('Prestation statuses list pagination', 'multipass' ),
+			'items_list'                 => esc_html__('Prestation statuses list', 'multipass' ),
+			'most_used'                  => esc_html__('Most Used', 'multipass' ),
+			'back_to_items'              => esc_html__('Back to prestation statuses', 'multipass' ),
+			'text_domain' => 'multipass',
 		];
 		$args = [
-			'label'              => esc_html__('Prestation statuses', 'multiservices' ),
+			'label'              => esc_html__('Prestation statuses', 'multipass' ),
 			'labels'             => $labels,
 			'description'        => '',
 			'public'             => false,
@@ -713,24 +713,24 @@ class Mltp_Prestation {
 		 */
 		MultiPass::register_terms('prestation-status', array(
 			// Open (still modifiable, available for new order inclusion)
-			'pending' => [ 'name' => __('Pending payment', 'multiservices' ) ],  // unpaid or paid less than deposit, not confirmed
-			'on-hold' => [ 'name' => __('On hold', 'multiservices' ) ], // fully paid and not started
-			'processing' => [ 'name' => __('Processing', 'multiservices' ) ], // paid and started
+			'pending' => [ 'name' => __('Pending payment', 'multipass' ) ],  // unpaid or paid less than deposit, not confirmed
+			'on-hold' => [ 'name' => __('On hold', 'multipass' ) ], // fully paid and not started
+			'processing' => [ 'name' => __('Processing', 'multipass' ) ], // paid and started
 
 			// Closed (not modifiable except refunds, not available for new order inclusion)
-			'completed' => [ 'name' => __('Completed', 'multiservices' ) ], // paid and finished
-			'cancelled' => [ 'name' => __('Cancelled', 'multiservices' ) ],
-			'refunded' => [ 'name' => __('Refunded', 'multiservices' ) ],
-			'failed' => [ 'name' => __('Failed', 'multiservices' ) ], // shouldn't need that at prestation level
+			'completed' => [ 'name' => __('Completed', 'multipass' ) ], // paid and finished
+			'cancelled' => [ 'name' => __('Cancelled', 'multipass' ) ],
+			'refunded' => [ 'name' => __('Refunded', 'multipass' ) ],
+			'failed' => [ 'name' => __('Failed', 'multipass' ) ], // shouldn't need that at prestation level
 
 			// Draft (not available for new order inclusion)
-			'checkout-draft' => [ 'name' => __('Draft', 'multiservices' ) ],
+			'checkout-draft' => [ 'name' => __('Draft', 'multipass' ) ],
 
-			'deposit' => [ 'name' => __('Deposit paid', 'multiservices' ), 'parent' => 'on-hold' ],
-			'paid' => [ 'name' => __('Paid', 'multiservices' ), 'parent' => 'on-hold' ],
+			'deposit' => [ 'name' => __('Deposit paid', 'multipass' ), 'parent' => 'on-hold' ],
+			'paid' => [ 'name' => __('Paid', 'multipass' ), 'parent' => 'on-hold' ],
 
-			'unpaid' => [ 'name' => __('Unpaid', 'multiservices' ), 'parent' => 'pending' ],
-			'partial' => [ 'name' => __('Partially paid', 'multiservices' ), 'parent' => 'pending' ],
+			'unpaid' => [ 'name' => __('Unpaid', 'multipass' ), 'parent' => 'pending' ],
+			'partial' => [ 'name' => __('Partially paid', 'multipass' ), 'parent' => 'pending' ],
 		));
 	}
 
@@ -787,19 +787,19 @@ class Mltp_Prestation {
 
 	function get_columns() {
 		return array(
-			// 'ID' => __('ID', 'multiservices'),
-			// 'date' => __('Date', 'multiservices'),
-			'type' => __('Type', 'multiservices'),
-			'description' => __('Description', 'multiservices'),
-			'dates' => __('Dates', 'multiservices'),
-			'subtotal' => __('Subtotal', 'multiservices'),
-			'discount' => __('Discount', 'multiservices'),
-			'total' => __('Total', 'multiservices'),
-			// 'deposit' => __('deposit', 'multiservices'),
-			'paid' => __('Paid', 'multiservices'),
-			'balance' => __('Balance', 'multiservices'),
-			'source' => __('Source', 'multiservices'),
-			'links' => __('Actions', 'multiservices'),
+			// 'ID' => __('ID', 'multipass'),
+			// 'date' => __('Date', 'multipass'),
+			'type' => __('Type', 'multipass'),
+			'description' => __('Description', 'multipass'),
+			'dates' => __('Dates', 'multipass'),
+			'subtotal' => __('Subtotal', 'multipass'),
+			'discount' => __('Discount', 'multipass'),
+			'total' => __('Total', 'multipass'),
+			// 'deposit' => __('deposit', 'multipass'),
+			'paid' => __('Paid', 'multipass'),
+			'balance' => __('Balance', 'multipass'),
+			'source' => __('Source', 'multipass'),
+			'links' => __('Actions', 'multipass'),
 		);
 	}
 
@@ -825,10 +825,10 @@ class Mltp_Prestation {
 	}
 
 	static function get_managed_list($args = [], $field = []) {
-		$html = apply_filters('multiservices_managed_list', NULL);
+		$html = apply_filters('multipass_managed_list', NULL);
 
 		// if(empty($html))
-		// $html = __('No data', 'multiservices' );
+		// $html = __('No data', 'multipass' );
 
 		return $html;
 	}
@@ -929,7 +929,7 @@ class Mltp_Prestation {
 					'<span class="%1$s-status-box status-%2$s">%3$s</span>',
 					$post->post_type,
 					$term->slug,
-					__($term->name, 'multiservices' ),
+					__($term->name, 'multipass' ),
 				);
 			}
 			return implode(' ', $status);
@@ -1177,20 +1177,20 @@ class Mltp_Prestation {
 
 	static function add_admin_columns( $columns ) {
 		$columns = array(
-			'title' => __('Title', 'multiservices'),
-			'customer' => __('Customer', 'multiservices'),
-			'contact' => __('Contact', 'multiservices'),
-			'services' => __('Services', 'multiservices'),
-			'dates' => __('Dates', 'multiservices'),
-			'discount' => __('Discount', 'multiservices'),
-			'total' => __('Total', 'multiservices'),
-			'deposit' => __('Deposit', 'multiservices'),
-			'paid' => __('Paid', 'multiservices'),
-			'balance' => __('Balance', 'multiservices'),
+			'title' => __('Title', 'multipass'),
+			'customer' => __('Customer', 'multipass'),
+			'contact' => __('Contact', 'multipass'),
+			'services' => __('Services', 'multipass'),
+			'dates' => __('Dates', 'multipass'),
+			'discount' => __('Discount', 'multipass'),
+			'total' => __('Total', 'multipass'),
+			'deposit' => __('Deposit', 'multipass'),
+			'paid' => __('Paid', 'multipass'),
+			'balance' => __('Balance', 'multipass'),
 		);
 
 		// unset($columns['paid']);
-		// $columns['paid'] = __('Paid', 'multiservices' );
+		// $columns['paid'] = __('Paid', 'multipass' );
 
 		return $columns;
 	}

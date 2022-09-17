@@ -49,8 +49,8 @@ class Mltp_Modules {
 	 * @since    0.1.0
 	 */
 	public function __construct() {
-		$this->version = MULTISERVICES_VERSION;
-		$this->plugin_slug = 'multiservices';
+		$this->version = MULTIPASS_VERSION;
+		$this->plugin_slug = 'multipass';
 
 		$this->locale = $this->get_locale();
 
@@ -58,32 +58,32 @@ class Mltp_Modules {
 		// $this->define_admin_hooks();
 		// $this->define_public_hooks();
 
-		// register_activation_hook( MULTISERVICES_FILE, __CLASS__ . '::activate' );
-		// register_deactivation_hook( MULTISERVICES_FILE, __CLASS__ . '::deactivate' );
+		// register_activation_hook( MULTIPASS_FILE, __CLASS__ . '::activate' );
+		// register_deactivation_hook( MULTIPASS_FILE, __CLASS__ . '::deactivate' );
 	}
 
 	private function load_dependencies() {
-		if(isset($_REQUEST['submit']) && isset($_REQUEST['page']) && $_REQUEST['page'] == 'multiservices')
+		if(isset($_REQUEST['submit']) && isset($_REQUEST['page']) && $_REQUEST['page'] == 'multipass')
 		$enabled = (isset($_REQUEST['modules_enable'])) ? $_REQUEST['modules_enable'] : [];
 		else $enabled = MultiPass::get_option('modules_enable', []);
 
 		$this->modules = [];
 
 		if(is_plugin_active('woocommerce/woocommerce.php')) {
-			require_once MULTISERVICES_DIR . 'includes/modules/class-woocommerce.php';
-			require_once MULTISERVICES_DIR . 'includes/modules/class-woocommerce-payment-product.php';
+			require_once MULTIPASS_DIR . 'includes/modules/class-woocommerce.php';
+			require_once MULTIPASS_DIR . 'includes/modules/class-woocommerce-payment-product.php';
 		}
 
 		if(in_array('imap', $enabled)) {
-			require_once MULTISERVICES_DIR . 'includes/class-mailbox.php';
+			require_once MULTIPASS_DIR . 'includes/class-mailbox.php';
 		}
 
 		if(in_array('lodgify', $enabled)) {
-			require_once MULTISERVICES_DIR . 'includes/modules/class-lodgify.php';
+			require_once MULTIPASS_DIR . 'includes/modules/class-lodgify.php';
 		}
 
 		if(in_array('hbook', $enabled)) {
-			require_once MULTISERVICES_DIR . 'includes/modules/class-hbook.php';
+			require_once MULTIPASS_DIR . 'includes/modules/class-hbook.php';
 		}
 
 	}
@@ -121,7 +121,7 @@ class Mltp_Modules {
 				'callback' => 'register_fields'
 			),
 			array(
-				'hook' => 'multiservices_managed_list',
+				'hook' => 'multipass_managed_list',
 				'callback' => 'managed_list_filter',
 			)
 		);
@@ -145,19 +145,19 @@ class Mltp_Modules {
 
 		// Modules settings in General tab
 		$meta_boxes[] = [
-			'title'          => __('MultiPass Modules', 'multiservices' ),
-			'id'             => 'multiservices-modules',
-			'settings_pages' => ['multiservices'],
+			'title'          => __('MultiPass Modules', 'multipass' ),
+			'id'             => 'multipass-modules',
+			'settings_pages' => ['multipass'],
 			'tab'            => 'general',
 			'fields'         => [
 				[
-					'name'    => __('Modules', 'multiservices' ),
+					'name'    => __('Modules', 'multipass' ),
 					'id'      => $prefix . 'enable',
 					'type'    => 'checkbox_list',
 					'options' => [
-						'imap'    => __('Mail Processing', 'multiservices' ),
-						'lodgify' => __('Lodgify', 'multiservices' ),
-						'hbook' => __('HBook Plugin', 'multiservices' ),
+						'imap'    => __('Mail Processing', 'multipass' ),
+						'lodgify' => __('Lodgify', 'multipass' ),
+						'hbook' => __('HBook Plugin', 'multipass' ),
 					],
 				],
 			],
@@ -167,8 +167,8 @@ class Mltp_Modules {
 	}
 
 	static function managed_list_filter($html = '') {
-		$title = __('External', 'multiservices' );
-		if(empty($list)) $list = __('Empty list', 'multiservices' );
+		$title = __('External', 'multipass' );
+		if(empty($list)) $list = __('Empty list', 'multipass' );
 
 		global $post;
 		$data = get_post_meta($post->ID, 'modules-data', true);
@@ -176,18 +176,18 @@ class Mltp_Modules {
 		if(empty($data)) $data = [];
 		// if(is_array($data)) {
 			$data['columns'] = array(
-				'id' => __('ID', 'multiservices' ),
-				'created' => __('Created', 'multiservices' ),
-				'source' => __('Source', 'multiservices' ),
-				'description' => __('Description', 'multiservices' ),
-				'from' => __('From', 'multiservices' ),
-				'to' => __('To', 'multiservices' ),
-				'subtotal' => __('Subtotal', 'multiservices' ),
-				'discount' => __('Discount', 'multiservices' ),
-				'refunded' => __('Refunded', 'multiservices' ),
-				'total' => __('Total', 'multiservices' ),
-				'paid' => __('Paid', 'multiservices' ),
-				'status' => __('Status', 'multiservices' ),
+				'id' => __('ID', 'multipass' ),
+				'created' => __('Created', 'multipass' ),
+				'source' => __('Source', 'multipass' ),
+				'description' => __('Description', 'multipass' ),
+				'from' => __('From', 'multipass' ),
+				'to' => __('To', 'multipass' ),
+				'subtotal' => __('Subtotal', 'multipass' ),
+				'discount' => __('Discount', 'multipass' ),
+				'refunded' => __('Refunded', 'multipass' ),
+				'total' => __('Total', 'multipass' ),
+				'paid' => __('Paid', 'multipass' ),
+				'status' => __('Status', 'multipass' ),
 				'actions' => '',
 			);
 			$data['format'] = array(

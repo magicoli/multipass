@@ -37,8 +37,8 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 		$this->locale = $this->get_locale();
 
-		// register_activation_hook( MULTISERVICES_FILE, __CLASS__ . '::activate' );
-		// register_deactivation_hook( MULTISERVICES_FILE, __CLASS__ . '::deactivate' );
+		// register_activation_hook( MULTIPASS_FILE, __CLASS__ . '::activate' );
+		// register_deactivation_hook( MULTIPASS_FILE, __CLASS__ . '::deactivate' );
 	}
 
 	/**
@@ -62,7 +62,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			),
 
 			array(
-				'hook' => 'multiservices_register_terms_prestation-item-source',
+				'hook' => 'multipass_register_terms_prestation-item-source',
 				'callback' => 'register_sources_filter',
 			),
 		);
@@ -82,7 +82,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 	}
 
 	static function register_settings_pages( $settings_pages ) {
-		$settings_pages['multiservices']['tabs']['lodgify'] = 'Lodgify';
+		$settings_pages['multipass']['tabs']['lodgify'] = 'Lodgify';
 
 		return $settings_pages;
 	}
@@ -93,13 +93,13 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 		// Lodify Settings tab
     $meta_boxes[] = [
-        'title'          => __('Lodgify Settings', 'multiservices' ),
+        'title'          => __('Lodgify Settings', 'multipass' ),
         'id'             => 'lodgify-settings',
-        'settings_pages' => ['multiservices'],
+        'settings_pages' => ['multipass'],
         'tab'            => 'lodgify',
         'fields'         => [
             [
-                'name' => __('API Key', 'multiservices' ),
+                'name' => __('API Key', 'multipass' ),
                 'id'   => $prefix . 'api_key',
                 'type' => 'text',
 								'sanitize_callback' => __CLASS__ . '::api_key_validation',
@@ -110,17 +110,17 @@ class Mltp_Lodgify extends Mltp_Modules {
 							'type' => 'custom_html',
 							'std' => sprintf(
 								'%s <a href="%s" target="_blank">%s</a>',
-								__('An API key is required to connect to Lodgify.', 'multiservices'),
+								__('An API key is required to connect to Lodgify.', 'multipass'),
 								'https://app.lodgify.com/#/reservation/settings/publicApiToken',
-								__('Get your API key from Logdify Settings page > Public API', 'multiservices'),
+								__('Get your API key from Logdify Settings page > Public API', 'multipass'),
 							),
 							'visible' => ['api_key', '=', ''],
 						],
 						[
-							'name'              => __('Synchronize now', 'multiservices' ),
+							'name'              => __('Synchronize now', 'multipass' ),
 							'id'                => $prefix . 'sync_bookings',
 							'type'              => 'switch',
-							'desc'              => __('Sync Lodgify bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multiservices' ),
+							'desc'              => __('Sync Lodgify bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multipass' ),
 							'style'             => 'rounded',
 							'sanitize_callback' => 'Mltp_Lodgify::sync_bookings',
 							'save_field' => false,
@@ -133,7 +133,7 @@ class Mltp_Lodgify extends Mltp_Modules {
     ];
 
 		$meta_boxes['services']['fields'][] = [
-			'name'       => __('Lodgify Property', 'multiservices' ),
+			'name'       => __('Lodgify Property', 'multipass' ),
 			'id'         => 'service_lodgify_id',
 			'type'       => 'select_advanced',
 			'options'	=> $lodgify->get_property_options(),
@@ -224,7 +224,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 		if(is_wp_error($result)) {
 			$message = sprintf(
-				__('API Key verification failed (%s).', 'multiservices' ) ,
+				__('API Key verification failed (%s).', 'multipass' ) ,
 				$result->get_error_message(),
 			);
 			add_settings_error( $field['id'], $field['id'], $message, 'error' );
@@ -251,7 +251,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		$response = $this->api_request('/v2/reservations/bookings', $args);
 		if(is_wp_error($response)) {
 			$error_id = sanitize_title(__CLASS__ . '-' . __METHOD__);
-			$message = sprintf( __('%s failed (%s).', 'multiservices' ) , $error_id, $response->get_error_message() );
+			$message = sprintf( __('%s failed (%s).', 'multipass' ) , $error_id, $response->get_error_message() );
 			add_settings_error( $error_id, $error_id, $message, 'error' );
 			return $response;
 		}
@@ -262,7 +262,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			$response = $this->api_request('/v2/reservations/bookings', $args);
 			if(is_wp_error($response)) {
 				$error_id = sanitize_title(__CLASS__ . '-' . __METHOD__);
-				$message = sprintf( __('%s failed (%s).', 'multiservices' ) , $error_id, $response->get_error_message() );
+				$message = sprintf( __('%s failed (%s).', 'multipass' ) , $error_id, $response->get_error_message() );
 				add_settings_error( $error_id, $error_id, $message, 'error' );
 				return $response;
 			}

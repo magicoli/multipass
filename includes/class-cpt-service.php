@@ -170,7 +170,7 @@ class Mltp_Service {
 				'accepted_args' => 4,
 			),
 			array(
-				'hook' => 'multiservices_update_service_title',
+				'hook' => 'multipass_update_service_title',
 				'callback' => 'update_service_title',
 			),
 
@@ -214,41 +214,41 @@ class Mltp_Service {
 
 	static function register_post_types() {
 		$labels = [
-			'name'                     => esc_html__('Services', 'multiservices' ),
-			'singular_name'            => esc_html__('Service', 'multiservices' ),
-			'add_new'                  => esc_html__('Add New', 'multiservices' ),
-			'add_new_item'             => esc_html__('Add New Service', 'multiservices' ),
-			'edit_item'                => esc_html__('Edit Service', 'multiservices' ),
-			'new_item'                 => esc_html__('New Service', 'multiservices' ),
-			'view_item'                => esc_html__('View Service', 'multiservices' ),
-			'view_items'               => esc_html__('View Services', 'multiservices' ),
-			'search_items'             => esc_html__('Search Services', 'multiservices' ),
-			'not_found'                => esc_html__('No services found.', 'multiservices' ),
-			'not_found_in_trash'       => esc_html__('No services found in Trash.', 'multiservices' ),
-			'parent_item_colon'        => esc_html__('Parent Service:', 'multiservices' ),
-			'all_items'                => esc_html__('Services', 'multiservices' ),
-			'archives'                 => esc_html__('Service Archives', 'multiservices' ),
-			'attributes'               => esc_html__('Service Attributes', 'multiservices' ),
-			'insert_into_item'         => esc_html__('Insert into service', 'multiservices' ),
-			'uploaded_to_this_item'    => esc_html__('Uploaded to this service', 'multiservices' ),
-			'featured_image'           => esc_html__('Featured image', 'multiservices' ),
-			'set_featured_image'       => esc_html__('Set featured image', 'multiservices' ),
-			'remove_featured_image'    => esc_html__('Remove featured image', 'multiservices' ),
-			'use_featured_image'       => esc_html__('Use as featured image', 'multiservices' ),
-			'menu_name'                => esc_html__('Services', 'multiservices' ),
-			'filter_items_list'        => esc_html__('Filter services list', 'multiservices' ),
-			'filter_by_date'           => esc_html__('', 'multiservices' ),
-			'items_list_navigation'    => esc_html__('Services list navigation', 'multiservices' ),
-			'items_list'               => esc_html__('Services list', 'multiservices' ),
-			'item_published'           => esc_html__('Service published.', 'multiservices' ),
-			'item_published_privately' => esc_html__('Service published privately.', 'multiservices' ),
-			'item_reverted_to_draft'   => esc_html__('Service reverted to draft.', 'multiservices' ),
-			'item_scheduled'           => esc_html__('Service scheduled.', 'multiservices' ),
-			'item_updated'             => esc_html__('Service updated.', 'multiservices' ),
-			'text_domain' => 'multiservices',
+			'name'                     => esc_html__('Services', 'multipass' ),
+			'singular_name'            => esc_html__('Service', 'multipass' ),
+			'add_new'                  => esc_html__('Add New', 'multipass' ),
+			'add_new_item'             => esc_html__('Add New Service', 'multipass' ),
+			'edit_item'                => esc_html__('Edit Service', 'multipass' ),
+			'new_item'                 => esc_html__('New Service', 'multipass' ),
+			'view_item'                => esc_html__('View Service', 'multipass' ),
+			'view_items'               => esc_html__('View Services', 'multipass' ),
+			'search_items'             => esc_html__('Search Services', 'multipass' ),
+			'not_found'                => esc_html__('No services found.', 'multipass' ),
+			'not_found_in_trash'       => esc_html__('No services found in Trash.', 'multipass' ),
+			'parent_item_colon'        => esc_html__('Parent Service:', 'multipass' ),
+			'all_items'                => esc_html__('Services', 'multipass' ),
+			'archives'                 => esc_html__('Service Archives', 'multipass' ),
+			'attributes'               => esc_html__('Service Attributes', 'multipass' ),
+			'insert_into_item'         => esc_html__('Insert into service', 'multipass' ),
+			'uploaded_to_this_item'    => esc_html__('Uploaded to this service', 'multipass' ),
+			'featured_image'           => esc_html__('Featured image', 'multipass' ),
+			'set_featured_image'       => esc_html__('Set featured image', 'multipass' ),
+			'remove_featured_image'    => esc_html__('Remove featured image', 'multipass' ),
+			'use_featured_image'       => esc_html__('Use as featured image', 'multipass' ),
+			'menu_name'                => esc_html__('Services', 'multipass' ),
+			'filter_items_list'        => esc_html__('Filter services list', 'multipass' ),
+			'filter_by_date'           => esc_html__('', 'multipass' ),
+			'items_list_navigation'    => esc_html__('Services list navigation', 'multipass' ),
+			'items_list'               => esc_html__('Services list', 'multipass' ),
+			'item_published'           => esc_html__('Service published.', 'multipass' ),
+			'item_published_privately' => esc_html__('Service published privately.', 'multipass' ),
+			'item_reverted_to_draft'   => esc_html__('Service reverted to draft.', 'multipass' ),
+			'item_scheduled'           => esc_html__('Service scheduled.', 'multipass' ),
+			'item_updated'             => esc_html__('Service updated.', 'multipass' ),
+			'text_domain' => 'multipass',
 		];
 		$args = [
-			'label'               => esc_html__('Services', 'multiservices' ),
+			'label'               => esc_html__('Services', 'multipass' ),
 			'labels'              => $labels,
 			'description'         => '',
 			'public'              => true,
@@ -282,13 +282,13 @@ class Mltp_Service {
 		$prefix = 'service_';
 
     $meta_boxes['services'] = [
-        'title'      => __('Services', 'multiservices' ),
+        'title'      => __('Services', 'multipass' ),
         'post_types' => ['service'],
         'autosave'   => true,
 				'style' => 'seamless',
         'fields'     => [
             [
-                'name'          => __('Page', 'multiservices' ),
+                'name'          => __('Page', 'multipass' ),
                 'id'         => 'service_page_id',
                 'type'          => 'post',
                 'post_type'     => ['page'],
@@ -315,7 +315,7 @@ class Mltp_Service {
 		if(!$update) return $data;
 		if($data['post_type'] !== 'service') return $data;
 
-		$data = apply_filters('multiservices_update_service_title', $data);
+		$data = apply_filters('multipass_update_service_title', $data);
 
 		return $data;
 	}
@@ -333,33 +333,33 @@ class Mltp_Service {
 
 	static function register_taxonomies() {
 		$labels = [
-			'name'                       => esc_html__( 'Service Types', 'multiservices' ),
-			'singular_name'              => esc_html__( 'Service Type', 'multiservices' ),
-			'menu_name'                  => esc_html__( 'Service Types', 'multiservices' ),
-			'search_items'               => esc_html__( 'Search Service Types', 'multiservices' ),
-			'popular_items'              => esc_html__( 'Popular Service Types', 'multiservices' ),
-			'all_items'                  => esc_html__( 'All Service Types', 'multiservices' ),
-			'parent_item'                => esc_html__( 'Parent Service Type', 'multiservices' ),
-			'parent_item_colon'          => esc_html__( 'Parent Service Type:', 'multiservices' ),
-			'edit_item'                  => esc_html__( 'Edit Service Type', 'multiservices' ),
-			'view_item'                  => esc_html__( 'View Service Type', 'multiservices' ),
-			'update_item'                => esc_html__( 'Update Service Type', 'multiservices' ),
-			'add_new_item'               => esc_html__( 'Add New Service Type', 'multiservices' ),
-			'new_item_name'              => esc_html__( 'New Service Type Name', 'multiservices' ),
-			'separate_items_with_commas' => esc_html__( 'Separate service types with commas', 'multiservices' ),
-			'add_or_remove_items'        => esc_html__( 'Add or remove service types', 'multiservices' ),
-			'choose_from_most_used'      => esc_html__( 'Choose most used service types', 'multiservices' ),
-			'not_found'                  => esc_html__( 'No service types found.', 'multiservices' ),
-			'no_terms'                   => esc_html__( 'No service types', 'multiservices' ),
-			'filter_by_item'             => esc_html__( 'Filter by service type', 'multiservices' ),
-			'items_list_navigation'      => esc_html__( 'Service Types list pagination', 'multiservices' ),
-			'items_list'                 => esc_html__( 'Service Types list', 'multiservices' ),
-			'most_used'                  => esc_html__( 'Most Used', 'multiservices' ),
-			'back_to_items'              => esc_html__( '&larr; Go to Service Types', 'multiservices' ),
-			'text_domain'                => esc_html__( 'multiservices', 'multiservices' ),
+			'name'                       => esc_html__( 'Service Types', 'multipass' ),
+			'singular_name'              => esc_html__( 'Service Type', 'multipass' ),
+			'menu_name'                  => esc_html__( 'Service Types', 'multipass' ),
+			'search_items'               => esc_html__( 'Search Service Types', 'multipass' ),
+			'popular_items'              => esc_html__( 'Popular Service Types', 'multipass' ),
+			'all_items'                  => esc_html__( 'All Service Types', 'multipass' ),
+			'parent_item'                => esc_html__( 'Parent Service Type', 'multipass' ),
+			'parent_item_colon'          => esc_html__( 'Parent Service Type:', 'multipass' ),
+			'edit_item'                  => esc_html__( 'Edit Service Type', 'multipass' ),
+			'view_item'                  => esc_html__( 'View Service Type', 'multipass' ),
+			'update_item'                => esc_html__( 'Update Service Type', 'multipass' ),
+			'add_new_item'               => esc_html__( 'Add New Service Type', 'multipass' ),
+			'new_item_name'              => esc_html__( 'New Service Type Name', 'multipass' ),
+			'separate_items_with_commas' => esc_html__( 'Separate service types with commas', 'multipass' ),
+			'add_or_remove_items'        => esc_html__( 'Add or remove service types', 'multipass' ),
+			'choose_from_most_used'      => esc_html__( 'Choose most used service types', 'multipass' ),
+			'not_found'                  => esc_html__( 'No service types found.', 'multipass' ),
+			'no_terms'                   => esc_html__( 'No service types', 'multipass' ),
+			'filter_by_item'             => esc_html__( 'Filter by service type', 'multipass' ),
+			'items_list_navigation'      => esc_html__( 'Service Types list pagination', 'multipass' ),
+			'items_list'                 => esc_html__( 'Service Types list', 'multipass' ),
+			'most_used'                  => esc_html__( 'Most Used', 'multipass' ),
+			'back_to_items'              => esc_html__( '&larr; Go to Service Types', 'multipass' ),
+			'text_domain'                => esc_html__( 'multipass', 'multipass' ),
 		];
 		$args = [
-			'label'              => esc_html__( 'Service Types', 'multiservices' ),
+			'label'              => esc_html__( 'Service Types', 'multipass' ),
 			'labels'             => $labels,
 			'description'        => '',
 			'public'             => false,
@@ -384,13 +384,13 @@ class Mltp_Service {
 		register_taxonomy( 'service-type', ['prestation', 'product', 'service', 'prestation-item'], $args );
 
 		MultiPass::register_terms('service-type', array(
-			'booking' => __('Booking', 'multiservices'),
+			'booking' => __('Booking', 'multipass'),
 		));
 
 	}
 
 	static function add_admin_columns( $columns ) {
-		$columns['taxonomy-service-type'] = __('Service Type', 'multiservices');
+		$columns['taxonomy-service-type'] = __('Service Type', 'multipass');
 		return $columns;
 	}
 

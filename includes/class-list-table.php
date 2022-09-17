@@ -17,18 +17,18 @@ class Mltp_Table extends WP_List_Table {
 
   function get_columns() {
     $rows = $this->rows;
-    if(!is_array($rows)) return [ 'error' => __('Not an array', 'multiservices') ];
-    if(empty($rows)) return [ 'error' => __('Empty table', 'multiservices') ];
+    if(!is_array($rows)) return [ 'error' => __('Not an array', 'multipass') ];
+    if(empty($rows)) return [ 'error' => __('Empty table', 'multipass') ];
 
     $first_row = reset($rows);
-    if(!is_array($first_row)) return  [ 'error' => __('Wrong table format', 'multiservices') ];
+    if(!is_array($first_row)) return  [ 'error' => __('Wrong table format', 'multipass') ];
     $keys = array_keys(array_shift($rows));
     switch ($keys[0]) {
       // case 'idprenota':
       // $columns = array (
-      //   'key' => __('key', 'multiservices' ),
-      //   'idprenota' => __('key', 'multiservices' ),
-      //   'customer' => __('key', 'multiservices' ),
+      //   'key' => __('key', 'multipass' ),
+      //   'idprenota' => __('key', 'multipass' ),
+      //   'customer' => __('key', 'multipass' ),
       // );
       // break;
 
@@ -124,7 +124,7 @@ class Mltp_Table extends WP_List_Table {
         if(is_array($item) && isset($item['id'])) {
           $slug = $item['status'];
           $term = get_term_by('slug', $slug, 'prestation-status');
-          $status_name = __( (($term) ? $term->name : $slug), 'multiservices');
+          $status_name = __( (($term) ? $term->name : $slug), 'multipass');
           return $this->render_status($item['id'], $slug, $status_name);
         } else return $item;
         break;
@@ -227,7 +227,7 @@ class Mltp_Table extends WP_List_Table {
 
   function render() {
     return sprintf(
-      '<table class="wp-list-table multiservices-list">
+      '<table class="wp-list-table multipass-list">
       <thead>%s</thead>
       <tbody>%s</tbody>
       <tfoot>%s</tfoot>

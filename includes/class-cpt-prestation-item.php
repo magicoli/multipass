@@ -169,7 +169,7 @@ class Mltp_Item {
 			),
 
 			array(
-				'hook' => 'multiservices_set_prestation_item_title',
+				'hook' => 'multipass_set_prestation_item_title',
 				'callback' => 'set_prestation_item_title',
 			),
 		);
@@ -204,8 +204,8 @@ class Mltp_Item {
 			));
 		} else {
 			$links = array_filter(array(
-				__('View %s item', 'multiservices') => get_post_meta($post->ID, 'view_url', true),
-				__('Edit %s item', 'multiservices') => get_post_meta($post->ID, 'edit_url', true),
+				__('View %s item', 'multipass') => get_post_meta($post->ID, 'view_url', true),
+				__('Edit %s item', 'multipass') => get_post_meta($post->ID, 'edit_url', true),
 			));
 		}
 		$links_html = [];
@@ -245,41 +245,41 @@ class Mltp_Item {
 
 	static function register_post_types() {
 		$labels = [
-			'name'                     => esc_html__('Prestations Items', 'multiservices' ),
-			'singular_name'            => esc_html__('Prestation Item', 'multiservices' ),
-			'add_new'                  => esc_html__('Add New', 'multiservices' ),
-			'add_new_item'             => esc_html__('Add New Part', 'multiservices' ),
-			'edit_item'                => esc_html__('Edit Part', 'multiservices' ),
-			'new_item'                 => esc_html__('New Part', 'multiservices' ),
-			'view_item'                => esc_html__('View Part', 'multiservices' ),
-			'view_items'               => esc_html__('View Parts', 'multiservices' ),
-			'search_items'             => esc_html__('Search Parts', 'multiservices' ),
-			'not_found'                => esc_html__('No prestation_items found.', 'multiservices' ),
-			'not_found_in_trash'       => esc_html__('No prestation_items found in Trash.', 'multiservices' ),
-			'parent_item_colon'        => esc_html__('Parent Part:', 'multiservices' ),
-			'all_items'                => esc_html__('Prestations Items', 'multiservices' ),
-			'archives'                 => esc_html__('Parts Archives', 'multiservices' ),
-			'attributes'               => esc_html__('Part Attributes', 'multiservices' ),
-			'insert_into_item'         => esc_html__('Insert into prestation_item', 'multiservices' ),
-			'uploaded_to_this_item'    => esc_html__('Uploaded to this prestation_item', 'multiservices' ),
-			'featured_image'           => esc_html__('Featured image', 'multiservices' ),
-			'set_featured_image'       => esc_html__('Set featured image', 'multiservices' ),
-			'remove_featured_image'    => esc_html__('Remove featured image', 'multiservices' ),
-			'use_featured_image'       => esc_html__('Use as featured image', 'multiservices' ),
-			'menu_name'                => esc_html__('Prestations Items', 'multiservices' ),
-			'filter_items_list'        => esc_html__('Filter prestation_items list', 'multiservices' ),
-			'filter_by_date'           => esc_html__('', 'multiservices' ),
-			'items_list_navigation'    => esc_html__('Parts list navigation', 'multiservices' ),
-			'items_list'               => esc_html__('Parts list', 'multiservices' ),
-			'item_published'           => esc_html__('Part published.', 'multiservices' ),
-			'item_published_privately' => esc_html__('Part published privately.', 'multiservices' ),
-			'item_reverted_to_draft'   => esc_html__('Part reverted to draft.', 'multiservices' ),
-			'item_scheduled'           => esc_html__('Part scheduled.', 'multiservices' ),
-			'item_updated'             => esc_html__('Part updated.', 'multiservices' ),
-			'text_domain' => 'multiservices',
+			'name'                     => esc_html__('Prestations Items', 'multipass' ),
+			'singular_name'            => esc_html__('Prestation Item', 'multipass' ),
+			'add_new'                  => esc_html__('Add New', 'multipass' ),
+			'add_new_item'             => esc_html__('Add New Part', 'multipass' ),
+			'edit_item'                => esc_html__('Edit Part', 'multipass' ),
+			'new_item'                 => esc_html__('New Part', 'multipass' ),
+			'view_item'                => esc_html__('View Part', 'multipass' ),
+			'view_items'               => esc_html__('View Parts', 'multipass' ),
+			'search_items'             => esc_html__('Search Parts', 'multipass' ),
+			'not_found'                => esc_html__('No prestation_items found.', 'multipass' ),
+			'not_found_in_trash'       => esc_html__('No prestation_items found in Trash.', 'multipass' ),
+			'parent_item_colon'        => esc_html__('Parent Part:', 'multipass' ),
+			'all_items'                => esc_html__('Prestations Items', 'multipass' ),
+			'archives'                 => esc_html__('Parts Archives', 'multipass' ),
+			'attributes'               => esc_html__('Part Attributes', 'multipass' ),
+			'insert_into_item'         => esc_html__('Insert into prestation_item', 'multipass' ),
+			'uploaded_to_this_item'    => esc_html__('Uploaded to this prestation_item', 'multipass' ),
+			'featured_image'           => esc_html__('Featured image', 'multipass' ),
+			'set_featured_image'       => esc_html__('Set featured image', 'multipass' ),
+			'remove_featured_image'    => esc_html__('Remove featured image', 'multipass' ),
+			'use_featured_image'       => esc_html__('Use as featured image', 'multipass' ),
+			'menu_name'                => esc_html__('Prestations Items', 'multipass' ),
+			'filter_items_list'        => esc_html__('Filter prestation_items list', 'multipass' ),
+			'filter_by_date'           => esc_html__('', 'multipass' ),
+			'items_list_navigation'    => esc_html__('Parts list navigation', 'multipass' ),
+			'items_list'               => esc_html__('Parts list', 'multipass' ),
+			'item_published'           => esc_html__('Part published.', 'multipass' ),
+			'item_published_privately' => esc_html__('Part published privately.', 'multipass' ),
+			'item_reverted_to_draft'   => esc_html__('Part reverted to draft.', 'multipass' ),
+			'item_scheduled'           => esc_html__('Part scheduled.', 'multipass' ),
+			'item_updated'             => esc_html__('Part updated.', 'multipass' ),
+			'text_domain' => 'multipass',
 		];
 		$args = [
-			'label'               => esc_html__('Parts', 'multiservices' ),
+			'label'               => esc_html__('Parts', 'multipass' ),
 			'labels'              => $labels,
 			'description'         => '',
 			'public'              => true,
@@ -313,7 +313,7 @@ class Mltp_Item {
     $prefix = '';
 
 		$meta_boxes['prestation_item'] = [
-			'title'      => __('Parts fields', 'multiservices' ),
+			'title'      => __('Parts fields', 'multipass' ),
 			'id'         => 'prestation_item',
 			'post_types' => [ 'prestation-item' ],
 			'style'      => 'seamless',
@@ -324,12 +324,12 @@ class Mltp_Item {
 					'callback' => 'MultiPass::title_html',
 				],
 				[
-					'name'          => __('Source', 'multiservices' ),
+					'name'          => __('Source', 'multipass' ),
 					'id'            => $prefix . 'source',
 					'type'          => 'taxonomy',
 					'taxonomy'      => ['prestation-item-source'],
 					'field_type'    => 'select',
-					'placeholder'   => _x('None', '(prestation_item) source', 'multiservices' ),
+					'placeholder'   => _x('None', '(prestation_item) source', 'multipass' ),
 					'admin_columns' => [
 						'position'   => 'replace date',
 						'sort'       => true,
@@ -338,7 +338,7 @@ class Mltp_Item {
 					],
 				],
 				[
-					'name'    => __('Source ID', 'multiservices' ),
+					'name'    => __('Source ID', 'multipass' ),
 					'id'      => $prefix . 'source_id',
 					'type'    => 'text',
 					'readonly' => true,
@@ -348,7 +348,7 @@ class Mltp_Item {
 					],
 				],
 				[
-					'name'    => __('Source Item ID', 'multiservices' ),
+					'name'    => __('Source Item ID', 'multipass' ),
 					'id'      => $prefix . 'source_item_id',
 					'type'    => 'text',
 					'readonly' => true,
@@ -358,7 +358,7 @@ class Mltp_Item {
 					],
 				],
 				[
-					'name'    => __('Links', 'multiservices' ),
+					'name'    => __('Links', 'multipass' ),
 					'id'      => $prefix . 'links',
 					'type'          => 'custom_html',
 					'callback'      => __CLASS__ . '::item_links_html',
@@ -368,7 +368,7 @@ class Mltp_Item {
 					],
 				],
 				[
-					'name'    => __('Description', 'multiservices' ),
+					'name'    => __('Description', 'multipass' ),
 					'id'      => $prefix . 'description',
 					'type'    => 'text',
 					'visible' => [
@@ -377,14 +377,14 @@ class Mltp_Item {
 					],
 				],
 				[
-					'name'       => __('Prestation', 'multiservices' ),
+					'name'       => __('Prestation', 'multipass' ),
 					'id'         => $prefix . 'prestation_id',
 					'type'       => 'post',
 					'post_type'  => ['prestation'],
 					'field_type' => 'select_advanced',
 				],
 				[
-					'name'          => __('Customer', 'multiservices' ),
+					'name'          => __('Customer', 'multipass' ),
 					'id'            => $prefix . 'customer_display',
 					'type'          => 'custom_html',
 					'callback'      => __CLASS__ . '::customer_html',
@@ -400,32 +400,32 @@ class Mltp_Item {
 					],
 				],
 				[
-					'name'              => __('Customer', 'multiservices' ),
+					'name'              => __('Customer', 'multipass' ),
 					'id'                => $prefix . 'customer',
 					'type'              => 'group',
 					'class'             => 'inline',
 					'fields'            => [
 						[
-							'name'       => __('Existing User', 'multiservices' ),
+							'name'       => __('Existing User', 'multipass' ),
 							'id'         => $prefix . 'user_id',
 							'type'       => 'user',
 							'field_type' => 'select_advanced',
 						],
 						[
-							'name'          => __('Name', 'multiservices' ),
+							'name'          => __('Name', 'multipass' ),
 							'id'            => $prefix . 'name',
 							'type'          => 'text',
 							'size'          => 30,
 							'admin_columns' => 'after title',
 						],
 						[
-							'name' => __('Email', 'multiservices' ),
+							'name' => __('Email', 'multipass' ),
 							'id'   => $prefix . 'email',
 							'type' => 'email',
 							'size' => 30,
 						],
 						[
-							'name' => __('Phone', 'multiservices' ),
+							'name' => __('Phone', 'multipass' ),
 							'id'   => $prefix . 'phone',
 							'type' => 'text',
 						],
@@ -436,33 +436,33 @@ class Mltp_Item {
 					],
 				],
 				[
-					'name'              => __('Attendee', 'multiservices' ),
+					'name'              => __('Attendee', 'multipass' ),
 					'id'                => $prefix . 'attendee',
 					'type'              => 'group',
 					'class'             => 'inline',
-					'desc'              => __('Fill only if different from customer.', 'multiservices' ),
+					'desc'              => __('Fill only if different from customer.', 'multipass' ),
 					'fields'            => [
 						[
-							'name'       => __('Existing User', 'multiservices' ),
+							'name'       => __('Existing User', 'multipass' ),
 							'id'         => $prefix . 'user_id',
 							'type'       => 'user',
 							'field_type' => 'select_advanced',
 						],
 						[
-							'name'          => __('Name', 'multiservices' ),
+							'name'          => __('Name', 'multipass' ),
 							'id'            => $prefix . 'name',
 							'type'          => 'text',
 							'size'          => 30,
 							// 'admin_columns' => 'after title',
 						],
 						[
-							'name' => __('Email', 'multiservices' ),
+							'name' => __('Email', 'multipass' ),
 							'id'   => $prefix . 'email',
 							'type' => 'email',
 							'size' => 30,
 						],
 						[
-							'name' => __('Phone', 'multiservices' ),
+							'name' => __('Phone', 'multipass' ),
 							'id'   => $prefix . 'phone',
 							'type' => 'text',
 						],
@@ -474,7 +474,7 @@ class Mltp_Item {
 					'std'  => '<hr>',
 				],
 				[
-					'name'          => __('Dates', 'multiservices' ),
+					'name'          => __('Dates', 'multipass' ),
 					'id'            => $prefix . 'dates_admin_list',
 					'type'          => 'hidden',
 					'disabled' => true,
@@ -484,13 +484,13 @@ class Mltp_Item {
 					],
 				],
 				[
-					'name'          => __('Dates', 'multiservices' ),
+					'name'          => __('Dates', 'multipass' ),
 					'id'            => $prefix . 'dates',
 					'type'          => 'group',
 					'class'         => 'inline',
 					'fields'        => [
 						[
-							'name'      => __('From', 'multiservices' ),
+							'name'      => __('From', 'multipass' ),
 							'id'        => $prefix . 'from',
 							'type'      => 'datetime',
 							'timestamp'     => true,
@@ -499,7 +499,7 @@ class Mltp_Item {
 							],
 						],
 						[
-							'name'      => __('To', 'multiservices' ),
+							'name'      => __('To', 'multipass' ),
 							'id'        => $prefix . 'to',
 							'type'      => 'datetime',
 							'timestamp'     => true,
@@ -510,13 +510,13 @@ class Mltp_Item {
 					],
 				],
 				[
-					'name'   => __('Number of Attendees', 'multiservices' ),
+					'name'   => __('Number of Attendees', 'multipass' ),
 					'id'     => $prefix . 'attendees',
 					'type'   => 'group',
 					'class'  => 'inline',
 					'fields' => [
 						[
-							'name'          => __('Total', 'multiservices' ),
+							'name'          => __('Total', 'multipass' ),
 							'id'            => $prefix . 'total',
 							'type'          => 'number',
 							'min'           => 0,
@@ -524,21 +524,21 @@ class Mltp_Item {
 							'readonly' => true,
 						],
 						[
-							'name' => __('Adults', 'multiservices' ),
+							'name' => __('Adults', 'multipass' ),
 							'id'   => $prefix . 'adults',
 							'type' => 'number',
 							'min'  => 0,
 							'size' => 5,
 						],
 						[
-							'name' => __('Children', 'multiservices' ),
+							'name' => __('Children', 'multipass' ),
 							'id'   => $prefix . 'children',
 							'type' => 'number',
 							'min'  => 0,
 							'size' => 5,
 						],
 						[
-							'name' => __('Babies', 'multiservices' ),
+							'name' => __('Babies', 'multipass' ),
 							'id'   => $prefix . 'babies',
 							'type' => 'number',
 							'min'  => 0,
@@ -547,7 +547,7 @@ class Mltp_Item {
 					],
 				],
 				[
-					'name'   => __('# Attendees', 'multiservices' ),
+					'name'   => __('# Attendees', 'multipass' ),
 					'id'            => $prefix . 'attendees_display',
 					'type'          => 'hidden',
 					'disabled' => true,
@@ -557,27 +557,27 @@ class Mltp_Item {
 					],
 				],
 				[
-					'name'   => __('Beds', 'multiservices' ),
+					'name'   => __('Beds', 'multipass' ),
 					'id'     => $prefix . 'beds',
 					'type'   => 'group',
 					'class'  => 'inline',
 					'fields' => [
 						[
-							'name' => __('Double', 'multiservices' ),
+							'name' => __('Double', 'multipass' ),
 							'id'   => $prefix . 'double',
 							'type' => 'number',
 							'min'  => 0,
 							'size' => 5,
 						],
 						[
-							'name' => __('Single', 'multiservices' ),
+							'name' => __('Single', 'multipass' ),
 							'id'   => $prefix . 'single',
 							'type' => 'number',
 							'min'  => 0,
 							'size' => 5,
 						],
 						[
-							'name' => __('Baby', 'multiservices' ),
+							'name' => __('Baby', 'multipass' ),
 							'id'   => $prefix . 'baby',
 							'type' => 'number',
 							'min'  => 0,
@@ -591,13 +591,13 @@ class Mltp_Item {
 					'std'  => '<hr>',
 				],
 				[
-					'name'   => __('Price', 'multiservices' ),
+					'name'   => __('Price', 'multipass' ),
 					'id'     => $prefix . 'price',
 					'type'   => 'group',
 					'class'  => 'inline',
 					'fields' => [
 						[
-							'name' => __('Quantity', 'multiservices' ),
+							'name' => __('Quantity', 'multipass' ),
 							'id'   => $prefix . 'quantity',
 							'type' => 'number',
 							'min'  => 0,
@@ -605,7 +605,7 @@ class Mltp_Item {
 							'size' => 5,
 						],
 						[
-							'name' => __('Unit Price', 'multiservices' ),
+							'name' => __('Unit Price', 'multipass' ),
 							'id'   => $prefix . 'unit',
 							'type' => 'number',
 							'min'  => 0,
@@ -613,7 +613,7 @@ class Mltp_Item {
 							'size' => 10,
 						],
 						[
-							'name'     => __('Subtotal', 'multiservices' ),
+							'name'     => __('Subtotal', 'multipass' ),
 							'id'       => $prefix . 'subtotal',
 							'type'     => 'number',
 							'step' => 'any',
@@ -623,7 +623,7 @@ class Mltp_Item {
 					],
 				],
 				[
-					'name'   => __('Discount', 'multiservices' ),
+					'name'   => __('Discount', 'multipass' ),
 					'id'     => $prefix . 'discount',
 					'type'   => 'group',
 					'class'  => 'inline',
@@ -647,7 +647,7 @@ class Mltp_Item {
 					],
 				],
 				[
-					'name'          => __('Total', 'multiservices' ),
+					'name'          => __('Total', 'multipass' ),
 					'id'            => $prefix . 'total',
 					'type'          => 'number',
 					'min'           => 0,
@@ -660,7 +660,7 @@ class Mltp_Item {
 					],
 				],
 				[
-					'name'          => __('Deposit', 'multiservices' ),
+					'name'          => __('Deposit', 'multipass' ),
 					'id'            => $prefix . 'deposit',
 					'type'          => 'group',
 					// 'admin_columns' => 'after total',
@@ -684,7 +684,7 @@ class Mltp_Item {
 						[
 							'id'          => $prefix . 'before',
 							'type'        => 'date',
-							'placeholder' => __('Before', 'multiservices' ),
+							'placeholder' => __('Before', 'multipass' ),
 							'timestamp'     => true,
 							'js_options'    => [
 								'dateFormat' => $js_date_format_short,
@@ -693,14 +693,14 @@ class Mltp_Item {
 					],
 				],
 				[
-					'name'   => __('Payment', 'multiservices' ),
+					'name'   => __('Payment', 'multipass' ),
 					'id'     => $prefix . 'payment',
 					'type'   => 'group',
 					'clone'  => true,
 					'class'  => 'inline',
 					'fields' => [
 						[
-							'name' => __('Date', 'multiservices' ),
+							'name' => __('Date', 'multipass' ),
 							'id'   => $prefix . 'date',
 							'type' => 'datetime',
 							'timestamp'     => true,
@@ -709,7 +709,7 @@ class Mltp_Item {
 							],
 						],
 						[
-							'name' => __('Amount', 'multiservices' ),
+							'name' => __('Amount', 'multipass' ),
 							'id'   => $prefix . 'amount',
 							'type' => 'number',
 							'min'  => 0,
@@ -717,19 +717,19 @@ class Mltp_Item {
 							'size' => 10,
 						],
 						[
-							'name' => __('Method', 'multiservices' ),
+							'name' => __('Method', 'multipass' ),
 							'id'   => $prefix . 'method',
 							'type' => 'text',
 						],
 						[
-							'name' => __('Reference', 'multiservices' ),
+							'name' => __('Reference', 'multipass' ),
 							'id'   => $prefix . 'reference',
 							'type' => 'text',
 						],
 					],
 				],
 				[
-					'name'          => __('Deposit', 'multiservices' ),
+					'name'          => __('Deposit', 'multipass' ),
 					'id'            => $prefix . 'deposit_amount',
 					'type'          => 'hidden',
 					'disabled' => true,
@@ -739,7 +739,7 @@ class Mltp_Item {
 					],
 				],
 				[
-					'name'          => __('Paid', 'multiservices' ),
+					'name'          => __('Paid', 'multipass' ),
 					'id'            => $prefix . 'paid',
 					'type'          => 'number',
 					'min'           => 0,
@@ -749,7 +749,7 @@ class Mltp_Item {
 					'admin_columns' => 'after deposit_amount',
 				],
 				[
-					'name'          => __('Balance', 'multiservices' ),
+					'name'          => __('Balance', 'multipass' ),
 					'id'            => $prefix . 'balance',
 					'type'          => 'number',
 					'min'           => 0,
@@ -762,7 +762,7 @@ class Mltp_Item {
 					],
 				],
 				[
-					'name'          => __('Status', 'multiservices' ),
+					'name'          => __('Status', 'multipass' ),
 					'id'            => $prefix . 'status',
 					'type'          => 'taxonomy',
 					'taxonomy'      => ['prestation-status'],
@@ -785,33 +785,33 @@ class Mltp_Item {
 
 	static function register_taxonomies() {
 		$labels = [
-			'name'                       => esc_html__('Part Sources', 'multiservices' ),
-			'singular_name'              => esc_html__('Part Source', 'multiservices' ),
-			'menu_name'                  => esc_html__('Part Sources', 'multiservices' ),
-			'search_items'               => esc_html__('Search Part Sources', 'multiservices' ),
-			'popular_items'              => esc_html__('Popular Part Sources', 'multiservices' ),
-			'all_items'                  => esc_html__('All Part Sources', 'multiservices' ),
-			'parent_item'                => esc_html__('Parent Part Source', 'multiservices' ),
-			'parent_item_colon'          => esc_html__('Parent Part Source:', 'multiservices' ),
-			'edit_item'                  => esc_html__('Edit Part Source', 'multiservices' ),
-			'view_item'                  => esc_html__('View Part Source', 'multiservices' ),
-			'update_item'                => esc_html__('Update Part Source', 'multiservices' ),
-			'add_new_item'               => esc_html__('Add New Part Source', 'multiservices' ),
-			'new_item_name'              => esc_html__('New Part Source Name', 'multiservices' ),
-			'separate_items_with_commas' => esc_html__('Separate prestation_item sources with commas', 'multiservices' ),
-			'add_or_remove_items'        => esc_html__('Add or remove prestation_item sources', 'multiservices' ),
-			'choose_from_most_used'      => esc_html__('Choose most used prestation_item sources', 'multiservices' ),
-			'not_found'                  => esc_html__('No prestation_item sources found.', 'multiservices' ),
-			'no_terms'                   => esc_html__('No prestation_item sources', 'multiservices' ),
-			'filter_by_item'             => esc_html__('Filter by prestation_item source', 'multiservices' ),
-			'items_list_navigation'      => esc_html__('Part Sources list pagination', 'multiservices' ),
-			'items_list'                 => esc_html__('Part Sources list', 'multiservices' ),
-			'most_used'                  => esc_html__('Most Used', 'multiservices' ),
-			'back_to_items'              => esc_html__('&larr; Go to Part Sources', 'multiservices' ),
-			'text_domain' => 'multiservices',
+			'name'                       => esc_html__('Part Sources', 'multipass' ),
+			'singular_name'              => esc_html__('Part Source', 'multipass' ),
+			'menu_name'                  => esc_html__('Part Sources', 'multipass' ),
+			'search_items'               => esc_html__('Search Part Sources', 'multipass' ),
+			'popular_items'              => esc_html__('Popular Part Sources', 'multipass' ),
+			'all_items'                  => esc_html__('All Part Sources', 'multipass' ),
+			'parent_item'                => esc_html__('Parent Part Source', 'multipass' ),
+			'parent_item_colon'          => esc_html__('Parent Part Source:', 'multipass' ),
+			'edit_item'                  => esc_html__('Edit Part Source', 'multipass' ),
+			'view_item'                  => esc_html__('View Part Source', 'multipass' ),
+			'update_item'                => esc_html__('Update Part Source', 'multipass' ),
+			'add_new_item'               => esc_html__('Add New Part Source', 'multipass' ),
+			'new_item_name'              => esc_html__('New Part Source Name', 'multipass' ),
+			'separate_items_with_commas' => esc_html__('Separate prestation_item sources with commas', 'multipass' ),
+			'add_or_remove_items'        => esc_html__('Add or remove prestation_item sources', 'multipass' ),
+			'choose_from_most_used'      => esc_html__('Choose most used prestation_item sources', 'multipass' ),
+			'not_found'                  => esc_html__('No prestation_item sources found.', 'multipass' ),
+			'no_terms'                   => esc_html__('No prestation_item sources', 'multipass' ),
+			'filter_by_item'             => esc_html__('Filter by prestation_item source', 'multipass' ),
+			'items_list_navigation'      => esc_html__('Part Sources list pagination', 'multipass' ),
+			'items_list'                 => esc_html__('Part Sources list', 'multipass' ),
+			'most_used'                  => esc_html__('Most Used', 'multipass' ),
+			'back_to_items'              => esc_html__('&larr; Go to Part Sources', 'multipass' ),
+			'text_domain' => 'multipass',
 		];
 		$args = [
-			'label'              => esc_html__('Part Sources', 'multiservices' ),
+			'label'              => esc_html__('Part Sources', 'multipass' ),
 			'labels'             => $labels,
 			'description'        => '',
 			'public'             => false,
@@ -844,7 +844,7 @@ class Mltp_Item {
 		if(!$update) return $data;
 		if($data['post_type'] !== 'prestation-item') return $data;
 
-		$data = apply_filters('multiservices_set_prestation_item_title', $data);
+		$data = apply_filters('multipass_set_prestation_item_title', $data);
 
 		return $data;
 	}
@@ -1207,7 +1207,7 @@ class Mltp_Item_Admin_Columns extends \MBAC\Post {
     //     $columns  = parent::columns( $columns );
     //     $position = '';
     //     $target   = '';
-    //     $this->add( $columns, 'deposit', __('Deposit', 'multiservices'), $position, $target );
+    //     $this->add( $columns, 'deposit', __('Deposit', 'multipass'), $position, $target );
     //     // Add more if you want
     //     return $columns;
     // }

@@ -95,7 +95,7 @@ class Mltp_Mailbox {
 	}
 
 	static function register_settings_pages( $settings_pages ) {
-		$settings_pages['multiservices']['tabs']['imap'] = 'IMAP';
+		$settings_pages['multipass']['tabs']['imap'] = 'IMAP';
 
 		return $settings_pages;
 	}
@@ -104,56 +104,56 @@ class Mltp_Mailbox {
 		$prefix = 'imap_';
 
 		$meta_boxes[] = [
-			'title'          => __('IMAP Settings', 'multiservices' ),
-			'id'             => 'multiservices-mail-settings',
-			'settings_pages' => ['multiservices'],
+			'title'          => __('IMAP Settings', 'multipass' ),
+			'id'             => 'multipass-mail-settings',
+			'settings_pages' => ['multipass'],
 			'tab'            => 'imap',
 			'fields'         => [
 				[
-					'name'        => __('IMAP Server', 'multiservices' ),
+					'name'        => __('IMAP Server', 'multipass' ),
 					'id'          => $prefix . 'server',
 					'type'        => 'text',
-					'placeholder' => __('mail.example.org', 'multiservices' ),
+					'placeholder' => __('mail.example.org', 'multipass' ),
 					'size'        => 40,
 					'required'    => false,
 				],
 				[
-					'name'     => __('Port', 'multiservices' ),
+					'name'     => __('Port', 'multipass' ),
 					'id'       => $prefix . 'port',
 					'type'     => 'button_group',
 					'options'  => [
-						143 => __('143', 'multiservices' ),
-						993 => __('993', 'multiservices' ),
+						143 => __('143', 'multipass' ),
+						993 => __('993', 'multipass' ),
 					],
 					'std'      => 993,
 					'required' => false,
 				],
 				[
-					'name'     => __('Encryption', 'multiservices' ),
+					'name'     => __('Encryption', 'multipass' ),
 					'id'       => $prefix . 'encryption',
 					'type'     => 'button_group',
 					'options'  => [
-						'TLS/SSL' => __('TLS/SSL', 'multiservices' ),
+						'TLS/SSL' => __('TLS/SSL', 'multipass' ),
 					],
 					'std'      => 'TLS/SSL',
 					'required' => false,
 				],
 				[
-					'name'     => __('Username', 'multiservices' ),
+					'name'     => __('Username', 'multipass' ),
 					'id'       => $prefix . 'username',
 					'type'     => 'text',
 					'size'     => 40,
 					'required' => false,
 				],
 				[
-					'name'     => __('Password', 'multiservices' ),
+					'name'     => __('Password', 'multipass' ),
 					'id'       => $prefix . 'password',
 					'type'     => 'text',
 					'size'     => 40,
 					'required' => false,
 				],
 				[
-					'name' => __('Save Attachments', 'multiservices' ),
+					'name' => __('Save Attachments', 'multipass' ),
 					'id'   => $prefix . 'attachments',
 					'type' => 'switch',
 				],

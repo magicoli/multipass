@@ -67,13 +67,13 @@ class MultiPass {
 	 * @since    0.1.0
 	 */
 	public function __construct() {
-		if ( defined( 'MULTISERVICES_VERSION' ) ) {
-			$this->version = MULTISERVICES_VERSION;
+		if ( defined( 'MULTIPASS_VERSION' ) ) {
+			$this->version = MULTIPASS_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->plugin_slug = 'multiservices';
-		$this->plugin_file = plugin_basename(MULTISERVICES_FILE);
+		$this->plugin_slug = 'multipass';
+		$this->plugin_file = plugin_basename(MULTIPASS_FILE);
 
 		$this->js_date_format_short = preg_match('/^[Fm]/', get_option('date_format')) ? 'mm-dd-yy' : 'dd-mm-yy';
 
@@ -106,56 +106,56 @@ class MultiPass {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once MULTISERVICES_DIR . 'includes/class-loader.php';
+		require_once MULTIPASS_DIR . 'includes/class-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once MULTISERVICES_DIR . 'includes/class-i18n.php';
+		require_once MULTIPASS_DIR . 'includes/class-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once MULTISERVICES_DIR . 'admin/class-admin.php';
+		require_once MULTIPASS_DIR . 'admin/class-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once MULTISERVICES_DIR . 'public/class-public.php';
+		require_once MULTIPASS_DIR . 'public/class-public.php';
 
 		$this->loader = new Mltp_Loader();
 
-		require_once MULTISERVICES_DIR . 'vendor/autoload.php';
-		require_once MULTISERVICES_DIR . 'includes/class-list-table.php';
+		require_once MULTIPASS_DIR . 'vendor/autoload.php';
+		require_once MULTIPASS_DIR . 'includes/class-list-table.php';
 
-		require_once MULTISERVICES_DIR . 'includes/class-cpt-prestation.php';
+		require_once MULTIPASS_DIR . 'includes/class-cpt-prestation.php';
 		$this->loaders[] = new Mltp_Prestation();
-		require_once MULTISERVICES_DIR . 'includes/class-cpt-prestation-item.php';
+		require_once MULTIPASS_DIR . 'includes/class-cpt-prestation-item.php';
 		$this->loaders[] = new Mltp_Item();
-		require_once MULTISERVICES_DIR . 'includes/class-cpt-service.php';
+		require_once MULTIPASS_DIR . 'includes/class-cpt-service.php';
 		$this->loaders[] = new Mltp_Service();
-		require_once MULTISERVICES_DIR . 'includes/class-settings.php';
+		require_once MULTIPASS_DIR . 'includes/class-settings.php';
 		$this->loaders[] = new Mltp_Settings();
-		require_once MULTISERVICES_DIR . 'includes/class-plugin-info.php';
+		require_once MULTIPASS_DIR . 'includes/class-plugin-info.php';
 		$this->loaders[] = new Mltp_PluginInfo();
 
-		require_once MULTISERVICES_DIR . 'includes/modules/load-modules.php';
+		require_once MULTIPASS_DIR . 'includes/modules/load-modules.php';
 		$this->loaders[] = new Mltp_Modules();
 		// if(is_plugin_active('woocommerce/woocommerce.php')) {
-		// 	require_once MULTISERVICES_DIR . 'includes/modules/class-woocommerce.php';
+		// 	require_once MULTIPASS_DIR . 'includes/modules/class-woocommerce.php';
 		// 	$this->loaders[] = new Mltp_WooCommerce();
 		//
-		// 	require_once MULTISERVICES_DIR . 'includes/modules/class-woocommerce-payment-product.php';
+		// 	require_once MULTIPASS_DIR . 'includes/modules/class-woocommerce-payment-product.php';
 		// 	$this->loaders[] = new Mltp_Payment_Product();
 		// }
 
-		if(get_transient('multiservices_rewrite_flush') || get_transient('multiservices_rewrite_version') != MULTISERVICES_VERSION) {
+		if(get_transient('multipass_rewrite_flush') || get_transient('multipass_rewrite_version') != MULTIPASS_VERSION) {
 		  wp_cache_flush();
 		  add_action('init', 'flush_rewrite_rules');
-			delete_transient('multiservices_rewrite_flush');
-		  set_transient('multiservices_rewrite_version', MULTISERVICES_VERSION);
+			delete_transient('multipass_rewrite_flush');
+		  set_transient('multipass_rewrite_version', MULTIPASS_VERSION);
 		  // admin_notice( 'Rewrite rules flushed' );
 		}
 
@@ -264,7 +264,7 @@ class MultiPass {
 			$settings_page = strstr($option, ':', true);
 			$option = trim(strstr($option, ':'), ':');
 		} else {
-			$settings_page = 'multiservices';
+			$settings_page = 'multipass';
 		}
 
 		$settings = get_option($settings_page);
@@ -307,7 +307,7 @@ class MultiPass {
 			if($i > 5) { // failed several times to find a unique slug, increase length
 				$slug_length++;
 				$i = 0;
-				MultiPass::update_option('multiservices:slug_length', $slug_length);
+				MultiPass::update_option('multipass:slug_length', $slug_length);
 			}
 
 			$chars = implode(range('a', 'z'));
@@ -335,7 +335,7 @@ class MultiPass {
 	}
 
 	static function currency_options() {
-		$options = wp_cache_get('multiservices-currencies');
+		$options = wp_cache_get('multipass-currencies');
 		if($options) return $options;
 
 		$options = [];
@@ -344,7 +344,7 @@ class MultiPass {
 			$options[$code] = "$code ($symbol)";
 		}
 
-		wp_cache_set('multiservices-currencies', $options);
+		wp_cache_set('multipass-currencies', $options);
 		return $options;
 	}
 
@@ -420,7 +420,7 @@ class MultiPass {
 			add_action( 'admin_notices', function() use ($notice, $class, $is_dismissible) {
 				?>
 				<div class="notice notice-<?=$class?> <?=$is_dismissible?>">
-					<p><strong><?php echo MULTISERVICES_PLUGIN_NAME; ?></strong>: <?php _e( $notice, 'band-tools' ); ?></p>
+					<p><strong><?php echo MULTIPASS_PLUGIN_NAME; ?></strong>: <?php _e( $notice, 'band-tools' ); ?></p>
 				</div>
 				<?php
 			} );
@@ -536,10 +536,10 @@ class MultiPass {
 	}
 
 	static function register_terms($taxonomy_slug, $terms = [], $args = []) {
-		$terms = apply_filters( 'multiservices_register_terms_' . $taxonomy_slug, $terms );
+		$terms = apply_filters( 'multipass_register_terms_' . $taxonomy_slug, $terms );
 		if(empty($terms)) return;
 
-		$desc_required = sprintf(__('(generated by %s)', 'multiservices'), MULTISERVICES_PLUGIN_NAME);
+		$desc_required = sprintf(__('(generated by %s)', 'multipass'), MULTIPASS_PLUGIN_NAME);
 		foreach($terms as $slug => $term) {
 			if(empty($slug)) continue;
 			if(is_string($term)) $term = [ 'name' => $term ];
@@ -561,7 +561,7 @@ class MultiPass {
 			unset($term['name']);
 			if(get_term_by('slug', $slug, $taxonomy_slug)) continue;
 			$term_id = wp_insert_term( $name, $taxonomy_slug, $term )['term_id'];
-			add_term_meta($term_id, 'multiservices_generated', true, true);
+			add_term_meta($term_id, 'multipass_generated', true, true);
 		}
 		add_filter( $taxonomy_slug . '_row_actions', 'MultiPass::unset_taxonomy_row_actions', 10, 2 );
 		add_action( $taxonomy_slug . '_edit_form', 'MultiPass::remove_delete_edit_term_form', 10, 2 );
@@ -570,7 +570,7 @@ class MultiPass {
 
 	static function unset_taxonomy_row_actions ($actions, $term)
 	{
-		$delete_protected = get_term_meta ($term->term_id, 'multiservices_generated', true);
+		$delete_protected = get_term_meta ($term->term_id, 'multipass_generated', true);
 		if ($delete_protected)
 		unset ($actions['delete']);
 
@@ -578,7 +578,7 @@ class MultiPass {
 	}
 
 	static function remove_delete_edit_term_form ($term, $taxonomy) {
-		$delete_protected = get_term_meta ($term->term_id, 'multiservices_generated', true);
+		$delete_protected = get_term_meta ($term->term_id, 'multipass_generated', true);
 		if ($delete_protected)
 		echo '<style type="text/css">#delete-link {display: none !important;}</style>';
 	}
@@ -586,12 +586,12 @@ class MultiPass {
 	static function taxonomy_delete_protection ( $term_id )
 	{
 
-		$delete_protected = get_term_meta ($term_id, 'multiservices_generated', true);
+		$delete_protected = get_term_meta ($term_id, 'multipass_generated', true);
 
 		if ($delete_protected)
 		{
 			$term = get_term ($term_id);
-			$message = sprintf( __('%s is required by %s, it cannot be deleted'), $term->name, MULTISERVICES_PLUGIN_NAME );
+			$message = sprintf( __('%s is required by %s, it cannot be deleted'), $term->name, MULTIPASS_PLUGIN_NAME );
 
 			$error = new WP_Error ();
 			$error->add (1, $message);

@@ -2,15 +2,15 @@
 
 /**
  * Plugin Name:       MultiPass (dev)
- * Plugin URI:        https://magiiic.com/wordpress/plugins/multiservices/
- * Description:       Group prestation items from different sources (WooCommerce, OTA, booking engines...) and manage them as a whole.
+ * Plugin URI:        https://magiiic.com/wordpress/plugins/multipass/
+ * Description:       Group services from different sources (WooCommerce, OTA, booking engines...) and manage them as a whole.
  * Version:           0.1.1.x-dev
  * Author:            Magiiic
  * Author URI:        https://magiiic.com/
- * GitHubURL:					https://github.com/magicoli/multiservices/
+ * GitHubURL:					https://github.com/magicoli/multipass/
  * License:           AGPLv3
  * License URI:       http://www.gnu.org/licenses/agpl-3.0.txt
- * Text Domain:       multiservices
+ * Text Domain:       multipass
  * Domain Path:       /languages
  * Requires at least: 3.0.1
  * Tested up to:			6.0.2
@@ -33,17 +33,17 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'MULTISERVICES_VERSION', '0.1.1.x-dev' . '-' . time() );
-define( 'MULTISERVICES_FILE', __FILE__ );
-define( 'MULTISERVICES_DIR', plugin_dir_path(__FILE__) );
-define( 'MULTISERVICES_PLUGIN_NAME', 'MultiPass' );
+define( 'MULTIPASS_VERSION', '0.1.1.x-dev' . '-' . time() );
+define( 'MULTIPASS_FILE', __FILE__ );
+define( 'MULTIPASS_DIR', plugin_dir_path(__FILE__) );
+define( 'MULTIPASS_PLUGIN_NAME', 'MultiPass' );
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-activator.php
  */
-function activate_multiservices() {
-	require_once MULTISERVICES_DIR . 'includes/class-activator.php';
+function activate_multipass() {
+	require_once MULTIPASS_DIR . 'includes/class-activator.php';
 	Mltp_Activator::activate();
 }
 
@@ -51,19 +51,19 @@ function activate_multiservices() {
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-deactivator.php
  */
-function deactivate_multiservices() {
-	require_once MULTISERVICES_DIR . 'includes/class-deactivator.php';
+function deactivate_multipass() {
+	require_once MULTIPASS_DIR . 'includes/class-deactivator.php';
 	Mltp_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_multiservices' );
-register_deactivation_hook( __FILE__, 'deactivate_multiservices' );
+register_activation_hook( __FILE__, 'activate_multipass' );
+register_deactivation_hook( __FILE__, 'deactivate_multipass' );
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require MULTISERVICES_DIR . 'includes/class.php';
+require MULTIPASS_DIR . 'includes/class.php';
 
 /**
  * Begins execution of the plugin.
@@ -74,10 +74,10 @@ require MULTISERVICES_DIR . 'includes/class.php';
  *
  * @since    0.1.0
  */
-function run_multiservices() {
+function run_multipass() {
 
 	$plugin = new MultiPass();
 	$plugin->run();
 
 }
-run_multiservices();
+run_multipass();

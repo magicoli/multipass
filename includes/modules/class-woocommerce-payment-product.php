@@ -48,53 +48,53 @@ class Mltp_Payment_Product {
 
 		// $meta_boxes['woocommerce_settings']['fields'][] =  [
 		$meta_boxes[] =  [
-			'title'          => __('Payment Products', 'multiservices' ),
-			'id'             => 'multiservices-payments',
-			'settings_pages' => ['multiservices'],
+			'title'          => __('Payment Products', 'multipass' ),
+			'id'             => 'multipass-payments',
+			'settings_pages' => ['multipass'],
 			'tab'            => 'woocommerce',
 			'fields'         => [
 				[
-					'name'       => __('Payment products', 'multiservices' ),
+					'name'       => __('Payment products', 'multipass' ),
 					'id' => 'products',
 					'type' => 'custom_html',
 					'callback' => __CLASS__ . '::payment_products_list',
 					'desc' => sprintf(
 						'<p>%s</p><p>%s</p>',
-						__('Payment products are used to provide a payment gateway for prestation not handled by WooCommerce (like deposits, custom items or prestation items handled by an external website).', 'multiservices' ),
+						__('Payment products are used to provide a payment gateway for prestation not handled by WooCommerce (like deposits, custom items or prestation items handled by an external website).', 'multipass' ),
 						join(
 							'<br/>', array(
-								__('To enable a product as payment, check the "Payment Only" option on product edit page and set its price to 0 (zero).', 'multiservices' ),
-								__('Enabling Payment Only will disable fixed product price and add amount and reference fields to product page.', 'multiservices' ),
-								__('Only one Payment Only product is needed by MultiPass plugin.', 'multiservices' ),
+								__('To enable a product as payment, check the "Payment Only" option on product edit page and set its price to 0 (zero).', 'multipass' ),
+								__('Enabling Payment Only will disable fixed product price and add amount and reference fields to product page.', 'multipass' ),
+								__('Only one Payment Only product is needed by MultiPass plugin.', 'multipass' ),
 							),
 						),
 					),
 				],
         [
-					'name' => __('Default product', 'multiservices' ),
+					'name' => __('Default product', 'multipass' ),
 					'id' => $prefix . 'default_product',
 					'type' => ($pp_count > 0) ? 'select' : 'custom_html',
-					'std' => ($pp_count > 0) ? array_key_first($pp) : __('Create a payment product first', 'multiservices' ),
+					'std' => ($pp_count > 0) ? array_key_first($pp) : __('Create a payment product first', 'multipass' ),
 					'options' => $pp,
-          'placeholder' => __('Select a product', 'multiservices' ),
-					'desc' => __('Used to generate payment links.', 'multiservices' ),
+          'placeholder' => __('Select a product', 'multipass' ),
+					'desc' => __('Used to generate payment links.', 'multipass' ),
           'sanitize_callback' => __CLASS__ . '::rewrite_slug_validation',
 				],
         [
-					'name' => __('Payment link slug', 'multiservices' ),
+					'name' => __('Payment link slug', 'multipass' ),
 					'id' => $prefix . 'rewrite_slug',
 					'type' => 'text',
           'size' => 10,
           // TRANSLATORS: slug used to generate payment links
-          'std' => __('pay', 'multiservices' ),
-					// 'desc' => __('Used to generate payment links.', 'multiservices' ),
+          'std' => __('pay', 'multipass' ),
+					// 'desc' => __('Used to generate payment links.', 'multipass' ),
           'sanitize_callback' => __CLASS__ . '::rewrite_slug_validation',
 				],
 			],
 		];
 
     $meta_boxes['prestation-cpt']['fields'][] = [
-      'name'          => __('Payment link', 'multiservices' ),
+      'name'          => __('Payment link', 'multipass' ),
       'id'            => $prefix . 'payment_link',
       'type'          => 'custom_html',
       'class' => 'payment-link',
@@ -150,12 +150,12 @@ class Mltp_Payment_Product {
 	}
 
   static function add_to_cart_button( $text, $product ) {
-    if($product->get_meta( '_prpay' ) == 'yes') $text = __('Pay prestation', 'multiservices' );
+    if($product->get_meta( '_prpay' ) == 'yes') $text = __('Pay prestation', 'multipass' );
   	return $text;
   }
 
   static function single_add_to_cart_button( $text, $product ) {
-    if($product->get_meta( '_prpay' ) == 'yes') $text = __('Pay prestation', 'multiservices' );
+    if($product->get_meta( '_prpay' ) == 'yes') $text = __('Pay prestation', 'multipass' );
   	return $text;
   }
 
@@ -169,8 +169,8 @@ class Mltp_Payment_Product {
     $product_type_options['prpay'] = array(
       "id"            => "_prpay",
       "wrapper_class" => "show_if_simple show_if_variable",
-      "label"         => __('Prestation Payment', 'multiservices' ),
-      "description"   => __('Check to use product as custom Prestation Payment.', 'multiservices' ),
+      "label"         => __('Prestation Payment', 'multipass' ),
+      "description"   => __('Check to use product as custom Prestation Payment.', 'multipass' ),
       "default"       => "no",
     );
     return $product_type_options;
@@ -199,10 +199,10 @@ class Mltp_Payment_Product {
 		      <input type="number" class="input-text" name="prpay_amount" value="%s" placeholder="%s" required>
 		    </p>
 		  </div>',
-		  __('Amount', 'multiservices' ),
+		  __('Amount', 'multipass' ),
 		  ' <abbr class="required" title="required">*</abbr>',
 		  $amount,
-		  __("Amount to pay", 'multiservices' ),
+		  __("Amount to pay", 'multipass' ),
 		  '',
 		);
 		printf(
@@ -213,12 +213,12 @@ class Mltp_Payment_Product {
 					%s
         </p>
       </div>',
-      __('Prestation reference', 'multiservices' ),
+      __('Prestation reference', 'multipass' ),
       (empty($reference)) ? ' <abbr class="required" title="required">*</abbr>' : ': <span class=reference>' . $reference . '</span>',
       (empty($reference)) ? 'text' : 'hidden',
       $reference,
-      __("Enter a prestation id", 'multiservices' ),
-      (empty($reference)) ? __('Use the reference number received during order.', 'multiservices' ) : '',
+      __("Enter a prestation id", 'multipass' ),
+      (empty($reference)) ? __('Use the reference number received during order.', 'multipass' ) : '',
     );
   }
 
@@ -245,7 +245,7 @@ class Mltp_Payment_Product {
 			if( $amount <= 0 ) {
 				$product_title = wc_get_product( $product_id )->get_title();
 				wc_add_notice( sprintf(
-          __('"%s" could not be added to the cart. Please provide a valid amount to pay.', 'multiservices' ),
+          __('"%s" could not be added to the cart. Please provide a valid amount to pay.', 'multipass' ),
           sprintf('<a href="%s">%s</a>', get_permalink($product_id), $product_title),
         ), 'error' );
         return false;
@@ -254,7 +254,7 @@ class Mltp_Payment_Product {
         $product_title = wc_get_product( $product_id )->get_title();
 
         wc_add_notice( sprintf(
-          __('"%s" could not be added to the cart. Please provide a prestation id.', 'multiservices' ),
+          __('"%s" could not be added to the cart. Please provide a prestation id.', 'multipass' ),
           sprintf('<a href="%s">%s</a>', get_permalink($product_id), $product_title),
         ), 'error' );
         return false;
@@ -295,7 +295,7 @@ class Mltp_Payment_Product {
       $prestation->post_title,
       sprintf(
         // TRANSLATORS: from [start date] to [end date] (without time)
-        __('from %s to %s', 'multiservices' ),
+        __('from %s to %s', 'multipass' ),
         $from,
         $to,
       ),
@@ -313,7 +313,7 @@ class Mltp_Payment_Product {
       return sprintf(
 				'<span class=prpay-prestation-id>%s%s</span>',
 				sprintf(
-          __('Reference #%s', 'multiservices' ),
+          __('Reference #%s', 'multipass' ),
           $reference,
         ),
       );
@@ -345,7 +345,7 @@ class Mltp_Payment_Product {
         } else {
           $price = wc_price( $price ) . $product->get_price_suffix();
         }
-        $price_html = sprintf('<span class="from">%s </span>', __('From', 'multiservices' )) . $price;
+        $price_html = sprintf('<span class="from">%s </span>', __('From', 'multipass' )) . $price;
       }
     }
     return $price_html;
@@ -361,7 +361,7 @@ class Mltp_Payment_Product {
     }
     // Iterate through each cart item
     foreach( $cart->get_cart() as $cart_key => $cart_item ) {
-      $cached = wp_cache_get('prpay_product_cart_item_processed_' . $cart_key, 'multiservices');
+      $cached = wp_cache_get('prpay_product_cart_item_processed_' . $cart_key, 'multipass');
       if(!$cached) {
         $added = (isset($cart_item['prpay_amount_added'])) ? $cart_item['prpay_amount_added'] : false;
         if( is_numeric( $cart_item['prpay_amount']) &! $added) {
@@ -371,7 +371,7 @@ class Mltp_Payment_Product {
           $cart_item['data']->set_price( ( $total ) );
           $cart_item['prpay_amount_added'] = true;
         }
-        wp_cache_set('prpay_product_cart_item_processed_' . $cart_key, true, 'multiservices');
+        wp_cache_set('prpay_product_cart_item_processed_' . $cart_key, true, 'multipass');
       }
     }
   }
@@ -397,13 +397,13 @@ class Mltp_Payment_Product {
       break;
     }
 
-    if($value != $oldvalue) set_transient('multiservices_rewrite_flush', true);
+    if($value != $oldvalue) set_transient('multipass_rewrite_flush', true);
 
     return $value;
   }
 
   static function payment_link($reference, $amount = NULL) {
-    $slug = __(MultiPass::get_option('woocommerce_rewrite_slug'), 'multiservices' );
+    $slug = __(MultiPass::get_option('woocommerce_rewrite_slug'), 'multipass' );
     return get_home_url(NULL, "$slug/$reference/" . $amount);
   }
 
@@ -427,14 +427,14 @@ class Mltp_Payment_Product {
       $deposit_due = $deposit - $paid;
       $links[] = sprintf(
         '<a class=button href="%2$s" target="blank">%1$s</a> ',
-        sprintf(__('Pay deposit (%s)', 'multiservices' ), MultiPass::price($deposit_due)),
+        sprintf(__('Pay deposit (%s)', 'multipass' ), MultiPass::price($deposit_due)),
         self::payment_link($reference, $deposit_due),
       );
     }
     if($balance > 0) {
       $links[] = sprintf(
         '<a class=button href="%2$s" target="blank">%1$s</a> ',
-        sprintf(__('Pay balance (%s)', 'multiservices' ), MultiPass::price($balance)),
+        sprintf(__('Pay balance (%s)', 'multipass' ), MultiPass::price($balance)),
         self::payment_link($reference, $deposit_due),
       );
     }
@@ -454,7 +454,7 @@ class Mltp_Payment_Product {
     // add_rewrite_tag('%amount%', $pattern_price, 'amount=');
 
     $slugs[] = MultiPass::get_option('woocommerce_rewrite_slug');
-    $slugs[] = __($slugs[0], 'multiservices' );
+    $slugs[] = __($slugs[0], 'multipass' );
     $slugs = array_unique($slugs);
     foreach($slugs as $slug) {
       add_rewrite_rule(
