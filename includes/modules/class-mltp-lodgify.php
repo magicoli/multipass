@@ -169,10 +169,9 @@ class Mltp_Lodgify extends Mltp_Modules {
 		$results = $this->api_request( '/v1/properties', array() );
 		if ( is_wp_error( $results ) ) {
 			$message = sprintf(
-				'%s failed ("%s") for %s',
+				'%s failed ("%s")',
 				__CLASS__ . '::' . __METHOD__,
 				$results->get_error_message(),
-				print_r( $this, true ),
 			);
 			error_log( $message );
 			// add_settings_error( $field['id'], $field['id'], $message, 'error' );
