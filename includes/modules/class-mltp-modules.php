@@ -72,20 +72,20 @@ class Mltp_Modules {
 		$this->modules = array();
 
 		if ( is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
-			require_once MULTIPASS_DIR . 'includes/modules/class-woocommerce.php';
-			require_once MULTIPASS_DIR . 'includes/modules/class-woocommerce-payment-product.php';
+			require_once MULTIPASS_DIR . 'includes/modules/class-mltp-woocommerce.php';
+			require_once MULTIPASS_DIR . 'includes/modules/class-mltp-payment-product.php';
 		}
 
 		if ( in_array( 'imap', $enabled ) ) {
-			require_once MULTIPASS_DIR . 'includes/class-mailbox.php';
+			require_once MULTIPASS_DIR . 'includes/class-mltp-mailbox.php';
 		}
 
 		if ( in_array( 'lodgify', $enabled ) ) {
-			require_once MULTIPASS_DIR . 'includes/modules/class-lodgify.php';
+			require_once MULTIPASS_DIR . 'includes/modules/class-mltp-lodgify.php';
 		}
 
 		if ( in_array( 'hbook', $enabled ) ) {
-			require_once MULTIPASS_DIR . 'includes/modules/class-hbook.php';
+			require_once MULTIPASS_DIR . 'includes/modules/class-mltp-hbook.php';
 		}
 
 	}

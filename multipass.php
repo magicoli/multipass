@@ -39,19 +39,19 @@ define( 'MULTIPASS_PLUGIN_NAME', 'MultiPass' );
 
 /**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-activator.php
+ * This action is documented in includes/class-mltp-activator.php
  */
 function activate_multipass() {
-	require_once MULTIPASS_DIR . 'includes/class-activator.php';
+	require_once MULTIPASS_DIR . 'includes/class-mltp-activator.php';
 	Mltp_Activator::activate();
 }
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-deactivator.php
+ * This action is documented in includes/class-mltp-deactivator.php
  */
 function deactivate_multipass() {
-	require_once MULTIPASS_DIR . 'includes/class-deactivator.php';
+	require_once MULTIPASS_DIR . 'includes/class-mltp-deactivator.php';
 	Mltp_Deactivator::deactivate();
 }
 
@@ -62,7 +62,7 @@ register_deactivation_hook( __FILE__, 'deactivate_multipass' );
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require MULTIPASS_DIR . 'includes/class.php';
+require MULTIPASS_DIR . 'includes/class-multipass.php';
 
 /**
  * Begins execution of the plugin.

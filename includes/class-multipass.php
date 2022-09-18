@@ -105,48 +105,48 @@ class MultiPass {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once MULTIPASS_DIR . 'includes/class-loader.php';
+		require_once MULTIPASS_DIR . 'includes/class-mltp-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once MULTIPASS_DIR . 'includes/class-i18n.php';
+		require_once MULTIPASS_DIR . 'includes/class-mltp-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once MULTIPASS_DIR . 'admin/class-admin.php';
+		require_once MULTIPASS_DIR . 'admin/class-mltp-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once MULTIPASS_DIR . 'public/class-public.php';
+		require_once MULTIPASS_DIR . 'public/class-mltp-public.php';
 
 		$this->loader = new Mltp_Loader();
 
 		require_once MULTIPASS_DIR . 'vendor/autoload.php';
-		require_once MULTIPASS_DIR . 'includes/class-list-table.php';
+		require_once MULTIPASS_DIR . 'includes/class-mltp-table.php';
 
-		require_once MULTIPASS_DIR . 'includes/class-cpt-prestation.php';
+		require_once MULTIPASS_DIR . 'includes/class-mltp-prestation.php';
 		$this->loaders[] = new Mltp_Prestation();
-		require_once MULTIPASS_DIR . 'includes/class-cpt-prestation-item.php';
+		require_once MULTIPASS_DIR . 'includes/class-mltp-item.php';
 		$this->loaders[] = new Mltp_Item();
-		require_once MULTIPASS_DIR . 'includes/class-cpt-service.php';
+		require_once MULTIPASS_DIR . 'includes/class-mltp-service.php';
 		$this->loaders[] = new Mltp_Service();
-		require_once MULTIPASS_DIR . 'includes/class-settings.php';
+		require_once MULTIPASS_DIR . 'includes/class-mltp-settings.php';
 		$this->loaders[] = new Mltp_Settings();
-		require_once MULTIPASS_DIR . 'includes/class-plugin-info.php';
+		require_once MULTIPASS_DIR . 'includes/class-mltp-plugininfo.php';
 		$this->loaders[] = new Mltp_PluginInfo();
 
-		require_once MULTIPASS_DIR . 'includes/modules/load-modules.php';
+		require_once MULTIPASS_DIR . 'includes/modules/class-mltp-modules.php';
 		$this->loaders[] = new Mltp_Modules();
 		// if(is_plugin_active('woocommerce/woocommerce.php')) {
-		// require_once MULTIPASS_DIR . 'includes/modules/class-woocommerce.php';
+		// require_once MULTIPASS_DIR . 'includes/modules/class-mltp-woocommerce.php';
 		// $this->loaders[] = new Mltp_WooCommerce();
 		//
-		// require_once MULTIPASS_DIR . 'includes/modules/class-woocommerce-payment-product.php';
+		// require_once MULTIPASS_DIR . 'includes/modules/class-mltp-payment-product.php';
 		// $this->loaders[] = new Mltp_Payment_Product();
 		// }
 

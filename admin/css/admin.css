@@ -1,130 +1,130 @@
 /**
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
- */
+**/
 
 :root {
-  --unpaid: pending;
-  --partial: pending;
+--unpaid: pending;
+--partial: pending;
 }
 .post-php.post-type-prestation .rwmb-group-wrapper .rwmb-clone::after {
-  padding-bottom: 0;
-  margin-bottom: 0px;
+padding-bottom: 0;
+margin-bottom: 0px;
 }
 .post-php.post-type-prestation .rwmb-group-clone:not(:first-child) label {
-  display: none;
+display: none;
 }
 
 .rwmb-field.inline > .rwmb-input > div,
 .rwmb-field.inline > .rwmb-input > a,
 .rwmb-field.inline .rwmb-clone > div
 {
-  display: inline-block;
-  margin-right: 1em;
+display: inline-block;
+margin-right: 1em;
 }
 .rwmb-field.inline > .rwmb-input > div,
 .rwmb-field.inline .rwmb-clone > div
 {
-  vertical-align: top;
-  margin-top: 0;
-  padding-top: 0;
+vertical-align: top;
+margin-top: 0;
+padding-top: 0;
 }
 .rwmb-field.inline > .rwmb-input > a.add-clone {
-  vertical-align: bottom;
+vertical-align: bottom;
 }
 .rwmb-field.inline  .rwmb-field > .rwmb-label {
-  width: initial;
+width: initial;
 }
 .rwmb-field.inline .rwmb-clone,
 .rwmb-field.inline .rwmb-clone > .rwmb-field {
-  margin-bottom: 6px;
+margin-bottom: 6px;
 }
 .rwmb-field.inline .rwmb-clone:after {
-  display: none;
+display: none;
 }
 .rwmb-field.inline .rwmb-clone > a > span {
-  margin-top: 1em;
+margin-top: 1em;
 }
 .rwmb-field.inline .rwmb-clone:not(:first-child) > .rwmb-field > .rwmb-label {
-  display: none;
+display: none;
 }
 #prestation-summary .rwmb-field {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  margin-bottom: 6px;
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+margin-bottom: 6px;
 }
 #prestation-summary .rwmb-field.total,
 #prestation-summary .rwmb-field.balance {
-  font-weight: bold;
-  border-top: solid 1px #ccc;
-  border-bottom: solid 1px #ccc;
-  padding: 6px 0 3px;
+font-weight: bold;
+border-top: solid 1px #ccc;
+border-bottom: solid 1px #ccc;
+padding: 6px 0 3px;
 }
 #prestation-summary .rwmb-field .rwmb-input {
-  text-align: right;
-  width: auto;
+text-align: right;
+width: auto;
 }
 
 @media screen and (min-width: 768px) {
-  :root {
-	--low-width: 7.5%;
-	--low-gap: calc( (100% - 12 * var(--low-width) ) / 11 );
-  }
-  .low-gap .rwmb-column {
-	margin-right: 0.9%;
-  }
-  .low-gap .rwmb-column-1 {
-	width: calc(1 * var(--low-width) + 0 * var(--low-gap));
-  }
-  .low-gap .rwmb-column-2 {
-	width: calc(2 * var(--low-width) + 1 * var(--low-gap));
-  }
-  .low-gap .rwmb-column-3 {
-	width: calc(3 * var(--low-width) + 2 * var(--low-gap));
-  }
+:root {
+--low-width: 7.5%;
+--low-gap: calc( (100% - 12 * var(--low-width) ) / 11 );
+}
+.low-gap .rwmb-column {
+margin-right: 0.9%;
+}
+.low-gap .rwmb-column-1 {
+width: calc(1 * var(--low-width) + 0 * var(--low-gap));
+}
+.low-gap .rwmb-column-2 {
+width: calc(2 * var(--low-width) + 1 * var(--low-gap));
+}
+.low-gap .rwmb-column-3 {
+width: calc(3 * var(--low-width) + 2 * var(--low-gap));
+}
 }
 
 @media screen and (max-width: 960px) {
-  :root {
-	--low-width: 15%;
-	--low-gap: calc( (100% - 12 * var(--low-width) ) / 11 );
-  }
-  .post-php.post-type-prestation .rwmb-group-clone:not(:first-child) label {
-	display: block;
-  }
+:root {
+--low-width: 15%;
+--low-gap: calc( (100% - 12 * var(--low-width) ) / 11 );
+}
+.post-php.post-type-prestation .rwmb-group-clone:not(:first-child) label {
+display: block;
+}
 
 }
 
 #prestation-summary .rwmb-field.status {
-  /* display: flex;
-  flex-wrap: wrap;*/
-  grid-template-columns: 1fr 3fr;
+/* display: flex;
+flex-wrap: wrap;*/
+grid-template-columns: 1fr 3fr;
 
-  margin-top: 1em;
-  margin-bottom: 0;
+margin-top: 1em;
+margin-bottom: 0;
 }
 #prestation-summary .rwmb-field.status .rwmb-input {
-  display: flex;
-  justify-content: right;
-  flex-wrap: wrap;
-  gap: 0.5em;
-  left: 0;
-  right: 0;
-  width: 100%;
+display: flex;
+justify-content: right;
+flex-wrap: wrap;
+gap: 0.5em;
+left: 0;
+right: 0;
+width: 100%;
 }
 
 .prestation-status-box,
 .column-status a {
-  border-radius: 0.25em;
-  padding: 0.5em 1em;
-  color: #777;
-  background: #e5e5e5;
-  width: auto;
+border-radius: 0.25em;
+padding: 0.5em 1em;
+color: #777;
+background: #e5e5e5;
+width: auto;
 }
 
 .column-contact a,
 .column-status a {
-  white-space: nowrap;
+white-space: nowrap;
 }
 .column-deposit,
 .column-total,
@@ -132,8 +132,8 @@
 .column-paid,
 .column-balance
 {
-  width: 5em;
-  white-space: nowrap;
+width: 5em;
+white-space: nowrap;
 }
 
 .prestation-status-box.status-pending,
@@ -141,68 +141,68 @@
 .prestation-status-box.status-unpaid,
 .column-status a[href*="prestation-status=unpaid"]
 {
-  --hue: 0;
-  color: hsl(var(--hue), 100%, 25%);
-  background: hsl(var(--hue), 100%, 80%);
+--hue: 0;
+color: hsl(var(--hue), 100%, 25%);
+background: hsl(var(--hue), 100%, 80%);
 }
 .prestation-status-box.status-partial,
 .column-status a[href*="prestation-status=partial"] {
-  --hue: 30;
-  color: hsl(var(--hue), 100%, 25%);
-  background: hsl(var(--hue), 100%, 80%);
+--hue: 30;
+color: hsl(var(--hue), 100%, 25%);
+background: hsl(var(--hue), 100%, 80%);
 }
 
 .prestation-status-box.status-deposit,
 .column-status a[href*="prestation-status=deposit"],
 .prestation-status-box.status-on-hold,
 .column-status a[href*="prestation-status=on-hold"] {
-  --hue: 60;
-  color: hsl(var(--hue), 100%, 25%);
-  background: hsl(var(--hue), 75%, 75%);
+--hue: 60;
+color: hsl(var(--hue), 100%, 25%);
+background: hsl(var(--hue), 75%, 75%);
 }
 .prestation-status-box.status-free,
 .column-status a[href*="prestation-status=free"],
 .prestation-status-box.status-paid,
 .column-status a[href*="prestation-status=paid"] {
-  --hue: 90;
-  color: hsl(var(--hue), 100%, 25%);
-  background: hsl(var(--hue), 75%, 75%);
+--hue: 90;
+color: hsl(var(--hue), 100%, 25%);
+background: hsl(var(--hue), 75%, 75%);
 }
 
 .wp-list-table.multipass-list .column-total {
-  text-align: right;
+text-align: right;
 }
 .wp-list-table.multipass-list {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+width: 100%;
+border-collapse: separate;
+border-spacing: 0;
 }
 .wp-list-table.multipass-list thead th {
-  border-bottom: solid 1px #ccc;
+border-bottom: solid 1px #ccc;
 }
 .wp-list-table.multipass-list tfoot th {
-  border-top: solid 1px #ccc;
+border-top: solid 1px #ccc;
 }
 
 .wp-list-table.multipass-list .column,
 .wp-list-table.multipass-list .column {
-  padding: 0.5em;
+padding: 0.5em;
 }
 
 .wp-list-table.multipass-list .column:first-child,
 .wp-list-table.multipass-list .column:first-child {
-  padding-left: 0;
+padding-left: 0;
 }
 
 .wp-list-table.multipass-list .column:last-child,
 .wp-list-table.multipass-list .column:last-child {
-  padding-right: 0;
+padding-right: 0;
 }
 
 
 .wp-list-table.multipass-list .column {
-  width: auto;
-  text-align: left;
+width: auto;
+text-align: left;
 }
 .wp-list-table.multipass-list .column.column-subtotal,
 .wp-list-table.multipass-list .column.column-discount,
@@ -210,22 +210,22 @@
 .wp-list-table.multipass-list .column.column-total,
 .wp-list-table.multipass-list .column.column-paid,
 .wp-list-table.multipass-list .column.column-actions {
-  width: 10%;
-  text-align: right;
+width: 10%;
+text-align: right;
 }
 .wp-list-table.multipass-list .column.date_time {
-  width: 8em;
-  white-space: nowrap;
+width: 8em;
+white-space: nowrap;
 }
 .wp-list-table.multipass-list .column.date {
-  width: 5em;
-  white-space: nowrap;
+width: 5em;
+white-space: nowrap;
 }
 
 .wp-list-table.multipass-list .column.column-actions {
-  width: 1%;
-  /* white-space: nowrap; */
-  padding-left: 1em;
-  border: none;
-  color: #999;
+width: 1%;
+/* white-space: nowrap; */
+padding-left: 1em;
+border: none;
+color: #999;
 }

@@ -1,3 +1,10 @@
+/**
+ * Public js
+ *
+ * @package    multipass
+ * @subpackage multipass/public
+ */
+
 (function( $ ) {
 	'use strict';
 
