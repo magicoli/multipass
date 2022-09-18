@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Register all actions and filters for the plugin
  *
@@ -43,8 +42,9 @@ class Mltp_Prestation {
 
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
+	 * If $args is passed, attempt to create a prestation object
 	 *
-	 * @since    1.0.0
+	 * @param    integer|object|array $args Object post id or data to use to search prestation.
 	 */
 	public function __construct( $args = null ) {
 		$this->post = $this->get( $args );
@@ -77,7 +77,7 @@ class Mltp_Prestation {
 	 * @param    object $component        A reference to the instance of the object on which the filter is defined.
 	 * @param    string $callback         The name of the function definition on the $component.
 	 * @param    int    $priority         Optional. The priority at which the function should be fired. Default is 10.
-	 * @param    int    $accepted_args    Optional. The number of arguments that should be passed to the $callback. Default is 1
+	 * @param    int    $accepted_args    Optional. The number of arguments that should be passed to the $callback. Default is 1.
 	 */
 	public function add_filter( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
 		$this->filters = $this->add( $this->filters, $hook, $component, $callback, $priority, $accepted_args );
@@ -129,7 +129,7 @@ class Mltp_Prestation {
 			),
 
 			array(
-				'hook'          => 'save_post', // use save_post because save_post_prestation_item is fired before actual save and meta values are not yet updated
+				'hook'          => 'save_post', // use save_post because save_post_prestation_item is fired before actual save and meta values are not yet updated.
 				'callback'      => 'save_post_action',
 				'accepted_args' => 3,
 			),
@@ -138,12 +138,6 @@ class Mltp_Prestation {
 				'hook'     => 'pre_get_posts',
 				'callback' => 'sortable_columns_order',
 			),
-
-			// array(
-			// 'hook' => 'mb_relationships_init',
-			// 'callback' => 'register_relationships',
-			// 'priority' => 20,
-			// ),
 		);
 
 		$filters = array(
@@ -180,22 +174,38 @@ class Mltp_Prestation {
 		);
 
 		foreach ( $filters as $hook ) {
-			( empty( $hook['component'] ) ) && $hook['component']         = __CLASS__;
-			( empty( $hook['priority'] ) ) && $hook['priority']           = 10;
-			( empty( $hook['accepted_args'] ) ) && $hook['accepted_args'] = 1;
+			$hook = array_merge(
+				array(
+					'component'     => __CLASS__,
+					'priority'      => 10,
+					'accepted_args' => 1,
+				),
+				$hook
+			);
 			add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
 
 		foreach ( $actions as $hook ) {
-			( empty( $hook['component'] ) ) && $hook['component']         = __CLASS__;
-			( empty( $hook['priority'] ) ) && $hook['priority']           = 10;
-			( empty( $hook['accepted_args'] ) ) && $hook['accepted_args'] = 1;
+			$hook = array_merge(
+				array(
+					'component'     => __CLASS__,
+					'priority'      => 10,
+					'accepted_args' => 1,
+				),
+				$hook
+			);
 			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
 
 	}
 
-	static function register_post_types() {
+
+	/**
+	 * Register Prestation post type
+	 *
+	 * @return void
+	 */
+	public static function register_post_types() {
 		$labels = array(
 			'name'                     => esc_html__( 'Prestations', 'multipass' ),
 			'singular_name'            => esc_html__( 'Prestation', 'multipass' ),
@@ -220,7 +230,7 @@ class Mltp_Prestation {
 			'use_featured_image'       => esc_html__( 'Use as featured image', 'multipass' ),
 			'menu_name'                => esc_html__( 'MultiPass', 'multipass' ),
 			'filter_items_list'        => esc_html__( 'Filter prestations list', 'multipass' ),
-			'filter_by_date'           => esc_html__( '', 'multipass' ),
+			'filter_by_date'           => esc_html__( 'Filter by date', 'multipass' ),
 			'items_list_navigation'    => esc_html__( 'Prestations list navigation', 'multipass' ),
 			'items_list'               => esc_html__( 'Prestations list', 'multipass' ),
 			'item_published'           => esc_html__( 'Prestation published', 'multipass' ),
@@ -261,7 +271,13 @@ class Mltp_Prestation {
 		register_post_type( 'prestation', $args );
 	}
 
-	static function register_fields( $meta_boxes ) {
+	/**
+	 * Register Prestations fields
+	 *
+	 * @param  array $meta_boxes    current metaboxes.
+	 * @return array                updated metaboxes.
+	 */
+	public static function register_fields( $meta_boxes ) {
 		$js_date_format_short = preg_match( '/^[Fm]/', get_option( 'date_format' ) ) ? 'mm-dd-yy' : 'dd-mm-yy';
 
 		$prefix                       = '';
@@ -549,7 +565,6 @@ class Mltp_Prestation {
 							'class'    => 'item_price',
 							'type'     => 'text',
 							'readonly' => true,
-							// 'pattern'  => '[0-9]+([,\.][0-9]+)?',
 							'columns'  => 1,
 							'visible'  => array(
 								'when'     => array(
@@ -636,14 +651,9 @@ class Mltp_Prestation {
 					'field_type'     => 'custom_html',
 					'callback'       => __CLASS__ . '::display_status',
 					'class'          => 'status',
-					// 'disabled' => true,
 					'readonly'       => true,
-					// 'save_field' => false,
-					// 'placeholder' => ' ',
 					'remove_default' => true,
 					'admin_columns'  => array(
-						// 'position' => 'after balance',
-						// 'sort'       => true,
 						'filterable' => true,
 					),
 				),
@@ -653,7 +663,12 @@ class Mltp_Prestation {
 		return $meta_boxes;
 	}
 
-	static function register_taxonomies() {
+	/**
+	 * Register prestation-status taxonomy.
+	 *
+	 * @return void
+	 */
+	public static function register_taxonomies() {
 		$labels = array(
 			'name'                       => esc_html__( 'Prestation statuses', 'multipass' ),
 			'singular_name'              => esc_html__( 'Prestation status', 'multipass' ),
@@ -713,18 +728,18 @@ class Mltp_Prestation {
 		MultiPass::register_terms(
 			'prestation-status',
 			array(
-				// Open (still modifiable, available for new order inclusion)
-				'pending'        => array( 'name' => __( 'Pending payment', 'multipass' ) ),  // unpaid or paid less than deposit, not confirmed
-				'on-hold'        => array( 'name' => __( 'On hold', 'multipass' ) ), // fully paid and not started
-				'processing'     => array( 'name' => __( 'Processing', 'multipass' ) ), // paid and started
+				// Open (still modifiable, available for new order inclusion).
+				'pending'        => array( 'name' => __( 'Pending payment', 'multipass' ) ),  // unpaid or paid less than deposit, not confirmed.
+				'on-hold'        => array( 'name' => __( 'On hold', 'multipass' ) ), // fully paid and not started.
+				'processing'     => array( 'name' => __( 'Processing', 'multipass' ) ), // paid and started.
 
-			// Closed (not modifiable except refunds, not available for new order inclusion)
-				'completed'      => array( 'name' => __( 'Completed', 'multipass' ) ), // paid and finished
+			// Closed (not modifiable except refunds, not available for new order inclusion).
+				'completed'      => array( 'name' => __( 'Completed', 'multipass' ) ), // paid and finished.
 				'cancelled'      => array( 'name' => __( 'Cancelled', 'multipass' ) ),
 				'refunded'       => array( 'name' => __( 'Refunded', 'multipass' ) ),
-				'failed'         => array( 'name' => __( 'Failed', 'multipass' ) ), // shouldn't need that at prestation level
+				'failed'         => array( 'name' => __( 'Failed', 'multipass' ) ), // shouldn't need that at prestation level.
 
-			// Draft (not available for new order inclusion)
+			// Draft (not available for new order inclusion).
 				'checkout-draft' => array( 'name' => __( 'Draft', 'multipass' ) ),
 
 				'deposit'        => array(
@@ -748,7 +763,12 @@ class Mltp_Prestation {
 		);
 	}
 
-	function get_items() {
+	/**
+	 * Get items belonging to this prestation.
+	 *
+	 * @return array Items formatted as array.
+	 */
+	public function get_items() {
 		$query_args       = array(
 			'post_type'   => 'prestation-item',
 			'post_status' => 'publish',
@@ -770,8 +790,8 @@ class Mltp_Prestation {
 			$price    = get_post_meta( $prestation_item->ID, 'price', true );
 			$dates    = get_post_meta( $prestation_item->ID, 'dates', true );
 			$discount = get_post_meta( $prestation_item->ID, 'discount', true );
-			// $deposit = get_post_meta($prestation_item->ID, 'deposit', true);
-			$items[] = array(
+			$deposit  = get_post_meta( $prestation_item->ID, 'deposit', true );
+			$items[]  = array(
 				'ID'          => $prestation_item->ID,
 				'date'        => $prestation_item->post_date,
 				'description' => reset( $meta['description'] ),
@@ -780,26 +800,23 @@ class Mltp_Prestation {
 				'subtotal'    => $price['sub_total'],
 				'discount'    => isset( $discount['amount'] ) ? $discount['amount'] : null,
 				'total'       => reset( $meta['total'] ),
-				// 'deposit' => $deposit['amount'],
+				'deposit'     => ( is_array( $deposit ) & ! empty( $deposit['amount'] ) ) ? $deposit['amount'] : null,
 				'paid'        => reset( $meta['paid'] ),
 				'balance'     => reset( $meta['balance'] ),
 				'source'      => reset( $meta['source'] ),
 				'links'       => Mltp_Item::item_links_html( $prestation_item, array( 'format' => 'icon' ) ),
-				// 'subtotal' => MultiPass::price($price['sub_total']),
-				// 'discount' => MultiPass::price($discount['amount']),
-				// 'total' => MultiPass::price(reset($meta['total'])),
-				// // 'deposit' => $deposit['amount'],
-				// 'paid' => MultiPass::price(reset($meta['paid'])),
-				// 'balance' => MultiPass::price(reset($meta['balance'])),
-				// 'source' => reset($meta['source']),
-				// 'links' => Mltp_Item::item_links_html($prestation_item, ['format' => 'icon']),
 			);
 		}
 
 		return $items;
 	}
 
-	function get_columns() {
+	/**
+	 * Define columns to display in admin list.
+	 *
+	 * @return array Columns.
+	 */
+	public function get_columns() {
 		return array(
 			// 'ID' => __('ID', 'multipass'),
 			// 'date' => __('Date', 'multipass'),
@@ -809,7 +826,7 @@ class Mltp_Prestation {
 			'subtotal'    => __( 'Subtotal', 'multipass' ),
 			'discount'    => __( 'Discount', 'multipass' ),
 			'total'       => __( 'Total', 'multipass' ),
-			// 'deposit' => __('deposit', 'multipass'),
+			'deposit'     => __( 'Deposit', 'multipass' ),
 			'paid'        => __( 'Paid', 'multipass' ),
 			'balance'     => __( 'Balance', 'multipass' ),
 			'source'      => __( 'Source', 'multipass' ),
@@ -817,14 +834,20 @@ class Mltp_Prestation {
 		);
 	}
 
-	static function items_list( $args = array(), $field = array() ) {
-		if ( is_object( $args ) ) {
-			$post = $args;
-		} else {
-			global $post;
+	/**
+	 * Build items list to display on prestation edit page.
+	 *
+	 * @param  object $post    Prestation post.
+	 * @param  array  $field   Field info passed by callback, unused.
+	 *
+	 * @return string  HTML formatted list.
+	 */
+	public static function items_list( $post = null, $field = array() ) {
+		if ( ! is_object( $post ) ) {
+			$post = get_post();
 		}
 		if ( ! self::is_prestation_post( $post ) ) {
-			return 'nope';
+			return false;
 		}
 
 		$prestation = new Mltp_Prestation( $post );
@@ -845,29 +868,26 @@ class Mltp_Prestation {
 				'rows'    => $items,
 			)
 		);
-		// error_log(print_r($list, true));
+
 		return $list->render();
 	}
 
-	static function get_managed_list( $args = array(), $field = array() ) {
-		$html = apply_filters( 'multipass_managed_list', null );
-
-		// if(empty($html))
-		// $html = __('No data', 'multipass' );
-
-		return $html;
+	/**
+	 * Format subtotal price for summary metabox.
+	 *
+	 * @return string  HTML formatted currency amount.
+	 */
+	public static function get_summary_price() {
+		$amount = get_post_meta( get_post()->ID, 'price', true );
+		return MultiPass::price( ( empty( $amount ) ) ? 0 : $amount );
 	}
 
-	static function get_summary_price( $args = array() ) {
-		global $post;
-		$amount = get_post_meta( $post->ID, 'price', true );
-		if ( empty( $amount ) ) {
-			$amount = 0;
-		}
-		return MultiPass::price( $amount );
-	}
-
-	static function get_summary_discount( $args = array() ) {
+	/**
+	 * Format discount amount for summary metabox.
+	 *
+	 * @return string  HTML formatted currency amount.
+	 */
+	public static function get_summary_discount( $args = array() ) {
 		global $post;
 		$discount = get_post_meta( $post->ID, 'discount', true );
 		$amount   = ( isset( $discount['total'] ) ) ? $discount['total'] : null;
@@ -876,7 +896,12 @@ class Mltp_Prestation {
 		}
 	}
 
-	static function get_summary_total( $args = array() ) {
+	/**
+	 * Format total price for summary metabox.
+	 *
+	 * @return string  HTML formatted currency amount.
+	 */
+	public static function get_summary_total( $args = array() ) {
 		global $post;
 		$amount = get_post_meta( $post->ID, 'total', true );
 		if ( empty( $amount ) ) {
@@ -885,7 +910,12 @@ class Mltp_Prestation {
 		return MultiPass::price( $amount );
 	}
 
-	static function get_summary_deposit_percent( $args = array() ) {
+	/**
+	 * Format discount percentage for summary metabox.
+	 *
+	 * @return string  HTML formatted percentage.
+	 */
+	public static function get_summary_deposit_percent( $args = array() ) {
 		global $post;
 		$deposit = get_post_meta( $post->ID, 'deposit', true );
 		$percent = ( isset( $deposit['percent'] ) ) ? $deposit['percent'] : null;
@@ -894,7 +924,12 @@ class Mltp_Prestation {
 		}
 	}
 
-	static function get_summary_deposit( $args = array() ) {
+	/**
+	 * Format deposit amount for summary metabox.
+	 *
+	 * @return string  HTML formatted currency amount.
+	 */
+	public static function get_summary_deposit( $args = array() ) {
 		global $post;
 		$deposit = get_post_meta( $post->ID, 'deposit', true );
 		$amount  = ( isset( $deposit['total'] ) ) ? $deposit['total'] : null;
@@ -903,26 +938,46 @@ class Mltp_Prestation {
 		}
 	}
 
-	static function get_summary_paid( $args = array() ) {
+	/**
+	 * Format paid amount for summary metabox.
+	 *
+	 * @return string  HTML formatted currency amount.
+	 */
+	public static function get_summary_paid( $args = array() ) {
 		global $post;
 		$amount = get_post_meta( $post->ID, 'paid', true );
 		return MultiPass::price( $amount );
 	}
 
-	static function get_balance( $args = array() ) {
+	/**
+	 * Get balance prestation balance
+	 *
+	 * @return float  Balance amount.
+	 */
+	public static function get_balance( $args = array() ) {
 		global $post;
 		$amount = get_post_meta( $post->ID, 'balance', true );
 		return $amount;
 	}
 
-	static function get_summary_balance( $args = array() ) {
+	/**
+	 * Format balance amount for summary metabox.
+	 *
+	 * @return string  HTML formatted currency amount.
+	 */
+	public static function get_summary_balance( $args = array() ) {
 		// global $post;
 		// $amount = get_post_meta($post->ID, 'balance', true);
 		$amount = self::get_balance();
 		return MultiPass::price( $amount );
 	}
 
-	static function get_summary_reference( $args = array() ) {
+	/**
+	 * Get prestation reference for summary..
+	 *
+	 * @return string  HTML formatted reference.
+	 */
+	public static function get_summary_reference( $args = array() ) {
 		global $post;
 		if ( $post->post_type != 'prestation' ) {
 			return;
@@ -947,7 +1002,7 @@ class Mltp_Prestation {
 	}
 
 
-	static function term_link_filter( $termlink, $term, $taxonomy ) {
+	public static function term_link_filter( $termlink, $term, $taxonomy ) {
 		if ( 'prestation-status' === $taxonomy ) {
 			return add_query_arg(
 				array(
@@ -959,7 +1014,7 @@ class Mltp_Prestation {
 		return $termlink;
 	}
 
-	static function display_status() {
+	public static function display_status() {
 		$paid_status = null;
 		global $post;
 		$terms = get_the_terms( $post, 'prestation-status' );
@@ -985,7 +1040,7 @@ class Mltp_Prestation {
 		}
 	}
 
-	static function get_post( $object ) {
+	public static function get_post( $object ) {
 		if ( self::is_prestation_post( $object ) ) {
 			return $object;
 		}
@@ -1000,7 +1055,7 @@ class Mltp_Prestation {
 		return ( self::is_prestation_post( $post ) ) ? $post : false;
 	}
 
-	static function is_prestation_post( $object ) {
+	public static function is_prestation_post( $object ) {
 		if ( ! is_object( $object ) ) {
 			return false;
 		}
@@ -1014,7 +1069,7 @@ class Mltp_Prestation {
 		return true;
 	}
 
-	static function save_post_action( $post_id, $post, $update ) {
+	public static function save_post_action( $post_id, $post, $update ) {
 		// if( !$update ) return; // update is not true when created by plugin
 		if ( ! self::is_prestation_post( $post ) ) {
 			return;
@@ -1278,7 +1333,7 @@ class Mltp_Prestation {
 		return;
 	}
 
-	static function add_admin_columns( $columns ) {
+	public static function add_admin_columns( $columns ) {
 		$columns = array(
 			'cb'       => $columns['cb'],
 			'title'    => __( 'Title', 'multipass' ),
@@ -1299,7 +1354,7 @@ class Mltp_Prestation {
 		return $columns;
 	}
 
-	static function sortable_columns( $columns ) {
+	public static function sortable_columns( $columns ) {
 		$columns = array_merge(
 			$columns,
 			array(
@@ -1317,7 +1372,7 @@ class Mltp_Prestation {
 		return $columns;
 	}
 
-	static function admin_columns_display( $column, $post_id ) {
+	public static function admin_columns_display( $column, $post_id ) {
 		// Image column
 		switch ( $column ) {
 			case 'dates':
@@ -1375,7 +1430,7 @@ class Mltp_Prestation {
 		}
 	}
 
-	static function sortable_columns_order( $query ) {
+	public static function sortable_columns_order( $query ) {
 		if ( ! is_admin() ) {
 			return;
 		}
@@ -1389,7 +1444,7 @@ class Mltp_Prestation {
 		}
 	}
 
-	static function new_post_random_slug( $data, $postarr ) {
+	public static function new_post_random_slug( $data, $postarr ) {
 		if ( ! in_array( $data['post_type'], array( 'prestation' ), true ) ) {
 			return $data;
 		}

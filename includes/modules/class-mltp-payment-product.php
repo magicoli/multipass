@@ -483,7 +483,7 @@ class Mltp_Payment_Product {
 			$links[] = sprintf(
 				'<a class=button href="%2$s" target="blank">%1$s</a> ',
 				sprintf( __( 'Pay balance (%s)', 'multipass' ), MultiPass::price( $balance ) ),
-				self::payment_link( $reference, $deposit_due ),
+				self::payment_link( $reference, $balance ),
 			);
 		}
 		$output = join( ' ', $links );
