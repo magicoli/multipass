@@ -4,3 +4,5 @@ vendor/*
 !vendor/composer
 vendor/composer/installers
 .phpunit.result.cache
+node_modules/
+build/
