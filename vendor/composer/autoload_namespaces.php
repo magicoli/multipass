@@ -7,4 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Parsedown' => array($baseDir . '/lib/erusev/parsedown'),
+    'ComponentInstaller' => array($vendorDir . '/robloach/component-installer/src'),
+    'Assetic' => array($vendorDir . '/kriswallsmith/assetic/src'),
 );

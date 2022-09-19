@@ -25,10 +25,10 @@
         "terdia/currency-util": "^1.0",
         "erusev/parsedown": "^1.7",
         "openpsa/ranger": "^0.5.4",
-        "oomphinc/composer-installers-extender": "^2.0"
+        "oomphinc/composer-installers-extender": "^2.0",
+        "fullcalendar/fullcalendar": "^3.10"
     },
     "extra": {
-      "installer-types": ["library"],
       "installer-paths": {
         "lib/meta-box/{$name}": ["vendor:wpmetabox","vendor:meta-box"],
         "lib/{$vendor}/{$name}": ["type:wordpress-plugin",
@@ -63,7 +63,8 @@
         "allow-plugins": {
             "composer/installers": true,
             "oomphinc/composer-installers-extender": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "robloach/component-installer": true
         }
     },
     "require-dev": {
