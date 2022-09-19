@@ -5,8 +5,8 @@ Tags: hotel, booking, multi-prestations, multi-services, woocommerce
 Requires at least: 5.9.0
 Tested up to: 6.0.2
 Stable tag: 1.0
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License: AGPLv3 or later
+License URI: http://www.gnu.org/licenses/agpl-3.0.txt
 
 Group services from different sources (WooCommerce, OTA, booking engines...) and manage them as a whole.
 
