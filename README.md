@@ -1,13 +1,13 @@
 # MultiPass (dev)
 
 - Contributors: magicoli69
-- Donate link: https: //magiiic.com/support/MultiPass+Plugin
+- Donate link: https://magiiic.com/support/MultiPass+Plugin
 - Tags: hotel, booking, multi-prestations, multi-services, woocommerce
 - Requires at least: 5.9.0
 - Tested up to: 6.0.2
 - Stable tag: 1.0
 - License: AGPLv3 or later
-- License URI: http: //www.gnu.org/licenses/agpl-3.0.txt
+- License URI: http://www.gnu.org/licenses/agpl-3.0.txt
 
 Group services from different sources (WooCommerce, OTA, booking engines...) and manage them as a whole.
 
