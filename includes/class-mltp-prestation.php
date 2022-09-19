@@ -1564,3 +1564,5 @@ class Mltp_Prestation {
 	}
 
 }
+
+$this->loaders[] = new Mltp_Prestation();

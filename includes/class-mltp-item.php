@@ -1298,3 +1298,5 @@ class Mltp_Item_Admin_Columns extends \MBAC\Post {
 		}
 	}
 }
+
+$this->loaders[] = new Mltp_Item();

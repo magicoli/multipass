@@ -231,3 +231,5 @@ class Mltp_Modules {
 	}
 
 }
+
+$this->loaders[] = new Mltp_Modules();

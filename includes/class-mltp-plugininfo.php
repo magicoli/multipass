@@ -310,3 +310,5 @@ class Mltp_PluginInfo {
 		// );
 	}
 }
+
+$this->loaders[] = new Mltp_PluginInfo();

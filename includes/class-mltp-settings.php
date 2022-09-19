@@ -239,3 +239,5 @@ class Mltp_Settings {
 	}
 
 }
+
+$this->loaders[] = new Mltp_Settings();

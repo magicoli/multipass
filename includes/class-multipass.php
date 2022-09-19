@@ -102,46 +102,36 @@ class MultiPass {
 	private function load_dependencies() {
 
 		/**
-		 * The class responsible for orchestrating the actions and filters of the
-		 * core plugin.
+		 * The standard plugin classes.
 		 */
 		require_once MULTIPASS_DIR . 'includes/class-mltp-loader.php';
-
-		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
 		require_once MULTIPASS_DIR . 'includes/class-mltp-i18n.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the admin area.
-		 */
 		require_once MULTIPASS_DIR . 'admin/class-mltp-admin.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the public-facing
-		 * side of the site.
-		 */
 		require_once MULTIPASS_DIR . 'public/class-mltp-public.php';
 
 		$this->loader = new Mltp_Loader();
 
+		/**
+		 * External libraries.
+		 */
 		require_once MULTIPASS_DIR . 'vendor/autoload.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-table.php';
 
+		/**
+		 * Post types.and specific plugin classes.
+		 */
 		require_once MULTIPASS_DIR . 'includes/class-mltp-prestation.php';
-		$this->loaders[] = new Mltp_Prestation();
 		require_once MULTIPASS_DIR . 'includes/class-mltp-item.php';
-		$this->loaders[] = new Mltp_Item();
 		require_once MULTIPASS_DIR . 'includes/class-mltp-service.php';
-		$this->loaders[] = new Mltp_Service();
+
 		require_once MULTIPASS_DIR . 'includes/class-mltp-settings.php';
-		$this->loaders[] = new Mltp_Settings();
 		require_once MULTIPASS_DIR . 'includes/class-mltp-plugininfo.php';
-		$this->loaders[] = new Mltp_PluginInfo();
 
 		require_once MULTIPASS_DIR . 'includes/modules/class-mltp-modules.php';
-		$this->loaders[] = new Mltp_Modules();
+
+		// Make sure to load calendar after modules.
+		require_once MULTIPASS_DIR . 'includes/class-mltp-calendar.php';
+
 		// if(is_plugin_active('woocommerce/woocommerce.php')) {
 		// require_once MULTIPASS_DIR . 'includes/modules/class-mltp-woocommerce.php';
 		// $this->loaders[] = new Mltp_WooCommerce();

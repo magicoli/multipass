@@ -418,3 +418,5 @@ class Mltp_Service {
 	}
 
 }
+
+$this->loaders[] = new Mltp_Service();
