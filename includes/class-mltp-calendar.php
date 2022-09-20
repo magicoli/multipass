@@ -405,6 +405,7 @@ class Mltp_Calendar {
 		}
 		$data = array(
 			'locale' => MultiPass::get_locale(),
+			'resTitle' => __('Services', 'multipass'),
 			'resources' => array(
 				array(
 					'id' => '1',

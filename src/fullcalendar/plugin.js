@@ -23,6 +23,7 @@ function init_calendar(json){
 	var resources = data.resources;
 	var events = data.events;
 	var locale = data.locale;
+	var resTitle = data.resTitle;
 	// var events = data['events'];
 	// var resources = jsondata['resources'];
 	console.log( resources );
@@ -46,6 +47,7 @@ function init_calendar(json){
 			height: 'auto',
 			resources: resources,
 			resourceAreaWidth: '15rem',
+			resourceAreaHeaderContent: resTitle,
 			events: events,
 			slotLabelFormat: [
 				{ weekday: 'short' }, // top level of text
