@@ -59,22 +59,7 @@ class Mltp_Admin {
 	 * @since    0.1.0
 	 */
 	public function enqueue_styles() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Mltp_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Mltp_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_style( $this->plugin_slug . '-admin-built', plugin_dir_url( __FILE__ ) . 'admin.css', array(), $this->version, 'all' );
-		wp_enqueue_style( $this->plugin_slug . '-admin', plugin_dir_url( __FILE__ ) . 'css/admin.css', array(), $this->version, 'all' );
-
+		wp_enqueue_style( $this->plugin_slug . '-admin-built', plugin_dir_url( __FILE__ ) . 'admin.css', array(), MULTIPASS_VERSION, 'all' );
 	}
 
 	/**
@@ -83,22 +68,7 @@ class Mltp_Admin {
 	 * @since    0.1.0
 	 */
 	public function enqueue_scripts() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Mltp_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Mltp_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_script( $this->plugin_slug . '-admin-built', plugin_dir_url( __FILE__ ) . 'admin.js', array( 'jquery' ), $this->version, false );
-		wp_enqueue_script( $this->plugin_slug . '-admin', plugin_dir_url( __FILE__ ) . 'js/admin.js', array( 'jquery' ), $this->version, false );
-
+		wp_enqueue_script( $this->plugin_slug . '-admin', plugin_dir_url( __FILE__ ) . 'admin.js', array( 'jquery' ), MULTIPASS_VERSION, false );
 	}
 
 }
