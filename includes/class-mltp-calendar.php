@@ -287,11 +287,12 @@ class Mltp_Calendar {
 	}
 
 	public static function render_calendar_page() {
-		wp_enqueue_style( 'mltp-fullcalendar-main', plugins_url( 'lib/fullcalendar/main.css', MULTIPASS_FILE ) );
+		wp_enqueue_style( 'mltp-fullcalendar-main', plugins_url( 'lib/fullcalendar/main.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION);
+		wp_enqueue_style( 'mltp-fullcalendar-plugin', plugins_url( 'includes/js/fullcalendar.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION);
+
 		wp_enqueue_script( 'fullcalendar-cdn', 'https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.0/main.min.js' );
 		// wp_enqueue_script( 'mltp-fullcalendar-main', plugins_url( 'lib/fullcalendar/main.js', MULTIPASS_FILE ) );
-		wp_enqueue_script( 'mltp-fullcalendar-plugin', plugins_url( 'includes/js/fullcalendar.js', MULTIPASS_FILE ) );
-		wp_enqueue_style( 'mltp-fullcalendar-plugin', plugins_url( 'includes/js/fullcalendar.css', MULTIPASS_FILE ) );
+		wp_enqueue_script( 'mltp-fullcalendar-plugin', plugins_url( 'includes/js/fullcalendar.js', MULTIPASS_FILE ), array(), MULTIPASS_VERSION);
 
 		$content = '(no content yet)';
 		$actions = '';
@@ -319,45 +320,91 @@ class Mltp_Calendar {
 
 		printf(
 			'<div class="wrap">
-      <h1 class="wp-heading-inline">%s %s</h1>
-      <div id="calendar"></div>
+				<div id="calendar-placeholder">
+					<h1 class="wp-heading-inline">%s %s</h1>
+					<p>%s <span class="dashicons dashicons-update spin"></span></p>
+				</div>
+				<div id="calendar"></div>
       </div>',
 			get_admin_page_title(),
 			$actions,
-			// __('Loading calendar...', 'multipass'),
+			__('Loading in progress, please wait', 'multipass'),
 		);
 	}
 
 	public function ajax_feed_events_action() {
-		$args  = array(
-			'post_type'      => 'prestation',
+		// Get calendars from taxonomy
+		$events = array();
+		// $terms = get_terms('calendar-section');
+		// if($terms) {
+		// 	foreach($terms as $term) {
+		// 		// Get services for each calendar
+		// 		$args = array(
+		// 			'posts_per_page' => -1,
+		// 			'post_type' => 'service',
+		// 			'tax_query' => array(
+		// 				array(
+		// 					'taxonomy' => 'calendar-section',
+		// 					'field' => 'term_id',
+		// 					'terms' => $term->term_id,
+		// 				)
+		// 			)
+		// 		);
+		// 		$query = new WP_Query( $args );
+		// 		error_log('term ' . print_r($term, true) . ' services ' . $query->found_posts);
+		// 		if($query->have_posts()) {
+		// 			// Get prestation items for each service
+		// 			while ( $query->have_posts() ) {
+		// 			}
+		// 		}
+		// 	}
+		// }
+
+		$args = array(
 			'posts_per_page' => -1,
+			'post_type' => 'prestation-item',
+			// 'tax_query' => array(
+			// 	array(
+			// 		'taxonomy' => 'calendar-section',
+			// 		'field' => 'term_id',
+			// 		'terms' => $term->term_id,
+			// 	)
+			// )
 		);
 		$query = new WP_Query( $args );
-		if ( $query->have_posts() ) {
-			$events = array();
+
+		if ( $query && $query->have_posts() ) {
 			while ( $query->have_posts() ) {
 				$query->the_post();
-				$bookings = get_post_meta( get_the_ID(), 'group_booking', true );
-				if ( $bookings ) {
-					foreach ( $bookings as $key => $booking ) {
-						$room  = $booking['room'];
-						$begin = $booking['check_in'];
-						$end   = $booking['check_out'];
+				$dates = get_post_meta( get_the_ID(), 'dates', true );
+				if(empty($dates)) continue;
+				$iso = array_map('MultiPass::format_date_iso', $dates);
+				// error_log(get_the_title() . ' dates ' . print_r(get_post(), true)
+				// . ' iso ' . print_r($iso, true) );
+			// 	if ( $bookings ) {
+			// 		foreach ( $bookings as $key => $booking ) {
+			  // $room_id = get_post_meta( get_the_ID(), 'dates', true );
+				$room  = join('-', array(
+					get_post_meta( get_the_ID(), 'source_id', true ),
+					get_post_meta( get_the_ID(), 'source_item_id', true ),
+				));
+						$begin = $iso['from'];
+						$end   = (empty($iso['to'])) ? $iso['from'] : $iso['to'];
 
-						$e['title']      = '#' . get_the_ID() . ' ' . get_the_title( $room );
+						$e['title']      = get_the_title();
 						$e['start']      = $begin;
 						$e['end']        = $end;
 						$e['url']        = get_edit_post_link( get_the_ID(), '' );
-						$e['classNames'] = 'room-' . $room;
+						$e['classNames'] = 'service-' . $room;
 						$e['allDay']     = true;
 
 						array_push( $events, $e );
-					}
-				}
+			// 		}
+			// 	}
 			}
-			echo json_encode( $events );
 		}
+		error_log(print_r($events,true));
+		echo json_encode( $events );
 		wp_die();
 	}
 

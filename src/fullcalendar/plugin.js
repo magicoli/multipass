@@ -1,7 +1,8 @@
-// import { Calendar } from '@fullcalendar/core';
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
-import './plugin.scss';
-
+// // import { FullCalendar } from '@fullcalendar/core';
+// // import timelinePlugin from '@fullcalendar/resource-timeline';
+// // import allLocales from '@fullcalendar/core/locales-all';
+// import './plugin.scss';
+//
 jQuery.ajax(
 	{
 		type: 'post',
@@ -17,38 +18,39 @@ jQuery.ajax(
 	}
 )
 
-function init_calendar(events){
+function init_calendar(data){
+	var events = data['events'];
+	var resources = data['resources'];
 	var calendarEl = document.getElementById( 'calendar' );
 	var calendar   = new FullCalendar.Calendar(
 		calendarEl,
 		{
 			schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-			// plugins: [ 'dayGrid' ],
-			// defaultView: 'dayGridMonth',
-			plugins: [ resourceTimelinePlugin ],
-		  initialView: 'viewTimelineDays',
+			// plugins: [ timelinePlugin ],
+		  initialView: 'resourceTimelineMonth',
+			// locales: allLocales,
+			// locale: 'fr',
 			header: {
 				left: 'prev,next today',
 				center: 'title',
 				right: ''
 			},
+			// dayHeaderFormat: 'D',
 			expandRows: false,
 			nowIndicator: true,
-			views: {
-			  viewTimelineDays: {
-			    type: 'resourceTimeline',
-			    duration: { days: 28 },
-			    // buttonText: '2 Years',
-			    slotDuration: { days: 1 },
-			  }
-			},
+			height: 'auto',
 			events: events,
+			slotLabelFormat: [
+				{ weekday: 'short' }, // top level of text
+				{ day: 'numeric' } // lower level of text
+			],
 			eventPositioned( view, element ) {
 				displayBookings();
 			},
 		}
 	);
 	calendar.render();
+	document.getElementById( 'calendar-placeholder' ).style.display = 'none';
 }
 
 // document.addEventListener('DOMContentLoaded', function() {
@@ -68,27 +70,60 @@ function init_calendar(events){
 // 			{
 // 				// plugins: [ 'dayGrid' ],
 // 				schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-// 				defaultView: 'timelineMonth',
+// 				// defaultView: 'timelineMonth',
+// 				initialView: 'resourceTimelineMonth',
 // 				defaultDate: '2022-09-07',
 // 				header: {
 // 					left: 'prev,next today',
 // 					center: 'title',
 // 				},
+// 				resources: [
+// 					{
+// 						id: 1,
+// 						title: 'Main',
+// 						children: [
+// 							{
+// 								id: 11,
+// 								title: 'Gite 1',
+// 							},
+// 							{
+// 								id: 12,
+// 								title: 'Gite 2',
+// 							},
+// 						]
+// 					},
+// 					{
+// 						id: 2,
+// 						title: 'Options',
+// 						children: [
+// 							{
+// 								id: 21,
+// 								title: 'Option 1',
+// 							},
+// 						]
+// 					},
+// 				],
 // 				events: [
-// 					{
-// 						title : 'event1',
-// 						start : '2022-09-27'
-// 					},
-// 					{
-// 						title : 'event2',
-// 						start : '2022-09-15',
-// 						end : '2022-09-17'
-// 					},
-// 					{
-// 						title : 'event3',
-// 						start : '2022-09-09T12:30:00',
-// 						allDay : false // will make the time show
-// 					}
+// 					// [
+// 					// 	'room1' :
+// 						{
+// 							title : 'event1',
+// 							start : '2022-09-27',
+// 							resourceId : 11,
+// 						},
+// 						{
+// 							title : 'event2',
+// 							start : '2022-09-15',
+// 							end : '2022-09-17',
+// 							resourceId : 12,
+// 						},
+// 						{
+// 							title : 'event3',
+// 							start : '2022-09-09T12:30:00',
+// 							allDay : false,
+// 							resourceId : 21,
+// 						}
+// 					// ]
 // 				]
 // 			}
 // 		);

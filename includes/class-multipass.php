@@ -479,6 +479,10 @@ class MultiPass {
 		delete_transient( $transient_key );
 	}
 
+	static function format_date_iso($timestamp) {
+		return date('Y-m-d\TH:i:sO', $timestamp );
+	}
+	
 	static function format_date_range( $dates = array(), $datetype = 'RELATIVE_MEDIUM', $timetype = 'NONE' ) {
 		if ( empty( $dates ) ) {
 			return;

@@ -1,16 +1,37 @@
 .prestation_page_mltp-calendar {
-  --fc-background-past: #eee;
-  --fc-background-today: #ded;
-  --fc-background-weekend: #ddd;
+  --fc-background-past: hsl(0,0%,85%);
+  --fc-background-past-weekend: hsl(0,0%,80%);
+  --fc-background-today: hsl(120,25%,90%);
+  --fc-background-weekend: hsl(0,0%,95%);
 
   .fc-timeline-slot.fc-day-sun,
   .fc-timeline-slot.fc-day-sat {
-    background: var(--fc-background-weekend);
-  }
-  .fc-timeline-slot.fc-day-today {
-    background: var(--fc-background-today);
+    background-color: var(--fc-background-weekend);
   }
   .fc-timeline-slot.fc-day-past {
-    background: var(--fc-background-past);
+    background-color: var(--fc-background-past);
   }
+  .fc-timeline-slot.fc-day-past.fc-day-sun,
+  .fc-timeline-slot.fc-day-past.fc-day-sat {
+    background-color: var(--fc-background-past-weekend);
+  }
+  .fc-timeline-slot.fc-day-today {
+    background-color: var(--fc-background-today);
+  }
+
+  .dashicons.spin {
+     animation: dashicons-spin 1s infinite;
+     animation-timing-function: linear;
+     opacity: 50%;
+  }
+
+  @keyframes dashicons-spin {
+     0% {
+        transform: rotate( 0deg );
+     }
+     100% {
+        transform: rotate( 360deg );
+     }
+  }
+
 }
