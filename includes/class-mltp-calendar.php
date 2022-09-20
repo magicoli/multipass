@@ -65,17 +65,17 @@ class Mltp_Calendar {
 				'hook'     => 'init',
 				'callback' => 'register_taxonomies',
 			),
-		// array(
-		// 'hook'     => 'admin_menu',
-		// 'callback' => 'admin_menu_action',
-		// ),
+      array(
+        'hook'     => 'admin_menu',
+        'callback' => 'admin_menu_action',
+      ),
 		);
 
 		$filters = array(
-			array(
-				'hook'     => 'mb_settings_pages',
-				'callback' => 'register_settings_pages',
-			),
+			// array(
+			// 	'hook'     => 'mb_settings_pages',
+			// 	'callback' => 'register_settings_pages',
+			// ),
 
 			array(
 				'hook'     => 'rwmb_meta_boxes',
@@ -263,18 +263,33 @@ class Mltp_Calendar {
 		return $termlink;
 	}
 
-	public static function register_settings_pages( $settings_pages ) {
-		$settings_pages[] = array(
-			'position'   => 25,
-			'parent'     => 'edit.php?post_type=prestation',
-			'capability' => 'manage_options',
-			'style'      => 'no-boxes',
-			'columns'    => 1,
-			'icon_url'   => 'dashicons-admin-generic',
-		);
+  public static function admin_menu_action() {
+    add_submenu_page(
+      'edit.php?post_type=prestation', // string $parent_slug,
+      __('Calendar', 'multipass'), // string $page_title,
+      __('Calendar', 'multipass'), // string $menu_title,
+      'manage_options', // string $capability,
+      'mltp-calendar', // string $menu_slug,
+      __CLASS__ . '::render_calendar_page', // callable $callback = '',
+      1, // int|float $position = null
+    );
+  }
 
-		return $settings_pages;
-	}
+  public static function render_calendar_page() {
+		wp_enqueue_style( 'mltp-fullcalendar', plugins_url( 'includes/fullcalendar/main.css', MULTIPASS_FILE ) );
+		wp_enqueue_script( 'mltp-fullcalendar', plugins_url( 'includes/fullcalendar/main.js', MULTIPASS_FILE ) );
+
+    $content = '(no content yet)';
+    printf(
+      '<div class="wrap">
+      <h1 class="wp-heading-inline">%s</h1>
+      <div id="calendar"></div>
+      %s
+      </div>',
+      get_admin_page_title(),
+      __('Loading calendar...', 'multipass'),
+    );
+  }
 }
 
 $this->loaders[] = new Mltp_Calendar();

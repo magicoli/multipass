@@ -72,7 +72,8 @@ class Mltp_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_slug, plugin_dir_url( __FILE__ ) . 'css/admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_slug . '-admin-built', plugin_dir_url( __FILE__ ) . 'admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_slug . '-admin', plugin_dir_url( __FILE__ ) . 'css/admin.css', array(), $this->version, 'all' );
 
 	}
 
@@ -95,7 +96,8 @@ class Mltp_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_slug, plugin_dir_url( __FILE__ ) . 'js/admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_slug . '-admin-built', plugin_dir_url( __FILE__ ) . 'admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_slug . '-admin', plugin_dir_url( __FILE__ ) . 'js/admin.js', array( 'jquery' ), $this->version, false );
 
 	}
 
