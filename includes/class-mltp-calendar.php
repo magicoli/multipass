@@ -22,7 +22,6 @@
  */
 class Mltp_Calendar {
 
-
 	/**
 	 * The array of actions registered with WordPress.
 	 *
@@ -65,16 +64,28 @@ class Mltp_Calendar {
 				'hook'     => 'init',
 				'callback' => 'register_taxonomies',
 			),
-      array(
-        'hook'     => 'admin_menu',
-        'callback' => 'admin_menu_action',
-      ),
+			array(
+				'hook'     => 'admin_menu',
+				'callback' => 'admin_menu_action',
+			),
+
+			array(
+				'hook'      => 'wp_ajax_feed_events',
+				'component' => $this,
+				'callback'  => 'feed_events_func',
+			),
+			array(
+				'hook'      => 'wp_ajax_nopriv_feed_events',
+				'component' => $this,
+				'callback'  => 'feed_events_func',
+			),
+
 		);
 
 		$filters = array(
 			// array(
-			// 	'hook'     => 'mb_settings_pages',
-			// 	'callback' => 'register_settings_pages',
+			// 'hook'     => 'mb_settings_pages',
+			// 'callback' => 'register_settings_pages',
 			// ),
 
 			array(
@@ -263,33 +274,91 @@ class Mltp_Calendar {
 		return $termlink;
 	}
 
-  public static function admin_menu_action() {
-    add_submenu_page(
-      'edit.php?post_type=prestation', // string $parent_slug,
-      __('Calendar', 'multipass'), // string $page_title,
-      __('Calendar', 'multipass'), // string $menu_title,
-      'manage_options', // string $capability,
-      'mltp-calendar', // string $menu_slug,
-      __CLASS__ . '::render_calendar_page', // callable $callback = '',
-      1, // int|float $position = null
-    );
-  }
+	public static function admin_menu_action() {
+		add_submenu_page(
+			'edit.php?post_type=prestation', // string $parent_slug,
+			__( 'Calendar', 'multipass' ), // string $page_title,
+			__( 'Calendar', 'multipass' ), // string $menu_title,
+			'manage_options', // string $capability,
+			'mltp-calendar', // string $menu_slug,
+			__CLASS__ . '::render_calendar_page', // callable $callback = '',
+			1, // int|float $position = null
+		);
+	}
 
-  public static function render_calendar_page() {
+	public static function render_calendar_page() {
 		wp_enqueue_style( 'mltp-fullcalendar-css', plugins_url( 'lib/fullcalendar/main.css', MULTIPASS_FILE ) );
 		wp_enqueue_script( 'fullcalendar-cdn', 'https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.0/main.min.js' );
 		wp_enqueue_script( 'mltp-fullcalendar-js', plugins_url( 'lib/fullcalendar/main.js', MULTIPASS_FILE ) );
 
-    $content = '(no content yet)';
-    printf(
-      '<div class="wrap">
+		$content = '(no content yet)';
+
+		$args  = array(
+			'post_type'      => 'service',
+			'posts_per_page' => -1,
+			'post__not_in'   => array( 498 ),
+		);
+		$query = new WP_Query( $args );
+		if ( $query->have_posts() ) {
+			$buttons  = '<div class="navbar mb-4">';
+			$buttons .= '<button class="button filter-bookings" data-room="all">ALL</button> ';
+			while ( $query->have_posts() ) {
+				$query->the_post();
+				$buttons .= sprintf(
+					// '<button class="button filter-bookings" data-room="all">ALL</button>',
+					'<button class="button filter-bookings" data-room="%s">%s</button> ',
+					get_the_ID(),
+					get_the_title(),
+				);
+			}
+			$buttons .= '</div>';
+		}
+
+		printf(
+			'<div class="wrap">
       <h1 class="wp-heading-inline">%s</h1>
+			%s
       <div id="calendar"></div>
       </div>',
-      get_admin_page_title(),
-      // __('Loading calendar...', 'multipass'),
-    );
-  }
+			get_admin_page_title(),
+			$buttons,
+			// __('Loading calendar...', 'multipass'),
+		);
+	}
+
+	public function ajax_feed_events_action() {
+		$args  = array(
+			'post_type'      => 'prestation',
+			'posts_per_page' => -1,
+		);
+		$query = new WP_Query( $args );
+		if ( $query->have_posts() ) {
+			$events = array();
+			while ( $query->have_posts() ) {
+				$query->the_post();
+				$bookings = get_post_meta( get_the_ID(), 'group_booking', true );
+				if ( $bookings ) {
+					foreach ( $bookings as $key => $booking ) {
+						$room  = $booking['room'];
+						$begin = $booking['check_in'];
+						$end   = $booking['check_out'];
+
+						$e['title']      = '#' . get_the_ID() . ' ' . get_the_title( $room );
+						$e['start']      = $begin;
+						$e['end']        = $end;
+						$e['url']        = get_edit_post_link( get_the_ID(), '' );
+						$e['classNames'] = 'room-' . $room;
+						$e['allDay']     = true;
+
+						array_push( $events, $e );
+					}
+				}
+			}
+			echo json_encode( $events );
+		}
+		wp_die();
+	}
+
 }
 
 $this->loaders[] = new Mltp_Calendar();
