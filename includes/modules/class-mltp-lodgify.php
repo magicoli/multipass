@@ -35,7 +35,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		$this->api_url = 'https://api.lodgify.com';
 		$this->api_key = MultiPass::get_option( 'lodgify_api_key' );
 
-		$this->locale = $this->get_locale();
+		$this->locale = MultiPass::get_locale();
 
 		// register_activation_hook( MULTIPASS_FILE, __CLASS__ . '::activate' );
 		// register_deactivation_hook( MULTIPASS_FILE, __CLASS__ . '::deactivate' );

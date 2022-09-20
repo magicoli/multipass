@@ -52,7 +52,7 @@ class Mltp_Modules {
 		$this->version     = MULTIPASS_VERSION;
 		$this->plugin_slug = 'multipass';
 
-		$this->locale = $this->get_locale();
+		$this->locale = MultiPass::get_locale();
 
 		$this->load_dependencies();
 		// $this->define_admin_hooks();
@@ -90,18 +90,6 @@ class Mltp_Modules {
 
 	}
 
-	public function get_locale() {
-		if ( ! empty( $this->locale ) ) {
-			return $this->locale;
-		}
-
-		$locale = preg_replace( '/_.*/', '', get_locale() );
-		if ( empty( $locale ) ) {
-			$locale = 'en';
-		}
-
-		return $locale;
-	}
 	/**
 	 * Register the filters and actions with WordPress.
 	 *

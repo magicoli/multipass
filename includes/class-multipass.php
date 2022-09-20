@@ -482,7 +482,7 @@ class MultiPass {
 	static function format_date_iso($timestamp) {
 		return date('Y-m-d\TH:i:sO', $timestamp );
 	}
-	
+
 	static function format_date_range( $dates = array(), $datetype = 'RELATIVE_MEDIUM', $timetype = 'NONE' ) {
 		if ( empty( $dates ) ) {
 			return;
@@ -655,6 +655,23 @@ class MultiPass {
 				wp_die( $message );
 			}
 		}
+	}
+
+	/**
+	 * Return 2-letters locale.
+	 * @return string Current locale.
+	 */
+	public static function get_locale() {
+		// if ( ! empty( $this->locale ) ) {
+		// 	return $this->locale;
+		// }
+
+		$locale = preg_replace( '/_.*/', '', get_locale() );
+		if ( empty( $locale ) ) {
+			$locale = 'en';
+		}
+
+		return $locale;
 	}
 
 }

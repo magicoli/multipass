@@ -399,11 +399,12 @@ class Mltp_Calendar {
 						'resourceId' => 1,
 					);
 
-				}
 					array_push( $events, $e );
+				}
 			}
 		}
 		$data = array(
+			'locale' => MultiPass::get_locale(),
 			'resources' => array(
 				array(
 					'id' => '1',
