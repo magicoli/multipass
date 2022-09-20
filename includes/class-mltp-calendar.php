@@ -379,31 +379,28 @@ class Mltp_Calendar {
 				$dates = get_post_meta( get_the_ID(), 'dates', true );
 				if(empty($dates)) continue;
 				$iso = array_map('MultiPass::format_date_iso', $dates);
-				// error_log(get_the_title() . ' dates ' . print_r(get_post(), true)
-				// . ' iso ' . print_r($iso, true) );
-			// 	if ( $bookings ) {
-			// 		foreach ( $bookings as $key => $booking ) {
-			  // $room_id = get_post_meta( get_the_ID(), 'dates', true );
+
 				$room  = join('-', array(
 					get_post_meta( get_the_ID(), 'source_id', true ),
 					get_post_meta( get_the_ID(), 'source_item_id', true ),
 				));
-						$begin = $iso['from'];
-						$end   = (empty($iso['to'])) ? $iso['from'] : $iso['to'];
+				$begin = $iso['from'];
+				$end   = (empty($iso['to'])) ? $iso['from'] : $iso['to'];
+				$prestation_id = get_post_meta( get_the_ID(), 'prestation_id', true );
+				$prestation = new Mltp_Prestation($prestation_id);
+				if($prestation) {
+					$e = array(
+						'title' => get_the_title($prestation_id),
+						'start' => $begin,
+						'end' => $end,
+						'url' => get_edit_post_link( $prestation_id, '' ),
+						'classNames' => 'service-' . $room,
+						'allDay' => true,
+						'resourceId' => 1,
+					);
 
-						$e = array(
-							'title' => get_the_title(),
-							'start' => $begin,
-							'end' => $end,
-							'url' => get_edit_post_link( get_the_ID(), '' ),
-							'classNames' => 'service-' . $room,
-							'allDay' => true,
-							'resourceId' => 1,
-						);
-
-						array_push( $events, $e );
-			// 		}
-			// 	}
+				}
+					array_push( $events, $e );
 			}
 		}
 		$data = array(
