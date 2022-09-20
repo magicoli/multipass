@@ -1,7 +1,7 @@
 === MultiPass (dev) ===
 Contributors: magicoli69
 Donate link: https://magiiic.com/support/MultiPass+Plugin
-Tags: hotel, booking, multi-prestations, multi-services, woocommerce
+Tags: hotel, booking, multi-prestations, multi-services, woocommerce, ota, pms, booking engine
 Requires at least: 5.9.0
 Tested up to: 6.0.2
 Stable tag: 1.0

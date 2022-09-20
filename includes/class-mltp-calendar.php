@@ -276,18 +276,18 @@ class Mltp_Calendar {
   }
 
   public static function render_calendar_page() {
-		wp_enqueue_style( 'mltp-fullcalendar', plugins_url( 'includes/fullcalendar/main.css', MULTIPASS_FILE ) );
-		wp_enqueue_script( 'mltp-fullcalendar', plugins_url( 'includes/fullcalendar/main.js', MULTIPASS_FILE ) );
+		wp_enqueue_style( 'mltp-fullcalendar-css', plugins_url( 'lib/fullcalendar/main.css', MULTIPASS_FILE ) );
+		wp_enqueue_script( 'fullcalendar-cdn', 'https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.0/main.min.js' );
+		wp_enqueue_script( 'mltp-fullcalendar-js', plugins_url( 'lib/fullcalendar/main.js', MULTIPASS_FILE ) );
 
     $content = '(no content yet)';
     printf(
       '<div class="wrap">
       <h1 class="wp-heading-inline">%s</h1>
       <div id="calendar"></div>
-      %s
       </div>',
       get_admin_page_title(),
-      __('Loading calendar...', 'multipass'),
+      // __('Loading calendar...', 'multipass'),
     );
   }
 }

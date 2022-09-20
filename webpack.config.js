@@ -9,7 +9,7 @@ const config = {
 		// 'admin/admin': './dev/admin/admin-index.js',
     '../public/public': './src/public/index.js',
     '../admin/admin': './src/admin/index.js',
-    '../includes/fullcalendar/fullcalendar': './src/fullcalendar/index.js',
+    '../lib/fullcalendar/main': './src/fullcalendar/index.js',
 	},
 	output: {
     filename: '[name].js',
