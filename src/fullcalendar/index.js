@@ -8,4 +8,4 @@
 // import 'fullcalendar/main.css';
 import 'fullcalendar-scheduler/main.js';
 import 'fullcalendar-scheduler/main.css';
-import './local.js';
+// import './local.js';

@@ -1,0 +1,16 @@
+.prestation_page_mltp-calendar {
+  --fc-background-past: #eee;
+  --fc-background-today: #ded;
+  --fc-background-weekend: #ddd;
+
+  .fc-timeline-slot.fc-day-sun,
+  .fc-timeline-slot.fc-day-sat {
+    background: var(--fc-background-weekend);
+  }
+  .fc-timeline-slot.fc-day-today {
+    background: var(--fc-background-today);
+  }
+  .fc-timeline-slot.fc-day-past {
+    background: var(--fc-background-past);
+  }
+}

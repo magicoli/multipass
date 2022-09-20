@@ -72,12 +72,12 @@ class Mltp_Calendar {
 			array(
 				'hook'      => 'wp_ajax_feed_events',
 				'component' => $this,
-				'callback'  => 'feed_events_func',
+				'callback'  => 'ajax_feed_events_action',
 			),
 			array(
 				'hook'      => 'wp_ajax_nopriv_feed_events',
 				'component' => $this,
-				'callback'  => 'feed_events_func',
+				'callback'  => 'ajax_feed_events_action',
 			),
 
 		);
@@ -287,41 +287,43 @@ class Mltp_Calendar {
 	}
 
 	public static function render_calendar_page() {
-		wp_enqueue_style( 'mltp-fullcalendar-css', plugins_url( 'lib/fullcalendar/main.css', MULTIPASS_FILE ) );
+		wp_enqueue_style( 'mltp-fullcalendar-main', plugins_url( 'lib/fullcalendar/main.css', MULTIPASS_FILE ) );
 		wp_enqueue_script( 'fullcalendar-cdn', 'https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.0/main.min.js' );
-		wp_enqueue_script( 'mltp-fullcalendar-js', plugins_url( 'lib/fullcalendar/main.js', MULTIPASS_FILE ) );
+		// wp_enqueue_script( 'mltp-fullcalendar-main', plugins_url( 'lib/fullcalendar/main.js', MULTIPASS_FILE ) );
+		wp_enqueue_script( 'mltp-fullcalendar-plugin', plugins_url( 'includes/js/fullcalendar.js', MULTIPASS_FILE ) );
+		wp_enqueue_style( 'mltp-fullcalendar-plugin', plugins_url( 'includes/js/fullcalendar.css', MULTIPASS_FILE ) );
 
 		$content = '(no content yet)';
+		$actions = '';
 
-		$args  = array(
-			'post_type'      => 'service',
-			'posts_per_page' => -1,
-			'post__not_in'   => array( 498 ),
-		);
-		$query = new WP_Query( $args );
-		if ( $query->have_posts() ) {
-			$buttons  = '<div class="navbar mb-4">';
-			$buttons .= '<button class="button filter-bookings" data-room="all">ALL</button> ';
-			while ( $query->have_posts() ) {
-				$query->the_post();
-				$buttons .= sprintf(
-					// '<button class="button filter-bookings" data-room="all">ALL</button>',
-					'<button class="button filter-bookings" data-room="%s">%s</button> ',
-					get_the_ID(),
-					get_the_title(),
-				);
-			}
-			$buttons .= '</div>';
-		}
+		// $args  = array(
+		// 	'post_type'      => 'service',
+		// 	'posts_per_page' => -1,
+		// 	'post__not_in'   => array( 498 ),
+		// );
+		// $query = new WP_Query( $args );
+		// if ( $query->have_posts() ) {
+		// 	$actions  = '<span class="navbar">';
+		// 	$actions .= '<button class="button filter-bookings" data-room="all">ALL</button> ';
+		// 	while ( $query->have_posts() ) {
+		// 		$query->the_post();
+		// 		$actions .= sprintf(
+		// 			// '<button class="button filter-bookings" data-room="all">ALL</button>',
+		// 			'<button class="button filter-bookings" data-room="%s">%s</button> ',
+		// 			get_the_ID(),
+		// 			get_the_title(),
+		// 		);
+		// 	}
+		// 	$actions .= '</span>';
+		// }
 
 		printf(
 			'<div class="wrap">
-      <h1 class="wp-heading-inline">%s</h1>
-			%s
+      <h1 class="wp-heading-inline">%s %s</h1>
       <div id="calendar"></div>
       </div>',
 			get_admin_page_title(),
-			$buttons,
+			$actions,
 			// __('Loading calendar...', 'multipass'),
 		);
 	}
