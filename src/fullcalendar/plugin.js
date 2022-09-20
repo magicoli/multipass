@@ -1,7 +1,7 @@
 // // import { FullCalendar } from '@fullcalendar/core';
 // // import timelinePlugin from '@fullcalendar/resource-timeline';
 // // import allLocales from '@fullcalendar/core/locales-all';
-// import './plugin.scss';
+import './plugin.scss';
 //
 jQuery.ajax(
 	{

@@ -287,12 +287,12 @@ class Mltp_Calendar {
 	}
 
 	public static function render_calendar_page() {
-		wp_enqueue_style( 'mltp-fullcalendar-main', plugins_url( 'lib/fullcalendar/main.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION);
-		wp_enqueue_style( 'mltp-fullcalendar-plugin', plugins_url( 'includes/js/fullcalendar.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION);
+		wp_enqueue_style( 'fullcalendar-main', plugins_url( 'lib/fullcalendar/main.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION);
+		wp_enqueue_style( 'mltp-fullcalendar', plugins_url( 'includes/fullcalendar/fullcalendar.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION);
 
-		wp_enqueue_script( 'fullcalendar-cdn', 'https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.0/main.min.js' );
 		// wp_enqueue_script( 'mltp-fullcalendar-main', plugins_url( 'lib/fullcalendar/main.js', MULTIPASS_FILE ) );
-		wp_enqueue_script( 'mltp-fullcalendar-plugin', plugins_url( 'includes/js/fullcalendar.js', MULTIPASS_FILE ), array(), MULTIPASS_VERSION);
+		wp_enqueue_script( 'fullcalendar-cdn', 'https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.0/main.min.js' );
+		wp_enqueue_script( 'mltp-fullcalendar', plugins_url( 'includes/fullcalendar/fullcalendar.js', MULTIPASS_FILE ), array(), MULTIPASS_VERSION);
 
 		$content = '(no content yet)';
 		$actions = '';
