@@ -480,7 +480,9 @@ class MultiPass {
 	}
 
 	static function format_date_iso($timestamp) {
-		return date('Y-m-d\TH:i:sO', $timestamp );
+		// error_log(date('Y-m-d\TH:i:s', $timestamp ));
+		// return date('Y-m-d\T12:00:00', $timestamp );
+		return date('Y-m-d\TH:i:s', round($timestamp / 3600) * 3600 );
 	}
 
 	static function format_date_range( $dates = array(), $datetype = 'RELATIVE_MEDIUM', $timetype = 'NONE' ) {

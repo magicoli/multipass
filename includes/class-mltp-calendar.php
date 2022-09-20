@@ -397,6 +397,7 @@ class Mltp_Calendar {
 						'classNames' => 'service-' . $room,
 						'allDay' => true,
 						'resourceId' => 1,
+						// 'allDay' => false,
 					);
 
 					array_push( $events, $e );

@@ -32,6 +32,17 @@
           animation-timing-function: linear;
   opacity: 50%;
 }
+.prestation_page_mltp-calendar .fc-timeline-event-harness {
+  margin-left: 1vw;
+  margin-right: -1vw;
+  margin-top: 0.3rem;
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-timeline-event {
+  border-radius: 1.5em;
+  margin: 0.1em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
 @-webkit-keyframes dashicons-spin {
   0% {
     transform: rotate(0deg);
