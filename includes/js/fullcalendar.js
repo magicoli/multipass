@@ -22,16 +22,21 @@ jQuery.ajax({
   }
 });
 
-function init_calendar(data) {
-  var events = data['events'];
-  var resources = data['resources'];
+function init_calendar(json) {
+  const data = JSON.parse(json);
+  var resources = data.resources;
+  var events = data.events;
+  var locale = data.locale; // var events = data['events'];
+  // var resources = jsondata['resources'];
+
+  console.log(resources);
   var calendarEl = document.getElementById('calendar');
   var calendar = new FullCalendar.Calendar(calendarEl, {
     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
     // plugins: [ timelinePlugin ],
     initialView: 'resourceTimelineMonth',
     // locales: allLocales,
-    // locale: 'fr',
+    locale: locale,
     header: {
       left: 'prev,next today',
       center: 'title',
@@ -41,6 +46,7 @@ function init_calendar(data) {
     expandRows: false,
     nowIndicator: true,
     height: 'auto',
+    resources: resources,
     events: events,
     slotLabelFormat: [{
       weekday: 'short'

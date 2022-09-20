@@ -391,20 +391,31 @@ class Mltp_Calendar {
 						$begin = $iso['from'];
 						$end   = (empty($iso['to'])) ? $iso['from'] : $iso['to'];
 
-						$e['title']      = get_the_title();
-						$e['start']      = $begin;
-						$e['end']        = $end;
-						$e['url']        = get_edit_post_link( get_the_ID(), '' );
-						$e['classNames'] = 'service-' . $room;
-						$e['allDay']     = true;
+						$e = array(
+							'title' => get_the_title(),
+							'start' => $begin,
+							'end' => $end,
+							'url' => get_edit_post_link( get_the_ID(), '' ),
+							'classNames' => 'service-' . $room,
+							'allDay' => true,
+							'resourceId' => 1,
+						);
 
 						array_push( $events, $e );
 			// 		}
 			// 	}
 			}
 		}
-		error_log(print_r($events,true));
-		echo json_encode( $events );
+		$data = array(
+			'resources' => array(
+				array(
+					'id' => '1',
+					'title' => 'Gite 1',
+				),
+			),
+			'events' => $events,
+		);
+		echo json_encode( $data );
 		wp_die();
 	}
 
