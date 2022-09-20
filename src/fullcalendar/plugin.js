@@ -45,6 +45,7 @@ function init_calendar(json){
 			nowIndicator: true,
 			height: 'auto',
 			resources: resources,
+			resourceAreaWidth: '15rem',
 			events: events,
 			slotLabelFormat: [
 				{ weekday: 'short' }, // top level of text

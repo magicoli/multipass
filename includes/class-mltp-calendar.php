@@ -408,7 +408,7 @@ class Mltp_Calendar {
 			'resources' => array(
 				array(
 					'id' => '1',
-					'title' => 'Gite 1',
+					'title' => 'Gite 1 qui a un nom plus long',
 				),
 			),
 			'events' => $events,
