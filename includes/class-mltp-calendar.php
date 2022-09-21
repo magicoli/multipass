@@ -351,7 +351,7 @@ class Mltp_Calendar {
 			foreach ( $terms as $term ) {
 				$resources[] = array(
 					'id'    => $term->term_id,
-					'title' => "$term->name ($term->term_id)",
+					'title' => $term->name,
 				);
 				$args        = array(
 					'posts_per_page' => -1,
@@ -373,7 +373,7 @@ class Mltp_Calendar {
 						$resource = get_post();
 						$resources[] = array(
 							'id'       => $resource->ID,
-							'title'    => "$resource->post_title ($resource->ID)",
+							'title'    => $resource->post_title,
 							'parentId' => $term->term_id,
 						);
 
@@ -412,6 +412,7 @@ class Mltp_Calendar {
 				$prestation        = new Mltp_Prestation( $prestation_id );
 				$prestation_status = $prestation->post->post_status;
 				$resource_id       = get_post_meta( get_the_ID(), 'resource_id', true );
+
 				if ( empty( $resource_id ) ) {
 					$resource_id  = 0;
 					$hide_unknown = false;
