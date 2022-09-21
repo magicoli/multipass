@@ -287,35 +287,35 @@ class Mltp_Calendar {
 	}
 
 	public static function render_calendar_page() {
-		wp_enqueue_style( 'fullcalendar-main', plugins_url( 'lib/fullcalendar/main.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION);
-		wp_enqueue_style( 'mltp-fullcalendar', plugins_url( 'includes/fullcalendar/fullcalendar.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION);
+		wp_enqueue_style( 'fullcalendar-main', plugins_url( 'lib/fullcalendar/main.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION );
+		wp_enqueue_style( 'mltp-fullcalendar', plugins_url( 'includes/fullcalendar/fullcalendar.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION );
 
 		// wp_enqueue_script( 'mltp-fullcalendar-main', plugins_url( 'lib/fullcalendar/main.js', MULTIPASS_FILE ) );
 		wp_enqueue_script( 'fullcalendar-cdn', 'https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.0/main.min.js' );
-		wp_enqueue_script( 'mltp-fullcalendar', plugins_url( 'includes/fullcalendar/fullcalendar.js', MULTIPASS_FILE ), array(), MULTIPASS_VERSION);
+		wp_enqueue_script( 'mltp-fullcalendar', plugins_url( 'includes/fullcalendar/fullcalendar.js', MULTIPASS_FILE ), array(), MULTIPASS_VERSION );
 
 		$content = '(no content yet)';
 		$actions = '';
 
 		// $args  = array(
-		// 	'post_type'      => 'mp_resource',
-		// 	'posts_per_page' => -1,
-		// 	'post__not_in'   => array( 498 ),
+		// 'post_type'      => 'mp_resource',
+		// 'posts_per_page' => -1,
+		// 'post__not_in'   => array( 498 ),
 		// );
 		// $query = new WP_Query( $args );
 		// if ( $query->have_posts() ) {
-		// 	$actions  = '<span class="navbar">';
-		// 	$actions .= '<button class="button filter-bookings" data-room="all">ALL</button> ';
-		// 	while ( $query->have_posts() ) {
-		// 		$query->the_post();
-		// 		$actions .= sprintf(
-		// 			// '<button class="button filter-bookings" data-room="all">ALL</button>',
-		// 			'<button class="button filter-bookings" data-room="%s">%s</button> ',
-		// 			get_the_ID(),
-		// 			get_the_title(),
-		// 		);
-		// 	}
-		// 	$actions .= '</span>';
+		// $actions  = '<span class="navbar">';
+		// $actions .= '<button class="button filter-bookings" data-room="all">ALL</button> ';
+		// while ( $query->have_posts() ) {
+		// $query->the_post();
+		// $actions .= sprintf(
+		// '<button class="button filter-bookings" data-room="all">ALL</button>',
+		// '<button class="button filter-bookings" data-room="%s">%s</button> ',
+		// get_the_ID(),
+		// get_the_title(),
+		// );
+		// }
+		// $actions .= '</span>';
 		// }
 
 		printf(
@@ -328,52 +328,54 @@ class Mltp_Calendar {
       </div>',
 			get_admin_page_title(),
 			$actions,
-			__('Loading in progress, please wait', 'multipass'),
+			__( 'Loading in progress, please wait', 'multipass' ),
 		);
 	}
 
 	public function ajax_feed_events_action() {
 		// Get calendars from taxonomy
-		$events = array();
+		$events    = array();
 		$resources = array();
 		// $terms = get_terms('calendar-section');
-		$terms = get_terms(array(
-			'taxonomy' => 'calendar-section',
-			'hide_empty' => true,
-		));
-		$resources[] = array(
-			'id' => 0,
-			'title' => __('Unknown'),
+		$terms       = get_terms(
+			array(
+				'taxonomy'   => 'calendar-section',
+				'hide_empty' => true,
+			)
 		);
-		if($terms) {
-			foreach($terms as $term) {
-				error_log('term ' . print_r($term, true));
+		$resources[] = array(
+			'id'    => 0,
+			'title' => __( 'Unknown' ),
+		);
+		if ( $terms ) {
+			foreach ( $terms as $term ) {
+				error_log( 'term ' . print_r( $term, true ) );
 				$resources[] = array(
-					'id' => $term->term_id,
+					'id'    => $term->term_id,
 					'title' => "$term->name ($term->term_id)",
 				);
-				$args = array(
+				$args        = array(
 					'posts_per_page' => -1,
-					'post_type' => 'mp_resource',
-					'tax_query' => array(
+					'post_type'      => 'mp_resource',
+					'tax_query'      => array(
 						array(
 							'taxonomy' => 'calendar-section',
-							'field' => 'term_id',
-							'terms' => $term->term_id,
-						)
-					)
+							'field'    => 'term_id',
+							'terms'    => $term->term_id,
+						),
+					),
 				);
-				$query = new WP_Query( $args );
-				// 		error_log('term ' . print_r($term, true) . ' resource ' . $query->found_posts);
-				if($query->have_posts()) {
+				$query       = new WP_Query( $args );
+				// error_log('term ' . print_r($term, true) . ' resource ' . $query->found_posts);
+				if ( $query->have_posts() ) {
 					// Get prestation items for each resource
 					while ( $query->have_posts() ) {
 						$query->the_post();
 						$resource = get_post();
-						error_log('resource ' . print_r($resource, true));
+						error_log( 'resource ' . print_r( $resource, true ) );
 						$resources[] = array(
-							'id' => $resource->ID,
-							'title' => "$resource->post_title ($resource->ID)",
+							'id'       => $resource->ID,
+							'title'    => "$resource->post_title ($resource->ID)",
 							'parentId' => $term->term_id,
 						);
 
@@ -382,9 +384,9 @@ class Mltp_Calendar {
 			}
 		}
 
-		$args = array(
+		$args  = array(
 			'posts_per_page' => -1,
-			'post_type' => 'prestation-item',
+			'post_type'      => 'prestation-item',
 		);
 		$query = new WP_Query( $args );
 
@@ -393,39 +395,47 @@ class Mltp_Calendar {
 			while ( $query->have_posts() ) {
 				$query->the_post();
 				$item_id = get_the_ID();
-				$dates = get_post_meta( get_the_ID(), 'dates', true );
-				if(empty($dates)) continue;
-				$iso = array_map('MultiPass::format_date_iso', $dates);
+				$dates   = get_post_meta( get_the_ID(), 'dates', true );
+				if ( empty( $dates ) ) {
+					continue;
+				}
+				$iso = array_map( 'MultiPass::format_date_iso', $dates );
 
-				$room  = join('-', array(
-					get_post_meta( get_the_ID(), 'source_id', true ),
-					get_post_meta( get_the_ID(), 'source_item_id', true ),
-				));
-				$begin = $iso['from'];
-				$end   = (empty($iso['to'])) ? $iso['from'] : $iso['to'];
-				$prestation_id = get_post_meta( get_the_ID(), 'prestation_id', true );
-				$prestation = new Mltp_Prestation($prestation_id);
+				$room              = join(
+					'-',
+					array(
+						get_post_meta( get_the_ID(), 'source_id', true ),
+						get_post_meta( get_the_ID(), 'source_item_id', true ),
+					)
+				);
+				$begin             = $iso['from'];
+				$end               = ( empty( $iso['to'] ) ) ? $iso['from'] : $iso['to'];
+				$prestation_id     = get_post_meta( get_the_ID(), 'prestation_id', true );
+				$prestation        = new Mltp_Prestation( $prestation_id );
 				$prestation_status = $prestation->post->post_status;
-				$resource_id = get_post_meta( get_the_ID(), 'resource_id', true );
-				if(empty($resource_id)) {
-					$resource_id = 0;
+				$resource_id       = get_post_meta( get_the_ID(), 'resource_id', true );
+				if ( empty( $resource_id ) ) {
+					$resource_id  = 0;
 					$hide_unknown = false;
 				}
-				if($prestation) {
+				if ( $prestation ) {
 					// $calendar = get_the_terms($item_id, )
 					$e = array(
-						'title' => get_the_title($prestation_id),
-						'start' => $begin,
-						'end' => $end,
-						'url' => get_edit_post_link( $prestation_id, '' ),
-						'classNames' => join(' ', array(
-							'prestation-' . $prestation_id,
-							'item-' . $item_id,
-							'resource-' . $resource_id,
-							'status-' . $prestation_status,
-						)),
-						'allDay' => true,
-						'resourceId' => (empty($resource_id)) ? 0 : $resource_id,
+						'title'      => get_the_title( $prestation_id ),
+						'start'      => $begin,
+						'end'        => $end,
+						'url'        => get_edit_post_link( $prestation_id, '' ),
+						'classNames' => join(
+							' ',
+							array(
+								'prestation-' . $prestation_id,
+								'item-' . $item_id,
+								'resource-' . $resource_id,
+								'status-' . $prestation_status,
+							)
+						),
+						'allDay'     => true,
+						'resourceId' => ( empty( $resource_id ) ) ? 0 : $resource_id,
 						// 'allDay' => false,
 					);
 
@@ -433,15 +443,15 @@ class Mltp_Calendar {
 				}
 			}
 		}
-		if($hide_unknown) {
-			array_shift($resources);
+		if ( $hide_unknown ) {
+			array_shift( $resources );
 		}
 
 		$data = array(
-			'locale' => MultiPass::get_locale(),
-			'resTitle' => __('Resources', 'multipass'),
+			'locale'    => MultiPass::get_locale(),
+			'resTitle'  => __( 'Resources', 'multipass' ),
 			'resources' => $resources,
-			'events' => $events,
+			'events'    => $events,
 		);
 		echo json_encode( $data );
 		wp_die();

@@ -479,10 +479,10 @@ class MultiPass {
 		delete_transient( $transient_key );
 	}
 
-	static function format_date_iso($timestamp) {
+	static function format_date_iso( $timestamp ) {
 		// error_log(date('Y-m-d\TH:i:s', $timestamp ));
 		// return date('Y-m-d\T12:00:00', $timestamp );
-		return date('Y-m-d\TH:i:s', round($timestamp / 3600) * 3600 );
+		return date( 'Y-m-d\TH:i:s', round( $timestamp / 3600 ) * 3600 );
 	}
 
 	static function format_date_range( $dates = array(), $datetype = 'RELATIVE_MEDIUM', $timetype = 'NONE' ) {
@@ -661,11 +661,12 @@ class MultiPass {
 
 	/**
 	 * Return 2-letters locale.
+	 *
 	 * @return string Current locale.
 	 */
 	public static function get_locale() {
 		// if ( ! empty( $this->locale ) ) {
-		// 	return $this->locale;
+		// return $this->locale;
 		// }
 
 		$locale = preg_replace( '/_.*/', '', get_locale() );

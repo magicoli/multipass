@@ -463,10 +463,10 @@ class Mltp_Prestation {
 							'id'          => $prefix . 'type',
 							'type'        => 'select',
 							'options'     => array(
-								'product' => __( 'Product', 'multipass' ),
+								'product'  => __( 'Product', 'multipass' ),
 								'resource' => __( 'Resource', 'multipass' ),
-								'booking' => __( 'Booking', 'multipass' ),
-								'payment' => __( 'Payment', 'multipass' ),
+								'booking'  => __( 'Booking', 'multipass' ),
+								'payment'  => __( 'Payment', 'multipass' ),
 							),
 							'placeholder' => __( 'Select a type', 'multipass' ),
 							'columns'     => 2,
@@ -1337,17 +1337,17 @@ class Mltp_Prestation {
 	 */
 	public static function add_admin_columns( $columns ) {
 		$columns = array(
-			'cb'       => $columns['cb'],
-			'title'    => __( 'Title', 'multipass' ),
-			'customer' => __( 'Customer', 'multipass' ),
-			'contact'  => __( 'Contact', 'multipass' ),
+			'cb'        => $columns['cb'],
+			'title'     => __( 'Title', 'multipass' ),
+			'customer'  => __( 'Customer', 'multipass' ),
+			'contact'   => __( 'Contact', 'multipass' ),
 			'resources' => __( 'Resources', 'multipass' ),
-			'dates'    => __( 'Dates', 'multipass' ),
-			'discount' => __( 'Discount', 'multipass' ),
-			'total'    => __( 'Total', 'multipass' ),
-			'deposit'  => __( 'Deposit', 'multipass' ),
-			'paid'     => __( 'Paid', 'multipass' ),
-			'balance'  => __( 'Balance', 'multipass' ),
+			'dates'     => __( 'Dates', 'multipass' ),
+			'discount'  => __( 'Discount', 'multipass' ),
+			'total'     => __( 'Total', 'multipass' ),
+			'deposit'   => __( 'Deposit', 'multipass' ),
+			'paid'      => __( 'Paid', 'multipass' ),
+			'balance'   => __( 'Balance', 'multipass' ),
 		);
 
 		return $columns;
