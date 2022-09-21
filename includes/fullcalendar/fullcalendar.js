@@ -101,9 +101,9 @@ function init_calendar(json) {
       right: ''
     },
     // dayHeaderFormat: 'D',
-    expandRows: false,
     nowIndicator: true,
     height: 'auto',
+    // expandRows: true,
     resources: resources,
     resourceAreaWidth: '15rem',
     resourceAreaHeaderContent: resTitle,

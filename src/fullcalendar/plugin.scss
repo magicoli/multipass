@@ -2,10 +2,10 @@
    text-transform: capitalize;
 }
 .prestation_page_mltp-calendar {
-  --fc-background-past: hsl(0,0%,85%);
-  --fc-background-past-weekend: hsl(0,0%,80%);
-  --fc-background-today: hsl(120,25%,90%);
-  --fc-background-weekend: hsl(0,0%,95%);
+  --fc-background-past: hsl(0, 0%, 70%, 25%);
+  --fc-background-past-weekend: hsl(0, 0%, 60%, 25%);
+  --fc-background-weekend: hsl(0, 0%, 80%, 25%);
+  --fc-background-today: hsl(60, 75%, 75%, 25%);
 
   .fc-timeline-slot.fc-day-sun,
   .fc-timeline-slot.fc-day-sat {
