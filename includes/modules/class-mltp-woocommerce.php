@@ -65,8 +65,9 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				'accepted_args' => 3,
 			),
 			array(
-				'hook'          => 'save_post_shop_order',
-				'callback'      => 'save_post_shop_order_action',
+				// 'hook'          => 'save_post_shop_order',
+				'hook'          => 'save_post', // use save_post because save_post_prestation_item is fired before actual save and meta values are not yet updated.
+				'callback'      => 'save_post_action',
 				'accepted_args' => 3,
 			),
 		);
@@ -354,11 +355,12 @@ class Mltp_WooCommerce extends Mltp_Modules {
 	}
 
 
-	static function save_post_shop_order_action( $post_id, $post, $update ) {
+	static function save_post_action( $post_id, $post, $update ) {
 		if ( ! $update ) {
 			return;
 		}
-
+		if( 'shop_order' !== $post->post_type) return;
+		
 		remove_action( current_action(), __CLASS__ . '::' . __FUNCTION__ );
 
 		self::update_order_prestation( $post_id, $post, $update );
@@ -777,6 +779,9 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		return $html;
 	}
 
+	function public get_resource() {
+
+	}
 }
 
 $this->modules[] = new Mltp_WooCommerce();
