@@ -350,7 +350,7 @@ class Mltp_Calendar {
 		if ( $terms ) {
 			foreach ( $terms as $term ) {
 				$resources[] = array(
-					'id'    => $term->term_id,
+					'id'    => $term->slug,
 					'title' => $term->name,
 				);
 				$args        = array(
@@ -372,9 +372,10 @@ class Mltp_Calendar {
 						$query->the_post();
 						$resource = get_post();
 						$resources[] = array(
-							'id'       => $resource->ID,
+							'id'       => $resource->post_name,
 							'title'    => $resource->post_title,
-							'parentId' => $term->term_id,
+							'parentId' => $term->slug,
+							// 'classNames' => 'resource-' . sanitize_title($resource->post_title),
 						);
 
 					}
@@ -412,11 +413,15 @@ class Mltp_Calendar {
 				$prestation        = new Mltp_Prestation( $prestation_id );
 				$prestation_status = $prestation->post->post_status;
 				$resource_id       = get_post_meta( get_the_ID(), 'resource_id', true );
-
-				if ( empty( $resource_id ) ) {
+				$resource = get_post($resource_id);
+				if ( $resource ) {
+					$resource_slug = $resource->post_name;
+				} else {
 					$resource_id  = 0;
+					$resource_slug = 0;
 					$hide_unknown = false;
 				}
+
 				if ( $prestation ) {
 					// $calendar = get_the_terms($item_id, )
 					$e = array(
@@ -429,12 +434,12 @@ class Mltp_Calendar {
 							array(
 								'prestation-' . $prestation_id,
 								'item-' . $item_id,
-								'resource-' . $resource_id,
+								'resource-' . $resource_slug,
 								'status-' . $prestation_status,
 							)
 						),
 						'allDay'     => true,
-						'resourceId' => ( empty( $resource_id ) ) ? 0 : $resource_id,
+						'resourceId' => $resource_slug,
 						// 'allDay' => false,
 					);
 
