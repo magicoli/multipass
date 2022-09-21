@@ -47,10 +47,7 @@ class Mltp_Public {
 	 * @param      string $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_slug, $version ) {
-
 		$this->plugin_slug = $plugin_slug;
-		$this->version     = $version;
-
 	}
 
 	/**
@@ -72,7 +69,7 @@ class Mltp_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_slug, plugin_dir_url( __FILE__ ) . 'css/public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_slug, plugin_dir_url( __FILE__ ) . 'css/public.css', array(), MULTIPASS_VERSION, 'all' );
 
 	}
 
@@ -95,7 +92,7 @@ class Mltp_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_slug, plugin_dir_url( __FILE__ ) . 'js/public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_slug, plugin_dir_url( __FILE__ ) . 'js/public.js', array( 'jquery' ), MULTIPASS_VERSION, false );
 
 	}
 

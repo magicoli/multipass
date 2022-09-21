@@ -49,7 +49,6 @@ class Mltp_Modules {
 	 * @since    0.1.0
 	 */
 	public function __construct() {
-		$this->version     = MULTIPASS_VERSION;
 		$this->plugin_slug = 'multipass';
 
 		$this->locale = MultiPass::get_locale();

@@ -49,7 +49,6 @@ class Mltp_PluginInfo {
 		$this->plugin_file = plugin_basename( MULTIPASS_FILE );
 		$this->plugin_name = MULTIPASS_PLUGIN_NAME;
 		$this->slug        = basename( MULTIPASS_DIR );
-		// $this->version = MULTIPASS_VERSION;
 	}
 
 

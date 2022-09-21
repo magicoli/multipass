@@ -49,7 +49,6 @@ class Mltp_Admin {
 	public function __construct( $plugin_slug, $version ) {
 
 		$this->plugin_slug = $plugin_slug;
-		$this->version     = $version;
 
 	}
 
