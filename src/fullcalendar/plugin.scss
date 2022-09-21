@@ -39,6 +39,18 @@
       padding-left: 0.5em;
       padding-right: 0.5em;
     }
+    .fc-h-event {
+      color: var(--mltp-color-undefined);
+      border-color: hsl(0, 0%, 75%);
+      background-color: var(--mltp-background-undefined);
+    }
+    .fc-h-event .fc-event-main {
+      color: inherit;
+    }
+    // .status-publish {
+    //   color: var(--mltp-color-confirmed);
+    //   background-color: var(--mltp-background-confirmed);
+    // }
   }
 
 

@@ -4,8 +4,16 @@
 **/
 
 :root {
-  --unpaid: pending;
-  --partial: pending;
+  --mltp-color-undefined: hsl(0, 0%, 25%);
+  --mltp-background-undefined: hsl(0, 0%, 80%);
+  --mltp-color-pending: hsl(0, 100%, 25%);
+  --mltp-background-pending: hsl(0, 100%, 80%);
+  --mltp-color-partial: hsl(30, 100%, 25%);
+  --mltp-background-partial: hsl(30, 100%, 80%);
+  --mltp-color-confirmed: hsl(60, 100%, 25%);
+  --mltp-background-confirmed: hsl(60, 75%, 75%);
+  --mltp-color-paid: hsl(90, 100%, 25%);
+  --mltp-background-paid: hsl(90, 75%, 75%);
 }
 .post-php.post-type-prestation {
   .rwmb-group-wrapper .rwmb-clone::after {
@@ -145,31 +153,28 @@
 .column-status a[href*="prestation-status=unpaid"]
 {
   --hue: 0;
-  color: hsl(var(--hue), 100%, 25%);
-  background: hsl(var(--hue), 100%, 80%);
+  color: var(--mltp-color-pending);
+  background: var(--mltp-background-pending);
 }
 .prestation-status-box.status-partial,
 .column-status a[href*="prestation-status=partial"] {
-  --hue: 30;
-  color: hsl(var(--hue), 100%, 25%);
-  background: hsl(var(--hue), 100%, 80%);
+  color: var(--mltp-color-partial);
+  background: var(--mltp-background-partial);
 }
 
 .prestation-status-box.status-deposit,
 .column-status a[href*="prestation-status=deposit"],
 .prestation-status-box.status-on-hold,
 .column-status a[href*="prestation-status=on-hold"] {
-  --hue: 60;
-  color: hsl(var(--hue), 100%, 25%);
-  background: hsl(var(--hue), 75%, 75%);
+  color: var(--mltp-color-confirmed);
+  background: var(--mltp-background-confirmed);
 }
 .prestation-status-box.status-free,
 .column-status a[href*="prestation-status=free"],
 .prestation-status-box.status-paid,
 .column-status a[href*="prestation-status=paid"] {
-  --hue: 90;
-  color: hsl(var(--hue), 100%, 25%);
-  background: hsl(var(--hue), 75%, 75%);
+  color: var(--mltp-color-paid);
+  background: var(--mltp-background-paid);
 }
 
 .wp-list-table.multipass-list {

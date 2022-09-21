@@ -388,13 +388,17 @@ class Mltp_Calendar {
 				$end   = (empty($iso['to'])) ? $iso['from'] : $iso['to'];
 				$prestation_id = get_post_meta( get_the_ID(), 'prestation_id', true );
 				$prestation = new Mltp_Prestation($prestation_id);
+				$prestation_status = $prestation->post->post_status;
 				if($prestation) {
 					$e = array(
 						'title' => get_the_title($prestation_id),
 						'start' => $begin,
 						'end' => $end,
 						'url' => get_edit_post_link( $prestation_id, '' ),
-						'classNames' => 'service-' . $room,
+						'classNames' => join(' ', array(
+							'prestation-' . $prestation_id,
+							'status-' . $prestation_status,
+						)),
 						'allDay' => true,
 						'resourceId' => 1,
 						// 'allDay' => false,
