@@ -335,47 +335,64 @@ class Mltp_Calendar {
 	public function ajax_feed_events_action() {
 		// Get calendars from taxonomy
 		$events = array();
+		$resources = array();
 		// $terms = get_terms('calendar-section');
-		// if($terms) {
-		// 	foreach($terms as $term) {
-		// 		// Get services for each calendar
-		// 		$args = array(
-		// 			'posts_per_page' => -1,
-		// 			'post_type' => 'service',
-		// 			'tax_query' => array(
-		// 				array(
-		// 					'taxonomy' => 'calendar-section',
-		// 					'field' => 'term_id',
-		// 					'terms' => $term->term_id,
-		// 				)
-		// 			)
-		// 		);
-		// 		$query = new WP_Query( $args );
-		// 		error_log('term ' . print_r($term, true) . ' services ' . $query->found_posts);
-		// 		if($query->have_posts()) {
-		// 			// Get prestation items for each service
-		// 			while ( $query->have_posts() ) {
-		// 			}
-		// 		}
-		// 	}
-		// }
+		$terms = get_terms(array(
+			'taxonomy' => 'calendar-section',
+			'hide_empty' => true,
+		));
+		$resources[] = array(
+			'id' => 0,
+			'title' => __('Unknown'),
+		);
+		if($terms) {
+			foreach($terms as $term) {
+				error_log('term ' . print_r($term, true));
+				$resources[] = array(
+					'id' => $term->term_id,
+					'title' => "$term->name ($term->term_id)",
+				);
+				$args = array(
+					'posts_per_page' => -1,
+					'post_type' => 'service',
+					'tax_query' => array(
+						array(
+							'taxonomy' => 'calendar-section',
+							'field' => 'term_id',
+							'terms' => $term->term_id,
+						)
+					)
+				);
+				$query = new WP_Query( $args );
+				// 		error_log('term ' . print_r($term, true) . ' services ' . $query->found_posts);
+				if($query->have_posts()) {
+					// Get prestation items for each service
+					while ( $query->have_posts() ) {
+						$query->the_post();
+						$service = get_post();
+						error_log('service ' . print_r($service, true));
+						$resources[] = array(
+							'id' => $service->ID,
+							'title' => "$service->post_title ($service->ID)",
+							'parentId' => $term->term_id,
+						);
+
+					}
+				}
+			}
+		}
 
 		$args = array(
 			'posts_per_page' => -1,
 			'post_type' => 'prestation-item',
-			// 'tax_query' => array(
-			// 	array(
-			// 		'taxonomy' => 'calendar-section',
-			// 		'field' => 'term_id',
-			// 		'terms' => $term->term_id,
-			// 	)
-			// )
 		);
 		$query = new WP_Query( $args );
 
+		$hide_unknown = true;
 		if ( $query && $query->have_posts() ) {
 			while ( $query->have_posts() ) {
 				$query->the_post();
+				$item_id = get_the_ID();
 				$dates = get_post_meta( get_the_ID(), 'dates', true );
 				if(empty($dates)) continue;
 				$iso = array_map('MultiPass::format_date_iso', $dates);
@@ -389,7 +406,13 @@ class Mltp_Calendar {
 				$prestation_id = get_post_meta( get_the_ID(), 'prestation_id', true );
 				$prestation = new Mltp_Prestation($prestation_id);
 				$prestation_status = $prestation->post->post_status;
+				$service_id = get_post_meta( get_the_ID(), 'service_id', true );
+				if(empty($service_id)) {
+					$service_id = 0;
+					$hide_unknown = false;
+				}
 				if($prestation) {
+					// $calendar = get_the_terms($item_id, )
 					$e = array(
 						'title' => get_the_title($prestation_id),
 						'start' => $begin,
@@ -397,10 +420,12 @@ class Mltp_Calendar {
 						'url' => get_edit_post_link( $prestation_id, '' ),
 						'classNames' => join(' ', array(
 							'prestation-' . $prestation_id,
+							'item-' . $item_id,
+							'service-' . $service_id,
 							'status-' . $prestation_status,
 						)),
 						'allDay' => true,
-						'resourceId' => 1,
+						'resourceId' => (empty($service_id)) ? 0 : $service_id,
 						// 'allDay' => false,
 					);
 
@@ -408,15 +433,14 @@ class Mltp_Calendar {
 				}
 			}
 		}
+		if($hide_unknown) {
+			array_shift($resources);
+		}
+
 		$data = array(
 			'locale' => MultiPass::get_locale(),
 			'resTitle' => __('Services', 'multipass'),
-			'resources' => array(
-				array(
-					'id' => '1',
-					'title' => 'Gite 1 qui a un nom plus long',
-				),
-			),
+			'resources' => $resources,
 			'events' => $events,
 		);
 		echo json_encode( $data );
