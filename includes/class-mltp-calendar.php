@@ -365,12 +365,12 @@ class Mltp_Calendar {
 					),
 				);
 
-				$query       = new WP_Query( $args );
+				$query = new WP_Query( $args );
 				if ( $query->have_posts() ) {
 					// Get prestation items for each resource
 					while ( $query->have_posts() ) {
 						$query->the_post();
-						$resource = get_post();
+						$resource    = get_post();
 						$resources[] = array(
 							'id'       => $resource->post_name,
 							'title'    => $resource->post_title,
@@ -413,13 +413,13 @@ class Mltp_Calendar {
 				$prestation        = new Mltp_Prestation( $prestation_id );
 				$prestation_status = $prestation->post->post_status;
 				$resource_id       = get_post_meta( get_the_ID(), 'resource_id', true );
-				$resource = get_post($resource_id);
+				$resource          = get_post( $resource_id );
 				if ( $resource ) {
 					$resource_slug = $resource->post_name;
 				} else {
-					$resource_id  = 0;
+					$resource_id   = 0;
 					$resource_slug = 0;
-					$hide_unknown = false;
+					$hide_unknown  = false;
 				}
 
 				if ( $prestation ) {

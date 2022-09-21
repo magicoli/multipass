@@ -359,7 +359,9 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		if ( ! $update ) {
 			return;
 		}
-		if( 'shop_order' !== $post->post_type) return;
+		if ( 'shop_order' !== $post->post_type ) {
+			return;
+		}
 
 		remove_action( current_action(), __CLASS__ . '::' . __FUNCTION__ );
 
@@ -627,7 +629,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 					'source_item_id' => "$item_id",
 					'view_url'       => $order->get_view_order_url(),
 					'edit_url'       => $order->get_edit_order_url(),
-					'resource_id' => self::get_resource($product_id),
+					'resource_id'    => self::get_resource( $product_id ),
 					// 'source_details' => array(
 					// 'wc_order_id' => $post_id,
 					// 'wc_order_item_id' => $item_id,
@@ -780,19 +782,21 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		return $html;
 	}
 
-	public static function get_resource($product_id = NULL) {
-		if(empty($product_id)) return;
-		$args        = array(
+	public static function get_resource( $product_id = null ) {
+		if ( empty( $product_id ) ) {
+			return;
+		}
+		$args  = array(
 			'posts_per_page' => -1,
 			'post_type'      => 'mp_resource',
-			'meta_query'      => array(
+			'meta_query'     => array(
 				array(
 					'meta_key' => 'resource_product_id-section',
 					'value'    => $product_id,
 				),
 			),
 		);
-		$query       = new WP_Query( $args );
+		$query = new WP_Query( $args );
 		if ( $query->have_posts() ) {
 			$query->the_post();
 			return get_the_ID();
