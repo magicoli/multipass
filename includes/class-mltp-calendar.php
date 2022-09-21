@@ -349,7 +349,6 @@ class Mltp_Calendar {
 		);
 		if ( $terms ) {
 			foreach ( $terms as $term ) {
-				error_log( 'term ' . print_r( $term, true ) );
 				$resources[] = array(
 					'id'    => $term->term_id,
 					'title' => "$term->name ($term->term_id)",
@@ -365,14 +364,13 @@ class Mltp_Calendar {
 						),
 					),
 				);
+
 				$query       = new WP_Query( $args );
-				// error_log('term ' . print_r($term, true) . ' resource ' . $query->found_posts);
 				if ( $query->have_posts() ) {
 					// Get prestation items for each resource
 					while ( $query->have_posts() ) {
 						$query->the_post();
 						$resource = get_post();
-						error_log( 'resource ' . print_r( $resource, true ) );
 						$resources[] = array(
 							'id'       => $resource->ID,
 							'title'    => "$resource->post_title ($resource->ID)",
