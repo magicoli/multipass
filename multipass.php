@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       MultiPass (dev)
  * Plugin URI:        https://magiiic.com/wordpress/plugins/multipass/
- * Description:       Group services from different sources (WooCommerce, OTA, booking engines...) and manage them as a whole.
+ * Description:       Group resources from different sources (WooCommerce, OTA, booking engines...) and manage them as a whole.
  * Version:           0.1.1.x-dev
  * Author:            Magiiic
  * Author URI:        https://magiiic.com/

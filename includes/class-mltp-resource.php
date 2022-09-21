@@ -20,7 +20,7 @@
  * @subpackage W4OS/includes
  * @author     Your Name <email@example.com>
  */
-class Mltp_Service {
+class Mltp_Resource {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -133,7 +133,7 @@ class Mltp_Service {
 			),
 
 			array(
-				'hook'     => 'manage_service_posts_columns',
+				'hook'     => 'manage_resource_posts_columns',
 				'callback' => 'add_admin_columns',
 			),
 			array(
@@ -144,12 +144,12 @@ class Mltp_Service {
 
 			array(
 				'hook'          => 'wp_insert_post_data',
-				'callback'      => 'insert_service_data',
+				'callback'      => 'insert_resource_data',
 				'accepted_args' => 4,
 			),
 			array(
-				'hook'     => 'multipass_update_service_title',
-				'callback' => 'update_service_title',
+				'hook'     => 'multipass_update_resource_title',
+				'callback' => 'update_resource_title',
 			),
 
 		);
@@ -181,47 +181,47 @@ class Mltp_Service {
 	}
 
 	/**
-	 * Register Service post type
+	 * Register Resource post type
 	 *
 	 * @return void
 	 */
 	public static function register_post_types() {
 		$labels = array(
-			'name'                     => esc_html__( 'Services', 'multipass' ),
-			'singular_name'            => esc_html__( 'Service', 'multipass' ),
+			'name'                     => esc_html__( 'Resources', 'multipass' ),
+			'singular_name'            => esc_html__( 'Resource', 'multipass' ),
 			'add_new'                  => esc_html__( 'Add New', 'multipass' ),
-			'add_new_item'             => esc_html__( 'Add New Service', 'multipass' ),
-			'edit_item'                => esc_html__( 'Edit Service', 'multipass' ),
-			'new_item'                 => esc_html__( 'New Service', 'multipass' ),
-			'view_item'                => esc_html__( 'View Service', 'multipass' ),
-			'view_items'               => esc_html__( 'View Services', 'multipass' ),
-			'search_items'             => esc_html__( 'Search Services', 'multipass' ),
-			'not_found'                => esc_html__( 'No services found.', 'multipass' ),
-			'not_found_in_trash'       => esc_html__( 'No services found in Trash.', 'multipass' ),
-			'parent_item_colon'        => esc_html__( 'Parent Service:', 'multipass' ),
-			'all_items'                => esc_html__( 'Services', 'multipass' ),
-			'archives'                 => esc_html__( 'Service Archives', 'multipass' ),
-			'attributes'               => esc_html__( 'Service Attributes', 'multipass' ),
-			'insert_into_item'         => esc_html__( 'Insert into service', 'multipass' ),
-			'uploaded_to_this_item'    => esc_html__( 'Uploaded to this service', 'multipass' ),
+			'add_new_item'             => esc_html__( 'Add New Resource', 'multipass' ),
+			'edit_item'                => esc_html__( 'Edit Resource', 'multipass' ),
+			'new_item'                 => esc_html__( 'New Resource', 'multipass' ),
+			'view_item'                => esc_html__( 'View Resource', 'multipass' ),
+			'view_items'               => esc_html__( 'View Resources', 'multipass' ),
+			'search_items'             => esc_html__( 'Search Resources', 'multipass' ),
+			'not_found'                => esc_html__( 'No resources found.', 'multipass' ),
+			'not_found_in_trash'       => esc_html__( 'No resources found in Trash.', 'multipass' ),
+			'parent_item_colon'        => esc_html__( 'Parent Resource:', 'multipass' ),
+			'all_items'                => esc_html__( 'Resources', 'multipass' ),
+			'archives'                 => esc_html__( 'Resource Archives', 'multipass' ),
+			'attributes'               => esc_html__( 'Resource Attributes', 'multipass' ),
+			'insert_into_item'         => esc_html__( 'Insert into resource', 'multipass' ),
+			'uploaded_to_this_item'    => esc_html__( 'Uploaded to this resource', 'multipass' ),
 			'featured_image'           => esc_html__( 'Featured image', 'multipass' ),
 			'set_featured_image'       => esc_html__( 'Set featured image', 'multipass' ),
 			'remove_featured_image'    => esc_html__( 'Remove featured image', 'multipass' ),
 			'use_featured_image'       => esc_html__( 'Use as featured image', 'multipass' ),
-			'menu_name'                => esc_html__( 'Services', 'multipass' ),
-			'filter_items_list'        => esc_html__( 'Filter services list', 'multipass' ),
+			'menu_name'                => esc_html__( 'Resources', 'multipass' ),
+			'filter_items_list'        => esc_html__( 'Filter resources list', 'multipass' ),
 			'filter_by_date'           => esc_html__( 'Filter by date', 'multipass' ),
-			'items_list_navigation'    => esc_html__( 'Services list navigation', 'multipass' ),
-			'items_list'               => esc_html__( 'Services list', 'multipass' ),
-			'item_published'           => esc_html__( 'Service published.', 'multipass' ),
-			'item_published_privately' => esc_html__( 'Service published privately.', 'multipass' ),
-			'item_reverted_to_draft'   => esc_html__( 'Service reverted to draft.', 'multipass' ),
-			'item_scheduled'           => esc_html__( 'Service scheduled.', 'multipass' ),
-			'item_updated'             => esc_html__( 'Service updated.', 'multipass' ),
+			'items_list_navigation'    => esc_html__( 'Resources list navigation', 'multipass' ),
+			'items_list'               => esc_html__( 'Resources list', 'multipass' ),
+			'item_published'           => esc_html__( 'Resource published.', 'multipass' ),
+			'item_published_privately' => esc_html__( 'Resource published privately.', 'multipass' ),
+			'item_reverted_to_draft'   => esc_html__( 'Resource reverted to draft.', 'multipass' ),
+			'item_scheduled'           => esc_html__( 'Resource scheduled.', 'multipass' ),
+			'item_updated'             => esc_html__( 'Resource updated.', 'multipass' ),
 			'text_domain'              => 'multipass',
 		);
 		$args   = array(
-			'label'               => esc_html__( 'Services', 'multipass' ),
+			'label'               => esc_html__( 'Resources', 'multipass' ),
 			'labels'              => $labels,
 			'description'         => '',
 			'public'              => true,
@@ -243,32 +243,32 @@ class Mltp_Service {
 			'supports'            => array( 'title' ),
 			'taxonomies'          => array(),
 			'rewrite'             => array(
-				'slug'       => 'service',
+				'slug'       => 'mp_resource',
 				'with_front' => false,
 			),
 		);
 
-		register_post_type( 'service', $args );
+		register_post_type( 'mp_resource', $args );
 	}
 
 	/**
-	 * Register Services fields
+	 * Register Resources fields
 	 *
 	 * @param  array $meta_boxes    current metaboxes.
 	 * @return array                updated metaboxes.
 	 */
 	public static function register_fields( $meta_boxes ) {
-		$prefix = 'service_';
+		$prefix = 'resource_';
 
-		$meta_boxes['services'] = array(
-			'title'      => __( 'Services', 'multipass' ),
-			'post_types' => array( 'service' ),
+		$meta_boxes['resources'] = array(
+			'title'      => __( 'Resources', 'multipass' ),
+			'post_types' => array( 'mp_resource' ),
 			'autosave'   => true,
 			'style'      => 'seamless',
 			'fields'     => array(
 				array(
 					'name'          => __( 'Page', 'multipass' ),
-					'id'            => 'service_page_id',
+					'id'            => 'resource_page_id',
 					'type'          => 'post',
 					'post_type'     => array( 'page' ),
 					'field_type'    => 'select_advanced',
@@ -286,7 +286,7 @@ class Mltp_Service {
 	}
 
 	/**
-	 * Update Service post filter. Define multipass_update_service_title hook for
+	 * Update Resource post filter. Define multipass_update_resource_title hook for
 	 * use by other modules.
 	 *
 	 * @param array $data                 An array of slashed, sanitized, and processed post data.
@@ -295,66 +295,66 @@ class Mltp_Service {
 	 * @param bool  $update               Whether this is an existing post being updated.
 	 * @return array                      Modifield post data.
 	 */
-	public static function insert_service_data( $data, $postarr, $unsanitized_postarr, $update ) {
-		if ( $update && 'service' === $data['post_type'] ) {
-			$data = apply_filters( 'multipass_update_service_title', $data );
+	public static function insert_resource_data( $data, $postarr, $unsanitized_postarr, $update ) {
+		if ( $update && 'mp_resource' === $data['post_type'] ) {
+			$data = apply_filters( 'multipass_update_resource_title', $data );
 		}
 
 		return $data;
 	}
 
 	/**
-	 * Set service title automatically, based on details from external service or module.
+	 * Set resource title automatically, based on details from external resource or module.
 	 *
 	 * @param array $data                 An array of slashed, sanitized, and processed post data.
 	 * @return array                      Modifield post data.
 	 */
-	public static function update_service_title( $data ) {
-		if ( empty( $_REQUEST['service_page_id'] ) ) {
+	public static function update_resource_title( $data ) {
+		if ( empty( $_REQUEST['resource_page_id'] ) ) {
 			return $data;
 		}
 
 		if ( empty( $data['post_title'] ) ) {
-			$data['post_title'] = get_the_title( absint( $_REQUEST['service_page_id'] ) );
+			$data['post_title'] = get_the_title( absint( $_REQUEST['resource_page_id'] ) );
 			$data['post_name']  = sanitize_title( esc_attr( $data['post_title'] ) );
 		}
 		return $data;
 	}
 
 	/**
-	 * Register service-type taxonomy.
+	 * Register resource-type taxonomy.
 	 *
 	 * @return void
 	 */
 	public static function register_taxonomies() {
 		$labels = array(
-			'name'                       => esc_html__( 'Service Types', 'multipass' ),
-			'singular_name'              => esc_html__( 'Service Type', 'multipass' ),
-			'menu_name'                  => esc_html__( 'Service Types', 'multipass' ),
-			'search_items'               => esc_html__( 'Search Service Types', 'multipass' ),
-			'popular_items'              => esc_html__( 'Popular Service Types', 'multipass' ),
-			'all_items'                  => esc_html__( 'All Service Types', 'multipass' ),
-			'parent_item'                => esc_html__( 'Parent Service Type', 'multipass' ),
-			'parent_item_colon'          => esc_html__( 'Parent Service Type:', 'multipass' ),
-			'edit_item'                  => esc_html__( 'Edit Service Type', 'multipass' ),
-			'view_item'                  => esc_html__( 'View Service Type', 'multipass' ),
-			'update_item'                => esc_html__( 'Update Service Type', 'multipass' ),
-			'add_new_item'               => esc_html__( 'Add New Service Type', 'multipass' ),
-			'new_item_name'              => esc_html__( 'New Service Type Name', 'multipass' ),
-			'separate_items_with_commas' => esc_html__( 'Separate service types with commas', 'multipass' ),
-			'add_or_remove_items'        => esc_html__( 'Add or remove service types', 'multipass' ),
-			'choose_from_most_used'      => esc_html__( 'Choose most used service types', 'multipass' ),
-			'not_found'                  => esc_html__( 'No service types found.', 'multipass' ),
-			'no_terms'                   => esc_html__( 'No service types', 'multipass' ),
-			'filter_by_item'             => esc_html__( 'Filter by service type', 'multipass' ),
-			'items_list_navigation'      => esc_html__( 'Service Types list pagination', 'multipass' ),
-			'items_list'                 => esc_html__( 'Service Types list', 'multipass' ),
+			'name'                       => esc_html__( 'Resource Types', 'multipass' ),
+			'singular_name'              => esc_html__( 'Resource Type', 'multipass' ),
+			'menu_name'                  => esc_html__( 'Resource Types', 'multipass' ),
+			'search_items'               => esc_html__( 'Search Resource Types', 'multipass' ),
+			'popular_items'              => esc_html__( 'Popular Resource Types', 'multipass' ),
+			'all_items'                  => esc_html__( 'All Resource Types', 'multipass' ),
+			'parent_item'                => esc_html__( 'Parent Resource Type', 'multipass' ),
+			'parent_item_colon'          => esc_html__( 'Parent Resource Type:', 'multipass' ),
+			'edit_item'                  => esc_html__( 'Edit Resource Type', 'multipass' ),
+			'view_item'                  => esc_html__( 'View Resource Type', 'multipass' ),
+			'update_item'                => esc_html__( 'Update Resource Type', 'multipass' ),
+			'add_new_item'               => esc_html__( 'Add New Resource Type', 'multipass' ),
+			'new_item_name'              => esc_html__( 'New Resource Type Name', 'multipass' ),
+			'separate_items_with_commas' => esc_html__( 'Separate resource types with commas', 'multipass' ),
+			'add_or_remove_items'        => esc_html__( 'Add or remove resource types', 'multipass' ),
+			'choose_from_most_used'      => esc_html__( 'Choose most used resource types', 'multipass' ),
+			'not_found'                  => esc_html__( 'No resource types found.', 'multipass' ),
+			'no_terms'                   => esc_html__( 'No resource types', 'multipass' ),
+			'filter_by_item'             => esc_html__( 'Filter by resource type', 'multipass' ),
+			'items_list_navigation'      => esc_html__( 'Resource Types list pagination', 'multipass' ),
+			'items_list'                 => esc_html__( 'Resource Types list', 'multipass' ),
 			'most_used'                  => esc_html__( 'Most Used', 'multipass' ),
-			'back_to_items'              => esc_html__( '&larr; Go to Service Types', 'multipass' ),
+			'back_to_items'              => esc_html__( '&larr; Go to Resource Types', 'multipass' ),
 			'text_domain'                => esc_html__( 'multipass', 'multipass' ),
 		);
 		$args   = array(
-			'label'              => esc_html__( 'Service Types', 'multipass' ),
+			'label'              => esc_html__( 'Resource Types', 'multipass' ),
 			'labels'             => $labels,
 			'description'        => '',
 			'public'             => false,
@@ -376,10 +376,10 @@ class Mltp_Service {
 				'hierarchical' => false,
 			),
 		);
-		register_taxonomy( 'service-type', array( 'prestation', 'product', 'service', 'prestation-item' ), $args );
+		register_taxonomy( 'resource-type', array( 'prestation', 'product', 'mp_resource', 'prestation-item' ), $args );
 
 		MultiPass::register_terms(
-			'service-type',
+			'resource-type',
 			array(
 				'booking' => __( 'Booking', 'multipass' ),
 			)
@@ -388,17 +388,17 @@ class Mltp_Service {
 	}
 
 	/**
-	 * Define additional columns for Services admin list.
+	 * Define additional columns for Resources admin list.
 	 *
 	 * @param array $columns Columns.
 	 */
 	public static function add_admin_columns( $columns ) {
-		$columns['taxonomy-service-type'] = __( 'Service Type', 'multipass' );
+		$columns['taxonomy-resource-type'] = __( 'Resource Type', 'multipass' );
 		return $columns;
 	}
 
 	/**
-	 * Allow filter by term in Services admin list.
+	 * Allow filter by term in Resources admin list.
 	 *
 	 * @param  string $termlink   Term link URL.
 	 * @param  object $term       Term object.
@@ -406,10 +406,10 @@ class Mltp_Service {
 	 * @return string             Term link URL.
 	 */
 	public static function term_link_filter( $termlink, $term, $taxonomy ) {
-		if ( 'service-type' === $taxonomy ) {
+		if ( 'resource-type' === $taxonomy ) {
 			return add_query_arg(
 				array(
-					'service-type' => $term->slug,
+					'resource-type' => $term->slug,
 				),
 				admin_url( basename( $_SERVER['REQUEST_URI'] ) )
 			);
@@ -419,4 +419,4 @@ class Mltp_Service {
 
 }
 
-$this->loaders[] = new Mltp_Service();
+$this->loaders[] = new Mltp_Resource();

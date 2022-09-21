@@ -90,8 +90,8 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			),
 
 			array(
-				'hook'     => 'multipass_update_service_title',
-				'callback' => 'update_service_title',
+				'hook'     => 'multipass_update_resource_title',
+				'callback' => 'update_resource_title',
 			),
 
 			array(
@@ -206,9 +206,9 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			),
 		);
 
-		$meta_boxes['services']['fields'][] = array(
+		$meta_boxes['resources']['fields'][] = array(
 			'name'          => __( 'Product', 'multipass' ),
-			'id'            => 'service_product_id',
+			'id'            => 'resource_product_id',
 			'type'          => 'post',
 			'post_type'     => array( 'product' ),
 			'field_type'    => 'select_advanced',
@@ -340,13 +340,13 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		// $this->background_request->dispatch();
 	}
 
-	static function update_service_title( $data ) {
-		if ( empty( $_REQUEST['service_product_id'] ) ) {
+	static function update_resource_title( $data ) {
+		if ( empty( $_REQUEST['resource_product_id'] ) ) {
 			return $data;
 		}
 
 		if ( empty( $data['post_title'] ) ) {
-			$data['post_title'] = get_the_title( $_REQUEST['service_product_id'] );
+			$data['post_title'] = get_the_title( $_REQUEST['resource_product_id'] );
 			$data['post_name']  = sanitize_title( $data['post_title'] );
 		}
 

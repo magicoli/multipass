@@ -122,7 +122,7 @@ class MultiPass {
 		 */
 		require_once MULTIPASS_DIR . 'includes/class-mltp-prestation.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-item.php';
-		require_once MULTIPASS_DIR . 'includes/class-mltp-service.php';
+		require_once MULTIPASS_DIR . 'includes/class-mltp-resource.php';
 
 		require_once MULTIPASS_DIR . 'includes/class-mltp-settings.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-plugininfo.php';

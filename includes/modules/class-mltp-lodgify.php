@@ -135,9 +135,9 @@ class Mltp_Lodgify extends Mltp_Modules {
 			),
 		);
 
-		$meta_boxes['services']['fields'][] = array(
+		$meta_boxes['resources']['fields'][] = array(
 			'name'          => __( 'Lodgify Property', 'multipass' ),
-			'id'            => 'service_lodgify_id',
+			'id'            => 'resource_lodgify_id',
 			'type'          => 'select_advanced',
 			'options'       => $lodgify->get_property_options(),
 			'admin_columns' => array(

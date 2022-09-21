@@ -464,7 +464,7 @@ class Mltp_Prestation {
 							'type'        => 'select',
 							'options'     => array(
 								'product' => __( 'Product', 'multipass' ),
-								'service' => __( 'Service', 'multipass' ),
+								'resource' => __( 'Resource', 'multipass' ),
 								'booking' => __( 'Booking', 'multipass' ),
 								'payment' => __( 'Payment', 'multipass' ),
 							),
@@ -1341,7 +1341,7 @@ class Mltp_Prestation {
 			'title'    => __( 'Title', 'multipass' ),
 			'customer' => __( 'Customer', 'multipass' ),
 			'contact'  => __( 'Contact', 'multipass' ),
-			'services' => __( 'Services', 'multipass' ),
+			'resources' => __( 'Resources', 'multipass' ),
 			'dates'    => __( 'Dates', 'multipass' ),
 			'discount' => __( 'Discount', 'multipass' ),
 			'total'    => __( 'Total', 'multipass' ),

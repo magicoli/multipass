@@ -172,7 +172,7 @@ class Mltp_Settings {
 			'columns'       => 2,
 			'tabs'          => array(
 				'general' => __( 'General', 'multipass' ),
-				'tos'     => __( 'Terms of Service', 'multipass' ),
+				'tos'     => __( 'Terms of Resource', 'multipass' ),
 			),
 			'icon_url'      => 'dashicons-book',
 		);

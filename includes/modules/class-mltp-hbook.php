@@ -124,9 +124,9 @@ class Mltp_HBook extends Mltp_Modules {
 			),
 		);
 
-		$meta_boxes['services']['fields'][] = array(
+		$meta_boxes['resources']['fields'][] = array(
 			'name'          => __( 'HBook Accommodations', 'multipass' ),
-			'id'            => 'service_hbook_id',
+			'id'            => 'resource_hbook_id',
 			'type'          => 'select_advanced',
 			'options'       => $hbook->get_property_options(),
 			'admin_columns' => array(

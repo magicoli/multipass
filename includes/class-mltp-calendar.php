@@ -150,7 +150,7 @@ class Mltp_Calendar {
 		$meta_boxes[] = array(
 			'title'      => __( 'Calendar', 'prestations' ),
 			'id'         => 'calendar',
-			'post_types' => array( 'service' ),
+			'post_types' => array( 'mp_resource' ),
 			'context'    => 'side',
 			'priority'   => 'low',
 			'autosave'   => true,
@@ -231,7 +231,7 @@ class Mltp_Calendar {
 				'hierarchical' => false,
 			),
 		);
-		register_taxonomy( 'calendar-section', array( 'service' ), $args );
+		register_taxonomy( 'calendar-section', array( 'mp_resource' ), $args );
 
 		MultiPass::register_terms(
 			'calendar-section',
@@ -298,7 +298,7 @@ class Mltp_Calendar {
 		$actions = '';
 
 		// $args  = array(
-		// 	'post_type'      => 'service',
+		// 	'post_type'      => 'mp_resource',
 		// 	'posts_per_page' => -1,
 		// 	'post__not_in'   => array( 498 ),
 		// );
@@ -354,7 +354,7 @@ class Mltp_Calendar {
 				);
 				$args = array(
 					'posts_per_page' => -1,
-					'post_type' => 'service',
+					'post_type' => 'mp_resource',
 					'tax_query' => array(
 						array(
 							'taxonomy' => 'calendar-section',
@@ -364,16 +364,16 @@ class Mltp_Calendar {
 					)
 				);
 				$query = new WP_Query( $args );
-				// 		error_log('term ' . print_r($term, true) . ' services ' . $query->found_posts);
+				// 		error_log('term ' . print_r($term, true) . ' resource ' . $query->found_posts);
 				if($query->have_posts()) {
-					// Get prestation items for each service
+					// Get prestation items for each resource
 					while ( $query->have_posts() ) {
 						$query->the_post();
-						$service = get_post();
-						error_log('service ' . print_r($service, true));
+						$resource = get_post();
+						error_log('resource ' . print_r($resource, true));
 						$resources[] = array(
-							'id' => $service->ID,
-							'title' => "$service->post_title ($service->ID)",
+							'id' => $resource->ID,
+							'title' => "$resource->post_title ($resource->ID)",
 							'parentId' => $term->term_id,
 						);
 
@@ -406,9 +406,9 @@ class Mltp_Calendar {
 				$prestation_id = get_post_meta( get_the_ID(), 'prestation_id', true );
 				$prestation = new Mltp_Prestation($prestation_id);
 				$prestation_status = $prestation->post->post_status;
-				$service_id = get_post_meta( get_the_ID(), 'service_id', true );
-				if(empty($service_id)) {
-					$service_id = 0;
+				$resource_id = get_post_meta( get_the_ID(), 'resource_id', true );
+				if(empty($resource_id)) {
+					$resource_id = 0;
 					$hide_unknown = false;
 				}
 				if($prestation) {
@@ -421,11 +421,11 @@ class Mltp_Calendar {
 						'classNames' => join(' ', array(
 							'prestation-' . $prestation_id,
 							'item-' . $item_id,
-							'service-' . $service_id,
+							'resource-' . $resource_id,
 							'status-' . $prestation_status,
 						)),
 						'allDay' => true,
-						'resourceId' => (empty($service_id)) ? 0 : $service_id,
+						'resourceId' => (empty($resource_id)) ? 0 : $resource_id,
 						// 'allDay' => false,
 					);
 
@@ -439,7 +439,7 @@ class Mltp_Calendar {
 
 		$data = array(
 			'locale' => MultiPass::get_locale(),
-			'resTitle' => __('Services', 'multipass'),
+			'resTitle' => __('Resources', 'multipass'),
 			'resources' => $resources,
 			'events' => $events,
 		);
