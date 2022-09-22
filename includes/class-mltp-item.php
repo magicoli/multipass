@@ -48,12 +48,12 @@ class Mltp_Item {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct( $args = null ) {
-		$this->post = $this->get( $args );
+	public function __construct( $args = null, $update = false ) {
+		if(empty($args)) return false;
+		$this->post = $this->get( $args, $update );
 		if ( $this->post ) {
 			$this->ID = $this->post->ID;
 		}
-
 	}
 
 	/**
@@ -898,21 +898,21 @@ class Mltp_Item {
 
 		remove_action( current_action(), __CLASS__ . '::' . __FUNCTION__ );
 
-		$prestation_id        = get_post_meta( $post_id, 'prestation_id', true );
-		$prestation_item_info = get_post_meta( $post_id, 'customer', true );
-		if ( $prestation_id ) {
+		$item_id        = get_post_meta( $post_id, 'prestation_id', true );
+		$item_info = get_post_meta( $post_id, 'customer', true );
+		if ( $item_id ) {
 			$user_info = array_filter(
 				array(
-					'user_id' => get_post_meta( $prestation_id, 'customer_id', true ),
-					'name'    => get_post_meta( $prestation_id, 'attendee_name', true ),
-					'email'   => get_post_meta( $prestation_id, 'attendee_email', true ),
-					'phone'   => get_post_meta( $prestation_id, 'attendee_phone', true ),
+					'user_id' => get_post_meta( $item_id, 'customer_id', true ),
+					'name'    => get_post_meta( $item_id, 'attendee_name', true ),
+					'email'   => get_post_meta( $item_id, 'attendee_email', true ),
+					'phone'   => get_post_meta( $item_id, 'attendee_phone', true ),
 				)
 			);
 		} else {
-			$user_info = $prestation_item_info;
+			$user_info = $item_info;
 		}
-		if ( $user_info != $prestation_item_info ) {
+		if ( $user_info != $item_info ) {
 			// error_log(__FUNCTION__ . '::' . __FUNCTION__ . ' meta ' . print_r($user_info, true));
 			update_post_meta( $post_id, 'customer', $user_info );
 		}
@@ -1025,7 +1025,7 @@ class Mltp_Item {
 		}
 		// $metas['subtotal'] = get_post_meta($post_id, 'prestation_id', true);
 		// $part = new Mltp_Item($post);
-		// $prestation_item->set_prestation();
+		// $item->set_prestation();
 
 		add_action( current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3 );
 	}
@@ -1047,15 +1047,15 @@ class Mltp_Item {
 		//
 		// switch($meta_key) {
 		// case 'customer':
-		// $prestation_id = get_post_meta($object_id, 'prestation_id', true);
+		// $item_id = get_post_meta($object_id, 'prestation_id', true);
 		// $prestation_info = array_filter(array(
-		// 'id' => get_post_meta($prestation_id, 'customer_id', true),
-		// 'name' => get_post_meta($prestation_id, 'attendee_name', true),
-		// 'email' => get_post_meta($prestation_id, 'attendee_email', true),
-		// 'phone' => get_post_meta($prestation_id, 'attendee_phone', true),
+		// 'id' => get_post_meta($item_id, 'customer_id', true),
+		// 'name' => get_post_meta($item_id, 'attendee_name', true),
+		// 'email' => get_post_meta($item_id, 'attendee_email', true),
+		// 'phone' => get_post_meta($item_id, 'attendee_phone', true),
 		// ));
-		// $prestation_item_info = MultiPass::get_user_info_by_info($meta_value);
-		// $meta_value = array_replace($prestation_item_info, $prestation_info);
+		// $item_info = MultiPass::get_user_info_by_info($meta_value);
+		// $meta_value = array_replace($item_info, $prestation_info);
 		// error_log("object $object_id user info " . print_r($meta_value, true) );
 		// return $meta_value;
 		// break;
@@ -1075,8 +1075,8 @@ class Mltp_Item {
 
 		// // remove_action(current_action(), __CLASS__ . '::wp_insert_post_action');
 
-		$prestation_id = get_post_meta( $post->ID, 'prestation_id', true );
-		$prestation    = get_post( $prestation_id );
+		$item_id = get_post_meta( $post->ID, 'prestation_id', true );
+		$prestation    = get_post( $item_id );
 
 		$user_info = get_post_meta( $post->ID, 'customer' );
 		error_log( __FUNCTION__ . '::' . __FUNCTION__ . ' meta ' . print_r( $user_info, true ) );
@@ -1102,7 +1102,7 @@ class Mltp_Item {
 		// $customer_email = get_post_meta($this->ID, '_billing_email', true);
 		// }
 		//
-		// if(empty($prestation_id) || ! $prestation) {
+		// if(empty($item_id) || ! $prestation) {
 		// $args = array(
 		// 'post_type' => 'prestation',
 		// 'post_status__in' => [ 'pending', 'on-hold', 'deposit', 'partial', 'unpaid', 'processing' ],
@@ -1144,13 +1144,13 @@ class Mltp_Item {
 		// $prestations = get_posts($args);
 		// if($prestations) {
 		// $prestation = $prestations[0];
-		// $prestation_id = $prestation->ID;
+		// $item_id = $prestation->ID;
 		// error_log("$prestation->ID $prestation->post_title " . print_r($prestation, true));
-		// update_post_meta( $this->ID, 'prestation_id', $prestation_id );
+		// update_post_meta( $this->ID, 'prestation_id', $item_id );
 		// }
 		// }
 		//
-		// if(empty($prestation_id) || ! $prestation) {
+		// if(empty($item_id) || ! $prestation) {
 		// $this->postarr = array(
 		// 'post_author' => $this->post->get_customer_id(),
 		// 'post_date' => $this->post->get_date_created(),
@@ -1158,47 +1158,51 @@ class Mltp_Item {
 		// 'post_type' => 'prestation',
 		// 'post_status' => 'publish',
 		// 'meta_input' => array(
-		// 'prestation_id' => $prestation_id,
+		// 'prestation_id' => $item_id,
 		// 'customer_id' => $customer_id,
 		// 'customer_name' => $customer_name,
 		// 'customer_email' => $customer_email,
 		// ),
 		// );
-		// $prestation_id = wp_insert_post($this->postarr);
-		// update_post_meta( $this->ID, 'prestation_id', $prestation_id );
+		// $item_id = wp_insert_post($this->postarr);
+		// update_post_meta( $this->ID, 'prestation_id', $item_id );
 		// foreach ($this->postarr['meta_input'] as $key => $value) update_post_meta( $this->ID, $key, $value );
 		// }
 		//
-		// if(!empty($prestation_id)) {
+		// if(!empty($item_id)) {
 		// $meta = array(
-		// 'prestation_id' => $prestation_id,
+		// 'prestation_id' => $item_id,
 		// 'customer_id' => $customer_id,
 		// 'customer_name' => $customer_name,
 		// 'customer_email' => $customer_email,
 		// );
 		// foreach ($meta as $key => $value) update_post_meta( $this->ID, $key, $value );
-		// Mltp_Item::update_prestation_prestation_items($prestation_id, get_post($prestation_id), true );
+		// Mltp_Item::update_prestation_prestation_items($item_id, get_post($item_id), true );
 		// }
 		//
 		// // add_action(current_action(), __CLASS__ . '::wp_insert_post_action', 10, 3);
 		return;
 	}
 
-	function get( $args ) {
-		$prestation_item = null;
+	function get( $args, $update = false ) {
+		$item_id = null;
+		$item = null;
+
 		switch ( gettype( $args ) ) {
 			case 'object':
 				$post = $args;
-				if ( isset( $post->post_type ) && $post->post_type == 'prestation-item' ) {
-					$prestation_item = $args;
+				if ( isset( $post->post_type ) && 'prestation-item' === $post->post_type ) {
+					$item = $args;
 				}
+				unset($args);
 				break;
 
 			case 'integer':
 				$post = get_post( $args );
-				if ( isset( $post->post_type ) && $post->post_type == 'prestation-item' ) {
-					$prestation_item = $post;
+				if ( isset( $post->post_type ) &&  'prestation-item' === $post->post_type ) {
+					$item = $post;
 				}
+				unset($args);
 				break;
 
 			case 'array':
@@ -1229,40 +1233,46 @@ class Mltp_Item {
 						),
 					),
 				);
-				$prestation_items = get_posts( $query_args );
-				if ( $prestation_items ) {
-					$prestation_item = reset( $prestation_items );
-				} else {
-					$postarr = array(
-						'post_author' => $args['customer']['user_id'],
-						'post_title'  => sprintf(
-							'#%s-%s %s',
-							$args['source_id'],
-							$args['source_item_id'],
-							$args['description'],
-						),
-						// 'post_date' => esc_attr($args['date']),
-						// 'post_date_gmt' => esc_attr($args['date_gmt']),
-						'post_type'   => 'prestation-item',
-						'post_status' => 'publish',
-						'meta_input'  => $args,
-						'tax_input'   => array(
-							'prestation-item-source' => $args['source'],
-						),
-					);
-
-					$prestation_item_id = wp_insert_post( $postarr );
-					$prestation_item    = get_post( $prestation_item_id );
+				$items = get_posts( $query_args );
+				if ( $items ) {
+					$item = reset( $items );
+					$item_id = $item->ID;
 				}
 				break;
 
 		}
 
-		// if(!empty($prestation_item)) {
-		// $this->post = $prestation_item;
-		// $this->ID = $prestation_item->ID;
+		if(is_array($args) &! empty($args) && ( empty($item_id) || $update )) {
+			$postarr = array(
+				'ID' => $item_id,
+				'post_author' => $args['customer']['user_id'],
+				'post_title'  => sprintf(
+					'Updated #%s-%s %s',
+					$args['source_id'],
+					$args['source_item_id'],
+					$args['description'],
+				),
+				// 'post_date' => esc_attr($args['date']),
+				// 'post_date_gmt' => esc_attr($args['date_gmt']),
+				'post_type'   => 'prestation-item',
+				'post_status' => 'publish',
+				'meta_input'  => $args,
+				'tax_input'   => array(
+					'prestation-item-source' => $args['source'],
+				),
+			);
+
+			$type = (empty($item_id)) ? 'new prestation-item' : "update $item->post_type";
+			error_log( __FUNCTION__ . "() $type " . $item_id . ' ' . print_r($postarr, true));
+
+			$item_id = wp_insert_post( $postarr );
+			$item = get_post( $item_id );
+		}
+		// if(!empty($item)) {
+		// $this->post = $item;
+		// $this->ID = $item->ID;
 		// }
-		return $prestation_item;
+		return $item;
 	}
 }
 
