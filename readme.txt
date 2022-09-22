@@ -1,4 +1,4 @@
-=== MultiPass ===
+=== MultiPass (dev) ===
 Contributors: magicoli69
 Donate link: https://magiiic.com/support/MultiPass+Plugin
 Tags: hotel, booking, multi-prestations, multi-resources, woocommerce, ota, pms, booking engine
