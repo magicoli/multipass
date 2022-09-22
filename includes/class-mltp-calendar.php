@@ -345,7 +345,7 @@ class Mltp_Calendar {
 		);
 		$resources[] = array(
 			'id'    => 0,
-			'title' => __( 'Unknown' ),
+			'title' => __( 'Undefined', 'multipass' ),
 		);
 		if ( $terms ) {
 			foreach ( $terms as $term ) {
@@ -454,7 +454,7 @@ class Mltp_Calendar {
 				}
 			}
 		}
-		if ( $hide_unknown ) {
+		if ( $hide_undefined ) {
 			array_shift( $resources );
 		}
 

@@ -253,7 +253,6 @@ class Mltp_PluginInfo {
 
 	protected function getFormattedAuthor() {
 		if ( ! empty( $this->author_homepage ) ) {
-			/** @noinspection HtmlUnknownTarget */
 			return sprintf( '<a href="%s">%s</a>', $this->author_homepage, $this->author );
 		}
 		return $this->author;
