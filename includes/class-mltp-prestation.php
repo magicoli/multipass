@@ -603,7 +603,7 @@ class Mltp_Prestation {
 					'name'     => __( 'Regular Price', 'multipass' ),
 					'id'       => $prefix . 'price_html',
 					'type'     => 'custom_html',
-					'callback' => 'Mltp_Prestation::get_summary_price',
+					'callback' => 'Mltp_Prestation::get_summary_subtotal',
 				),
 				array(
 					'name'     => __( 'Discount', 'multipass' ),
@@ -877,8 +877,8 @@ class Mltp_Prestation {
 	 *
 	 * @return string  HTML formatted currency amount.
 	 */
-	public static function get_summary_price() {
-		$amount = get_post_meta( get_post()->ID, 'price', true );
+	public static function get_summary_subtotal() {
+		$amount = get_post_meta( get_post()->ID, 'subtotal', true );
 		return MultiPass::price( ( empty( $amount ) ) ? 0 : $amount );
 	}
 
@@ -1099,24 +1099,30 @@ class Mltp_Prestation {
 		if ( ! $post ) {
 			return;
 		}
-		if ( 'trash' === $post->post_status ) {
-			return; // TODO: remove prestation reference from other post types.
-		}
-
-		$request = wp_unslash( $_REQUEST );
-		if ( isset( $request['action'] ) ) {
-			if ( empty( $request['_wpnonce'] ) || ! wp_verify_nonce( $request['_wpnonce'] ) ) {
-				return;
-			}
-
-			if ( 'trash' === $request['action'] ) {
-				return; // maybe redundant?
-			}
-		}
-
 		if ( MultiPass::is_new_post() ) {
-			return; // triggered when opened new post page, empty.
+			// triggered when opened new post page, empty.
+			return;
 		}
+		if ( 'trash' === $post->post_status ) {
+			// TODO: remove related prestation items and reference in post types.
+			return;
+		}
+
+		/**
+		 * Maybe obsolete.  We probably don't need to check request ation anymore,
+		 * since the post is already saved.
+		 */
+		// $request = wp_unslash( $_REQUEST );
+		// if ( isset( $request['action'] ) ) {
+		// 	if ( 'trash' === $request['action'] ) {
+		// 		return; // maybe redundant?
+		// 	}
+		//
+		// 	if ( isset( $request['_wpnonce'] ) &! wp_verify_nonce( $request['_wpnonce'] ) ) {
+		// 		return;
+		// 	}
+		// }
+		// End maybe obsolete check.
 
 		remove_action( current_action(), __CLASS__ . '::' . __FUNCTION__ );
 
@@ -1133,23 +1139,23 @@ class Mltp_Prestation {
 		$updates['balance']  = get_post_meta( $post_id, 'balance', true );
 		$updates['dates']    = get_post_meta( $post_id, 'dates', true );
 
-		$updates['price'] = 0;
-		$updates['paid']  = 0;
-		$updates['total'] = 0;
-		$dates            = array();
+		$updates['subtotal'] = 0;
+		$updates['paid']     = 0;
+		$updates['total']    = 0;
+		$dates               = array();
 
-		if ( is_array( $request ) ) {
-			foreach ( $updates as $key => $value ) {
-				if ( isset( $request[ $key ] ) ) {
-					$updates[ $key ] = is_array( $request[ $key ] ) ? $request[ $key ] : esc_attr( $request[ $key ] );
-				}
-			}
-			foreach ( $amounts as $key => $value ) {
-				if ( isset( $request[ $key ] ) ) {
-					$amounts[ $key ] = is_array( $request[ $key ] ) ? $request[ $key ] : esc_attr( $request[ $key ] );
-				}
-			}
-		}
+		// if ( is_array( $request ) ) {
+		// 	foreach ( $updates as $key => $value ) {
+		// 		if ( isset( $request[ $key ] ) ) {
+		// 			$updates[ $key ] = is_array( $request[ $key ] ) ? $request[ $key ] : esc_attr( $request[ $key ] );
+		// 		}
+		// 	}
+		// 	foreach ( $amounts as $key => $value ) {
+		// 		if ( isset( $request[ $key ] ) ) {
+		// 			$amounts[ $key ] = is_array( $request[ $key ] ) ? $request[ $key ] : esc_attr( $request[ $key ] );
+		// 		}
+		// 	}
+		// }
 
 		if ( ! is_array( $updates['deposit'] ) ) {
 			$updates['deposit'] = array(
@@ -1173,9 +1179,11 @@ class Mltp_Prestation {
 
 		$prestation       = new Mltp_Prestation( $post );
 		$prestation_items = $prestation->get_items();
+
 		foreach ( $prestation_items as $item ) {
+			error_log( print_r( $item, true ) );
 			$updates['discount']['total'] += $item['discount'];
-			$updates['price']             += $item['subtotal'];
+			$updates['subtotal']          += $item['subtotal'];
 			$updates['total']             += $item['total'];
 			$updates['paid']              += $item['paid'];
 			if ( ! empty( $item['dates'] ) ) {
@@ -1203,7 +1211,7 @@ class Mltp_Prestation {
 				if ( empty( $item['quantity'] ) || empty( $item['unit_price'] ) ) {
 					continue;
 				}
-				$updates['price'] += (float) $item['quantity'] * (float) $item['unit_price'];
+				$updates['subtotal'] += (float) $item['quantity'] * (float) $item['unit_price'];
 
 				if ( ! empty( $item['from']['timestamp'] ) ) {
 					$dates[] = $item['from']['timestamp'];
@@ -1215,7 +1223,7 @@ class Mltp_Prestation {
 		}
 
 		if ( $updates['discount']['percent'] > 0 ) {
-			$updates['discount']['amount'] = $updates['price'] * $updates['discount']['percent'] / 100;
+			$updates['discount']['amount'] = $updates['subtotal'] * $updates['discount']['percent'] / 100;
 		} else {
 			$updates['discount']['amount'] = ( empty( $updates['discount']['amount'] ) ) ? null : $updates['discount']['amount'];
 		}
