@@ -241,7 +241,13 @@ class Mltp_Item {
 		} else {
 			$customer_info = get_post_meta( $post->ID, 'customer', true );
 		}
-
+		$customer_info = array_merge(array(
+			'user_id' => null,
+			'name' => null,
+			'phone' => null,
+			'email' => null,
+		), $customer_info);
+		
 		$customer_html = '';
 		if ( is_array( $customer_info ) ) {
 			$customer_html = join(
