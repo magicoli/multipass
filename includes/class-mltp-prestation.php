@@ -1181,7 +1181,6 @@ class Mltp_Prestation {
 		$prestation_items = $prestation->get_items();
 
 		foreach ( $prestation_items as $item ) {
-			error_log( print_r( $item, true ) );
 			$updates['discount']['total'] += $item['discount'];
 			$updates['subtotal']          += $item['subtotal'];
 			$updates['total']             += $item['total'];
@@ -1313,6 +1312,8 @@ class Mltp_Prestation {
 		$updates['sort_date']    = ( isset( $updates['dates'] ) && isset( $updates['dates']['from'] ) ) ? $updates['dates']['from'] : '';
 		$updates['display_name'] = $display_name;
 
+		$updates['flags'] = MultiPass::set_flags($updates);
+		$updates['classes'] = MultiPass::get_flag_slugs($updates['flags']);
 		$post_update = array(
 			'ID'          => $post_id,
 			'post_title'  => trim( $display_name . ' #' . ( ( empty( $post->post_name ) ) ? $post_id : $post->post_name ) ),
