@@ -47,10 +47,19 @@
     .fc-h-event .fc-event-main {
       color: inherit;
     }
-    // .status-publish {
-    //   color: var(--mltp-color-confirmed);
-    //   background-color: var(--mltp-background-confirmed);
-    // }
+    .status-paid-some {
+      color: var(--mltp-color-partial);
+      background-color: var(--mltp-background-partial);
+    }
+    .status-confirmed,
+    .status-paid-deposit {
+      color: var(--mltp-color-confirmed);
+      background-color: var(--mltp-background-confirmed);
+    }
+    .status-paid-all {
+      color: var(--mltp-color-paid);
+      background-color: var(--mltp-background-paid);
+    }
   }
 
 

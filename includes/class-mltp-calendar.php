@@ -422,6 +422,21 @@ class Mltp_Calendar {
 					$hide_unknown  = false;
 				}
 
+				$flags = get_post_meta( get_the_ID(), 'flags', true );
+				$flags = empty($flags) ? 0 : $flags;
+				if($prestation) $pflags = get_post_meta( $prestation_id, 'flags', true );
+				$pflags = empty($pflags) ? 0 : $pflags;
+
+				$flags = $flags | ($pflags & MLTP_PAID_SOME) | ($pflags & MLTP_PAID_DEPOSIT) | ($pflags & MLTP_PAID_ALL) | ($pflags & MLTP_CONFIRMED);
+
+				$classes = MultiPass::get_flag_slugs($flags);
+				$classes = (is_array($classes)) ? preg_replace('/^/', 'status-', $classes) : [];
+				$classes = array_merge($classes, array(
+					'prestation-' . $prestation_id,
+					'item-' . $item_id,
+					'resource-' . $resource_slug,
+				));
+
 				if ( $prestation ) {
 					// $calendar = get_the_terms($item_id, )
 					$e = array(
@@ -429,15 +444,7 @@ class Mltp_Calendar {
 						'start'      => $begin,
 						'end'        => $end,
 						'url'        => get_edit_post_link( $prestation_id, '' ),
-						'classNames' => join(
-							' ',
-							array(
-								'prestation-' . $prestation_id,
-								'item-' . $item_id,
-								'resource-' . $resource_slug,
-								'status-' . $prestation_status,
-							)
-						),
+						'classNames' => join(' ', $classes),
 						'allDay'     => true,
 						'resourceId' => $resource_slug,
 						// 'allDay' => false,

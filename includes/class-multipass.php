@@ -679,6 +679,14 @@ class MultiPass {
 		return $locale;
 	}
 
+	public static function get_the_flags($post_id = null) {
+		if(empty($post_id)) $post_id = get_the_ID();
+		$flags = get_post_meta( get_the_ID(), 'flags', true );
+		if($flags) {
+			return self::get_flag_slugs($flags);
+		}
+	}
+
 	public static function get_flag_slugs($flags, $format = 'array') {
 		$array = [];
 		$slugs = MLTP_FLAGSLUGS;

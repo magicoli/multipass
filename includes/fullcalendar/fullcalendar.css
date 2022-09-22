@@ -51,6 +51,19 @@
 .prestation_page_mltp-calendar .fc-timeline-event-harness .fc-h-event .fc-event-main {
   color: inherit;
 }
+.prestation_page_mltp-calendar .fc-timeline-event-harness .status-paid-some {
+  color: var(--mltp-color-partial);
+  background-color: var(--mltp-background-partial);
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .status-confirmed,
+.prestation_page_mltp-calendar .fc-timeline-event-harness .status-paid-deposit {
+  color: var(--mltp-color-confirmed);
+  background-color: var(--mltp-background-confirmed);
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .status-paid-all {
+  color: var(--mltp-color-paid);
+  background-color: var(--mltp-background-paid);
+}
 @-webkit-keyframes dashicons-spin {
   0% {
     transform: rotate(0deg);
