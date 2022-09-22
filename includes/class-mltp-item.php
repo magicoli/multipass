@@ -247,7 +247,7 @@ class Mltp_Item {
 			'phone' => null,
 			'email' => null,
 		), $customer_info);
-		
+
 		$customer_html = '';
 		if ( is_array( $customer_info ) ) {
 			$customer_html = join(
@@ -942,9 +942,9 @@ class Mltp_Item {
 			if ( ! is_array( $discount ) ) {
 				$discount = array( 'amount' => null );
 			}
-			$discount_percent = isset( $discount['percent'] ) ? $discount['percent'] : null;
+			$discount_amount = (isset($discount['amount'])) ? $discount['amount'] : null;
 			if ( isset( $discount['percent'] ) ) {
-				$discount_amount = $sub_total * $discount_percent / 100;
+				$discount_amount = $sub_total * $discount['percent'] / 100;
 			}
 			$updates['discount'] = array_merge(
 				$discount,
@@ -952,7 +952,6 @@ class Mltp_Item {
 					'amount' => $discount_amount,
 				)
 			);
-
 			$updates['total'] = $total = $sub_total - $discount_amount;
 
 			$deposit = get_post_meta( $post_id, 'deposit', true );
@@ -961,6 +960,7 @@ class Mltp_Item {
 			}
 
 			$deposit_percent = isset( $deposit['percent'] ) ? $deposit['percent'] : null;
+			$deposit_amount = (isset($deposit['amount'])) ? $deposit['amount'] : null;
 			if ( isset( $deposit['percent'] ) ) {
 				$deposit_amount = $total * $deposit_percent / 100;
 			}
@@ -972,15 +972,18 @@ class Mltp_Item {
 			);
 
 			$payments = get_post_meta( $post_id, 'payment', true );
-			$paid     = null;
-			foreach ( $payments as $key => $payment ) {
-				if ( isset( $payment['amount'] ) ) {
-					$paid += $payment['amount'];
+			error_log(print_r(get_post_meta( $post_id), true));
+
+			$paid = (float)get_post_meta( $post_id, 'paid', true );
+			if(is_array($payments)) {
+				foreach ( $payments as $key => $payment ) {
+					if ( isset( $payment['amount'] ) ) {
+						$paid += (float)$payment['amount'];
+					}
 				}
-				// code...
 			}
 			$updates['paid']    = $paid;
-			$updates['balance'] = $total - $paid;
+			$updates['balance'] = (float)round($total - $paid, 4);
 		}
 
 		$attendees = get_post_meta( $post_id, 'attendees', true );
