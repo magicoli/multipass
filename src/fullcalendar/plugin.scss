@@ -7,6 +7,11 @@
   --fc-background-weekend: hsl(0, 0%, 80%, 25%);
   --fc-background-today: hsl(60, 75%, 75%, 25%);
 
+  .fc-datagrid-cell-frame,
+  .fc-timeline-lane-frame {
+    min-height: 3.7em;
+  }
+
   .fc-timeline-slot.fc-day-sun,
   .fc-timeline-slot.fc-day-sat {
     background-color: var(--fc-background-weekend);
@@ -27,26 +32,44 @@
      animation-timing-function: linear;
      opacity: 50%;
   }
-
   .fc-timeline-event-harness {
     margin-left: 1vw;
     margin-right: -1vw;
     margin-top: 0.3rem;
 
-    .fc-timeline-event {
+    .fc-event:not(.fc-event-end) {
+      padding-right: 1vw;
+    }
+    .fc-event:not(.fc-event-start) {
+      margin-left: -1vw;
+    }
+
+    .fc-event {
+        font-size: 1.2em;
+        line-height: 2em;
+    // }
+    //
+    // .fc-timeline-event {
       border-radius: 1.5em;
       margin: 0.1em;
-      padding-left: 0.5em;
-      padding-right: 0.5em;
-    }
-    .fc-h-event {
+      // padding-left: 0.5em;
+    // }
+    // .fc-h-event {
       color: var(--mltp-color-undefined);
       border-color: hsl(0, 0%, 75%);
       background-color: var(--mltp-background-undefined);
+
+      .fc-event-main {
+        color: inherit;
+      }
+
+      .fc-event-title-container {
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+      }
+
     }
-    .fc-h-event .fc-event-main {
-      color: inherit;
-    }
+
     .status-paid-some {
       color: var(--mltp-color-partial);
       background-color: var(--mltp-background-partial);
@@ -60,6 +83,30 @@
       color: var(--mltp-color-paid);
       background-color: var(--mltp-background-paid);
     }
+
+    /* .fc-timeline-event-harness .fc-timeline-event:before,*/
+    .fc-event-title-container:before {
+    /*  content: 'B';*/
+      display: inline-block;
+      // margin-right: 0.25em;
+      margin-left: -0.5em;
+      background: white;
+      border-radius: 1em;
+      width: 2em;
+      text-align: center;
+      font-weight: 900;
+    }
+
+    .fc-event-title-container {
+        white-space: nowrap;
+      overflow-y: hidden;
+      margin-left: 0;
+    }
+    .origin-woocommerce .fc-event-title-container:before { content: 'W'; }
+    .origin-lodgify .fc-event-title-container:before { content: 'L'; }
+    .origin-booking .fc-event-title-container:before { content: 'B.'; }
+    .origin-hbook .fc-event-title-container:before { content: 'HB'; }
+    .origin-airbnb .fc-event-title-container:before { content: 'A'; }
   }
 
 

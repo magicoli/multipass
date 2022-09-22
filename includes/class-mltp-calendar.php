@@ -431,10 +431,12 @@ class Mltp_Calendar {
 
 				$classes = MultiPass::get_flag_slugs($flags);
 				$classes = (is_array($classes)) ? preg_replace('/^/', 'status-', $classes) : [];
+				$source_slug = get_post_meta($item_id, 'source', true);
 				$classes = array_merge($classes, array(
 					'prestation-' . $prestation_id,
 					'item-' . $item_id,
 					'resource-' . $resource_slug,
+					'origin-' . $source_slug,
 				));
 
 				if ( $prestation ) {

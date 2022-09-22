@@ -1,6 +1,8 @@
 ## Changelog
 
 ### Unreleased
+- added origin sign to timeline events
+- timeline events bigger font size
 
 ### 0.1.1
 
