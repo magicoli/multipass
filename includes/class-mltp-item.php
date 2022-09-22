@@ -49,7 +49,9 @@ class Mltp_Item {
 	 * @since    1.0.0
 	 */
 	public function __construct( $args = null, $update = false ) {
-		if(empty($args)) return false;
+		if ( empty( $args ) ) {
+			return false;
+		}
 		$this->post = $this->get( $args, $update );
 		if ( $this->post ) {
 			$this->ID = $this->post->ID;
@@ -241,12 +243,15 @@ class Mltp_Item {
 		} else {
 			$customer_info = get_post_meta( $post->ID, 'customer', true );
 		}
-		$customer_info = array_merge(array(
-			'user_id' => null,
-			'name' => null,
-			'phone' => null,
-			'email' => null,
-		), $customer_info);
+		$customer_info = array_merge(
+			array(
+				'user_id' => null,
+				'name'    => null,
+				'phone'   => null,
+				'email'   => null,
+			),
+			$customer_info
+		);
 
 		$customer_html = '';
 		if ( is_array( $customer_info ) ) {
@@ -404,24 +409,30 @@ class Mltp_Item {
 					),
 				),
 				array(
-					'name'       => __( 'Prestation', 'multipass' ),
-					'id'         => $prefix . 'prestation_id',
-					'type'       => 'post',
-					'post_type'  => array( 'prestation' ),
-					'field_type' => 'select_advanced',
-				),
-				array(
-					'name'          => __( 'Customer', 'multipass' ),
-					'id'            => $prefix . 'customer_display',
-					'type'          => 'custom_html',
-					'callback'      => __CLASS__ . '::customer_html',
+					'name'          => __( 'Prestation', 'multipass' ),
+					'id'            => $prefix . 'prestation_id',
+					'type'          => 'post',
+					'post_type'     => array( 'prestation' ),
+					'field_type'    => 'select_advanced',
 					'admin_columns' => array(
 						'position'   => 'after title',
 						// 'title'      => 'Customer',
 						'sort'       => true,
 						'searchable' => true,
 					),
-					'visible'       => array(
+				),
+				array(
+					'name'     => __( 'Customer', 'multipass' ),
+					'id'       => $prefix . 'customer_display',
+					'type'     => 'custom_html',
+					'callback' => __CLASS__ . '::customer_html',
+					// 'admin_columns' => array(
+					// 'position'   => 'after prestation_id',
+					// 'title'      => 'Customer',
+					// 'sort'       => true,
+					// 'searchable' => true,
+					// ),
+					'visible'  => array(
 						'when'     => array( array( 'prestation_id', '!=', '' ) ),
 						'relation' => 'or',
 					),
@@ -439,11 +450,11 @@ class Mltp_Item {
 							'field_type' => 'select_advanced',
 						),
 						array(
-							'name'          => __( 'Name', 'multipass' ),
-							'id'            => $prefix . 'name',
-							'type'          => 'text',
-							'size'          => 30,
-							'admin_columns' => 'after title',
+							'name' => __( 'Name', 'multipass' ),
+							'id'   => $prefix . 'name',
+							'type' => 'text',
+							'size' => 30,
+							// 'admin_columns' => 'after title',
 						),
 						array(
 							'name' => __( 'Email', 'multipass' ),
@@ -579,7 +590,7 @@ class Mltp_Item {
 					'type'          => 'hidden',
 					'disabled'      => true,
 					'admin_columns' => array(
-						'position' => 'after customer_display',
+						'position' => 'after prestation_id',
 						'sort'     => true,
 					),
 				),
@@ -904,7 +915,7 @@ class Mltp_Item {
 
 		remove_action( current_action(), __CLASS__ . '::' . __FUNCTION__ );
 
-		$item_id        = get_post_meta( $post_id, 'prestation_id', true );
+		$item_id   = get_post_meta( $post_id, 'prestation_id', true );
 		$item_info = get_post_meta( $post_id, 'customer', true );
 		if ( $item_id ) {
 			$user_info = array_filter(
@@ -942,7 +953,7 @@ class Mltp_Item {
 			if ( ! is_array( $discount ) ) {
 				$discount = array( 'amount' => null );
 			}
-			$discount_amount = (isset($discount['amount'])) ? $discount['amount'] : null;
+			$discount_amount = ( isset( $discount['amount'] ) ) ? $discount['amount'] : null;
 			if ( isset( $discount['percent'] ) ) {
 				$discount_amount = $sub_total * $discount['percent'] / 100;
 			}
@@ -952,7 +963,7 @@ class Mltp_Item {
 					'amount' => $discount_amount,
 				)
 			);
-			$updates['total'] = $total = $sub_total - $discount_amount;
+			$updates['total']    = $total = $sub_total - $discount_amount;
 
 			$deposit = get_post_meta( $post_id, 'deposit', true );
 			if ( ! is_array( $deposit ) ) {
@@ -960,7 +971,7 @@ class Mltp_Item {
 			}
 
 			$deposit_percent = isset( $deposit['percent'] ) ? $deposit['percent'] : null;
-			$deposit_amount = (isset($deposit['amount'])) ? $deposit['amount'] : null;
+			$deposit_amount  = ( isset( $deposit['amount'] ) ) ? $deposit['amount'] : null;
 			if ( isset( $deposit['percent'] ) ) {
 				$deposit_amount = $total * $deposit_percent / 100;
 			}
@@ -972,18 +983,18 @@ class Mltp_Item {
 			);
 
 			$payments = get_post_meta( $post_id, 'payment', true );
-			error_log(print_r(get_post_meta( $post_id), true));
 
-			$paid = (float)get_post_meta( $post_id, 'paid', true );
-			if(is_array($payments)) {
+			$paid = (float) get_post_meta( $post_id, 'paid', true );
+			if ( is_array( $payments ) ) {
 				foreach ( $payments as $key => $payment ) {
 					if ( isset( $payment['amount'] ) ) {
-						$paid += (float)$payment['amount'];
+						$paid += (float) $payment['amount'];
 					}
 				}
 			}
 			$updates['paid']    = $paid;
-			$updates['balance'] = (float)round($total - $paid, 4);
+			$updates['balance'] = round( $total - $paid, 4 );
+			$updates['balance'] = ( empty( $updates['balance'] ) ) ? null : $updates['balance'];
 		}
 
 		$attendees = get_post_meta( $post_id, 'attendees', true );
@@ -1013,6 +1024,9 @@ class Mltp_Item {
 		}
 
 		if ( ! empty( $updates ) ) {
+			$updates['flags'] = MultiPass::set_flags($updates);
+			$updates['classes'] = MultiPass::get_flag_slugs($updates['flags']);
+
 			$post_update = array(
 				'ID'         => $post_id,
 				// 'post_title' => trim($display_name . ' ' . "#" . ((empty($post->post_name)) ? $post_id : $post->post_name)),
@@ -1024,13 +1038,6 @@ class Mltp_Item {
 			);
 
 			wp_update_post( $post_update );
-			/*
-			* TODO: get why metadata and taxonomies are not saved with wp_update_post
-			* In the meantime, we force the update
-			*/
-			// foreach ($updates as $key => $value) update_post_meta( $post_id, $key, $value );
-			// wp_set_object_terms( $post_id, $paid_status, 'prestation-status');
-			//
 		}
 		// $metas['subtotal'] = get_post_meta($post_id, 'prestation_id', true);
 		// $part = new Mltp_Item($post);
@@ -1084,11 +1091,10 @@ class Mltp_Item {
 
 		// // remove_action(current_action(), __CLASS__ . '::wp_insert_post_action');
 
-		$item_id = get_post_meta( $post->ID, 'prestation_id', true );
-		$prestation    = get_post( $item_id );
+		$item_id    = get_post_meta( $post->ID, 'prestation_id', true );
+		$prestation = get_post( $item_id );
 
 		$user_info = get_post_meta( $post->ID, 'customer' );
-		error_log( __FUNCTION__ . '::' . __FUNCTION__ . ' meta ' . print_r( $user_info, true ) );
 
 		// $user_info = MultiPass::get_user_info_by_info($user_info);
 		// error_log('user info ' . print_r($user_info, true));
@@ -1195,7 +1201,7 @@ class Mltp_Item {
 
 	function get( $args, $update = false ) {
 		$item_id = null;
-		$item = null;
+		$item    = null;
 
 		switch ( gettype( $args ) ) {
 			case 'object':
@@ -1203,20 +1209,20 @@ class Mltp_Item {
 				if ( isset( $post->post_type ) && 'prestation-item' === $post->post_type ) {
 					$item = $args;
 				}
-				unset($args);
+				unset( $args );
 				break;
 
 			case 'integer':
 				$post = get_post( $args );
-				if ( isset( $post->post_type ) &&  'prestation-item' === $post->post_type ) {
+				if ( isset( $post->post_type ) && 'prestation-item' === $post->post_type ) {
 					$item = $post;
 				}
-				unset($args);
+				unset( $args );
 				break;
 
 			case 'array':
-				$source_term_id   = ( empty( $args['source'] ) ) ? null : get_term_by( 'slug', $args['source'], 'prestation-item-source' );
-				$query_args       = array(
+				$source_term_id = ( empty( $args['source'] ) ) ? null : get_term_by( 'slug', $args['source'], 'prestation-item-source' );
+				$query_args     = array(
 					'post_type'   => 'prestation-item',
 					'post_status' => 'publish',
 					'numberposts' => 1,
@@ -1242,21 +1248,21 @@ class Mltp_Item {
 						),
 					),
 				);
-				$items = get_posts( $query_args );
+				$items          = get_posts( $query_args );
 				if ( $items ) {
-					$item = reset( $items );
+					$item    = reset( $items );
 					$item_id = $item->ID;
 				}
 				break;
 
 		}
 
-		if(is_array($args) &! empty($args) && ( empty($item_id) || $update )) {
+		if ( is_array( $args ) & ! empty( $args ) && ( empty( $item_id ) || $update ) ) {
 			$postarr = array(
-				'ID' => $item_id,
+				'ID'          => $item_id,
 				'post_author' => $args['customer']['user_id'],
 				'post_title'  => sprintf(
-					'Updated #%s-%s %s',
+					'#%s-%s %s',
 					$args['source_id'],
 					$args['source_item_id'],
 					$args['description'],
@@ -1271,11 +1277,10 @@ class Mltp_Item {
 				),
 			);
 
-			$type = (empty($item_id)) ? 'new prestation-item' : "update $item->post_type";
-			error_log( __FUNCTION__ . "() $type " . $item_id . ' ' . print_r($postarr, true));
+			$type = ( empty( $item_id ) ) ? 'new prestation-item' : "update $item->post_type";
 
 			$item_id = wp_insert_post( $postarr );
-			$item = get_post( $item_id );
+			$item    = get_post( $item_id );
 		}
 		// if(!empty($item)) {
 		// $this->post = $item;

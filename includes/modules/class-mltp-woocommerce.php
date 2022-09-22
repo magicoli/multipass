@@ -609,7 +609,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				$unit_price = ( empty( $quantity ) ) ? $sub_total : $sub_total / $quantity;
 				$total      = $item->get_total() + $item->get_total_tax();
 				$discount   = ( $total != $sub_total ) ? array( 'amount' => $sub_total - $total ) : array();
-				$paid       = ( in_array( $order->get_status(), array( 'completed', 'processing' ) ) ) ? $total : 0;
+				$paid       = ( in_array( $order->get_status(), array( 'completed', 'processing' ) ) ) ? $total : null;
 				$balance    = $total - $paid;
 
 				$type = ( Mltp_Payment_Product::is_payment_product( $product ) ) ? 'payment' : $product->get_type();

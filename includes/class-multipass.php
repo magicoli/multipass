@@ -71,6 +71,23 @@ class MultiPass {
 
 		$this->js_date_format_short = preg_match( '/^[Fm]/', get_option( 'date_format' ) ) ? 'mm-dd-yy' : 'dd-mm-yy';
 
+		$flags = array(
+			1 => 'MLTP_PAID_SOME',
+			2 => 'MLTP_PAID_DEPOSIT',
+			4 => 'MLTP_PAID_ALL',
+			8 => 'MLTP_PAID_MORE',
+			16 => 'MLTP_REFUNDED',
+			32 => 'MLTP_CONFIRMED',
+			64 => 'MLTP_STARTED',
+			128 => 'MLTP_ENDED', // end date passed, but final invoicing not done
+			256 => 'MLTP_CLOSED', // final invoicing done
+		);
+		foreach ($flags as $key => $flag) {
+			if(!defined($flag)) define($flag, $key);
+			$slugs[$key] = sanitize_title(preg_replace('/_/', '-', preg_replace('/^MLTP_/', '', $flag)));
+		}
+		define('MLTP_FLAGSLUGS', $slugs);
+
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -662,4 +679,40 @@ class MultiPass {
 		return $locale;
 	}
 
+	public static function get_flag_slugs($flags, $format = 'array') {
+		$array = [];
+		$slugs = MLTP_FLAGSLUGS;
+		foreach($slugs as $flag => $slug) {
+			$array[$flag] = ($flags & $flag) ? $slug : null;
+		}
+
+		return array_filter($array);
+	}
+
+	public static function set_flags($args) {
+		$paid = isset($args['paid']) ? $args['paid'] : 0;
+		$deposit = isset($args['deposit']['amount']) ? $args['deposit']['amount'] : 0;
+		$total = isset($args['total']) ? $args['total'] : 0;
+		$confirmed = isset($args['confirmed']) ? $args['confirmed'] : false;
+		$flags = 0;
+
+		if ( $paid > 0 ) {
+			$flags = $flags | MLTP_PAID_SOME;
+			if ( $deposit > 0 && $paid >= $deposit ) {
+				$flags = $flags | MLTP_PAID_DEPOSIT;
+				$confirmed = true;
+			}
+		}
+		if ( $confirmed ) {
+			$flags = $flags | MLTP_CONFIRMED;
+		}
+		if ( $paid >= $total ) {
+			$flags = $flags | MLTP_PAID_ALL;
+			if( $paid > $total ) {
+				$flags = $flags | MLTP_PAID_MORE;
+			}
+		}
+
+		return $flags;
+	}
 }
