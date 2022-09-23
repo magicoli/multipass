@@ -389,7 +389,7 @@ class Mltp_Calendar {
 		);
 		$query = new WP_Query( $args );
 
-		$hide_unknown = true;
+		$hide_undefined = true;
 		if ( $query && $query->have_posts() ) {
 			while ( $query->have_posts() ) {
 				$query->the_post();
@@ -419,7 +419,7 @@ class Mltp_Calendar {
 				} else {
 					$resource_id   = 0;
 					$resource_slug = 0;
-					$hide_unknown  = false;
+					$hide_undefined  = false;
 				}
 
 				$flags = get_post_meta( get_the_ID(), 'flags', true );
