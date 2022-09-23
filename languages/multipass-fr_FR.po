@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MultiPass\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/multipass\n"
-"POT-Creation-Date: 2022-09-22T17:24:33-04:00\n"
+"POT-Creation-Date: 2022-09-23T15:36:59-04:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -14,9 +14,8 @@ msgstr ""
 "X-Generator: Poedit 3.0.1\n"
 
 #. Plugin Name of the plugin
-#: includes/class-mltp-prestation.php:231
-msgid "MultiPass"
-msgstr "MultiPass"
+msgid "MultiPass (dev)"
+msgstr "MultiPass (dev)"
 
 #. Plugin URI of the plugin
 msgid "https://magiiic.com/wordpress/plugins/multipass/"
@@ -24,11 +23,11 @@ msgstr "https://magiiic.com/wordpress/plugins/multipass/"
 
 #. Description of the plugin
 msgid ""
-"Group resources from different sources (WooCommerce, OTA, booking "
-"engines...) and manage them as a whole."
+"Manage bookings and other services from different sources (WooCommerce, "
+"Lodgify, HBook, OTA, PMS, booking engines...)."
 msgstr ""
-"Grouper les resources de différentes sources (WooCommerce, OTA, moteurs de "
-"réservation...) et les gérer comme un tout."
+"Gestion des réservations et services depuis différentes sources "
+"(WooCommerce, Lodgify, HBook, OTA, PMS, moteurs de réservation...) ."
 
 #. Author of the plugin
 msgid "Magiiic"
@@ -38,8 +37,8 @@ msgstr "Magiiic"
 msgid "https://magiiic.com/"
 msgstr "https://magiiic.com/"
 
-#: includes/class-mltp-calendar.php:151 includes/class-mltp-calendar.php:280
-#: includes/class-mltp-calendar.php:281
+#: includes/class-mltp-calendar.php:151 includes/class-mltp-calendar.php:168
+#: includes/class-mltp-calendar.php:280 includes/class-mltp-calendar.php:281
 msgid "Calendar"
 msgstr "Calendrier"
 
@@ -158,12 +157,12 @@ msgstr "Chargement en cours, merci de patienter"
 msgid "Undefined"
 msgstr "Indéterminé"
 
-#: includes/class-mltp-calendar.php:463 includes/class-mltp-prestation.php:1353
+#: includes/class-mltp-calendar.php:465 includes/class-mltp-prestation.php:1353
 #: includes/class-mltp-resource.php:190 includes/class-mltp-resource.php:202
 #: includes/class-mltp-resource.php:211 includes/class-mltp-resource.php:224
 #: includes/class-mltp-resource.php:264
 msgid "Resources"
-msgstr "Resources"
+msgstr "Ressources"
 
 #: includes/class-mltp-item.php:218
 msgid "View %s item"
@@ -715,6 +714,10 @@ msgstr "Insérer dans la prestation"
 msgid "Uploaded to this prestation"
 msgstr "Téléchargé sur cette prestation"
 
+#: includes/class-mltp-prestation.php:231
+msgid "MultiPass"
+msgstr "MultiPass"
+
 #: includes/class-mltp-prestation.php:232
 msgid "Filter prestations list"
 msgstr "Filtrer la liste des prestations"
@@ -791,14 +794,14 @@ msgstr ""
 msgid "Type"
 msgstr "Type"
 
-#: includes/class-mltp-prestation.php:466
+#: includes/class-mltp-prestation.php:466 includes/class-mltp-resource.php:387
 #: includes/modules/class-mltp-woocommerce.php:211
 msgid "Product"
 msgstr "Produit"
 
 #: includes/class-mltp-prestation.php:467 includes/class-mltp-resource.php:191
 msgid "Resource"
-msgstr "Resource"
+msgstr "Ressource"
 
 #: includes/class-mltp-prestation.php:468 includes/class-mltp-resource.php:384
 #: includes/modules/class-mltp-woocommerce.php:618
@@ -964,7 +967,7 @@ msgstr "Ajouter un nouveau resource"
 
 #: includes/class-mltp-resource.php:194
 msgid "Edit Resource"
-msgstr "Modifier me resource"
+msgstr "Modifier la resource"
 
 #: includes/class-mltp-resource.php:195
 msgid "New Resource"
@@ -992,7 +995,7 @@ msgstr "Aucun resource trouvé dans la corbeille."
 
 #: includes/class-mltp-resource.php:201
 msgid "Parent Resource:"
-msgstr "Resource parente :"
+msgstr "Ressource parente :"
 
 #: includes/class-mltp-resource.php:203
 msgid "Resource Archives"
@@ -1032,15 +1035,15 @@ msgstr "Associaiton publiée en privé."
 
 #: includes/class-mltp-resource.php:218
 msgid "Resource reverted to draft."
-msgstr "Resource remise en brouillon."
+msgstr "Ressource remise en brouillon."
 
 #: includes/class-mltp-resource.php:219
 msgid "Resource scheduled."
-msgstr "Resource planifiée."
+msgstr "Ressource planifiée."
 
 #: includes/class-mltp-resource.php:220
 msgid "Resource updated."
-msgstr "Resource mise à jour."
+msgstr "Ressource mise à jour."
 
 #: includes/class-mltp-resource.php:270
 msgid "Page"
@@ -1051,7 +1054,7 @@ msgstr "Page"
 msgid "Resource Types"
 msgstr "Types de resources"
 
-#: includes/class-mltp-resource.php:332 includes/class-mltp-resource.php:396
+#: includes/class-mltp-resource.php:332
 msgid "Resource Type"
 msgstr "Type de resource"
 
@@ -1130,6 +1133,14 @@ msgstr "Liste des types de resource"
 #: includes/class-mltp-resource.php:353
 msgid "&larr; Go to Resource Types"
 msgstr "&larr; Aller aux types de resource"
+
+#: includes/class-mltp-resource.php:385
+msgid "Catering"
+msgstr "Restauration"
+
+#: includes/class-mltp-resource.php:386
+msgid "Service"
+msgstr "Service"
 
 #: includes/class-mltp-settings.php:164 includes/class-mltp-settings.php:236
 msgid "Settings"
@@ -1457,9 +1468,6 @@ msgstr "Voir les prestations"
 #: includes/modules/class-mltp-woocommerce.php:736
 msgid "Online Shop (WooCommerce)"
 msgstr "Boutique en ligne (WooCommerce)"
-
-#~ msgid "MultiPass (dev)"
-#~ msgstr "MultiPass (dev)"
 
 #~ msgid "Attendee name"
 #~ msgstr "Nom du participant"

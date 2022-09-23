@@ -148,7 +148,7 @@ class Mltp_Calendar {
 		$prefix = '';
 
 		$meta_boxes[] = array(
-			'title'      => __( 'Calendar', 'prestations' ),
+			'title'      => __( 'Calendar', 'multipass' ),
 			'id'         => 'calendar',
 			'post_types' => array( 'mp_resource' ),
 			'context'    => 'side',
@@ -165,7 +165,7 @@ class Mltp_Calendar {
 					'placeholder'    => _x( 'None', 'Calendar section', 'multipass' ),
 					'admin_columns'  => array(
 						'position'   => 'after title',
-						'title'      => 'Calendar',
+						'title'      => __('Calendar', 'multipass'),
 						'sort'       => true,
 						'filterable' => true,
 					),

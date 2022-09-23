@@ -2,20 +2,19 @@
 # This file is distributed under the AGPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: MultiPass 0.1.1\n"
+"Project-Id-Version: MultiPass (dev) 0.1.1.x-dev\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/multipass\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-09-22T17:25:31-04:00\n"
+"POT-Creation-Date: 2022-09-23T15:36:59-04:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 
 #. Plugin Name of the plugin
-#: includes/class-mltp-prestation.php:231
-msgid "MultiPass"
+msgid "MultiPass (dev)"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -23,7 +22,7 @@ msgid "https://magiiic.com/wordpress/plugins/multipass/"
 msgstr ""
 
 #. Description of the plugin
-msgid "Group resources from different sources (WooCommerce, OTA, booking engines...) and manage them as a whole."
+msgid "Manage bookings and other services from different sources (WooCommerce, Lodgify, HBook, OTA, PMS, booking engines...)."
 msgstr ""
 
 #. Author of the plugin
@@ -35,6 +34,7 @@ msgid "https://magiiic.com/"
 msgstr ""
 
 #: includes/class-mltp-calendar.php:151
+#: includes/class-mltp-calendar.php:168
 #: includes/class-mltp-calendar.php:280
 #: includes/class-mltp-calendar.php:281
 msgid "Calendar"
@@ -159,7 +159,7 @@ msgstr ""
 msgid "Undefined"
 msgstr ""
 
-#: includes/class-mltp-calendar.php:463
+#: includes/class-mltp-calendar.php:465
 #: includes/class-mltp-prestation.php:1353
 #: includes/class-mltp-resource.php:190
 #: includes/class-mltp-resource.php:202
@@ -750,6 +750,10 @@ msgstr ""
 msgid "Uploaded to this prestation"
 msgstr ""
 
+#: includes/class-mltp-prestation.php:231
+msgid "MultiPass"
+msgstr ""
+
 #: includes/class-mltp-prestation.php:232
 msgid "Filter prestations list"
 msgstr ""
@@ -826,6 +830,7 @@ msgid "Type"
 msgstr ""
 
 #: includes/class-mltp-prestation.php:466
+#: includes/class-mltp-resource.php:387
 #: includes/modules/class-mltp-woocommerce.php:211
 msgid "Product"
 msgstr ""
@@ -1089,7 +1094,6 @@ msgid "Resource Types"
 msgstr ""
 
 #: includes/class-mltp-resource.php:332
-#: includes/class-mltp-resource.php:396
 msgid "Resource Type"
 msgstr ""
 
@@ -1167,6 +1171,14 @@ msgstr ""
 
 #: includes/class-mltp-resource.php:353
 msgid "&larr; Go to Resource Types"
+msgstr ""
+
+#: includes/class-mltp-resource.php:385
+msgid "Catering"
+msgstr ""
+
+#: includes/class-mltp-resource.php:386
+msgid "Service"
 msgstr ""
 
 #: includes/class-mltp-settings.php:164
