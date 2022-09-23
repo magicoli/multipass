@@ -1,6 +1,6 @@
 # MultiPass (dev)
 
-![Stable tag 0.1.2](https://badgen.net/badge/Stable/0.1.2/yellow)
+![Stable tag 0.1.1](https://badgen.net/badge/Stable/0.1.1/yellow)
 ![Requires WordPress 5.9.0 - 6.0.2](https://badgen.net/badge/WordPress/5.9.0-6.0.2/blue?icon=wordpress)
 ![Requires PHP](https://badgen.net/badge/PHP/7.4/purple)
 ![License AGPLv3 or later](https://badgen.net/badge/License/AGPLv3+)

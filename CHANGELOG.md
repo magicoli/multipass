@@ -1,8 +1,6 @@
 ## Changelog
 
 ### Unreleased
-
-### 0.1.2
 - added origin sign to timeline events
 - timeline events bigger font size
 
