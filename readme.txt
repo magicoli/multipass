@@ -14,9 +14,9 @@ Group services or products sold from different sources (WooCommerce, OTA, bookin
 
 Bring orders from several sources together and see them as a single provision of services.
 
-Particularly useful in lodging facilities, if your business offers other kinds of services (meals, vehicule rentals, merchandising, local products...) that are not or poorly handled by the main booking engine.
+Particularly useful in lodging facilities, if your business offers other kinds of services (meals, vehicule rentals, merchandising, local products...) that are not or poorly handled by your usual booking engine.
 
-This should also fit well for other kind of services, needing a more fluid approach than usual e-commerce solutions.
+This plugin could also fit well other kinds of services, needing a more fluid approach than usual e-commerce solutions.
 
 DISCLAIMER: this is an early-stage development version, updates might include breaking changes until 1.0 release.
 
@@ -70,7 +70,7 @@ WARNING: **Make a full backup of your website and databases** before installing 
 * added origin sign to timeline events
 * timeline events bigger font size
 
-= 0.1.1 =
+= 0.1.1 (alpha release) =
 
 * Functional(-ish) release
 * Settings page

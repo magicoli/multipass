@@ -4,7 +4,7 @@
 - added origin sign to timeline events
 - timeline events bigger font size
 
-### 0.1.1
+### 0.1.1 (alpha release)
 
 - Functional(-ish) release
 - Settings page
