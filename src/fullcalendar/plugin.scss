@@ -37,12 +37,12 @@
     margin-left: 1vw;
     margin-right: -1vw;
   }
-  .fc-timeline-event-harness:not(:has( > .fc-event-start)) {
-    margin-left: 0;
-  }
-  .fc-timeline-event-harness:not(:has( > .fc-event-end)) {
-    margin-right: 0;
-  }
+  // .fc-timeline-event-harness:not(:has( > .fc-event-start)) {
+  //   margin-left: 0;
+  // }
+  // .fc-timeline-event-harness:not(:has( > .fc-event-end)) {
+  //   margin-right: 0;
+  // }
   .fc-event-start {
     border-top-left-radius: 1.5em;
     border-bottom-left-radius: 1.5em;
@@ -102,6 +102,10 @@
       background-color: var(--mltp-background-paid);
     }
 
+    .fc-event-start[class*=" origin-"] .fc-event-title.fc-sticky {
+      margin-left: 0.2rem;
+      position: relative;
+    }
     /* .fc-timeline-event-harness .fc-timeline-event:before,*/
     .fc-event-start {
       .fc-event-title-container:before {
@@ -121,6 +125,7 @@
         margin-left: 0;
       }
     }
+
     .fc-event-start.origin-woocommerce .fc-event-title-container:before { content: 'W'; }
     .fc-event-start.origin-lodgify .fc-event-title-container:before { content: 'L'; }
     .fc-event-start.origin-booking .fc-event-title-container:before { content: 'B.'; }
@@ -128,7 +133,6 @@
     .fc-event-start.origin-airbnb .fc-event-title-container:before { content: 'A'; }
 
   }
-
 
   @keyframes dashicons-spin {
      0% {
