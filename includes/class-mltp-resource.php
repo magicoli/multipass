@@ -282,6 +282,351 @@ class Mltp_Resource {
 			),
 		);
 
+		$meta_boxes['resources_settings'] = array(
+			'title'      => __( 'Resource Settings', 'multipass' ),
+			'id'         => 'resource-settings',
+			'post_types' => array( 'mp_resource' ),
+			'style'      => 'seamless',
+			'fields'     => array(
+				array(
+					'name'       => __( 'Resource Type', 'multipass' ),
+					'id'         => $prefix . 'resource_type',
+					'type'       => 'taxonomy',
+					'taxonomy'   => array( 'resource-type' ),
+					'field_type' => 'select_advanced',
+				),
+				array(
+					'name'        => __( 'Get rules from', 'multipass' ),
+					'id'          => $prefix . 'get_rules_from',
+					'type'        => 'select',
+					'placeholder' => __( 'Custom Rules', 'multipass' ),
+				),
+				array(
+					'name'        => __( 'Get prices from', 'multipass' ),
+					'id'          => $prefix . 'get_prices_from',
+					'type'        => 'select',
+					'placeholder' => __( 'Custom Prices', 'multipass' ),
+				),
+			),
+		);
+
+		$meta_boxes['resource_type_settings'] = array(
+			'title'      => __( 'Resource Type Settings', 'multipass' ),
+			'id'         => 'resource-type-settings',
+			'taxonomies' => array( 'resource-type' ),
+			'fields'     => array(
+				array(
+					'name' => __( 'Get rules from Parent', 'multipass' ),
+					'id'   => $prefix . 'get_rules_from',
+					'type' => 'switch',
+				),
+				array(
+					'name' => __( 'Get prices from Parent', 'multipass' ),
+					'id'   => $prefix . 'get_prices_from',
+					'type' => 'switch',
+				),
+			),
+		);
+
+		$settings_rules = array(
+			'title'      => __( 'Resource Rules', 'multipass' ),
+			'visible'    => array(
+				'when'     => array( array( 'get_rules_from', '=', '' ), array( 'parent', '=', '' ) ),
+				'relation' => 'or',
+			),
+			'fields'     => array(
+				array(
+					'name'   => __( 'Quantity', 'multipass' ),
+					'id'     => $prefix . 'quantity',
+					'type'   => 'group',
+					'fields' => array(
+						array(
+							'id'    => $prefix . 'has_quantity',
+							'type'  => 'switch',
+							'style' => 'rounded',
+						),
+						array(
+							'name'    => __( 'Min', 'multipass' ),
+							'id'      => $prefix . 'min',
+							'type'    => 'number',
+							'min'     => 0,
+							'size'    => 5,
+							'visible' => array(
+								'when'     => array( array( 'has_quantity', '=', 1 ) ),
+								'relation' => 'or',
+							),
+						),
+						array(
+							'name'    => __( 'Max', 'multipass' ),
+							'id'      => $prefix . 'max',
+							'type'    => 'number',
+							'min'     => 0,
+							'size'    => 5,
+							'visible' => array(
+								'when'     => array( array( 'has_quantity', '=', 1 ) ),
+								'relation' => 'or',
+							),
+						),
+					),
+				),
+				array(
+					'name'  => __( 'Guests', 'multipass' ),
+					'id'    => $prefix . 'has_guests',
+					'type'  => 'switch',
+					'style' => 'rounded',
+				),
+				array(
+					'name'    => __( 'Guests Rules', 'multipass' ),
+					'id'      => $prefix . 'guests_rules',
+					'type'    => 'group',
+					'fields'  => array(
+						array(
+							'id'      => $prefix . 'total',
+							'type'    => 'group',
+							'fields'  => array(
+								array(
+									'name'        => __( 'Total', 'multipass' ),
+									'id'          => $prefix . 'placeholder',
+									'type'        => 'text',
+									'placeholder' => __( 'Set total capacity', 'multipass' ),
+									'size'        => 20,
+									'disabled'    => true,
+									'readonly'    => true,
+								),
+								array(
+									'name' => __( 'Min', 'multipass' ),
+									'id'   => $prefix . 'min',
+									'type' => 'number',
+									'min'  => 0,
+									'size' => 5,
+								),
+								array(
+									'name' => __( 'Max', 'multipass' ),
+									'id'   => $prefix . 'max',
+									'type' => 'number',
+									'min'  => 0,
+									'size' => 5,
+								),
+							),
+							'visible' => array(
+								'when'     => array( array( 'has_guests', '=', 1 ) ),
+								'relation' => 'or',
+							),
+						),
+						array(
+							'id'            => $prefix . 'guest_types',
+							'type'          => 'group',
+							'clone'         => true,
+							'clone_default' => true,
+							'fields'        => array(
+								array(
+									'name'     => __( 'Guest Type', 'multipass' ),
+									'id'       => $prefix . 'guest_type',
+									'type'     => 'text',
+									'size'     => 20,
+									'datalist' => array(
+										'id'      => '632e33c01ea75',
+										'options' => array(
+											'Adults
+							',
+											'Children
+							',
+											'Babies',
+										),
+									),
+								),
+								array(
+									'name'  => __( 'Include in total', 'multipass' ),
+									'id'    => $prefix . 'include',
+									'type'  => 'switch',
+									'desc'  => __( 'For min and max capacity', 'multipass' ),
+									'style' => 'rounded',
+									'std'   => true,
+								),
+								array(
+									'name' => __( 'Number', 'multipass' ),
+									'id'   => $prefix . 'number_k0fwejl49fg',
+									'type' => 'number',
+									'min'  => 0,
+									'size' => 5,
+								),
+								array(
+									'name' => __( 'Max', 'multipass' ),
+									'id'   => $prefix . 'max',
+									'type' => 'number',
+									'min'  => 0,
+									'size' => 5,
+								),
+							),
+							'visible'       => array(
+								'when'     => array( array( 'has_guests', '=', 1 ) ),
+								'relation' => 'or',
+							),
+						),
+					),
+					'visible' => array(
+						'when'     => array( array( 'has_guests', '=', 1 ) ),
+						'relation' => 'or',
+					),
+				),
+				array(
+					'name'  => __( 'Booking', 'multipass' ),
+					'id'    => $prefix . 'has_booking',
+					'type'  => 'switch',
+					'style' => 'rounded',
+				),
+				array(
+					'name'    => __( 'Booking Rules', 'multipass' ),
+					'id'      => $prefix . 'booking_rules',
+					'type'    => 'group',
+					'desc'    => __( 'Default, minimum and maximum durations are counted in hours when unit is "time", days for "Full day" or "Ovenight". Hours can be divided (1.5, 0.25...), days cannot (1, 2..). Set maximum to 0 or empty for unlimited duration.', 'multipass' ),
+					'fields'  => array(
+						array(
+							'name'    => __( 'Unit', 'multipass' ),
+							'id'      => $prefix . 'unit',
+							'type'    => 'select',
+							'options' => array(
+								'time'      => __( 'Time', 'multipass' ),
+								'fullday'   => __( 'Full Day', 'multipass' ),
+								'overnight' => __( 'Overnight', 'multipass' ),
+							),
+							'std'     => 'overnight',
+						),
+						array(
+							'type' => 'divider',
+						),
+						array(
+							'name' => __( 'Default Duration', 'multipass' ),
+							'id'   => $prefix . 'default_duration',
+							'type' => 'number',
+							'min'  => 1,
+							'step' => 'any',
+							'size' => 5,
+						),
+						array(
+							'name' => __( 'Min Duration', 'multipass' ),
+							'id'   => $prefix . 'min_duration',
+							'type' => 'number',
+							'min'  => 0,
+							'step' => 'any',
+							'size' => 5,
+						),
+						array(
+							'name' => __( 'Max Duration', 'multipass' ),
+							'id'   => $prefix . 'max_duration',
+							'type' => 'number',
+							'min'  => 0,
+							'step' => 'any',
+							'size' => 5,
+						),
+						array(
+							'type' => 'divider',
+						),
+						array(
+							'name'    => __( 'Min Time', 'multipass' ),
+							'id'      => $prefix . 'min_time',
+							'type'    => 'time',
+							'size'    => 5,
+							'visible' => array(
+								'when'     => array( array( 'unit', '=', 'time' ) ),
+								'relation' => 'or',
+							),
+						),
+						array(
+							'name'    => __( 'Max Time', 'multipass' ),
+							'id'      => $prefix . 'max_time',
+							'type'    => 'time',
+							'size'    => 5,
+							'visible' => array(
+								'when'     => array( array( 'unit', '=', 'time' ) ),
+								'relation' => 'or',
+							),
+						),
+					),
+					'visible' => array(
+						'when'     => array( array( 'has_booking', '=', 1 ) ),
+						'relation' => 'or',
+					),
+				),
+			),
+		);
+
+		$settings_prices = array(
+			'title'      => __( 'Resource Prices', 'multipass' ),
+			'id'         => 'resource-prices',
+			'visible'    => array(
+				'when'     => array( array( 'get_prices_from', '=', '' ) ),
+				'relation' => 'or',
+			),
+			'fields'     => array(
+				array(
+					'name'    => __( 'Fixed', 'multipass' ),
+					'id'      => $prefix . 'fixed',
+					'type'    => 'number',
+					'min'     => 0,
+					'step'    => 'any',
+					'size'    => 10,
+					'prepend' => MultiPass::get_currency_symbol(),
+				),
+				array(
+					'name'    => __( 'Per Quantity', 'multipass' ),
+					'id'      => $prefix . 'per_quantity',
+					'type'    => 'number',
+					'min'     => 0,
+					'step'    => 'any',
+					'size'    => 10,
+					'prepend' => MultiPass::get_currency_symbol(),
+					'visible' => array(
+						'when'     => array( array( 'has_quantity', '=', 1 ) ),
+						'relation' => 'or',
+					),
+				),
+				array(
+					'name'    => __( 'Per Booking unit', 'multipass' ),
+					'id'      => $prefix . 'per_unit',
+					'type'    => 'number',
+					'min'     => 0,
+					'step'    => 'any',
+					'size'    => 10,
+					'prepend' => MultiPass::get_currency_symbol(),
+					'visible' => array(
+						'when'     => array( array( 'has_booking', '=', 1 ) ),
+						'relation' => 'or',
+					),
+				),
+				array(
+					'name'    => __( 'Per Guest', 'multipass' ),
+					'id'      => $prefix . 'per_guest',
+					'type'    => 'number',
+					'min'     => 0,
+					'step'    => 'any',
+					'size'    => 10,
+					'prepend' => MultiPass::get_currency_symbol(),
+					'visible' => array(
+						'when'     => array( array( 'has_guests', '=', 1 ) ),
+						'relation' => 'or',
+					),
+				),
+			),
+		);
+
+		$meta_boxes['resource_type_rules'] = array_merge($settings_rules, array(
+			'id'         => 'resource-type-rules',
+			'taxonomies' => array( 'resource-type' ),
+		));
+		$meta_boxes['resource_rules'] = array_merge($settings_rules, array(
+			'id'         => 'resource-rules',
+			'post_types' => array( 'mp_resource' ),
+		));
+		$meta_boxes['resource_type_prices'] = array_merge($settings_prices, array(
+			'id'         => 'resource-type-prices',
+			'taxonomies' => array( 'resource-type' ),
+		));
+		$meta_boxes['resource_prices'] = array_merge($settings_prices, array(
+			'id'         => 'resource-prices',
+			'post_types' => array( 'mp_resource' ),
+		));
+
 		return $meta_boxes;
 	}
 
@@ -366,7 +711,7 @@ class Mltp_Resource {
 			'show_in_rest'       => true,
 			'show_tagcloud'      => false,
 			'show_in_quick_edit' => true,
-			'show_admin_column'  => true,
+			'show_admin_column'  => false,
 			'query_var'          => true,
 			'sort'               => false,
 			'meta_box_cb'        => 'post_categories_meta_box',
@@ -381,7 +726,10 @@ class Mltp_Resource {
 		MultiPass::register_terms(
 			'resource-type',
 			array(
-				'booking' => __( 'Booking', 'multipass' ),
+				'booking'  => __( 'Booking', 'multipass' ),
+				'catering' => __( 'Catering', 'multipass' ),
+				'service'  => __( 'Service', 'multipass' ),
+				'product'  => __( 'Product', 'multipass' ),
 			)
 		);
 
@@ -393,7 +741,7 @@ class Mltp_Resource {
 	 * @param array $columns Columns.
 	 */
 	public static function add_admin_columns( $columns ) {
-		$columns['taxonomy-resource-type'] = __( 'Resource Type', 'multipass' );
+		// $columns['taxonomy-resource-type'] = __( 'Resource Type', 'multipass' );
 		return $columns;
 	}
 
@@ -406,14 +754,14 @@ class Mltp_Resource {
 	 * @return string             Term link URL.
 	 */
 	public static function term_link_filter( $termlink, $term, $taxonomy ) {
-		if ( 'resource-type' === $taxonomy ) {
-			return add_query_arg(
-				array(
-					'resource-type' => $term->slug,
-				),
-				admin_url( basename( $_SERVER['REQUEST_URI'] ) )
-			);
-		}
+		// if ( 'resource-type' === $taxonomy ) {
+		// return add_query_arg(
+		// array(
+		// 'resource-type' => $term->slug,
+		// ),
+		// admin_url( basename( $_SERVER['REQUEST_URI'] ) )
+		// );
+		// }
 		return $termlink;
 	}
 
