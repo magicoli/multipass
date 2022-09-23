@@ -1,6 +1,8 @@
 ## Changelog
 
 ### Unreleased
+
+### 0.1.2
 - added origin sign to timeline events
 - timeline events bigger font size
 
@@ -9,15 +11,15 @@
 - Functional(-ish) release
 - Settings page
 - Prestations: sets of services, ordered as parts of a common project).
-  - Prestations admin list, showing resource dates and payment status.
+  - Prestations admin list, showing prestation dates and payment status.
   - Manual operations (bookings, products, payments)
-  - Prestation or resource level deposit percentage or fixed amount.
-  - Prestation or resource level discount percentage or fixed amount.
+  - Prestation or service level deposit percentage or fixed amount.
+  - Prestation or service level discount percentage or fixed amount.
   - Summarized payment status, centralizing amounts paid locally or via external providers.
 - Resources, linked with their counterparts from other plugins or external solutions providers
 - Calendar page, grouped by sections (default Main and Options, customizable)
 - WooCommerce & WooCommerce Booking integration:
-  - Bookable resources synchronization
+  - Bookable products synchronization
   - create a prestation for new orders, attempt to link to existing, open prestation
   - include bookings made with WooCommerce Bookings (or WC Accommodation Bookings)
   - include WC orders costs in prestation summmary count
