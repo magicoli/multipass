@@ -164,7 +164,7 @@ class Mltp_Calendar {
 					'remove_default' => true,
 					'placeholder'    => _x( 'None', 'Calendar section', 'multipass' ),
 					'admin_columns'  => array(
-						'position'   => 'after title',
+						'position'   => 'after resource_resource_type',
 						'title'      => __('Calendar', 'multipass'),
 						'sort'       => true,
 						'filterable' => true,
@@ -263,10 +263,10 @@ class Mltp_Calendar {
 	 * @return string             Term link URL.
 	 */
 	public static function term_link_filter( $termlink, $term, $taxonomy ) {
-		if ( 'calendar-section' === $taxonomy ) {
+		if ( 'calendar-section' === $taxonomy || 'resource-type' === $taxonomy ) {
 			return add_query_arg(
 				array(
-					'calendar-section' => $term->slug,
+					$taxonomy => $term->slug,
 				),
 				admin_url( basename( $_SERVER['REQUEST_URI'] ) )
 			);
