@@ -83,10 +83,11 @@ class Mltp_Calendar {
 		);
 
 		$filters = array(
-			// array(
-			// 'hook'     => 'mb_settings_pages',
-			// 'callback' => 'register_settings_pages',
-			// ),
+			array(
+				'hook'     => 'mb_settings_pages',
+				'callback' => 'register_settings_pages',
+				'priority' => 5,
+			),
 
 			array(
 				'hook'     => 'rwmb_meta_boxes',
@@ -131,6 +132,28 @@ class Mltp_Calendar {
 	}
 
 	/**
+	 * Add Calendar tab to settings page.
+	 *
+	 * @param  array $settings_pages  Current settings.
+	 * @return array                  Updated settings.
+	 */
+	static function register_settings_pages( $settings_pages ) {
+		$settings_pages['multipass']['tabs']['calendar'] = __( 'Calendar', 'multipass' );
+
+		return $settings_pages;
+	}
+
+	static function get_calendar_sections() {
+		$sections = array(
+			'Four',
+			'One',
+			'Three',
+			'Two',
+		);
+		return $section;
+	}
+
+	/**
 	 * Register Calendar post type
 	 *
 	 * @return void
@@ -165,7 +188,7 @@ class Mltp_Calendar {
 					'placeholder'    => _x( 'None', 'Calendar section', 'multipass' ),
 					'admin_columns'  => array(
 						'position'   => 'after resource_resource_type',
-						'title'      => __('Calendar', 'multipass'),
+						'title'      => __( 'Calendar', 'multipass' ),
 						'sort'       => true,
 						'filterable' => true,
 					),
@@ -173,7 +196,30 @@ class Mltp_Calendar {
 			),
 		);
 
-		return $meta_boxes;
+			$meta_boxes['calendar-settings'] = array(
+				'title'          => __( 'Calendar Setttings', 'multipass' ),
+				'id'             => 'calendar-setttings',
+				'settings_pages' => array( 'multipass' ),
+				'tab'            => 'calendar',
+				'fields'         => array(
+					array(
+						'name'            => __( 'Sections Ordering', 'multipass' ),
+						'id'              => $prefix . 'sections_ordering',
+						'type'            => 'taxonomy_advanced',
+						'desc'            => sprintf(
+							__( 'To create or delete sections, go to %sCalendar Sections edit page%s.', 'multipass' ),
+							'<a href="' . get_admin_url( null, 'edit-tags.php?taxonomy=calendar-section&post_type=prestation' ) . '">',
+							'</a>',
+						),
+						'taxonomy'        => array( 'calendar-section' ),
+						'field_type'      => 'select_advanced',
+						'multiple'        => true,
+						'select_all_none' => true,
+					),
+				),
+			);
+
+			return $meta_boxes;
 	}
 
 	/**
@@ -417,27 +463,32 @@ class Mltp_Calendar {
 				if ( $resource ) {
 					$resource_slug = $resource->post_name;
 				} else {
-					$resource_id   = 0;
-					$resource_slug = 0;
-					$hide_undefined  = false;
+					$resource_id    = 0;
+					$resource_slug  = 0;
+					$hide_undefined = false;
 				}
 
 				$flags = get_post_meta( get_the_ID(), 'flags', true );
-				$flags = empty($flags) ? 0 : $flags;
-				if($prestation) $pflags = get_post_meta( $prestation_id, 'flags', true );
-				$pflags = empty($pflags) ? 0 : $pflags;
+				$flags = empty( $flags ) ? 0 : $flags;
+				if ( $prestation ) {
+					$pflags = get_post_meta( $prestation_id, 'flags', true );
+				}
+				$pflags = empty( $pflags ) ? 0 : $pflags;
 
-				$flags = $flags | ($pflags & MLTP_PAID_SOME) | ($pflags & MLTP_PAID_DEPOSIT) | ($pflags & MLTP_PAID_ALL) | ($pflags & MLTP_CONFIRMED);
+				$flags = $flags | ( $pflags & MLTP_PAID_SOME ) | ( $pflags & MLTP_PAID_DEPOSIT ) | ( $pflags & MLTP_PAID_ALL ) | ( $pflags & MLTP_CONFIRMED );
 
-				$classes = MultiPass::get_flag_slugs($flags);
-				$classes = (is_array($classes)) ? preg_replace('/^/', 'status-', $classes) : [];
-				$source_slug = get_post_meta($item_id, 'source', true);
-				$classes = array_merge($classes, array(
-					'prestation-' . $prestation_id,
-					'item-' . $item_id,
-					'resource-' . $resource_slug,
-					'origin-' . $source_slug,
-				));
+				$classes     = MultiPass::get_flag_slugs( $flags );
+				$classes     = ( is_array( $classes ) ) ? preg_replace( '/^/', 'status-', $classes ) : array();
+				$source_slug = get_post_meta( $item_id, 'source', true );
+				$classes     = array_merge(
+					$classes,
+					array(
+						'prestation-' . $prestation_id,
+						'item-' . $item_id,
+						'resource-' . $resource_slug,
+						'origin-' . $source_slug,
+					)
+				);
 
 				if ( $prestation ) {
 					// $calendar = get_the_terms($item_id, )
@@ -446,7 +497,7 @@ class Mltp_Calendar {
 						'start'      => $begin,
 						'end'        => $end,
 						'url'        => get_edit_post_link( $prestation_id, '' ),
-						'classNames' => join(' ', $classes),
+						'classNames' => join( ' ', $classes ),
 						'allDay'     => true,
 						'resourceId' => $resource_slug,
 						// 'allDay' => false,

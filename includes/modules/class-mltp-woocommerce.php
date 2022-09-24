@@ -253,6 +253,13 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		}
 	}
 
+	/**
+	 * Add WooCommerce tab to settings page. 'WooCommerce' string is intentionally
+	 * left not translatable as it is a brand name.
+	 *
+	 * @param  array $settings_pages  Current settings.
+	 * @return array                  Updated settings.
+	 */
 	static function register_settings_pages( $settings_pages ) {
 		$settings_pages['multipass']['tabs']['woocommerce'] = 'WooCommerce';
 

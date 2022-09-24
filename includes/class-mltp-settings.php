@@ -121,6 +121,7 @@ class Mltp_Settings {
 			array(
 				'hook'     => 'mb_settings_pages',
 				'callback' => 'register_settings_pages',
+				'priority' => 5,
 			),
 			array(
 				'hook'     => 'plugin_action_links_' . basename( MULTIPASS_DIR ) . '/' . basename( MULTIPASS_FILE ),
@@ -172,7 +173,7 @@ class Mltp_Settings {
 			'columns'       => 2,
 			'tabs'          => array(
 				'general' => __( 'General', 'multipass' ),
-				'tos'     => __( 'Terms of Resource', 'multipass' ),
+				// 'tos'     => __( 'Terms of Service', 'multipass' ),
 			),
 			'icon_url'      => 'dashicons-book',
 		);
