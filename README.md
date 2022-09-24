@@ -1,9 +1,9 @@
 # MultiPass (dev)
 
-![Stable](https://badgen.net/badge/Stable/0.1.1/yellow)
-![WordPress](https://badgen.net/badge/WordPress/5.9.0-6.0.2/blue)
-![Requires PHP](https://badgen.net/badge/PHP/7.4/purple)
-![License AGPLv3 or later](https://badgen.net/badge/License/AGPLv3+)
+![Stable 0.1.1](https://badgen.net/badge/Stable/0.1.1/yellow)
+![WordPress 5.9.0 - 6.0.2](https://badgen.net/badge/WordPress/5.9.0%20-%206.0.2/blue)
+![Requires PHP 7.4](https://badgen.net/badge/PHP/7.4/purple)
+![License AGPLv3 or later](https://badgen.net/badge/License/AGPLv3%20or%20later)
 
 Manage bookings and other services from different sources (WooCommerce, Lodgify, HBook, OTA, PMS, booking engines...).
 
