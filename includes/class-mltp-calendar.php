@@ -383,21 +383,31 @@ class Mltp_Calendar {
 		$events    = array();
 		$resources = array();
 		// $terms = get_terms('calendar-section');
+		$resources[] = array(
+			'id'    => 0,
+			'title' => __( 'Undefined', 'multipass' ),
+		);
+
 		$terms       = get_terms(
 			array(
 				'taxonomy'   => 'calendar-section',
 				'hide_empty' => true,
 			)
 		);
-		$resources[] = array(
-			'id'    => 0,
-			'title' => __( 'Undefined', 'multipass' ),
-		);
 		if ( $terms ) {
+			$sections_ordering = explode(',', MultiPass::get_option( 'sections_ordering' ));
+			$sections = array_fill_keys($sections_ordering, []);
 			foreach ( $terms as $term ) {
+				$sections[$term->term_id] = $term;
+			}
+			$r = 0;
+			foreach ( $sections as $term ) {
+				$r += 1;
 				$resources[] = array(
 					'id'    => $term->slug,
 					'title' => $term->name,
+					'mp_order' => $r,
+					// 'classNames' => 'section-' . $term->slug,
 				);
 				$args        = array(
 					'posts_per_page' => -1,
@@ -426,6 +436,7 @@ class Mltp_Calendar {
 
 					}
 				}
+				error_log('resources ' . print_r($resources, true));
 			}
 		}
 

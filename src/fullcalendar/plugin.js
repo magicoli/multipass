@@ -46,6 +46,7 @@ function init_calendar(json){
 			height: 'auto',
 			// expandRows: true,
 			resources: resources,
+			resourceOrder: 'mp_order',
 			resourceAreaWidth: '15rem',
 			resourceAreaHeaderContent: resTitle,
 			events: events,

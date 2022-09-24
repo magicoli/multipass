@@ -1,6 +1,7 @@
 ## Changelog
 
 ### Unreleased
+- added Calendar settings tab, including Sections Ordering field
 - added per resource and per resource type Rules and Prices settings
 - added origin sign to timeline events
 - timeline events bigger font size
