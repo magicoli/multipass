@@ -6,11 +6,10 @@ const CopyPlugin = require("copy-webpack-plugin");
 const config = {
   ...defaultConfig,
 	entry: {
-		// 'admin/admin': './dev/admin/admin-index.js',
-    '../public/public': './src/public/index.js',
-    '../admin/admin': './src/admin/index.js',
-    '../lib/fullcalendar/main': './src/fullcalendar/index.js',
-    '../includes/fullcalendar/fullcalendar': './src/fullcalendar/plugin.js',
+    '../public/js/public': './src/public/index.js',
+    '../admin/js/admin': './src/admin/index.js',
+    '../lib/js/fullcalendar': './src/fullcalendar/fullcalendar-library.js',
+    '../includes/js/calendar': './src/fullcalendar/calendar.js',
 	},
 	output: {
     filename: '[name].js',

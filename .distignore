@@ -51,3 +51,10 @@ bin
 node_modules
 sources
 tests
+admin/js/admin.css.map
+admin/js/admin.js.map
+includes/calendar/calendar.css.map
+includes/calendar/calendar.js.map
+includes/js/calendar.css.map
+includes/js/calendar.js.map
+public/js/public.js.map

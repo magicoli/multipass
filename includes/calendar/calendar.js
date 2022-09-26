@@ -2,15 +2,25 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/fullcalendar/plugin.scss":
-/*!**************************************!*\
-  !*** ./src/fullcalendar/plugin.scss ***!
-  \**************************************/
+/***/ "./src/fullcalendar/calendar.scss":
+/*!****************************************!*\
+  !*** ./src/fullcalendar/calendar.scss ***!
+  \****************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
+
+/***/ }),
+
+/***/ "@wordpress/i18n":
+/*!******************************!*\
+  !*** external ["wp","i18n"] ***!
+  \******************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["i18n"];
 
 /***/ })
 
@@ -41,6 +51,35 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	!function() {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = function(module) {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				function() { return module['default']; } :
+/******/ 				function() { return module; };
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	!function() {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = function(exports, definition) {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	!function() {
+/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 	}();
+/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	!function() {
 /******/ 		// define __esModule on exports
@@ -56,14 +95,17 @@ __webpack_require__.r(__webpack_exports__);
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 !function() {
-/*!************************************!*\
-  !*** ./src/fullcalendar/plugin.js ***!
-  \************************************/
+/*!**************************************!*\
+  !*** ./src/fullcalendar/calendar.js ***!
+  \**************************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _plugin_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./plugin.scss */ "./src/fullcalendar/plugin.scss");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _calendar_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./calendar.scss */ "./src/fullcalendar/calendar.scss");
 // // import { FullCalendar } from '@fullcalendar/core';
 // // import timelinePlugin from '@fullcalendar/resource-timeline';
 // // import allLocales from '@fullcalendar/core/locales-all';
+
 
 jQuery(document).ready(function ($) {
   jQuery.ajax({
@@ -119,9 +161,16 @@ jQuery(document).ready(function ($) {
       //
       // },
       eventClick: function (data) {
+        const {
+          __,
+          _e
+        } = wp.i18n;
+        var event = data.event;
+
+        var stringEdit = __('Edit');
+
         data.jsEvent.preventDefault(); // don't let the browser navigate
 
-        var event = data.event;
         console.log(event);
         $('<div>' + event.extendedProps.modal + '</div>').dialog({
           modal: true,
@@ -130,14 +179,25 @@ jQuery(document).ready(function ($) {
           // showText: false,
           closeText: 'closeText ' + event.description,
           width: 'auto',
-          buttons: {
-            Edit: function () {
-              window.open(data.event.url, '_self');
-            },
-            Close: function () {
+          buttons: [{
+            text: __('Calendar', 'multipass'),
+            icon: "ui-icon-heart",
+            click: function () {
               $(this).dialog("close");
             }
-          }
+          }, {
+            text: __('Close Window', 'multipass'),
+            icon: "ui-icon-heart",
+            click: function () {
+              $(this).dialog("close");
+            }
+          }] // stringEdit: function() {
+          // 	window.open(data.event.url, '_self');
+          // },
+          // Close: function() {
+          // 	$( this ).dialog( "close" );
+          // },
+
         });
       },
       slotLabelFormat: [{
@@ -160,4 +220,4 @@ jQuery(document).ready(function ($) {
 }();
 /******/ })()
 ;
-//# sourceMappingURL=fullcalendar.js.map
+//# sourceMappingURL=calendar.js.map

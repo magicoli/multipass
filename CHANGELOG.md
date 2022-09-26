@@ -1,10 +1,16 @@
 ## Changelog
 
 ### Unreleased
-- added Calendar settings tab, including Sections Ordering field
-- added per resource and per resource type Rules and Prices settings
-- added origin sign to timeline events
-- timeline events bigger font size
+
+### 0.1.2 (alpha release)
+
+- Calendar page:
+  - added settings tab, including Sections Ordering field
+  - click on envent opens info modal box
+  - added origin sign to timeline events (1 letter, ready for icons via css)
+  - main section events bigger (in progress)
+  - added custom order (on main sections and resources levels)
+- Prices: per resource and per type rules (work in progress, need to sync with providers)
 
 ### 0.1.1 (alpha release)
 

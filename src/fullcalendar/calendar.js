@@ -1,7 +1,8 @@
 // // import { FullCalendar } from '@fullcalendar/core';
 // // import timelinePlugin from '@fullcalendar/resource-timeline';
 // // import allLocales from '@fullcalendar/core/locales-all';
-import './plugin.scss';
+import { __ } from '@wordpress/i18n';
+import './calendar.scss';
 
 jQuery(document).ready(function($) {
 	jQuery.ajax(
@@ -60,8 +61,12 @@ jQuery(document).ready(function($) {
 				//
 				// },
 				eventClick: function(data) {
-					data.jsEvent.preventDefault(); // don't let the browser navigate
+					const { __, _e } = wp.i18n;
 					var event = data.event;
+					var stringEdit = __('Edit');
+
+					data.jsEvent.preventDefault(); // don't let the browser navigate
+
 					console.log(event);
 					$('<div>' + event.extendedProps.modal + '</div>').dialog({
 						modal: true,
@@ -70,14 +75,28 @@ jQuery(document).ready(function($) {
 						// showText: false,
 						closeText : 'closeText ' + event.description,
 						width: 'auto',
-						buttons: {
-							Edit: function() {
-								window.open(data.event.url, '_self');
+						buttons: [
+							{
+								text: __('Calendar', 'multipass'),
+								icon: "ui-icon-heart",
+								click: function() {
+									$( this ).dialog( "close" );
+								}
 							},
-							Close: function() {
-								$( this ).dialog( "close" );
+							{
+								text: __('Close Window', 'multipass'),
+								icon: "ui-icon-heart",
+								click: function() {
+									$( this ).dialog( "close" );
+								}
 							},
-						}
+						],
+							// stringEdit: function() {
+							// 	window.open(data.event.url, '_self');
+							// },
+								// Close: function() {
+							// 	$( this ).dialog( "close" );
+							// },
 					});
 
 				},

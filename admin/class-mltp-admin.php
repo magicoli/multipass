@@ -58,7 +58,7 @@ class Mltp_Admin {
 	 * @since    0.1.0
 	 */
 	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_slug . '-admin-built', plugin_dir_url( __FILE__ ) . 'admin.css', array(), MULTIPASS_VERSION, 'all' );
+		wp_enqueue_style( $this->plugin_slug . '-admin-built', plugin_dir_url( __FILE__ ) . 'js/admin.css', array(), MULTIPASS_VERSION, 'all' );
 	}
 
 	/**
@@ -67,7 +67,7 @@ class Mltp_Admin {
 	 * @since    0.1.0
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_slug . '-admin', plugin_dir_url( __FILE__ ) . 'admin.js', array( 'jquery' ), MULTIPASS_VERSION, false );
+		wp_enqueue_script( $this->plugin_slug . '-admin', plugin_dir_url( __FILE__ ) . 'js/admin.js', array( 'jquery' ), MULTIPASS_VERSION, false );
 	}
 
 }
