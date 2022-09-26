@@ -481,6 +481,15 @@ class MultiPass {
 		delete_transient( $transient_key );
 	}
 
+	static function format_date( $timestamp, $datetype = 'RELATIVE_MEDIUM', $timetype = 'NONE' ) {
+		$DateType  = constant( "IntlDateFormatter::$datetype" );
+		$TimeType  = constant( "IntlDateFormatter::$timetype" );
+		if(empty($timestamp)) return null;
+		$formatter   = new IntlDateFormatter( get_locale() , $DateType, $TimeType );
+		$formatted = $formatter->format( $timestamp );
+		return $formatted;
+	}
+
 	static function format_date_iso( $timestamp ) {
 		// error_log(date('Y-m-d\TH:i:s', $timestamp ));
 		// return date('Y-m-d\T12:00:00', $timestamp );
@@ -519,6 +528,7 @@ class MultiPass {
 		}
 		return join( ', ', $formatted );
 	}
+
 
 
 	static function title_html() {

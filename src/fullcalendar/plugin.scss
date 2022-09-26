@@ -149,3 +149,11 @@
 .no-close .ui-dialog-titlebar-close {
   display: none;
 }
+
+.ui-dialog-content table {
+  min-width: 15rem;
+}
+
+.ui-dialog-content th {
+  text-align: left;
+}

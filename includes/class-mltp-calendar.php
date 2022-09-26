@@ -338,7 +338,7 @@ class Mltp_Calendar {
 
 		// wp_enqueue_script( 'mltp-fullcalendar-main', plugins_url( 'lib/fullcalendar/main.js', MULTIPASS_FILE ) );
 		wp_enqueue_script( 'fullcalendar-cdn', 'https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.0/main.min.js' );
-		wp_enqueue_script( 'mltp-fullcalendar', plugins_url( 'includes/fullcalendar/fullcalendar.js', MULTIPASS_FILE ),  array( 'jquery' ), MULTIPASS_VERSION );
+		wp_enqueue_script( 'mltp-fullcalendar', plugins_url( 'includes/fullcalendar/fullcalendar.js', MULTIPASS_FILE ), array( 'jquery' ), MULTIPASS_VERSION );
 
 		$content = '(no content yet)';
 		$actions = '';
@@ -510,16 +510,17 @@ class Mltp_Calendar {
 				if ( $prestation ) {
 					// $calendar = get_the_terms($item_id, )
 					$e = array(
-						'id' => 'item-' . $item_id,
-						'title'      => get_the_title( $prestation_id ),
+						'id'          => 'item-' . $item_id,
+						'title'       => get_the_title( $prestation_id ),
 						'description' => 'this is a long description',
-						'start'      => $begin,
-						'end'        => $end,
-						'url'        => get_edit_post_link( $prestation_id, '' ),
+						'modal'       => self::get_the_modal( $item_id ),
+						'start'       => $begin,
+						'end'         => $end,
+						'url'         => get_edit_post_link( $prestation_id, '' ),
 						// 'url'        => '#',
-						'classNames' => join( ' ', $classes ),
-						'allDay'     => true,
-						'resourceId' => $resource_slug,
+						'classNames'  => join( ' ', $classes ),
+						'allDay'      => true,
+						'resourceId'  => $resource_slug,
 						// 'allDay' => false,
 
 					);
@@ -540,6 +541,107 @@ class Mltp_Calendar {
 		);
 		echo json_encode( $data );
 		wp_die();
+	}
+
+	static function get_the_modal( $item_id ) {
+		$event = new Mltp_Event( $item_id );
+		if ( ! $event ) {
+			return false;
+		}
+
+		$html  = '';
+		$data  = array(
+			__( 'Contact', 'multipass' )   => MultiPass::price( $event->contact ),
+			__( 'Email', 'multipass' )     => MultiPass::price( $event->email ),
+			__( 'Phone', 'multipass' )     => MultiPass::price( $event->phone ),
+			__( 'Check in', 'multipass' )  => MultiPass::format_date( $event->display_start ),
+			__( 'Check out', 'multipass' ) => MultiPass::format_date( $event->display_end ),
+			__( 'Subtotal', 'multipass' )  => MultiPass::price( $event->subtotal ),
+			__( 'Discount', 'multipass' )  => MultiPass::price( $event->discount ),
+			__( 'Total', 'multipass' )     => MultiPass::price( $event->total ),
+			__( 'Deposit', 'multipass' )   => MultiPass::price( $event->deposit ),
+			__( 'Balance', 'multipass' )   => MultiPass::price( $event->balance ),
+		);
+		$html .= '<span class="description">' . $event->description . '</span>';
+		$html .= '<table class="modal-summary">';
+		foreach ( $data as $row => $value ) {
+			$html .= sprintf(
+				'<tr><th>%s</th><td>%s</td></tr>',
+				$row,
+				$value,
+			);
+		}
+		$html .= '<table>';
+		// if ( ! empty( $event->edit_url ) ) {
+		// $html .= sprintf(
+		// '<a href="%s">%s</a>',
+		// $event->edit_url,
+		// __( 'Edit event', 'multipass' ),
+		// );
+		// }
+		return $html;
+	}
+}
+
+class Mltp_Event {
+
+	public $phone;
+
+	function __construct( $args ) {
+		if ( empty( $args ) ) {
+			return new WP_Error( 'empty', __( 'Event is empty', 'multipass' ) );
+		}
+
+		if ( is_numeric( $args ) ) {
+			$this->post = get_post( $args );
+		} elseif ( is_object( $args ) && 'prestation-item' === $args->post_type ) {
+			$this->post = $args;
+		}
+		if ( ! $this->post ) {
+			return new WP_Error( 'notfound', __( 'Event not found', 'multipass' ) );
+		}
+		$type = get_post_meta( $this->post->ID, 'type', true );
+		if ( 'booking' !== $type ) {
+			return new WP_Error( 'wrongtype', __( 'Not an event', 'multipass' ) );
+		}
+
+		$this->id = $this->post->ID;
+
+		$this->title = $this->post->post_title;
+		$metas       = get_post_meta( $this->id );
+		// $this->source = 'source' => get_post_meta($this->id, 'source', true);
+		$this->description = get_post_meta( $this->id, 'description', true );
+		$dates             = get_post_meta( $this->id, 'dates', true );
+		$price             = get_post_meta( $this->id, 'price', true );
+		$this->subtotal    = ( isset( $price['sub_total'] ) ) ? $price['sub_total'] : null;
+		$discount          = get_post_meta( $this->id, 'discount', true );
+		$this->discount    = ( isset( $discount['amount'] ) ) ? $discount['amoun'] : null;
+		$this->total       = get_post_meta( $this->id, 'total', true );
+		$this->deposit     = get_post_meta( $this->id, 'deposit', true );
+		$this->paid        = get_post_meta( $this->id, 'paid', true );
+		$this->balance     = get_post_meta( $this->id, 'balance', true );
+		$this->start       = ( isset( $dates['from'] ) ) ? $dates['from'] : null;
+		$this->end         = ( isset( $dates['to'] ) ) ? $dates['to'] : null;
+		$this->flags       = get_post_meta( $this->id, 'flags', true );
+		$this->edit_url    = get_post_meta( $this->id, 'edit_url', true );
+		$slots             = get_post_meta( $this->id, 'slots', true );
+		$slots             = ( empty( $slots ) ) ? 'overnight' : $slots;
+		$check_in           = ( isset( $dates['check_in'] ) ) ? $dates['check_in'] : null;
+		$check_out          = ( isset( $dates['check_out'] ) ) ? $dates['check_in'] : null;
+		$d            = 86400;
+		$check_in     = ( empty( $check_in ) ) ? ($d / 2) : $check_in;
+		$check_out     = ( empty( $check_out ) ) ? ($d / 2) : $check_out;
+		if ( 'overnight' === $slots ) {
+			$this->display_start = floor( $this->start / $d ) * $d + $check_in;
+			$this->display_end = floor( $this->end / $d + 1 ) * $d + $check_out;;
+		} else {
+			$this->display_start = $this->start;
+			$this->display_end = $this->end;
+		}
+		// foreach($metas as $key => $meta) {
+		// $this->$key = get_post_meta($this->id, $key, true);
+		// }
+		// return $this;
 	}
 
 }

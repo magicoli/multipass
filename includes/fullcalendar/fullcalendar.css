@@ -142,4 +142,12 @@
   display: none;
 }
 
+.ui-dialog-content table {
+  min-width: 15rem;
+}
+
+.ui-dialog-content th {
+  text-align: left;
+}
+
 /*# sourceMappingURL=fullcalendar.css.map*/

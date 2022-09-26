@@ -123,7 +123,7 @@ jQuery(document).ready(function ($) {
 
         var event = data.event;
         console.log(event);
-        $('<div>' + event.extendedProps.description + '</div>').dialog({
+        $('<div>' + event.extendedProps.modal + '</div>').dialog({
           modal: true,
           // dialogClass: "no-close",
           title: event.title,
@@ -131,15 +131,12 @@ jQuery(document).ready(function ($) {
           closeText: 'closeText ' + event.description,
           width: 'auto',
           buttons: {
-            'Details': function () {
+            Edit: function () {
               window.open(data.event.url, '_self');
-            } // 'View': function() {
-            // 	document.open(data.event.viewUrl);
-            // },
-            // Close: function() {
-            // 	$( this ).dialog( "close" );
-            // },
-
+            },
+            Close: function () {
+              $(this).dialog("close");
+            }
           }
         });
       },
