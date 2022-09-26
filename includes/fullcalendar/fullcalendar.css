@@ -13,10 +13,6 @@
   --mltp-event-font-size: 1.1em;
   --mltp-event-row-height: 3.6em;
 }
-.prestation_page_mltp-calendar .fc-datagrid-cell-frame,
-.prestation_page_mltp-calendar .fc-timeline-lane-frame {
-  min-height: var(--mltp-event-row-height);
-}
 .prestation_page_mltp-calendar .fc-timeline-slot.fc-day-sun,
 .prestation_page_mltp-calendar .fc-timeline-slot.fc-day-sat {
   background-color: var(--fc-background-weekend);
@@ -60,9 +56,25 @@
 .prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event:not(.fc-event-start) {
   margin-left: -1vw;
 }
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-datagrid-cell-frame,
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-timeline-lane-frame {
+  min-height: 1.8rem;
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-scrollgrid-sync-table .fc-event,
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-scrollgrid-sync-table tr:first-of-type() .fc-event {
+  font-size: 0.9rem;
+  line-height: 120%;
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-datagrid-body tr:nth-of-type(-n+6):not(:first-of-type) .fc-datagrid-cell-frame,
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-scrollgrid-sync-table tr:nth-of-type(-n+6):not(:first-of-type) .fc-timeline-lane-frame {
+  min-height: 3.6rem;
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-scrollgrid-sync-table tr:nth-of-type(-n+6):not(:first-of-type) .fc-event {
+  background: yellow;
+  font-size: 2rem;
+  /* line-height: 2rem;*/
+}
 .prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event {
-  font-size: var(--mltp-event-font-size);
-  line-height: 2em;
   margin: 0.1em;
   color: var(--mltp-color-undefined);
   border-color: hsl(0deg, 0%, 75%);
@@ -98,7 +110,6 @@
   margin-left: -0.5em;
   background: white;
   border-radius: 1em;
-  width: 2em;
   text-align: center;
   font-weight: 900;
   opacity: 50%;
@@ -150,6 +161,39 @@
 
 .ui-dialog-content th {
   text-align: left;
+}
+
+/*
+ * Temporary set here, must be set dynamically from PHP class
+ */
+.fc-datagrid-cell-frame,
+.fc-timeline-lane-frame {
+  min-height: 1.8rem;
+}
+
+.fc-scrollgrid-sync-table .fc-event,
+.fc-scrollgrid-sync-table .fc-event {
+  font-size: 1rem;
+  line-height: 120%;
+}
+
+.fc-scrollgrid-sync-table .fc-event-start .fc-event-title-container:before {
+  width: 1.5em;
+  font-size: 0.9em;
+}
+
+.fc-datagrid-body tr:nth-of-type(-n+6):not(:first-of-type) .fc-datagrid-cell-frame,
+.fc-scrollgrid-sync-table tr:nth-of-type(-n+6):not(:first-of-type) .fc-timeline-lane-frame {
+  min-height: 3.5rem;
+}
+
+.fc-scrollgrid-sync-table tr:nth-of-type(-n+6):not(:first-of-type) .fc-event {
+  font-size: 1.2rem;
+  line-height: 200%;
+}
+
+.fc-scrollgrid-sync-table tr:nth-of-type(-n+6):not(:first-of-type) .fc-event-start .fc-event-title-container:before {
+  width: 2em;
 }
 
 /*# sourceMappingURL=fullcalendar.css.map*/
