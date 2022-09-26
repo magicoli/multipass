@@ -338,7 +338,7 @@ class Mltp_Calendar {
 
 		// wp_enqueue_script( 'mltp-fullcalendar-main', plugins_url( 'lib/fullcalendar/main.js', MULTIPASS_FILE ) );
 		wp_enqueue_script( 'fullcalendar-cdn', 'https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.0/main.min.js' );
-		wp_enqueue_script( 'mltp-fullcalendar', plugins_url( 'includes/fullcalendar/fullcalendar.js', MULTIPASS_FILE ), array(), MULTIPASS_VERSION );
+		wp_enqueue_script( 'mltp-fullcalendar', plugins_url( 'includes/fullcalendar/fullcalendar.js', MULTIPASS_FILE ),  array( 'jquery' ), MULTIPASS_VERSION );
 
 		$content = '(no content yet)';
 		$actions = '';
@@ -510,14 +510,20 @@ class Mltp_Calendar {
 				if ( $prestation ) {
 					// $calendar = get_the_terms($item_id, )
 					$e = array(
+						'id' => 'item-' . $item_id,
 						'title'      => get_the_title( $prestation_id ),
+						'description' => 'this is a long description',
+						'tooltip' => 'this is a tooltip',
+						'desctip' => 'this is a desctip',
 						'start'      => $begin,
 						'end'        => $end,
 						'url'        => get_edit_post_link( $prestation_id, '' ),
+						// 'url'        => '#',
 						'classNames' => join( ' ', $classes ),
 						'allDay'     => true,
 						'resourceId' => $resource_slug,
 						// 'allDay' => false,
+
 					);
 
 					array_push( $events, $e );

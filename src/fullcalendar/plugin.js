@@ -3,140 +3,98 @@
 // // import allLocales from '@fullcalendar/core/locales-all';
 import './plugin.scss';
 
-jQuery.ajax(
-	{
-		type: 'post',
-		url: ajaxurl,
-		data: {action: 'feed_events'},
-		error: function(err){
-			console.log( err );
-		},
-		success: function (data)
+jQuery(document).ready(function($) {
+	jQuery.ajax(
 		{
-			init_calendar( data );
+			type: 'post',
+			url: ajaxurl,
+			data: {action: 'feed_events'},
+			error: function(err){
+				console.log( err );
+			},
+			success: function (data)
+			{
+				init_calendar( data );
+			}
 		}
+	)
+
+	function init_calendar(json){
+		const data = JSON.parse(json);
+		var resources = data.resources;
+		var events = data.events;
+		var locale = data.locale;
+		var resTitle = data.resTitle;
+		// var events = data['events'];
+		// var resources = jsondata['resources'];
+		console.log( resources );
+		var calendarEl = document.getElementById( 'calendar' );
+		var calendar   = new FullCalendar.Calendar(
+			calendarEl,
+			{
+				schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+				// plugins: [ timelinePlugin ],
+				initialView: 'resourceTimelineMonth',
+				// locales: allLocales,
+				locale: locale,
+				header: {
+					left: 'prev,next today',
+					center: 'title',
+					right: ''
+				},
+				// dayHeaderFormat: 'D',
+				nowIndicator: true,
+				height: 'auto',
+				// expandRows: true,
+				resources: resources,
+				resourceOrder: 'mp_order',
+				resourceAreaWidth: '15rem',
+				resourceAreaHeaderContent: resTitle,
+				events: events,
+				selectable: true,
+				selectHelper: true,
+				// select: function(start, end) {
+				// 		// Display the modal.
+				// 		// You could fill in the start and end fields based on the parameters
+				// 		$('.modal').modal('show');
+				//
+				// },
+				eventClick: function(data) {
+					data.jsEvent.preventDefault(); // don't let the browser navigate
+					var event = data.event;
+
+					$('<div>').html = 'html text';
+					$('<div>').dialog({
+						modal: true,
+						classes: {
+							"ui-dialog": "highlight"
+						},
+						title: event.title,
+						text : '<p>' + event.description + '</p>',
+						showText: false,
+						closeText : 'closeText ' + event.description,
+						width: 'auto',
+						buttons: {
+							'Edit': function() {
+								window.open(data.event.url);
+							},
+							Close: function() {
+								$( this ).dialog( "close" );
+							},
+						}
+					});
+				},
+				slotLabelFormat: [
+					{ weekday: 'short' }, // top level of text
+					{ day: 'numeric' } // lower level of text
+				],
+				eventPositioned( view, element ) {
+					displayBookings();
+				},
+			}
+		);
+		calendar.render();
+		document.getElementById( 'calendar-placeholder' ).style.display = 'none';
 	}
-)
 
-function init_calendar(json){
-	const data = JSON.parse(json);
-	var resources = data.resources;
-	var events = data.events;
-	var locale = data.locale;
-	var resTitle = data.resTitle;
-	// var events = data['events'];
-	// var resources = jsondata['resources'];
-	console.log( resources );
-	var calendarEl = document.getElementById( 'calendar' );
-	var calendar   = new FullCalendar.Calendar(
-		calendarEl,
-		{
-			schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-			// plugins: [ timelinePlugin ],
-		  initialView: 'resourceTimelineMonth',
-			// locales: allLocales,
-			locale: locale,
-			header: {
-				left: 'prev,next today',
-				center: 'title',
-				right: ''
-			},
-			// dayHeaderFormat: 'D',
-			nowIndicator: true,
-			height: 'auto',
-			// expandRows: true,
-			resources: resources,
-			resourceOrder: 'mp_order',
-			resourceAreaWidth: '15rem',
-			resourceAreaHeaderContent: resTitle,
-			events: events,
-			slotLabelFormat: [
-				{ weekday: 'short' }, // top level of text
-				{ day: 'numeric' } // lower level of text
-			],
-			eventPositioned( view, element ) {
-				displayBookings();
-			},
-		}
-	);
-	calendar.render();
-	document.getElementById( 'calendar-placeholder' ).style.display = 'none';
-}
-
-// document.addEventListener('DOMContentLoaded', function() {
-// 	var calendarEl = document.getElementById('calendar');
-// 	var calendar = new FullCalendar.Calendar(calendarEl, {
-// 		initialView: 'dayGridMonth'
-// 	});
-// 	calendar.render();
-// });
-
-// document.addEventListener(
-// 	'DOMContentLoaded',
-// 	function() {
-// 		var calendarEl = document.getElementById( 'calendar' );
-// 		var calendar   = new FullCalendar.Calendar(
-// 			calendarEl,
-// 			{
-// 				// plugins: [ 'dayGrid' ],
-// 				schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-// 				// defaultView: 'timelineMonth',
-// 				initialView: 'resourceTimelineMonth',
-// 				defaultDate: '2022-09-07',
-// 				header: {
-// 					left: 'prev,next today',
-// 					center: 'title',
-// 				},
-// 				resources: [
-// 					{
-// 						id: 1,
-// 						title: 'Main',
-// 						children: [
-// 							{
-// 								id: 11,
-// 								title: 'Gite 1',
-// 							},
-// 							{
-// 								id: 12,
-// 								title: 'Gite 2',
-// 							},
-// 						]
-// 					},
-// 					{
-// 						id: 2,
-// 						title: 'Options',
-// 						children: [
-// 							{
-// 								id: 21,
-// 								title: 'Option 1',
-// 							},
-// 						]
-// 					},
-// 				],
-// 				events: [
-// 					// [
-// 					// 	'room1' :
-// 						{
-// 							title : 'event1',
-// 							start : '2022-09-27',
-// 							resourceId : 11,
-// 						},
-// 						{
-// 							title : 'event2',
-// 							start : '2022-09-15',
-// 							end : '2022-09-17',
-// 							resourceId : 12,
-// 						},
-// 						{
-// 							title : 'event3',
-// 							start : '2022-09-09T12:30:00',
-// 							allDay : false,
-// 							resourceId : 21,
-// 						}
-// 					// ]
-// 				]
-// 			}
-// 		);
-// 		calendar.render();
-// 	}
-// );
+});

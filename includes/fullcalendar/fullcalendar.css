@@ -1,1 +1,141 @@
-.fc .fc-toolbar-title{text-transform:capitalize}.prestation_page_mltp-calendar{--fc-background-past:hsla(0,0%,70%,.25);--fc-background-past-weekend:hsla(0,0%,60%,.25);--fc-background-weekend:hsla(0,0%,80%,.25);--fc-background-today:hsla(60,75%,75%,.25)}.prestation_page_mltp-calendar .fc-datagrid-cell-frame,.prestation_page_mltp-calendar .fc-timeline-lane-frame{min-height:3.7em}.prestation_page_mltp-calendar .fc-timeline-slot.fc-day-sat,.prestation_page_mltp-calendar .fc-timeline-slot.fc-day-sun{background-color:var(--fc-background-weekend)}.prestation_page_mltp-calendar .fc-timeline-slot.fc-day-past{background-color:var(--fc-background-past)}.prestation_page_mltp-calendar .fc-timeline-slot.fc-day-past.fc-day-sat,.prestation_page_mltp-calendar .fc-timeline-slot.fc-day-past.fc-day-sun{background-color:var(--fc-background-past-weekend)}.prestation_page_mltp-calendar .fc-timeline-slot.fc-day-today{background-color:var(--fc-background-today)}.prestation_page_mltp-calendar .dashicons.spin{-webkit-animation:dashicons-spin 1s infinite;animation:dashicons-spin 1s infinite;-webkit-animation-timing-function:linear;animation-timing-function:linear;opacity:50%}.prestation_page_mltp-calendar .fc-timeline-event-harness{margin-left:1vw;margin-right:-1vw}.prestation_page_mltp-calendar .fc-event-start{border-bottom-left-radius:1.5em;border-top-left-radius:1.5em}.prestation_page_mltp-calendar .fc-event-end{border-bottom-right-radius:1.5em;border-top-right-radius:1.5em}.prestation_page_mltp-calendar .fc-timeline-event-harness{margin-top:.3rem}.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event:not(.fc-event-end){margin-right:1vw}.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event:not(.fc-event-start){margin-left:-1vw}.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event{background-color:var(--mltp-background-undefined);border-color:#bfbfbf;color:var(--mltp-color-undefined);font-size:1.2em;line-height:2em;margin:.1em}.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event .fc-event-main{color:inherit}.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event .fc-event-title-container{padding-left:.5em;padding-right:.5em}.prestation_page_mltp-calendar .fc-timeline-event-harness .status-paid-some{background-color:var(--mltp-background-partial);color:var(--mltp-color-partial)}.prestation_page_mltp-calendar .fc-timeline-event-harness .status-confirmed,.prestation_page_mltp-calendar .fc-timeline-event-harness .status-paid-deposit{background-color:var(--mltp-background-confirmed);color:var(--mltp-color-confirmed)}.prestation_page_mltp-calendar .fc-timeline-event-harness .status-paid-all{background-color:var(--mltp-background-paid);color:var(--mltp-color-paid)}.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event-start[class*=" origin-"] .fc-event-title.fc-sticky{margin-left:.2rem;position:relative}.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event-start .fc-event-title-container:before{background:#fff;border-radius:1em;display:inline-block;font-weight:900;margin-left:-.5em;opacity:50%;text-align:center;width:2em}.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event-start .fc-event-title-container{margin-left:0;overflow-y:hidden;white-space:nowrap}.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event-start.origin-woocommerce .fc-event-title-container:before{content:"W"}.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event-start.origin-lodgify .fc-event-title-container:before{content:"L"}.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event-start.origin-booking .fc-event-title-container:before{content:"B."}.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event-start.origin-hbook .fc-event-title-container:before{content:"HB"}.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event-start.origin-airbnb .fc-event-title-container:before{content:"A"}@-webkit-keyframes dashicons-spin{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}@keyframes dashicons-spin{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}
+/*!*****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/fullcalendar/plugin.scss ***!
+  \*****************************************************************************************************************************************************************************************************************************************************/
+.fc .fc-toolbar-title {
+  text-transform: capitalize;
+}
+
+.prestation_page_mltp-calendar {
+  --fc-background-past: hsl(0, 0%, 70%, 25%);
+  --fc-background-past-weekend: hsl(0, 0%, 60%, 25%);
+  --fc-background-weekend: hsl(0, 0%, 80%, 25%);
+  --fc-background-today: hsl(60, 75%, 75%, 25%);
+}
+.prestation_page_mltp-calendar .fc-datagrid-cell-frame,
+.prestation_page_mltp-calendar .fc-timeline-lane-frame {
+  min-height: 3.7em;
+}
+.prestation_page_mltp-calendar .fc-timeline-slot.fc-day-sun,
+.prestation_page_mltp-calendar .fc-timeline-slot.fc-day-sat {
+  background-color: var(--fc-background-weekend);
+}
+.prestation_page_mltp-calendar .fc-timeline-slot.fc-day-past {
+  background-color: var(--fc-background-past);
+}
+.prestation_page_mltp-calendar .fc-timeline-slot.fc-day-past.fc-day-sun,
+.prestation_page_mltp-calendar .fc-timeline-slot.fc-day-past.fc-day-sat {
+  background-color: var(--fc-background-past-weekend);
+}
+.prestation_page_mltp-calendar .fc-timeline-slot.fc-day-today {
+  background-color: var(--fc-background-today);
+}
+.prestation_page_mltp-calendar .dashicons.spin {
+  -webkit-animation: dashicons-spin 1s infinite;
+          animation: dashicons-spin 1s infinite;
+  -webkit-animation-timing-function: linear;
+          animation-timing-function: linear;
+  opacity: 50%;
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness {
+  margin-left: 1vw;
+  margin-right: -1vw;
+}
+.prestation_page_mltp-calendar .fc-event-start {
+  border-top-left-radius: 1.5em;
+  border-bottom-left-radius: 1.5em;
+}
+.prestation_page_mltp-calendar .fc-event-end {
+  border-top-right-radius: 1.5em;
+  border-bottom-right-radius: 1.5em;
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness {
+  margin-top: 0.3rem;
+  /* .fc-timeline-event-harness .fc-timeline-event:before,*/
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event:not(.fc-event-end) {
+  margin-right: 1vw;
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event:not(.fc-event-start) {
+  margin-left: -1vw;
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event {
+  font-size: 1.2em;
+  line-height: 2em;
+  margin: 0.1em;
+  color: var(--mltp-color-undefined);
+  border-color: hsl(0deg, 0%, 75%);
+  background-color: var(--mltp-background-undefined);
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event .fc-event-main {
+  color: inherit;
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event .fc-event-title-container {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .status-paid-some {
+  color: var(--mltp-color-partial);
+  background-color: var(--mltp-background-partial);
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .status-confirmed,
+.prestation_page_mltp-calendar .fc-timeline-event-harness .status-paid-deposit {
+  color: var(--mltp-color-confirmed);
+  background-color: var(--mltp-background-confirmed);
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .status-paid-all {
+  color: var(--mltp-color-paid);
+  background-color: var(--mltp-background-paid);
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event-start[class*=" origin-"] .fc-event-title.fc-sticky {
+  margin-left: 0.2rem;
+  position: relative;
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event-start .fc-event-title-container:before {
+  /*  content: 'B';*/
+  display: inline-block;
+  margin-left: -0.5em;
+  background: white;
+  border-radius: 1em;
+  width: 2em;
+  text-align: center;
+  font-weight: 900;
+  opacity: 50%;
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event-start .fc-event-title-container {
+  white-space: nowrap;
+  overflow-y: hidden;
+  margin-left: 0;
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event-start.origin-woocommerce .fc-event-title-container:before {
+  content: "W";
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event-start.origin-lodgify .fc-event-title-container:before {
+  content: "L";
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event-start.origin-booking .fc-event-title-container:before {
+  content: "B.";
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event-start.origin-hbook .fc-event-title-container:before {
+  content: "HB";
+}
+.prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event-start.origin-airbnb .fc-event-title-container:before {
+  content: "A";
+}
+@-webkit-keyframes dashicons-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes dashicons-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*# sourceMappingURL=fullcalendar.css.map*/
