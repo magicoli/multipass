@@ -513,8 +513,6 @@ class Mltp_Calendar {
 						'id' => 'item-' . $item_id,
 						'title'      => get_the_title( $prestation_id ),
 						'description' => 'this is a long description',
-						'tooltip' => 'this is a tooltip',
-						'desctip' => 'this is a desctip',
 						'start'      => $begin,
 						'end'        => $end,
 						'url'        => get_edit_post_link( $prestation_id, '' ),

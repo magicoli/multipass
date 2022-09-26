@@ -138,4 +138,8 @@
   }
 }
 
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
+
 /*# sourceMappingURL=fullcalendar.css.map*/

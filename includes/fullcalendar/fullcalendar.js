@@ -122,24 +122,24 @@ jQuery(document).ready(function ($) {
         data.jsEvent.preventDefault(); // don't let the browser navigate
 
         var event = data.event;
-        $('<div>').html = 'html text';
-        $('<div>').dialog({
+        console.log(event);
+        $('<div>' + event.extendedProps.description + '</div>').dialog({
           modal: true,
-          classes: {
-            "ui-dialog": "highlight"
-          },
+          // dialogClass: "no-close",
           title: event.title,
-          text: '<p>' + event.description + '</p>',
-          showText: false,
+          // showText: false,
           closeText: 'closeText ' + event.description,
           width: 'auto',
           buttons: {
-            'Edit': function () {
-              window.open(data.event.url);
-            },
-            Close: function () {
-              $(this).dialog("close");
-            }
+            'Details': function () {
+              window.open(data.event.url, '_self');
+            } // 'View': function() {
+            // 	document.open(data.event.viewUrl);
+            // },
+            // Close: function() {
+            // 	$( this ).dialog( "close" );
+            // },
+
           }
         });
       },
