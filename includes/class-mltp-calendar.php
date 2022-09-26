@@ -207,7 +207,7 @@ class Mltp_Calendar {
 						'id'              => $prefix . 'sections_ordering',
 						'type'            => 'taxonomy_advanced',
 						'desc'            => sprintf(
-							__( 'To create or delete sections, go to %sCalendar Sections edit page%s.', 'multipass' ),
+							__( 'To create or delete sections, go to %1$sCalendar Sections edit page%2$s.', 'multipass' ),
 							'<a href="' . get_admin_url( null, 'edit-tags.php?taxonomy=calendar-section&post_type=prestation' ) . '">',
 							'</a>',
 						),
@@ -388,28 +388,29 @@ class Mltp_Calendar {
 			'title' => __( 'Undefined', 'multipass' ),
 		);
 
-		$terms       = get_terms(
+		$terms = get_terms(
 			array(
 				'taxonomy'   => 'calendar-section',
 				'hide_empty' => true,
 			)
 		);
 		if ( $terms ) {
-			$sections_ordering = explode(',', MultiPass::get_option( 'sections_ordering' ));
-			$sections = array_fill_keys($sections_ordering, []);
+			$sections_ordering = explode( ',', MultiPass::get_option( 'sections_ordering' ) );
+			$sections          = array_fill_keys( $sections_ordering, array() );
 			foreach ( $terms as $term ) {
-				$sections[$term->term_id] = $term;
+				$sections[ $term->term_id ] = $term;
 			}
-			$r = 0;
-			foreach ( $sections as $term ) {
-				$r += 1;
+			$sections = array_filter( $sections );
+
+			$r = 0; foreach ( $sections as $term ) {
+				$r          += 1;
 				$resources[] = array(
-					'id'    => $term->slug,
-					'title' => $term->name,
+					'id'       => $term->slug,
+					'title'    => $term->name,
 					'mp_order' => $r,
 					// 'classNames' => 'section-' . $term->slug,
 				);
-				$args        = array(
+				$args = array(
 					'posts_per_page' => -1,
 					'post_type'      => 'mp_resource',
 					'tax_query'      => array(
@@ -436,9 +437,9 @@ class Mltp_Calendar {
 
 					}
 				}
-				error_log('resources ' . print_r($resources, true));
 			}
 		}
+		// error_log('resources ' . print_r($resources, true));
 
 		$args  = array(
 			'posts_per_page' => -1,
