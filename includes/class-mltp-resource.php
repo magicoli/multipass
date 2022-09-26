@@ -124,6 +124,11 @@ class Mltp_Resource {
 				'hook'     => 'init',
 				'callback' => 'register_taxonomies',
 			),
+			array(
+				'hook'          => 'save_post', // use save_post because save_post_prestation_item is fired before actual save and meta values are not yet updated.
+				'callback'      => 'save_post_action',
+				'accepted_args' => 3,
+			),
 		);
 
 		$filters = array(
@@ -288,6 +293,16 @@ class Mltp_Resource {
 			'post_types' => array( 'mp_resource' ),
 			'style'      => 'seamless',
 			'fields'     => array(
+				array(
+					'name'          => __( 'Position', 'multipass' ),
+					'id'            => 'position',
+					'type'          => 'number',
+					'size' => 5,
+					'admin_columns' => array(
+						'position'   => 'after title',
+						'sort'       => true,
+					),
+				),
 				array(
 					'name'           => __( 'Resource Type', 'multipass' ),
 					'id'             => $prefix . 'resource_type',
@@ -791,6 +806,26 @@ class Mltp_Resource {
 		return $termlink;
 	}
 
+	public static function save_post_action( $post_id, $post, $update ) {
+		if ( ! $post ) {
+			return;
+		}
+		if ( MultiPass::is_new_post() ) { // triggered when opened new post page, empty.
+			return;
+		}
+		if ( 'mp_resource' !== $post->post_type ) {
+			return;
+		}
+
+		remove_action( current_action(), __CLASS__ . '::' . __FUNCTION__ );
+
+		$position_sort = get_post_meta($post->ID, 'position', true);
+		$position_sort = (empty($position_sort)) ? 9999 : $position_sort;
+		update_post_meta($post->ID, 'position_sort', $position_sort);
+		error_log("sort order $position_sort " . get_post_meta($post->ID, 'position_sort', true));
+
+		add_action( current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3 );
+	}
 }
 
 $this->loaders[] = new Mltp_Resource();

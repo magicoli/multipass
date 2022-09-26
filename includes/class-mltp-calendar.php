@@ -402,17 +402,20 @@ class Mltp_Calendar {
 			}
 			$sections = array_filter( $sections );
 
-			$r = 0; foreach ( $sections as $term ) {
-				$r          += 1;
+			$s = 0; foreach ( $sections as $term ) {
+				$s++;
 				$resources[] = array(
 					'id'       => $term->slug,
 					'title'    => $term->name,
-					'mp_order' => $r,
+					'mp_order' => $s,
 					// 'classNames' => 'section-' . $term->slug,
 				);
 				$args = array(
 					'posts_per_page' => -1,
 					'post_type'      => 'mp_resource',
+					'meta_key'       => 'position_sort',
+					'orderby'        => 'meta_value_num',
+					'order'          => 'ASC',
 					'tax_query'      => array(
 						array(
 							'taxonomy' => 'calendar-section',
@@ -422,16 +425,19 @@ class Mltp_Calendar {
 					),
 				);
 
+				$r     = 0;
 				$query = new WP_Query( $args );
 				if ( $query->have_posts() ) {
 					// Get prestation items for each resource
 					while ( $query->have_posts() ) {
+						$r++;
 						$query->the_post();
 						$resource    = get_post();
 						$resources[] = array(
 							'id'       => $resource->post_name,
 							'title'    => $resource->post_title,
 							'parentId' => $term->slug,
+							'mp_order' => $r,
 							// 'classNames' => 'resource-' . sanitize_title($resource->post_title),
 						);
 
@@ -439,7 +445,6 @@ class Mltp_Calendar {
 				}
 			}
 		}
-		// error_log('resources ' . print_r($resources, true));
 
 		$args  = array(
 			'posts_per_page' => -1,
