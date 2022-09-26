@@ -307,7 +307,7 @@ class Mltp_Prestation {
 					'description' => __( 'Leave empty if same as customer name', 'multipass' ),
 				),
 				array(
-					'name' => __( 'Contact', 'multipass' ),
+					'name' => _x( 'Contact', '(noun)', 'multipass' ),
 					'id'   => $prefix . 'display_name',
 					'type' => 'hidden',
 				),
@@ -1349,7 +1349,7 @@ class Mltp_Prestation {
 			'cb'        => $columns['cb'],
 			'title'     => __( 'Title', 'multipass' ),
 			'customer'  => __( 'Customer', 'multipass' ),
-			'contact'   => __( 'Contact', 'multipass' ),
+			'contact'   => _x( 'Contact', '(noun)', 'multipass' ),
 			'resources' => __( 'Resources', 'multipass' ),
 			'dates'     => __( 'Dates', 'multipass' ),
 			'discount'  => __( 'Discount', 'multipass' ),

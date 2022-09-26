@@ -457,13 +457,13 @@ class Mltp_Item {
 							// 'admin_columns' => 'after title',
 						),
 						array(
-							'name' => __( 'Email', 'multipass' ),
+							'name' => _x( 'Email', '(noun)', 'multipass' ),
 							'id'   => $prefix . 'email',
 							'type' => 'email',
 							'size' => 30,
 						),
 						array(
-							'name' => __( 'Phone', 'multipass' ),
+							'name' => _x( 'Phone', '(noun)', 'multipass' ),
 							'id'   => $prefix . 'phone',
 							'type' => 'text',
 						),
@@ -494,13 +494,13 @@ class Mltp_Item {
 							// 'admin_columns' => 'after title',
 						),
 						array(
-							'name' => __( 'Email', 'multipass' ),
+							'name' => _x( 'Email', '(noun)', 'multipass' ),
 							'id'   => $prefix . 'email',
 							'type' => 'email',
 							'size' => 30,
 						),
 						array(
-							'name' => __( 'Phone', 'multipass' ),
+							'name' => _x( 'Phone', '(noun)', 'multipass' ),
 							'id'   => $prefix . 'phone',
 							'type' => 'text',
 						),

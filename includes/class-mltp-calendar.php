@@ -551,16 +551,16 @@ class Mltp_Calendar {
 
 		$html  = '';
 		$data  = array(
-			__( 'Contact', 'multipass' )   => MultiPass::price( $event->contact ),
-			__( 'Email', 'multipass' )     => MultiPass::price( $event->email ),
-			__( 'Phone', 'multipass' )     => MultiPass::price( $event->phone ),
-			__( 'Check in', 'multipass' )  => MultiPass::format_date( $event->display_start ),
-			__( 'Check out', 'multipass' ) => MultiPass::format_date( $event->display_end ),
-			__( 'Subtotal', 'multipass' )  => MultiPass::price( $event->subtotal ),
-			__( 'Discount', 'multipass' )  => MultiPass::price( $event->discount ),
-			__( 'Total', 'multipass' )     => MultiPass::price( $event->total ),
-			__( 'Deposit', 'multipass' )   => MultiPass::price( $event->deposit ),
-			__( 'Balance', 'multipass' )   => MultiPass::price( $event->balance ),
+			_x( 'Contact', '(noun)', '(noun)', 'multipass' ) => MultiPass::price( $event->contact ),
+			_x( 'Email', '(noun)', 'multipass' ) => MultiPass::price( $event->email ),
+			_x( 'Phone', '(noun)', 'multipass' ) => MultiPass::price( $event->phone ),
+			__( 'Check in', 'multipass' )        => MultiPass::format_date( $event->display_start ),
+			__( 'Check out', 'multipass' )       => MultiPass::format_date( $event->display_end ),
+			__( 'Subtotal', 'multipass' )        => MultiPass::price( $event->subtotal ),
+			__( 'Discount', 'multipass' )        => MultiPass::price( $event->discount ),
+			__( 'Total', 'multipass' )           => MultiPass::price( $event->total ),
+			__( 'Deposit', 'multipass' )         => MultiPass::price( $event->deposit ),
+			__( 'Balance', 'multipass' )         => MultiPass::price( $event->balance ),
 		);
 		$html .= '<span class="description">' . $event->description . '</span>';
 		$html .= '<table class="modal-summary">';
@@ -585,9 +585,26 @@ class Mltp_Calendar {
 
 class Mltp_Event {
 
+	public $id;
+	public $title;
+	public $description;
+	public $subtotal;
+	public $discount;
+	public $total;
+	public $deposit;
+	public $paid;
+	public $balance;
+	public $start;
+	public $end;
+	public $flags;
+	public $edit_url;
+	public $display_start;
+	public $display_end;
+	public $contact;
+	public $email;
 	public $phone;
 
-	function __construct( $args ) {
+	public function __construct( $args ) {
 		if ( empty( $args ) ) {
 			return new WP_Error( 'empty', __( 'Event is empty', 'multipass' ) );
 		}
@@ -626,17 +643,18 @@ class Mltp_Event {
 		$this->edit_url    = get_post_meta( $this->id, 'edit_url', true );
 		$slots             = get_post_meta( $this->id, 'slots', true );
 		$slots             = ( empty( $slots ) ) ? 'overnight' : $slots;
-		$check_in           = ( isset( $dates['check_in'] ) ) ? $dates['check_in'] : null;
-		$check_out          = ( isset( $dates['check_out'] ) ) ? $dates['check_in'] : null;
-		$d            = 86400;
-		$check_in     = ( empty( $check_in ) ) ? ($d / 2) : $check_in;
-		$check_out     = ( empty( $check_out ) ) ? ($d / 2) : $check_out;
+		$check_in          = ( isset( $dates['check_in'] ) ) ? $dates['check_in'] : null;
+		$check_out         = ( isset( $dates['check_out'] ) ) ? $dates['check_in'] : null;
+		$d                 = 86400;
+		$check_in          = ( empty( $check_in ) ) ? ( $d / 2 ) : $check_in;
+		$check_out         = ( empty( $check_out ) ) ? ( $d / 2 ) : $check_out;
 		if ( 'overnight' === $slots ) {
 			$this->display_start = floor( $this->start / $d ) * $d + $check_in;
-			$this->display_end = floor( $this->end / $d + 1 ) * $d + $check_out;;
+			$this->display_end   = floor( $this->end / $d + 1 ) * $d + $check_out;
+
 		} else {
 			$this->display_start = $this->start;
-			$this->display_end = $this->end;
+			$this->display_end   = $this->end;
 		}
 		// foreach($metas as $key => $meta) {
 		// $this->$key = get_post_meta($this->id, $key, true);
