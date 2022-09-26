@@ -10,10 +10,12 @@
   --fc-background-past-weekend: hsl(0, 0%, 60%, 25%);
   --fc-background-weekend: hsl(0, 0%, 80%, 25%);
   --fc-background-today: hsl(60, 75%, 75%, 25%);
+  --mltp-event-font-size: 1.1em;
+  --mltp-event-row-height: 3.6em;
 }
 .prestation_page_mltp-calendar .fc-datagrid-cell-frame,
 .prestation_page_mltp-calendar .fc-timeline-lane-frame {
-  min-height: 3.7em;
+  min-height: var(--mltp-event-row-height);
 }
 .prestation_page_mltp-calendar .fc-timeline-slot.fc-day-sun,
 .prestation_page_mltp-calendar .fc-timeline-slot.fc-day-sat {
@@ -59,7 +61,7 @@
   margin-left: -1vw;
 }
 .prestation_page_mltp-calendar .fc-timeline-event-harness .fc-event {
-  font-size: 1.2em;
+  font-size: var(--mltp-event-font-size);
   line-height: 2em;
   margin: 0.1em;
   color: var(--mltp-color-undefined);

@@ -7,9 +7,12 @@
   --fc-background-weekend: hsl(0, 0%, 80%, 25%);
   --fc-background-today: hsl(60, 75%, 75%, 25%);
 
+  --mltp-event-font-size: 1.1em;
+  --mltp-event-row-height: 3.6em;
+
   .fc-datagrid-cell-frame,
   .fc-timeline-lane-frame {
-    min-height: 3.7em;
+    min-height: var(--mltp-event-row-height);
   }
 
   .fc-timeline-slot.fc-day-sun,
@@ -63,7 +66,7 @@
     }
 
     .fc-event {
-        font-size: 1.2em;
+        font-size: var(--mltp-event-font-size);
         line-height: 2em;
         margin: 0.1em;
     // }
