@@ -822,7 +822,6 @@ class Mltp_Resource {
 		$position_sort = get_post_meta($post->ID, 'position', true);
 		$position_sort = (empty($position_sort)) ? 9999 : $position_sort;
 		update_post_meta($post->ID, 'position_sort', $position_sort);
-		error_log("sort order $position_sort " . get_post_meta($post->ID, 'position_sort', true));
 
 		add_action( current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3 );
 	}
