@@ -641,25 +641,28 @@ class Mltp_Event {
 		$this->end         = ( isset( $dates['to'] ) ) ? $dates['to'] : null;
 		$this->flags       = get_post_meta( $this->id, 'flags', true );
 		$this->edit_url    = get_post_meta( $this->id, 'edit_url', true );
-		$slots             = get_post_meta( $this->id, 'slots', true );
-		$slots             = ( empty( $slots ) ) ? 'overnight' : $slots;
 		$check_in          = ( isset( $dates['check_in'] ) ) ? $dates['check_in'] : null;
 		$check_out         = ( isset( $dates['check_out'] ) ) ? $dates['check_in'] : null;
+
 		$d                 = 86400;
 		$check_in          = ( empty( $check_in ) ) ? ( $d / 2 ) : $check_in;
 		$check_out         = ( empty( $check_out ) ) ? ( $d / 2 ) : $check_out;
-		if ( 'overnight' === $slots ) {
-			$this->display_start = floor( $this->start / $d ) * $d + $check_in;
-			$this->display_end   = floor( $this->end / $d + 1 ) * $d + $check_out;
 
-		} else {
-			$this->display_start = $this->start;
-			$this->display_end   = $this->end;
-		}
-		// foreach($metas as $key => $meta) {
-		// $this->$key = get_post_meta($this->id, $key, true);
+		// $slots             = get_post_meta( $this->id, 'slots', true );
+		// $slots             = ( empty( $slots ) ) ? 'overnight' : $slots;
+
+		// $fix_overnight =  get_post_meta( $this->id, 'slots', true );
+		$fix_overnight =  true;
+		$this->display_start   = ($fix_overnight) ? (round( $this->start / $d ) * $d) : $this->start;
+		$this->display_end   = ($fix_overnight) ? (round( $this->end / $d ) * $d) : $this->end;
+
+		// if ( 'overnight' === $slots ) {
+		// 	$this->display_start = floor( $this->start / $d ) * $d + $check_in;
+		// 	$this->display_end   = floor( $this->end / $d + 1 ) * $d + $check_out;
+		// } else {
+		// 	$this->display_start = $this->start;
+		// 	$this->display_end   = $this->end;
 		// }
-		// return $this;
 	}
 
 }
