@@ -48,12 +48,16 @@ class Mltp_Lodgify extends Mltp_Modules {
 	 */
 	public function run() {
 
-		$this->actions = array();
+		$actions = array();
 
-		$this->filters = array(
+		$filters = array(
 			array(
 				'hook'     => 'mb_settings_pages',
 				'callback' => 'register_settings_pages',
+			),
+			array(
+				'hook'     => 'rwmb_meta_boxes',
+				'callback' => 'register_settings_fields',
 			),
 			array(
 				'hook'     => 'rwmb_meta_boxes',
@@ -67,32 +71,33 @@ class Mltp_Lodgify extends Mltp_Modules {
 		);
 
 		$defaults = array(
-			'component'     => __CLASS__,
+			'component'     => $this,
 			'priority'      => 10,
 			'accepted_args' => 1,
 		);
 
-		foreach ( $this->filters as $hook ) {
+		foreach ( $filters as $hook ) {
 			$hook = array_merge( $defaults, $hook );
+			error_log('hook' . print_r($hook, true));
 			add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
 
-		foreach ( $this->actions as $hook ) {
+		foreach ( $actions as $hook ) {
 			$hook = array_merge( $defaults, $hook );
 			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
 
 	}
 
-	static function register_settings_pages( $settings_pages ) {
+	function register_settings_pages( $settings_pages ) {
 		$settings_pages['multipass']['tabs']['lodgify'] = 'Lodgify';
 
 		return $settings_pages;
 	}
 
-	static function register_fields( $meta_boxes ) {
+	function register_settings_fields( $meta_boxes ) {
 		$prefix  = 'lodgify_';
-		$lodgify = new Mltp_Lodgify();
+		// $lodgify = new Mltp_Lodgify();
 
 		// Lodify Settings tab
 		$meta_boxes[] = array(
@@ -135,11 +140,17 @@ class Mltp_Lodgify extends Mltp_Modules {
 			),
 		);
 
+		return $meta_boxes;
+	}
+	function register_fields( $meta_boxes ) {
+		$prefix  = 'lodgify_';
+		// $lodgify = new Mltp_Lodgify();
+
 		$meta_boxes['resources']['fields'][] = array(
 			'name'          => __( 'Lodgify Property', 'multipass' ),
 			'id'            => 'resource_lodgify_id',
 			'type'          => 'select_advanced',
-			'options'       => $lodgify->get_property_options(),
+			'options'       => $this->get_property_options(),
 			'admin_columns' => array(
 				'position'   => 'before date',
 				'sort'       => true,
@@ -151,7 +162,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		return $meta_boxes;
 	}
 
-	static function register_sources_filter( $sources ) {
+	function register_sources_filter( $sources ) {
 		$sources['lodgify'] = 'Lodgify';
 		return $sources;
 	}
@@ -235,6 +246,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		$result = $lodgify->api_request( '/v1/properties', array() );
 
 		if ( is_wp_error( $result ) ) {
+			$lodgify->api_key = null;
 			$message = sprintf(
 				__( 'API Key verification failed (%s).', 'multipass' ),
 				$result->get_error_message(),

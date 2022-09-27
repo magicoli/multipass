@@ -62,10 +62,17 @@ class Mltp_HBook extends Mltp_Modules {
 
 		$this->filters = array(
 			array(
+				'component' => $this,
 				'hook'     => 'mb_settings_pages',
 				'callback' => 'register_settings_pages',
 			),
 			array(
+				'component' => $this,
+				'hook'     => 'rwmb_meta_boxes',
+				'callback' => 'register_settings_fields',
+			),
+			array(
+				'component' => $this,
 				'hook'     => 'rwmb_meta_boxes',
 				'callback' => 'register_fields',
 			),
@@ -94,18 +101,16 @@ class Mltp_HBook extends Mltp_Modules {
 
 	}
 
-	static function register_settings_pages( $settings_pages ) {
+	function register_settings_pages( $settings_pages ) {
 		$settings_pages['multipass']['tabs']['hbook'] = 'HBook';
 		// error_log(__CLASS__ . ' tabs ' . print_r($settings_pages['multipass']['tabs'], true));
 
 		return $settings_pages;
 	}
 
-	static function register_fields( $meta_boxes ) {
+	function register_settings_fields( $meta_boxes ) {
 		$prefix = 'hbook_';
-		$hbook  = new Mltp_HBook();
 
-		// Lodify Settings tab
 		$meta_boxes[] = array(
 			'title'          => __( 'HBook Settings', 'multipass' ),
 			'id'             => 'hbook-settings',
@@ -124,11 +129,18 @@ class Mltp_HBook extends Mltp_Modules {
 			),
 		);
 
+		return $meta_boxes;
+	}
+
+	function register_fields( $meta_boxes ) {
+		$prefix = 'hbook_';
+		// $hbook  = new Mltp_HBook();
+
 		$meta_boxes['resources']['fields'][] = array(
 			'name'          => __( 'HBook Accommodations', 'multipass' ),
 			'id'            => 'resource_hbook_id',
 			'type'          => 'select_advanced',
-			'options'       => $hbook->get_property_options(),
+			'options'       => $this->get_property_options(),
 			'admin_columns' => array(
 				'position'   => 'before date',
 				'sort'       => true,

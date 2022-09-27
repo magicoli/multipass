@@ -74,14 +74,17 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 		$this->filters = array(
 			array(
-				'hook'     => 'rwmb_meta_boxes',
-				'callback' => 'register_fields',
-			),
-			array(
+				'component' => $this,
 				'hook'     => 'mb_settings_pages',
 				'callback' => 'register_settings_pages',
 			),
 			array(
+				'component' => $this,
+				'hook'     => 'rwmb_meta_boxes',
+				'callback' => 'register_fields',
+			),
+			array(
+				'component' => $this,
 				'hook'     => 'rwmb_meta_boxes',
 				'callback' => 'register_settings_fields',
 			),
@@ -146,7 +149,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		self::sync_orders();
 	}
 
-	static function register_fields( $meta_boxes ) {
+	function register_fields( $meta_boxes ) {
 		// WooCommerce settings
 
 		$prefix = 'woocommerce_';
@@ -260,13 +263,13 @@ class Mltp_WooCommerce extends Mltp_Modules {
 	 * @param  array $settings_pages  Current settings.
 	 * @return array                  Updated settings.
 	 */
-	static function register_settings_pages( $settings_pages ) {
+	function register_settings_pages( $settings_pages ) {
 		$settings_pages['multipass']['tabs']['woocommerce'] = 'WooCommerce';
 
 		return $settings_pages;
 	}
 
-	static function register_settings_fields( $meta_boxes ) {
+	function register_settings_fields( $meta_boxes ) {
 		$prefix = 'woocommerce_';
 
 		$meta_boxes['multipass-woocommerce-settings'] = array(

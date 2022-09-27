@@ -112,14 +112,15 @@ class Mltp_Modules {
 				'hook'     => 'rwmb_meta_boxes',
 				'callback' => 'register_fields',
 			),
-			array(
-				'hook'     => 'multipass_managed_list',
-				'callback' => 'managed_list_filter',
-			),
+			// array(
+			// 	'hook'     => 'multipass_managed_list',
+			// 	'callback' => 'managed_list_filter',
+			// ),
 		);
 
 		$defaults = array(
-			'component'     => __CLASS__,
+			// 'component'     => __CLASS__,
+			'component'     => $this,
 			'priority'      => 10,
 			'accepted_args' => 1,
 		);
@@ -136,7 +137,7 @@ class Mltp_Modules {
 
 	}
 
-	static function register_fields( $meta_boxes ) {
+	function register_fields( $meta_boxes ) {
 		$prefix = 'modules_';
 
 		// Modules settings in General tab
