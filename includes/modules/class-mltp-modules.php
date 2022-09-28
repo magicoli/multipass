@@ -110,7 +110,7 @@ class Mltp_Modules {
 			// ),
 			array(
 				'hook'     => 'rwmb_meta_boxes',
-				'callback' => 'register_fields',
+				'callback' => 'register_settings_fields',
 			),
 			// array(
 			// 	'hook'     => 'multipass_managed_list',
@@ -137,7 +137,7 @@ class Mltp_Modules {
 
 	}
 
-	function register_fields( $meta_boxes ) {
+	function register_settings_fields( $meta_boxes ) {
 		$prefix = 'modules_';
 
 		// Modules settings in General tab
