@@ -147,16 +147,6 @@ class Mltp_Calendar {
 		return $settings_pages;
 	}
 
-	static function get_calendar_sections() {
-		$sections = array(
-			'Four',
-			'One',
-			'Three',
-			'Two',
-		);
-		return $section;
-	}
-
 	/**
 	 * Register Calendar post type
 	 *
@@ -356,6 +346,30 @@ class Mltp_Calendar {
 		wp_enqueue_script( 'fullcalendar-cdn', 'https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.0/main.min.js' );
 		wp_enqueue_script( 'mltp-fullcalendar', plugins_url( 'includes/js/calendar.js', MULTIPASS_FILE ), array( 'jquery' ), MULTIPASS_VERSION );
 
+		$calendar_resources = self::get_calendar_resources(true);
+		$main_count = (empty($calendar_resources['main_count'])) ? null : $calendar_resources['main_count'];
+		if($main_count) {
+			$custom_inline_style = sprintf(
+				'
+				.dummy{
+				}
+				.fc-datagrid-body tr:nth-of-type(-n+%1$s):not(:first-of-type) .fc-datagrid-cell-frame,
+				.fc-scrollgrid-sync-table tr:nth-of-type(-n+%1$s):not(:first-of-type) .fc-timeline-lane-frame {
+					min-height: 3.5rem;
+				}
+				.fc-scrollgrid-sync-table  tr:nth-of-type(-n+%1$s):not(:first-of-type) .fc-event {
+					font-size: 1.2rem;
+					line-height: 200%%;
+				}
+				.fc-scrollgrid-sync-table  tr:nth-of-type(-n+%1$s):not(:first-of-type) .fc-event-start .fc-event-title-container:before {
+					width: 2em;
+				}
+				',
+				$main_count,
+			);
+			wp_add_inline_style( 'mltp-fullcalendar', $custom_inline_style );
+		}
+
 		$content = '(no content yet)';
 		$actions = '';
 
@@ -394,16 +408,11 @@ class Mltp_Calendar {
 		);
 	}
 
-	public function ajax_feed_events_action() {
-		// Get calendars from taxonomy
-		$events    = array();
-		$resources = array();
-		// $terms = get_terms('calendar-section');
+	public static function get_calendar_resources($include_count = false) {
 		$resources[] = array(
 			'id'    => 0,
 			'title' => __( 'Undefined', 'multipass' ),
 		);
-
 		$terms = get_terms(
 			array(
 				'taxonomy'   => 'calendar-section',
@@ -418,6 +427,7 @@ class Mltp_Calendar {
 			}
 			$sections = array_filter( $sections );
 
+			$main_count = 1;
 			$s = 0; foreach ( $sections as $term ) {
 				$s++;
 				$resources[] = array(
@@ -446,6 +456,7 @@ class Mltp_Calendar {
 				if ( $query->have_posts() ) {
 					// Get prestation items for each resource
 					while ( $query->have_posts() ) {
+						if(1 === $s) $main_count++;
 						$r++;
 						$query->the_post();
 						$resource    = get_post();
@@ -461,6 +472,17 @@ class Mltp_Calendar {
 				}
 			}
 		}
+		if($include_count) {
+			$resources['main_count'] = $main_count;
+		}
+		return $resources;
+	}
+
+	public function ajax_feed_events_action() {
+		// Get calendars from taxonomy
+		$events    = array();
+
+		$resources = self::get_calendar_resources();
 
 		$args  = array(
 			'posts_per_page' => -1,

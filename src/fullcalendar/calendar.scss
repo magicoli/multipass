@@ -54,6 +54,15 @@
   .fc-timeline-lane-frame {
     min-height: 2.5rem;
   }
+  .fc-scrollgrid-sync-table .fc-event,
+  .fc-scrollgrid-sync-table .fc-event {
+    font-size: 1rem;
+    line-height: 120%;
+  }
+  .fc-scrollgrid-sync-table .fc-event-start .fc-event-title-container:before {
+    width: 1.5em;
+    font-size: 0.9em;
+  }
 
   .fc-timeline-event-harness {
     margin-top: 0.3rem;
@@ -71,15 +80,15 @@
       line-height: 120%;
     }
 
-    .fc-datagrid-body tr:nth-of-type(-n+6):not(:first-of-type) .fc-datagrid-cell-frame,
-    .fc-scrollgrid-sync-table tr:nth-of-type(-n+6):not(:first-of-type) .fc-timeline-lane-frame {
-      min-height: 3.6rem;
-    }
-    .fc-scrollgrid-sync-table  tr:nth-of-type(-n+6):not(:first-of-type) .fc-event {
-      background: yellow;
-      font-size: 2rem;
-      /* line-height: 2rem;*/
-    }
+    // .fc-datagrid-body tr:nth-of-type(-n+6):not(:first-of-type) .fc-datagrid-cell-frame,
+    // .fc-scrollgrid-sync-table tr:nth-of-type(-n+6):not(:first-of-type) .fc-timeline-lane-frame {
+    //   min-height: 3.6rem;
+    // }
+    // .fc-scrollgrid-sync-table  tr:nth-of-type(-n+6):not(:first-of-type) .fc-event {
+    //   background: yellow;
+    //   font-size: 2rem;
+    //   /* line-height: 2rem;*/
+    // }
     .fc-event {
         // font-size: var(--mltp-event-font-size);
         // line-height: 2em;
@@ -174,38 +183,6 @@
 .ui-dialog-content th {
   text-align: left;
 }
-
-
-
-
-/*
- * Temporary set here, must be set dynamically from PHP class
- */
- .fc-datagrid-cell-frame,
- .fc-timeline-lane-frame {
-   min-height: 1.8rem;
- }
- .fc-scrollgrid-sync-table .fc-event,
- .fc-scrollgrid-sync-table .fc-event {
-   font-size: 1rem;
-   line-height: 120%;
- }
- .fc-scrollgrid-sync-table .fc-event-start .fc-event-title-container:before {
-   width: 1.5em;
-   font-size: 0.9em;
- }
-
- .fc-datagrid-body tr:nth-of-type(-n+6):not(:first-of-type) .fc-datagrid-cell-frame,
- .fc-scrollgrid-sync-table tr:nth-of-type(-n+6):not(:first-of-type) .fc-timeline-lane-frame {
-   min-height: 3.5rem;
- }
- .fc-scrollgrid-sync-table  tr:nth-of-type(-n+6):not(:first-of-type) .fc-event {
-   font-size: 1.2rem;
-   line-height: 200%;
- }
- .fc-scrollgrid-sync-table  tr:nth-of-type(-n+6):not(:first-of-type) .fc-event-start .fc-event-title-container:before {
-   width: 2em;
- }
 
 .modal-buttons {
   text-align: right;
