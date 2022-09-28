@@ -52,3 +52,10 @@ bin export-ignore
 node_modules export-ignore
 sources export-ignore
 tests export-ignore
+admin/js/admin.css.map export-ignore
+admin/js/admin.js.map export-ignore
+includes/calendar/calendar.css.map export-ignore
+includes/calendar/calendar.js.map export-ignore
+includes/js/calendar.css.map export-ignore
+includes/js/calendar.js.map export-ignore
+public/js/public.js.map export-ignore

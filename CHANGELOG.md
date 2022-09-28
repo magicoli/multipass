@@ -1,6 +1,8 @@
 ## Changelog
 
 ### Unreleased
+- new Lodgify bookings sync
+- added source and origin edit links to Calendar modal
 
 ### 0.1.2 (alpha release)
 
