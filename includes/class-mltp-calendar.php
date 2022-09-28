@@ -499,7 +499,7 @@ class Mltp_Calendar {
 				$source_slug = get_post_meta( $item_id, 'source', true );
 				$origin = get_post_meta( $item_id, 'origin', true );
 				$origin = (empty($origin)) ? get_post_meta( $item_id, 'source', true ) : $origin;
-				
+
 				$classes     = array_merge(
 					$classes,
 					array(
@@ -575,6 +575,63 @@ class Mltp_Calendar {
 			);
 		}
 		$html .= '<table>';
+		$links = array_filter(array(
+			// 'view' => array(
+			// 	'label' => __('View', 'multipass'),
+			// 	'url' => empty($event->view_url) ? null : $event->view_url,
+			// 	'icon' => 'post',
+			// ),
+			'details' => array(
+				'label' => __('Details', 'multipass'),
+				'url' => empty($event->edit_url) ? null : $event->edit_url,
+				'icon' => 'edit',
+			),
+		));
+		if(!empty($event->source)) {
+			$links['source'] = array(
+				'label' => sprintf(
+					__('Edit on %s',  'multipass'),
+					$event->source,
+				),
+				'url' => $event->source_url,
+				'icon' => ($event->source === 'woocommerce') ? 'cart' : 'external',
+			);
+		}
+		if(!empty($event->origin)) {
+			$links['origin'] = array(
+				'label' => sprintf(
+					__('Edit on %s',  'multipass'),
+					$event->origin,
+				),
+				'url' => $event->origin_url,
+				'icon' => ($event->source === 'woocommerce') ? 'cart' : 'external',
+			);
+		}
+		if( !empty($links['source']['url']) &! empty($links['origin']['url']) && $links['source']['url'] === $links['origin']['url'] ) {
+			unset($links['origin']);
+		}
+		if( !empty($links['view']['url']) &! empty($links['details']['url']) && $links['view']['url'] === $links['details']['url'] ) {
+			unset($links['view']);
+		}
+		$links_html = '';
+		foreach ($links as $link) {
+			if(empty($link['url'])) continue;
+			$icon = (empty($link['icon'])) ? '' : sprintf(
+				'<span class="dashicons dashicons-%s"></span> ',
+				$link['icon'],
+			);
+			$target = (MultiPass::is_external($link['url'])) ? '_blank' : '_self';
+			$links_html .= sprintf(
+				'<li><a class=button href="%s" target="%s">%s%s</a></li>',
+				$link['url'],
+				$target,
+				$icon,
+				// $link['url'],
+				$link['label'],
+			);
+		}
+		if(!empty($links_html)) $html .= '<ul class="modal-buttons">' . $links_html . '</ul>';
+
 		// if ( ! empty( $event->edit_url ) ) {
 		// $html .= sprintf(
 		// '<a href="%s">%s</a>',
@@ -606,6 +663,10 @@ class Mltp_Event {
 	public $contact;
 	public $email;
 	public $phone;
+	public $source;
+	public $source_url;
+	public $origin;
+	public $origin_url;
 
 	public function __construct( $args ) {
 		if ( empty( $args ) ) {
@@ -644,6 +705,10 @@ class Mltp_Event {
 		$this->end         = ( isset( $dates['to'] ) ) ? $dates['to'] : null;
 		$this->flags       = get_post_meta( $this->id, 'flags', true );
 		$this->edit_url    = get_post_meta( $this->id, 'edit_url', true );
+		$this->source = get_post_meta($this->id, 'source', true);
+		$this->source_url = get_post_meta($this->id, 'source_url', true);
+		$this->origin = get_post_meta($this->id, 'origin', true);
+		$this->origin_url = get_post_meta($this->id, 'origin_url', true);
 		$check_in          = ( isset( $dates['check_in'] ) ) ? $dates['check_in'] : null;
 		$check_out         = ( isset( $dates['check_out'] ) ) ? $dates['check_in'] : null;
 

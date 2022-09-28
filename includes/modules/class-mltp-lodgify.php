@@ -395,15 +395,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			);
 			$subtotal = $booking['subtotals']['stay'] + $booking['subtotals']['fees'] + $booking['subtotals']['addons'];
 
-			$prestation_args = array(
-				'customer_name' => $booking['guest']['name'],
-				'customer_email' => $booking['guest']['email'],
-				'customer_phone' => $booking['guest']['phone'],
-				// 'confirmed' => $confirmed,
-				'from' => $from,
-				'to' => $to,
-			);
-			$prestation = new Mltp_Prestation( $prestation_args);
+			$source_url = 'https://app.lodgify.com/#/reservation/inbox/B' . $booking['id'];
 
 			$p_replace = array(
 				'/AirbnbIntegration/' => 'airbnb',
@@ -412,16 +404,58 @@ class Mltp_Lodgify extends Mltp_Modules {
 			);
 			$p_keys = array_keys($p_replace);
 			$origin = sanitize_title(preg_replace($p_keys, $p_replace, $booking['source']));
+			switch($origin) {
+				case 'airbnb':
+				$origin_details = json_decode($booking['source_text']);
+				$origin_id = $origin_details->confirmationCode;
+				$origin_url = (empty($origin_id)) ? $source_url : 'https://www.airbnb.com/reservation/itinerary?code=' . $origin_id;
+				break;
+				// if(!empty($origin_details['confirmationCode'])) {
+				// 	$origin_url =
+				// }
+				//
+				case 'booking':
+				$origin_details = explode('|', $booking['source_text']);
+				$origin_id = $origin_details[0];
+				$origin_url = (empty($origin_id)) ? $source_url : 'https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/booking.html?res_id=' . $origin_id;
+				break;
+
+				default:
+				$origin_url = $source_url;
+			}
+
+			$prestation_args = array(
+				'customer_name' => $booking['guest']['name'],
+				'customer_email' => $booking['guest']['email'],
+				'customer_phone' => $booking['guest']['phone'],
+				'source_url'       => $source_url,
+				'origin_url'       => $origin_url,
+				// 'confirmed' => $confirmed,
+				'from' => $from,
+				'to' => $to,
+			);
+			$prestation = new Mltp_Prestation( $prestation_args, true );
+
+			// error_log("
+			// $description
+			// source $source $source_url
+			// origin $origin $origin_url
+			// edit " . get_edit_post_link($prestation->ID) . "
+			// ");
 
 			$item_args = array(
 				'source' => 'lodgify',
 				'source_id' => $booking['id'],
 				'source_item_id' => $booking['property_id'],
-				'view_url'       => 'https://app.lodgify.com/#/reservation/inbox/B' . $booking['id'],
-				// 'edit_url'       => $order->get_edit_order_url(),
+				'source_url'       => $source_url,
+				'origin' => $origin,
+				'origin_url'       => $origin_url,
+				'edit_url'       => get_edit_post_link($prestation->ID),
+				'view_url'       => get_edit_post_link($prestation->ID),
 				'resource_id'    => $resource_id,
 				'status' => $status,
 				'confirmed' => $confirmed,
+				'description'    => $description,
 				'source_details' => array(
 					'rooms' => $booking['rooms'],
 					'language' => $booking['language'],
@@ -433,8 +467,6 @@ class Mltp_Lodgify extends Mltp_Modules {
 					'currency_code' => $booking['currency_code'],
 					'quote' => $booking['quote'],
 				),
-				'origin' => $origin,
-				'description'    => $description,
 				'prestation_id'  => $prestation->ID,
 				'customer'       => array(
 					// TODO: try to get WP user if exists
@@ -467,7 +499,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			// 	. ' origin ' . $item_args['origin']
 			// );
 
-			$prestation_item = new Mltp_Item( $item_args );
+			$prestation_item = new Mltp_Item( $item_args, true );
 			$prestation->update();
 
 			// error_log(

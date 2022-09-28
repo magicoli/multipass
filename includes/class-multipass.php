@@ -733,4 +733,10 @@ class MultiPass {
 
 		return $flags;
 	}
+
+	public static function is_external($url) {
+		$components = parse_url($url);
+	  return !empty($components['host']) && strcasecmp($components['host'], 'example.com'); // empty host will indicate url like '/relative.php'
+	}
+
 }

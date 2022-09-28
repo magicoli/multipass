@@ -999,6 +999,8 @@ class Mltp_Item {
 		}
 
 		$attendees = get_post_meta( $post_id, 'attendees', true );
+		$attendees = ( ! is_array($attendees) ) ? [ 'total' => $attendees ] : $attendees;
+		$attendees = empty($attendees) ? [] : $attendees;
 		if ( $attendees ) {
 			$attendees       = array_replace(
 				array(

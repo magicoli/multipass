@@ -67,38 +67,33 @@ jQuery(document).ready(function($) {
 
 					data.jsEvent.preventDefault(); // don't let the browser navigate
 
-					console.log(event);
 					$('<div>' + event.extendedProps.modal + '</div>').dialog({
 						modal: true,
 						// dialogClass: "no-close",
 						title: event.title,
 						// showText: false,
-						closeText : 'closeText ' + event.description,
+						// closeText : 'Close',
 						width: 'auto',
 						buttons: [
-							{
-								text: __('Calendar', 'multipass'),
-								icon: "ui-icon-heart",
-								click: function() {
-									$( this ).dialog( "close" );
-								}
-							},
-							{
-								text: __('Close Window', 'multipass'),
-								icon: "ui-icon-heart",
-								click: function() {
-									$( this ).dialog( "close" );
-								}
-							},
+							// {
+							// 	text: __('View', 'multipass'),
+							// 	icon: "ui-icon-pencil",
+							// 	icons: { primary: "ui-icon-pencil" },
+							// 	click: function() {
+							// 			window.open(data.event.url, '_self');
+							// 		// $( this ).dialog( "close" );
+							// 	}
+							// },
+							// {
+							// 	text: __('Close Window', 'multipass'),
+							// 	icon: "ui-icon-close",
+							// 	icons: { primary: "ui-icon-closethick" },
+							// 	click: function() {
+							// 		$( this ).dialog( "close" );
+							// 	}
+							// },
 						],
-							// stringEdit: function() {
-							// 	window.open(data.event.url, '_self');
-							// },
-								// Close: function() {
-							// 	$( this ).dialog( "close" );
-							// },
 					});
-
 				},
 				slotLabelFormat: [
 					{ weekday: 'short' }, // top level of text

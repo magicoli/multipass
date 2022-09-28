@@ -60,6 +60,11 @@ class Mltp_Resource {
 			$this->ID = $post->ID;
 			$this->post = $post;
 			$this->name = $post->post_title;
+			$this->edit_url    = get_post_meta( $this->id, 'edit_url', true );
+			$this->source = get_post_meta($this->id, 'source', true);
+			$this->source_url = get_post_meta($this->id, 'source_url', true);
+			$this->origin = get_post_meta($this->id, 'origin', true);
+			$this->origin_url = get_post_meta($this->id, 'origin_url', true);
 		}
 	}
 
