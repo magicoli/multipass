@@ -88,6 +88,10 @@ class Mltp_Calendar {
 				'callback' => 'register_settings_pages',
 				'priority' => 5,
 			),
+			array(
+				'hook'     => 'rwmb_meta_boxes',
+				'callback' => 'register_settings_fields',
+			),
 
 			array(
 				'hook'     => 'rwmb_meta_boxes',
@@ -167,6 +171,41 @@ class Mltp_Calendar {
 	 * @param  array $meta_boxes current metaboxes.
 	 * @return array                updated metaboxes.
 	 */
+	public static function register_settings_fields( $meta_boxes ) {
+		$prefix = '';
+
+		$meta_boxes['calendar-settings'] = array(
+			'title'          => __( 'Calendar Setttings', 'multipass' ),
+			'id'             => 'calendar-setttings',
+			'settings_pages' => array( 'multipass' ),
+			'tab'            => 'calendar',
+			'fields'         => array(
+				array(
+					'name'            => __( 'Sections Ordering', 'multipass' ),
+					'id'              => $prefix . 'sections_ordering',
+					'type'            => 'taxonomy_advanced',
+					'desc'            => sprintf(
+						__( 'To create or delete sections, go to %1$sCalendar Sections edit page%2$s.', 'multipass' ),
+						'<a href="' . get_admin_url( null, 'edit-tags.php?taxonomy=calendar-section&post_type=prestation' ) . '">',
+						'</a>',
+					),
+					'taxonomy'        => array( 'calendar-section' ),
+					'field_type'      => 'select_advanced',
+					'multiple'        => true,
+					'select_all_none' => true,
+				),
+			),
+		);
+
+		return $meta_boxes;
+	}
+
+	/**
+	 * Register Calendars fields
+	 *
+	 * @param  array $meta_boxes current metaboxes.
+	 * @return array                updated metaboxes.
+	 */
 	public static function register_fields( $meta_boxes ) {
 		$prefix = '';
 
@@ -196,30 +235,7 @@ class Mltp_Calendar {
 			),
 		);
 
-			$meta_boxes['calendar-settings'] = array(
-				'title'          => __( 'Calendar Setttings', 'multipass' ),
-				'id'             => 'calendar-setttings',
-				'settings_pages' => array( 'multipass' ),
-				'tab'            => 'calendar',
-				'fields'         => array(
-					array(
-						'name'            => __( 'Sections Ordering', 'multipass' ),
-						'id'              => $prefix . 'sections_ordering',
-						'type'            => 'taxonomy_advanced',
-						'desc'            => sprintf(
-							__( 'To create or delete sections, go to %1$sCalendar Sections edit page%2$s.', 'multipass' ),
-							'<a href="' . get_admin_url( null, 'edit-tags.php?taxonomy=calendar-section&post_type=prestation' ) . '">',
-							'</a>',
-						),
-						'taxonomy'        => array( 'calendar-section' ),
-						'field_type'      => 'select_advanced',
-						'multiple'        => true,
-						'select_all_none' => true,
-					),
-				),
-			);
-
-			return $meta_boxes;
+		return $meta_boxes;
 	}
 
 	/**
@@ -497,10 +513,10 @@ class Mltp_Calendar {
 				$classes     = MultiPass::get_flag_slugs( $flags );
 				$classes     = ( is_array( $classes ) ) ? preg_replace( '/^/', 'status-', $classes ) : array();
 				$source_slug = get_post_meta( $item_id, 'source', true );
-				$origin = get_post_meta( $item_id, 'origin', true );
-				$origin = (empty($origin)) ? get_post_meta( $item_id, 'source', true ) : $origin;
+				$origin      = get_post_meta( $item_id, 'origin', true );
+				$origin      = ( empty( $origin ) ) ? get_post_meta( $item_id, 'source', true ) : $origin;
 
-				$classes     = array_merge(
+				$classes = array_merge(
 					$classes,
 					array(
 						'prestation-' . $prestation_id,
@@ -575,52 +591,56 @@ class Mltp_Calendar {
 			);
 		}
 		$html .= '<table>';
-		$links = array_filter(array(
-			// 'view' => array(
-			// 	'label' => __('View', 'multipass'),
-			// 	'url' => empty($event->view_url) ? null : $event->view_url,
-			// 	'icon' => 'post',
-			// ),
-			'details' => array(
-				'label' => __('Details', 'multipass'),
-				'url' => empty($event->edit_url) ? null : $event->edit_url,
-				'icon' => 'edit',
-			),
-		));
-		if(!empty($event->source)) {
+		$links = array_filter(
+			array(
+				// 'view' => array(
+				// 'label' => __('View', 'multipass'),
+				// 'url' => empty($event->view_url) ? null : $event->view_url,
+				// 'icon' => 'post',
+				// ),
+				'details' => array(
+					'label' => __( 'Details', 'multipass' ),
+					'url'   => empty( $event->edit_url ) ? null : $event->edit_url,
+					'icon'  => 'edit',
+				),
+			)
+		);
+		if ( ! empty( $event->source ) ) {
 			$links['source'] = array(
 				'label' => sprintf(
-					__('Edit on %s',  'multipass'),
+					__( 'Edit on %s', 'multipass' ),
 					$event->source,
 				),
-				'url' => $event->source_url,
-				'icon' => ($event->source === 'woocommerce') ? 'cart' : 'external',
+				'url'   => $event->source_url,
+				'icon'  => ( $event->source === 'woocommerce' ) ? 'cart' : 'external',
 			);
 		}
-		if(!empty($event->origin)) {
+		if ( ! empty( $event->origin ) ) {
 			$links['origin'] = array(
 				'label' => sprintf(
-					__('Edit on %s',  'multipass'),
+					__( 'Edit on %s', 'multipass' ),
 					$event->origin,
 				),
-				'url' => $event->origin_url,
-				'icon' => ($event->source === 'woocommerce') ? 'cart' : 'external',
+				'url'   => $event->origin_url,
+				'icon'  => ( $event->source === 'woocommerce' ) ? 'cart' : 'external',
 			);
 		}
-		if( !empty($links['source']['url']) &! empty($links['origin']['url']) && $links['source']['url'] === $links['origin']['url'] ) {
-			unset($links['origin']);
+		if ( ! empty( $links['source']['url'] ) & ! empty( $links['origin']['url'] ) && $links['source']['url'] === $links['origin']['url'] ) {
+			unset( $links['origin'] );
 		}
-		if( !empty($links['view']['url']) &! empty($links['details']['url']) && $links['view']['url'] === $links['details']['url'] ) {
-			unset($links['view']);
+		if ( ! empty( $links['view']['url'] ) & ! empty( $links['details']['url'] ) && $links['view']['url'] === $links['details']['url'] ) {
+			unset( $links['view'] );
 		}
 		$links_html = '';
-		foreach ($links as $link) {
-			if(empty($link['url'])) continue;
-			$icon = (empty($link['icon'])) ? '' : sprintf(
+		foreach ( $links as $link ) {
+			if ( empty( $link['url'] ) ) {
+				continue;
+			}
+			$icon        = ( empty( $link['icon'] ) ) ? '' : sprintf(
 				'<span class="dashicons dashicons-%s"></span> ',
 				$link['icon'],
 			);
-			$target = (MultiPass::is_external($link['url'])) ? '_blank' : '_self';
+			$target      = ( MultiPass::is_external( $link['url'] ) ) ? '_blank' : '_self';
 			$links_html .= sprintf(
 				'<li><a class=button href="%s" target="%s">%s%s</a></li>',
 				$link['url'],
@@ -630,7 +650,9 @@ class Mltp_Calendar {
 				$link['label'],
 			);
 		}
-		if(!empty($links_html)) $html .= '<ul class="modal-buttons">' . $links_html . '</ul>';
+		if ( ! empty( $links_html ) ) {
+			$html .= '<ul class="modal-buttons">' . $links_html . '</ul>';
+		}
 
 		// if ( ! empty( $event->edit_url ) ) {
 		// $html .= sprintf(
@@ -698,39 +720,39 @@ class Mltp_Event {
 		$discount          = get_post_meta( $this->id, 'discount', true );
 		$this->discount    = ( isset( $discount['amount'] ) ) ? $discount['amount'] : null;
 		$this->total       = get_post_meta( $this->id, 'total', true );
-		$deposit     = get_post_meta( $this->id, 'deposit', true );
-		$this->deposit    = ( isset( $discount['deposit'] ) ) ? $deposit['amount'] : null;
+		$deposit           = get_post_meta( $this->id, 'deposit', true );
+		$this->deposit     = ( isset( $discount['deposit'] ) ) ? $deposit['amount'] : null;
 		$this->paid        = get_post_meta( $this->id, 'paid', true );
 		$this->balance     = get_post_meta( $this->id, 'balance', true );
 		$this->start       = ( isset( $dates['from'] ) ) ? $dates['from'] : null;
 		$this->end         = ( isset( $dates['to'] ) ) ? $dates['to'] : null;
 		$this->flags       = get_post_meta( $this->id, 'flags', true );
 		$this->edit_url    = get_post_meta( $this->id, 'edit_url', true );
-		$this->source = get_post_meta($this->id, 'source', true);
-		$this->source_url = get_post_meta($this->id, 'source_url', true);
-		$this->origin = get_post_meta($this->id, 'origin', true);
-		$this->origin_url = get_post_meta($this->id, 'origin_url', true);
+		$this->source      = get_post_meta( $this->id, 'source', true );
+		$this->source_url  = get_post_meta( $this->id, 'source_url', true );
+		$this->origin      = get_post_meta( $this->id, 'origin', true );
+		$this->origin_url  = get_post_meta( $this->id, 'origin_url', true );
 		$check_in          = ( isset( $dates['check_in'] ) ) ? $dates['check_in'] : null;
 		$check_out         = ( isset( $dates['check_out'] ) ) ? $dates['check_in'] : null;
 
-		$d                 = 86400;
-		$check_in          = ( empty( $check_in ) ) ? ( $d / 2 ) : $check_in;
-		$check_out         = ( empty( $check_out ) ) ? ( $d / 2 ) : $check_out;
+		$d         = 86400;
+		$check_in  = ( empty( $check_in ) ) ? ( $d / 2 ) : $check_in;
+		$check_out = ( empty( $check_out ) ) ? ( $d / 2 ) : $check_out;
 
 		// $slots             = get_post_meta( $this->id, 'slots', true );
 		// $slots             = ( empty( $slots ) ) ? 'overnight' : $slots;
 
 		// $fix_overnight =  get_post_meta( $this->id, 'slots', true );
-		$fix_overnight =  true;
-		$this->display_start   = ($fix_overnight) ? (round( $this->start / $d ) * $d) : $this->start;
-		$this->display_end   = ($fix_overnight) ? (round( $this->end / $d ) * $d) : $this->end;
+		$fix_overnight       = true;
+		$this->display_start = ( $fix_overnight ) ? ( round( $this->start / $d ) * $d ) : $this->start;
+		$this->display_end   = ( $fix_overnight ) ? ( round( $this->end / $d ) * $d ) : $this->end;
 
 		// if ( 'overnight' === $slots ) {
-		// 	$this->display_start = floor( $this->start / $d ) * $d + $check_in;
-		// 	$this->display_end   = floor( $this->end / $d + 1 ) * $d + $check_out;
+		// $this->display_start = floor( $this->start / $d ) * $d + $check_in;
+		// $this->display_end   = floor( $this->end / $d + 1 ) * $d + $check_out;
 		// } else {
-		// 	$this->display_start = $this->start;
-		// 	$this->display_end   = $this->end;
+		// $this->display_start = $this->start;
+		// $this->display_end   = $this->end;
 		// }
 	}
 
