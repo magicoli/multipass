@@ -19,7 +19,7 @@
  *
  * @package    MultiPass
  * @subpackage MultiPass/includes
- * @author     Your Name <email@example.com>
+ * @author     Magiiic <info@magiiic.com>
  */
 class Mltp_Mailbox {
 

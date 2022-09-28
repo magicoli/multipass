@@ -18,7 +18,7 @@
  *
  * @package    multipass
  * @subpackage multipass/includes
- * @author     Your Name <email@example.com>
+ * @author     Magiiic <info@magiiic.com>
  */
 class Mltp_Settings {
 

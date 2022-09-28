@@ -18,7 +18,7 @@
  *
  * @package    W4OS
  * @subpackage W4OS/includes
- * @author     Your Name <email@example.com>
+ * @author     Magiiic <info@magiiic.com>
  */
 class Mltp_Calendar {
 

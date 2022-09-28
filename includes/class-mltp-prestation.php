@@ -18,7 +18,7 @@
  *
  * @package    W4OS
  * @subpackage W4OS/includes
- * @author     Your Name <email@example.com>
+ * @author     Magiiic <info@magiiic.com>
  */
 class Mltp_Prestation {
 
@@ -261,7 +261,7 @@ class Mltp_Prestation {
 			'show_in_menu'        => true,
 			'menu_position'       => null,
 			'menu_icon'           => 'dashicons-book-alt',
-			'capability_type'     => 'post',
+			'capability_type'     => 'page',
 			'supports'            => array( 'revisions' ),
 			'taxonomies'          => array(),
 			'rewrite'             => array(

@@ -18,7 +18,7 @@
  *
  * @package    W4OS
  * @subpackage W4OS/includes
- * @author     Your Name <email@example.com>
+ * @author     Magiiic <info@magiiic.com>
  */
 class Mltp_Item {
 
@@ -330,7 +330,7 @@ class Mltp_Item {
 			'rest_base'           => '',
 			'show_in_menu'        => 'edit.php?post_type=prestation',
 			'menu_icon'           => 'dashicons-admin-generic',
-			'capability_type'     => 'post',
+			'capability_type'     => 'manage_options',
 			'supports'            => false,
 			'taxonomies'          => array(),
 			'rewrite'             => array(

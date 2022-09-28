@@ -17,7 +17,7 @@
  *
  * @package    MultiPass
  * @subpackage MultiPass/public
- * @author     Your Name <email@example.com>
+ * @author     Magiiic <info@magiiic.com>
  */
 class Mltp_Public {
 
