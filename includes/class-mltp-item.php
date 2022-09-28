@@ -54,7 +54,7 @@ class Mltp_Item {
 		}
 		$this->post = $this->get( $args, $update );
 		if ( $this->post ) {
-			$this->ID = $this->post->ID;
+			$this->id = $this->post->ID;
 			$this->name = $this->post->post_title;
 		}
 	}
@@ -1109,15 +1109,15 @@ class Mltp_Item {
 		// )));
 		// }
 
-		// $customer_id = get_post_meta($this->ID, '_customer_user', true);
+		// $customer_id = get_post_meta($this->id, '_customer_user', true);
 		// $customer = get_user_by('id', $customer_id);
 		// if($customer) {
 		// $customer_name = $customer->display_name;
 		// $customer_email = $customer->user_email;
 		// error_log("customer " . print_r($customer, true));
 		// } else {
-		// $customer_name = trim(get_post_meta($this->ID, '_billing_first_name', true) . ' ' . get_post_meta($this->ID, '_billing_last_name', true));
-		// $customer_email = get_post_meta($this->ID, '_billing_email', true);
+		// $customer_name = trim(get_post_meta($this->id, '_billing_first_name', true) . ' ' . get_post_meta($this->id, '_billing_last_name', true));
+		// $customer_email = get_post_meta($this->id, '_billing_email', true);
 		// }
 		//
 		// if(empty($item_id) || ! $prestation) {
@@ -1164,7 +1164,7 @@ class Mltp_Item {
 		// $prestation = $prestations[0];
 		// $item_id = $prestation->ID;
 		// error_log("$prestation->ID $prestation->post_title " . print_r($prestation, true));
-		// update_post_meta( $this->ID, 'prestation_id', $item_id );
+		// update_post_meta( $this->id, 'prestation_id', $item_id );
 		// }
 		// }
 		//
@@ -1183,8 +1183,8 @@ class Mltp_Item {
 		// ),
 		// );
 		// $item_id = wp_insert_post($this->postarr);
-		// update_post_meta( $this->ID, 'prestation_id', $item_id );
-		// foreach ($this->postarr['meta_input'] as $key => $value) update_post_meta( $this->ID, $key, $value );
+		// update_post_meta( $this->id, 'prestation_id', $item_id );
+		// foreach ($this->postarr['meta_input'] as $key => $value) update_post_meta( $this->id, $key, $value );
 		// }
 		//
 		// if(!empty($item_id)) {
@@ -1194,7 +1194,7 @@ class Mltp_Item {
 		// 'customer_name' => $customer_name,
 		// 'customer_email' => $customer_email,
 		// );
-		// foreach ($meta as $key => $value) update_post_meta( $this->ID, $key, $value );
+		// foreach ($meta as $key => $value) update_post_meta( $this->id, $key, $value );
 		// Mltp_Item::update_prestation_prestation_items($item_id, get_post($item_id), true );
 		// }
 		//
@@ -1203,14 +1203,14 @@ class Mltp_Item {
 	}
 
 	function get( $args, $update = false ) {
-		$item_id = null;
-		$item    = null;
+		$post_id = null;
+		$post    = null;
 
 		switch ( gettype( $args ) ) {
 			case 'object':
 				$post = $args;
 				if ( isset( $post->post_type ) && 'prestation-item' === $post->post_type ) {
-					$item = $args;
+					$post = $args;
 				}
 				unset( $args );
 				break;
@@ -1218,7 +1218,7 @@ class Mltp_Item {
 			case 'integer':
 				$post = get_post( $args );
 				if ( isset( $post->post_type ) && 'prestation-item' === $post->post_type ) {
-					$item = $post;
+					$post = $post;
 				}
 				unset( $args );
 				break;
@@ -1251,18 +1251,18 @@ class Mltp_Item {
 						),
 					),
 				);
-				$items          = get_posts( $query_args );
-				if ( $items ) {
-					$item    = reset( $items );
-					$item_id = $item->ID;
+				$posts          = get_posts( $query_args );
+				if ( $posts ) {
+					$post    = reset( $posts );
+					$post_id = $post->ID;
 				}
 				break;
 
 		}
 
-		if ( is_array( $args ) & ! empty( $args ) && ( empty( $item_id ) || $update ) ) {
+		if ( is_array( $args ) & ! empty( $args ) && ( empty( $post_id ) || $update ) ) {
 			$postarr = array(
-				'ID'          => $item_id,
+				'ID'          => $post_id,
 				'post_author' => (empty($args['customer']['user_id'])) ? null : $args['customer']['user_id'],
 				'post_title'  => sprintf(
 					'#%s-%s %s',
@@ -1280,16 +1280,16 @@ class Mltp_Item {
 				),
 			);
 
-			$type = ( empty( $item_id ) ) ? 'new prestation-item' : "update $item->post_type";
+			$type = ( empty( $post_id ) ) ? 'new prestation-item' : "update $post->post_type";
 
-			$item_id = wp_insert_post( $postarr );
-			$item    = get_post( $item_id );
+			$post_id = wp_insert_post( $postarr );
+			$post    = get_post( $post_id );
 		}
-		// if(!empty($item)) {
-		// $this->post = $item;
-		// $this->ID = $item->ID;
+		// if(!empty($post)) {
+		// $this->post = $post;
+		// $this->id = $post->ID;
 		// }
-		return $item;
+		return $post;
 	}
 }
 

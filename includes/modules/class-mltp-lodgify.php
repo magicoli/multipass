@@ -502,16 +502,6 @@ class Mltp_Lodgify extends Mltp_Modules {
 			$prestation_item = new Mltp_Item( $item_args, true );
 			$prestation->update();
 
-			// error_log(
-			// 	"booking $key "
-			// 	// . print_r( $booking, true )
-			// 	. '
-			// 	 prestation ' . $prestation->ID . ' ' . $prestation->name
-			// 	. '
-			// 	 item ' .  $prestation_item->ID . ' ' . $prestation_item->name
-			// 	 . "\n"
-			// );
-
 		}
 
 		// if(isset($_REQUEST['lodgify_sync_now']) && $_REQUEST['lodgify_sync_now'] == true) {

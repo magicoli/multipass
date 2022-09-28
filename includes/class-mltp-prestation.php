@@ -769,7 +769,7 @@ class Mltp_Prestation {
 	 *
 	 * @return array Items formatted as array.
 	 */
-	public function get_items() {
+	public function get_items_as_posts() {
 		$query_args       = array(
 			'post_type'   => 'prestation-item',
 			'post_status' => 'publish',
@@ -784,17 +784,17 @@ class Mltp_Prestation {
 				),
 			),
 		);
-		$prestation_items = get_posts( $query_args );
+		$item_posts = get_posts( $query_args );
 		$items            = array();
-		foreach ( $prestation_items as $prestation_item ) {
-			$meta     = get_post_meta( $prestation_item->ID );
-			$price    = get_post_meta( $prestation_item->ID, 'price', true );
-			$dates    = get_post_meta( $prestation_item->ID, 'dates', true );
-			$discount = get_post_meta( $prestation_item->ID, 'discount', true );
-			$deposit  = get_post_meta( $prestation_item->ID, 'deposit', true );
+		foreach ( $item_posts as $item_post ) {
+			$meta     = get_post_meta( $item_post->ID );
+			$price    = get_post_meta( $item_post->ID, 'price', true );
+			$dates    = get_post_meta( $item_post->ID, 'dates', true );
+			$discount = get_post_meta( $item_post->ID, 'discount', true );
+			$deposit  = get_post_meta( $item_post->ID, 'deposit', true );
 			$items[]  = array(
-				'ID'          => $prestation_item->ID,
-				'date'        => $prestation_item->post_date,
+				'ID'          => $item_post->ID,
+				'date'        => $item_post->post_date,
 				'description' => reset( $meta['description'] ),
 				'type'        => reset( $meta['type'] ),
 				'dates'       => $dates,
@@ -805,7 +805,7 @@ class Mltp_Prestation {
 				'paid'        => reset( $meta['paid'] ),
 				'balance'     => reset( $meta['balance'] ),
 				'source'      => reset( $meta['source'] ),
-				'links'       => Mltp_Item::item_links_html( $prestation_item, array( 'format' => 'icon' ) ),
+				'links'       => Mltp_Item::item_links_html( $item_post, array( 'format' => 'icon' ) ),
 			);
 		}
 
@@ -852,7 +852,7 @@ class Mltp_Prestation {
 		}
 
 		$prestation = new Mltp_Prestation( $post );
-		$items      = $prestation->get_items();
+		$posts      = $prestation->get_items_as_posts();
 		$list       = new Mltp_Table(
 			array(
 				'columns' => $prestation->get_columns(),
@@ -866,7 +866,7 @@ class Mltp_Prestation {
 					'balance'  => 'price',
 					'status'   => 'status',
 				),
-				'rows'    => $items,
+				'rows'    => $posts,
 			)
 		);
 
@@ -1183,7 +1183,7 @@ class Mltp_Prestation {
 		$updates['discount']['total']   = 0;
 
 		$prestation       = new Mltp_Prestation( $post );
-		$prestation_items = $prestation->get_items();
+		$prestation_items = $prestation->get_items_as_posts();
 
 		foreach ( $prestation_items as $item ) {
 			$updates['discount']['total'] += $item['discount'];

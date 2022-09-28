@@ -683,7 +683,6 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 				$prestation_item = new Mltp_Item( $args, $update );
 				// $prestation_item->update($args);
-				// error_log ("prestation-item " . print_r($prestation_item->ID, true));
 
 				// $lock = array_keys($part); // TODO: prevent modifications of locked fields
 

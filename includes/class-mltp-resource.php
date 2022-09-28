@@ -57,7 +57,7 @@ class Mltp_Resource {
 		}
 
 		if($post) {
-			$this->ID = $post->ID;
+			$this->id = $post->ID;
 			$this->post = $post;
 			$this->name = $post->post_title;
 			$this->edit_url    = get_post_meta( $this->id, 'edit_url', true );
