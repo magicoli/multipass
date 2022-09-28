@@ -352,7 +352,15 @@ class Mltp_Lodgify extends Mltp_Modules {
 		$z = 0;
 		foreach ( $bookings as $key => $booking ) {
 			$status = $booking['status'];
-			if('Declined' === $status) continue;
+			if(in_array($status, [ 'Declined', 'Open', 'Unavailable' ] )) continue;
+
+			if( ! in_array( $status, [ 'Booked', 'Tentative' ] ) ) {
+				error_log(
+					"Unknown status "
+					. print_r( $booking, true )
+				);
+				// break;
+			}
 
 			$confirmed = (in_array($status, [ 'Booked' ])) ? true : false;
 
@@ -385,16 +393,6 @@ class Mltp_Lodgify extends Mltp_Modules {
 				'to' => $to,
 			);
 			$prestation = new Mltp_Prestation( $prestation_args);
-
-			if( $status != 'Booked' ) {
-				error_log(
-					"booking $key "
-					. print_r( $booking, true )
-					. 'args ' . print_r( $prestation, true )
-					. "\n could not create prestation"
-				);
-				break;
-			}
 
 			$item_args = array(
 				'source' => 'lodgify',
