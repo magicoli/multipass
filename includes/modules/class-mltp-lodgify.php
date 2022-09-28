@@ -368,7 +368,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 			if( ! in_array( $status, [ 'Booked', 'Tentative' ] ) ) {
 				error_log(
-					"Unknown status "
+					"Check status "
 					. print_r( $booking, true )
 				);
 				// break;
@@ -405,6 +405,14 @@ class Mltp_Lodgify extends Mltp_Modules {
 			);
 			$prestation = new Mltp_Prestation( $prestation_args);
 
+			$p_replace = array(
+				'/AirbnbIntegration/' => 'airbnb',
+				'/BookingCom/' => 'booking',
+				'/Manual/' => 'lodgify',
+			);
+			$p_keys = array_keys($p_replace);
+			$origin = sanitize_title(preg_replace($p_keys, $p_replace, $booking['source']));
+
 			$item_args = array(
 				'source' => 'lodgify',
 				'source_id' => $booking['id'],
@@ -425,7 +433,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 					'currency_code' => $booking['currency_code'],
 					'quote' => $booking['quote'],
 				),
-				'origin' => $booking['source'],
+				'origin' => $origin,
 				'description'    => $description,
 				'prestation_id'  => $prestation->ID,
 				'customer'       => array(
@@ -451,6 +459,14 @@ class Mltp_Lodgify extends Mltp_Modules {
 				'balance'        => $booking['amount_due'],
 				'type'           => 'booking',
 			);
+
+			// error_log(
+			// 	"Check status "
+			// 	. print_r( $booking, true )
+			// 	. ' source ' . $item_args['source']
+			// 	. ' origin ' . $item_args['origin']
+			// );
+
 			$prestation_item = new Mltp_Item( $item_args );
 			$prestation->update();
 
