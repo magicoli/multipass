@@ -342,6 +342,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 	 *
 	 * TODO: Include blocked dates.
 	 * TODO: Check why existing prestation from other source is not found.
+	 * TODO: Fix bug when name contains '&'.
 	 *
 	 * @param  boolean $value                  Sync now.
 	 * @param  array   $field                  Field from settings.
@@ -380,12 +381,12 @@ class Mltp_Lodgify extends Mltp_Modules {
 			$date_range = MultiPass::format_date_range( $dates );
 			$attendees = $booking['rooms'][0]['people'];
 			$resource_id = Mltp_Resource::get_resource_id( 'lodgify', $booking['property_id'] );
-			if($resource_id) {
-				$resource = new Mltp_Resource($resource_id);
-				$name =  $resource->name;
-			} else {
-				$name = 'lodgify-' . $booking['property_id'];
+			if( ! $resource_id ) {
+				// No resource associated with this property.
+				continue;
 			}
+			$resource = new Mltp_Resource($resource_id);
+			$name =  $resource->name;
 			$description = sprintf(
 				'%s (%sp, %s)',
 				$name,
