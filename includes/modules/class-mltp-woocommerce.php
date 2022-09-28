@@ -711,7 +711,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			}
 			//
 			// TODO: delete remaining "review in progress" parts
-
+			$prestation->update();
 		}
 
 		// add_action(current_action(), __CLASS__ . '::wp_insert_post_action', 10, 3);
