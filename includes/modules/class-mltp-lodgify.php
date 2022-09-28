@@ -278,7 +278,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			// 'size' => 10,
 			'includeCount'        => 'true',
 			'includeTransactions' => 'true',
-			// 'includeExternal' => false,
+			'includeExternal' => true,
 			'includeQuoteDetails' => 'true',
 			'stayFilter'          => 'Upcoming', // Upcoming (default), Current, Historic, All
 		);
@@ -337,6 +337,17 @@ class Mltp_Lodgify extends Mltp_Modules {
 		return $options;
 	}
 
+	/**
+	 * Sync bookings from Lodgify.
+	 *
+	 * TODO: Include blocked dates.
+	 * TODO: Check why existing prestation from other source is not found.
+	 *
+	 * @param  boolean $value                  Sync now.
+	 * @param  array   $field                  Field from settings.
+	 * @param  [type]  $oldvalue               Always false
+	 * @return void
+	 */
 	function sync_now( $value = true, $field = [], $oldvalue = null) {
 		if ( ! $value ) {
 			return;
@@ -361,7 +372,6 @@ class Mltp_Lodgify extends Mltp_Modules {
 				);
 				// break;
 			}
-
 			$confirmed = (in_array($status, [ 'Booked' ])) ? true : false;
 
 			$from = strtotime($booking['arrival']);
