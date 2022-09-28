@@ -50,6 +50,11 @@
     border-bottom-right-radius: 1.5em;
   }
 
+  .fc-datagrid-cell-frame,
+  .fc-timeline-lane-frame {
+    min-height: 2.5rem;
+  }
+
   .fc-timeline-event-harness {
     margin-top: 0.3rem;
 
@@ -58,11 +63,6 @@
     }
     .fc-event:not(.fc-event-start) {
       margin-left: -1vw;
-    }
-
-    .fc-datagrid-cell-frame,
-    .fc-timeline-lane-frame {
-      min-height: 1.8rem;
     }
 
     .fc-scrollgrid-sync-table .fc-event,

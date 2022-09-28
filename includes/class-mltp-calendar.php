@@ -696,9 +696,10 @@ class Mltp_Event {
 		$price             = get_post_meta( $this->id, 'price', true );
 		$this->subtotal    = ( isset( $price['sub_total'] ) ) ? $price['sub_total'] : null;
 		$discount          = get_post_meta( $this->id, 'discount', true );
-		$this->discount    = ( isset( $discount['amount'] ) ) ? $discount['amoun'] : null;
+		$this->discount    = ( isset( $discount['amount'] ) ) ? $discount['amount'] : null;
 		$this->total       = get_post_meta( $this->id, 'total', true );
-		$this->deposit     = get_post_meta( $this->id, 'deposit', true );
+		$deposit     = get_post_meta( $this->id, 'deposit', true );
+		$this->deposit    = ( isset( $discount['deposit'] ) ) ? $deposit['amount'] : null;
 		$this->paid        = get_post_meta( $this->id, 'paid', true );
 		$this->balance     = get_post_meta( $this->id, 'balance', true );
 		$this->start       = ( isset( $dates['from'] ) ) ? $dates['from'] : null;
