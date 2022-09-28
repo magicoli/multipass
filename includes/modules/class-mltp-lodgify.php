@@ -78,7 +78,6 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 		foreach ( $filters as $hook ) {
 			$hook = array_merge( $defaults, $hook );
-			error_log('hook' . print_r($hook, true));
 			add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
 
@@ -126,24 +125,34 @@ class Mltp_Lodgify extends Mltp_Modules {
 				),
 				array(
 					'name'              => __( 'Synchronize now', 'multipass' ),
-					'id'                => $prefix . 'sync_bookings',
+					'id'                => $prefix . 'sync_now',
 					'type'              => 'switch',
 					'desc'              => __( 'Sync Lodgify bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multipass' ),
 					'style'             => 'rounded',
-					'sanitize_callback' => 'Mltp_Lodgify::sync_bookings',
+					'sanitize_callback' => array ($this,  'sync_now'),
 					'save_field'        => false,
 					'visible'           => array(
 						'when'     => array( array( 'api_key', '!=', '' ) ),
 						'relation' => 'or',
 					),
 				),
+				array(
+					'id'                => $prefix . 'debug',
+					'type'              => 'custom_html',
+					'callback'	=> array($this, 'render_debug'),
+				),
 			),
 		);
 
 		return $meta_boxes;
 	}
+
+	function render_debug() {
+		return 'this <pre>' . print_r($this, true) . '</pre>';
+	}
+
 	function register_fields( $meta_boxes ) {
-		$prefix  = 'lodgify_';
+		// $prefix  = 'lodgify_';
 		// $lodgify = new Mltp_Lodgify();
 
 		$meta_boxes['resources']['fields'][] = array(
@@ -328,25 +337,127 @@ class Mltp_Lodgify extends Mltp_Modules {
 		return $options;
 	}
 
-	static function sync_bookings( $value, $field, $oldvalue ) {
+	function sync_now( $value = true, $field = [], $oldvalue = null) {
 		if ( ! $value ) {
 			return;
 		}
+		$properties = $this->get_properties();
 
-		$lodgify  = new Mltp_Lodgify();
-		$response = $lodgify->get_bookings();
+		$response = $this->get_bookings();
 		if ( is_wp_error( $response ) ) {
 			return false;
 		}
-		error_log( __CLASS__ . '::' . __METHOD__ . ' ' . $response['count'] . ' ' . count( $response['items'] ) );
 
 		$bookings = $response['items'];
+		$z = 0;
 		foreach ( $bookings as $key => $booking ) {
-			error_log( "booking $key " . print_r( $booking, true ) );
-			break;
+			$status = $booking['status'];
+			if('Declined' === $status) continue;
+
+			$confirmed = (in_array($status, [ 'Booked' ])) ? true : false;
+
+			$from = strtotime($booking['arrival']);
+			$to = strtotime($booking['departure']);
+			$dates = [ 'from' => $from, 'to' => $to ];
+			$date_range = MultiPass::format_date_range( $dates );
+			$attendees = $booking['rooms'][0]['people'];
+			$resource_id = Mltp_Resource::get_resource_id( 'lodgify', $booking['property_id'] );
+			if($resource_id) {
+				$resource = new Mltp_Resource($resource_id);
+				$name =  $resource->name;
+			} else {
+				$name = 'lodgify-' . $booking['property_id'];
+			}
+			$description = sprintf(
+				'%s (%sp, %s)',
+				$name,
+				$attendees,
+				$date_range,
+			);
+			$subtotal = $booking['subtotals']['stay'] + $booking['subtotals']['fees'] + $booking['subtotals']['addons'];
+
+			$prestation_args = array(
+				'customer_name' => $booking['guest']['name'],
+				'customer_email' => $booking['guest']['email'],
+				'customer_phone' => $booking['guest']['phone'],
+				// 'confirmed' => $confirmed,
+				'from' => $from,
+				'to' => $to,
+			);
+			$prestation = new Mltp_Prestation( $prestation_args);
+
+			if( $status != 'Booked' ) {
+				error_log(
+					"booking $key "
+					. print_r( $booking, true )
+					. 'args ' . print_r( $prestation, true )
+					. "\n could not create prestation"
+				);
+				break;
+			}
+
+			$item_args = array(
+				'source' => 'lodgify',
+				'source_id' => $booking['id'],
+				'source_item_id' => $booking['property_id'],
+				'view_url'       => 'https://app.lodgify.com/#/reservation/inbox/B' . $booking['id'],
+				// 'edit_url'       => $order->get_edit_order_url(),
+				'resource_id'    => $resource_id,
+				'status' => $status,
+				'confirmed' => $confirmed,
+				'source_details' => array(
+					'rooms' => $booking['rooms'],
+					'language' => $booking['language'],
+					'created' => strtotime($booking['created_at']),
+					'updated' => strtotime($booking['updated_at']),
+					'canceled' => strtotime($booking['canceled_at']),
+					'is_deleted' => $booking['is_deleted'],
+					'currency_code' => $booking['currency_code'],
+					'currency_code' => $booking['currency_code'],
+					'quote' => $booking['quote'],
+				),
+				'origin' => $booking['source'],
+				'description'    => $description,
+				'prestation_id'  => $prestation->ID,
+				'customer'       => array(
+					// TODO: try to get WP user if exists
+					// 'user_id' => $customer_id,
+					'name'    => $booking['guest']['name'],
+					'email'   => $booking['guest']['email'],
+					'phone'   => $booking['guest']['phone'],
+				),
+				'dates'          => $dates,
+				'attendees' => $attendees,
+				// // 'beds' => $beds,
+				'price'          => array(
+					// 'quantity'  => 1,
+					'unit'      => $subtotal,
+					'sub_total' => $subtotal,
+				),
+				'discount'       => $booking['subtotals']['promotions'],
+				'total'          => $booking['total_amount'],
+				// // TODO: ensure paid status is updated immediatly, not after second time save
+				// //
+				'paid'           => $booking['amount_paid'],
+				'balance'        => $booking['amount_due'],
+				'type'           => 'booking',
+			);
+			$prestation_item = new Mltp_Item( $item_args );
+			$prestation->update();
+
+			// error_log(
+			// 	"booking $key "
+			// 	// . print_r( $booking, true )
+			// 	. '
+			// 	 prestation ' . $prestation->ID . ' ' . $prestation->name
+			// 	. '
+			// 	 item ' .  $prestation_item->ID . ' ' . $prestation_item->name
+			// 	 . "\n"
+			// );
+
 		}
 
-		// if(isset($_REQUEST['lodgify_sync_bookings']) && $_REQUEST['lodgify_sync_bookings'] == true) {
+		// if(isset($_REQUEST['lodgify_sync_now']) && $_REQUEST['lodgify_sync_now'] == true) {
 		// $orders = wc_get_orders( array(
 		// 'limit'        => -1, // Query all orders
 		// 'orderby'      => 'date',

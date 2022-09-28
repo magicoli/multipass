@@ -45,11 +45,22 @@ class Mltp_Resource {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct() {
+	public function __construct($args = null) {
+		$post = false;
 
-		$this->actions = array();
-		$this->filters = array();
+		if(!empty($args) ) {
+			if(is_numeric($args)) {
+				$post = get_post($args);
+			} else if (is_object($args)) {
+				$post = $args;
+			}
+		}
 
+		if($post) {
+			$this->ID = $post->ID;
+			$this->post = $post;
+			$this->name = $post->post_title;
+		}
 	}
 
 	/**
@@ -63,7 +74,7 @@ class Mltp_Resource {
 	 * @param    int    $accepted_args    Optional. The number of arguments that should be passed to the $callback. Default is 1.
 	 */
 	public function add_action( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
-		$this->actions = $this->add( $this->actions, $hook, $component, $callback, $priority, $accepted_args );
+		$actions = $this->add( $actions, $hook, $component, $callback, $priority, $accepted_args );
 	}
 
 	/**
@@ -77,7 +88,7 @@ class Mltp_Resource {
 	 * @param    int    $accepted_args    Optional. The number of arguments that should be passed to the $callback. Default is 1.
 	 */
 	public function add_filter( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
-		$this->filters = $this->add( $this->filters, $hook, $component, $callback, $priority, $accepted_args );
+		$filters = $this->add( $filters, $hook, $component, $callback, $priority, $accepted_args );
 	}
 
 	/**
@@ -825,6 +836,35 @@ class Mltp_Resource {
 
 		add_action( current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3 );
 	}
+
+	public static function get_resource( $source, $source_item_id ) {
+		$resource_id = self::get_resource_id( $source, $source_item_id );
+		if($resource_id) {
+			return new Mltp_Resource($resource_id);
+		}
+	}
+
+	public static function get_resource_id( $source, $source_item_id ) {
+		if ( empty( $source ) || empty( $source_item_id ) ) {
+			return;
+		}
+		$args  = array(
+			'posts_per_page' => -1,
+			'post_type'      => 'mp_resource',
+			'meta_query'     => array(
+				array(
+					'meta_key' => 'resource_' . $source . '_id',
+					'value'    => $source_item_id,
+				),
+			),
+		);
+		$query = new WP_Query( $args );
+		if ( $query->have_posts() ) {
+			$query->the_post();
+			return get_the_ID();
+		}
+	}
+
 }
 
 $this->loaders[] = new Mltp_Resource();

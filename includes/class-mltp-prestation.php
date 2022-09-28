@@ -49,6 +49,7 @@ class Mltp_Prestation {
 	public function __construct( $args = null ) {
 		$this->post = $this->get( $args );
 		$this->ID   = ( $this->post ) ? $this->post->ID : false;
+		$this->name   = ( $this->post ) ? $this->post->post_title : false;
 
 		$this->actions = array();
 		$this->filters = array();
@@ -1084,6 +1085,10 @@ class Mltp_Prestation {
 		return true;
 	}
 
+	function update() {
+		if(!$this->post) return;
+		return self::save_post_action($this->ID, $this->post, true);
+	}
 	/**
 	 * Save post action, uptate summary values and prestation status.
 	 *
@@ -1497,6 +1502,13 @@ class Mltp_Prestation {
 			return $prestation;
 		}
 
+		$args = array_merge(array(
+			'prestation_id' => null,
+			'customer_id' => null,
+			'customer_name' => null,
+			'customer_email' => null,
+		), $args);
+
 		$prestation_id  = $args['prestation_id'];
 		$customer_id    = $args['customer_id'];
 		$customer_name  = $args['customer_name'];
@@ -1560,8 +1572,8 @@ class Mltp_Prestation {
 		);
 		$postarr       = array(
 			'post_author'   => $customer_id,
-			'post_date'     => esc_attr( $args['date'] ),
-			'post_date_gmt' => esc_attr( $args['date_gmt'] ),
+			'post_date'     => (empty($args['date'])) ? null : esc_attr( $args['date'] ),
+			'post_date_gmt' => (empty($args['date_gmt'])) ? null : esc_attr( $args['date_gmt'] ),
 			'post_type'     => 'prestation',
 			'post_status'   => 'publish',
 			'meta_input'    => $meta,

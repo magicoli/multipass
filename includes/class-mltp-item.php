@@ -55,6 +55,7 @@ class Mltp_Item {
 		$this->post = $this->get( $args, $update );
 		if ( $this->post ) {
 			$this->ID = $this->post->ID;
+			$this->name = $this->post->post_title;
 		}
 	}
 
@@ -1260,7 +1261,7 @@ class Mltp_Item {
 		if ( is_array( $args ) & ! empty( $args ) && ( empty( $item_id ) || $update ) ) {
 			$postarr = array(
 				'ID'          => $item_id,
-				'post_author' => $args['customer']['user_id'],
+				'post_author' => (empty($args['customer']['user_id'])) ? null : $args['customer']['user_id'],
 				'post_title'  => sprintf(
 					'#%s-%s %s',
 					$args['source_id'],

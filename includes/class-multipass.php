@@ -512,11 +512,11 @@ class MultiPass {
 			$ranger->setDateType( $DateType )->setTimeType( $TimeType );
 			$from = ( is_array( $dates['from'] ) ) ? $dates['from']['timestamp'] : $dates['from'];
 			$to   = ( is_array( $dates['to'] ) ) ? $dates['to']['timestamp'] : $dates['to'];
-			return $ranger->format(
+			$string = $ranger->format(
 				intval( $from ),
 				intval( $to ),
 			);
-
+			return $string;
 		}
 
 		$DateType  = constant( "IntlDateFormatter::$datetype" );
