@@ -260,7 +260,7 @@ class Mltp_Resource {
 			'rest_base'           => '',
 			'show_in_menu'        => 'edit.php?post_type=prestation',
 			'menu_icon'           => 'dashicons-admin-generic',
-			'capability_type'     => 'manage_options',
+			'capability_type'     => 'page',
 			'supports'            => array( 'title' ),
 			'taxonomies'          => array(),
 			'rewrite'             => array(

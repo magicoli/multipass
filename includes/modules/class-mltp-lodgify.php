@@ -1,7 +1,10 @@
 <?php
 
 /**
- * Register all actions and filters for the plugin
+ * Lodgify API.
+ *
+ * https://www.lodgify.com/docs/api
+ * https://docs.lodgify.com/reference/
  *
  * @link       https://github.com/magicoli/multipass
  * @since      0.1.0
@@ -11,11 +14,7 @@
  */
 
 /**
- * Register all actions and filters for the plugin.
- *
- * Maintain a list of all hooks that are registered throughout
- * the plugin, and register them with the WordPress API. Call the
- * run function to execute the list of actions and filters.
+ * Lodgify Class.
  *
  * @package    MultiPass
  * @subpackage MultiPass/includes
@@ -137,6 +136,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 					),
 				),
 				array(
+					// 'name'              => __( 'Debug', 'multipass' ),
 					'id'                => $prefix . 'debug',
 					'type'              => 'custom_html',
 					'callback'	=> array($this, 'render_debug'),
@@ -148,7 +148,19 @@ class Mltp_Lodgify extends Mltp_Modules {
 	}
 
 	function render_debug() {
-		return 'this <pre>' . print_r($this, true) . '</pre>';
+		$response = $this->get_closed_periods();
+		if ( is_wp_error( $response ) ) {
+			$message = sprintf(
+				'%s failed ("%s")',
+				__CLASS__ . '::' . __METHOD__,
+				$response->get_error_message(),
+			);
+
+			return $message;
+		}
+		$debug = 'availabilities ' . print_r($response, true);
+		// $availabilities = $response['items'];
+		return '<label>Debug</label><pre>' . $debug . '</pre>';
 	}
 
 	function register_fields( $meta_boxes ) {
@@ -267,6 +279,63 @@ class Mltp_Lodgify extends Mltp_Modules {
 		return $value;
 	}
 
+	/**
+	 * Get closed periods, complementary to get_bookings(), as API method
+	 * /v2/reservations/bookings does not return dates blocked manually.
+	 *
+	 * @return array API response as array
+	 */
+	function get_closed_periods() {
+		$cache_key = sanitize_title( __CLASS__ . '-' . __METHOD__ );
+		$closed  = wp_cache_get( $cache_key );
+		if ( $closed ) {
+			return $closed;
+		}
+
+		$closed = [];
+		// foreach($props as $propertyId => $prop) {
+		$api_query = array(
+			'start' => date('Y-m-d', strtotime('first day of last month') ),
+			'end' => date('Y-m-d', strtotime('last day of next month') ),
+			// 'end' => date('Y-m-d', strtotime('last day of next month + 2 years') ),
+			'includeDetails' => true,
+		);
+		$response = $this->api_request( '/v2/availability', $api_query );
+		if ( is_wp_error( $response ) ) {
+			$error_id = sanitize_title( __CLASS__ . '-' . __METHOD__ );
+			$message  = sprintf( __( '%1$s failed (%2$s).', 'multipass' ), $error_id, $response->get_error_message() );
+			add_settings_error( $error_id, $error_id, $message, 'error' );
+			return $response;
+		}
+
+		foreach($response as $avail) {
+			$periods = $avail['periods'];
+			$property_id = $avail['property_id'];
+			$resource = Mltp_Resource::get_resource( 'lodgify', $property_id );
+			if(!$resource) continue;
+
+			$closed[$property_id] = array(
+				'user_id' => $avail['user_id'],
+				'property_id' => $avail['property_id'],
+				'room_type_id' => $avail['room_type_id'],
+			);
+			foreach($periods as $period_key => $period) {
+				if($period['available']) continue;
+				if(empty($period['closed_period'])) {
+					// Not available, but there is a booking associated
+					continue;
+				}
+				$period['source_url'] = 'https://app.lodgify.com/#/reservation/calendar/multi/closed-period/' . $period['closed_period']['id'];
+				$closed[$property_id]['periods'][] = $period;
+			}
+			if(empty($closed[$property_id]['periods'])) unset($closed[$property_id]);
+		}
+		// }
+
+		wp_cache_set( $cache_key, $closed );
+		return $closed;
+	}
+
 	function get_bookings() {
 		$cache_key = sanitize_title( __CLASS__ . '-' . __METHOD__ );
 		$response  = wp_cache_get( $cache_key );
@@ -274,8 +343,9 @@ class Mltp_Lodgify extends Mltp_Modules {
 			return $response;
 		}
 
-		$args = array(
-			// 'size' => 10,
+		$api_query = array(
+			// 'size' => -1,
+			// 'updatedSince' => '2022-01-01',
 			'includeCount'        => 'true',
 			'includeTransactions' => 'true',
 			'includeExternal' => true,
@@ -283,7 +353,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			'stayFilter'          => 'Upcoming', // Upcoming (default), Current, Historic, All
 		);
 
-		$response = $this->api_request( '/v2/reservations/bookings', $args );
+		$response = $this->api_request( '/v2/reservations/bookings', $api_query );
 		if ( is_wp_error( $response ) ) {
 			$error_id = sanitize_title( __CLASS__ . '-' . __METHOD__ );
 			$message  = sprintf( __( '%1$s failed (%2$s).', 'multipass' ), $error_id, $response->get_error_message() );
@@ -293,8 +363,8 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 		if ( $response['count'] > count( $response['items'] ) ) {
 			error_log( 'missing some, getting them all ' . $response['count'] );
-			$args['size'] = $response['count'];
-			$response     = $this->api_request( '/v2/reservations/bookings', $args );
+			$api_query['size'] = $response['count'];
+			$response     = $this->api_request( '/v2/reservations/bookings', $api_query );
 			if ( is_wp_error( $response ) ) {
 				$error_id = sanitize_title( __CLASS__ . '-' . __METHOD__ );
 				$message  = sprintf( __( '%1$s failed (%2$s).', 'multipass' ), $error_id, $response->get_error_message() );
@@ -302,40 +372,41 @@ class Mltp_Lodgify extends Mltp_Modules {
 				return $response;
 			}
 		}
+		// error_log('got ' . count( $response['items']) . '/' . $response['count'] );
 
 		wp_cache_set( $cache_key, $response );
 		return $response;
 	}
 
-	static function bookings_options() {
-		$lodgify  = new Mltp_Lodgify();
-		$options  = array();
-		$response = $lodgify->get_bookings();
-		if ( is_wp_error( $response ) ) {
-			return false;
-		}
-		if ( ! is_array( $response['items'] ) ) {
-			return false;
-		}
-
-		foreach ( $response['items'] as $key => $booking ) {
-			$options[ $booking['id'] ] = sprintf(
-				'%s, %sp %s (#%s)',
-				$booking['attendee']['name'],
-				$booking['rooms'][0]['people'],
-				MultiPass::format_date_range(
-					array(
-						$booking['arrival'],
-						$booking['departure'],
-					),
-					true
-				),
-				$booking['id'],
-			);
-		}
-
-		return $options;
-	}
+	// static function bookings_options() {
+	// 	$lodgify  = new Mltp_Lodgify();
+	// 	$options  = array();
+	// 	$response = $lodgify->get_bookings();
+	// 	if ( is_wp_error( $response ) ) {
+	// 		return false;
+	// 	}
+	// 	if ( ! is_array( $response['items'] ) ) {
+	// 		return false;
+	// 	}
+	//
+	// 	foreach ( $response['items'] as $key => $booking ) {
+	// 		$options[ $booking['id'] ] = sprintf(
+	// 			'%s, %sp %s (#%s)',
+	// 			$booking['attendee']['name'],
+	// 			$booking['rooms'][0]['people'],
+	// 			MultiPass::format_date_range(
+	// 				array(
+	// 					$booking['arrival'],
+	// 					$booking['departure'],
+	// 				),
+	// 				true
+	// 			),
+	// 			$booking['id'],
+	// 		);
+	// 	}
+	//
+	// 	return $options;
+	// }
 
 	/**
 	 * Sync bookings from Lodgify.
@@ -359,8 +430,8 @@ class Mltp_Lodgify extends Mltp_Modules {
 		if ( is_wp_error( $response ) ) {
 			return false;
 		}
-
 		$bookings = $response['items'];
+
 		$z = 0;
 		foreach ( $bookings as $key => $booking ) {
 			$status = $booking['status'];
