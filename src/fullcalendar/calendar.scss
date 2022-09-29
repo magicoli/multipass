@@ -1,6 +1,3 @@
-.fc .fc-toolbar-title {
-   text-transform: capitalize;
-}
 .prestation_page_mltp-calendar {
   --fc-background-past: hsl(0, 0%, 70%, 25%);
   --fc-background-past-weekend: hsl(0, 0%, 60%, 25%);
@@ -9,6 +6,19 @@
 
   --mltp-event-font-size: 1.1em;
   --mltp-event-row-height: 3.6em;
+
+  // .fc .fc-toolbar {
+  //   margin-top: 0.5em;
+  // }
+  .fc .fc-toolbar-title {
+    text-transform: capitalize;
+    display: inline-block;
+    // padding-right: 0.25em;
+  }
+  // .fc-toolbar-chunk > .fc-button,
+  // .fc-toolbar-chunk > .fc-button-group {
+  //   margin-top: -0.7em;
+  // }
 
   .fc-timeline-slot.fc-day-sun,
   .fc-timeline-slot.fc-day-sat {

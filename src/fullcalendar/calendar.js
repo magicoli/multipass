@@ -38,10 +38,18 @@ jQuery(document).ready(function($) {
 				initialView: 'resourceTimelineMonth',
 				// locales: allLocales,
 				locale: locale,
-				header: {
-					left: 'prev,next today',
-					center: 'title',
-					right: ''
+				// customButtons: {
+				// 	myCustomButton: {
+				// 		text: 'Custom Button',
+				// 		click: function() {
+				// 			alert('clicked the custom button!');
+				// 		}
+				// 	}
+			  // },
+				headerToolbar: {
+					start: 'title',
+					center: '',
+					end: 'prevYear,prev today next,nextYear',
 				},
 				// dayHeaderFormat: 'D',
 				nowIndicator: true,
