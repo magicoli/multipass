@@ -148,18 +148,9 @@ class Mltp_Lodgify extends Mltp_Modules {
 	}
 
 	function render_debug() {
-		$response = $this->get_closed_periods();
-		if ( is_wp_error( $response ) ) {
-			$message = sprintf(
-				'%s failed ("%s")',
-				__CLASS__ . '::' . __METHOD__,
-				$response->get_error_message(),
-			);
-
-			return $message;
-		}
-		$debug = 'availabilities ' . print_r($response, true);
+		$debug = '';
 		// $availabilities = $response['items'];
+		if(!empty($debug))
 		return '<label>Debug</label><pre>' . $debug . '</pre>';
 	}
 
@@ -336,6 +327,16 @@ class Mltp_Lodgify extends Mltp_Modules {
 		return $closed;
 	}
 
+
+	/**
+	 * Get all future bookings.
+	 *
+	 * TODO: fetch only bookings updated since last sync on regular basis (use
+	 * 'updatedSince' paramenter). Fetch all less often, or on initial sync or
+	 * manual resync.
+	 *
+	 * @return array API response as array
+	 */
 	function get_bookings() {
 		$cache_key = sanitize_title( __CLASS__ . '-' . __METHOD__ );
 		$response  = wp_cache_get( $cache_key );
@@ -344,25 +345,25 @@ class Mltp_Lodgify extends Mltp_Modules {
 		}
 
 		$api_query = array(
-			// 'size' => -1,
+			'size' => null,
 			// 'updatedSince' => '2022-01-01',
 			'includeCount'        => 'true',
 			'includeTransactions' => 'true',
 			'includeExternal' => true,
 			'includeQuoteDetails' => 'true',
-			'stayFilter'          => 'Upcoming', // Upcoming (default), Current, Historic, All
+			'stayFilter'          => 'All', // Upcoming (default), Current, Historic, All
+			// 'stayFilter'          => ($get_past) ? 'All' : 'Upcoming', // Upcoming (default), Current, Historic, All
 		);
-
 		$response = $this->api_request( '/v2/reservations/bookings', $api_query );
+
 		if ( is_wp_error( $response ) ) {
 			$error_id = sanitize_title( __CLASS__ . '-' . __METHOD__ );
 			$message  = sprintf( __( '%1$s failed (%2$s).', 'multipass' ), $error_id, $response->get_error_message() );
 			add_settings_error( $error_id, $error_id, $message, 'error' );
 			return $response;
 		}
-
-		if ( $response['count'] > count( $response['items'] ) ) {
-			error_log( 'missing some, getting them all ' . $response['count'] );
+		if ( isset($response['count']) && $response['count'] > count( $response['items'] ) ) {
+			// error_log( 'missing some, getting them all ' . $response['count'] );
 			$api_query['size'] = $response['count'];
 			$response     = $this->api_request( '/v2/reservations/bookings', $api_query );
 			if ( is_wp_error( $response ) ) {
@@ -372,7 +373,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 				return $response;
 			}
 		}
-		// error_log('got ' . count( $response['items']) . '/' . $response['count'] );
+		error_log(__CLASS__ . ' ' . __METHOD__ . ' ' . count( $response['items'] ) . '/' . $response['count'] . ' bookings');
 
 		wp_cache_set( $cache_key, $response );
 		return $response;
@@ -424,6 +425,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		if ( ! $value ) {
 			return;
 		}
+
 		$properties = $this->get_properties();
 
 		$response = $this->get_bookings();
