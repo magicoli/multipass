@@ -101,7 +101,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		$meta_boxes[] = array(
 			'title'          => __( 'Lodgify Settings', 'multipass' ),
 			'id'             => 'lodgify-settings',
-			'settings_pages' => array( 'multipass' ),
+			'settings_pages' => array( 'multipass-settings' ),
 			'tab'            => 'lodgify',
 			'fields'         => array(
 				array(

@@ -50,7 +50,7 @@ class Mltp_Payment_Product {
 		$meta_boxes[] = array(
 			'title'          => __( 'Payment Products', 'multipass' ),
 			'id'             => 'multipass-payments',
-			'settings_pages' => array( 'multipass' ),
+			'settings_pages' => array( 'multipass-settings' ),
 			'tab'            => 'woocommerce',
 			'fields'         => array(
 				array(

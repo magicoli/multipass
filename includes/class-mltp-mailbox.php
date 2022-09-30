@@ -106,7 +106,7 @@ class Mltp_Mailbox {
 		$meta_boxes[] = array(
 			'title'          => __( 'IMAP Settings', 'multipass' ),
 			'id'             => 'multipass-mail-settings',
-			'settings_pages' => array( 'multipass' ),
+			'settings_pages' => array( 'multipass-settings' ),
 			'tab'            => 'imap',
 			'fields'         => array(
 				array(

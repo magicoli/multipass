@@ -167,7 +167,7 @@ class Mltp_Calendar {
 		$meta_boxes['calendar-settings'] = array(
 			'title'          => __( 'Calendar Setttings', 'multipass' ),
 			'id'             => 'calendar-setttings',
-			'settings_pages' => array( 'multipass' ),
+			'settings_pages' => array( 'multipass-settings' ),
 			'tab'            => 'calendar',
 			'fields'         => array(
 				array(
@@ -328,13 +328,13 @@ class Mltp_Calendar {
 
 	public static function admin_menu_action() {
 		add_submenu_page(
-			'edit.php?post_type=prestation', // string $parent_slug,
+			'multipass', // string $parent_slug,
 			__( 'Calendar', 'multipass' ), // string $page_title,
 			__( 'Calendar', 'multipass' ), // string $menu_title,
-			'manage_options', // string $capability,
-			'mltp-calendar', // string $menu_slug,
+			'view_mltp_calendar', // string $capability,
+			'multipass', // string $menu_slug,
 			__CLASS__ . '::render_calendar_page', // callable $callback = '',
-			1, // int|float $position = null
+			0, // int|float $position = null
 		);
 	}
 

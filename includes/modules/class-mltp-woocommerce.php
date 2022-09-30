@@ -168,7 +168,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		$meta_boxes['woocommerce_settings'] = array(
 			'title'          => __( 'WooCommerce Settings', 'multipass' ),
 			'id'             => 'multipass-woocommerce',
-			'settings_pages' => array( 'multipass' ),
+			'settings_pages' => array( 'multipass-settings' ),
 			'tab'            => 'woocommerce',
 			'fields'         => array(
 				array(
@@ -275,7 +275,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		$meta_boxes['multipass-woocommerce-settings'] = array(
 			'title'          => __( 'WooCommerce Settings', 'multipass' ),
 			'id'             => 'multipass-woocommerce-settings',
-			'settings_pages' => array( 'multipass' ),
+			'settings_pages' => array( 'multipass-settings' ),
 			'tab'            => 'woocommerce',
 			'fields'         => array(),
 		);

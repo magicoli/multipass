@@ -220,7 +220,8 @@ class Mltp_Prestation {
 			'not_found'                => esc_html__( 'No prestations found', 'multipass' ),
 			'not_found_in_trash'       => esc_html__( 'No prestations found in Trash', 'multipass' ),
 			'parent_item_colon'        => esc_html__( 'Parent Prestation:', 'multipass' ),
-			'all_items'                => esc_html__( 'All Prestations', 'multipass' ),
+			'all_items'                => esc_html__( 'Prestations', 'multipass' ),
+			'menu_name'                => esc_html__( 'Prestations', 'multipass' ),
 			'archives'                 => esc_html__( 'Prestation Archives', 'multipass' ),
 			'attributes'               => esc_html__( 'Prestation Attributes', 'multipass' ),
 			'insert_into_item'         => esc_html__( 'Insert into prestation', 'multipass' ),
@@ -229,7 +230,6 @@ class Mltp_Prestation {
 			'set_featured_image'       => esc_html__( 'Set featured image', 'multipass' ),
 			'remove_featured_image'    => esc_html__( 'Remove featured image', 'multipass' ),
 			'use_featured_image'       => esc_html__( 'Use as featured image', 'multipass' ),
-			'menu_name'                => esc_html__( 'MultiPass', 'multipass' ),
 			'filter_items_list'        => esc_html__( 'Filter prestations list', 'multipass' ),
 			'filter_by_date'           => esc_html__( 'Filter by date', 'multipass' ),
 			'items_list_navigation'    => esc_html__( 'Prestations list navigation', 'multipass' ),
@@ -258,10 +258,8 @@ class Mltp_Prestation {
 			'delete_with_user'    => true,
 			'has_archive'         => true,
 			'rest_base'           => '',
-			'show_in_menu'        => true,
-			'menu_position'       => null,
-			'menu_icon'           => 'dashicons-book-alt',
-			'capability_type'     => 'page',
+			'show_in_menu'        => 'multipass',
+			'capability_type'     => 'mltp_prestation',
 			'supports'            => array( 'revisions' ),
 			'taxonomies'          => array(),
 			'rewrite'             => array(
@@ -674,9 +672,9 @@ class Mltp_Prestation {
 			'name'                       => esc_html__( 'Prestation statuses', 'multipass' ),
 			'singular_name'              => esc_html__( 'Prestation status', 'multipass' ),
 			'menu_name'                  => esc_html__( 'Prestation statuses', 'multipass' ),
-			'search_items'               => esc_html__( 'Search Prestation statuses', 'multipass' ),
-			'popular_items'              => esc_html__( 'Popular Prestation statuses', 'multipass' ),
-			'all_items'                  => esc_html__( 'All Prestation statuses', 'multipass' ),
+			'search_items'               => esc_html__( 'Search statuses', 'multipass' ),
+			'popular_items'              => esc_html__( 'Popular statuses', 'multipass' ),
+			'all_items'                  => esc_html__( 'All statuses', 'multipass' ),
 			'parent_item'                => esc_html__( 'Parent Prestation status', 'multipass' ),
 			'parent_item_colon'          => esc_html__( 'Parent Prestation status', 'multipass' ),
 			'edit_item'                  => esc_html__( 'Edit Prestation status', 'multipass' ),
@@ -684,16 +682,16 @@ class Mltp_Prestation {
 			'update_item'                => esc_html__( 'Update Prestation status', 'multipass' ),
 			'add_new_item'               => esc_html__( 'Add new prestation status', 'multipass' ),
 			'new_item_name'              => esc_html__( 'New prestation status name', 'multipass' ),
-			'separate_items_with_commas' => esc_html__( 'Separate prestation statuses with commas', 'multipass' ),
-			'add_or_remove_items'        => esc_html__( 'Add or remove prestation statuses', 'multipass' ),
-			'choose_from_most_used'      => esc_html__( 'Choose most used prestation statuses', 'multipass' ),
-			'not_found'                  => esc_html__( 'No prestation statuses found', 'multipass' ),
-			'no_terms'                   => esc_html__( 'No Prestation statuses', 'multipass' ),
+			'separate_items_with_commas' => esc_html__( 'Separate statuses with commas', 'multipass' ),
+			'add_or_remove_items'        => esc_html__( 'Add or remove statuses', 'multipass' ),
+			'choose_from_most_used'      => esc_html__( 'Choose most used statuses', 'multipass' ),
+			'not_found'                  => esc_html__( 'No status found', 'multipass' ),
+			'no_terms'                   => esc_html__( 'No status', 'multipass' ),
 			'filter_by_item'             => esc_html__( 'Filter by prestation status', 'multipass' ),
 			'items_list_navigation'      => esc_html__( 'Prestation statuses list pagination', 'multipass' ),
 			'items_list'                 => esc_html__( 'Prestation statuses list', 'multipass' ),
 			'most_used'                  => esc_html__( 'Most Used', 'multipass' ),
-			'back_to_items'              => esc_html__( 'Back to prestation statuses', 'multipass' ),
+			'back_to_items'              => esc_html__( 'Back to statuses', 'multipass' ),
 			'text_domain'                => 'multipass',
 		);
 		$args   = array(
@@ -723,7 +721,7 @@ class Mltp_Prestation {
 		register_taxonomy( 'prestation-status', array( 'prestation' ), $args );
 
 		/**
-		 * Prestation statuses, we use basically the same terminology as
+		 * statuses, we use basically the same terminology as
 		 * WooCommerce, but it is not mandatory.
 		 */
 		MultiPass::register_terms(

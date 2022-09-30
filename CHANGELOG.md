@@ -2,7 +2,9 @@
 
 ### Unreleased
 - new Lodgify bookings sync
+- added MultiPass Reader, Manager and Administrator capabilities sets
 - added source and origin edit links to Calendar modal
+- reorganised admin menu (defaults to Calendar)
 
 ### 0.1.2 (alpha release)
 

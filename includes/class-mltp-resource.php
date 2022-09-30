@@ -258,9 +258,9 @@ class Mltp_Resource {
 			'delete_with_user'    => true,
 			'has_archive'         => true,
 			'rest_base'           => '',
-			'show_in_menu'        => 'edit.php?post_type=prestation',
+			'show_in_menu'        => 'multipass',
 			'menu_icon'           => 'dashicons-admin-generic',
-			'capability_type'     => 'page',
+			'capability_type'     => 'mltp_resource',
 			'supports'            => array( 'title' ),
 			'taxonomies'          => array(),
 			'rewrite'             => array(

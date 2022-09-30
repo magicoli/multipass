@@ -114,7 +114,7 @@ class Mltp_HBook extends Mltp_Modules {
 		$meta_boxes[] = array(
 			'title'          => __( 'HBook Settings', 'multipass' ),
 			'id'             => 'hbook-settings',
-			'settings_pages' => array( 'multipass' ),
+			'settings_pages' => array( 'multipass-settings' ),
 			'tab'            => 'hbook',
 			'fields'         => array(
 				array(

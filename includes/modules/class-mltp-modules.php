@@ -144,7 +144,7 @@ class Mltp_Modules {
 		$meta_boxes[] = array(
 			'title'          => __( 'MultiPass Modules', 'multipass' ),
 			'id'             => 'multipass-modules',
-			'settings_pages' => array( 'multipass' ),
+			'settings_pages' => array( 'multipass-settings' ),
 			'tab'            => 'general',
 			'fields'         => array(
 				array(
