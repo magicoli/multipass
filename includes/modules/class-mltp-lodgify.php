@@ -88,7 +88,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 	}
 
 	function register_settings_pages( $settings_pages ) {
-		$settings_pages['multipass']['tabs']['lodgify'] = 'Lodgify';
+		$settings_pages['multipass-settings']['tabs']['lodgify'] = 'Lodgify';
 
 		return $settings_pages;
 	}

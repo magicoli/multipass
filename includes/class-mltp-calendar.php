@@ -142,7 +142,7 @@ class Mltp_Calendar {
 	 * @return array                  Updated settings.
 	 */
 	static function register_settings_pages( $settings_pages ) {
-		$settings_pages['multipass']['tabs']['calendar'] = __( 'Calendar', 'multipass' );
+		$settings_pages['multipass-settings']['tabs']['calendar'] = __( 'Calendar', 'multipass' );
 
 		return $settings_pages;
 	}

@@ -264,7 +264,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 	 * @return array                  Updated settings.
 	 */
 	function register_settings_pages( $settings_pages ) {
-		$settings_pages['multipass']['tabs']['woocommerce'] = 'WooCommerce';
+		$settings_pages['multipass-settings']['tabs']['woocommerce'] = 'WooCommerce';
 
 		return $settings_pages;
 	}

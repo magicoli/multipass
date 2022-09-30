@@ -95,7 +95,7 @@ class Mltp_Mailbox {
 	}
 
 	static function register_settings_pages( $settings_pages ) {
-		$settings_pages['multipass']['tabs']['imap'] = 'IMAP';
+		$settings_pages['multipass-settings']['tabs']['imap'] = 'IMAP';
 
 		return $settings_pages;
 	}

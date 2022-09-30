@@ -102,8 +102,8 @@ class Mltp_HBook extends Mltp_Modules {
 	}
 
 	function register_settings_pages( $settings_pages ) {
-		$settings_pages['multipass']['tabs']['hbook'] = 'HBook';
-		// error_log(__CLASS__ . ' tabs ' . print_r($settings_pages['multipass']['tabs'], true));
+		$settings_pages['multipass-settings']['tabs']['hbook'] = 'HBook';
+		// error_log(__CLASS__ . ' tabs ' . print_r($settings_pages['multipass-settings']['tabs'], true));
 
 		return $settings_pages;
 	}
