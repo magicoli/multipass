@@ -295,7 +295,7 @@ class Mltp_Settings {
 					'name'              => __( 'MultiPass Reader', 'multipass' ),
 					'id'                => $prefix . 'mltp_reader',
 					'type'              => 'select',
-					'options'           => MultiPass::get_roles(),
+					'options'           => MultiPass::get_roles(true),
 					'default'		=> 'contributor',
 					'placeholder'       => __( 'Select a role', 'multipass' ),
 					'sanitize_callback' => array($this, 'sanitize_role'),
@@ -331,8 +331,8 @@ class Mltp_Settings {
 		return $links;
 	}
 
-	function sanitize_role($role_name, $field, $old_value = null) {
-		$cap = $field['id'];
+	function sanitize_role($role_id, $field, $old_value = null) {
+		$group = $field['id'];
 
 		$all_caps['mltp_reader'] = array(
 			'view_mltp_dashboard',
@@ -367,27 +367,39 @@ class Mltp_Settings {
 			'edit_published_mltp_resources',
 			'delete_published_mltp_resources',
 		));
-		$caps = $all_caps[$cap];
+		$caps = $all_caps[$group];
 
-		if($old_value !== $role_name &! empty($old_value) && $old_value != 'administrator' ) {
+		if($old_value !== $role_id &! empty($old_value) && $old_value != 'administrator' ) {
 			$role = get_role( $old_value );
-			error_log("$old_value remove " . print_r($caps, true));
+			// error_log("$old_value remove " . print_r($caps, true));
 			foreach ($caps as $cap) {
 				$role->remove_cap( $cap, true );
 			}
 		}
 
 		// $caps[] = 'view_admin_dashboard';
-		if( ! empty($role_name)) {
-			$role = get_role( $role_name );
-			if($role_name !== 'administrator')
-			error_log("$role_name add " . print_r($caps, true));
-			foreach ($caps as $cap) {
-				$role->add_cap( $cap, true );
+		if( ! empty($role_id)) {
+			if( '_create' === $role_id ) {
+				$role_id = $group;
+				$role_name = $field['name'];
+
+				$role = add_role( $role_id, $role_name, [ 'view_admin_dashboard' => true ] );
+			}
+
+			$role = get_role( $role_id );
+			if($role) {
+				if($role_id !== 'administrator')
+				// error_log("$role_id add " . print_r($caps, true));
+				foreach ($caps as $cap) {
+					$role->add_cap( $cap, true );
+				}
+			} else {
+				error_log( __CLASS__ . '::' .__METHOD__ . " could not find role $role_id");
+				return;
 			}
 		}
 
-		return $role_name;
+		return $role_id;
 	}
 }
 

@@ -739,10 +739,13 @@ class MultiPass {
 	  return !empty($components['host']) && strcasecmp($components['host'], 'example.com'); // empty host will indicate url like '/relative.php'
 	}
 
-	public static function get_roles() {
+	public static function get_roles($add_create = false) {
     global $wp_roles;
 
 		$roles=[];
+		// if($add_create) {
+			$roles['_create'] = __('&rarr; Create a new role', 'multipass');
+		// }
 		foreach($wp_roles->roles as $slug => $role) {
 			$roles[$slug] = $role['name'];
 		}
