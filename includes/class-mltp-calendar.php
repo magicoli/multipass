@@ -340,34 +340,32 @@ class Mltp_Calendar {
 
 	public static function render_calendar_page() {
 		wp_enqueue_style( 'fullcalendar-main', plugins_url( 'lib/js/fullcalendar.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION );
-		wp_enqueue_style( 'mltp-fullcalendar', plugins_url( 'includes/js/calendar.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION );
+		wp_enqueue_style( 'mltp-calendar', plugins_url( 'includes/js/calendar.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION );
 
-		// wp_enqueue_script( 'mltp-fullcalendar-main', plugins_url( 'lib/js/fullcalendar.js', MULTIPASS_FILE ) );
+		// wp_enqueue_script( 'mltp-calendar-main', plugins_url( 'lib/js/fullcalendar.js', MULTIPASS_FILE ) );
 		wp_enqueue_script( 'fullcalendar-cdn', 'https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.0/main.min.js' );
-		wp_enqueue_script( 'mltp-fullcalendar', plugins_url( 'includes/js/calendar.js', MULTIPASS_FILE ), array( 'jquery' ), MULTIPASS_VERSION );
+		wp_enqueue_script( 'mltp-calendar', plugins_url( 'includes/js/calendar.js', MULTIPASS_FILE ), array( 'jquery' ), MULTIPASS_VERSION );
 
 		$calendar_resources = self::get_calendar_resources(true);
 		$main_count = (empty($calendar_resources['main_count'])) ? null : $calendar_resources['main_count'];
 		if($main_count) {
 			$custom_inline_style = sprintf(
 				'
-				.dummy{
-				}
-				.fc-datagrid-body tr:nth-of-type(-n+%1$s):not(:first-of-type) .fc-datagrid-cell-frame,
-				.fc-scrollgrid-sync-table tr:nth-of-type(-n+%1$s):not(:first-of-type) .fc-timeline-lane-frame {
+				#mltp-calendar .fc-datagrid-body tr:nth-of-type(-n+%1$s):not(:first-of-type) .fc-datagrid-cell-frame,
+				#mltp-calendar .fc-scrollgrid-sync-table tr:nth-of-type(-n+%1$s):not(:first-of-type) .fc-timeline-lane-frame {
 					min-height: 3.5rem;
 				}
-				.fc-scrollgrid-sync-table  tr:nth-of-type(-n+%1$s):not(:first-of-type) .fc-event {
+				#mltp-calendar .fc-scrollgrid-sync-table  tr:nth-of-type(-n+%1$s):not(:first-of-type) .fc-event {
 					font-size: 1.2rem;
 					line-height: 200%%;
 				}
-				.fc-scrollgrid-sync-table  tr:nth-of-type(-n+%1$s):not(:first-of-type) .fc-event-start .fc-event-title-container:before {
+				#mltp-calendar .fc-scrollgrid-sync-table  tr:nth-of-type(-n+%1$s):not(:first-of-type) .fc-event-start .fc-event-title-container:before {
 					width: 2em;
 				}
 				',
 				$main_count,
 			);
-			wp_add_inline_style( 'mltp-fullcalendar', $custom_inline_style );
+			wp_add_inline_style( 'mltp-calendar', $custom_inline_style );
 		}
 
 		$content = '(no content yet)';
@@ -395,12 +393,12 @@ class Mltp_Calendar {
 		// }
 
 		printf(
-			'<div class="wrap">
-				<div id="calendar-placeholder">
+			'<div id="mltp-calendar-wrapper" class="wrap">
+				<div id="mltp-placeholder">
 					<h1 class="wp-heading-inline">%s %s</h1>
 					<p>%s <span class="dashicons dashicons-update spin"></span></p>
 				</div>
-				<div id="calendar"></div>
+				<div id="mltp-calendar"></div>
       </div>',
 			get_admin_page_title(),
 			$actions,

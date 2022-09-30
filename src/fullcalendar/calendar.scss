@@ -1,4 +1,4 @@
-.prestation_page_mltp-calendar {
+#mltp-calendar {
   --fc-background-past: hsl(0, 0%, 70%, 25%);
   --fc-background-past-weekend: hsl(0, 0%, 60%, 25%);
   --fc-background-weekend: hsl(0, 0%, 80%, 25%);
@@ -7,10 +7,7 @@
   --mltp-event-font-size: 1.1em;
   --mltp-event-row-height: 3.6em;
 
-  // .fc .fc-toolbar {
-  //   margin-top: 0.5em;
-  // }
-  .fc .fc-toolbar-title {
+  .fc-toolbar-title {
     text-transform: capitalize;
     display: inline-block;
     // padding-right: 0.25em;

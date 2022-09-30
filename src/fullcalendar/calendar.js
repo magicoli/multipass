@@ -29,7 +29,7 @@ jQuery(document).ready(function($) {
 		// var events = data['events'];
 		// var resources = jsondata['resources'];
 		console.log( resources );
-		var calendarEl = document.getElementById( 'calendar' );
+		var calendarEl = document.getElementById( 'mltp-calendar' );
 		var calendar   = new FullCalendar.Calendar(
 			calendarEl,
 			{
@@ -113,7 +113,7 @@ jQuery(document).ready(function($) {
 			}
 		);
 		calendar.render();
-		document.getElementById( 'calendar-placeholder' ).style.display = 'none';
+		document.getElementById( 'mltp-placeholder' ).style.display = 'none';
 	}
 
 });
