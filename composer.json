@@ -1,76 +1,79 @@
 {
-    "name": "magicoli/multipass",
-    "description": "MultiPass",
-    "type": "wordpress-plugin",
-    "license": "AGPLv3",
-    "authors": [
-        {
-            "name": "Olivier van Helden",
-            "email": "olivier@van-helden.net"
-        }
-    ],
-    "minimum-stability": "stable",
-    "require": {
-        "php-imap/php-imap": "^5.0",
-        "wpmetabox/meta-box": "^5.6",
-        "meta-box/mb-admin-columns": "dev-master",
-        "meta-box/mb-settings-page": "dev-master",
-        "meta-box/meta-box-columns": "dev-master",
-        "meta-box/meta-box-conditional-logic": "dev-master",
-        "meta-box/meta-box-group": "dev-master",
-        "meta-box/meta-box-include-exclude": "dev-master",
-        "meta-box/meta-box-show-hide": "dev-master",
-        "meta-box/meta-box-tabs": "dev-master",
-        "deliciousbrains/wp-background-processing": "^1.0",
-        "terdia/currency-util": "^1.0",
-        "erusev/parsedown": "^1.7",
-        "openpsa/ranger": "^0.5.4",
-        "oomphinc/composer-installers-extender": "^2.0"
-    },
-    "extra": {
-      "installer-paths": {
-        "lib/meta-box/{$name}": ["vendor:wpmetabox","vendor:meta-box"],
-        "lib/{$vendor}/{$name}": ["type:wordpress-plugin",
-          "vendor:deliciousbrains",
-          "vendor:erusev",
-          "vendor:meta-box",
-          "vendor:openpsa",
-          "vendor:php-imap",
-          "vendor:symfony",
-          "vendor:terdia"
-        ],
-        "vendor/{$vendor}/{$name}": [
-          "type:library",
-          "type:composer-plugin"
-        ]
-      }
-    },
-    "autoload": {
-      "files": [
-        "lib/meta-box/meta-box/meta-box.php",
-        "lib/meta-box/meta-box-columns/meta-box-columns.php",
-        "lib/meta-box/meta-box-conditional-logic/meta-box-conditional-logic.php",
-        "lib/meta-box/meta-box-group/meta-box-group.php",
-        "lib/meta-box/meta-box-include-exclude/meta-box-include-exclude.php",
-        "lib/meta-box/meta-box-show-hide/meta-box-show-hide.php",
-        "lib/meta-box/mb-admin-columns/mb-admin-columns.php",
-        "lib/meta-box/mb-settings-page/mb-settings-page.php",
-        "lib/meta-box/meta-box-tabs/meta-box-tabs.php"
-      ]
-    },
-    "config": {
-        "allow-plugins": {
-            "composer/installers": true,
-            "oomphinc/composer-installers-extender": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
-        }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^9.5"
-    },
-    "scripts": {
-      "remove-git-submodules" : "find vendor/ -mindepth 2 -type d -name .git | xargs rm -rf; rmdir vendor/* 2>/dev/null; echo cleaned",
-      "post-install-cmd": "@remove-git-submodules",
-      "post-update-cmd" : "@remove-git-submodules"
+  "name": "magicoli/multipass",
+  "description": "MultiPass",
+  "type": "wordpress-plugin",
+  "license": "AGPLv3",
+  "authors": [
+    {
+      "name": "Olivier van Helden",
+      "email": "olivier@van-helden.net"
     }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php-imap/php-imap": "^5.0",
+    "wpmetabox/meta-box": "^5.6",
+    "meta-box/mb-admin-columns": "dev-master",
+    "meta-box/mb-settings-page": "dev-master",
+    "meta-box/meta-box-columns": "dev-master",
+    "meta-box/meta-box-conditional-logic": "dev-master",
+    "meta-box/meta-box-group": "dev-master",
+    "meta-box/meta-box-include-exclude": "dev-master",
+    "meta-box/meta-box-show-hide": "dev-master",
+    "meta-box/meta-box-tabs": "dev-master",
+    "deliciousbrains/wp-background-processing": "^1.0",
+    "terdia/currency-util": "^1.0",
+    "erusev/parsedown": "^1.7",
+    "openpsa/ranger": "^0.5.4",
+    "oomphinc/composer-installers-extender": "^2.0"
+  },
+  "extra": {
+    "installer-paths": {
+      "lib/meta-box/{$name}": ["vendor:wpmetabox","vendor:meta-box"],
+      "lib/{$vendor}/{$name}": ["type:wordpress-plugin",
+        "vendor:deliciousbrains",
+        "vendor:erusev",
+        "vendor:meta-box",
+        "vendor:openpsa",
+        "vendor:php-imap",
+        "vendor:symfony",
+        "vendor:terdia"
+      ],
+      "vendor/{$vendor}/{$name}": [
+        "type:library",
+        "type:composer-plugin"
+      ]
+    }
+  },
+  "autoload": {
+    "files": [
+      "lib/meta-box/meta-box/meta-box.php",
+      "lib/meta-box/meta-box-columns/meta-box-columns.php",
+      "lib/meta-box/meta-box-conditional-logic/meta-box-conditional-logic.php",
+      "lib/meta-box/meta-box-group/meta-box-group.php",
+      "lib/meta-box/meta-box-include-exclude/meta-box-include-exclude.php",
+      "lib/meta-box/meta-box-show-hide/meta-box-show-hide.php",
+      "lib/meta-box/mb-admin-columns/mb-admin-columns.php",
+      "lib/meta-box/mb-settings-page/mb-settings-page.php",
+      "lib/meta-box/meta-box-tabs/meta-box-tabs.php"
+    ]
+  },
+  "config": {
+    "platform": {
+      "php": "7.4"
+    },
+    "allow-plugins": {
+      "composer/installers": true,
+      "oomphinc/composer-installers-extender": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5"
+  },
+  "scripts": {
+    "remove-git-submodules" : "find vendor/ -mindepth 2 -type d -name .git | xargs rm -rf; rmdir vendor/* 2>/dev/null; echo cleaned",
+    "post-install-cmd": "@remove-git-submodules",
+    "post-update-cmd" : "@remove-git-submodules"
+  }
 }
