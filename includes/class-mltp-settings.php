@@ -40,6 +40,8 @@ class Mltp_Settings {
 	 */
 	protected $filters;
 
+	protected $caps;
+
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
 	 *
@@ -47,7 +49,50 @@ class Mltp_Settings {
 	 */
 	public function __construct() {
 
-		$this->sanitize_role('administrator', [ 'id' => 'mltp_administrator' ] );
+		$this->caps['mltp_reader'] = array(
+			'view_mltp_dashboard',
+			'view_mltp_calendar',
+			// 'delete_mltp_prestations',
+			// 'edit_mltp_prestations',
+			// 'edit_others_mltp_prestations',
+			// 'publish_mltp_prestations',
+			// 'read_private_mltp_prestations',
+		);
+
+		$this->caps['mltp_manager']       = array_merge(
+			$this->caps['mltp_reader'],
+			array(
+				'create_prestations',
+				'delete_others_prestations',
+				'delete_prestations',
+				'delete_private_prestations',
+				'delete_published_prestations',
+				'edit_others_prestations',
+				'edit_prestations',
+				'edit_private_prestations',
+				'edit_published_prestations',
+				'publish_prestations',
+				'read_private_prestations ',
+			)
+		);
+		$this->caps['mltp_administrator'] = array_merge(
+			$this->caps['mltp_manager'],
+			array(
+				'create_resources',
+				'delete_others_resources',
+				'delete_resources',
+				'delete_private_resources',
+				'delete_published_resources',
+				'edit_others_resources',
+				'edit_resources',
+				'edit_private_resources',
+				'edit_published_resources',
+				'publish_resources',
+				'read_private_resources ',
+			)
+		);
+
+		$this->sanitize_roles( 'administrator', array( 'id' => 'mltp_administrator' ) );
 
 	}
 
@@ -118,6 +163,16 @@ class Mltp_Settings {
 
 		$filters = array(
 			array(
+				'hook'     => 'init',
+				'callback' => 'add_roles',
+				'priority' => 10,
+			),
+			array(
+				'hook'     => 'init',
+				'callback' => 'add_capabilities',
+				'priority' => 11,
+			),
+			array(
 				'hook'     => 'admin_menu',
 				'callback' => 'admin_menu_action',
 			),
@@ -162,7 +217,7 @@ class Mltp_Settings {
 
 	}
 
-	function admin_menu_action( ) {
+	function admin_menu_action() {
 		// $cap = (current_user_can('manage_options')) ? 'manage_options' : 'view_mltp_dashboard';
 		add_menu_page(
 			'MultiPass', // string $page_title,
@@ -171,18 +226,17 @@ class Mltp_Settings {
 			'multipass', // string $menu_slug,
 			null, // [ $this, 'dashboard_callback' ], // callable $callback = '',
 			'dashicons-excerpt-view', // string $icon_url = '',
-			MultiPass::get_option('menu_position', 20), // int|float $position = null,
+			MultiPass::get_option( 'menu_position', 20 ), // int|float $position = null,
 		);
 		// add_submenu_page(
-		// 	'multipass', // string $parent_slug,
-		// 	__( 'Dashboard', 'multipass' ), // string $page_title,
-		// 	__( 'Dashboard', 'multipass' ), // string $menu_title,
-		// 	'read', // string $capability,
-		// 	'multipass', // string $menu_slug,
-		// 	[ $this, 'render_dashboard' ], // callable $callback = '',
-		// 	1, // int|float $position = null
+		// 'multipass', // string $parent_slug,
+		// __( 'Dashboard', 'multipass' ), // string $page_title,
+		// __( 'Dashboard', 'multipass' ), // string $menu_title,
+		// 'read', // string $capability,
+		// 'multipass', // string $menu_slug,
+		// [ $this, 'render_dashboard' ], // callable $callback = '',
+		// 1, // int|float $position = null
 		// );
-
 	}
 	function render_dashboard() {
 		$actions = '';
@@ -203,40 +257,41 @@ class Mltp_Settings {
 	}
 	function register_settings_pages( $settings_pages ) {
 		// $settings_pages[] = [
-		// 	'id'          => 'multipass',
-		// 	'option_name' => 'MultiPass Option',
-		// 	'menu_title'    => __('MultiPass Menu', 'multipass' ),
-		// 	'position'    => 15,
-		// 	'submenu_title' => 'Calendar',
-		// 	'style'       => 'no-boxes',
-		// 	'columns'     => 1,
-		// 	'icon_url'    => 'dashicons-excerpt-view',
-		// 	'capability'    => 'manage_options',
+		// 'id'          => 'multipass',
+		// 'option_name' => 'MultiPass Option',
+		// 'menu_title'    => __('MultiPass Menu', 'multipass' ),
+		// 'position'    => 15,
+		// 'submenu_title' => 'Calendar',
+		// 'style'       => 'no-boxes',
+		// 'columns'     => 1,
+		// 'icon_url'    => 'dashicons-excerpt-view',
+		// 'capability'    => 'manage_options',
 		// ];
 		// $settings_pages[] = [
 		// ];
 
 		$settings_pages['multipass-settings'] = array(
-			'menu_title'    => __( 'Settings', 'multipass' ),
-			'page_title'    => __( 'MultiPass Settings', 'multipass' ),
-			'id'            => 'multipass-settings',
-			'option_name'   => 'multipass',
+			'menu_title'  => __( 'Settings', 'multipass' ),
+			'page_title'  => __( 'MultiPass Settings', 'multipass' ),
+			'id'          => 'multipass-settings',
+			'option_name' => 'multipass',
 			// 'position'      => 23,
-			'parent'        => 'multipass',
-			'capability'    => 'manage_options',
-			'style'         => 'no-boxes',
-			'columns'       => 1,
-			'tabs'          => array(
+			'parent'      => 'multipass',
+			'capability'  => 'manage_options',
+			'style'       => 'no-boxes',
+			'columns'     => 1,
+			'tabs'        => array(
 				'general' => __( 'General', 'multipass' ),
-				'roles' => __( 'Roles', 'multipass' ),
+				'roles'   => __( 'Roles', 'multipass' ),
 				// 'tos'     => __( 'Terms of Service', 'multipass' ),
 			),
-			'icon_url'      => 'dashicons-book',
+			'icon_url'    => 'dashicons-book',
 		);
 		return $settings_pages;
 	}
 
 	function register_settings_fields( $meta_boxes ) {
+		if(!is_admin()) return $meta_boxes;
 		$prefix = '';
 
 		$meta_boxes['multipass-settings'] = array(
@@ -285,41 +340,41 @@ class Mltp_Settings {
 			),
 		);
 
-		$meta_boxes['roles-settings'] = [
+		$meta_boxes['roles-settings'] = array(
 			'title'          => __( 'Roles Settings', 'multipass' ),
 			'id'             => 'roles-settings',
 			'settings_pages' => array( 'multipass-settings' ),
 			'tab'            => 'roles',
-			'fields'         => [
-				[
+			'fields'         => array(
+				array(
 					'name'              => __( 'MultiPass Reader', 'multipass' ),
 					'id'                => $prefix . 'mltp_reader',
 					'type'              => 'select',
-					'options'           => MultiPass::get_roles(true),
-					'default'		=> 'contributor',
+					'options'           => MultiPass::get_roles( true ),
+					'default'           => 'contributor',
 					'placeholder'       => __( 'Select a role', 'multipass' ),
-					'sanitize_callback' => array($this, 'sanitize_role'),
-				],
-				[
+					'sanitize_callback' => array( $this, 'sanitize_roles' ),
+				),
+				array(
 					'name'              => __( 'MultiPass Manager', 'multipass' ),
 					'id'                => $prefix . 'mltp_manager',
 					'type'              => 'select',
 					'options'           => MultiPass::get_roles(),
-					'default'		=> 'editor',
+					'default'           => 'editor',
 					'placeholder'       => __( 'Select a role', 'multipass' ),
-					'sanitize_callback' => array($this, 'sanitize_role'),
-				],
-				[
+					'sanitize_callback' => array( $this, 'sanitize_roles' ),
+				),
+				array(
 					'name'              => __( 'MultiPass Administrator', 'multipass' ),
 					'id'                => $prefix . 'mltp_administrator',
 					'type'              => 'select',
 					'options'           => MultiPass::get_roles(),
-					'default'		=> 'administrator',
+					'default'           => 'administrator',
 					'placeholder'       => __( 'Select a role', 'multipass' ),
-					'sanitize_callback' => array($this, 'sanitize_role'),
-				],
-			],
-		];
+					'sanitize_callback' => array( $this, 'sanitize_roles' ),
+				),
+			),
+		);
 
 		return $meta_boxes;
 	}
@@ -331,75 +386,108 @@ class Mltp_Settings {
 		return $links;
 	}
 
-	function sanitize_role($role_id, $field, $old_value = null) {
-		$group = $field['id'];
+	function roles_settings_being_updated() {
+		$request = wp_unslash($_REQUEST);
+		if(empty($request['nonce_roles-settings'])) return false;
 
-		$all_caps['mltp_reader'] = array(
-			'view_mltp_dashboard',
-			'view_mltp_calendar',
-			// 'delete_mltp_prestations',
-			// 'edit_mltp_prestations',
-			// 'edit_others_mltp_prestations',
-			// 'publish_mltp_prestations',
-			// 'read_private_mltp_prestations',
-		);
-		$all_caps['mltp_manager'] = array_merge($all_caps['mltp_reader'], array(
-			'edit_mltp_prestations',
-			'delete_mltp_prestations',
-			'publish_mltp_prestations',
-			'edit_others_mltp_prestations',
-			'delete_others_mltp_prestations',
-			'read_private_mltp_prestations',
-			'edit_private_mltp_prestations',
-			'delete_private_mltp_prestations',
-			'edit_published_mltp_prestations',
-			'delete_published_mltp_prestations',
-		));
-		$all_caps['mltp_administrator'] = array_merge($all_caps['mltp_manager'], array(
-			'edit_mltp_resources',
-			'delete_mltp_resources',
-			'publish_mltp_resources',
-			'edit_others_mltp_resources',
-			'delete_others_mltp_resources',
-			'read_private_mltp_resources',
-			'edit_private_mltp_resources',
-			'delete_private_mltp_resources',
-			'edit_published_mltp_resources',
-			'delete_published_mltp_resources',
-		));
-		$caps = $all_caps[$group];
-
-		if($old_value !== $role_id &! empty($old_value) && $old_value != 'administrator' ) {
-			$role = get_role( $old_value );
-			// error_log("$old_value remove " . print_r($caps, true));
-			foreach ($caps as $cap) {
-				$role->remove_cap( $cap, true );
-			}
+		if( ! wp_verify_nonce( $request['nonce_roles-settings'], 'rwmb-save-roles-settings' ) ) {
+			return false;
 		}
 
-		// $caps[] = 'view_admin_dashboard';
-		if( ! empty($role_id)) {
-			if( '_create' === $role_id ) {
-				$role_id = $group;
-				$role_name = $field['name'];
+		return true;
+	}
 
-				$role = add_role( $role_id, $role_name, [ 'view_admin_dashboard' => true ] );
+	/**
+	 * We have to process roles and capabilities before settings page is rendered.
+	 */
+	function add_roles() {
+		if( $this->roles_settings_being_updated() ) {
+			$request = wp_unslash($_REQUEST);
+
+			$new_role = (isset($request['mltp_reader'])) ? $request['mltp_reader'] : MultiPass::get_option( 'mltp_reader' );
+			if ( '_create' === $new_role ) {
+				error_log( __METHOD__ . ' add role mltp_reader' . $new_role );
+				add_role( 'mltp_reader', __( 'MultiPass Reader' ), array( 'view_admin_dashboard' => true ) );
 			}
 
-			$role = get_role( $role_id );
-			if($role) {
-				if($role_id !== 'administrator')
-				// error_log("$role_id add " . print_r($caps, true));
+			$manager_role = (isset($request['mltp_manager'])) ? $request['mltp_manager'] : MultiPass::get_option( 'mltp_manager' );
+			if ( '_create' === $manager_role ) {
+				error_log( __METHOD__ . ' add role mltp_manager' . $manager_role );
+				add_role( 'mltp_manager', __( 'MultiPass Reader' ), array( 'view_admin_dashboard' => true ) );
+			}
+
+			$administrator_role = (isset($request['mltp_administrator'])) ? $request['mltp_administrator'] : MultiPass::get_option( 'mltp_administrator' );
+			if ( '_create' === $administrator_role ) {
+				error_log( __METHOD__ . ' add role mltp_administrator' . $administrator_role );
+				add_role( 'mltp_administrator', __( 'MultiPass Reader' ), array( 'view_admin_dashboard' => true ) );
+			}
+
+		}
+
+		return;
+	}
+
+	function add_capabilities() {
+		if( $this->roles_settings_being_updated() ) {
+			$request = wp_unslash($_REQUEST);
+			$options = array( 'mltp_reader', 'mltp_manager', 'mltp_administrator' );
+			foreach($options as $option) {
+				$new_role = (isset($request[$option])) ? $request[$option] : MultiPass::get_option( $option );
+				$new_role = ('_create' === $new_role) ? $option : $new_role;
+				$previous_role = MultiPass::get_option( $option );
+				if ( $previous_role !== $new_role &! empty( $previous_role ) && $previous_role != 'administrator' ) {
+					$remove[$previous_role] = array_merge(
+						(isset($remove[$previous_role])) ? $remove[$previous_role] : [],
+						$this->caps[$option],
+					);
+				}
+				if ( ! empty( $new_role ) ) {
+					$add[$new_role] = array_merge(
+						(isset($add[$new_role])) ? $add[$new_role] : [],
+						$this->caps[$option],
+					);
+				}
+			}
+
+			foreach ($remove as $role_id => $caps) {
+				$role = get_role( $role_id );
 				foreach ($caps as $cap) {
+					$message .= "\n${role_id}->remove_cap( $cap, true );";
+					$role->remove_cap( $cap, true );
+				}
+			}
+
+			foreach ($add as $role_id => $caps) {
+				$role = get_role( $role_id );
+				foreach ($caps as $cap) {
+					$message .= "\n${role_id}->add_cap( $cap, true );";
 					$role->add_cap( $cap, true );
 				}
-			} else {
-				error_log( __CLASS__ . '::' .__METHOD__ . " could not find role $role_id");
+			}
+
+			error_log($message);
+		}
+	}
+
+	function sanitize_roles( $new_role, $field, $old_value = null ) {
+		$group = $field['id'];
+		if( isset( $request['nonce_roles-settings'] )  && 'mltp_reader' === $group ) {
+			error_log( __METHOD__ . " $new_role = " . MultiPass::get_option( 'mltp_reader' ) );
+		}
+
+		if ( ! empty( $new_role ) ) {
+			if ( '_create' === $new_role ) {
+				$new_role   = $group;
+			}
+
+			$role = get_role( $new_role );
+			if ( ! $role ) {
+				error_log( __CLASS__ . '::' . __METHOD__ . " could not find role $new_role" );
 				return;
 			}
 		}
 
-		return $role_id;
+		return $new_role;
 	}
 }
 
