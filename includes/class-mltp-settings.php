@@ -69,33 +69,35 @@ class Mltp_Settings {
 		$this->caps['mltp_manager']       = array_merge(
 			$this->caps['mltp_reader'],
 			array(
-				'create_prestations',
-				'delete_others_prestations',
-				'delete_prestations',
-				'delete_private_prestations',
-				'delete_published_prestations',
-				'edit_others_prestations',
-				'edit_prestations',
-				'edit_private_prestations',
-				'edit_published_prestations',
-				'publish_prestations',
-				'read_private_prestations ',
+				// 'create_mltp_prestations',
+				'edit_mltp_prestation',
+				'edit_mltp_prestations',
+				'edit_others_mltp_prestations',
+				'edit_private_mltp_prestations',
+				'edit_published_mltp_prestations',
+				'publish_mltp_prestations',
+				'delete_mltp_prestations',
+				'delete_others_mltp_prestations',
+				'delete_private_mltp_prestations',
+				'delete_published_mltp_prestations',
+				'read_private_mltp_prestations',
 			)
 		);
 		$this->caps['mltp_administrator'] = array_merge(
 			$this->caps['mltp_manager'],
 			array(
-				'create_resources',
-				'delete_others_resources',
-				'delete_resources',
-				'delete_private_resources',
-				'delete_published_resources',
-				'edit_others_resources',
-				'edit_resources',
-				'edit_private_resources',
-				'edit_published_resources',
-				'publish_resources',
-				'read_private_resources ',
+				// 'create_mltp_resources',
+				'edit_mltp_resource',
+				'edit_mltp_resources',
+				'edit_others_mltp_resources',
+				'edit_private_mltp_resources',
+				'edit_published_mltp_resources',
+				'publish_mltp_resources',
+				'delete_mltp_resources',
+				'delete_others_mltp_resources',
+				'delete_private_mltp_resources',
+				'delete_published_mltp_resources',
+				'read_private_mltp_resources',
 			)
 		);
 
@@ -551,9 +553,9 @@ class Mltp_Settings {
 
 	function sanitize_roles( $new_role, $field, $old_value = null ) {
 		$group = $field['id'];
-		if ( isset( $request['nonce_roles-settings'] ) && 'mltp_reader' === $group ) {
-			error_log( __METHOD__ . " $new_role = " . MultiPass::get_option( 'mltp_reader' ) );
-		}
+		// if ( isset( $request['nonce_roles-settings'] ) && 'mltp_reader' === $group ) {
+		// 	error_log( __METHOD__ . " $new_role = " . MultiPass::get_option( 'mltp_reader' ) );
+		// }
 
 		if ( ! empty( $new_role ) ) {
 			if ( '_create' === $new_role ) {
