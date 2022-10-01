@@ -41,6 +41,7 @@ class Mltp_Settings {
 	protected $filters;
 
 	protected $caps;
+	protected $roles;
 
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
@@ -48,6 +49,12 @@ class Mltp_Settings {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
+
+		$this->roles = array(
+			'mltp_reader'        => __( 'MultiPass Reader', 'multipass' ),
+			'mltp_manager'       => __( 'MultiPass Manager', 'multipass' ),
+			'mltp_administrator' => __( 'MultiPass Administrator', 'multipass' ),
+		);
 
 		$this->caps['mltp_reader'] = array(
 			'view_mltp_dashboard',
@@ -291,7 +298,9 @@ class Mltp_Settings {
 	}
 
 	function register_settings_fields( $meta_boxes ) {
-		if(!is_admin()) return $meta_boxes;
+		if ( ! is_admin() ) {
+			return $meta_boxes;
+		}
 		$prefix = '';
 
 		$meta_boxes['multipass-settings'] = array(
@@ -347,28 +356,31 @@ class Mltp_Settings {
 			'tab'            => 'roles',
 			'fields'         => array(
 				array(
-					'name'              => __( 'MultiPass Reader', 'multipass' ),
+					'name'              => __( 'Reader', 'multipass' ),
 					'id'                => $prefix . 'mltp_reader',
 					'type'              => 'select',
-					'options'           => MultiPass::get_roles( true ),
+					'options'           => $this->get_roles( 'mltp_reader' ),
+					'desc'              => $this->get_role_users( 'mltp_reader' ),
 					'default'           => 'contributor',
 					'placeholder'       => __( 'Select a role', 'multipass' ),
 					'sanitize_callback' => array( $this, 'sanitize_roles' ),
 				),
 				array(
-					'name'              => __( 'MultiPass Manager', 'multipass' ),
+					'name'              => __( 'Manager', 'multipass' ),
 					'id'                => $prefix . 'mltp_manager',
 					'type'              => 'select',
-					'options'           => MultiPass::get_roles(),
+					'options'           => $this->get_roles( 'mltp_manager' ),
+					'desc'              => $this->get_role_users( 'mltp_manager' ),
 					'default'           => 'editor',
 					'placeholder'       => __( 'Select a role', 'multipass' ),
 					'sanitize_callback' => array( $this, 'sanitize_roles' ),
 				),
 				array(
-					'name'              => __( 'MultiPass Administrator', 'multipass' ),
+					'name'              => __( 'Administrator', 'multipass' ),
 					'id'                => $prefix . 'mltp_administrator',
 					'type'              => 'select',
-					'options'           => MultiPass::get_roles(),
+					'options'           => $this->get_roles( 'mltp_administrator' ),
+					'desc'              => $this->get_role_users( 'mltp_administrator' ),
 					'default'           => 'administrator',
 					'placeholder'       => __( 'Select a role', 'multipass' ),
 					'sanitize_callback' => array( $this, 'sanitize_roles' ),
@@ -387,97 +399,165 @@ class Mltp_Settings {
 	}
 
 	function roles_settings_being_updated() {
-		$request = wp_unslash($_REQUEST);
-		if(empty($request['nonce_roles-settings'])) return false;
+		$request = wp_unslash( $_REQUEST );
+		if ( empty( $request['nonce_roles-settings'] ) ) {
+			return false;
+		}
 
-		if( ! wp_verify_nonce( $request['nonce_roles-settings'], 'rwmb-save-roles-settings' ) ) {
+		if ( ! wp_verify_nonce( $request['nonce_roles-settings'], 'rwmb-save-roles-settings' ) ) {
 			return false;
 		}
 
 		return true;
 	}
 
+	function get_roles( $default = false ) {
+		global $wp_roles;
+
+		$roles = array();
+		if ( $default ) {
+			$default_role = get_role( $default );
+			if ( ! $default_role ) {
+				$roles['_create'] = sprintf(
+					__( '&rarr; Create "%s" role', 'multipass' ),
+					__( $this->roles[ $default ], 'multipass' ),
+				);
+			}
+		}
+		// error_log(print_r($this->roles, true));
+		foreach ( $this->roles as $role_slug => $role_name ) {
+			$role = get_role( $role_slug );
+			if ( $role ) {
+				$roles[ $role_slug ] = __( $role_name, 'multipass' );
+			}
+		}
+
+		foreach ( $wp_roles->roles as $slug => $role ) {
+			$roles[ $slug ] = __( $role['name'], 'multipass' );
+		}
+		if ( isset( $roles[ $default ] ) ) {
+			$roles[ $default ] = sprintf(
+				__( '%s (default)', 'multipass' ),
+				$roles[ $default ],
+				// __($roles[$default], 'multipass'),
+			);
+		}
+		return $roles;
+	}
+
+	function get_role_users( $group ) {
+		if ( $this->roles_settings_being_updated() ) {
+			$request = wp_unslash( $_REQUEST );
+			$role_slug = ('_create' === $request[ $group ]) ? $group : $request[ $group ];
+		} else {
+			$role_slug = MultiPass::get_option($group);
+		}
+		if(empty($role_slug)) return;
+
+		$args  = array(
+			'role__in'    => ('mltp_administrator' === $role_slug) ? [ $role_slug, 'administrator' ] : [ $role_slug ],
+			'orderby' => 'user_nicename',
+			'order'   => 'ASC',
+		);
+		$users = get_users( $args );
+		$count = count($users);
+		$more = '';
+		if($count > 5) {
+			$users = array_slice($users, 0, 5);
+			$more = sprintf(
+				__(', and %s more...', 'multipass'),
+				$count - 5,
+			);
+		}
+
+		$list = [];
+		foreach ( $users as $user ) {
+			$list[] = sprintf(
+				'<a href="%s">%s</a>',
+				get_edit_user_link( $user->ID ),
+				$user->display_name,
+			);
+		}
+
+		return sprintf(
+			_n('Currently %s allowed user: %s%s', 'Currently %s allowed users: %s%s', $count, 'multipass'),
+			$count,
+			join( ', ', $list ),
+			$more,
+		);
+	}
+
 	/**
 	 * We have to process roles and capabilities before settings page is rendered.
 	 */
 	function add_roles() {
-		if( $this->roles_settings_being_updated() ) {
-			$request = wp_unslash($_REQUEST);
 
-			$new_role = (isset($request['mltp_reader'])) ? $request['mltp_reader'] : MultiPass::get_option( 'mltp_reader' );
-			if ( '_create' === $new_role ) {
-				error_log( __METHOD__ . ' add role mltp_reader' . $new_role );
-				add_role( 'mltp_reader', __( 'MultiPass Reader' ), array( 'view_admin_dashboard' => true ) );
+		if ( $this->roles_settings_being_updated() ) {
+			$request = wp_unslash( $_REQUEST );
+			foreach ( $this->roles as $role_slug => $role_name ) {
+				$new_role = ( isset( $request[ $role_slug ] ) ) ? $request[ $role_slug ] : MultiPass::get_option( $role_slug );
+				if ( '_create' === $new_role ) {
+					add_role( $role_slug, $role_name, array( 'view_admin_dashboard' => true ) );
+				}
 			}
-
-			$manager_role = (isset($request['mltp_manager'])) ? $request['mltp_manager'] : MultiPass::get_option( 'mltp_manager' );
-			if ( '_create' === $manager_role ) {
-				error_log( __METHOD__ . ' add role mltp_manager' . $manager_role );
-				add_role( 'mltp_manager', __( 'MultiPass Reader' ), array( 'view_admin_dashboard' => true ) );
-			}
-
-			$administrator_role = (isset($request['mltp_administrator'])) ? $request['mltp_administrator'] : MultiPass::get_option( 'mltp_administrator' );
-			if ( '_create' === $administrator_role ) {
-				error_log( __METHOD__ . ' add role mltp_administrator' . $administrator_role );
-				add_role( 'mltp_administrator', __( 'MultiPass Reader' ), array( 'view_admin_dashboard' => true ) );
-			}
-
 		}
 
 		return;
 	}
 
 	function add_capabilities() {
-		if( $this->roles_settings_being_updated() ) {
-			$request = wp_unslash($_REQUEST);
+		if ( $this->roles_settings_being_updated() ) {
+			$request = wp_unslash( $_REQUEST );
 			$options = array( 'mltp_reader', 'mltp_manager', 'mltp_administrator' );
-			foreach($options as $option) {
-				$new_role = (isset($request[$option])) ? $request[$option] : MultiPass::get_option( $option );
-				$new_role = ('_create' === $new_role) ? $option : $new_role;
+			$remove  = array();
+			$add     = array();
+			foreach ( $options as $option ) {
+				$new_role      = ( isset( $request[ $option ] ) ) ? $request[ $option ] : MultiPass::get_option( $option );
+				$new_role      = ( '_create' === $new_role ) ? $option : $new_role;
 				$previous_role = MultiPass::get_option( $option );
-				if ( $previous_role !== $new_role &! empty( $previous_role ) && $previous_role != 'administrator' ) {
-					$remove[$previous_role] = array_merge(
-						(isset($remove[$previous_role])) ? $remove[$previous_role] : [],
-						$this->caps[$option],
+				if ( $previous_role !== $new_role & ! empty( $previous_role ) && $previous_role != 'administrator' ) {
+					$remove[ $previous_role ] = array_merge(
+						( isset( $remove[ $previous_role ] ) ) ? $remove[ $previous_role ] : array(),
+						$this->caps[ $option ],
 					);
 				}
 				if ( ! empty( $new_role ) ) {
-					$add[$new_role] = array_merge(
-						(isset($add[$new_role])) ? $add[$new_role] : [],
-						$this->caps[$option],
+					$add[ $new_role ] = array_merge(
+						( isset( $add[ $new_role ] ) ) ? $add[ $new_role ] : array(),
+						$this->caps[ $option ],
 					);
 				}
 			}
 
-			foreach ($remove as $role_id => $caps) {
-				$role = get_role( $role_id );
-				foreach ($caps as $cap) {
-					$message .= "\n${role_id}->remove_cap( $cap, true );";
-					$role->remove_cap( $cap, true );
+			foreach ( $remove as $role_slug => $caps ) {
+				$role = get_role( $role_slug );
+				if ( $role ) {
+					foreach ( $caps as $cap ) {
+						$role->remove_cap( $cap, true );
+					}
 				}
 			}
 
-			foreach ($add as $role_id => $caps) {
-				$role = get_role( $role_id );
-				foreach ($caps as $cap) {
-					$message .= "\n${role_id}->add_cap( $cap, true );";
-					$role->add_cap( $cap, true );
+			foreach ( $add as $role_slug => $caps ) {
+				$role = get_role( $role_slug );
+				if ( $role ) {
+					foreach ( $caps as $cap ) {
+						$role->add_cap( $cap, true );
+					}
 				}
 			}
-
-			error_log($message);
 		}
 	}
 
 	function sanitize_roles( $new_role, $field, $old_value = null ) {
 		$group = $field['id'];
-		if( isset( $request['nonce_roles-settings'] )  && 'mltp_reader' === $group ) {
+		if ( isset( $request['nonce_roles-settings'] ) && 'mltp_reader' === $group ) {
 			error_log( __METHOD__ . " $new_role = " . MultiPass::get_option( 'mltp_reader' ) );
 		}
 
 		if ( ! empty( $new_role ) ) {
 			if ( '_create' === $new_role ) {
-				$new_role   = $group;
+				$new_role = $group;
 			}
 
 			$role = get_role( $new_role );
