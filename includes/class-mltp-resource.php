@@ -239,6 +239,7 @@ class Mltp_Resource {
 			'item_reverted_to_draft'   => esc_html__( 'Resource reverted to draft.', 'multipass' ),
 			'item_scheduled'           => esc_html__( 'Resource scheduled.', 'multipass' ),
 			'item_updated'             => esc_html__( 'Resource updated.', 'multipass' ),
+			'select_an_item'           => esc_html__( 'Select a resource', 'multipass' ),
 			'text_domain'              => 'multipass',
 		);
 		$args   = array(
@@ -293,6 +294,7 @@ class Mltp_Resource {
 					'type'          => 'post',
 					'post_type'     => array( 'page' ),
 					'field_type'    => 'select_advanced',
+					'placeholder'    => __('Select a page', 'multipass'),
 					'admin_columns' => array(
 						'position'   => 'after title',
 						'sort'       => true,

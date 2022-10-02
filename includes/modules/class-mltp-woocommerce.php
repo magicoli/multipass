@@ -216,6 +216,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			'type'          => 'post',
 			'post_type'     => array( 'product' ),
 			'field_type'    => 'select_advanced',
+			'placeholder'    => __('Select a product', 'multipass'),
 			'admin_columns' => array(
 				'position'   => 'before date',
 				'sort'       => true,

@@ -163,6 +163,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			'id'            => 'resource_lodgify_id',
 			'type'          => 'select_advanced',
 			'options'       => $this->get_property_options(),
+			'placeholder'    => __('Select a property', 'multipass'),
 			'admin_columns' => array(
 				'position'   => 'before date',
 				'sort'       => true,

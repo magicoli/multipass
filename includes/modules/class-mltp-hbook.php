@@ -141,6 +141,7 @@ class Mltp_HBook extends Mltp_Modules {
 			'id'            => 'resource_hbook_id',
 			'type'          => 'select_advanced',
 			'options'       => $this->get_property_options(),
+			'placeholder'    => __('Select an accommodation', 'multipass'),
 			'admin_columns' => array(
 				'position'   => 'before date',
 				'sort'       => true,

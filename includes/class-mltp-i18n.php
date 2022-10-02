@@ -33,6 +33,12 @@ class Mltp_I18n {
 	 */
 	public function load_plugin_textdomain() {
 
+		$trigger_translate = array(
+			__('Select a room', 'multipass'),
+			__('Select an appartment', 'multipass'),
+			__('Select a lodging', 'multipass'),
+		);
+
 		load_plugin_textdomain(
 			'multipass',
 			false,

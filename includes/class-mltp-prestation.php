@@ -239,6 +239,7 @@ class Mltp_Prestation {
 			'item_reverted_to_draft'   => esc_html__( 'Prestation reverted to draft', 'multipass' ),
 			'item_scheduled'           => esc_html__( 'Prestation scheduled', 'multipass' ),
 			'item_updated'             => esc_html__( 'Prestation updated', 'multipass' ),
+			'select_an_item'           => esc_html__( 'Select a prestation', 'multipass' ),
 			'text_domain'              => 'multipass',
 		);
 		$args   = array(

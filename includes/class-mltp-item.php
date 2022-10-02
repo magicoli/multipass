@@ -309,6 +309,7 @@ class Mltp_Item {
 			'item_reverted_to_draft'   => esc_html__( 'Part reverted to draft.', 'multipass' ),
 			'item_scheduled'           => esc_html__( 'Part scheduled.', 'multipass' ),
 			'item_updated'             => esc_html__( 'Part updated.', 'multipass' ),
+			'select_an_item'           => esc_html__( 'Select a detail', 'multipass' ),
 			'text_domain'              => 'multipass',
 		);
 		$args   = array(

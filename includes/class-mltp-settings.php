@@ -102,7 +102,6 @@ class Mltp_Settings {
 		);
 
 		$this->sanitize_roles( 'administrator', array( 'id' => 'mltp_administrator' ) );
-
 	}
 
 	/**
