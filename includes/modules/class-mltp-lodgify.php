@@ -45,7 +45,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 	 *
 	 * @since    0.1.0
 	 */
-	public function run() {
+	public function init() {
 
 		$actions = array();
 

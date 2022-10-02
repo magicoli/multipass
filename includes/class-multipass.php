@@ -216,11 +216,11 @@ class MultiPass {
 	 *
 	 * @since    0.1.0
 	 */
-	public function run() {
-		$this->loader->run();
+	public function init() {
+		$this->loader->init();
 		if ( ! empty( $this->loaders ) && is_array( $this->loaders ) ) {
 			foreach ( $this->loaders as $key => $loader ) {
-				$this->loaders[ $key ]->run();
+				$this->loaders[ $key ]->init();
 			}
 		}
 

@@ -113,7 +113,7 @@ class Mltp_Loader {
 	 *
 	 * @since    0.1.0
 	 */
-	public function run() {
+	public function init() {
 
 		foreach ( $this->filters as $hook ) {
 			add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );

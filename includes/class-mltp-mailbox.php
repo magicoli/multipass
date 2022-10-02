@@ -56,7 +56,7 @@ class Mltp_Mailbox {
 	 *
 	 * @since    0.1.0
 	 */
-	public function run() {
+	public function init() {
 
 		$this->actions = array(
 			array(

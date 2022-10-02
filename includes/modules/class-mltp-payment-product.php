@@ -8,7 +8,7 @@ class Mltp_Payment_Product {
 	/*
 	* Bootstraps the class and hooks required actions & filters.
 	*/
-	public static function run() {
+	public static function init() {
 		// Add Prestation Payment option to product edit page
 		add_filter( 'product_type_options', __CLASS__ . '::add_product_prpay_options' );
 		add_action( 'save_post_product', __CLASS__ . '::save_product_prpay_options', 10, 3 );

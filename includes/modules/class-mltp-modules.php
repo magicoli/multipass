@@ -54,6 +54,7 @@ class Mltp_Modules {
 		$this->locale = MultiPass::get_locale();
 
 		$this->load_dependencies();
+
 		// $this->define_admin_hooks();
 		// $this->define_public_hooks();
 
@@ -87,6 +88,10 @@ class Mltp_Modules {
 			require_once MULTIPASS_DIR . 'includes/modules/class-mltp-hbook.php';
 		}
 
+		// $modules=[];
+		$this->modules = apply_filters('multipass_load_modules', $this->modules);
+		// do_action( 'multipass_load_modules', $args = null );
+
 	}
 
 	/**
@@ -94,10 +99,10 @@ class Mltp_Modules {
 	 *
 	 * @since    0.1.0
 	 */
-	public function run() {
+	public function init() {
 		if ( ! empty( $this->modules ) && is_array( $this->modules ) ) {
 			foreach ( $this->modules as $key => $loader ) {
-				$this->modules[ $key ]->run();
+				$this->modules[ $key ]->init();
 			}
 		}
 
@@ -113,8 +118,8 @@ class Mltp_Modules {
 				'callback' => 'register_settings_fields',
 			),
 			// array(
-			// 	'hook'     => 'multipass_managed_list',
-			// 	'callback' => 'managed_list_filter',
+			// 'hook'     => 'multipass_managed_list',
+			// 'callback' => 'managed_list_filter',
 			// ),
 		);
 

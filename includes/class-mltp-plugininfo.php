@@ -57,7 +57,7 @@ class Mltp_PluginInfo {
 	 *
 	 * @since    1.0.0
 	 */
-	public function run() {
+	public function init() {
 
 		add_filter( 'plugins_api', array( $this, 'injectInfo' ), 20, 3 );
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 4 );

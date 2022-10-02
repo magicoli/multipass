@@ -60,7 +60,7 @@ class Mltp_Public {
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
-		 * An instance of this class should be passed to the run() function
+		 * An instance of this class should be passed to the init() function
 		 * defined in Mltp_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
@@ -83,7 +83,7 @@ class Mltp_Public {
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
-		 * An instance of this class should be passed to the run() function
+		 * An instance of this class should be passed to the init() function
 		 * defined in Mltp_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *

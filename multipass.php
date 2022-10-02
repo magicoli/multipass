@@ -76,7 +76,7 @@ require MULTIPASS_DIR . 'includes/class-multipass.php';
 function run_multipass() {
 
 	$plugin = new MultiPass();
-	$plugin->run();
+	$plugin->init();
 
 }
 run_multipass();

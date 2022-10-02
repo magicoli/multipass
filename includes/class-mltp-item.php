@@ -120,7 +120,7 @@ class Mltp_Item {
 	 *
 	 * @since    1.0.0
 	 */
-	public function run() {
+	public function init() {
 
 		$actions = array(
 			array(
