@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-10-02T16:25:21-04:00\n"
+"POT-Creation-Date: 2022-10-02T16:30:11-04:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 
@@ -283,15 +283,19 @@ msgid "Not an event"
 msgstr ""
 
 #: includes/class-mltp-i18n.php:37
-msgid "Select a room"
+msgid "Select a lodging"
 msgstr ""
 
 #: includes/class-mltp-i18n.php:38
-msgid "Select an appartment"
+msgid "Select a room"
 msgstr ""
 
 #: includes/class-mltp-i18n.php:39
-msgid "Select a lodging"
+msgid "Select an appartment"
+msgstr ""
+
+#: includes/class-mltp-i18n.php:40
+msgid "Do not import"
 msgstr ""
 
 #: includes/class-mltp-item.php:219

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MultiPass\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/multipass\n"
-"POT-Creation-Date: 2022-10-02T16:25:21-04:00\n"
+"POT-Creation-Date: 2022-10-02T16:30:11-04:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -269,16 +269,20 @@ msgid "Not an event"
 msgstr "Pas un événement"
 
 #: includes/class-mltp-i18n.php:37
+msgid "Select a lodging"
+msgstr "Sélectionnez un logement"
+
+#: includes/class-mltp-i18n.php:38
 msgid "Select a room"
 msgstr "Sélectionnez une chambre"
 
-#: includes/class-mltp-i18n.php:38
+#: includes/class-mltp-i18n.php:39
 msgid "Select an appartment"
 msgstr "Sélectionnez un appartement"
 
-#: includes/class-mltp-i18n.php:39
-msgid "Select a lodging"
-msgstr "Sélectionnez un logement"
+#: includes/class-mltp-i18n.php:40
+msgid "Do not import"
+msgstr "Ne pas importer"
 
 #: includes/class-mltp-item.php:219
 msgid "View %s item"
