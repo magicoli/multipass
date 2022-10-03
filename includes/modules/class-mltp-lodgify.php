@@ -352,7 +352,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			'includeTransactions' => 'true',
 			'includeExternal' => true,
 			'includeQuoteDetails' => 'true',
-			'stayFilter'          => 'All', // Upcoming (default), Current, Historic, All
+			// 'stayFilter'          => 'All', // Upcoming (default), Current, Historic, All
 			// 'stayFilter'          => ($get_past) ? 'All' : 'Upcoming', // Upcoming (default), Current, Historic, All
 		);
 		$response = $this->api_request( '/v2/reservations/bookings', $api_query );
@@ -364,7 +364,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			return $response;
 		}
 		if ( isset($response['count']) && $response['count'] > count( $response['items'] ) ) {
-			// error_log( 'missing some, getting them all ' . $response['count'] );
+			// error_log( 'missing some, getting them all ' . $response['count'] . ' ' . print_r($debug, true) );
 			$api_query['size'] = $response['count'];
 			$response     = $this->api_request( '/v2/reservations/bookings', $api_query );
 			if ( is_wp_error( $response ) ) {
@@ -374,7 +374,9 @@ class Mltp_Lodgify extends Mltp_Modules {
 				return $response;
 			}
 		}
-		error_log(__CLASS__ . ' ' . __METHOD__ . ' ' . count( $response['items'] ) . '/' . $response['count'] . ' bookings');
+		$debug = $response;
+		unset($debug['items']);
+		error_log(__CLASS__ . ' ' . __METHOD__ . ' ' . count( $response['items'] ) . '/' . $response['count'] . ' bookings ' . print_r($debug, true));
 
 		wp_cache_set( $cache_key, $response );
 		return $response;

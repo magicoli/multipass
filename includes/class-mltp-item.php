@@ -54,7 +54,7 @@ class Mltp_Item {
 		}
 		$this->post = $this->get( $args, $update );
 		if ( $this->post ) {
-			$this->id = $this->post->ID;
+			$this->id   = $this->post->ID;
 			$this->name = $this->post->post_title;
 		}
 	}
@@ -813,6 +813,17 @@ class Mltp_Item {
 						'filterable' => true,
 					),
 				),
+				array(
+					'name'    => __( 'Notes', 'prestations' ),
+					'id'      => $prefix . 'notes',
+					'type'    => 'wysiwyg',
+					'raw'     => false,
+					'options' => array(
+						// 'textarea_rows' => 4,
+						'teeny'             => true,
+						'media_buttonsbool' => false,
+					),
+				),
 			),
 		);
 
@@ -1000,8 +1011,8 @@ class Mltp_Item {
 		}
 
 		$attendees = get_post_meta( $post_id, 'attendees', true );
-		$attendees = ( ! is_array($attendees) ) ? [ 'total' => $attendees ] : $attendees;
-		$attendees = empty($attendees) ? [] : $attendees;
+		$attendees = ( ! is_array( $attendees ) ) ? array( 'total' => $attendees ) : $attendees;
+		$attendees = empty( $attendees ) ? array() : $attendees;
 		if ( $attendees ) {
 			$attendees       = array_replace(
 				array(
@@ -1028,8 +1039,8 @@ class Mltp_Item {
 		}
 
 		if ( ! empty( $updates ) ) {
-			$updates['flags'] = MultiPass::set_flags($updates);
-			$updates['classes'] = MultiPass::get_flag_slugs($updates['flags']);
+			$updates['flags']   = MultiPass::set_flags( $updates );
+			$updates['classes'] = MultiPass::get_flag_slugs( $updates['flags'] );
 
 			$post_update = array(
 				'ID'         => $post_id,
@@ -1229,6 +1240,7 @@ class Mltp_Item {
 				$query_args     = array(
 					'post_type'   => 'prestation-item',
 					'post_status' => 'publish',
+					'post_date'   => ( empty( $args['date'] ) ) ? null : esc_attr( $args['date'] ),
 					'numberposts' => 1,
 					'orderby'     => 'post_date',
 					'order'       => 'asc',
@@ -1264,7 +1276,7 @@ class Mltp_Item {
 		if ( is_array( $args ) & ! empty( $args ) && ( empty( $post_id ) || $update ) ) {
 			$postarr = array(
 				'ID'          => $post_id,
-				'post_author' => (empty($args['customer']['user_id'])) ? null : $args['customer']['user_id'],
+				'post_author' => ( empty( $args['customer']['user_id'] ) ) ? null : $args['customer']['user_id'],
 				'post_title'  => sprintf(
 					'#%s-%s %s',
 					$args['source_id'],

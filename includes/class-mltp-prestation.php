@@ -424,6 +424,35 @@ class Mltp_Prestation {
 				),
 			),
 		);
+		$meta_boxes['prestation-notes'] = array(
+			'title'      => __( 'Notes', 'multipass' ),
+			'id'         => 'prestation-notes',
+			'post_types' => array( 'prestation' ),
+			// 'context'    => 'after_title',
+			// 'style'      => 'seamless',
+			'autosave'   => true,
+			'fields'     => array(
+				array(
+					// 'name'    => __( 'Notes', 'prestations' ),
+					'id'      => $prefix . 'notes',
+					'type'    => 'wysiwyg',
+					'raw'     => false,
+					'options' => array(
+						'textarea_rows' => 10,
+						'teeny'             => true,
+						'media_buttonsbool' => false,
+					),
+					'columns' => 6,
+				),
+				array(
+					// 'name'    => __( 'Notes', 'prestations' ),
+					'id'      => $prefix . 'details_notes',
+					'type'    => 'custom_html',
+					'callback' => 'Mltp_Prestation::render_details_notes',
+					'columns' => 6,
+				),
+			),
+		);
 
 		$prefix                = 'managed_';
 		$meta_boxes['managed'] = array(
@@ -784,6 +813,17 @@ class Mltp_Prestation {
 			),
 		);
 		$item_posts = get_posts( $query_args );
+		return $item_posts;
+	}
+
+	/**
+	 * Get items belonging to this prestation.
+	 *
+	 * @return array Items formatted as array.
+	 */
+	public function get_details_array() {
+		$item_posts = $this->get_items_as_posts();
+
 		$items            = array();
 		foreach ( $item_posts as $item_post ) {
 			$meta     = get_post_meta( $item_post->ID );
@@ -805,6 +845,7 @@ class Mltp_Prestation {
 				'balance'     => reset( $meta['balance'] ),
 				'source'      => reset( $meta['source'] ),
 				'links'       => Mltp_Item::item_links_html( $item_post, array( 'format' => 'icon' ) ),
+				'notes'       => get_post_meta( $item_post->ID, 'notes', true ),
 			);
 		}
 
@@ -851,7 +892,7 @@ class Mltp_Prestation {
 		}
 
 		$prestation = new Mltp_Prestation( $post );
-		$posts      = $prestation->get_items_as_posts();
+		$posts      = $prestation->get_details_array();
 		$list       = new Mltp_Table(
 			array(
 				'columns' => $prestation->get_columns(),
@@ -1182,7 +1223,7 @@ class Mltp_Prestation {
 		$updates['discount']['total']   = 0;
 
 		$prestation       = new Mltp_Prestation( $post );
-		$prestation_items = $prestation->get_items_as_posts();
+		$prestation_items = $prestation->get_details_array();
 
 		foreach ( $prestation_items as $item ) {
 			$updates['discount']['total'] += $item['discount'];
@@ -1495,15 +1536,21 @@ class Mltp_Prestation {
 		$prestation = false;
 		if ( is_numeric( $args ) ) {
 			$prestation = get_post( $args );
-		} elseif ( is_object( $args ) && 'prestation' === $prestation->post_type ) {
+		} elseif ( is_object( $args ) && 'prestation' === $args->post_type ) {
 			$prestation = $args;
 		}
-		if ( $prestation && 'prestation' === $prestation->post_type ) {
+		if ( $prestation ) {
 			return $prestation;
+		}
+		if(is_wp_error($prestation)) {
+			$error_code = array_key_first( $user_id->errors );
+			$error_message = $user_id->errors[$error_code][0];
+			error_log("\nCould not get prestation - $error_message");
+			return false;
 		}
 
 		if(!is_array($args)) {
-			error_log(__CLASS__.'::'.__METHOD__ . "($args): args should be an id, a post or an array");
+			error_log(__CLASS__.'::'.__METHOD__ . "( " . print_r($args, true) . "): args should be an id, a post or an array");
 			return false;
 		}
 
@@ -1600,6 +1647,23 @@ class Mltp_Prestation {
 		return $prestation;
 	}
 
+	static function render_details_notes() {
+		global $post;
+		$prestation = new Mltp_Prestation($post);
+		$items = $prestation->get_details_array();
+		$html = '';
+		foreach($items as $item) {
+			if(!empty($item['notes'])) {
+				$html .= sprintf(
+					'<h4>%s</h4>
+					<p>%s</p>',
+					$item['description'],
+					$item['notes'],
+				);
+			}
+		}
+		return $html;
+	}
 }
 
 $this->loaders[] = new Mltp_Prestation();
