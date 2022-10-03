@@ -1226,10 +1226,10 @@ class Mltp_Prestation {
 		$prestation_items = $prestation->get_details_array();
 
 		foreach ( $prestation_items as $item ) {
-			$updates['discount']['total'] += $item['discount'];
-			$updates['subtotal']          += $item['subtotal'];
-			$updates['total']             += $item['total'];
-			$updates['paid']              += $item['paid'];
+			$updates['discount']['total'] += empty($item['discount']) ? 0 : $item['discount'];
+			$updates['subtotal']          += empty($item['subtotal']) ? 0 : $item['subtotal'];
+			$updates['total']             += empty($item['total']) ? 0 : $item['total'];
+			$updates['paid']              += empty($item['paid']) ? 0 : $item['paid'];
 			if ( ! empty( $item['dates'] ) ) {
 				$dates += array_values( $item['dates'] );
 			}
