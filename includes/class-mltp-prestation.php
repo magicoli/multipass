@@ -1492,13 +1492,19 @@ class Mltp_Prestation {
 		if ( empty( $args ) ) {
 			return $args;
 		}
+		$prestation = false;
 		if ( is_numeric( $args ) ) {
 			$prestation = get_post( $args );
-		} elseif ( is_object( $args ) && 'prestation' === $args->post_type ) {
+		} elseif ( is_object( $args ) && 'prestation' === $prestation->post_type ) {
 			$prestation = $args;
 		}
-		if ( isset( $prestation ) ) {
+		if ( $prestation && 'prestation' === $prestation->post_type ) {
 			return $prestation;
+		}
+
+		if(!is_array($args)) {
+			error_log(__CLASS__.'::'.__METHOD__ . "($args): args should be an id, a post or an array");
+			return false;
 		}
 
 		$args = array_merge(array(
@@ -1552,6 +1558,7 @@ class Mltp_Prestation {
 				),
 			);
 		}
+
 		$prestations = get_posts( $query_args );
 		$prestation  = false;
 		if ( $prestations ) {
@@ -1572,7 +1579,7 @@ class Mltp_Prestation {
 		$postarr       = array(
 			'post_author'   => $customer_id,
 			'post_date'     => (empty($args['date'])) ? null : esc_attr( $args['date'] ),
-			'post_date_gmt' => (empty($args['date_gmt'])) ? null : esc_attr( $args['date_gmt'] ),
+			// 'post_date_gmt' => (empty($args['date_gmt'])) ? null : esc_attr( $args['date_gmt'] ),
 			'post_type'     => 'prestation',
 			'post_status'   => 'publish',
 			'meta_input'    => $meta,
