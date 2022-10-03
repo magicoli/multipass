@@ -161,11 +161,14 @@
     }
 
     .fc-event-start.origin-hoteldruid .fc-event-title-container:before { content: 'HD'; }
-    .fc-event-start.origin-woocommerce .fc-event-title-container:before { content: 'W'; }
     .fc-event-start.origin-lodgify .fc-event-title-container:before { content: 'L'; }
+    .fc-event-start.origin-woocommerce .fc-event-title-container:before { content: 'W'; }
+
+    .fc-event-start.origin-airbnb .fc-event-title-container:before { content: 'Air'; }
+    .fc-event-start.origin-abritel .fc-event-title-container:before { content: 'Abr'; }
     .fc-event-start.origin-booking .fc-event-title-container:before { content: 'B.'; }
+    .fc-event-start.origin-expedia .fc-event-title-container:before { content: 'E'; }
     .fc-event-start.origin-hbook .fc-event-title-container:before { content: 'HB'; }
-    .fc-event-start.origin-airbnb .fc-event-title-container:before { content: 'A'; }
 
   }
 
