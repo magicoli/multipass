@@ -1585,6 +1585,16 @@ class Mltp_Prestation {
 			'meta_input'    => $meta,
 		);
 		$prestation_id = wp_insert_post( $postarr );
+		if( 0 === $prestation_id ) {
+			error_log("\ncould not create prestation " . print_r($postarr, true));
+			return false;
+		}
+		if( is_wp_error($prestation_id) ) {
+			$error_code = array_key_first( $user_id->errors );
+			$error_message = $user_id->errors[$error_code][0];
+			error_log("\ncould not create prestation " . print_r($postarr, true) . "\n$error_message");
+			return false;
+		}
 
 		$prestation = get_post( $prestation_id );
 		return $prestation;
