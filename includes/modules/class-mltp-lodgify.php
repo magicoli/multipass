@@ -471,7 +471,8 @@ class Mltp_Lodgify extends Mltp_Modules {
 			);
 			$subtotal = $booking['subtotals']['stay'] + $booking['subtotals']['fees'] + $booking['subtotals']['addons'];
 
-			$source_url = 'https://app.lodgify.com/#/reservation/inbox/B' . $booking['id'];
+			// $source_url = 'https://app.lodgify.com/#/reservation/inbox/B' . $booking['id'];
+			$source_url = MultiPass::origin_url( 'lodgify', $booking['id'] );
 
 			$p_replace = array(
 				'/AirbnbIntegration/' => 'airbnb',
@@ -484,7 +485,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 				case 'airbnb':
 				$origin_details = json_decode($booking['source_text']);
 				$origin_id = $origin_details->confirmationCode;
-				$origin_url = (empty($origin_id)) ? $source_url : 'https://www.airbnb.com/reservation/itinerary?code=' . $origin_id;
+				// $origin_url = (empty($origin_id)) ? $source_url : 'https://www.airbnb.fr/hosting/reservations/details/HMPJMKS2P4' . $origin_id;
 				break;
 				// if(!empty($origin_details['confirmationCode'])) {
 				// 	$origin_url =
@@ -493,12 +494,13 @@ class Mltp_Lodgify extends Mltp_Modules {
 				case 'booking':
 				$origin_details = explode('|', $booking['source_text']);
 				$origin_id = $origin_details[0];
-				$origin_url = (empty($origin_id)) ? $source_url : 'https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/booking.html?res_id=' . $origin_id;
+				// $origin_url = (empty($origin_id)) ? $source_url : 'https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/booking.html?res_id=' . $origin_id;
 				break;
 
-				default:
-				$origin_url = $source_url;
+				// default:
+				// $origin_url = $source_url;
 			}
+			$origin_url = MultiPass::origin_url($origin, $origin_id, $source_url);
 
 			$prestation_args = array(
 				'customer_name' => $booking['guest']['name'],

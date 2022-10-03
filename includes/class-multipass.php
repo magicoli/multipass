@@ -72,21 +72,23 @@ class MultiPass {
 		$this->js_date_format_short = preg_match( '/^[Fm]/', get_option( 'date_format' ) ) ? 'mm-dd-yy' : 'dd-mm-yy';
 
 		$flags = array(
-			1 => 'MLTP_PAID_SOME',
-			2 => 'MLTP_PAID_DEPOSIT',
-			4 => 'MLTP_PAID_ALL',
-			8 => 'MLTP_PAID_MORE',
-			16 => 'MLTP_REFUNDED',
-			32 => 'MLTP_CONFIRMED',
-			64 => 'MLTP_STARTED',
+			1   => 'MLTP_PAID_SOME',
+			2   => 'MLTP_PAID_DEPOSIT',
+			4   => 'MLTP_PAID_ALL',
+			8   => 'MLTP_PAID_MORE',
+			16  => 'MLTP_REFUNDED',
+			32  => 'MLTP_CONFIRMED',
+			64  => 'MLTP_STARTED',
 			128 => 'MLTP_ENDED', // end date passed, but final invoicing not done
 			256 => 'MLTP_CLOSED', // final invoicing done
 		);
-		foreach ($flags as $key => $flag) {
-			if(!defined($flag)) define($flag, $key);
-			$slugs[$key] = sanitize_title(preg_replace('/_/', '-', preg_replace('/^MLTP_/', '', $flag)));
+		foreach ( $flags as $key => $flag ) {
+			if ( ! defined( $flag ) ) {
+				define( $flag, $key );
+			}
+			$slugs[ $key ] = sanitize_title( preg_replace( '/_/', '-', preg_replace( '/^MLTP_/', '', $flag ) ) );
 		}
-		define('MLTP_FLAGSLUGS', $slugs);
+		define( 'MLTP_FLAGSLUGS', $slugs );
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -482,10 +484,12 @@ class MultiPass {
 	}
 
 	static function format_date( $timestamp, $datetype = 'RELATIVE_MEDIUM', $timetype = 'NONE' ) {
-		$DateType  = constant( "IntlDateFormatter::$datetype" );
-		$TimeType  = constant( "IntlDateFormatter::$timetype" );
-		if(empty($timestamp)) return null;
-		$formatter   = new IntlDateFormatter( get_locale() , $DateType, $TimeType );
+		$DateType = constant( "IntlDateFormatter::$datetype" );
+		$TimeType = constant( "IntlDateFormatter::$timetype" );
+		if ( empty( $timestamp ) ) {
+			return null;
+		}
+		$formatter = new IntlDateFormatter( get_locale(), $DateType, $TimeType );
 		$formatted = $formatter->format( $timestamp );
 		return $formatted;
 	}
@@ -510,8 +514,8 @@ class MultiPass {
 			$TimeType = constant( 'IntlDateFormatter::' . preg_replace( '/RELATIVE_/', '', $timetype ) );
 			$ranger   = new OpenPsa\Ranger\Ranger( get_locale() );
 			$ranger->setDateType( $DateType )->setTimeType( $TimeType );
-			$from = ( is_array( $dates['from'] ) ) ? $dates['from']['timestamp'] : $dates['from'];
-			$to   = ( is_array( $dates['to'] ) ) ? $dates['to']['timestamp'] : $dates['to'];
+			$from   = ( is_array( $dates['from'] ) ) ? $dates['from']['timestamp'] : $dates['from'];
+			$to     = ( is_array( $dates['to'] ) ) ? $dates['to']['timestamp'] : $dates['to'];
 			$string = $ranger->format(
 				intval( $from ),
 				intval( $to ),
@@ -689,35 +693,37 @@ class MultiPass {
 		return $locale;
 	}
 
-	public static function get_the_flags($post_id = null) {
-		if(empty($post_id)) $post_id = get_the_ID();
+	public static function get_the_flags( $post_id = null ) {
+		if ( empty( $post_id ) ) {
+			$post_id = get_the_ID();
+		}
 		$flags = get_post_meta( get_the_ID(), 'flags', true );
-		if($flags) {
-			return self::get_flag_slugs($flags);
+		if ( $flags ) {
+			return self::get_flag_slugs( $flags );
 		}
 	}
 
-	public static function get_flag_slugs($flags, $format = 'array') {
-		$array = [];
+	public static function get_flag_slugs( $flags, $format = 'array' ) {
+		$array = array();
 		$slugs = MLTP_FLAGSLUGS;
-		foreach($slugs as $flag => $slug) {
-			$array[$flag] = ($flags & $flag) ? $slug : null;
+		foreach ( $slugs as $flag => $slug ) {
+			$array[ $flag ] = ( $flags & $flag ) ? $slug : null;
 		}
 
-		return array_filter($array);
+		return array_filter( $array );
 	}
 
-	public static function set_flags($args) {
-		$paid = isset($args['paid']) ? $args['paid'] : 0;
-		$deposit = isset($args['deposit']['amount']) ? $args['deposit']['amount'] : 0;
-		$total = isset($args['total']) ? $args['total'] : 0;
-		$confirmed = isset($args['confirmed']) ? $args['confirmed'] : false;
-		$flags = 0;
+	public static function set_flags( $args ) {
+		$paid      = isset( $args['paid'] ) ? $args['paid'] : 0;
+		$deposit   = isset( $args['deposit']['amount'] ) ? $args['deposit']['amount'] : 0;
+		$total     = isset( $args['total'] ) ? $args['total'] : 0;
+		$confirmed = isset( $args['confirmed'] ) ? $args['confirmed'] : false;
+		$flags     = 0;
 
 		if ( $paid > 0 ) {
 			$flags = $flags | MLTP_PAID_SOME;
 			if ( $deposit > 0 && $paid >= $deposit ) {
-				$flags = $flags | MLTP_PAID_DEPOSIT;
+				$flags     = $flags | MLTP_PAID_DEPOSIT;
 				$confirmed = true;
 			}
 		}
@@ -726,7 +732,7 @@ class MultiPass {
 		}
 		if ( $paid >= $total ) {
 			$flags = $flags | MLTP_PAID_ALL;
-			if( $paid > $total ) {
+			if ( $paid > $total ) {
 				$flags = $flags | MLTP_PAID_MORE;
 			}
 		}
@@ -734,17 +740,48 @@ class MultiPass {
 		return $flags;
 	}
 
-	public static function is_external($url) {
-		$components = parse_url($url);
-	  return !empty($components['host']) && strcasecmp($components['host'], 'example.com'); // empty host will indicate url like '/relative.php'
+	public static function is_external( $url ) {
+		$components = parse_url( $url );
+		return ! empty( $components['host'] ) && strcasecmp( $components['host'], 'example.com' ); // empty host will indicate url like '/relative.php'
 	}
 
 	public static function get_editable_roles() {
 		global $wp_roles;
 
-    $all_roles = $wp_roles->roles;
-		$editable_roles = apply_filters('editable_roles', $all_roles);
+		$all_roles      = $wp_roles->roles;
+		$editable_roles = apply_filters( 'editable_roles', $all_roles );
 
-    return $editable_roles;
+		return $editable_roles;
 	}
+
+	public static function origin_url( $origin, $origin_id, $default = null ) {
+		if ( empty($origin) || empty( $origin_id ) ) {
+			return $default;
+		}
+
+		switch ( $origin ) {
+			case 'airbnb':
+				$origin_url = 'https://www.airbnb.fr/hosting/reservations/details/HMPJMKS2P4' . $origin_id;
+				break;
+
+			case 'booking':
+				$origin_url = 'https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/booking.html?res_id=' . $origin_id;
+				break;
+
+			case 'expedia':
+				$origin_url = 'https://apps.expediapartnercentral.com/lodging/bookings?bookingItemId=' . $origin_id;
+				break;
+
+			case 'lodgify':
+				$origin_url = 'https://app.lodgify.com/#/reservation/inbox/B' . $origin_id;
+				break;
+
+			default:
+				$origin_url = $default;
+		}
+
+		// $origin_url = apply_filters('multipass_origin_url', $origin_url, $origin, $origin_id, $default);
+		return $origin_url;
+	}
+
 }
