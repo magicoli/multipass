@@ -784,4 +784,17 @@ class MultiPass {
 		return $origin_url;
 	}
 
+	public static function sanitize_email($email) {
+		if(empty($email)) return null;
+
+		$email = html_entity_decode($email);
+		$email = preg_replace('/,.*/', '', $email);
+		$email = preg_replace('/mailto:/', '', $email);
+		$email = preg_replace('/.*<(.*)>.*/', '$1', $email);
+		$email = preg_replace('/\'/', '', $email);
+		$email = preg_replace('/"/', '', $email);
+		$email = sanitize_email($email);
+
+		return $email;
+	}
 }

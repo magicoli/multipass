@@ -1564,7 +1564,7 @@ class Mltp_Prestation {
 		$prestation_id  = $args['prestation_id'];
 		$customer_id    = $args['customer_id'];
 		$customer_name  = $args['customer_name'];
-		$customer_email = $args['customer_email'];
+		$customer_email = MultiPass::sanitize_email($args['customer_email']);
 
 		// Check by customer id, email or name.
 		$query_args = array(
