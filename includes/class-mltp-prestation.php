@@ -1569,6 +1569,7 @@ class Mltp_Prestation {
 		// Check by customer id, email or name.
 		$query_args = array(
 			'post_type'       => 'prestation',
+			// 'post_status__in' => array( 'publish', 'pending', 'on-hold', 'deposit', 'partial', 'unpaid', 'processing' ),
 			'post_status__in' => array( 'pending', 'on-hold', 'deposit', 'partial', 'unpaid', 'processing' ),
 			'orderby'         => 'post_date',
 			'order'           => 'desc',
