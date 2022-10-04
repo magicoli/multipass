@@ -1265,6 +1265,32 @@ class Mltp_Item {
 					),
 				);
 				$posts          = get_posts( $query_args );
+				if ( ! $posts) {
+					$debug = "$args[description] by resource $args[resource_id] and date " . print_r($args['dates'], true);
+					$query_args     = array(
+						'post_type'   => 'prestation-item',
+						'post_status' => 'publish',
+						'numberposts' => 1,
+						'orderby'     => 'post_date',
+						'order'       => 'asc',
+						'meta_query'  => array(
+							'relation' => 'AND',
+							array(
+								'key'   => 'dates',
+								'value' => $args['dates'],
+							),
+							array(
+								'key'   => 'resource_id',
+								'value' => $args['resource_id'],
+							),
+						),
+					);
+					$posts          = get_posts( $query_args );
+
+					if( ! $posts ) {
+						error_log("not found $debug");
+					}
+				}
 				if ( $posts ) {
 					$post    = reset( $posts );
 					$post_id = $post->ID;
@@ -1294,6 +1320,10 @@ class Mltp_Item {
 			);
 
 			$type = ( empty( $post_id ) ) ? 'new prestation-item' : "update $post->post_type";
+
+			if(empty($post_id)) {
+				error_log("$type " . print_r($postarr, true));
+			}
 
 			$post_id = wp_insert_post( $postarr );
 			$post    = get_post( $post_id );
