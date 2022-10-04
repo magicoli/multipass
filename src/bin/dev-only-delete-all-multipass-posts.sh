@@ -1,8 +1,11 @@
 #!/bin/bash
 
-wp post-type list --format=csv | cut -d , -f 1 | sort | egrep "^mp_|mltp|prestation|resource"
+[ ! "$1" ] && echo specify the post types to delete >&2 && exit
+read -p "really delete all post of types $@? " || exit $?
 
-for post_type in prestation mltp_detail mltp_resource
+# wp post-type list --format=csv | cut -d , -f 1 | sort | egrep "^mp_|mltp|prestation|resource"
+
+for post_type in $@
 do
   count=$(wp db query "select count(*) from wp_posts where post_type='$post_type'" | tail +2)
   echo "# removein $count $post_type posts" >&2
