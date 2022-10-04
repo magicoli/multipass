@@ -66,7 +66,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			),
 			array(
 				// 'hook'          => 'save_post_shop_order',
-				'hook'          => 'save_post', // use save_post because save_post_prestation_item is fired before actual save and meta values are not yet updated.
+				'hook'          => 'save_post', // use save_post because save_post_mltp_detail is fired before actual save and meta values are not yet updated.
 				'callback'      => 'save_post_action',
 				'accepted_args' => 3,
 			),
@@ -89,7 +89,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				'callback' => 'register_settings_fields',
 			),
 			array(
-				'hook'     => 'multipass_register_terms_prestation-item-source',
+				'hook'     => 'multipass_register_terms_mltp_detail-source',
 				'callback' => 'register_sources_filter',
 			),
 
@@ -104,7 +104,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			),
 
 			array(
-				'hook'          => 'manage_prestation_posts_custom_column',
+				'hook'          => 'manage_mltp_prestation_posts_custom_column',
 				'callback'      => 'prestations_columns_display',
 				'accepted_args' => 2,
 			),
@@ -183,9 +183,9 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			),
 		);
 
-		$wc_term    = get_term_by( 'slug', 'woocommerce', 'prestation-item-source' );
-		$wc_term_id = ( $wc_term ) ? get_term_by( 'slug', 'woocommerce', 'prestation-item-source' )->term_id : 'woocommerce';
-		// Order info on prestation-item
+		$wc_term    = get_term_by( 'slug', 'woocommerce', 'mltp_detail-source' );
+		$wc_term_id = ( $wc_term ) ? get_term_by( 'slug', 'woocommerce', 'mltp_detail-source' )->term_id : 'woocommerce';
+		// Order info on detail
 
 		// Prestation info on WC Orders
 		$prefix       = 'prestation_';
@@ -199,7 +199,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 					// 'name'       => __('Prestation', 'multipass' ),
 					'id'         => $prefix . 'id',
 					'type'       => 'post',
-					'post_type'  => array( 'prestation' ),
+					'post_type'  => array( 'mltp_prestation' ),
 					'field_type' => 'select_advanced',
 				),
 				array(
@@ -395,7 +395,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			// self::update_order_prestation($post_id, $post, $update );
 			// break;
 
-			case 'prestation':
+			case 'mltp_prestation':
 				self::update_prestation_orders( $post_id, $post, $update );
 				break;
 		}
@@ -410,7 +410,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		// if(!$prestation) return;
 		// // if(! Mltp_Prestation::is_prestation_post($prestation) && isset($prestation->post)) $prestation = $prestation->post;
 		// // if(! Mltp_Prestation::is_prestation_post($prestation)) return;
-		// // if( $prestation->post_type != 'prestation' ) return;
+		// // if( $prestation->post_type != 'mltp_prestation' ) return;
 		// if( $prestation->post_status == 'trash' ) return; // TODO: remove prestation reference from orders
 		//
 		// $orders = wc_get_orders( array(
@@ -494,7 +494,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		// ) );
 		//
 		// $prestation_post = get_post($prestation_id);
-		// if(is_object($prestation) && $prestation->post_type == 'prestation')
+		// if(is_object($prestation) && $prestation->post_type == 'mltp_prestation')
 		// Mltp_Prestation::update_prestation_amounts($prestation_id, $prestation, true );
 		//
 		// // $metas = get_post_meta($prestation_id, 'modules-data');
@@ -682,8 +682,8 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 				);
 
-				$prestation_item = new Mltp_Item( $args, $update );
-				// $prestation_item->update($args);
+				$mltp_detail = new Mltp_Item( $args, $update );
+				// $mltp_detail->update($args);
 
 				// $lock = array_keys($part); // TODO: prevent modifications of locked fields
 
@@ -798,7 +798,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		}
 		$args  = array(
 			'posts_per_page' => -1,
-			'post_type'      => 'mp_resource',
+			'post_type'      => 'mltp_resource',
 			'meta_query'     => array(
 				array(
 					'meta_key' => 'resource_product_id-section',

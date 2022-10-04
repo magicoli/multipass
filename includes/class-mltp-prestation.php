@@ -130,7 +130,7 @@ class Mltp_Prestation {
 			),
 
 			array(
-				'hook'          => 'save_post', // use save_post because save_post_prestation_item is fired before actual save and meta values are not yet updated.
+				'hook'          => 'save_post', // use save_post because save_post_mltp_detail is fired before actual save and meta values are not yet updated.
 				'callback'      => 'save_post_action',
 				'accepted_args' => 3,
 			),
@@ -159,17 +159,17 @@ class Mltp_Prestation {
 			),
 
 			array(
-				'hook'     => 'manage_prestation_posts_columns',
+				'hook'     => 'manage_mltp_prestation_posts_columns',
 				'callback' => 'add_admin_columns',
 			),
 			array(
-				'hook'          => 'manage_prestation_posts_custom_column',
+				'hook'          => 'manage_mltp_prestation_posts_custom_column',
 				'callback'      => 'admin_columns_display',
 				'priority'      => 99,
 				'accepted_args' => 2,
 			),
 			array(
-				'hook'     => 'manage_edit-prestation_sortable_columns',
+				'hook'     => 'manage_edit-mltp_prestation_sortable_columns',
 				'callback' => 'sortable_columns',
 			),
 		);
@@ -268,7 +268,7 @@ class Mltp_Prestation {
 			),
 		);
 
-		register_post_type( 'prestation', $args );
+		register_post_type( 'mltp_prestation', $args );
 	}
 
 	/**
@@ -284,7 +284,7 @@ class Mltp_Prestation {
 		$meta_boxes['prestation-cpt'] = array(
 			'title'      => __( 'Prestations', 'multipass' ),
 			'id'         => 'prestation-fields',
-			'post_types' => array( 'prestation' ),
+			'post_types' => array( 'mltp_prestation' ),
 			'context'    => 'after_title',
 			'style'      => 'seamless',
 			'autosave'   => true,
@@ -427,7 +427,7 @@ class Mltp_Prestation {
 		$meta_boxes['prestation-notes'] = array(
 			'title'      => __( 'Notes', 'multipass' ),
 			'id'         => 'prestation-notes',
-			'post_types' => array( 'prestation' ),
+			'post_types' => array( 'mltp_prestation' ),
 			// 'context'    => 'after_title',
 			// 'style'      => 'seamless',
 			'autosave'   => true,
@@ -457,7 +457,7 @@ class Mltp_Prestation {
 		$prefix                = 'managed_';
 		$meta_boxes['managed'] = array(
 			'id'         => 'prestation-managed',
-			'post_types' => array( 'prestation' ),
+			'post_types' => array( 'mltp_prestation' ),
 			'style'      => 'seamless',
 			'readonly'   => true,
 			'fields'     => array(
@@ -473,8 +473,8 @@ class Mltp_Prestation {
 
 		$prefix       = '';
 		$meta_boxes[] = array(
-			'id'         => 'prestation-items',
-			'post_types' => array( 'prestation' ),
+			'id'         => 'mltp_details',
+			'post_types' => array( 'mltp_prestation' ),
 			'style'      => 'seamless',
 
 			'fields'     => array(
@@ -625,7 +625,7 @@ class Mltp_Prestation {
 		$meta_boxes['prestation-summary'] = array(
 			'title'      => __( 'Summary', 'multipass' ),
 			'id'         => 'prestation-summary',
-			'post_types' => array( 'prestation' ),
+			'post_types' => array( 'mltp_prestation' ),
 			'context'    => 'side',
 			'fields'     => array(
 				array(
@@ -748,7 +748,7 @@ class Mltp_Prestation {
 				'hierarchical' => false,
 			),
 		);
-		register_taxonomy( 'prestation-status', array( 'prestation' ), $args );
+		register_taxonomy( 'prestation-status', array( 'mltp_prestation' ), $args );
 
 		/**
 		 * statuses, we use basically the same terminology as
@@ -799,7 +799,7 @@ class Mltp_Prestation {
 	 */
 	public function get_items_as_posts() {
 		$query_args       = array(
-			'post_type'   => 'prestation-item',
+			'post_type'   => 'mltp_detail',
 			'post_status' => 'publish',
 			'numberposts' => -1,
 			'orderby'     => 'post_date',
@@ -1017,7 +1017,7 @@ class Mltp_Prestation {
 	 */
 	public static function get_summary_reference() {
 		global $post;
-		if ( 'prestation' !== $post->post_type ) {
+		if ( 'mltp_prestation' !== $post->post_type ) {
 			return;
 		}
 		if ( MultiPass::is_new_post() ) {
@@ -1118,7 +1118,7 @@ class Mltp_Prestation {
 		if ( 'WP_Post' !== get_class( $object ) ) {
 			return false;
 		}
-		if ( 'prestation' !== $object->post_type ) {
+		if ( 'mltp_prestation' !== $object->post_type ) {
 			return false;
 		}
 
@@ -1223,9 +1223,9 @@ class Mltp_Prestation {
 		$updates['discount']['total']   = 0;
 
 		$prestation       = new Mltp_Prestation( $post );
-		$prestation_items = $prestation->get_details_array();
+		$mltp_details = $prestation->get_details_array();
 
-		foreach ( $prestation_items as $item ) {
+		foreach ( $mltp_details as $item ) {
 			$updates['discount']['total'] += empty($item['discount']) ? 0 : $item['discount'];
 			$updates['subtotal']          += empty($item['subtotal']) ? 0 : $item['subtotal'];
 			$updates['total']             += empty($item['total']) ? 0 : $item['total'];
@@ -1511,7 +1511,7 @@ class Mltp_Prestation {
 	 * @return string           generated slug.
 	 */
 	public static function new_post_random_slug( $data, $postarr ) {
-		if ( ! in_array( $data['post_type'], array( 'prestation' ), true ) ) {
+		if ( ! in_array( $data['post_type'], array( 'mltp_prestation' ), true ) ) {
 			return $data;
 		}
 
@@ -1536,7 +1536,7 @@ class Mltp_Prestation {
 		$prestation = false;
 		if ( is_numeric( $args ) ) {
 			$prestation = get_post( $args );
-		} elseif ( is_object( $args ) && 'prestation' === $args->post_type ) {
+		} elseif ( is_object( $args ) && 'mltp_prestation' === $args->post_type ) {
 			$prestation = $args;
 		}
 		if ( $prestation ) {
@@ -1568,7 +1568,7 @@ class Mltp_Prestation {
 
 		// Check by customer id, email or name.
 		$query_args = array(
-			'post_type'       => 'prestation',
+			'post_type'       => 'mltp_prestation',
 			// 'post_status__in' => array( 'publish', 'pending', 'on-hold', 'deposit', 'partial', 'unpaid', 'processing' ),
 			'post_status__in' => array( 'pending', 'on-hold', 'deposit', 'partial', 'unpaid', 'processing' ),
 			'orderby'         => 'post_date',
@@ -1628,7 +1628,7 @@ class Mltp_Prestation {
 			'post_author'   => $customer_id,
 			'post_date'     => (empty($args['date'])) ? null : esc_attr( $args['date'] ),
 			// 'post_date_gmt' => (empty($args['date_gmt'])) ? null : esc_attr( $args['date_gmt'] ),
-			'post_type'     => 'prestation',
+			'post_type'     => 'mltp_prestation',
 			'post_status'   => 'publish',
 			'meta_input'    => $meta,
 		);

@@ -138,7 +138,7 @@ class Mltp_Item {
 			),
 
 			array(
-				'hook'          => 'save_post', // use save_post because save_post_prestation_item is fired before actual save and meta values are not yet updated
+				'hook'          => 'save_post', // use save_post because save_post_mltp_detail is fired before actual save and meta values are not yet updated
 				'callback'      => 'save_post_action',
 				'accepted_args' => 3,
 			),
@@ -152,7 +152,7 @@ class Mltp_Item {
 
 			array(
 				'hook'          => 'wp_insert_post_data',
-				'callback'      => 'insert_prestation_item_data',
+				'callback'      => 'insert_mltp_detail_data',
 				'accepted_args' => 4,
 			),
 			// array(
@@ -162,19 +162,19 @@ class Mltp_Item {
 			// ),
 
 			array(
-				'hook'          => 'sanitize_post_meta_customer_for_prestation_item',
-				'callback'      => 'sanitize_prestation_item_meta',
+				'hook'          => 'sanitize_post_meta_customer_for_mltp_detail',
+				'callback'      => 'sanitize_mltp_detail_meta',
 				'accepted_args' => 3,
 			),
 			array(
-				'hook'          => 'sanitize_post_meta_attendee_for_prestation_item',
-				'callback'      => 'sanitize_prestation_item_meta',
+				'hook'          => 'sanitize_post_meta_attendee_for_mltp_detail',
+				'callback'      => 'sanitize_mltp_detail_meta',
 				'accepted_args' => 3,
 			),
 
 			array(
-				'hook'     => 'multipass_set_prestation_item_title',
-				'callback' => 'set_prestation_item_title',
+				'hook'     => 'multipass_set_mltp_detail_title',
+				'callback' => 'set_mltp_detail_title',
 			),
 		);
 
@@ -204,7 +204,7 @@ class Mltp_Item {
 		}
 
 		$source      = get_post_meta( $post->ID, 'source', true );
-		$term        = get_term_by( 'slug', $source, 'prestation-item-source' );
+		$term        = get_term_by( 'slug', $source, 'mltp_detail-source' );
 		$source_name = $term->name;
 		if ( $field['format'] == 'icon' ) {
 			$links = array_filter(
@@ -293,8 +293,8 @@ class Mltp_Item {
 			'all_items'                => esc_html__( 'Details', 'multipass' ),
 			'archives'                 => esc_html__( 'Parts Archives', 'multipass' ),
 			'attributes'               => esc_html__( 'Part Attributes', 'multipass' ),
-			'insert_into_item'         => esc_html__( 'Insert into prestation_detail', 'multipass' ),
-			'uploaded_to_this_item'    => esc_html__( 'Uploaded to this prestation_detail', 'multipass' ),
+			'insert_into_item'         => esc_html__( 'Insert into prestation detail', 'multipass' ),
+			'uploaded_to_this_item'    => esc_html__( 'Uploaded to this prestation detail', 'multipass' ),
 			'featured_image'           => esc_html__( 'Featured image', 'multipass' ),
 			'set_featured_image'       => esc_html__( 'Set featured image', 'multipass' ),
 			'remove_featured_image'    => esc_html__( 'Remove featured image', 'multipass' ),
@@ -339,17 +339,17 @@ class Mltp_Item {
 			),
 		);
 
-		register_post_type( 'prestation-item', $args );
+		register_post_type( 'mltp_detail', $args );
 	}
 
 	static function register_fields( $meta_boxes ) {
 		$js_date_format_short = preg_match( '/^[Fm]/', get_option( 'date_format' ) ) ? 'mm-dd-yy' : 'dd-mm-yy';
 		$prefix               = '';
 
-		$meta_boxes['prestation_item'] = array(
+		$meta_boxes['mltp_detail'] = array(
 			'title'      => __( 'Parts fields', 'multipass' ),
-			'id'         => 'prestation_item',
-			'post_types' => array( 'prestation-item' ),
+			'id'         => 'mltp_detail',
+			'post_types' => array( 'mltp_detail' ),
 			'style'      => 'seamless',
 			'fields'     => array(
 				array(
@@ -361,9 +361,9 @@ class Mltp_Item {
 					'name'          => __( 'Source', 'multipass' ),
 					'id'            => $prefix . 'source',
 					'type'          => 'taxonomy',
-					'taxonomy'      => array( 'prestation-item-source' ),
+					'taxonomy'      => array( 'mltp_detail-source' ),
 					'field_type'    => 'select',
-					'placeholder'   => _x( 'None', '(prestation_item) source', 'multipass' ),
+					'placeholder'   => _x( 'None', '(mltp_detail) source', 'multipass' ),
 					'admin_columns' => array(
 						'position'   => 'replace date',
 						'sort'       => true,
@@ -414,7 +414,7 @@ class Mltp_Item {
 					'name'          => __( 'Prestation', 'multipass' ),
 					'id'            => $prefix . 'prestation_id',
 					'type'          => 'post',
-					'post_type'     => array( 'prestation' ),
+					'post_type'     => array( 'mltp_prestation' ),
 					'field_type'    => 'select_advanced',
 					'admin_columns' => array(
 						'position'   => 'after title',
@@ -831,7 +831,7 @@ class Mltp_Item {
 	}
 
 	static function add_custom_columns() {
-		new Mltp_Item_Admin_Columns( 'prestation_item', array() );
+		new Mltp_Item_Admin_Columns( 'mltp_detail', array() );
 	}
 
 	static function register_taxonomies() {
@@ -854,7 +854,7 @@ class Mltp_Item {
 			'choose_from_most_used'      => esc_html__( 'Choose most used sources', 'multipass' ),
 			'not_found'                  => esc_html__( 'No sources found.', 'multipass' ),
 			'no_terms'                   => esc_html__( 'No sources', 'multipass' ),
-			'filter_by_item'             => esc_html__( 'Filter by prestation_item source', 'multipass' ),
+			'filter_by_item'             => esc_html__( 'Filter by detail source', 'multipass' ),
 			'items_list_navigation'      => esc_html__( 'Sources list pagination', 'multipass' ),
 			'items_list'                 => esc_html__( 'Sources list', 'multipass' ),
 			'most_used'                  => esc_html__( 'Most Used', 'multipass' ),
@@ -885,31 +885,31 @@ class Mltp_Item {
 			),
 			'_builtin'           => true,
 		);
-		register_taxonomy( 'prestation-item-source', array( 'prestation-item' ), $args );
+		register_taxonomy( 'mltp_detail-source', array( 'mltp_detail' ), $args );
 
-		MultiPass::register_terms( 'prestation-item-source' );
+		MultiPass::register_terms( 'mltp_detail-source' );
 
 	}
 
-	static function insert_prestation_item_data( $data, $postarr, $unsanitized_postarr, $update ) {
+	static function insert_mltp_detail_data( $data, $postarr, $unsanitized_postarr, $update ) {
 		if ( ! $update ) {
 			return $data;
 		}
-		if ( $data['post_type'] !== 'prestation-item' ) {
+		if ( $data['post_type'] !== 'mltp_detail' ) {
 			return $data;
 		}
 
-		$data = apply_filters( 'multipass_set_prestation_item_title', $data );
+		$data = apply_filters( 'multipass_set_mltp_detail_title', $data );
 
 		return $data;
 	}
 
-	static function set_prestation_item_title( $data ) {
+	static function set_mltp_detail_title( $data ) {
 		// error_log(__CLASS__ . '::' . __FUNCTION__);
-		// if(empty($_REQUEST['prestation_item_page_id'])) return $data;
+		// if(empty($_REQUEST['mltp_detail_page_id'])) return $data;
 		//
 		// if(empty($data['post_title'])) {
-		// $data['post_title'] = get_the_title($_REQUEST['prestation_item_page_id']);
+		// $data['post_title'] = get_the_title($_REQUEST['mltp_detail_page_id']);
 		// $data['post_name'] = sanitize_title($data['post_title']);
 		// }
 		return $data;
@@ -919,7 +919,7 @@ class Mltp_Item {
 		if ( ! $update ) {
 			return;
 		}
-		if ( 'prestation-item' !== $post->post_type ) {
+		if ( 'mltp_detail' !== $post->post_type ) {
 			return;
 		}
 		if ( 'trash' == $post->post_status ) {
@@ -1061,7 +1061,7 @@ class Mltp_Item {
 		add_action( current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3 );
 	}
 
-	static function sanitize_prestation_item_meta( $meta_value, $meta_key, $object_type ) {
+	static function sanitize_mltp_detail_meta( $meta_value, $meta_key, $object_type ) {
 		switch ( $meta_key ) {
 			case 'customer':
 			case 'attendee':
@@ -1074,7 +1074,7 @@ class Mltp_Item {
 	static function update_metadata_filter( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
 		return $check;
 		//
-		// if(get_post_type($object_id) != 'prestation-item') return $check;
+		// if(get_post_type($object_id) != 'mltp_detail') return $check;
 		//
 		// switch($meta_key) {
 		// case 'customer':
@@ -1097,7 +1097,7 @@ class Mltp_Item {
 
 	function set_prestation( $post = null ) {
 		$post = $this->post;
-		if ( $post->post_type != 'prestation-item' ) {
+		if ( $post->post_type != 'mltp_detail' ) {
 			return;
 		}
 		if ( $post->post_status == 'trash' ) {
@@ -1134,7 +1134,7 @@ class Mltp_Item {
 		//
 		// if(empty($item_id) || ! $prestation) {
 		// $args = array(
-		// 'post_type' => 'prestation',
+		// 'post_type' => 'mltp_prestation',
 		// 'post_status__in' => [ 'pending', 'on-hold', 'deposit', 'partial', 'unpaid', 'processing' ],
 		// 'orderby' => 'post_date',
 		// 'order' => 'desc',
@@ -1185,7 +1185,7 @@ class Mltp_Item {
 		// 'post_author' => $this->post->get_customer_id(),
 		// 'post_date' => $this->post->get_date_created(),
 		// 'post_date_gmt' => $this->post->post_date_gmt,
-		// 'post_type' => 'prestation',
+		// 'post_type' => 'mltp_prestation',
 		// 'post_status' => 'publish',
 		// 'meta_input' => array(
 		// 'prestation_id' => $item_id,
@@ -1207,7 +1207,7 @@ class Mltp_Item {
 		// 'customer_email' => $customer_email,
 		// );
 		// foreach ($meta as $key => $value) update_post_meta( $this->id, $key, $value );
-		// Mltp_Item::update_prestation_prestation_items($item_id, get_post($item_id), true );
+		// Mltp_Item::update_prestation_mltp_details($item_id, get_post($item_id), true );
 		// }
 		//
 		// // add_action(current_action(), __CLASS__ . '::wp_insert_post_action', 10, 3);
@@ -1221,7 +1221,7 @@ class Mltp_Item {
 		switch ( gettype( $args ) ) {
 			case 'object':
 				$post = $args;
-				if ( isset( $post->post_type ) && 'prestation-item' === $post->post_type ) {
+				if ( isset( $post->post_type ) && 'mltp_detail' === $post->post_type ) {
 					$post = $args;
 				}
 				unset( $args );
@@ -1229,16 +1229,16 @@ class Mltp_Item {
 
 			case 'integer':
 				$post = get_post( $args );
-				if ( isset( $post->post_type ) && 'prestation-item' === $post->post_type ) {
+				if ( isset( $post->post_type ) && 'mltp_detail' === $post->post_type ) {
 					$post = $post;
 				}
 				unset( $args );
 				break;
 
 			case 'array':
-				$source_term_id = ( empty( $args['source'] ) ) ? null : get_term_by( 'slug', $args['source'], 'prestation-item-source' );
+				$source_term_id = ( empty( $args['source'] ) ) ? null : get_term_by( 'slug', $args['source'], 'mltp_detail-source' );
 				$query_args     = array(
-					'post_type'   => 'prestation-item',
+					'post_type'   => 'mltp_detail',
 					'post_status' => 'publish',
 					'post_date'   => ( empty( $args['date'] ) ) ? null : esc_attr( $args['date'] ),
 					'numberposts' => 1,
@@ -1246,7 +1246,7 @@ class Mltp_Item {
 					'order'       => 'asc',
 					'tax_query'   => array(
 						array(
-							'taxonomy' => 'prestation-item-source',
+							'taxonomy' => 'mltp_detail-source',
 							'field'    => 'slug',
 							'terms'    => array( $args['source'] ),
 							'operator' => 'IN',
@@ -1268,7 +1268,7 @@ class Mltp_Item {
 				if ( ! $posts) {
 					$debug = "$args[description] by resource $args[resource_id] and date " . print_r($args['dates'], true);
 					$query_args     = array(
-						'post_type'   => 'prestation-item',
+						'post_type'   => 'mltp_detail',
 						'post_status' => 'publish',
 						'numberposts' => 1,
 						'orderby'     => 'post_date',
@@ -1311,15 +1311,15 @@ class Mltp_Item {
 				),
 				// 'post_date' => esc_attr($args['date']),
 				// 'post_date_gmt' => esc_attr($args['date_gmt']),
-				'post_type'   => 'prestation-item',
+				'post_type'   => 'mltp_detail',
 				'post_status' => 'publish',
 				'meta_input'  => $args,
 				'tax_input'   => array(
-					'prestation-item-source' => $args['source'],
+					'mltp_detail-source' => $args['source'],
 				),
 			);
 
-			$type = ( empty( $post_id ) ) ? 'new prestation-item' : "update $post->post_type";
+			$type = ( empty( $post_id ) ) ? 'new detail' : "update $post->post_type";
 
 			if(empty($post_id)) {
 				error_log("$type " . print_r($postarr, true));

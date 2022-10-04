@@ -202,7 +202,7 @@ class Mltp_Calendar {
 		$meta_boxes[] = array(
 			'title'      => __( 'Calendar', 'multipass' ),
 			'id'         => 'calendar',
-			'post_types' => array( 'mp_resource' ),
+			'post_types' => array( 'mltp_resource' ),
 			'context'    => 'side',
 			'priority'   => 'low',
 			'autosave'   => true,
@@ -283,7 +283,7 @@ class Mltp_Calendar {
 				'hierarchical' => false,
 			),
 		);
-		register_taxonomy( 'calendar-section', array( 'mp_resource' ), $args );
+		register_taxonomy( 'calendar-section', array( 'mltp_resource' ), $args );
 
 		MultiPass::register_terms(
 			'calendar-section',
@@ -372,7 +372,7 @@ class Mltp_Calendar {
 		$actions = '';
 
 		// $args  = array(
-		// 'post_type'      => 'mp_resource',
+		// 'post_type'      => 'mltp_resource',
 		// 'posts_per_page' => -1,
 		// 'post__not_in'   => array( 498 ),
 		// );
@@ -436,7 +436,7 @@ class Mltp_Calendar {
 				);
 				$args = array(
 					'posts_per_page' => -1,
-					'post_type'      => 'mp_resource',
+					'post_type'      => 'mltp_resource',
 					'meta_key'       => 'position_sort',
 					'orderby'        => 'meta_value_num',
 					'order'          => 'ASC',
@@ -484,7 +484,7 @@ class Mltp_Calendar {
 
 		$args  = array(
 			'posts_per_page' => -1,
-			'post_type'      => 'prestation-item',
+			'post_type'      => 'mltp_detail',
 		);
 		$query = new WP_Query( $args );
 
@@ -717,7 +717,7 @@ class Mltp_Event {
 
 		if ( is_numeric( $args ) ) {
 			$this->post = get_post( $args );
-		} elseif ( is_object( $args ) && 'prestation-item' === $args->post_type ) {
+		} elseif ( is_object( $args ) && 'mltp_detail' === $args->post_type ) {
 			$this->post = $args;
 		}
 		if ( ! $this->post ) {

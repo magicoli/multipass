@@ -64,7 +64,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			),
 
 			array(
-				'hook'     => 'multipass_register_terms_prestation-item-source',
+				'hook'     => 'multipass_register_terms_mltp_detail-source',
 				'callback' => 'register_sources_filter',
 			),
 		);
@@ -584,7 +584,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			// 	. ' origin ' . $item_args['origin']
 			// );
 
-			$prestation_item = new Mltp_Item( $item_args, true );
+			$mltp_detail = new Mltp_Item( $item_args, true );
 			$prestation->update();
 
 		}

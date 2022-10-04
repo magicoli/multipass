@@ -308,7 +308,7 @@ class Mltp_Payment_Product {
 		if ( ! empty( $amount ) ) {
 			$cart_item_data['prpay_amount'] = $amount;
 		}
-		$prestation = get_page_by_path( $reference, OBJECT, 'prestation' );
+		$prestation = get_page_by_path( $reference, OBJECT, 'mltp_prestation' );
 		if ( $prestation ) {
 			$cart_item_data['title'] = self::prestation_cart_name( $prestation );
 		}
@@ -342,7 +342,7 @@ class Mltp_Payment_Product {
 		if ( isset( $cart_item['prpay_reference'] ) ) {
 			$reference = sanitize_text_field( $cart_item['prpay_reference'] );
 
-			$prestation = get_page_by_path( $reference, OBJECT, 'prestation' );
+			$prestation = get_page_by_path( $reference, OBJECT, 'mltp_prestation' );
 			if ( $prestation ) {
 				return self::prestation_cart_name( $prestation );
 			}

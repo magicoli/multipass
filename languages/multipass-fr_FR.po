@@ -350,11 +350,11 @@ msgid "Part Attributes"
 msgstr "Attributs d'élément"
 
 #: includes/class-mltp-item.php:296
-msgid "Insert into prestation_detail"
+msgid "Insert into prestation detail"
 msgstr "Insérer dans le détail de prestation"
 
 #: includes/class-mltp-item.php:297
-msgid "Uploaded to this prestation_detail"
+msgid "Uploaded to this prestation detail"
 msgstr "Téléchargé sur ce détail de prestation"
 
 #: includes/class-mltp-item.php:298 includes/class-mltp-prestation.php:229
@@ -438,7 +438,7 @@ msgid "Source"
 msgstr "Source"
 
 #: includes/class-mltp-item.php:366
-msgctxt "(prestation_item) source"
+msgctxt "(mltp_detail) source"
 msgid "None"
 msgstr "Aucune"
 
@@ -666,7 +666,7 @@ msgid "No sources"
 msgstr "Aucune source"
 
 #: includes/class-mltp-item.php:846
-msgid "Filter by prestation_item source"
+msgid "Filter by detail source"
 msgstr "Filtrer par élément"
 
 #: includes/class-mltp-item.php:847
@@ -1768,19 +1768,19 @@ msgstr "Modifier"
 #~ msgid "Item Sources list"
 #~ msgstr "Liste des sources"
 
-#~ msgid "No prestation_items found."
+#~ msgid "No details found."
 #~ msgstr "Aucun élément trouvé."
 
-#~ msgid "No prestation_items found in Trash."
+#~ msgid "No details found in Trash."
 #~ msgstr "Aucun élément trouvé dans la corbeille."
 
-#~ msgid "Insert into prestation_item"
+#~ msgid "Insert into detail"
 #~ msgstr "Insérer dans l'élément"
 
-#~ msgid "Uploaded to this prestation_item"
+#~ msgid "Uploaded to this detail"
 #~ msgstr "Téléchargé sur cet élément"
 
-#~ msgid "Filter prestation_items list"
+#~ msgid "Filter details list"
 #~ msgstr "Filtrer la liste des articles"
 
 #~ msgid "Search Part Sources"
@@ -1813,19 +1813,19 @@ msgstr "Modifier"
 #~ msgid "New Part Source Name"
 #~ msgstr "Nom de la nouvelle source de détail de prestation"
 
-#~ msgid "Separate prestation_item sources with commas"
+#~ msgid "Separate detailsources with commas"
 #~ msgstr "Séparez les éléments par des virgules"
 
-#~ msgid "Add or remove prestation_item sources"
+#~ msgid "Add or remove detailsources"
 #~ msgstr "Ajouter ou supprimer des éléments"
 
-#~ msgid "Choose most used prestation_item sources"
+#~ msgid "Choose most used detailsources"
 #~ msgstr "Choisissez les éléménts les plus utilisées"
 
-#~ msgid "No prestation_item sources found."
+#~ msgid "No detailsources found."
 #~ msgstr "Aucun élément trouvé."
 
-#~ msgid "No prestation_item sources"
+#~ msgid "No detailsources"
 #~ msgstr "Aucune élément"
 
 #~ msgid "&larr; Go to Part Sources"

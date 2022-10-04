@@ -78,7 +78,7 @@ class Mltp_HBook extends Mltp_Modules {
 			),
 
 			array(
-				'hook'     => 'multipass_register_terms_prestation-item-source',
+				'hook'     => 'multipass_register_terms_mltp_detail-source',
 				'callback' => 'register_sources_filter',
 			),
 		);

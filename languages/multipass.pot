@@ -365,11 +365,11 @@ msgid "Part Attributes"
 msgstr ""
 
 #: includes/class-mltp-item.php:296
-msgid "Insert into prestation_detail"
+msgid "Insert into prestation detail"
 msgstr ""
 
 #: includes/class-mltp-item.php:297
-msgid "Uploaded to this prestation_detail"
+msgid "Uploaded to this prestation detail"
 msgstr ""
 
 #: includes/class-mltp-item.php:298
@@ -459,7 +459,7 @@ msgid "Source"
 msgstr ""
 
 #: includes/class-mltp-item.php:366
-msgctxt "(prestation_item) source"
+msgctxt "(mltp_detail) source"
 msgid "None"
 msgstr ""
 
@@ -707,7 +707,7 @@ msgid "No sources"
 msgstr ""
 
 #: includes/class-mltp-item.php:846
-msgid "Filter by prestation_item source"
+msgid "Filter by detail source"
 msgstr ""
 
 #: includes/class-mltp-item.php:847

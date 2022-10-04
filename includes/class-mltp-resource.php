@@ -141,7 +141,7 @@ class Mltp_Resource {
 				'callback' => 'register_taxonomies',
 			),
 			array(
-				'hook'          => 'save_post', // use save_post because save_post_prestation_item is fired before actual save and meta values are not yet updated.
+				'hook'          => 'save_post', // use save_post because save_post_mltp_detail is fired before actual save and meta values are not yet updated.
 				'callback'      => 'save_post_action',
 				'accepted_args' => 3,
 			),
@@ -265,12 +265,12 @@ class Mltp_Resource {
 			'supports'            => array( 'title' ),
 			'taxonomies'          => array(),
 			'rewrite'             => array(
-				'slug'       => 'mp_resource',
+				'slug'       => 'mltp_resource',
 				'with_front' => false,
 			),
 		);
 
-		register_post_type( 'mp_resource', $args );
+		register_post_type( 'mltp_resource', $args );
 	}
 
 	/**
@@ -284,7 +284,7 @@ class Mltp_Resource {
 
 		$meta_boxes['resources'] = array(
 			'title'      => __( 'Resources', 'multipass' ),
-			'post_types' => array( 'mp_resource' ),
+			'post_types' => array( 'mltp_resource' ),
 			'autosave'   => true,
 			'style'      => 'seamless',
 			'fields'     => array(
@@ -308,7 +308,7 @@ class Mltp_Resource {
 		$meta_boxes['resources_settings'] = array(
 			'title'      => __( 'Settings', 'multipass' ),
 			'id'         => 'resource-settings',
-			'post_types' => array( 'mp_resource' ),
+			'post_types' => array( 'mltp_resource' ),
 			'style'      => 'seamless',
 			'fields'     => array(
 				array(
@@ -668,7 +668,7 @@ class Mltp_Resource {
 			$settings_rules,
 			array(
 				'id'         => 'resource-rules',
-				'post_types' => array( 'mp_resource' ),
+				'post_types' => array( 'mltp_resource' ),
 			)
 		);
 		$meta_boxes['resource_type_prices'] = array_merge(
@@ -682,7 +682,7 @@ class Mltp_Resource {
 			$settings_prices,
 			array(
 				'id'         => 'resource-prices',
-				'post_types' => array( 'mp_resource' ),
+				'post_types' => array( 'mltp_resource' ),
 			)
 		);
 
@@ -700,7 +700,7 @@ class Mltp_Resource {
 	 * @return array                      Modifield post data.
 	 */
 	public static function insert_resource_data( $data, $postarr, $unsanitized_postarr, $update ) {
-		if ( $update && 'mp_resource' === $data['post_type'] ) {
+		if ( $update && 'mltp_resource' === $data['post_type'] ) {
 			$data = apply_filters( 'multipass_update_resource_title', $data );
 		}
 
@@ -780,7 +780,7 @@ class Mltp_Resource {
 				'hierarchical' => false,
 			),
 		);
-		register_taxonomy( 'resource-type', array( 'prestation', 'product', 'mp_resource', 'prestation-item' ), $args );
+		register_taxonomy( 'resource-type', array( 'mltp_prestation', 'product', 'mltp_resource', 'mltp_detail' ), $args );
 
 		MultiPass::register_terms(
 			'resource-type',
@@ -831,7 +831,7 @@ class Mltp_Resource {
 		if ( MultiPass::is_new_post() ) { // triggered when opened new post page, empty.
 			return;
 		}
-		if ( 'mp_resource' !== $post->post_type ) {
+		if ( 'mltp_resource' !== $post->post_type ) {
 			return;
 		}
 
@@ -857,7 +857,7 @@ class Mltp_Resource {
 		}
 		$args  = array(
 			'posts_per_page' => -1,
-			'post_type'      => 'mp_resource',
+			'post_type'      => 'mltp_resource',
 			'meta_query'     => array(
 				array(
 					'meta_key' => 'resource_' . $source . '_id',
