@@ -519,6 +519,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 				'from' => $from,
 				'to' => $to,
 			);
+
 			$prestation = new Mltp_Prestation( $prestation_args, true );
 
 			// error_log("
@@ -530,6 +531,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 			$item_args = array(
 				'source' => 'lodgify',
+				'lodgify_uuid' => join('-', [ $booking['id'], $booking['user_id'], $booking['property_id'] ] ),
 				'source_id' => $booking['id'],
 				'source_item_id' => $booking['property_id'],
 				'source_url'       => $source_url,
