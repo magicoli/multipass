@@ -1289,20 +1289,30 @@ class Mltp_Item {
 				);
 				$posts      = get_posts( $query_args );
 
-				if ( ! $posts ) {
-					// error_log("looking by resource $resource_id and dates from $from to $to");
+				// if (! $posts)
+				// error_log("looking by resource $args[resource_id] and dates from $from to $to");
+				if ( ! $posts &! empty($from) &! empty($to) &! empty($args['resource_id']) ) {
+					// error_log("looking by resource $args[resource_id] and dates from $from to $to");
 
 					$query_args = array(
 						'post_type'   => 'mltp_detail',
-						'post_status' => 'publish',
-						'numberposts' => 1,
+						// 'post_status' => 'publish',
+						// 'numberposts' => 1,
 						'orderby'     => 'post_date',
 						'order'       => 'asc',
 						'meta_query'  => array(
 							'relation' => 'AND',
+							// array(
+							// 	'key'   => 'dates',
+							// 	'value' => $args['dates'],
+							// ),
 							array(
-								'key'   => 'dates',
-								'value' => $args['dates'],
+								'key'   => 'from',
+								'value' => $from,
+							),
+							array(
+								'key'   => 'to',
+								'value' => $to,
 							),
 							array(
 								'key'   => 'resource_id',
@@ -1310,11 +1320,14 @@ class Mltp_Item {
 							),
 						),
 					);
-					// error_log("looking by dates " . print_r($query_args, true));
 					$posts = get_posts( $query_args );
 
 				}
+
 				if ( $posts ) {
+					// error_log('not found, aborting for debug purpose');
+					// return false;
+
 					$post    = reset( $posts );
 					$post_id = $post->ID;
 				}
@@ -1323,6 +1336,9 @@ class Mltp_Item {
 		}
 
 		if ( is_array( $args ) & ! empty( $args ) && ( empty( $post_id ) || $update ) ) {
+			$args['from'] = $from;
+			$args['to'] = $to;
+
 			$postarr = array(
 				'ID'          => $post_id,
 				'post_author' => ( empty( $args['customer']['user_id'] ) ) ? null : $args['customer']['user_id'],
@@ -1341,9 +1357,7 @@ class Mltp_Item {
 					'mltp_detail-source' => $args['source'],
 				),
 			);
-			if ( empty( $post_id ) ) {
-				error_log( "creating post $uuid_value" );
-			}
+
 			$post_id = wp_insert_post( $postarr );
 			$post    = get_post( $post_id );
 		}

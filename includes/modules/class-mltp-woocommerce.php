@@ -75,18 +75,18 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		$this->filters = array(
 			array(
 				'component' => $this,
-				'hook'     => 'mb_settings_pages',
-				'callback' => 'register_settings_pages',
+				'hook'      => 'mb_settings_pages',
+				'callback'  => 'register_settings_pages',
 			),
 			array(
 				'component' => $this,
-				'hook'     => 'rwmb_meta_boxes',
-				'callback' => 'register_fields',
+				'hook'      => 'rwmb_meta_boxes',
+				'callback'  => 'register_fields',
 			),
 			array(
 				'component' => $this,
-				'hook'     => 'rwmb_meta_boxes',
-				'callback' => 'register_settings_fields',
+				'hook'      => 'rwmb_meta_boxes',
+				'callback'  => 'register_settings_fields',
 			),
 			array(
 				'hook'     => 'multipass_register_terms_mltp_detail-source',
@@ -216,7 +216,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			'type'          => 'post',
 			'post_type'     => array( 'product' ),
 			'field_type'    => 'select_advanced',
-			'placeholder'    => __('Select a product', 'multipass'),
+			'placeholder'   => __( 'Select a product', 'multipass' ),
 			'admin_columns' => array(
 				'position'   => 'before date',
 				'sort'       => true,
@@ -571,7 +571,8 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 			$order = wc_get_order( $post_id ); // make sure it is a wc object, not only a post
 			foreach ( $order->get_items() as $item_id => $item ) {
-				$uuid = wp_hash( get_the_guid($post_id) . '-' . get_current_blog_id() ) . '-' . $post_id . '-'  . $item_id;
+				// $uuid = wp_hash( 'woocommerce-' . get_current_blog_id() ) . '-' . $post_id . '-'  . $item_id;
+				$uuid       = join( '-', array( get_current_blog_id(), $post_id, $item_id ) );
 				$product    = $item->get_product();
 				$product_id = $product->get_id();
 
@@ -637,25 +638,25 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				}
 
 				$args = array(
-					'source'         => 'woocommerce',
+					'source'           => 'woocommerce',
 					'woocommerce_uuid' => $uuid,
-					'date' => $post->post_date,
-					'source_id'      => "$post_id",
-					'source_item_id' => "$item_id",
-					'view_url'       => $order->get_view_order_url(),
-					'edit_url'       => $order->get_edit_order_url(),
-					'resource_id'    => self::get_resource( $product_id ),
+					'date'             => $post->post_date,
+					'source_id'        => "$post_id",
+					'source_item_id'   => "$item_id",
+					'view_url'         => $order->get_view_order_url(),
+					'edit_url'         => $order->get_edit_order_url(),
+					'resource_id'      => self::get_resource( $product_id ),
 					// 'source_details' => array(
 					// 'wc_order_id' => $post_id,
 					// 'wc_order_item_id' => $item_id,
 					// 'wc_product_id' => $product_id,
 					// 'wc_variation_id' => $item->get_variation_id(),
 					// ),
-					'description'    => "$description",
+					'description'      => "$description",
 
-					'prestation_id'  => $prestation->ID,
+					'prestation_id'    => $prestation->ID,
 
-					'customer'       => array(
+					'customer'         => array(
 						'user_id' => $customer_id,
 						'name'    => $customer_name,
 						'email'   => $customer_email,
@@ -667,23 +668,23 @@ class Mltp_WooCommerce extends Mltp_Modules {
 					// 'email' => $customer_email,
 					// 'phone' => join(', ', $customer_phone),
 					// ),
-					'dates'          => $dates,
+					'dates'            => $dates,
 					// 'attendees' => $attendees;
 					// 'beds' => $beds;
 
-					'price'          => array(
+					'price'            => array(
 						'quantity'  => $quantity,
 						'unit'      => $unit_price,
 						'sub_total' => $sub_total,
 					),
-					'subtotal' => $sub_total, // TODO: replace use of price['subtotal'] by subtotal.
-					'discount'       => $discount,
-					'total'          => $total,
+					'subtotal'         => $sub_total, // TODO: replace use of price['subtotal'] by subtotal.
+					'discount'         => $discount,
+					'total'            => $total,
 					// TODO: ensure paid status is updated immediatly, not after second time save
 					//
-					'paid'           => $paid,
-					'balance'        => $balance,
-					'type'           => $type,
+					'paid'             => $paid,
+					'balance'          => $balance,
+					'type'             => $type,
 
 				);
 
