@@ -32,7 +32,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 	 */
 	public function __construct() {
 		$this->api_url = 'https://api.lodgify.com';
-		$this->api_key = MultiPass::get_option( 'lodgify_api_key' );
+		$this->api_key = $this->get_option( 'lodgify_api_key' );
 
 		$this->locale = MultiPass::get_locale();
 
@@ -88,7 +88,16 @@ class Mltp_Lodgify extends Mltp_Modules {
 	}
 
 	function register_settings_pages( $settings_pages ) {
-		$settings_pages['multipass-settings']['tabs']['lodgify'] = 'Lodgify';
+
+		$settings_pages[] = [
+			'menu_title' => __( 'Lodgify', 'multipass' ),
+			'id'         => 'multipass-lodgify',
+			'position'   => 25,
+			'parent'     => 'multipass',
+			'capability' => 'manage_options',
+			'style'      => 'no-boxes',
+			'icon_url'   => 'dashicons-admin-generic',
+		];
 
 		return $settings_pages;
 	}
@@ -100,15 +109,24 @@ class Mltp_Lodgify extends Mltp_Modules {
 		// Lodify Settings tab
 		$meta_boxes[] = array(
 			'title'          => __( 'Lodgify Settings', 'multipass' ),
-			'id'             => 'lodgify-settings',
-			'settings_pages' => array( 'multipass-settings' ),
-			'tab'            => 'lodgify',
+			'id'             => 'multipass-lodgify-settings',
+			'settings_pages' => array( 'multipass-lodgify' ),
+			// 'tab'            => 'lodgify',
 			'fields'         => array(
 				array(
 					'name'              => __( 'API Key', 'multipass' ),
 					'id'                => $prefix . 'api_key',
 					'type'              => 'text',
-					'sanitize_callback' => __CLASS__ . '::api_key_validation',
+					'sanitize_callback' => [ $this, 'verify_api_key' ],
+				),
+				array(
+					'name' => __('API key is valid', 'multipass'),
+					'id' => 'api_key_verified',
+					'type' => 'hidden',
+					// 'readonly' => true,
+					// 'disabled' => true,
+					// 'save_field' => false,
+					'sanitize_callback' => [ $this, 'api_key_verified' ],
 				),
 				array(
 					'id'         => $prefix . 'api_key_required',
@@ -120,7 +138,13 @@ class Mltp_Lodgify extends Mltp_Modules {
 						'https://app.lodgify.com/#/reservation/settings/publicApiToken',
 						__( 'Get your API key from Logdify Settings page > Public API', 'multipass' ),
 					),
-					'visible'    => array( 'api_key', '=', '' ),
+					'visible'    => array(
+						'when' => array(
+							array( 'api_key', '=', '' ),
+							array( 'api_key_verified', '=', '' ),
+						),
+						'relation' => 'or',
+					),
 				),
 				array(
 					'name'              => __( 'Synchronize now', 'multipass' ),
@@ -131,8 +155,11 @@ class Mltp_Lodgify extends Mltp_Modules {
 					'sanitize_callback' => array ($this,  'sync_now'),
 					'save_field'        => false,
 					'visible'           => array(
-						'when'     => array( array( 'api_key', '!=', '' ) ),
-						'relation' => 'or',
+						'when'     => array(
+							array( 'api_key', '!=', '' ),
+							array( 'api_key_verified', '=', '1' ),
+						 ),
+						'relation' => 'and',
 					),
 				),
 				array(
@@ -223,6 +250,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 	}
 
 	function api_request( $path, $args = array() ) {
+
 		$url      = $this->api_url . "$path?" . http_build_query( $args );
 		$options  = array(
 			// 'method'  => 'GET',
@@ -245,29 +273,54 @@ class Mltp_Lodgify extends Mltp_Modules {
 		return $json_data;
 	}
 
-	static function api_key_validation( $value, $field, $oldvalue ) {
+	function get_option( $option, $default = false ) {
+		if ( preg_match( '/:/', $option ) ) {
+			return MultiPass::get_option($option, $default);
+		} else {
+			return MultiPass::get_option('multipass-lodfify:' . $option, $default);
+		}
+	}
+
+	function update_option ( $option, $value, $autoload = null ) {
+		if ( preg_match( '/:/', $option ) ) {
+			return MultiPass::update_option ( $option, $value, $autoload );
+		} else {
+			return MultiPass::update_option ( 'multipass-lodfify:' . $option, $value, $autoload );
+		}
+	}
+
+	function api_key_verified( $value, $field, $oldvalue ) {
+		return wp_cache_get('multipass_lodgify-api_key_verified');
+		// // add_settings_error( $field['id'], $field['id'], $message, 'error' );
+		// if($status === 'valid')  return true;
+		//
+		// return false;
+	}
+
+	function verify_api_key( $value, $field, $oldvalue ) {
 		if ( empty( $value ) ) {
+			// $this->update_option('api_key_verified', false);
+			wp_cache_set('multipass_lodgify-api_key_verified', false);
 			return false;
 		}
-		if ( $value == $oldvalue ) {
-			return $value; // we assume it has already been checked
-		}
+		// if ( $value == $oldvalue ) {
+		// 	return $value; // we assume it has already been checked
+		// }
 
-		$lodgify          = new Mltp_Lodgify();
-		$lodgify->api_key = $value;
-
-		$result = $lodgify->api_request( '/v1/properties', array() );
-
+		$this->api_key = $value;
+		$result = $this->api_request( '/v1/properties', array() );
 		if ( is_wp_error( $result ) ) {
-			$lodgify->api_key = null;
+			$this->api_key = null;
 			$message = sprintf(
 				__( 'API Key verification failed (%s).', 'multipass' ),
 				$result->get_error_message(),
 			);
 			add_settings_error( $field['id'], $field['id'], $message, 'error' );
+			wp_cache_set('multipass_lodgify-api_key_verified', false);
 			return false;
 		}
 
+		wp_cache_set('multipass_lodgify-api_key_verified', true);
 		return $value;
 	}
 
