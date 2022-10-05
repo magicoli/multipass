@@ -560,6 +560,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				'customer_email' => $customer_email,
 				'date'           => esc_attr( $post->post_date ),
 				'date_gmt'       => esc_attr( $post->post_date_gmt ),
+				// TODO: add items from and to, avoid merging unrelated orders
 			)
 		);
 		if ( $prestation ) {
@@ -570,6 +571,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 			$order = wc_get_order( $post_id ); // make sure it is a wc object, not only a post
 			foreach ( $order->get_items() as $item_id => $item ) {
+				$uuid = wp_hash($order->post->guid . '-' . get_current_blog_id() ) . '-' . $order->ID . '-'  . $item_id;
 				$product    = $item->get_product();
 				$product_id = $product->get_id();
 
@@ -636,6 +638,8 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 				$args = array(
 					'source'         => 'woocommerce',
+					'woocommerce_uuid' => $uuid,
+					'date' => $post->post_date,
 					'source_id'      => "$post_id",
 					'source_item_id' => "$item_id",
 					'view_url'       => $order->get_view_order_url(),
@@ -672,6 +676,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 						'unit'      => $unit_price,
 						'sub_total' => $sub_total,
 					),
+					'subtotal' => $sub_total, // TODO: replace use of price['subtotal'] by subtotal.
 					'discount'       => $discount,
 					'total'          => $total,
 					// TODO: ensure paid status is updated immediatly, not after second time save

@@ -1559,6 +1559,8 @@ class Mltp_Prestation {
 			'customer_id' => null,
 			'customer_name' => null,
 			'customer_email' => null,
+			'from' => null,
+			'to' => null,
 		), $args);
 
 		$prestation_id  = $args['prestation_id'];

@@ -1,7 +1,8 @@
 #!/bin/bash
 
 [ ! "$1" ] && echo specify the post types to delete >&2 && exit
-read -p "really delete all post of types $@? " || exit $?
+echo "you are about to delete all posts of type(s) $@"
+types=$@ read -p "Really proceed? (Ctrl-C to abort) " || exit $?
 
 # wp post-type list --format=csv | cut -d , -f 1 | sort | egrep "^mp_|mltp|prestation|resource"
 

@@ -176,8 +176,8 @@ class Mltp_Payment_Product {
 		$product_type_options['prpay'] = array(
 			'id'            => '_prpay',
 			'wrapper_class' => 'show_if_simple show_if_variable',
-			'label'         => __( 'Prestation Payment', 'multipass' ),
-			'description'   => __( 'Check to use product as custom Prestation Payment.', 'multipass' ),
+			'label'         => sprintf(__( '%s payment', 'multipass' ), 'MultiPass'),
+			'description'   => __( 'Check to use product as MultiPass payment.', 'multipass' ),
 			'default'       => 'no',
 		);
 		return $product_type_options;

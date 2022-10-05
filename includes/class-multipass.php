@@ -135,7 +135,7 @@ class MultiPass {
 		 * Post types.and specific plugin classes.
 		 */
 		require_once MULTIPASS_DIR . 'includes/class-mltp-prestation.php';
-		require_once MULTIPASS_DIR . 'includes/class-mltp-item.php';
+		require_once MULTIPASS_DIR . 'includes/class-mltp-prestation-detail.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-resource.php';
 
 		require_once MULTIPASS_DIR . 'includes/class-mltp-settings.php';
