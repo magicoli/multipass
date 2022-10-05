@@ -763,7 +763,11 @@ class Mltp_Event {
 		// $slots             = ( empty( $slots ) ) ? 'overnight' : $slots;
 
 		// $fix_overnight =  get_post_meta( $this->id, 'slots', true );
+		//
+
 		$fix_overnight       = true;
+		$this->start = MultiPass::sanitize_timestamp( $this->start );
+		$this->end = MultiPass::sanitize_timestamp( $this->end );
 		$this->display_start = ( $fix_overnight ) ? ( round( $this->start / $d ) * $d ) : $this->start;
 		$this->display_end   = ( $fix_overnight ) ? ( round( $this->end / $d ) * $d ) : $this->end;
 

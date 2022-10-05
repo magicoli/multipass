@@ -483,6 +483,17 @@ class MultiPass {
 		delete_transient( $transient_key );
 	}
 
+	static function sanitize_timestamp( $timestamp ) {
+		if ( is_array( $timestamp ) && isset( $timestamp['timestamp'] ) ) {
+			$timestamp = $timestamp['timestamp'];
+		}
+		if ( is_numeric( $timestamp ) &! empty( $timestamp ) ) {
+			return $timestamp;
+		}
+
+		return null;
+	}
+
 	static function format_date( $timestamp, $datetype = 'RELATIVE_MEDIUM', $timetype = 'NONE' ) {
 		$DateType = constant( "IntlDateFormatter::$datetype" );
 		$TimeType = constant( "IntlDateFormatter::$timetype" );
@@ -495,6 +506,11 @@ class MultiPass {
 	}
 
 	static function format_date_iso( $timestamp ) {
+		$timestamp = self::sanitize_timestamp( $timestamp );
+		if ( empty( $timestamp ) ) {
+			return;
+		}
+
 		// error_log(date('Y-m-d\TH:i:s', $timestamp ));
 		// return date('Y-m-d\T12:00:00', $timestamp );
 		return date( 'Y-m-d\TH:i:s', round( $timestamp / 3600 ) * 3600 );
@@ -755,7 +771,7 @@ class MultiPass {
 	}
 
 	public static function origin_url( $origin, $origin_id, $default = null ) {
-		if ( empty($origin) || empty( $origin_id ) ) {
+		if ( empty( $origin ) || empty( $origin_id ) ) {
 			return $default;
 		}
 
@@ -784,16 +800,18 @@ class MultiPass {
 		return $origin_url;
 	}
 
-	public static function sanitize_email($email) {
-		if(empty($email)) return null;
+	public static function sanitize_email( $email ) {
+		if ( empty( $email ) ) {
+			return null;
+		}
 
-		$email = html_entity_decode($email);
-		$email = preg_replace('/,.*/', '', $email);
-		$email = preg_replace('/mailto:/', '', $email);
-		$email = preg_replace('/.*<(.*)>.*/', '$1', $email);
-		$email = preg_replace('/\'/', '', $email);
-		$email = preg_replace('/"/', '', $email);
-		$email = sanitize_email($email);
+		$email = html_entity_decode( $email );
+		$email = preg_replace( '/,.*/', '', $email );
+		$email = preg_replace( '/mailto:/', '', $email );
+		$email = preg_replace( '/.*<(.*)>.*/', '$1', $email );
+		$email = preg_replace( '/\'/', '', $email );
+		$email = preg_replace( '/"/', '', $email );
+		$email = sanitize_email( $email );
 
 		return $email;
 	}
