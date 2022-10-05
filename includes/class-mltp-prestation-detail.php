@@ -1236,48 +1236,48 @@ class Mltp_Item {
 				break;
 
 			case 'array':
-				if( empty( $args['source'] ) ) {
-					error_log("received " . print_r($args, true) . ", source cannot be empty, arbort.");
+				if ( empty( $args['source'] ) ) {
+					error_log( 'source cannot be empty, arbort.' );
 					return false;
 				}
 				$uuid_field = $args['source'] . '_uuid';
 
 				$source_term_id = get_term_by( 'slug', $args['source'], 'mltp_detail-source' );
-				if( ! $source_term_id ) {
-					error_log("received " . print_r($args, true) . ", unknown source " . $args['source'] . ", arbort");
+				if ( ! $source_term_id ) {
+					error_log( 'unknown source ' . $args['source'] . ', arbort' );
 					return;
 				}
 
-				if( empty( $args[$uuid_field] ) ) {
-					error_log("received " . print_r($args, true) . ", $uuid_field cannot be empty, arbort.");
+				if ( empty( $args[ $uuid_field ] ) ) {
+					error_log( "$uuid_field cannot be empty when source is $args[source], arbort." );
 					// error_log("$uuid_field cannot be empty, arbort.");
 					return false;
 				}
-				$uuid_value = $args[$uuid_field];
+				$uuid_value = $args[ $uuid_field ];
 
-				if( ! empty( $args['dates']['from'] ) ) {
-					$args['dates']['from'] = round($args['dates']['from'] / 86400 ) * 86400;
+				if ( ! empty( $args['dates']['from'] ) ) {
+					$args['dates']['from'] = round( $args['dates']['from'] / 86400 ) * 86400;
 				}
-				if( ! empty( $args['dates']['to'] ) ) {
-					$args['dates']['to'] = round($args['dates']['to'] / 86400 ) * 86400;
+				if ( ! empty( $args['dates']['to'] ) ) {
+					$args['dates']['to'] = round( $args['dates']['to'] / 86400 ) * 86400;
 				}
-				$from = ( empty($args['dates']['from']) ) ? null : $args['dates']['from'];
-				$to = ( empty($args['dates']['to']) ) ? null : $args['dates']['to'];
+				$from = ( empty( $args['dates']['from'] ) ) ? null : $args['dates']['from'];
+				$to   = ( empty( $args['dates']['to'] ) ) ? null : $args['dates']['to'];
 
-				error_log("looking by $uuid_field = $uuid_value");
-				$query_args     = array(
+				// error_log("looking by $uuid_field = $uuid_value");
+				$query_args = array(
 					'post_type'   => 'mltp_detail',
 					'post_status' => 'publish',
 					'numberposts' => 1,
 					'orderby'     => 'post_date',
 					'order'       => 'asc',
 					// 'tax_query'   => array(
-					// 	array(
-					// 		'taxonomy' => 'mltp_detail-source',
-					// 		'field'    => 'slug',
-					// 		'terms'    => array( $args['source'] ),
-					// 		'operator' => 'IN',
-					// 	),
+					// array(
+					// 'taxonomy' => 'mltp_detail-source',
+					// 'field'    => 'slug',
+					// 'terms'    => array( $args['source'] ),
+					// 'operator' => 'IN',
+					// ),
 					// ),
 					'meta_query'  => array(
 						'relation' => 'AND',
@@ -1287,12 +1287,12 @@ class Mltp_Item {
 						),
 					),
 				);
-				$posts          = get_posts( $query_args );
+				$posts      = get_posts( $query_args );
 
-				if ( ! $posts) {
-					error_log("looking by resource $resource_id and dates from $from to $to");
+				if ( ! $posts ) {
+					// error_log("looking by resource $resource_id and dates from $from to $to");
 
-					$query_args     = array(
+					$query_args = array(
 						'post_type'   => 'mltp_detail',
 						'post_status' => 'publish',
 						'numberposts' => 1,
@@ -1310,12 +1310,9 @@ class Mltp_Item {
 							),
 						),
 					);
-					error_log("looking by dates " . print_r($query_args, true));
-					$posts          = get_posts( $query_args );
+					// error_log("looking by dates " . print_r($query_args, true));
+					$posts = get_posts( $query_args );
 
-					if( ! $posts ) {
-						error_log("not found");
-					}
 				}
 				if ( $posts ) {
 					$post    = reset( $posts );
@@ -1329,7 +1326,7 @@ class Mltp_Item {
 			$postarr = array(
 				'ID'          => $post_id,
 				'post_author' => ( empty( $args['customer']['user_id'] ) ) ? null : $args['customer']['user_id'],
-				'post_date' => ( empty( $post_id ) && isset( $args['date'] ) ) ? $args['date'] : null,
+				'post_date'   => ( empty( $post_id ) && isset( $args['date'] ) ) ? $args['date'] : null,
 				'post_title'  => sprintf(
 					'#%s-%s %s',
 					$args['source_id'],
@@ -1344,7 +1341,7 @@ class Mltp_Item {
 					'mltp_detail-source' => $args['source'],
 				),
 			);
-			if(empty($post_id)) {
+			if ( empty( $post_id ) ) {
 				error_log( "creating post $uuid_value" );
 			}
 			$post_id = wp_insert_post( $postarr );
