@@ -571,7 +571,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 			$order = wc_get_order( $post_id ); // make sure it is a wc object, not only a post
 			foreach ( $order->get_items() as $item_id => $item ) {
-				$uuid = wp_hash($order->post->guid . '-' . get_current_blog_id() ) . '-' . $order->ID . '-'  . $item_id;
+				$uuid = wp_hash( get_the_guid($post_id) . '-' . get_current_blog_id() ) . '-' . $post_id . '-'  . $item_id;
 				$product    = $item->get_product();
 				$product_id = $product->get_id();
 
