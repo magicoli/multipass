@@ -1576,6 +1576,7 @@ class Mltp_Prestation {
 			'orderby'         => 'post_date',
 			'order'           => 'desc',
 		);
+
 		if ( ! empty( $customer_id ) ) {
 			$query_args['meta_query'] = array(
 				array(
@@ -1606,6 +1607,34 @@ class Mltp_Prestation {
 					'key'   => 'contact_name',
 					'value' => esc_attr( $customer_name ),
 				),
+			);
+		}
+
+		if(!empty($args['from'])) {
+			$query_args['meta_query'] = array(
+				'relation' => 'AND',
+				$query_args['meta_query'],
+				array(
+					'relation' => 'or',
+					array(
+						'key' => 'from',
+						'type' => 'numeric',
+						'compare' => 'between',
+						'value' => array(
+							$args['from'] - 3600,
+							$args['to'] + 3600,
+						)
+					),
+					array(
+						'key' => 'to',
+						'type' => 'numeric',
+						'compare' => 'between',
+						'value' => array(
+							$args['from'] - 3600,
+							$args['to'] + 3600,
+						)
+					),
+				)
 			);
 		}
 

@@ -552,6 +552,139 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			);
 		}
 
+		$all_dates = [];
+
+		$order = wc_get_order( $post_id ); // make sure it is a wc object, not only a post
+		foreach ( $order->get_items() as $item_id => $item ) {
+			// $uuid = wp_hash( 'woocommerce-' . get_current_blog_id() ) . '-' . $post_id . '-'  . $item_id;
+			$uuid       = join( '-', array( get_current_blog_id(), $post_id, $item_id ) );
+			$product    = $item->get_product();
+			$product_id = $product->get_id();
+
+			$terms = get_the_terms( $product_id, 'product_cat' );
+			if ( $terms ) {
+				$category = $terms[0]->name;
+			}
+
+			$description = join(
+				' ',
+				array_filter(
+					array(
+						isset( $category ) ? $category : '',
+						$item->get_name(),
+						isset( $variation ) ? $variation->get_formatted_name() : '',
+					)
+				)
+			);
+
+			$from = null;
+			$to = null;
+			$dates = [];
+			// $attendees = [];
+
+			if ( $product->is_type( 'booking' ) ) {
+				$booking_ids = WC_Booking_Data_Store::get_booking_ids_from_order_item_id( $item_id );
+				foreach ( $booking_ids as $booking_id ) {
+					$booking = get_wc_booking( $booking_id );
+					// $datetimes[] = esc_html( apply_filters( 'wc_bookings_summary_list_date', date_i18n( $date_format, $booking->get_start() ), $booking->get_start(), $booking->get_end() ) );
+					$dates[] = $booking->get_start();
+					$dates[] = $booking->get_end();
+				}
+				$dates = array_filter($dates);
+				if(!empty($dates)) {
+					$from = empty($dates) ? null : min($dates);
+					$to = empty($dates) ? null : max($dates);
+
+					$description .= ' ' . MultiPass::format_date_range( [ 'from' => $from, 'to' => $to ], 'SHORT' );
+				}
+
+				// TODO: get attendees and beds counts
+				//
+				// 'id'     => $prefix . 'attendees',
+				// 'id'            => $prefix . 'total',
+				// 'id'   => $prefix . 'adults',
+				// 'id'   => $prefix . 'children',
+				// 'id'   => $prefix . 'babies',
+				//
+				// 'id'     => $prefix . 'beds',
+				// 'id'   => $prefix . 'double',
+				// 'id'   => $prefix . 'single',
+				// 'id'   => $prefix . 'baby',
+			}
+
+
+			$sub_total  = $item->get_subtotal() + $item->get_subtotal_tax();
+			$quantity   = $item->get_quantity();
+			$unit_price = ( empty( $quantity ) ) ? $sub_total : $sub_total / $quantity;
+			$total      = $item->get_total() + $item->get_total_tax();
+			$discount   = ( $total != $sub_total ) ? array( 'amount' => $sub_total - $total ) : array();
+			$paid       = ( in_array( $order->get_status(), array( 'completed', 'processing' ) ) ) ? $total : null;
+			$balance    = $total - $paid;
+
+			$type = ( Mltp_Payment_Product::is_payment_product( $product ) ) ? 'payment' : $product->get_type();
+			switch ( $type ) {
+				case 'booking':
+					$description = '[' . __( 'Booking', 'multipass' ) . '] ' . $description;
+					break;
+
+				case 'payment':
+					$description = '[' . __( 'Payment', 'multipass' ) . '] ' . $description;
+					break;
+			}
+
+			$args = array(
+				'source'           => 'woocommerce',
+				'woocommerce_uuid' => $uuid,
+				'date'             => $post->post_date,
+				'source_id'        => "$post_id",
+				'source_item_id'   => "$item_id",
+				// 'view_url'         => $order->get_view_order_url(),
+				'edit_url'         => $order->get_edit_order_url(),
+				'resource_id'      => self::get_resource( $product_id ),
+
+				'description'      => "$description",
+
+				'customer'         => array(
+					'user_id' => $customer_id,
+					'name'    => $customer_name,
+					'email'   => $customer_email,
+					'phone'   => join( ', ', $customer_phone ),
+				),
+				// 'attendee' => array(
+				// 'user_id' => $customer_id,
+				// 'name' => $customer_name,
+				// 'email' => $customer_email,
+				// 'phone' => join(', ', $customer_phone),
+				// ),
+				'dates' => [ 'from' => $from, 'to' => $to ],
+				'from' => $from,
+				'to' => $to,
+				// 'attendees' => $attendees;
+				// 'beds' => $beds;
+
+				'price'            => array(
+					'quantity'  => $quantity,
+					'unit'      => $unit_price,
+					'sub_total' => $sub_total,
+				),
+				'subtotal'         => $sub_total, // TODO: replace use of price['subtotal'] by subtotal.
+				'discount'         => $discount,
+				'total'            => $total,
+				// TODO: ensure paid status is updated immediatly, not after second time save
+				//
+				'paid'             => $paid,
+				'balance'          => $balance,
+				'type'             => $type,
+
+			);
+
+			$details[] = $args;
+			$all_dates = array_merge($all_dates, array_values($dates));
+		}
+
+		$from = (empty($all_dates)) ? null : min($all_dates);
+		$to = (empty($all_dates)) ? null : max($all_dates);
+
 		$prestation = new Mltp_Prestation(
 			array(
 				'prestation_id'  => $prestation_id,
@@ -560,163 +693,25 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				'customer_email' => $customer_email,
 				'date'           => esc_attr( $post->post_date ),
 				'date_gmt'       => esc_attr( $post->post_date_gmt ),
+				'from' => $from,
+				'to' => $to,
 				// TODO: add items from and to, avoid merging unrelated orders
 			)
 		);
+
 		if ( $prestation ) {
 			update_post_meta( $post_id, 'prestation_id', $prestation->ID );
 			self::update_prestation_orders( $prestation->ID, $prestation, true );
 
 			// TODO: mark parts related to this order as review in progress
 
-			$order = wc_get_order( $post_id ); // make sure it is a wc object, not only a post
-			foreach ( $order->get_items() as $item_id => $item ) {
-				// $uuid = wp_hash( 'woocommerce-' . get_current_blog_id() ) . '-' . $post_id . '-'  . $item_id;
-				$uuid       = join( '-', array( get_current_blog_id(), $post_id, $item_id ) );
-				$product    = $item->get_product();
-				$product_id = $product->get_id();
-
-				$terms = get_the_terms( $product_id, 'product_cat' );
-				if ( $terms ) {
-					$category = $terms[0]->name;
-				}
-
-				$description = join(
-					' ',
-					array_filter(
-						array(
-							isset( $category ) ? $category : '',
-							$item->get_name(),
-							isset( $variation ) ? $variation->get_formatted_name() : '',
-						)
-					)
-				);
-
-				$dates = array();
-				// $attendees = [];
-				if ( $product->is_type( 'booking' ) ) {
-					$booking_ids = WC_Booking_Data_Store::get_booking_ids_from_order_item_id( $item_id );
-					foreach ( $booking_ids as $booking_id ) {
-						$booking = get_wc_booking( $booking_id );
-						// $datetimes[] = esc_html( apply_filters( 'wc_bookings_summary_list_date', date_i18n( $date_format, $booking->get_start() ), $booking->get_start(), $booking->get_end() ) );
-						$dates['from'] = $booking->get_start();
-						$dates['to']   = $booking->get_end();
-					}
-					$description .= ' ' . MultiPass::format_date_range( $dates, 'SHORT' );
-
-					// TODO: get attendees and beds counts
-					//
-					// 'id'     => $prefix . 'attendees',
-					// 'id'            => $prefix . 'total',
-					// 'id'   => $prefix . 'adults',
-					// 'id'   => $prefix . 'children',
-					// 'id'   => $prefix . 'babies',
-					//
-					// 'id'     => $prefix . 'beds',
-					// 'id'   => $prefix . 'double',
-					// 'id'   => $prefix . 'single',
-					// 'id'   => $prefix . 'baby',
-				}
-
-				$sub_total  = $item->get_subtotal() + $item->get_subtotal_tax();
-				$quantity   = $item->get_quantity();
-				$unit_price = ( empty( $quantity ) ) ? $sub_total : $sub_total / $quantity;
-				$total      = $item->get_total() + $item->get_total_tax();
-				$discount   = ( $total != $sub_total ) ? array( 'amount' => $sub_total - $total ) : array();
-				$paid       = ( in_array( $order->get_status(), array( 'completed', 'processing' ) ) ) ? $total : null;
-				$balance    = $total - $paid;
-
-				$type = ( Mltp_Payment_Product::is_payment_product( $product ) ) ? 'payment' : $product->get_type();
-				switch ( $type ) {
-					case 'booking':
-						$description = '[' . __( 'Booking', 'multipass' ) . '] ' . $description;
-						break;
-
-					case 'payment':
-						$description = '[' . __( 'Payment', 'multipass' ) . '] ' . $description;
-						break;
-				}
-
-				$args = array(
-					'source'           => 'woocommerce',
-					'woocommerce_uuid' => $uuid,
-					'date'             => $post->post_date,
-					'source_id'        => "$post_id",
-					'source_item_id'   => "$item_id",
-					'view_url'         => $order->get_view_order_url(),
-					'edit_url'         => $order->get_edit_order_url(),
-					'resource_id'      => self::get_resource( $product_id ),
-					// 'source_details' => array(
-					// 'wc_order_id' => $post_id,
-					// 'wc_order_item_id' => $item_id,
-					// 'wc_product_id' => $product_id,
-					// 'wc_variation_id' => $item->get_variation_id(),
-					// ),
-					'description'      => "$description",
-
-					'prestation_id'    => $prestation->ID,
-
-					'customer'         => array(
-						'user_id' => $customer_id,
-						'name'    => $customer_name,
-						'email'   => $customer_email,
-						'phone'   => join( ', ', $customer_phone ),
-					),
-					// 'attendee' => array(
-					// 'user_id' => $customer_id,
-					// 'name' => $customer_name,
-					// 'email' => $customer_email,
-					// 'phone' => join(', ', $customer_phone),
-					// ),
-					'dates'            => $dates,
-					// 'attendees' => $attendees;
-					// 'beds' => $beds;
-
-					'price'            => array(
-						'quantity'  => $quantity,
-						'unit'      => $unit_price,
-						'sub_total' => $sub_total,
-					),
-					'subtotal'         => $sub_total, // TODO: replace use of price['subtotal'] by subtotal.
-					'discount'         => $discount,
-					'total'            => $total,
-					// TODO: ensure paid status is updated immediatly, not after second time save
-					//
-					'paid'             => $paid,
-					'balance'          => $balance,
-					'type'             => $type,
-
-				);
-
-				$mltp_detail = new Mltp_Item( $args, $update );
-				// $mltp_detail->update($args);
-
-				// $lock = array_keys($part); // TODO: prevent modifications of locked fields
-
-				// TODO: add lines for order discount, deposit, paid
-				// 'id'            => $prefix . 'deposit',
-				// 'id'      => $prefix . 'percent',
-				// 'id'      => $prefix . 'amount',
-				// 'id'          => $prefix . 'before',
-				// 'id'     => $prefix . 'payment',
-				// 'id'   => $prefix . 'date',
-				// 'id'   => $prefix . 'amount',
-				// 'id'   => $prefix . 'method',
-				// 'id'   => $prefix . 'reference',
-				// 'id'            => $prefix . 'deposit_amount',
-				// 'id'            => $prefix . 'paid',
-				// 'id'            => $prefix . 'balance',
-				// 'id'            => $prefix . 'status',
-				//
-				//
-				// if(Mltp_Payment_Product::is_payment_product($product)) {
-				// $p_order['subtotal'] -= $item->get_subtotal();
-				// $p_order['refunded'] -= $post->get_total_refunded_for_item($item_id);
-				// $p_order['total'] = $p_order['total'] - $item->get_total() + $post->get_total_refunded_for_item($item_id);
-				// }
+			foreach ($details as $key => $detail) {
+				$detail['prestation_id'] = $prestation->ID;
+				$mltp_detail = new Mltp_Item( $detail, $update );
 			}
-			//
+
 			// TODO: delete remaining "review in progress" parts
+
 			$prestation->update();
 		}
 
