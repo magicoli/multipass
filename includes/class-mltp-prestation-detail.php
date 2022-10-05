@@ -250,7 +250,9 @@ class Mltp_Item {
 			$url = $link['url'];
 			if(isset($links_html[$link['url']])) continue;
 
-			$class = "link-$key link-$link[slug] ";
+			$class = "link-$key";
+			if(isset($link['slug']))
+			$class .= " link-${link['slug']} ";
 
 			if ($field['format'] == 'icon' ) {
 				$class .= ' ' . $link['icon_class'];

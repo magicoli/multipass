@@ -49,7 +49,7 @@ class Mltp_Prestation {
 	public function __construct( $args = null ) {
 		$this->post = $this->get( $args );
 		$this->ID   = ( $this->post ) ? $this->post->ID : false;
-		$this->name   = ( $this->post ) ? $this->post->post_title : false;
+		$this->name = ( $this->post ) ? $this->post->post_title : false;
 
 		$this->actions = array();
 		$this->filters = array();
@@ -280,8 +280,8 @@ class Mltp_Prestation {
 	public static function register_fields( $meta_boxes ) {
 		$js_date_format_short = preg_match( '/^[Fm]/', get_option( 'date_format' ) ) ? 'mm-dd-yy' : 'dd-mm-yy';
 
-		$prefix                       = '';
-		$meta_boxes['prestation-cpt'] = array(
+		$prefix                         = '';
+		$meta_boxes['prestation-cpt']   = array(
 			'title'      => __( 'Prestations', 'multipass' ),
 			'id'         => 'prestation-fields',
 			'post_types' => array( 'mltp_prestation' ),
@@ -438,7 +438,7 @@ class Mltp_Prestation {
 					'type'    => 'wysiwyg',
 					'raw'     => false,
 					'options' => array(
-						'textarea_rows' => 10,
+						'textarea_rows'     => 10,
 						'teeny'             => true,
 						'media_buttonsbool' => false,
 					),
@@ -446,10 +446,10 @@ class Mltp_Prestation {
 				),
 				array(
 					// 'name'    => __( 'Notes', 'prestations' ),
-					'id'      => $prefix . 'details_notes',
-					'type'    => 'custom_html',
+					'id'       => $prefix . 'details_notes',
+					'type'     => 'custom_html',
 					'callback' => 'Mltp_Prestation::render_details_notes',
-					'columns' => 6,
+					'columns'  => 6,
 				),
 			),
 		);
@@ -798,7 +798,7 @@ class Mltp_Prestation {
 	 * @return array Items formatted as array.
 	 */
 	public function get_items_as_posts() {
-		$query_args       = array(
+		$query_args = array(
 			'post_type'   => 'mltp_detail',
 			'post_status' => 'publish',
 			'numberposts' => -1,
@@ -824,22 +824,22 @@ class Mltp_Prestation {
 	public function get_details_array() {
 		$item_posts = $this->get_items_as_posts();
 
-		$items            = array();
+		$items = array();
 		foreach ( $item_posts as $item_post ) {
 			$meta     = get_post_meta( $item_post->ID );
 			$price    = get_post_meta( $item_post->ID, 'price', true );
 			$dates    = get_post_meta( $item_post->ID, 'dates', true );
 			$discount = get_post_meta( $item_post->ID, 'discount', true );
 			$deposit  = get_post_meta( $item_post->ID, 'deposit', true );
-			$links = Mltp_Item::item_links_html( $item_post, array( 'format' => 'icon' ) );
+			$links    = Mltp_Item::item_links_html( $item_post, array( 'format' => 'icon' ) );
 
-			$items[]  = array(
+			$items[] = array(
 				'ID'          => $item_post->ID,
 				'date'        => $item_post->post_date,
 				'description' => reset( $meta['description'] ),
 				'type'        => reset( $meta['type'] ),
 				'dates'       => $dates,
-				'subtotal'    => $price['sub_total'],
+				'subtotal'    => isset( $price['sub_total'] ) ? $price['sub_total'] : null,
 				'discount'    => isset( $discount['amount'] ) ? $discount['amount'] : null,
 				'total'       => reset( $meta['total'] ),
 				'deposit'     => ( is_array( $deposit ) & ! empty( $deposit['amount'] ) ) ? $deposit['amount'] : null,
@@ -1129,8 +1129,10 @@ class Mltp_Prestation {
 	}
 
 	function update() {
-		if(!$this->post) return;
-		return self::save_post_action($this->ID, $this->post, true);
+		if ( ! $this->post ) {
+			return;
+		}
+		return self::save_post_action( $this->ID, $this->post, true );
 	}
 	/**
 	 * Save post action, uptate summary values and prestation status.
@@ -1162,13 +1164,13 @@ class Mltp_Prestation {
 		 */
 		// $request = wp_unslash( $_REQUEST );
 		// if ( isset( $request['action'] ) ) {
-		// 	if ( 'trash' === $request['action'] ) {
-		// 		return; // maybe redundant?
-		// 	}
+		// if ( 'trash' === $request['action'] ) {
+		// return; // maybe redundant?
+		// }
 		//
-		// 	if ( isset( $request['_wpnonce'] ) &! wp_verify_nonce( $request['_wpnonce'] ) ) {
-		// 		return;
-		// 	}
+		// if ( isset( $request['_wpnonce'] ) &! wp_verify_nonce( $request['_wpnonce'] ) ) {
+		// return;
+		// }
 		// }
 		// End maybe obsolete check.
 
@@ -1193,16 +1195,16 @@ class Mltp_Prestation {
 		$dates               = array();
 
 		// if ( is_array( $request ) ) {
-		// 	foreach ( $updates as $key => $value ) {
-		// 		if ( isset( $request[ $key ] ) ) {
-		// 			$updates[ $key ] = is_array( $request[ $key ] ) ? $request[ $key ] : esc_attr( $request[ $key ] );
-		// 		}
-		// 	}
-		// 	foreach ( $amounts as $key => $value ) {
-		// 		if ( isset( $request[ $key ] ) ) {
-		// 			$amounts[ $key ] = is_array( $request[ $key ] ) ? $request[ $key ] : esc_attr( $request[ $key ] );
-		// 		}
-		// 	}
+		// foreach ( $updates as $key => $value ) {
+		// if ( isset( $request[ $key ] ) ) {
+		// $updates[ $key ] = is_array( $request[ $key ] ) ? $request[ $key ] : esc_attr( $request[ $key ] );
+		// }
+		// }
+		// foreach ( $amounts as $key => $value ) {
+		// if ( isset( $request[ $key ] ) ) {
+		// $amounts[ $key ] = is_array( $request[ $key ] ) ? $request[ $key ] : esc_attr( $request[ $key ] );
+		// }
+		// }
 		// }
 
 		if ( ! is_array( $updates['deposit'] ) ) {
@@ -1225,14 +1227,14 @@ class Mltp_Prestation {
 		$updates['refunded']            = 0;
 		$updates['discount']['total']   = 0;
 
-		$prestation       = new Mltp_Prestation( $post );
+		$prestation   = new Mltp_Prestation( $post );
 		$mltp_details = $prestation->get_details_array();
 
 		foreach ( $mltp_details as $item ) {
-			$updates['discount']['total'] += empty($item['discount']) ? 0 : $item['discount'];
-			$updates['subtotal']          += empty($item['subtotal']) ? 0 : $item['subtotal'];
-			$updates['total']             += empty($item['total']) ? 0 : $item['total'];
-			$updates['paid']              += empty($item['paid']) ? 0 : $item['paid'];
+			$updates['discount']['total'] += empty( $item['discount'] ) ? 0 : $item['discount'];
+			$updates['subtotal']          += empty( $item['subtotal'] ) ? 0 : $item['subtotal'];
+			$updates['total']             += empty( $item['total'] ) ? 0 : $item['total'];
+			$updates['paid']              += empty( $item['paid'] ) ? 0 : $item['paid'];
 			if ( ! empty( $item['dates'] ) ) {
 				$dates += array_values( $item['dates'] );
 			}
@@ -1360,9 +1362,9 @@ class Mltp_Prestation {
 		$updates['sort_date']    = ( isset( $updates['dates'] ) && isset( $updates['dates']['from'] ) ) ? $updates['dates']['from'] : '';
 		$updates['display_name'] = $display_name;
 
-		$updates['flags'] = MultiPass::set_flags($updates);
-		$updates['classes'] = MultiPass::get_flag_slugs($updates['flags']);
-		$post_update = array(
+		$updates['flags']   = MultiPass::set_flags( $updates );
+		$updates['classes'] = MultiPass::get_flag_slugs( $updates['flags'] );
+		$post_update        = array(
 			'ID'          => $post_id,
 			'post_title'  => trim( $display_name . ' #' . ( ( empty( $post->post_name ) ) ? $post_id : $post->post_name ) ),
 			'post_status' => $post_status,
@@ -1545,28 +1547,30 @@ class Mltp_Prestation {
 		if ( $prestation ) {
 			return $prestation;
 		}
-		if(is_wp_error($prestation)) {
-			$error_code = array_key_first( $user_id->errors );
-			$error_message = $user_id->errors[$error_code][0];
-			error_log("\nCould not get prestation - $error_message");
+		if ( is_wp_error( $prestation ) ) {
+			$error_code    = array_key_first( $user_id->errors );
+			$error_message = $user_id->errors[ $error_code ][0];
+			error_log( "\nCould not get prestation - $error_message" );
 			return false;
 		}
 
-		if(!is_array($args)) {
-			error_log(__CLASS__.'::'.__METHOD__ . "( " . print_r($args, true) . "): args should be an id, a post or an array");
+		if ( ! is_array( $args ) ) {
+			error_log( __CLASS__ . '::' . __METHOD__ . '( ' . print_r( $args, true ) . '): args should be an id, a post or an array' );
 			return false;
 		}
 
-
-		$args = array_merge(array(
-			'prestation_id' => null,
-			'customer_id' => null,
-			'customer_name' => null,
-			'customer_email' => null,
-			'from' => null,
-			'to' => null,
-		), $args);
-		$args['customer_email'] = MultiPass::sanitize_email($args['customer_email']);
+		$args                   = array_merge(
+			array(
+				'prestation_id'  => null,
+				'customer_id'    => null,
+				'customer_name'  => null,
+				'customer_email' => null,
+				'from'           => null,
+				'to'             => null,
+			),
+			$args
+		);
+		$args['customer_email'] = MultiPass::sanitize_email( $args['customer_email'] );
 
 		$prestation_id  = $args['prestation_id'];
 		$customer_id    = $args['customer_id'];
@@ -1615,31 +1619,31 @@ class Mltp_Prestation {
 			);
 		}
 
-		if(!empty($args['from'])) {
+		if ( ! empty( $args['from'] ) ) {
 			$query_args['meta_query'] = array(
 				'relation' => 'AND',
 				$query_args['meta_query'],
 				array(
 					'relation' => 'OR',
 					array(
-						'key' => 'from',
-						'type' => 'numeric',
+						'key'     => 'from',
+						'type'    => 'numeric',
 						'compare' => 'between',
-						'value' => array(
+						'value'   => array(
 							$args['from'] - 3600,
 							$args['to'] + 3600,
-						)
+						),
 					),
 					array(
-						'key' => 'to',
-						'type' => 'numeric',
+						'key'     => 'to',
+						'type'    => 'numeric',
 						'compare' => 'between',
-						'value' => array(
+						'value'   => array(
 							$args['from'] - 3600,
 							$args['to'] + 3600,
-						)
+						),
 					),
-				)
+				),
 			);
 		}
 
@@ -1655,31 +1659,31 @@ class Mltp_Prestation {
 		}
 
 		// Nothing worked so far, create new prestation post.
-		$meta          = array(
+		$meta    = array(
 			'customer_id'    => $customer_id,
 			'customer_name'  => $customer_name,
 			'customer_email' => $customer_email,
-			'from' => $args['from'],
-			'to' => $args['to'],
+			'from'           => $args['from'],
+			'to'             => $args['to'],
 		);
-		$postarr       = array(
-			'post_author'   => $customer_id,
-			'post_date'     => (empty($args['date'])) ? null : esc_attr( $args['date'] ),
+		$postarr = array(
+			'post_author' => $customer_id,
+			'post_date'   => ( empty( $args['date'] ) ) ? null : esc_attr( $args['date'] ),
 			// 'post_date_gmt' => (empty($args['date_gmt'])) ? null : esc_attr( $args['date_gmt'] ),
-			'post_type'     => 'mltp_prestation',
-			'post_status'   => 'publish',
-			'meta_input'    => $meta,
+			'post_type'   => 'mltp_prestation',
+			'post_status' => 'publish',
+			'meta_input'  => $meta,
 		);
 
 		$prestation_id = wp_insert_post( $postarr );
-		if( 0 === $prestation_id ) {
-			error_log("\ncould not create prestation " . print_r($postarr, true));
+		if ( 0 === $prestation_id ) {
+			error_log( "\ncould not create prestation " . print_r( $postarr, true ) );
 			return false;
 		}
-		if( is_wp_error($prestation_id) ) {
-			$error_code = array_key_first( $user_id->errors );
-			$error_message = $user_id->errors[$error_code][0];
-			error_log("\ncould not create prestation " . print_r($postarr, true) . "\n$error_message");
+		if ( is_wp_error( $prestation_id ) ) {
+			$error_code    = array_key_first( $user_id->errors );
+			$error_message = $user_id->errors[ $error_code ][0];
+			error_log( "\ncould not create prestation " . print_r( $postarr, true ) . "\n$error_message" );
 			return false;
 		}
 
@@ -1689,11 +1693,11 @@ class Mltp_Prestation {
 
 	static function render_details_notes() {
 		global $post;
-		$prestation = new Mltp_Prestation($post);
-		$items = $prestation->get_details_array();
-		$html = '';
-		foreach($items as $item) {
-			if(!empty($item['notes'])) {
+		$prestation = new Mltp_Prestation( $post );
+		$items      = $prestation->get_details_array();
+		$html       = '';
+		foreach ( $items as $item ) {
+			if ( ! empty( $item['notes'] ) ) {
 				$html .= sprintf(
 					'<h4>%s</h4>
 					<p>%s</p>',
