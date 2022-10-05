@@ -378,7 +378,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		// Make sure we have at least all future bookings
 		unset($api_query['stayFilter']);
 		$complement = $this->api_request( '/v2/reservations/bookings', $api_query );
-		if ( is_wp_error( $complement ) ) {
+		if ( ! is_wp_error( $complement ) ) {
 			$response = array_merge_recursive($response, $complement);
 		}
 
