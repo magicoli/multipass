@@ -831,6 +831,8 @@ class Mltp_Prestation {
 			$dates    = get_post_meta( $item_post->ID, 'dates', true );
 			$discount = get_post_meta( $item_post->ID, 'discount', true );
 			$deposit  = get_post_meta( $item_post->ID, 'deposit', true );
+			$links = Mltp_Item::item_links_html( $item_post, array( 'format' => 'icon' ) );
+
 			$items[]  = array(
 				'ID'          => $item_post->ID,
 				'date'        => $item_post->post_date,
@@ -844,7 +846,7 @@ class Mltp_Prestation {
 				'paid'        => reset( $meta['paid'] ),
 				'balance'     => reset( $meta['balance'] ),
 				'source'      => reset( $meta['source'] ),
-				'links'       => Mltp_Item::item_links_html( $item_post, array( 'format' => 'icon' ) ),
+				'links'       => $links,
 				'notes'       => get_post_meta( $item_post->ID, 'notes', true ),
 			);
 		}
@@ -872,6 +874,7 @@ class Mltp_Prestation {
 			'balance'     => __( 'Balance', 'multipass' ),
 			'source'      => __( 'Source', 'multipass' ),
 			'links'       => __( 'Actions', 'multipass' ),
+			'debug'       => __( 'Debug', 'multipass' ),
 		);
 	}
 

@@ -202,34 +202,75 @@ class Mltp_Item {
 		if ( ! $post ) {
 			return;
 		}
+		$post_id = $post->ID;
 
-		$source      = get_post_meta( $post->ID, 'source', true );
-		$term        = get_term_by( 'slug', $source, 'mltp_detail-source' );
-		$source_name = $term->name;
-		if ( $field['format'] == 'icon' ) {
-			$links = array_filter(
-				array(
-					'<a class="dashicons dashicons-visibility" href="%s"></a>' => get_post_meta( $post->ID, 'view_url', true ),
-					'<a class="dashicons dashicons-edit" href="%s"></a>' => get_post_meta( $post->ID, 'edit_url', true ),
-				)
-			);
-		} else {
-			$links = array_filter(
-				array(
-					__( 'View %s item', 'multipass' ) => get_post_meta( $post->ID, 'view_url', true ),
-					__( 'Edit %s item', 'multipass' ) => get_post_meta( $post->ID, 'edit_url', true ),
-				)
+		$links['view'] = array(
+			'url' => get_post_meta( $post->ID, 'view_url', true ),
+			'icon_class' => 'dashicons dashicons-visibility',
+			'text' => __( 'View', 'multipass' ),
+		);
+		$links = array(
+			'edit' => array(
+				'url' => current_user_can( 'edit_post', $post_id ) ? get_edit_post_link($post_id) : null,
+				'icon_class' => 'edit dashicons dashicons-edit',
+				'text' => __( 'Edit', 'multipass' ),
+			),
+		);
+		if(!empty($links['edit']['url'])) unset($links['view']);
+
+		if(get_post_meta( $post->ID, 'source_url', true )) {
+			$source = get_post_meta( $post->ID, 'source', true );
+			$source_term = get_term_by( 'slug', $source, 'mltp_detail-source' );
+			if($source_term) {
+				$links['source'] = array(
+					'url' => get_post_meta( $post->ID, 'source_url', true ),
+					'icon_class' => 'dashicons dashicons-external',
+					'text' => sprintf( __( 'Edit on %s', 'multipass' ), $source_term->name ),
+					'slug' => $source_term->slug,
+				);
+			}
+		}
+		if(get_post_meta( $post->ID, 'origin_url', true )) {
+			$origin = get_post_meta( $post->ID, 'origin', true );
+			$origin_term = get_term_by( 'slug', $origin, 'mltp_detail-origin' );
+			if($origin_term) {
+				$links['origin'] = array(
+					'url' => get_post_meta( $post->ID, 'origin_url', true ),
+					'icon_class' => 'dashicons dashicons-external',
+					'text' => sprintf( __( 'Edit on %s', 'multipass' ), $origin_term->name ),
+					'slug' => $origin_term->slug,
+				);
+			}
+		}
+
+		$links_html = [];
+
+		foreach ( $links as $key => $link ) {
+			if(empty($link['url'])) continue;
+			$url = $link['url'];
+			if(isset($links_html[$link['url']])) continue;
+
+			$class = "link-$key link-$link[slug] ";
+
+			if ($field['format'] == 'icon' ) {
+				$class .= ' ' . $link['icon_class'];
+				$text = '';
+				$title = $link['text'];
+			} else {
+				$text = $link['text'];
+				$title = '';
+			}
+			$links_html[$link['url']] = sprintf(
+				'<a href="%s" class="%s" title="%s">%s</a> ',
+				$link['url'],
+				$class,
+				$title,
+				$text,
 			);
 		}
-		$links_html = array();
-		foreach ( $links as $label => $link ) {
-			$links_html[] = sprintf(
-				'<a href="%s">%s</a>',
-				$link,
-				sprintf( $label, $source_name ),
-			);
-		}
-		return join( ' ', $links_html );
+		$output =join( ' ', $links_html );
+
+		return $output;
 	}
 
 	static function customer_html( $value = null, $field = array() ) {
