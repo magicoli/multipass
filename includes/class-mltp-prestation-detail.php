@@ -1287,9 +1287,9 @@ class Mltp_Item {
 					);
 					$posts          = get_posts( $query_args );
 
-					if( ! $posts ) {
-						error_log("not found $debug");
-					}
+					// if( ! $posts ) {
+					// 	error_log("not found $debug");
+					// }
 				}
 				if ( $posts ) {
 					$post    = reset( $posts );
@@ -1321,9 +1321,9 @@ class Mltp_Item {
 
 			$type = ( empty( $post_id ) ) ? 'new detail' : "update $post->post_type";
 
-			if(empty($post_id)) {
-				error_log("$type " . print_r($postarr, true));
-			}
+			// if(empty($post_id)) {
+			// 	error_log("$type " . print_r($postarr, true));
+			// }
 
 			$post_id = wp_insert_post( $postarr );
 			$post    = get_post( $post_id );
