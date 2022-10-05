@@ -635,7 +635,7 @@ class Mltp_Calendar {
 				'icon'  => ( $event->source === 'woocommerce' ) ? 'cart' : 'external',
 			);
 		}
-		if ( ! empty( $event->origin ) ) {
+		if ( ! empty( $event->origin ) && $event->origin != $event->source ) {
 			$links['origin'] = array(
 				'label' => sprintf(
 					__( 'Edit on %s', 'multipass' ),
