@@ -1236,11 +1236,12 @@ class Mltp_Prestation {
 			$updates['total']             += empty( $item['total'] ) ? 0 : $item['total'];
 			$updates['paid']              += empty( $item['paid'] ) ? 0 : $item['paid'];
 			if ( ! empty( $item['dates'] ) ) {
-				$dates += array_values( $item['dates'] );
+				$dates = array_merge( $dates, array_values( $item['dates'] ) );
 			}
 		}
 
 		if ( is_array( $manual_items ) ) {
+
 			foreach ( $manual_items as $item ) {
 				if ( isset( $item['paid'] ) ) {
 					$updates['paid'] += (float) $item['paid'];
@@ -1288,7 +1289,8 @@ class Mltp_Prestation {
 			}
 		}
 
-		$dates = array_unique( array_filter( $dates ) );
+		$dates = array_filter( $dates );
+
 		if ( ! empty( $dates ) ) {
 			$updates['dates'] = array(
 				'from' => min( $dates ),
