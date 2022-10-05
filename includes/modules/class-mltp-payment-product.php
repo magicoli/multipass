@@ -404,7 +404,7 @@ class Mltp_Payment_Product {
 			$cached = wp_cache_get( 'prpay_product_cart_item_processed_' . $cart_key, 'multipass' );
 			if ( ! $cached ) {
 				$added = ( isset( $cart_item['prpay_amount_added'] ) ) ? $cart_item['prpay_amount_added'] : false;
-				if ( is_numeric( $cart_item['prpay_amount'] ) & ! $added ) {
+				if ( isset( $cart_item['prpay_amount'] ) && is_numeric( $cart_item['prpay_amount'] ) & ! $added ) {
 					// $cart_item['data']->adjust_price( $cart_item['prpay_amount'] );
 					$price = (float) $cart_item['data']->get_price( 'edit' );
 					$total = $price + $cart_item['prpay_amount'];
