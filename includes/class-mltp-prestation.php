@@ -1615,7 +1615,7 @@ class Mltp_Prestation {
 				'relation' => 'AND',
 				$query_args['meta_query'],
 				array(
-					'relation' => 'or',
+					'relation' => 'OR',
 					array(
 						'key' => 'from',
 						'type' => 'numeric',
@@ -1654,6 +1654,8 @@ class Mltp_Prestation {
 			'customer_id'    => $customer_id,
 			'customer_name'  => $customer_name,
 			'customer_email' => $customer_email,
+			'from' => $args['from'],
+			'to' => $args['to'],
 		);
 		$postarr       = array(
 			'post_author'   => $customer_id,
@@ -1663,6 +1665,7 @@ class Mltp_Prestation {
 			'post_status'   => 'publish',
 			'meta_input'    => $meta,
 		);
+
 		$prestation_id = wp_insert_post( $postarr );
 		if( 0 === $prestation_id ) {
 			error_log("\ncould not create prestation " . print_r($postarr, true));
