@@ -148,22 +148,6 @@ class Mltp_Lodgify extends Mltp_Modules {
 					),
 				),
 				array(
-					'name'              => __( 'Synchronize now', 'multipass' ),
-					'id'                => $prefix . 'sync_now',
-					'type'              => 'switch',
-					'desc'              => __( 'Sync Lodgify bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multipass' ),
-					'style'             => 'rounded',
-					'sanitize_callback' => array ($this,  'sync_now'),
-					'save_field'        => false,
-					'visible'           => array(
-						'when'     => array(
-							array( 'api_key', '!=', '' ),
-							array( 'api_key_verified', '=', '1' ),
-						 ),
-						'relation' => 'and',
-					),
-				),
-				array(
 					// 'name'              => __( 'Debug', 'multipass' ),
 					'id'                => $prefix . 'debug',
 					'type'              => 'custom_html',
@@ -174,7 +158,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 		if($this->get_option('api_key_verified') === true) {
 		// if( ! empty ( $this->api_key ) ) {
-			$meta_boxes[] = array(
+			$meta_boxes['multipass-lodgify-resources'] = array(
 				'name'              => __( 'Resources', 'multipass' ),
 				'id'             => 'multipass-lodgify-resources',
 				'settings_pages' => array( 'multipass-lodgify' ),
@@ -187,6 +171,29 @@ class Mltp_Lodgify extends Mltp_Modules {
 						'type'              => 'group',
 						'fields'            => $this->resource_group_fields(),
 						'sanitize_callback' => array( $this, 'sanitize_resources_settings' ),
+					),
+				),
+			);
+			$meta_boxes['multipass-lodgify-synchronize'] = array(
+				'name'              => __( 'Synchronize', 'multipass' ),
+				'id'             => 'multipass-lodgify-synchronize',
+				'settings_pages' => array( 'multipass-lodgify' ),
+				'fields' => array(
+					array(
+						'name'              => __( 'Synchronize now', 'multipass' ),
+						'id'                => $prefix . 'sync_now',
+						'type'              => 'switch',
+						'desc'              => __( 'Sync Lodgify bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multipass' ),
+						'style'             => 'rounded',
+						'sanitize_callback' => array ($this,  'sync_now'),
+						'save_field'        => false,
+						'visible'           => array(
+							'when'     => array(
+								array( 'api_key', '!=', '' ),
+								array( 'api_key_verified', '=', '1' ),
+							),
+							'relation' => 'and',
+						),
 					),
 				),
 			);
@@ -415,18 +422,18 @@ class Mltp_Lodgify extends Mltp_Modules {
 		// return false;
 	}
 
-	function verify_api_key( $value, $field, $oldvalue ) {
-		if ( empty( $value ) ) {
+	function verify_api_key( $api_key, $field, $oldapi_key ) {
+		if ( empty( $api_key ) ) {
 			// $this->update_option('api_key_verified', false);
 			wp_cache_set('multipass_lodgify-api_key_verified', false);
 			return false;
 		}
-		if ( $value == $oldvalue ) {
+		if ( $api_key == $oldapi_key ) {
 			wp_cache_set('multipass_lodgify-api_key_verified', $this->get_option('api_key_verified'));
-			return $value; // we assume it has already been checked
+			return $api_key; // we assume it has already been checked
 		}
 
-		$this->api_key = $value;
+		$this->api_key = $api_key;
 		$result = $this->api_request( '/v1/properties', array() );
 		if ( is_wp_error( $result ) ) {
 			$this->api_key = null;
@@ -440,7 +447,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		}
 
 		wp_cache_set('multipass_lodgify-api_key_verified', true);
-		return $value;
+		return $api_key;
 	}
 
 	/**
