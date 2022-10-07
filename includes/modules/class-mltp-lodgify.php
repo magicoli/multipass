@@ -336,7 +336,12 @@ class Mltp_Lodgify extends Mltp_Modules {
 		$transient_key = sanitize_title( __CLASS__ . '-' . __FUNCTION__ );
 		$properties    = get_transient( $transient_key );
 		if ( $properties ) {
-			return $properties;
+			$check = reset($properties);
+			if( !empty($check) && preg_match('/^Elite Royal Apartment/', $check['name']) ) {
+				error_log('Properties contain demo data, force fetch again');
+			} else {
+				return $properties;
+			}
 		}
 
 		if ( empty( $this->api_key ) ) {
