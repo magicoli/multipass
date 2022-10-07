@@ -633,6 +633,17 @@ class Mltp_Lodgify extends Mltp_Modules {
 				continue;
 			}
 
+			$booking = array_replace_recursive(array(
+				'language' => null,
+				'canceled_at' => null,
+				'currency_code' => null,
+				'quote' => null,
+				'subtotals' => [ 'promotions' => null, 'stay' => null, 'fees' => null, 'addons' => null ],
+				'amount_paid' => null,
+				'amount_due' => null,
+				'user_id' => null,
+			), $booking );
+
 			$confirmed = (in_array($status, [ 'Booked' ])) ? true : false;
 
 			$from = strtotime($booking['arrival']);
@@ -750,12 +761,6 @@ class Mltp_Lodgify extends Mltp_Modules {
 				'debug' => $booking,
 			);
 
-			// error_log(
-			// 	"Check status "
-			// 	. print_r( $booking, true )
-			// 	. ' source ' . $item_args['source']
-			// 	. ' origin ' . $item_args['origin']
-			// );
 			$mltp_detail = new Mltp_Item( $item_args, true );
 			$prestation->update();
 

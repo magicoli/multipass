@@ -1622,31 +1622,37 @@ class Mltp_Prestation {
 		}
 
 		if ( ! empty( $args['from'] ) ) {
-			$query_args['meta_query'] = array(
-				'relation' => 'AND',
-				$query_args['meta_query'],
+			$from_query = array(
+				'relation' => 'OR',
 				array(
-					'relation' => 'OR',
-					array(
-						'key'     => 'from',
-						'type'    => 'numeric',
-						'compare' => 'between',
-						'value'   => array(
-							$args['from'] - 3600,
-							$args['to'] + 3600,
-						),
+					'key'     => 'from',
+					'type'    => 'numeric',
+					'compare' => 'between',
+					'value'   => array(
+						$args['from'] - 3600,
+						$args['to'] + 3600,
 					),
-					array(
-						'key'     => 'to',
-						'type'    => 'numeric',
-						'compare' => 'between',
-						'value'   => array(
-							$args['from'] - 3600,
-							$args['to'] + 3600,
-						),
+				),
+				array(
+					'key'     => 'to',
+					'type'    => 'numeric',
+					'compare' => 'between',
+					'value'   => array(
+						$args['from'] - 3600,
+						$args['to'] + 3600,
 					),
 				),
 			);
+
+			if( empty( $query_args['meta_query'] ) ) {
+				$query_args['meta_query'] = $from_query;
+			} else {
+				$query_args['meta_query'] = array(
+					'relation' => 'AND',
+					$query_args['meta_query'],
+					$from_query,
+				);
+			}
 		}
 
 		$prestations = get_posts( $query_args );
