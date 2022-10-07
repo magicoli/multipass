@@ -31,6 +31,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 	 * @since    0.1.0
 	 */
 	public function __construct() {
+		$this->prefix = 'lodgify_';
 		$this->api_url = 'https://api.lodgify.com';
 		$this->api_key = $this->get_option( 'lodgify_api_key' );
 
@@ -103,7 +104,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 	}
 
 	function register_settings_fields( $meta_boxes ) {
-		$prefix  = 'lodgify_';
+		$prefix  = $this->prefix;
 		// $lodgify = new Mltp_Lodgify();
 
 		// Lodify Settings tab
@@ -171,7 +172,114 @@ class Mltp_Lodgify extends Mltp_Modules {
 			),
 		);
 
+		if($this->get_option('api_key_verified') === true) {
+		// if( ! empty ( $this->api_key ) ) {
+			$meta_boxes[] = array(
+				'name'              => __( 'Resources', 'multipass' ),
+				'id'             => 'multipass-lodgify-resources',
+				'settings_pages' => array( 'multipass-lodgify' ),
+				// 'tab'            => 'lodgify',
+				// 'fields'            => $this->resource_group_fields(),
+				'fields' => array(
+					array(
+						'name'              => __( 'Resources', 'multipass' ),
+						'id'                => 'resources',
+						'type'              => 'group',
+						'fields'            => $this->resource_group_fields(),
+						'sanitize_callback' => array( $this, 'sanitize_resources_settings' ),
+					),
+				),
+			);
+		}
+
 		return $meta_boxes;
+	}
+
+	function resource_group_fields() {
+		$fields = array();
+		$options = $this->get_property_options();
+		asort($options);
+		// error_log('options ' . print_r($options, true));
+
+		foreach ($options as $key => $value) {
+			$fields[] = array(
+				'id'          => $this->prefix . $key,
+				'name'        => $value,
+				'type'        => 'post',
+				'post_type'   => array( 'mltp_resource' ),
+				'field_type'  => 'select_advanced',
+				'placeholder' => __( 'Do not synchronize', 'multipass' ),
+				'size'        => 5,
+			);
+		}
+		// error_log('fields ' . print_r($fields, true));
+		return $fields;
+	}
+
+	function sanitize_resources_settings( $values, $field, $old_value ) {
+		// $options = $this->get_property_options();
+		$options = $this->get_property_options($this->prefix);
+		$array_keys = array_fill_keys( array_keys( $this->get_property_options($this->prefix) ), null );
+		$values = array_replace( $array_keys, $values );
+		$prefix = 'resource_' . $this->prefix;
+		// $meta_key = $this->prefix . 'id';
+
+		foreach ( $values as $key => $resource_id ) {
+			$lodgify_id = preg_replace("/^$this->prefix/", '', $key);
+
+			$query = $this->query_resources( $lodgify_id );
+			while ( $query->have_posts() ) {
+				$query->the_post();
+				$post_id = get_the_ID();
+				if ( $post_id !== $resource_id ) {
+					update_post_meta( $post_id, $prefix . 'id', null );
+					update_post_meta( $post_id, $prefix . 'name', null );
+				}
+			}
+
+			if ( ! empty( $resource_id ) ) {
+				// add reference to resource
+				$resource = new Mltp_Resource( $resource_id );
+				if ( $resource ) {
+					// error_log('options ' . print_r($options))
+					update_post_meta( $resource->id, $prefix . 'id', $lodgify_id );
+					update_post_meta( $resource->id, $prefix . 'name', $options[$key] );
+				} else {
+					$resource_id = null;
+				}
+			}
+		}
+
+		return $values;
+	}
+
+	function query_resources( $property_id = null ) {
+		$meta_key = 'resource_' . $this->prefix . 'id';
+		// $meta_key = $this->prefix . 'id';
+
+		$args  = array(
+			'posts_per_page' => -1,
+			'post_type'      => 'mltp_resource',
+			'meta_query'     => array(
+				array(
+					'meta_key' => $meta_key,
+					'value'    => $property_id,
+				),
+			),
+		);
+		$query = new WP_Query( $args );
+		return $query;
+	}
+
+	function get_resource_id( $property_id = null ) {
+		if ( empty( $property_id ) ) {
+			return;
+		}
+		$query = $this->query_resources( $property_id );
+		if ( $query->have_posts() ) {
+			$query->the_post();
+			return get_the_ID();
+		}
 	}
 
 	function render_debug() {
@@ -182,15 +290,15 @@ class Mltp_Lodgify extends Mltp_Modules {
 	}
 
 	function register_fields( $meta_boxes ) {
-		// $prefix  = 'lodgify_';
+		$prefix  = $this->prefix;
 		// $lodgify = new Mltp_Lodgify();
 
 		$meta_boxes['resources']['fields'][] = array(
 			'name'          => __( 'Lodgify Property', 'multipass' ),
-			'id'            => 'resource_lodgify_id',
-			'type'          => 'select_advanced',
-			'options'       => $this->get_property_options(),
-			'placeholder'    => __('Select a property', 'multipass'),
+			'id'            => 'resource_' . $prefix . 'name',
+			'type' => 'custom_html',
+			'callback' => [ $this, 'property_name' ],
+			'save_field' => false,
 			'admin_columns' => array(
 				'position'   => 'before date',
 				'sort'       => true,
@@ -200,6 +308,16 @@ class Mltp_Lodgify extends Mltp_Modules {
 		);
 
 		return $meta_boxes;
+	}
+
+	function property_name( $value = '', $field = [] ) {
+		if(empty($value)) {
+			$post_id = get_the_ID();
+			$prefix = 'resource_' . $this->prefix;
+			$value = get_post_meta($post_id, $prefix . 'name', true);
+		}
+
+		return $value;
 	}
 
 	function register_sources_filter( $sources ) {
@@ -238,12 +356,12 @@ class Mltp_Lodgify extends Mltp_Modules {
 		return $properties;
 	}
 
-	function get_property_options() {
+	function get_property_options( $prefix = '' ) {
 		$options    = array();
 		$properties = $this->get_properties();
 		if ( $properties ) {
 			foreach ( $properties as $id => $property ) {
-				$options[ $id ] = $property['name'];
+				$options[ $prefix . $id ] = $property['name'];
 			}
 		}
 		return $options;
@@ -277,7 +395,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		if ( preg_match( '/:/', $option ) ) {
 			return MultiPass::get_option($option, $default);
 		} else {
-			return MultiPass::get_option('multipass-lodfify:' . $option, $default);
+			return MultiPass::get_option('multipass-lodgify:' . $option, $default);
 		}
 	}
 
@@ -303,9 +421,10 @@ class Mltp_Lodgify extends Mltp_Modules {
 			wp_cache_set('multipass_lodgify-api_key_verified', false);
 			return false;
 		}
-		// if ( $value == $oldvalue ) {
-		// 	return $value; // we assume it has already been checked
-		// }
+		if ( $value == $oldvalue ) {
+			wp_cache_set('multipass_lodgify-api_key_verified', $this->get_option('api_key_verified'));
+			return $value; // we assume it has already been checked
+		}
 
 		$this->api_key = $value;
 		$result = $this->api_request( '/v1/properties', array() );
