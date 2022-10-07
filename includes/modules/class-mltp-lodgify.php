@@ -380,8 +380,12 @@ class Mltp_Lodgify extends Mltp_Modules {
 	}
 
 	function api_request( $path, $args = array() ) {
-
-		$url      = $this->api_url . "$path?" . http_build_query( $args );
+		if(preg_match('~^[a-z]+://~', $path)) {
+			$url = $path;
+		} else {
+			$url      = $this->api_url . "$path?" . http_build_query( $args );
+		}
+		error_log(__METHOD__ . ' ' . $url);
 		$options  = array(
 			// 'method'  => 'GET',
 			'timeout' => 10,
@@ -529,79 +533,50 @@ class Mltp_Lodgify extends Mltp_Modules {
 			return $response;
 		}
 
+		$items = [];
+		$count = -1;
+		$total = -1;
 		$api_query = array(
-			'size' => null,
-			// 'updatedSince' => '2022-01-01',
-			'includeCount'        => 'true',
-			'includeTransactions' => 'true',
-			'includeExternal' => true,
-			'includeQuoteDetails' => 'true',
-			'stayFilter'          => 'All', // Upcoming (default), Current, Historic, All
-			// 'stayFilter'          => ($get_past) ? 'All' : 'Upcoming', // Upcoming (default), Current, Historic, All
+			'offset' => 0,
+			'limit' => 100,
+			'trash' => 'false',
 		);
-		$response = $this->api_request( '/v2/reservations/bookings', $api_query );
-
+		$response = $this->api_request( '/v1/reservation', $api_query );
 		if ( is_wp_error( $response ) ) {
-			$error_id = sanitize_title( __CLASS__ . '-' . __METHOD__ );
-			$message  = sprintf( __( '%1$s failed (%2$s).', 'multipass' ), $error_id, $response->get_error_message() );
+			$error_code = $response->get_error_code();
+			$error_id = __CLASS__ . '-' . __METHOD__ . '-' . $error_code;
+			error_log($error_id . " " . print_r($response, true));
+			$message  = sprintf( __( '%1$s failed with error %2$s: %3$s', 'multipass' ), __CLASS__ . ' ' . __METHOD__ . '()', $error_code, $response->get_error_message() );
 			add_settings_error( $error_id, $error_id, $message, 'error' );
 			return $response;
 		}
-		if ( isset($response['count']) && $response['count'] > count( $response['items'] ) ) {
-			// error_log( 'missing some, getting them all ' . $response['count'] . ' ' . print_r($debug, true) );
-			$api_query['size'] = $response['count'];
-			$response     = $this->api_request( '/v2/reservations/bookings', $api_query );
-			if ( is_wp_error( $response ) ) {
-				$error_id = sanitize_title( __CLASS__ . '-' . __METHOD__ );
-				$message  = sprintf( __( '%1$s failed (%2$s).', 'multipass' ), $error_id, $response->get_error_message() );
-				add_settings_error( $error_id, $error_id, $message, 'error' );
-				return $response;
-			}
+
+		$items = $response['items'];
+		$total = $response['total'];
+		$count = count($response['items']);
+
+		while ( !empty($response['next']) ) {
+			$response = $this->api_request( $response['next'] );
+			if ( is_wp_error( $response ) ) break;
+
+			$count = count($response['items']);
+			$items = array_merge($items, $response['items']);
 		}
 
-		// Make sure we have at least all future bookings
-		unset($api_query['stayFilter']);
-		$complement = $this->api_request( '/v2/reservations/bookings', $api_query );
-		if ( ! is_wp_error( $complement ) ) {
-			$response = array_merge_recursive($response, $complement);
+		$count = count($items);
+		if($count < $total) {
+			error_log(__CLASS__ . '::' . __METHOD__ . "() partial result $count/$total");
 		}
 
-		// unset($debug['items']);
-		// error_log(__CLASS__ . ' ' . __METHOD__ . ' ' . count( $response['items'] ) . '/' . $response['count'] . ' bookings ' . print_r($debug, true));
+		$response = array(
+			'total' => $total,
+			'count' => $count,
+			'items' => $items,
+		);
 
 		wp_cache_set( $cache_key, $response );
 		return $response;
 	}
-
-	// static function bookings_options() {
-	// 	$lodgify  = new Mltp_Lodgify();
-	// 	$options  = array();
-	// 	$response = $lodgify->get_bookings();
-	// 	if ( is_wp_error( $response ) ) {
-	// 		return false;
-	// 	}
-	// 	if ( ! is_array( $response['items'] ) ) {
-	// 		return false;
-	// 	}
-	//
-	// 	foreach ( $response['items'] as $key => $booking ) {
-	// 		$options[ $booking['id'] ] = sprintf(
-	// 			'%s, %sp %s (#%s)',
-	// 			$booking['attendee']['name'],
-	// 			$booking['rooms'][0]['people'],
-	// 			MultiPass::format_date_range(
-	// 				array(
-	// 					$booking['arrival'],
-	// 					$booking['departure'],
-	// 				),
-	// 				true
-	// 			),
-	// 			$booking['id'],
-	// 		);
-	// 	}
-	//
-	// 	return $options;
-	// }
 
 	/**
 	 * Sync bookings from Lodgify.
@@ -622,31 +597,15 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 		$properties = $this->get_properties();
 
-		$response = $this->get_bookings();
-		if ( is_wp_error( $response ) ) {
+		$api_response = $this->get_bookings();
+		if ( is_wp_error( $api_response ) ) {
 			return false;
 		}
-		$bookings = $response['items'];
+		$bookings = $api_response['items'];
 
-		$z = 0;
+		error_log(__METHOD__ . '(): ' . count($bookings) . ' bookings received');
+
 		foreach ( $bookings as $key => $booking ) {
-			$status = $booking['status'];
-			if(in_array($status, [ 'Declined', 'Open', 'Unavailable' ] )) continue;
-
-			if( ! in_array( $status, [ 'Booked', 'Tentative' ] ) ) {
-				error_log(
-					"Check status "
-					. print_r( $booking, true )
-				);
-				// break;
-			}
-			$confirmed = (in_array($status, [ 'Booked' ])) ? true : false;
-
-			$from = strtotime($booking['arrival']);
-			$to = strtotime($booking['departure']);
-			$dates = [ 'from' => $from, 'to' => $to ];
-			$date_range = MultiPass::format_date_range( $dates );
-			$attendees = $booking['rooms'][0]['people'];
 			$resource_id = Mltp_Resource::get_resource_id( 'lodgify', $booking['property_id'] );
 			if( ! $resource_id ) {
 				// No resource associated with this property.
@@ -654,6 +613,33 @@ class Mltp_Lodgify extends Mltp_Modules {
 			}
 			$resource = new Mltp_Resource($resource_id);
 			$name =  $resource->name;
+
+			$status = $booking['status'];
+			// if(in_array($status, [ 'Declined', 'Open', 'Unavailable' ] )) {
+			// }
+
+			if(in_array($status, [ 'Declined', 'Open' ] )) {
+				continue;
+			}
+
+			if( ! in_array( $status, [ 'Booked', 'Tentative' ] ) ) {
+				// TODO: ensure already imported booking status is set accordingly
+				error_log(join(', ', array(
+					'status' => $booking['status'],
+					'guest' => $booking['guest']['name'],
+					'property' => $name,
+					'dates' => $booking['arrival'] . ' - ' . $booking['departure'],
+				)));
+				continue;
+			}
+
+			$confirmed = (in_array($status, [ 'Booked' ])) ? true : false;
+
+			$from = strtotime($booking['arrival']);
+			$to = strtotime($booking['departure']);
+			$dates = [ 'from' => $from, 'to' => $to ];
+			$date_range = MultiPass::format_date_range( $dates );
+			$attendees = $booking['rooms'][0]['people'];
 			$description = sprintf(
 				'%s (%sp, %s)',
 				$name,
@@ -761,6 +747,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 				'paid'           => $booking['amount_paid'],
 				'balance'        => $booking['amount_due'],
 				'type'           => 'booking',
+				'debug' => $booking,
 			);
 
 			// error_log(
@@ -769,7 +756,6 @@ class Mltp_Lodgify extends Mltp_Modules {
 			// 	. ' source ' . $item_args['source']
 			// 	. ' origin ' . $item_args['origin']
 			// );
-
 			$mltp_detail = new Mltp_Item( $item_args, true );
 			$prestation->update();
 
