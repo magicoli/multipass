@@ -186,6 +186,13 @@ class Mltp_Settings {
 				'hook'     => 'admin_menu',
 				'callback' => 'admin_menu_action',
 			),
+
+			array(
+				'component' => $this,
+				'hook'     => 'rwmb_meta_boxes',
+				'callback' => 'register_fields',
+			),
+
 			array(
 				'hook'     => 'mb_settings_pages',
 				'callback' => 'register_settings_pages',
@@ -392,6 +399,51 @@ class Mltp_Settings {
 		);
 
 		return $meta_boxes;
+	}
+
+	function register_fields( $meta_boxes ) {
+		if( ! get_option('multipass_debug', false)) return $meta_boxes;
+
+		$prefix = '';
+
+		$meta_boxes['debug'] = array(
+			'title'      => __( 'Debug', 'multipass' ),
+			'title'      => __( 'Debug data', 'hoteldruid-migration' ),
+			'id'         => 'debug',
+			'post_types' => ['mltp_prestation', 'mltp_detail', 'mltp_resource'],
+			'priority'   => 'low',
+			// 'style' => 'seamless',
+			// 'closed'     => true,
+			// 'visible'    => [
+			// 		'when'     => [['debug', '!=', '']],
+			// 		'relation' => 'or',
+			// ],
+			'fields'     => array(
+				array(
+					// 'name' => __('Debug', 'multipass'),
+					'id'       => $prefix . 'debug',
+					'type'     => 'custom_html',
+					'save_field' => false,
+					'callback' => [ $this, 'debug_html' ],
+				),
+			),
+		);
+
+		return $meta_boxes;
+	}
+
+	function debug_html($value, $field) {
+
+		if(empty($value)) {
+			$post_id = get_the_ID();
+			$value = get_post_meta($post_id, 'debug', true);
+			if(is_array($value)) {
+				$value = '<pre>' . print_r($value, true) . '</pre>';
+			}
+		}
+
+		return $value;
+		// return "debug";
 	}
 
 	function plugin_action_links( $links ) {
