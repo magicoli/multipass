@@ -385,7 +385,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		} else {
 			$url      = $this->api_url . "$path?" . http_build_query( $args );
 		}
-		error_log(__METHOD__ . ' ' . $url);
+
 		$options  = array(
 			// 'method'  => 'GET',
 			'timeout' => 10,
@@ -603,8 +603,6 @@ class Mltp_Lodgify extends Mltp_Modules {
 		}
 		$bookings = $api_response['items'];
 
-		error_log(__METHOD__ . '(): ' . count($bookings) . ' bookings received');
-
 		foreach ( $bookings as $key => $booking ) {
 			$resource_id = Mltp_Resource::get_resource_id( 'lodgify', $booking['property_id'] );
 			if( ! $resource_id ) {
@@ -615,10 +613,8 @@ class Mltp_Lodgify extends Mltp_Modules {
 			$name =  $resource->name;
 
 			$status = $booking['status'];
-			// if(in_array($status, [ 'Declined', 'Open', 'Unavailable' ] )) {
-			// }
 
-			if(in_array($status, [ 'Declined', 'Open' ] )) {
+			if(in_array($status, [ 'Declined', 'Open', 'Unavailable' ] )) {
 				continue;
 			}
 
