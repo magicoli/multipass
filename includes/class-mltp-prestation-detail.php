@@ -146,6 +146,7 @@ class Mltp_Item {
 
 		$filters = array(
 			array(
+				'component' => $this,
 				'hook'     => 'rwmb_meta_boxes',
 				'callback' => 'register_fields',
 			),
@@ -385,7 +386,7 @@ class Mltp_Item {
 		register_post_type( 'mltp_detail', $args );
 	}
 
-	static function register_fields( $meta_boxes ) {
+	function register_fields( $meta_boxes ) {
 		$js_date_format_short = preg_match( '/^[Fm]/', get_option( 'date_format' ) ) ? 'mm-dd-yy' : 'dd-mm-yy';
 		$prefix               = '';
 
@@ -1387,10 +1388,10 @@ class Mltp_Item {
 				'post_author' => ( empty( $args['customer']['user_id'] ) ) ? null : $args['customer']['user_id'],
 				'post_date'   => ( empty( $post_id ) && isset( $args['date'] ) ) ? $args['date'] : null,
 				'post_title'  => sprintf(
-					'#%s-%s %s',
+					'%s #%s-%s',
+					$args['description'],
 					$args['source_id'],
 					$args['source_item_id'],
-					$args['description'],
 				),
 				// 'post_date_gmt' => esc_attr($args['date_gmt']),
 				'post_type'   => 'mltp_detail',
