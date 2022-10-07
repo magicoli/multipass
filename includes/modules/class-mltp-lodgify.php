@@ -461,7 +461,8 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 	/**
 	 * Get closed periods, complementary to get_bookings(), as API method
-	 * /v2/reservations/bookings does not return dates blocked manually.
+	 * /v2/reservations/bookings does not return dates blocked manually, and v1
+	 * api doesn't return details.
 	 *
 	 * @return array API response as array
 	 */
@@ -562,6 +563,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			$count = count($response['items']);
 			$items = array_merge($items, $response['items']);
 		}
+		// $closed = $this->get_closed_periods();
 
 		$count = count($items);
 		if($count < $total) {
@@ -572,6 +574,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			'total' => $total,
 			'count' => $count,
 			'items' => $items,
+			// 'closed' => $closed,
 		);
 
 		wp_cache_set( $cache_key, $response );
@@ -599,6 +602,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 		$api_response = $this->get_bookings();
 		if ( is_wp_error( $api_response ) ) {
+			error_log($api_response->get_error_message());
 			return false;
 		}
 		$bookings = $api_response['items'];
@@ -655,8 +659,14 @@ class Mltp_Lodgify extends Mltp_Modules {
 			);
 			$subtotal = $booking['subtotals']['stay'] + $booking['subtotals']['fees'] + $booking['subtotals']['addons'];
 
-			// $source_url = 'https://app.lodgify.com/#/reservation/inbox/B' . $booking['id'];
-			$source_url = MultiPass::origin_url( 'lodgify', $booking['id'] );
+			if( 'AAAAAAAAAAAAAAAAAAAAAA' === $booking['guest']['id'] ) {
+				// TODO: find closed period comment and use it as client name
+				$booking['guest']['name'] = sprintf( __( 'Closed in %s', 'multipass' ), 'Lodgify' );
+				$source_url = 'https://app.lodgify.com/#/reservation/calendar/multi/closed-period/' . $booking['id'];
+			} else {
+				// $source_url = 'https://app.lodgify.com/#/reservation/inbox/B' . $booking['id'];
+				$source_url = MultiPass::origin_url( 'lodgify', $booking['id'] );
+			}
 
 			$p_replace = array(
 				'/AirbnbIntegration/' => 'airbnb',
