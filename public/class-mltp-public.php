@@ -69,7 +69,7 @@ class Mltp_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_slug, plugin_dir_url( __FILE__ ) . 'css/public.css', array(), MULTIPASS_VERSION, 'all' );
+		wp_enqueue_style( $this->plugin_slug, plugin_dir_url( __FILE__ ) . 'js/public.css', array(), MULTIPASS_VERSION, 'all' );
 
 	}
 

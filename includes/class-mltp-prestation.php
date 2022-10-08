@@ -39,6 +39,9 @@ class Mltp_Prestation {
 	 * @var      array    $filters    The filters registered with WordPress to fire when the plugin loads.
 	 */
 	protected $filters;
+	protected $post = false;
+	protected $id = false;
+	protected $name = false;
 
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
@@ -47,13 +50,14 @@ class Mltp_Prestation {
 	 * @param    integer|object|array $args Object post id or data to use to search prestation.
 	 */
 	public function __construct( $args = null ) {
-		$this->post = $this->get( $args );
-		$this->ID   = ( $this->post ) ? $this->post->ID : false;
-		$this->name = ( $this->post ) ? $this->post->post_title : false;
-
-		$this->actions = array();
-		$this->filters = array();
-
+		$post = $this->get( $args );
+		if( ! is_wp_error($post) &! empty($post)) {
+			$this->post = $post;
+			$this->id   = $post->ID;
+			$this->name = $post->post_title;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -818,6 +822,8 @@ class Mltp_Prestation {
 	}
 
 	public function summary() {
+		if( !$this->is_prestation() ) return;
+
 		$details = $this->get_details_array();
 		$title = '<tr><th colspan="2">' . $this->name . '</th></tr>';
 		$list = [ $title ];
@@ -840,12 +846,14 @@ class Mltp_Prestation {
 				),
 			);
 		}
-		$amounts += array(
-			'total' => array(
-				'desc' => __('Prestation total', 'multipass'),
-				'price' => $this->get_summary_total(),
-			),
-		);
+		if(!empty($this->get_summary_total(true))) {
+			$amounts += array(
+				'total' => array(
+					'desc' => __('Prestation total', 'multipass'),
+					'price' => $this->get_summary_total(),
+				),
+			);
+		}
 		if(!empty($this->get_summary_deposit())) {
 			$amounts += array(
 				'deposit' => array(
@@ -860,13 +868,17 @@ class Mltp_Prestation {
 					'desc' => __('Paid', 'multipass'),
 					'price' => $this->get_summary_paid(),
 				),
+			);
+		}
+		if(!empty($this->get_summary_balance() ) && $this->get_summary_balance() != $this->get_summary_total() ) {
+			$amounts += array(
 				'balance' => array(
 					'desc' => __('Balance', 'multipass'),
 					'price' => $this->get_summary_balance(),
 				),
 			);
 		}
-		error_log('amounts ' . print_r($amounts, true));
+
 		// $amounts['total'] = array(
 		// 	'desc' => __('Prestation total', 'multipass'),
 		// 	'price' => $detail['total']
@@ -876,7 +888,7 @@ class Mltp_Prestation {
 			$output[] = sprintf(
 				'<tr>
 				<td class="description">%s</td>
-				<td class="right">%s</td>
+				<td class="price">%s</td>
 				</tr>',
 				$amount['desc'],
 				$amount['price'],
@@ -1016,13 +1028,15 @@ class Mltp_Prestation {
 	 *
 	 * @return string  HTML formatted currency amount.
 	 */
-	public function get_summary_total() {
+	public function get_summary_total( $raw = false ) {
+
 		global $post;
 		$amount = get_post_meta( $post->ID, 'total', true );
 		if ( empty( $amount ) ) {
 			$amount = 0;
 		}
-		return MultiPass::price( $amount );
+		if($raw) return $amount;
+		else return MultiPass::price( $amount );
 	}
 
 	/**
@@ -1197,6 +1211,11 @@ class Mltp_Prestation {
 		}
 
 		return true;
+	}
+
+	function is_prestation() {
+		if(empty($this->post)) return false;
+		return self::is_prestation_post($this->post);
 	}
 
 	function update() {
