@@ -510,7 +510,7 @@ class Mltp_Calendar {
 				$end               = ( empty( $iso['to'] ) ) ? $iso['from'] : $iso['to'];
 				$prestation_id     = get_post_meta( get_the_ID(), 'prestation_id', true );
 				$prestation        = new Mltp_Prestation( $prestation_id );
-				$prestation_status = $prestation->post->post_status;
+				$prestation_status = ($prestation->post) ? $prestation->post->post_status : null;
 				$resource_id       = get_post_meta( get_the_ID(), 'resource_id', true );
 				$resource          = get_post( $resource_id );
 				if ( $resource ) {

@@ -39,9 +39,10 @@ class Mltp_Prestation {
 	 * @var      array    $filters    The filters registered with WordPress to fire when the plugin loads.
 	 */
 	protected $filters;
-	protected $post = false;
-	protected $id = false;
-	protected $name = false;
+
+	public $post = false;
+	public $id = false;
+	public $name = false;
 
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
@@ -51,12 +52,10 @@ class Mltp_Prestation {
 	 */
 	public function __construct( $args = null ) {
 		$post = $this->get( $args );
-		if( ! is_wp_error($post) &! empty($post)) {
-			$this->post = $post;
-			$this->id   = $post->ID;
+		if($post) {
+			$this->id = $post->ID;
 			$this->name = $post->post_title;
-		} else {
-			return false;
+			$this->post = $post;
 		}
 	}
 
@@ -813,7 +812,7 @@ class Mltp_Prestation {
 				'relation' => 'AND',
 				array(
 					'key'   => 'prestation_id',
-					'value' => $this->ID,
+					'value' => $this->id,
 				),
 			),
 		);
@@ -1009,17 +1008,37 @@ class Mltp_Prestation {
 		return MultiPass::price( ( empty( $amount ) ) ? 0 : $amount );
 	}
 
+
 	/**
 	 * Format discount amount for summary metabox.
 	 *
 	 * @return string  HTML formatted currency amount.
 	 */
-	public function get_summary_discount() {
-		global $post;
-		$discount = get_post_meta( $post->ID, 'discount', true );
+
+	public function get_discount() {
+		$discount = get_post_meta( $this->get_id(), 'discount', true );
 		$amount   = ( isset( $discount['total'] ) ) ? $discount['total'] : null;
 		if ( $amount > 0 ) {
-			return MultiPass::price( $amount );
+			return $amount;
+		}
+	}
+
+	public function get_summary_discount() {
+		return MultiPass::price( $this->get_discount() );
+		// global $post;
+		// $discount = get_post_meta( $post->ID, 'discount', true );
+		// $amount   = ( isset( $discount['total'] ) ) ? $discount['total'] : null;
+		// if ( $amount > 0 ) {
+		// 	return MultiPass::price( $amount );
+		// }
+	}
+
+	public function get_id() {
+		if( ! empty( $this->id )) {
+			return $this->id;
+		} else {
+			global $post;
+			return $post->ID;
 		}
 	}
 
@@ -1028,15 +1047,25 @@ class Mltp_Prestation {
 	 *
 	 * @return string  HTML formatted currency amount.
 	 */
-	public function get_summary_total( $raw = false ) {
+	public function get_total() {
+		return get_post_meta( $this->get_id(), 'total', true );
+	}
 
-		global $post;
-		$amount = get_post_meta( $post->ID, 'total', true );
-		if ( empty( $amount ) ) {
-			$amount = 0;
-		}
-		if($raw) return $amount;
-		else return MultiPass::price( $amount );
+
+	public function get_summary_total( $raw = false ) {
+		return MultiPass::price( $this->get_total() );
+		// global $post;
+		// error_log("this " . print_r($this, true) . " post_id $post->ID" );
+		// $amount = get_post_meta( $post->ID, 'total', true );
+		// if ( empty( $amount ) ) {
+		// 	$amount = 0;
+		// }
+		// error_log(
+		// 	"\nbefore\n" . MultiPass::price( $amount )
+		// 	. "\nnow\n" . MultiPass::price($this->get_total())
+		// 	. "\n"
+		// );
+		// // return MultiPass::price($this->get_total());
 	}
 
 	/**
@@ -1222,7 +1251,7 @@ class Mltp_Prestation {
 		if ( ! $this->post ) {
 			return;
 		}
-		return self::save_post_action( $this->ID, $this->post, true );
+		return self::save_post_action( $this->id, $this->post, true );
 	}
 	/**
 	 * Save post action, uptate summary values and prestation status.
@@ -1630,19 +1659,19 @@ class Mltp_Prestation {
 		if ( empty( $args ) ) {
 			return $args;
 		}
-		$prestation = false;
+		$post = false;
 		if ( is_numeric( $args ) ) {
-			$prestation = get_post( $args );
-			if('mltp_prestation' !== $prestation->post_type) return new WP_Error( 'prestation-wrong-type', 'Not a prestation' );
+			$post = get_post( $args );
+			if('mltp_prestation' !== $post->post_type) return new WP_Error( 'prestation-wrong-type', 'Not a prestation' );
 		} elseif ( is_object( $args ) && 'mltp_prestation' === $args->post_type ) {
-			$prestation = $args;
+			$post = $args;
 		} elseif( is_string($args)) {
-			$prestation = get_page_by_path($args, OBJECT, 'mltp_prestation');
+			$post = get_page_by_path($args, OBJECT, 'mltp_prestation');
 		}
-		if ( $prestation ) {
-			return $prestation;
+		if ( $post ) {
+			return $post;
 		}
-		if ( is_wp_error( $prestation ) ) {
+		if ( is_wp_error( $post ) ) {
 			$error_code    = array_key_first( $user_id->errors );
 			$error_message = $user_id->errors[ $error_code ][0];
 			error_log( "\nCould not get prestation - $error_message" );
@@ -1748,15 +1777,15 @@ class Mltp_Prestation {
 			}
 		}
 
-		$prestations = get_posts( $query_args );
-		$prestation  = false;
-		if ( $prestations ) {
-			$prestation    = $prestations[0];
-			$prestation_id = $prestation->ID;
-			// update_post_meta( $order_id, 'prestation_id', $prestation_id );
+		$posts = get_posts( $query_args );
+		$post  = false;
+		if ( $posts ) {
+			$post    = $posts[0];
+			$post_id = $post->ID;
+			// update_post_meta( $order_id, 'prestation_id', $post_id );
 		}
-		if ( $prestation ) {
-			return $prestation;
+		if ( $post ) {
+			return $post;
 		}
 
 		// Nothing worked so far, create new prestation post.
@@ -1776,20 +1805,20 @@ class Mltp_Prestation {
 			'meta_input'  => $meta,
 		);
 
-		$prestation_id = wp_insert_post( $postarr );
-		if ( 0 === $prestation_id ) {
+		$post_id = wp_insert_post( $postarr );
+		if ( 0 === $post_id ) {
 			error_log( "\ncould not create prestation " . print_r( $postarr, true ) );
 			return false;
 		}
-		if ( is_wp_error( $prestation_id ) ) {
+		if ( is_wp_error( $post_id ) ) {
 			$error_code    = array_key_first( $user_id->errors );
 			$error_message = $user_id->errors[ $error_code ][0];
 			error_log( "\ncould not create prestation " . print_r( $postarr, true ) . "\n$error_message" );
 			return false;
 		}
 
-		$prestation = get_post( $prestation_id );
-		return $prestation;
+		$post = get_post( $post_id );
+		return $post;
 	}
 
 	static function render_details_notes() {

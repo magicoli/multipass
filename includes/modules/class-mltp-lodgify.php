@@ -713,7 +713,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			// $description
 			// source $source $source_url
 			// origin $origin $origin_url
-			// edit " . get_edit_post_link($prestation->ID) . "
+			// edit " . get_edit_post_link($prestation->id) . "
 			// ");
 
 			$item_args = array(
@@ -724,8 +724,8 @@ class Mltp_Lodgify extends Mltp_Modules {
 				'source_url'       => $source_url,
 				'origin' => $origin,
 				'origin_url'       => $origin_url,
-				'edit_url'       => get_edit_post_link($prestation->ID),
-				'view_url'       => get_edit_post_link($prestation->ID),
+				'edit_url'       => get_edit_post_link($prestation->id),
+				'view_url'       => get_edit_post_link($prestation->id),
 				'resource_id'    => $resource_id,
 				'status' => $status,
 				'confirmed' => $confirmed,
@@ -741,7 +741,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 					'currency_code' => $booking['currency_code'],
 					'quote' => $booking['quote'],
 				),
-				'prestation_id'  => $prestation->ID,
+				'prestation_id'  => $prestation->id,
 				'customer'       => array(
 					// TODO: try to get WP user if exists
 					// 'user_id' => $customer_id,

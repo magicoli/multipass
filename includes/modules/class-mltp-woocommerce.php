@@ -700,13 +700,13 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		);
 
 		if ( $prestation ) {
-			update_post_meta( $post_id, 'prestation_id', $prestation->ID );
-			self::update_prestation_orders( $prestation->ID, $prestation, true );
+			update_post_meta( $post_id, 'prestation_id', $prestation->id );
+			self::update_prestation_orders( $prestation->id, $prestation, true );
 
 			// TODO: mark parts related to this order as review in progress
 
 			foreach ($details as $key => $detail) {
-				$detail['prestation_id'] = $prestation->ID;
+				$detail['prestation_id'] = $prestation->id;
 				$mltp_detail = new Mltp_Item( $detail, $update );
 			}
 
