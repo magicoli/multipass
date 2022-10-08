@@ -1614,6 +1614,7 @@ class Mltp_Prestation {
 		$prestation = false;
 		if ( is_numeric( $args ) ) {
 			$prestation = get_post( $args );
+			if('mltp_prestation' !== $prestation->post_type) return new WP_Error( 'prestation-wrong-type', 'Not a prestation' );
 		} elseif ( is_object( $args ) && 'mltp_prestation' === $args->post_type ) {
 			$prestation = $args;
 		} elseif( is_string($args)) {
