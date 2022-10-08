@@ -639,8 +639,8 @@ class Mltp_Lodgify extends Mltp_Modules {
 				'currency_code' => null,
 				'quote' => null,
 				'subtotals' => [ 'promotions' => null, 'stay' => null, 'fees' => null, 'addons' => null ],
-				'amount_paid' => null,
-				'amount_due' => null,
+				// 'amount_paid' => null,
+				// 'amount_due' => null,
 				'user_id' => null,
 			), $booking );
 
@@ -658,11 +658,17 @@ class Mltp_Lodgify extends Mltp_Modules {
 				$date_range,
 			);
 			$subtotal = $booking['subtotals']['stay'] + $booking['subtotals']['fees'] + $booking['subtotals']['addons'];
+			$discount = (empty($booking['subtotals']['promotions'])) ? null : $booking['subtotals']['promotions'];
+			if(empty($subtotal)) $subtotal = $booking['total_amount'] - $discount;
+			if(!empty($booking['amount_due'])) $balance = $booking['amount_due'];
+			else if (!empty($booking['amount_to_pay'])) $balance = $booking['amount_to_pay'];
+			else $balance = $booking['total_amount'] - $booking['total_paid'];
 
 			if( 'AAAAAAAAAAAAAAAAAAAAAA' === $booking['guest']['id'] ) {
 				// TODO: find closed period comment and use it as client name
 				$booking['guest']['name'] = sprintf( __( 'Closed in %s', 'multipass' ), 'Lodgify' );
 				$source_url = 'https://app.lodgify.com/#/reservation/calendar/multi/closed-period/' . $booking['id'];
+				$booking['status'] = 'closed';
 			} else {
 				// $source_url = 'https://app.lodgify.com/#/reservation/inbox/B' . $booking['id'];
 				$source_url = MultiPass::origin_url( 'lodgify', $booking['id'] );
@@ -757,12 +763,12 @@ class Mltp_Lodgify extends Mltp_Modules {
 					'unit'      => $subtotal,
 					'sub_total' => $subtotal,
 				),
-				'discount'       => $booking['subtotals']['promotions'],
+				'discount'       => $discount,
 				'total'          => $booking['total_amount'],
 				// // TODO: ensure paid status is updated immediatly, not after second time save
 				// //
-				'paid'           => $booking['amount_paid'],
-				'balance'        => $booking['amount_due'],
+				'paid'           => $booking['total_paid'],
+				'balance'        => $balance,
 				'type'           => 'booking',
 				'debug' => $booking,
 			);
