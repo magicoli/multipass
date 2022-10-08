@@ -348,9 +348,9 @@ class Mltp_Payment_Product {
 			}
 
 			return sprintf(
-				'<span class=prpay-prestation-id>%s%s</span>',
+				'<span class=prpay-prestation-id>%s</span>',
 				sprintf(
-					__( 'Reference #%s', 'multipass' ),
+					__( 'Reference # %s', 'multipass' ),
 					$reference,
 				),
 			);
