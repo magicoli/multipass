@@ -817,6 +817,76 @@ class Mltp_Prestation {
 		return $item_posts;
 	}
 
+	public function summary() {
+		$details = $this->get_details_array();
+		$title = '<tr><th colspan="2">' . $this->name . '</th></tr>';
+		$list = [ $title ];
+		$amounts = [];
+		foreach($details as $detail) {
+			$amounts[] = array(
+				'desc' => $detail['description'],
+				'price' => MultiPass::price($detail['total']),
+			);
+		}
+		if($this->get_summary_subtotal() != $this->get_summary_total()) {
+			$amounts += array(
+				'subtotal' => array(
+					'desc' => __('Prestation subtotal', 'multipass'),
+					'price' => $this->get_summary_subtotal(),
+				),
+				'discount' => array(
+					'desc' => __('Prestation discount', 'multipass'),
+					'price' => $this->get_summary_discount(),
+				),
+			);
+		}
+		$amounts += array(
+			'total' => array(
+				'desc' => __('Prestation total', 'multipass'),
+				'price' => $this->get_summary_total(),
+			),
+		);
+		if(!empty($this->get_summary_deposit())) {
+			$amounts += array(
+				'deposit' => array(
+					'desc' => __('Deposit', 'multipass'),
+					'price' => $this->get_summary_deposit(),
+				),
+			);
+		}
+		if(!empty($this->get_summary_paid())) {
+			$amounts += array(
+				'paid' => array(
+					'desc' => __('Paid', 'multipass'),
+					'price' => $this->get_summary_paid(),
+				),
+				'balance' => array(
+					'desc' => __('Balance', 'multipass'),
+					'price' => $this->get_summary_balance(),
+				),
+			);
+		}
+		error_log('amounts ' . print_r($amounts, true));
+		// $amounts['total'] = array(
+		// 	'desc' => __('Prestation total', 'multipass'),
+		// 	'price' => $detail['total']
+		// )
+		$output[] = $title;
+		foreach ($amounts as $key => $amount) {
+			$output[] = sprintf(
+				'<tr>
+				<td class="description">%s</td>
+				<td class="right">%s</td>
+				</tr>',
+				$amount['desc'],
+				$amount['price'],
+			);
+		}
+
+		return '<table class="prestation-summary">' . join(' ', $output) . '</table>';
+
+	}
+
 	/**
 	 * Get items belonging to this prestation.
 	 *
@@ -922,7 +992,7 @@ class Mltp_Prestation {
 	 *
 	 * @return string  HTML formatted currency amount.
 	 */
-	public static function get_summary_subtotal() {
+	public function get_summary_subtotal() {
 		$amount = get_post_meta( get_post()->ID, 'subtotal', true );
 		return MultiPass::price( ( empty( $amount ) ) ? 0 : $amount );
 	}
@@ -932,7 +1002,7 @@ class Mltp_Prestation {
 	 *
 	 * @return string  HTML formatted currency amount.
 	 */
-	public static function get_summary_discount() {
+	public function get_summary_discount() {
 		global $post;
 		$discount = get_post_meta( $post->ID, 'discount', true );
 		$amount   = ( isset( $discount['total'] ) ) ? $discount['total'] : null;
@@ -946,7 +1016,7 @@ class Mltp_Prestation {
 	 *
 	 * @return string  HTML formatted currency amount.
 	 */
-	public static function get_summary_total() {
+	public function get_summary_total() {
 		global $post;
 		$amount = get_post_meta( $post->ID, 'total', true );
 		if ( empty( $amount ) ) {
@@ -960,7 +1030,7 @@ class Mltp_Prestation {
 	 *
 	 * @return string  HTML formatted percentage.
 	 */
-	public static function get_summary_deposit_percent() {
+	public function get_summary_deposit_percent() {
 		global $post;
 		$deposit = get_post_meta( $post->ID, 'deposit', true );
 		$percent = ( isset( $deposit['percent'] ) ) ? $deposit['percent'] : null;
@@ -974,7 +1044,7 @@ class Mltp_Prestation {
 	 *
 	 * @return string  HTML formatted currency amount.
 	 */
-	public static function get_summary_deposit() {
+	public function get_summary_deposit() {
 		global $post;
 		$deposit = get_post_meta( $post->ID, 'deposit', true );
 		$amount  = ( isset( $deposit['total'] ) ) ? $deposit['total'] : null;
@@ -988,7 +1058,7 @@ class Mltp_Prestation {
 	 *
 	 * @return string  HTML formatted currency amount.
 	 */
-	public static function get_summary_paid() {
+	public function get_summary_paid() {
 		global $post;
 		$amount = get_post_meta( $post->ID, 'paid', true );
 		return MultiPass::price( $amount );
@@ -1010,7 +1080,7 @@ class Mltp_Prestation {
 	 *
 	 * @return string  HTML formatted currency amount.
 	 */
-	public static function get_summary_balance() {
+	public function get_summary_balance() {
 		return MultiPass::price( self::get_balance() );
 	}
 
@@ -1019,7 +1089,7 @@ class Mltp_Prestation {
 	 *
 	 * @return string  HTML formatted reference.
 	 */
-	public static function get_summary_reference() {
+	public function get_summary_reference() {
 		global $post;
 		if ( 'mltp_prestation' !== $post->post_type ) {
 			return;
@@ -1546,6 +1616,8 @@ class Mltp_Prestation {
 			$prestation = get_post( $args );
 		} elseif ( is_object( $args ) && 'mltp_prestation' === $args->post_type ) {
 			$prestation = $args;
+		} elseif( is_string($args)) {
+			$prestation = get_page_by_path($args, OBJECT, 'mltp_prestation');
 		}
 		if ( $prestation ) {
 			return $prestation;
