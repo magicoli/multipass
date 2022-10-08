@@ -5,7 +5,7 @@
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'e4c5afcaf1fc787352fb20e4b59d607804882c14',
+        'reference' => '2844d8d2e1d245cfc4eb6cb84a6e43d7a639a314',
         'name' => 'magicoli/multipass',
         'dev' => true,
     ),
@@ -52,7 +52,7 @@
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'e4c5afcaf1fc787352fb20e4b59d607804882c14',
+            'reference' => '2844d8d2e1d245cfc4eb6cb84a6e43d7a639a314',
             'dev_requirement' => false,
         ),
         'meta-box/mb-admin-columns' => array(

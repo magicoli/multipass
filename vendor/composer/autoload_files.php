@@ -7,17 +7,17 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'ec07570ca5a812141189b1fa81503674' => $vendorDir . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
-    'a4a119a56e50fbb293281d9a48007e0e' => $vendorDir . '/symfony/polyfill-php80/bootstrap.php',
     '6e3fae29631ef280660b3cdad06f25a8' => $vendorDir . '/symfony/deprecation-contracts/function.php',
+    'a4a119a56e50fbb293281d9a48007e0e' => $vendorDir . '/symfony/polyfill-php80/bootstrap.php',
     '6124b4c8570aa390c21fafd04a26c69f' => $vendorDir . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
     '53c7be3308b5aa229d03a4dfcf6ca18d' => $vendorDir . '/symfony/intl/Resources/functions.php',
     '483a6c1dd1321d7fa05db0a69f0114f4' => $baseDir . '/lib/meta-box/meta-box/meta-box.php',
+    '7e8b57f4066682cfe9e869ba020c5475' => $baseDir . '/lib/meta-box/mb-admin-columns/mb-admin-columns.php',
     'd95fc3e30752846d6a1eea85c799d275' => $baseDir . '/lib/meta-box/meta-box-columns/meta-box-columns.php',
     '97c4727e949ddd31c2c57c9bf5121a33' => $baseDir . '/lib/meta-box/meta-box-conditional-logic/meta-box-conditional-logic.php',
     '25191c4b0600832bbf3070f0dc0cb7cb' => $baseDir . '/lib/meta-box/meta-box-group/meta-box-group.php',
     '8c7c94d5e9a1f773ebc921ef27ed7b71' => $baseDir . '/lib/meta-box/meta-box-include-exclude/meta-box-include-exclude.php',
     '2f9980cb114e539d3b77117951fef197' => $baseDir . '/lib/meta-box/meta-box-show-hide/meta-box-show-hide.php',
-    '7e8b57f4066682cfe9e869ba020c5475' => $baseDir . '/lib/meta-box/mb-admin-columns/mb-admin-columns.php',
     '0ff37db1889dbd9e62776afa3abd12ce' => $baseDir . '/lib/meta-box/mb-settings-page/mb-settings-page.php',
     '04adf0ee41c969c55b6634808e8b121e' => $baseDir . '/lib/meta-box/meta-box-tabs/meta-box-tabs.php',
 );

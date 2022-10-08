@@ -48,6 +48,7 @@
   "autoload": {
     "files": [
       "lib/meta-box/meta-box/meta-box.php",
+      "lib/meta-box/mb-admin-columns/mb-admin-columns.php",
       "lib/meta-box/meta-box-columns/meta-box-columns.php",
       "lib/meta-box/meta-box-conditional-logic/meta-box-conditional-logic.php",
       "lib/meta-box/meta-box-group/meta-box-group.php",

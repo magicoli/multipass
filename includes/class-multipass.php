@@ -116,8 +116,8 @@ class MultiPass {
 	private function load_dependencies() {
 
 		/**
-		* External libraries.
-		*/
+		 * External libraries.
+		 */
 		require_once MULTIPASS_DIR . 'vendor/autoload.php';
 
 		/**
