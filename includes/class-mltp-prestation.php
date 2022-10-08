@@ -143,6 +143,7 @@ class Mltp_Prestation {
 
 		$filters = array(
 			array(
+				'component' => $this,
 				'hook'     => 'rwmb_meta_boxes',
 				'callback' => 'register_fields',
 			),
@@ -277,7 +278,7 @@ class Mltp_Prestation {
 	 * @param  array $meta_boxes    current metaboxes.
 	 * @return array                updated metaboxes.
 	 */
-	public static function register_fields( $meta_boxes ) {
+	public function register_fields( $meta_boxes ) {
 		$js_date_format_short = preg_match( '/^[Fm]/', get_option( 'date_format' ) ) ? 'mm-dd-yy' : 'dd-mm-yy';
 
 		$prefix                         = '';
@@ -632,45 +633,45 @@ class Mltp_Prestation {
 					'name'     => __( 'Regular Price', 'multipass' ),
 					'id'       => $prefix . 'price_html',
 					'type'     => 'custom_html',
-					'callback' => 'Mltp_Prestation::get_summary_subtotal',
+					'callback' => [ $this, 'get_summary_subtotal' ],
 				),
 				array(
 					'name'     => __( 'Discount', 'multipass' ),
 					'id'       => $prefix . 'discount_html',
 					'type'     => 'custom_html',
-					'callback' => 'Mltp_Prestation::get_summary_discount',
+					'callback' => [ $this, 'get_summary_discount' ],
 				),
 				array(
 					'name'     => __( 'Total', 'multipass' ),
 					'id'       => $prefix . 'total_html',
 					'type'     => 'custom_html',
 					'class'    => 'total',
-					'callback' => 'Mltp_Prestation::get_summary_total',
+					'callback' => [ $this, 'get_summary_total' ],
 				),
 				array(
 					'name'     => __( 'Deposit', 'multipass' ),
 					'id'       => $prefix . 'deposit_amount_html',
 					'type'     => 'custom_html',
-					'callback' => 'Mltp_Prestation::get_summary_deposit',
+					'callback' => [ $this, 'get_summary_deposit' ],
 				),
 				array(
 					'name'     => __( 'Paid', 'multipass' ),
 					'id'       => $prefix . 'paid_html',
 					'type'     => 'custom_html',
-					'callback' => 'Mltp_Prestation::get_summary_paid',
+					'callback' => [ $this, 'get_summary_paid' ],
 				),
 				array(
 					'name'     => __( 'Balance', 'multipass' ),
 					'id'       => $prefix . 'balance_html',
 					'type'     => 'custom_html',
 					'class'    => 'balance',
-					'callback' => 'Mltp_Prestation::get_summary_balance',
+					'callback' => [ $this, 'get_summary_balance' ],
 				),
 				array(
 					'name'     => __( 'Reference #', 'multipass' ),
 					'id'       => $prefix . 'reference',
 					'type'     => 'custom_html',
-					'callback' => 'Mltp_Prestation::get_summary_reference',
+					'callback' => [ $this, 'get_summary_reference' ],
 				),
 				array(
 					'name'           => __( 'Status', 'multipass' ),
