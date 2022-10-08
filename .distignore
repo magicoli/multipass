@@ -1,4 +1,3 @@
-.gitattributes
 .babelrc
 .circleci/config.yml
 .deployignore
@@ -8,16 +7,17 @@
 .eslintignore
 .eslintrc
 .git/
+.gitattributes
 .gitignore
 .gitlab-ci.yml
 .gitmodules
 .phpcs.xml
 .phpcs.xml.dist
+.phpunit.result.cache
 .travis.yml
 .distignore.wp
 .version
 .wpignore
-.git
 *.sql
 *.tar.gz
 *.zip
@@ -51,10 +51,6 @@ bin
 node_modules
 sources
 tests
-admin/js/admin.css.map
-admin/js/admin.js.map
-includes/calendar/calendar.css.map
-includes/calendar/calendar.js.map
-includes/js/calendar.css.map
-includes/js/calendar.js.map
-public/js/public.js.map
+admin/*/*.map
+includes/*/*.map
+public/*/*.map
