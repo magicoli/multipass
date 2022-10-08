@@ -875,7 +875,9 @@ class Mltp_Item {
 	}
 
 	static function add_custom_columns() {
-		new Mltp_Item_Admin_Columns( 'mltp_detail', array() );
+		if( class_exists( 'Mltp_Item_Admin_Columns' ) ) {
+			new Mltp_Item_Admin_Columns( 'mltp_detail', array() );
+		}
 	}
 
 	static function register_taxonomies() {
@@ -1413,37 +1415,43 @@ class Mltp_Item {
 	}
 }
 
-class Mltp_Item_Admin_Columns extends \MBAC\Post {
-	// public function columns( $columns ) {
-	// $columns  = parent::columns( $columns );
-	// $position = '';
-	// $target   = '';
-	// $this->add( $columns, 'deposit', __('Deposit', 'multipass'), $position, $target );
-	// Add more if you want
-	// return $columns;
-	// }
+$this->loaders[] = new Mltp_Item();
 
-	public function show( $column, $post_id ) {
-		switch ( $column ) {
-			case 'dates_admin_list':
+/**
+ * This is a dirty fix. This class needs to be loaded, or the admin columns has
+ * to be set in another way.
+ */
+if( class_exists( '\MBAC\Post' ) ) {
+	class Mltp_Item_Admin_Columns extends \MBAC\Post {
+		// public function columns( $columns ) {
+		// $columns  = parent::columns( $columns );
+		// $position = '';
+		// $target   = '';
+		// $this->add( $columns, 'deposit', __('Deposit', 'multipass'), $position, $target );
+		// Add more if you want
+		// return $columns;
+		// }
+
+		public function show( $column, $post_id ) {
+			switch ( $column ) {
+				case 'dates_admin_list':
 				echo MultiPass::format_date_range( get_post_meta( $post_id, 'dates', true ) );
 				break;
 
-			case 'attendees_display';
+				case 'attendees_display';
 				$attendees = get_post_meta( $post_id, 'attendees', true );
 				if ( is_array( $attendees ) && isset( $attendees['total'] ) ) {
 					echo $attendees['total'];
 				}
-					break;
+				break;
 
-			case 'deposit_amount';
+				case 'deposit_amount';
 				$deposit = get_post_meta( $post_id, 'deposit', true );
 				if ( is_array( $deposit ) && isset( $deposit['amount'] ) ) {
 					echo $deposit['amount'];
 				}
-					break;
+				break;
+			}
 		}
 	}
 }
-
-$this->loaders[] = new Mltp_Item();
