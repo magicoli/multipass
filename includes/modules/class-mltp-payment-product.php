@@ -242,7 +242,7 @@ class Mltp_Payment_Product {
 		      <input type="number" class="input-text" name="prpay_amount" value="%s" placeholder="%s" required>
 		    </p>
 		  </div>',
-			__( 'Amount', 'multipass' ),
+			__( 'Amount to pay', 'multipass' ),
 			' <abbr class="required" title="required">*</abbr>',
 			$amount,
 			__( 'Amount to pay', 'multipass' ),
