@@ -116,6 +116,11 @@ class MultiPass {
 	private function load_dependencies() {
 
 		/**
+		* External libraries.
+		*/
+		require_once MULTIPASS_DIR . 'vendor/autoload.php';
+
+		/**
 		 * The standard plugin classes.
 		 */
 		require_once MULTIPASS_DIR . 'includes/class-mltp-loader.php';
@@ -126,14 +131,9 @@ class MultiPass {
 		$this->loader = new Mltp_Loader();
 
 		/**
-		 * External libraries.
-		 */
-		require_once MULTIPASS_DIR . 'vendor/autoload.php';
-		require_once MULTIPASS_DIR . 'includes/class-mltp-table.php';
-
-		/**
 		 * Post types.and specific plugin classes.
 		 */
+	  require_once MULTIPASS_DIR . 'includes/class-mltp-table.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-prestation.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-prestation-detail.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-resource.php';
@@ -141,9 +141,16 @@ class MultiPass {
 		require_once MULTIPASS_DIR . 'includes/class-mltp-settings.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-plugininfo.php';
 
+		/**
+		 * Modules
+		 */
 		require_once MULTIPASS_DIR . 'includes/modules/class-mltp-modules.php';
 
-		// Make sure to load calendar after modules.
+		/**
+		 * Calendar
+		 *
+		 * Make sure to load all modules before calendar
+		 */
 		require_once MULTIPASS_DIR . 'includes/class-mltp-calendar.php';
 
 		// if(is_plugin_active('woocommerce/woocommerce.php')) {
