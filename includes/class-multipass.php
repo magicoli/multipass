@@ -81,6 +81,7 @@ class MultiPass {
 			64  => 'MLTP_STARTED',
 			128 => 'MLTP_ENDED', // end date passed, but final invoicing not done
 			256 => 'MLTP_CLOSED', // final invoicing done
+			512 => 'MLTP_AVAILABLE',
 		);
 		foreach ( $flags as $key => $flag ) {
 			if ( ! defined( $flag ) ) {

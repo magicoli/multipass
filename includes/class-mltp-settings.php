@@ -102,8 +102,6 @@ class Mltp_Settings {
 				'read_private_mltp_resources',
 			)
 		);
-
-		$this->sanitize_roles( 'administrator', array( 'id' => 'mltp_administrator' ) );
 	}
 
 	/**
@@ -560,27 +558,30 @@ class Mltp_Settings {
 		return;
 	}
 
-	function add_capabilities() {
-		if ( $this->roles_settings_being_updated() ) {
+	function add_capabilities( $force = false ) {
+		$force = (get_transient('multipass-refresh-capabilities')) ? true : $force;
+		if ( $this->roles_settings_being_updated() || $force ) {
+			delete_transient('multipass-refresh-capabilities');
+			error_log( __CLASS__.'::'.__METHOD__ );
 			$request = wp_unslash( $_REQUEST );
 			$options = array( 'mltp_reader', 'mltp_manager', 'mltp_administrator' );
 			$remove  = array();
 			$add     = array();
 			foreach ( $options as $option ) {
-				$new_role      = ( isset( $request[ $option ] ) ) ? $request[ $option ] : MultiPass::get_option( $option );
-				$new_role      = ( '_create' === $new_role ) ? $option : $new_role;
-				$previous_role = MultiPass::get_option( $option );
-				if ( $previous_role !== $new_role & ! empty( $previous_role ) && $previous_role != 'administrator' ) {
-					$remove[ $previous_role ] = array_merge(
-						( isset( $remove[ $previous_role ] ) ) ? $remove[ $previous_role ] : array(),
-						$this->caps[ $option ],
-					);
+				$new_slug      = ( isset( $request[ $option ] ) ) ? $request[ $option ] : MultiPass::get_option( $option );
+				$new_slug      = ( '_create' === $new_slug ) ? $option : $new_slug;
+				$previous_slug = MultiPass::get_option( $option );
+				$option_caps = $this->caps[ $option ];
+				if(!isset($remove[$previous_slug])) $remove[$previous_slug] = [];
+				if(!isset($add[$new_slug])) $add[$new_slug] = [];
+				if(!isset($add['administrator'])) $add['administrator'] = [];
+
+				if ( $previous_slug !== $new_slug & ! empty( $previous_slug ) && $previous_slug != 'administrator' ) {
+					$remove[ $previous_slug ] = array_merge( $remove[ $previous_slug ], $option_caps );
 				}
-				if ( ! empty( $new_role ) ) {
-					$add[ $new_role ] = array_merge(
-						( isset( $add[ $new_role ] ) ) ? $add[ $new_role ] : array(),
-						$this->caps[ $option ],
-					);
+				$add[ 'administrator' ] = array_merge( $add[ 'administrator' ], $option_caps);
+				if ( ! empty( $new_slug ) ) {
+					$add[ $new_slug ] = array_merge( $add[ $new_slug ], $option_caps);
 				}
 			}
 
@@ -588,16 +589,17 @@ class Mltp_Settings {
 				$role = get_role( $role_slug );
 				if ( $role ) {
 					foreach ( $caps as $cap ) {
-						$role->remove_cap( $cap, true );
+						$role->remove_cap( $cap );
 					}
 				}
 			}
 
+			$admin_role = get_role( 'administrator' );
 			foreach ( $add as $role_slug => $caps ) {
 				$role = get_role( $role_slug );
 				if ( $role ) {
 					foreach ( $caps as $cap ) {
-						$role->add_cap( $cap, true );
+						$role->add_cap( $cap );
 					}
 				}
 			}

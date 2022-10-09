@@ -1283,20 +1283,19 @@ class Mltp_Item {
 
 			case 'array':
 				if ( empty( $args['source'] ) ) {
-					error_log( 'source cannot be empty, arbort.' );
+					error_log( 'source cannot be empty, abort.' );
 					return false;
 				}
 				$uuid_field = $args['source'] . '_uuid';
 
 				$source_term_id = get_term_by( 'slug', $args['source'], 'mltp_detail-source' );
 				if ( ! $source_term_id ) {
-					error_log( 'unknown source ' . $args['source'] . ', arbort' );
+					// error_log( 'unknown source ' . $args['source'] . ', abort' );
 					return;
 				}
 
 				if ( empty( $args[ $uuid_field ] ) ) {
-					error_log( "$uuid_field cannot be empty when source is $args[source], arbort." );
-					// error_log("$uuid_field cannot be empty, arbort.");
+					error_log( "$uuid_field cannot be empty when source is $args[source], abort." );
 					return false;
 				}
 				$uuid_value = $args[ $uuid_field ];
