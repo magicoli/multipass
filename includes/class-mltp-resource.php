@@ -45,26 +45,26 @@ class Mltp_Resource {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct($args = null) {
+	public function __construct( $args = null ) {
 		$post = false;
 
-		if(!empty($args) ) {
-			if(is_numeric($args)) {
-				$post = get_post($args);
-			} else if (is_object($args)) {
+		if ( ! empty( $args ) ) {
+			if ( is_numeric( $args ) ) {
+				$post = get_post( $args );
+			} elseif ( is_object( $args ) ) {
 				$post = $args;
 			}
 		}
 
-		if($post) {
-			$this->id = $post->ID;
-			$this->post = $post;
-			$this->name = $post->post_title;
-			$this->edit_url    = get_post_meta( $this->id, 'edit_url', true );
-			$this->source = get_post_meta($this->id, 'source', true);
-			$this->source_url = get_post_meta($this->id, 'source_url', true);
-			$this->origin = get_post_meta($this->id, 'origin', true);
-			$this->origin_url = get_post_meta($this->id, 'origin_url', true);
+		if ( $post ) {
+			$this->id         = $post->ID;
+			$this->post       = $post;
+			$this->name       = $post->post_title;
+			$this->edit_url   = get_post_meta( $this->id, 'edit_url', true );
+			$this->source     = get_post_meta( $this->id, 'source', true );
+			$this->source_url = get_post_meta( $this->id, 'source_url', true );
+			$this->origin     = get_post_meta( $this->id, 'origin', true );
+			$this->origin_url = get_post_meta( $this->id, 'origin_url', true );
 		}
 	}
 
@@ -294,7 +294,7 @@ class Mltp_Resource {
 					'type'          => 'post',
 					'post_type'     => array( 'page' ),
 					'field_type'    => 'select_advanced',
-					'placeholder'    => __('Select a page', 'multipass'),
+					'placeholder'   => __( 'Select a page', 'multipass' ),
 					'admin_columns' => array(
 						'position'   => 'after title',
 						'sort'       => true,
@@ -315,10 +315,10 @@ class Mltp_Resource {
 					'name'          => __( 'Position', 'multipass' ),
 					'id'            => 'position',
 					'type'          => 'number',
-					'size' => 5,
+					'size'          => 5,
 					'admin_columns' => array(
-						'position'   => 'after title',
-						'sort'       => true,
+						'position' => 'after title',
+						'sort'     => true,
 					),
 				),
 				array(
@@ -837,17 +837,17 @@ class Mltp_Resource {
 
 		remove_action( current_action(), __CLASS__ . '::' . __FUNCTION__ );
 
-		$position_sort = get_post_meta($post->ID, 'position', true);
-		$position_sort = (empty($position_sort)) ? 9999 : $position_sort;
-		update_post_meta($post->ID, 'position_sort', $position_sort);
+		$position_sort = get_post_meta( $post->ID, 'position', true );
+		$position_sort = ( empty( $position_sort ) ) ? 9999 : $position_sort;
+		update_post_meta( $post->ID, 'position_sort', $position_sort );
 
 		add_action( current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3 );
 	}
 
 	public static function get_resource( $source, $source_item_id ) {
 		$resource_id = self::get_resource_id( $source, $source_item_id );
-		if($resource_id) {
-			return new Mltp_Resource($resource_id);
+		if ( $resource_id ) {
+			return new Mltp_Resource( $resource_id );
 		}
 	}
 

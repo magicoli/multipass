@@ -63,18 +63,18 @@ class Mltp_HBook extends Mltp_Modules {
 		$this->filters = array(
 			array(
 				'component' => $this,
-				'hook'     => 'mb_settings_pages',
-				'callback' => 'register_settings_pages',
+				'hook'      => 'mb_settings_pages',
+				'callback'  => 'register_settings_pages',
 			),
 			array(
 				'component' => $this,
-				'hook'     => 'rwmb_meta_boxes',
-				'callback' => 'register_settings_fields',
+				'hook'      => 'rwmb_meta_boxes',
+				'callback'  => 'register_settings_fields',
 			),
 			array(
 				'component' => $this,
-				'hook'     => 'rwmb_meta_boxes',
-				'callback' => 'register_fields',
+				'hook'      => 'rwmb_meta_boxes',
+				'callback'  => 'register_fields',
 			),
 
 			array(
@@ -141,7 +141,7 @@ class Mltp_HBook extends Mltp_Modules {
 			'id'            => 'resource_hbook_id',
 			'type'          => 'select_advanced',
 			'options'       => $this->get_property_options(),
-			'placeholder'    => __('Select an accommodation', 'multipass'),
+			'placeholder'   => __( 'Select an accommodation', 'multipass' ),
 			'admin_columns' => array(
 				'position'   => 'before date',
 				'sort'       => true,

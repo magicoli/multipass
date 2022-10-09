@@ -346,9 +346,9 @@ class Mltp_Calendar {
 		wp_enqueue_script( 'fullcalendar-cdn', 'https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.0/main.min.js' );
 		wp_enqueue_script( 'mltp-calendar', plugins_url( 'includes/js/calendar.js', MULTIPASS_FILE ), array( 'jquery' ), MULTIPASS_VERSION );
 
-		$calendar_resources = self::get_calendar_resources(true);
-		$main_count = (empty($calendar_resources['main_count'])) ? null : $calendar_resources['main_count'];
-		if($main_count) {
+		$calendar_resources = self::get_calendar_resources( true );
+		$main_count         = ( empty( $calendar_resources['main_count'] ) ) ? null : $calendar_resources['main_count'];
+		if ( $main_count ) {
 			$custom_inline_style = sprintf(
 				'
 				#mltp-calendar .fc-datagrid-body tr:nth-of-type(-n+%1$s):not(:first-of-type) .fc-datagrid-cell-frame,
@@ -406,12 +406,12 @@ class Mltp_Calendar {
 		);
 	}
 
-	public static function get_calendar_resources($include_count = false) {
+	public static function get_calendar_resources( $include_count = false ) {
 		$resources[] = array(
 			'id'    => 0,
 			'title' => __( 'Undefined', 'multipass' ),
 		);
-		$terms = get_terms(
+		$terms       = get_terms(
 			array(
 				'taxonomy'   => 'calendar-section',
 				'hide_empty' => true,
@@ -426,7 +426,7 @@ class Mltp_Calendar {
 			$sections = array_filter( $sections );
 
 			$main_count = 1;
-			$s = 0; foreach ( $sections as $term ) {
+			$s          = 0; foreach ( $sections as $term ) {
 				$s++;
 				$resources[] = array(
 					'id'       => $term->slug,
@@ -454,7 +454,9 @@ class Mltp_Calendar {
 				if ( $query->have_posts() ) {
 					// Get prestation items for each resource
 					while ( $query->have_posts() ) {
-						if(1 === $s) $main_count++;
+						if ( 1 === $s ) {
+							$main_count++;
+						}
 						$r++;
 						$query->the_post();
 						$resource    = get_post();
@@ -470,7 +472,7 @@ class Mltp_Calendar {
 				}
 			}
 		}
-		if($include_count) {
+		if ( $include_count ) {
 			$resources['main_count'] = $main_count;
 		}
 		return $resources;
@@ -478,7 +480,7 @@ class Mltp_Calendar {
 
 	public function ajax_feed_events_action() {
 		// Get calendars from taxonomy
-		$events    = array();
+		$events = array();
 
 		$resources = self::get_calendar_resources();
 
@@ -510,7 +512,7 @@ class Mltp_Calendar {
 				$end               = ( empty( $iso['to'] ) ) ? $iso['from'] : $iso['to'];
 				$prestation_id     = get_post_meta( get_the_ID(), 'prestation_id', true );
 				$prestation        = new Mltp_Prestation( $prestation_id );
-				$prestation_status = ($prestation->post) ? $prestation->post->post_status : null;
+				$prestation_status = ( $prestation->post ) ? $prestation->post->post_status : null;
 				$resource_id       = get_post_meta( get_the_ID(), 'resource_id', true );
 				$resource          = get_post( $resource_id );
 				if ( $resource ) {
@@ -766,8 +768,8 @@ class Mltp_Event {
 		//
 
 		$fix_overnight       = true;
-		$this->start = MultiPass::sanitize_timestamp( $this->start );
-		$this->end = MultiPass::sanitize_timestamp( $this->end );
+		$this->start         = MultiPass::sanitize_timestamp( $this->start );
+		$this->end           = MultiPass::sanitize_timestamp( $this->end );
 		$this->display_start = ( $fix_overnight ) ? ( round( $this->start / $d ) * $d ) : $this->start;
 		$this->display_end   = ( $fix_overnight ) ? ( round( $this->end / $d ) * $d ) : $this->end;
 

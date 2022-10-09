@@ -41,7 +41,7 @@ class Mltp_Prestation {
 	protected $filters;
 
 	public $post = false;
-	public $id = false;
+	public $id   = false;
 	public $name = false;
 
 	/**
@@ -52,8 +52,8 @@ class Mltp_Prestation {
 	 */
 	public function __construct( $args = null ) {
 		$post = $this->get( $args );
-		if($post) {
-			$this->id = $post->ID;
+		if ( $post ) {
+			$this->id   = $post->ID;
 			$this->name = $post->post_title;
 			$this->post = $post;
 		}
@@ -147,8 +147,8 @@ class Mltp_Prestation {
 		$filters = array(
 			array(
 				'component' => $this,
-				'hook'     => 'rwmb_meta_boxes',
-				'callback' => 'register_fields',
+				'hook'      => 'rwmb_meta_boxes',
+				'callback'  => 'register_fields',
 			),
 			array(
 				'hook'          => 'wp_insert_post_data',
@@ -636,45 +636,45 @@ class Mltp_Prestation {
 					'name'     => __( 'Regular Price', 'multipass' ),
 					'id'       => $prefix . 'price_html',
 					'type'     => 'custom_html',
-					'callback' => [ $this, 'get_summary_subtotal' ],
+					'callback' => array( $this, 'get_summary_subtotal' ),
 				),
 				array(
 					'name'     => __( 'Discount', 'multipass' ),
 					'id'       => $prefix . 'discount_html',
 					'type'     => 'custom_html',
-					'callback' => [ $this, 'get_summary_discount' ],
+					'callback' => array( $this, 'get_summary_discount' ),
 				),
 				array(
 					'name'     => __( 'Total', 'multipass' ),
 					'id'       => $prefix . 'total_html',
 					'type'     => 'custom_html',
 					'class'    => 'total',
-					'callback' => [ $this, 'get_summary_total' ],
+					'callback' => array( $this, 'get_summary_total' ),
 				),
 				array(
 					'name'     => __( 'Deposit', 'multipass' ),
 					'id'       => $prefix . 'deposit_amount_html',
 					'type'     => 'custom_html',
-					'callback' => [ $this, 'get_summary_deposit' ],
+					'callback' => array( $this, 'get_summary_deposit' ),
 				),
 				array(
 					'name'     => __( 'Paid', 'multipass' ),
 					'id'       => $prefix . 'paid_html',
 					'type'     => 'custom_html',
-					'callback' => [ $this, 'get_summary_paid' ],
+					'callback' => array( $this, 'get_summary_paid' ),
 				),
 				array(
 					'name'     => __( 'Balance', 'multipass' ),
 					'id'       => $prefix . 'balance_html',
 					'type'     => 'custom_html',
 					'class'    => 'balance',
-					'callback' => [ $this, 'get_summary_balance' ],
+					'callback' => array( $this, 'get_summary_balance' ),
 				),
 				array(
 					'name'     => __( 'Reference #', 'multipass' ),
 					'id'       => $prefix . 'reference',
 					'type'     => 'custom_html',
-					'callback' => [ $this, 'get_summary_reference' ],
+					'callback' => array( $this, 'get_summary_reference' ),
 				),
 				array(
 					'name'           => __( 'Status', 'multipass' ),
@@ -821,69 +821,71 @@ class Mltp_Prestation {
 	}
 
 	public function summary() {
-		if( !$this->is_prestation() ) return;
+		if ( ! $this->is_prestation() ) {
+			return;
+		}
 
 		$details = $this->get_details_array();
-		$title = '<tr><th colspan="2">' . $this->name . '</th></tr>';
-		$list = [ $title ];
-		$amounts = [];
-		foreach($details as $detail) {
+		$title   = '<tr><th colspan="2">' . $this->name . '</th></tr>';
+		$list    = array( $title );
+		$amounts = array();
+		foreach ( $details as $detail ) {
 			$amounts[] = array(
-				'desc' => $detail['description'],
-				'price' => MultiPass::price($detail['total']),
+				'desc'  => $detail['description'],
+				'price' => MultiPass::price( $detail['total'] ),
 			);
 		}
-		if($this->get_summary_subtotal() != $this->get_summary_total()) {
+		if ( $this->get_summary_subtotal() != $this->get_summary_total() ) {
 			$amounts += array(
 				'subtotal' => array(
-					'desc' => __('Prestation subtotal', 'multipass'),
+					'desc'  => __( 'Prestation subtotal', 'multipass' ),
 					'price' => $this->get_summary_subtotal(),
 				),
 				'discount' => array(
-					'desc' => __('Prestation discount', 'multipass'),
+					'desc'  => __( 'Prestation discount', 'multipass' ),
 					'price' => $this->get_summary_discount(),
 				),
 			);
 		}
-		if(!empty($this->get_summary_total(true))) {
+		if ( ! empty( $this->get_summary_total( true ) ) ) {
 			$amounts += array(
 				'total' => array(
-					'desc' => __('Prestation total', 'multipass'),
+					'desc'  => __( 'Prestation total', 'multipass' ),
 					'price' => $this->get_summary_total(),
 				),
 			);
 		}
-		if(!empty($this->get_summary_deposit())) {
+		if ( ! empty( $this->get_summary_deposit() ) ) {
 			$amounts += array(
 				'deposit' => array(
-					'desc' => __('Deposit', 'multipass'),
+					'desc'  => __( 'Deposit', 'multipass' ),
 					'price' => $this->get_summary_deposit(),
 				),
 			);
 		}
-		if(!empty($this->get_summary_paid())) {
+		if ( ! empty( $this->get_summary_paid() ) ) {
 			$amounts += array(
 				'paid' => array(
-					'desc' => __('Paid', 'multipass'),
+					'desc'  => __( 'Paid', 'multipass' ),
 					'price' => $this->get_summary_paid(),
 				),
 			);
 		}
-		if(!empty($this->get_summary_balance() ) && $this->get_summary_balance() != $this->get_summary_total() ) {
+		if ( ! empty( $this->get_summary_balance() ) && $this->get_summary_balance() != $this->get_summary_total() ) {
 			$amounts += array(
 				'balance' => array(
-					'desc' => __('Balance', 'multipass'),
+					'desc'  => __( 'Balance', 'multipass' ),
 					'price' => $this->get_summary_balance(),
 				),
 			);
 		}
 
 		// $amounts['total'] = array(
-		// 	'desc' => __('Prestation total', 'multipass'),
-		// 	'price' => $detail['total']
+		// 'desc' => __('Prestation total', 'multipass'),
+		// 'price' => $detail['total']
 		// )
 		$output[] = $title;
-		foreach ($amounts as $key => $amount) {
+		foreach ( $amounts as $key => $amount ) {
 			$output[] = sprintf(
 				'<tr>
 				<td class="description">%s</td>
@@ -894,7 +896,7 @@ class Mltp_Prestation {
 			);
 		}
 
-		return '<table class="prestation-summary">' . join(' ', $output) . '</table>';
+		return '<table class="prestation-summary">' . join( ' ', $output ) . '</table>';
 
 	}
 
@@ -1029,12 +1031,12 @@ class Mltp_Prestation {
 		// $discount = get_post_meta( $post->ID, 'discount', true );
 		// $amount   = ( isset( $discount['total'] ) ) ? $discount['total'] : null;
 		// if ( $amount > 0 ) {
-		// 	return MultiPass::price( $amount );
+		// return MultiPass::price( $amount );
 		// }
 	}
 
 	public function get_id() {
-		if( ! empty( $this->id )) {
+		if ( ! empty( $this->id ) ) {
 			return $this->id;
 		} else {
 			global $post;
@@ -1058,12 +1060,12 @@ class Mltp_Prestation {
 		// error_log("this " . print_r($this, true) . " post_id $post->ID" );
 		// $amount = get_post_meta( $post->ID, 'total', true );
 		// if ( empty( $amount ) ) {
-		// 	$amount = 0;
+		// $amount = 0;
 		// }
 		// error_log(
-		// 	"\nbefore\n" . MultiPass::price( $amount )
-		// 	. "\nnow\n" . MultiPass::price($this->get_total())
-		// 	. "\n"
+		// "\nbefore\n" . MultiPass::price( $amount )
+		// . "\nnow\n" . MultiPass::price($this->get_total())
+		// . "\n"
 		// );
 		// // return MultiPass::price($this->get_total());
 	}
@@ -1243,8 +1245,10 @@ class Mltp_Prestation {
 	}
 
 	function is_prestation() {
-		if(empty($this->post)) return false;
-		return self::is_prestation_post($this->post);
+		if ( empty( $this->post ) ) {
+			return false;
+		}
+		return self::is_prestation_post( $this->post );
 	}
 
 	function update() {
@@ -1662,11 +1666,13 @@ class Mltp_Prestation {
 		$post = false;
 		if ( is_numeric( $args ) ) {
 			$post = get_post( $args );
-			if('mltp_prestation' !== $post->post_type) return new WP_Error( 'prestation-wrong-type', 'Not a prestation' );
+			if ( 'mltp_prestation' !== $post->post_type ) {
+				return new WP_Error( 'prestation-wrong-type', 'Not a prestation' );
+			}
 		} elseif ( is_object( $args ) && 'mltp_prestation' === $args->post_type ) {
 			$post = $args;
-		} elseif( is_string($args)) {
-			$post = get_page_by_path($args, OBJECT, 'mltp_prestation');
+		} elseif ( is_string( $args ) ) {
+			$post = get_page_by_path( $args, OBJECT, 'mltp_prestation' );
 		}
 		if ( $post ) {
 			return $post;
@@ -1766,7 +1772,7 @@ class Mltp_Prestation {
 				),
 			);
 
-			if( empty( $query_args['meta_query'] ) ) {
+			if ( empty( $query_args['meta_query'] ) ) {
 				$query_args['meta_query'] = $from_query;
 			} else {
 				$query_args['meta_query'] = array(

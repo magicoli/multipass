@@ -92,10 +92,10 @@ class Mltp_Payment_Product {
 						'sanitize_callback' => __CLASS__ . '::rewrite_slug_validation',
 				),
 				array(
-					'name'                  => __( 'Debug', 'multipass' ),
-					'id'                    => $prefix . 'debug',
-					'type'                  => 'custom_html',
-					'std'                  => self::generate_payment_link_tests(),
+					'name' => __( 'Debug', 'multipass' ),
+					'id'   => $prefix . 'debug',
+					'type' => 'custom_html',
+					'std'  => self::generate_payment_link_tests(),
 				),
 			),
 		);
@@ -182,7 +182,7 @@ class Mltp_Payment_Product {
 		$product_type_options['prpay'] = array(
 			'id'            => '_prpay',
 			'wrapper_class' => 'show_if_simple show_if_variable',
-			'label'         => sprintf(__( '%s payment', 'multipass' ), 'MultiPass'),
+			'label'         => sprintf( __( '%s payment', 'multipass' ), 'MultiPass' ),
 			'description'   => __( 'Check to use product as MultiPass payment.', 'multipass' ),
 			'default'       => 'no',
 		);
@@ -205,15 +205,15 @@ class Mltp_Payment_Product {
 		}
 
 		$reference = self::get_payment_reference();
-		$amount = self::get_payment_amount();
-		$details = null;
+		$amount    = self::get_payment_amount();
+		$details   = null;
 
-		if( ! empty($reference)) {
-			$prestation = new Mltp_Prestation($reference);
-			if( $prestation->is_prestation() ) {
+		if ( ! empty( $reference ) ) {
+			$prestation = new Mltp_Prestation( $reference );
+			if ( $prestation->is_prestation() ) {
 				$details = $prestation->summary();
 			} else {
-				$details = __('Payment reference: ', 'multipass') . $reference;
+				$details = __( 'Payment reference: ', 'multipass' ) . $reference;
 			}
 		}
 
@@ -248,45 +248,45 @@ class Mltp_Payment_Product {
 			__( 'Amount to pay', 'multipass' ),
 			'',
 		);
-		printf('<div style="height:0.5em;"></div>');
+		printf( '<div style="height:0.5em;"></div>' );
 	}
 
 	static function get_payment_reference() {
-		$request = wp_unslash($_REQUEST);
-		$keys = [ 'prpay_reference', 'reference', 'booking_id' ];
-		foreach ($keys as $key) {
-			if( ! empty($request[$key])) {
-				return sanitize_text_field($request[$key]);
+		$request = wp_unslash( $_REQUEST );
+		$keys    = array( 'prpay_reference', 'reference', 'booking_id' );
+		foreach ( $keys as $key ) {
+			if ( ! empty( $request[ $key ] ) ) {
+				return sanitize_text_field( $request[ $key ] );
 			}
 		}
 		// for param in
 		// if ( ! empty( $_POST['prpay_reference'] ) ) {
-		// 	$reference = sanitize_text_field( $_POST['prpay_reference'] );
+		// $reference = sanitize_text_field( $_POST['prpay_reference'] );
 		// } elseif ( ! empty( $_REQUEST['reference'] ) ) {
-		// 	$reference = sanitize_text_field( $_REQUEST['reference'] );
+		// $reference = sanitize_text_field( $_REQUEST['reference'] );
 		// } else {
-		// 	$reference = null;
+		// $reference = null;
 		// }
 		// return $reference;
 	}
 
 	static function get_payment_amount() {
-		$amount = null;
-		$request = wp_unslash($_REQUEST);
-		$keys = [ 'prpay_amount', 'amount', 'nyp' ];
-		foreach ($keys as $key) {
-			if( ! empty($request[$key])) {
-				$amount = sanitize_text_field(preg_replace('/,/', '.', $request[$key]));
+		$amount  = null;
+		$request = wp_unslash( $_REQUEST );
+		$keys    = array( 'prpay_amount', 'amount', 'nyp' );
+		foreach ( $keys as $key ) {
+			if ( ! empty( $request[ $key ] ) ) {
+				$amount = sanitize_text_field( preg_replace( '/,/', '.', $request[ $key ] ) );
 				break;
 			}
 		}
 
 		// if ( ! empty( $_POST['prpay_amount'] ) ) {
-		// 	$amount = sanitize_text_field( $_POST['prpay_amount'] );
+		// $amount = sanitize_text_field( $_POST['prpay_amount'] );
 		// } elseif ( ! empty( $_REQUEST['amount'] ) ) {
-		// 	$amount = sanitize_text_field( $_REQUEST['amount'] );
+		// $amount = sanitize_text_field( $_REQUEST['amount'] );
 		// } else {
-		// 	$amount = null;
+		// $amount = null;
 		// }
 		if ( is_numeric( $amount ) ) {
 			return $amount;
@@ -487,36 +487,38 @@ class Mltp_Payment_Product {
 		return $value;
 	}
 
-	static function payment_link( $reference = null, $amount = null, $language=null ) {
+	static function payment_link( $reference = null, $amount = null, $language = null ) {
 		$slug = __( MultiPass::get_option( 'woocommerce_rewrite_slug' ), 'multipass' );
 		// if(!empty($language)) $slug = "$language/$slug";
-		if(empty($reference)) {
+		if ( empty( $reference ) ) {
 			return get_home_url( null, "$slug/" );
 		} else {
-			return preg_replace(':/*$:', '', get_home_url( null, "$language/$slug/$reference/" . $amount ));
+			return preg_replace( ':/*$:', '', get_home_url( null, "$language/$slug/$reference/" . $amount ) );
 		}
 	}
 
 	static function generate_payment_link_tests() {
 		$links[] = self::payment_link();
-		$links[] = self::payment_link('123');
-		$links[] = self::payment_link(24459);
-		$links[] = self::payment_link('123', '45.6');
-		$links[] = self::payment_link('123', '45,6');
-		$links[] = self::payment_link('mwvo');
-		$links[] = self::payment_link('mwvo', 123.45);
-		$links[] = self::payment_link('B4520009');
-		$links[] = self::payment_link('B4520009', 123.45);
+		$links[] = self::payment_link( '123' );
+		$links[] = self::payment_link( 24459 );
+		$links[] = self::payment_link( '123', '45.6' );
+		$links[] = self::payment_link( '123', '45,6' );
+		$links[] = self::payment_link( 'mwvo' );
+		$links[] = self::payment_link( 'mwvo', 123.45 );
+		$links[] = self::payment_link( 'B4520009' );
+		$links[] = self::payment_link( 'B4520009', 123.45 );
 
-		$output = 'Test payment links:';
+		$output  = 'Test payment links:';
 		$output .= '<ul>';
-		foreach ($links as $link) {
-			$output .= sprintf('<li><a target="_blank" href="%1$s">%1$s<a></li>', $link);
+		foreach ( $links as $link ) {
+			$output .= sprintf( '<li><a target="_blank" href="%1$s">%1$s<a></li>', $link );
 			// code...
 		}
 		$output .= '</ul>';
 		// return $output;
-		if(!empty($output)) return "$output";
+		if ( ! empty( $output ) ) {
+			return "$output";
+		}
 		// error_log(print_r($query, true));
 	}
 

@@ -134,7 +134,7 @@ class MultiPass {
 		/**
 		 * Post types.and specific plugin classes.
 		 */
-	  require_once MULTIPASS_DIR . 'includes/class-mltp-table.php';
+		require_once MULTIPASS_DIR . 'includes/class-mltp-table.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-prestation.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-prestation-detail.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-resource.php';
@@ -495,7 +495,7 @@ class MultiPass {
 		if ( is_array( $timestamp ) && isset( $timestamp['timestamp'] ) ) {
 			$timestamp = $timestamp['timestamp'];
 		}
-		if ( is_numeric( $timestamp ) &! empty( $timestamp ) ) {
+		if ( is_numeric( $timestamp ) & ! empty( $timestamp ) ) {
 			return $timestamp;
 		}
 

@@ -552,7 +552,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			);
 		}
 
-		$all_dates = [];
+		$all_dates = array();
 
 		$order = wc_get_order( $post_id ); // make sure it is a wc object, not only a post
 		foreach ( $order->get_items() as $item_id => $item ) {
@@ -577,9 +577,9 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				)
 			);
 
-			$from = null;
-			$to = null;
-			$dates = [];
+			$from  = null;
+			$to    = null;
+			$dates = array();
 			// $attendees = [];
 
 			if ( $product->is_type( 'booking' ) ) {
@@ -590,12 +590,18 @@ class Mltp_WooCommerce extends Mltp_Modules {
 					$dates[] = $booking->get_start();
 					$dates[] = $booking->get_end();
 				}
-				$dates = array_filter($dates);
-				if(!empty($dates)) {
-					$from = empty($dates) ? null : min($dates);
-					$to = empty($dates) ? null : max($dates);
+				$dates = array_filter( $dates );
+				if ( ! empty( $dates ) ) {
+					$from = empty( $dates ) ? null : min( $dates );
+					$to   = empty( $dates ) ? null : max( $dates );
 
-					$description .= ' ' . MultiPass::format_date_range( [ 'from' => $from, 'to' => $to ], 'SHORT' );
+					$description .= ' ' . MultiPass::format_date_range(
+						array(
+							'from' => $from,
+							'to'   => $to,
+						),
+						'SHORT'
+					);
 				}
 
 				// TODO: get attendees and beds counts
@@ -611,7 +617,6 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				// 'id'   => $prefix . 'single',
 				// 'id'   => $prefix . 'baby',
 			}
-
 
 			$sub_total  = $item->get_subtotal() + $item->get_subtotal_tax();
 			$quantity   = $item->get_quantity();
@@ -656,9 +661,12 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				// 'email' => $customer_email,
 				// 'phone' => join(', ', $customer_phone),
 				// ),
-				'dates' => [ 'from' => $from, 'to' => $to ],
-				'from' => $from,
-				'to' => $to,
+				'dates'            => array(
+					'from' => $from,
+					'to'   => $to,
+				),
+				'from'             => $from,
+				'to'               => $to,
 				// 'attendees' => $attendees;
 				// 'beds' => $beds;
 
@@ -679,11 +687,11 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			);
 
 			$details[] = $args;
-			$all_dates = array_merge($all_dates, array_values($dates));
+			$all_dates = array_merge( $all_dates, array_values( $dates ) );
 		}
 
-		$from = (empty($all_dates)) ? null : min($all_dates);
-		$to = (empty($all_dates)) ? null : max($all_dates);
+		$from = ( empty( $all_dates ) ) ? null : min( $all_dates );
+		$to   = ( empty( $all_dates ) ) ? null : max( $all_dates );
 
 		$prestation = new Mltp_Prestation(
 			array(
@@ -693,8 +701,8 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				'customer_email' => $customer_email,
 				'date'           => esc_attr( $post->post_date ),
 				'date_gmt'       => esc_attr( $post->post_date_gmt ),
-				'from' => $from,
-				'to' => $to,
+				'from'           => $from,
+				'to'             => $to,
 				// TODO: add items from and to, avoid merging unrelated orders
 			)
 		);
@@ -705,9 +713,9 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 			// TODO: mark parts related to this order as review in progress
 
-			foreach ($details as $key => $detail) {
+			foreach ( $details as $key => $detail ) {
 				$detail['prestation_id'] = $prestation->id;
-				$mltp_detail = new Mltp_Item( $detail, $update );
+				$mltp_detail             = new Mltp_Item( $detail, $update );
 			}
 
 			// TODO: delete remaining "review in progress" parts

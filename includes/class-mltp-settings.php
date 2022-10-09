@@ -187,8 +187,8 @@ class Mltp_Settings {
 
 			array(
 				'component' => $this,
-				'hook'     => 'rwmb_meta_boxes',
-				'callback' => 'register_fields',
+				'hook'      => 'rwmb_meta_boxes',
+				'callback'  => 'register_fields',
 			),
 
 			array(
@@ -400,7 +400,9 @@ class Mltp_Settings {
 	}
 
 	function register_fields( $meta_boxes ) {
-		if( ! get_option('multipass_debug', false)) return $meta_boxes;
+		if ( ! get_option( 'multipass_debug', false ) ) {
+			return $meta_boxes;
+		}
 
 		$prefix = '';
 
@@ -408,21 +410,21 @@ class Mltp_Settings {
 			'title'      => __( 'Debug', 'multipass' ),
 			'title'      => __( 'Debug data', 'hoteldruid-migration' ),
 			'id'         => 'debug',
-			'post_types' => ['mltp_prestation', 'mltp_detail', 'mltp_resource'],
+			'post_types' => array( 'mltp_prestation', 'mltp_detail', 'mltp_resource' ),
 			'priority'   => 'low',
 			// 'style' => 'seamless',
 			// 'closed'     => true,
 			// 'visible'    => [
-			// 		'when'     => [['debug', '!=', '']],
-			// 		'relation' => 'or',
+			// 'when'     => [['debug', '!=', '']],
+			// 'relation' => 'or',
 			// ],
 			'fields'     => array(
 				array(
 					// 'name' => __('Debug', 'multipass'),
-					'id'       => $prefix . 'debug',
-					'type'     => 'custom_html',
+					'id'         => $prefix . 'debug',
+					'type'       => 'custom_html',
 					'save_field' => false,
-					'callback' => [ $this, 'debug_html' ],
+					'callback'   => array( $this, 'debug_html' ),
 				),
 			),
 		);
@@ -430,13 +432,13 @@ class Mltp_Settings {
 		return $meta_boxes;
 	}
 
-	function debug_html($value, $field) {
+	function debug_html( $value, $field ) {
 
-		if(empty($value)) {
+		if ( empty( $value ) ) {
 			$post_id = get_the_ID();
-			$value = get_post_meta($post_id, 'debug', true);
-			if(is_array($value)) {
-				$value = '<pre>' . print_r($value, true) . '</pre>';
+			$value   = get_post_meta( $post_id, 'debug', true );
+			if ( is_array( $value ) ) {
+				$value = '<pre>' . print_r( $value, true ) . '</pre>';
 			}
 		}
 
@@ -500,30 +502,32 @@ class Mltp_Settings {
 
 	function get_role_users( $group ) {
 		if ( $this->roles_settings_being_updated() ) {
-			$request = wp_unslash( $_REQUEST );
-			$role_slug = ('_create' === $request[ $group ]) ? $group : $request[ $group ];
+			$request   = wp_unslash( $_REQUEST );
+			$role_slug = ( '_create' === $request[ $group ] ) ? $group : $request[ $group ];
 		} else {
-			$role_slug = MultiPass::get_option($group);
+			$role_slug = MultiPass::get_option( $group );
 		}
-		if(empty($role_slug)) return;
+		if ( empty( $role_slug ) ) {
+			return;
+		}
 
 		$args  = array(
-			'role__in'    => ('mltp_administrator' === $role_slug) ? [ $role_slug, 'administrator' ] : [ $role_slug ],
-			'orderby' => 'user_nicename',
-			'order'   => 'ASC',
+			'role__in' => ( 'mltp_administrator' === $role_slug ) ? array( $role_slug, 'administrator' ) : array( $role_slug ),
+			'orderby'  => 'user_nicename',
+			'order'    => 'ASC',
 		);
 		$users = get_users( $args );
-		$count = count($users);
-		$more = '';
-		if($count > 5) {
-			$users = array_slice($users, 0, 5);
-			$more = sprintf(
-				__(', and %s more...', 'multipass'),
+		$count = count( $users );
+		$more  = '';
+		if ( $count > 5 ) {
+			$users = array_slice( $users, 0, 5 );
+			$more  = sprintf(
+				__( ', and %s more...', 'multipass' ),
 				$count - 5,
 			);
 		}
 
-		$list = [];
+		$list = array();
 		foreach ( $users as $user ) {
 			$list[] = sprintf(
 				'<a href="%s">%s</a>',
@@ -533,7 +537,7 @@ class Mltp_Settings {
 		}
 
 		return sprintf(
-			_n('Currently %s allowed user: %s%s', 'Currently %s allowed users: %s%s', $count, 'multipass'),
+			_n( 'Currently %1$s allowed user: %2$s%3$s', 'Currently %1$s allowed users: %2$s%3$s', $count, 'multipass' ),
 			$count,
 			join( ', ', $list ),
 			$more,
@@ -559,10 +563,9 @@ class Mltp_Settings {
 	}
 
 	function add_capabilities( $force = false ) {
-		$force = (get_transient('multipass-refresh-capabilities')) ? true : $force;
+		$force = ( get_transient( 'multipass-refresh-capabilities' ) ) ? true : $force;
 		if ( $this->roles_settings_being_updated() || $force ) {
-			delete_transient('multipass-refresh-capabilities');
-			error_log( __CLASS__.'::'.__METHOD__ );
+			delete_transient( 'multipass-refresh-capabilities' );
 			$request = wp_unslash( $_REQUEST );
 			$options = array( 'mltp_reader', 'mltp_manager', 'mltp_administrator' );
 			$remove  = array();
@@ -571,17 +574,23 @@ class Mltp_Settings {
 				$new_slug      = ( isset( $request[ $option ] ) ) ? $request[ $option ] : MultiPass::get_option( $option );
 				$new_slug      = ( '_create' === $new_slug ) ? $option : $new_slug;
 				$previous_slug = MultiPass::get_option( $option );
-				$option_caps = $this->caps[ $option ];
-				if(!isset($remove[$previous_slug])) $remove[$previous_slug] = [];
-				if(!isset($add[$new_slug])) $add[$new_slug] = [];
-				if(!isset($add['administrator'])) $add['administrator'] = [];
+				$option_caps   = $this->caps[ $option ];
+				if ( ! isset( $remove[ $previous_slug ] ) ) {
+					$remove[ $previous_slug ] = array();
+				}
+				if ( ! isset( $add[ $new_slug ] ) ) {
+					$add[ $new_slug ] = array();
+				}
+				if ( ! isset( $add['administrator'] ) ) {
+					$add['administrator'] = array();
+				}
 
 				if ( $previous_slug !== $new_slug & ! empty( $previous_slug ) && $previous_slug != 'administrator' ) {
 					$remove[ $previous_slug ] = array_merge( $remove[ $previous_slug ], $option_caps );
 				}
-				$add[ 'administrator' ] = array_merge( $add[ 'administrator' ], $option_caps);
+				$add['administrator'] = array_merge( $add['administrator'], $option_caps );
 				if ( ! empty( $new_slug ) ) {
-					$add[ $new_slug ] = array_merge( $add[ $new_slug ], $option_caps);
+					$add[ $new_slug ] = array_merge( $add[ $new_slug ], $option_caps );
 				}
 			}
 
@@ -609,7 +618,7 @@ class Mltp_Settings {
 	function sanitize_roles( $new_role, $field, $old_value = null ) {
 		$group = $field['id'];
 		// if ( isset( $request['nonce_roles-settings'] ) && 'mltp_reader' === $group ) {
-		// 	error_log( __METHOD__ . " $new_role = " . MultiPass::get_option( 'mltp_reader' ) );
+		// error_log( __METHOD__ . " $new_role = " . MultiPass::get_option( 'mltp_reader' ) );
 		// }
 
 		if ( ! empty( $new_role ) ) {

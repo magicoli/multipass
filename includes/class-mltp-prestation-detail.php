@@ -147,8 +147,8 @@ class Mltp_Item {
 		$filters = array(
 			array(
 				'component' => $this,
-				'hook'     => 'rwmb_meta_boxes',
-				'callback' => 'register_fields',
+				'hook'      => 'rwmb_meta_boxes',
+				'callback'  => 'register_fields',
 			),
 
 			array(
@@ -206,64 +206,71 @@ class Mltp_Item {
 		$post_id = $post->ID;
 
 		$links['view'] = array(
-			'url' => get_post_meta( $post->ID, 'view_url', true ),
+			'url'        => get_post_meta( $post->ID, 'view_url', true ),
 			'icon_class' => 'dashicons dashicons-visibility',
-			'text' => __( 'View', 'multipass' ),
+			'text'       => __( 'View', 'multipass' ),
 		);
-		$links = array(
+		$links         = array(
 			'edit' => array(
-				'url' => current_user_can( 'edit_post', $post_id ) ? get_edit_post_link($post_id) : null,
+				'url'        => current_user_can( 'edit_post', $post_id ) ? get_edit_post_link( $post_id ) : null,
 				'icon_class' => 'edit dashicons dashicons-edit',
-				'text' => __( 'Edit', 'multipass' ),
+				'text'       => __( 'Edit', 'multipass' ),
 			),
 		);
-		if(!empty($links['edit']['url'])) unset($links['view']);
+		if ( ! empty( $links['edit']['url'] ) ) {
+			unset( $links['view'] );
+		}
 
-		if(get_post_meta( $post->ID, 'source_url', true )) {
-			$source = get_post_meta( $post->ID, 'source', true );
+		if ( get_post_meta( $post->ID, 'source_url', true ) ) {
+			$source      = get_post_meta( $post->ID, 'source', true );
 			$source_term = get_term_by( 'slug', $source, 'mltp_detail-source' );
-			if($source_term) {
+			if ( $source_term ) {
 				$links['source'] = array(
-					'url' => get_post_meta( $post->ID, 'source_url', true ),
+					'url'        => get_post_meta( $post->ID, 'source_url', true ),
 					'icon_class' => 'dashicons dashicons-external',
-					'text' => sprintf( __( 'Edit on %s', 'multipass' ), $source_term->name ),
-					'slug' => $source_term->slug,
+					'text'       => sprintf( __( 'Edit on %s', 'multipass' ), $source_term->name ),
+					'slug'       => $source_term->slug,
 				);
 			}
 		}
-		if(get_post_meta( $post->ID, 'origin_url', true )) {
-			$origin = get_post_meta( $post->ID, 'origin', true );
+		if ( get_post_meta( $post->ID, 'origin_url', true ) ) {
+			$origin      = get_post_meta( $post->ID, 'origin', true );
 			$origin_term = get_term_by( 'slug', $origin, 'mltp_detail-origin' );
-			if($origin_term) {
+			if ( $origin_term ) {
 				$links['origin'] = array(
-					'url' => get_post_meta( $post->ID, 'origin_url', true ),
+					'url'        => get_post_meta( $post->ID, 'origin_url', true ),
 					'icon_class' => 'dashicons dashicons-external',
-					'text' => sprintf( __( 'Edit on %s', 'multipass' ), $origin_term->name ),
-					'slug' => $origin_term->slug,
+					'text'       => sprintf( __( 'Edit on %s', 'multipass' ), $origin_term->name ),
+					'slug'       => $origin_term->slug,
 				);
 			}
 		}
 
-		$links_html = [];
+		$links_html = array();
 
 		foreach ( $links as $key => $link ) {
-			if(empty($link['url'])) continue;
+			if ( empty( $link['url'] ) ) {
+				continue;
+			}
 			$url = $link['url'];
-			if(isset($links_html[$link['url']])) continue;
+			if ( isset( $links_html[ $link['url'] ] ) ) {
+				continue;
+			}
 
 			$class = "link-$key";
-			if(isset($link['slug']))
-			$class .= " link-${link['slug']} ";
+			if ( isset( $link['slug'] ) ) {
+				$class .= " link-${link['slug']} ";
+			}
 
-			if ($field['format'] == 'icon' ) {
+			if ( $field['format'] == 'icon' ) {
 				$class .= ' ' . $link['icon_class'];
-				$text = '';
-				$title = $link['text'];
+				$text   = '';
+				$title  = $link['text'];
 			} else {
-				$text = $link['text'];
+				$text  = $link['text'];
 				$title = '';
 			}
-			$links_html[$link['url']] = sprintf(
+			$links_html[ $link['url'] ] = sprintf(
 				'<a href="%s" class="%s" title="%s">%s</a> ',
 				$link['url'],
 				$class,
@@ -271,7 +278,7 @@ class Mltp_Item {
 				$text,
 			);
 		}
-		$output =join( ' ', $links_html );
+		$output = join( ' ', $links_html );
 
 		return $output;
 	}
@@ -875,7 +882,7 @@ class Mltp_Item {
 	}
 
 	static function add_custom_columns() {
-		if( class_exists( 'Mltp_Item_Admin_Columns' ) ) {
+		if ( class_exists( 'Mltp_Item_Admin_Columns' ) ) {
 			new Mltp_Item_Admin_Columns( 'mltp_detail', array() );
 		}
 	}
@@ -1336,20 +1343,20 @@ class Mltp_Item {
 
 				// if (! $posts)
 				// error_log("looking by resource $args[resource_id] and dates from $from to $to");
-				if ( ! $posts &! empty($from) &! empty($to) &! empty($args['resource_id']) ) {
+				if ( ! $posts & ! empty( $from ) & ! empty( $to ) & ! empty( $args['resource_id'] ) ) {
 					// error_log("looking by resource $args[resource_id] and dates from $from to $to");
 
 					$query_args = array(
-						'post_type'   => 'mltp_detail',
+						'post_type'  => 'mltp_detail',
 						// 'post_status' => 'publish',
 						// 'numberposts' => 1,
-						'orderby'     => 'post_date',
-						'order'       => 'asc',
-						'meta_query'  => array(
+						'orderby'    => 'post_date',
+						'order'      => 'asc',
+						'meta_query' => array(
 							'relation' => 'AND',
 							// array(
-							// 	'key'   => 'dates',
-							// 	'value' => $args['dates'],
+							// 'key'   => 'dates',
+							// 'value' => $args['dates'],
 							// ),
 							array(
 								'key'   => 'from',
@@ -1365,7 +1372,7 @@ class Mltp_Item {
 							),
 						),
 					);
-					$posts = get_posts( $query_args );
+					$posts      = get_posts( $query_args );
 
 				}
 
@@ -1382,7 +1389,7 @@ class Mltp_Item {
 
 		if ( is_array( $args ) & ! empty( $args ) && ( empty( $post_id ) || $update ) ) {
 			$args['from'] = $from;
-			$args['to'] = $to;
+			$args['to']   = $to;
 
 			$postarr = array(
 				'ID'          => $post_id,
@@ -1420,7 +1427,7 @@ $this->loaders[] = new Mltp_Item();
  * This is a dirty fix. This class needs to be loaded, or the admin columns has
  * to be set in another way.
  */
-if( class_exists( '\MBAC\Post' ) ) {
+if ( class_exists( '\MBAC\Post' ) ) {
 	class Mltp_Item_Admin_Columns extends \MBAC\Post {
 		// public function columns( $columns ) {
 		// $columns  = parent::columns( $columns );
@@ -1434,21 +1441,21 @@ if( class_exists( '\MBAC\Post' ) ) {
 		public function show( $column, $post_id ) {
 			switch ( $column ) {
 				case 'dates_admin_list':
-				echo MultiPass::format_date_range( get_post_meta( $post_id, 'dates', true ) );
-				break;
+					echo MultiPass::format_date_range( get_post_meta( $post_id, 'dates', true ) );
+					break;
 
 				case 'attendees_display';
-				$attendees = get_post_meta( $post_id, 'attendees', true );
-				if ( is_array( $attendees ) && isset( $attendees['total'] ) ) {
-					echo $attendees['total'];
-				}
+					$attendees = get_post_meta( $post_id, 'attendees', true );
+					if ( is_array( $attendees ) && isset( $attendees['total'] ) ) {
+						echo $attendees['total'];
+					}
 				break;
 
 				case 'deposit_amount';
-				$deposit = get_post_meta( $post_id, 'deposit', true );
-				if ( is_array( $deposit ) && isset( $deposit['amount'] ) ) {
-					echo $deposit['amount'];
-				}
+					$deposit = get_post_meta( $post_id, 'deposit', true );
+					if ( is_array( $deposit ) && isset( $deposit['amount'] ) ) {
+						echo $deposit['amount'];
+					}
 				break;
 			}
 		}

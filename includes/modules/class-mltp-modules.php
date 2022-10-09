@@ -89,9 +89,8 @@ class Mltp_Modules {
 		}
 
 		// $modules=[];
-		$this->modules = apply_filters('multipass_load_modules', $this->modules);
+		$this->modules = apply_filters( 'multipass_load_modules', $this->modules );
 		// do_action( 'multipass_load_modules', $args = null );
-
 	}
 
 	/**

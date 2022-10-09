@@ -41,7 +41,7 @@ define( 'MULTIPASS_PLUGIN_NAME', 'MultiPass' );
  * The code that runs during plugin activation.
  */
 function activate_multipass() {
-	set_transient('multipass-refresh-capabilities', true);
+	set_transient( 'multipass-refresh-capabilities', true );
 	flush_rewrite_rules();
 }
 register_activation_hook( __FILE__, 'activate_multipass' );
@@ -68,10 +68,5 @@ require MULTIPASS_DIR . 'includes/class-multipass.php';
  *
  * @since    0.1.0
  */
-function run_multipass() {
-
-	$plugin = new MultiPass();
-	$plugin->init();
-
-}
-run_multipass();
+$multipass = new MultiPass();
+$multipass->init();
