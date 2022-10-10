@@ -7,6 +7,8 @@
 - added option to create custom roles
 - added MultiPass Reader, Manager and Administrator capabilities sets * reorganised admin menu (defaults to Calendar)
 - added source and origin edit links to Calendar modal
+- fix PHP 7.4 compatibility
+- fix issues with composer dependencies custom location (revert to
 - fix duplicate details on wc order update, use uuid to identify linked detail
 
 ### 0.1.2 (alpha release)
