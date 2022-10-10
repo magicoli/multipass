@@ -370,9 +370,13 @@ class MultiPass {
 			} else {
 				$search_currency = $currency;
 			}
+			if(empty($search_currency)) {
+				$symbol = null;
+			} else {
+				$symbols = Currency\Util\CurrencySymbolMapping::values();
+				$symbol  = ( ! empty( $symbols[ $search_currency ] ) ) ? $symbols[ $search_currency ] : $currency;
+			}
 
-			$symbols = Currency\Util\CurrencySymbolMapping::values();
-			$symbol  = ( ! empty( $symbols[ $search_currency ] ) ) ? $symbols[ $search_currency ] : $currency;
 		}
 
 		wp_cache_set( 'get_currency_symbol-' . $currency, $symbol );
