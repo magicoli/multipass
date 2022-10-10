@@ -8,7 +8,7 @@ const config = {
 	entry: {
     '../public/js/public': './src/public/index.js',
     '../admin/js/admin': './src/admin/index.js',
-    '../lib/js/fullcalendar': './src/fullcalendar/fullcalendar-library.js',
+    '../includes/js/fullcalendar': './src/fullcalendar/fullcalendar-library.js',
     '../includes/js/calendar': './src/fullcalendar/calendar.js',
 	},
 	output: {

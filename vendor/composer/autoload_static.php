@@ -4,21 +4,21 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInite42ea528137d3c61bda48e39362698e9
+class ComposerStaticInite446079fa2cc77fc71ba2d2a1334bc0c
 {
     public static $files = array (
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '53c7be3308b5aa229d03a4dfcf6ca18d' => __DIR__ . '/..' . '/symfony/intl/Resources/functions.php',
-        '483a6c1dd1321d7fa05db0a69f0114f4' => __DIR__ . '/../..' . '/lib/meta-box/meta-box/meta-box.php',
-        '7e8b57f4066682cfe9e869ba020c5475' => __DIR__ . '/../..' . '/lib/meta-box/mb-admin-columns/mb-admin-columns.php',
-        'd95fc3e30752846d6a1eea85c799d275' => __DIR__ . '/../..' . '/lib/meta-box/meta-box-columns/meta-box-columns.php',
-        '97c4727e949ddd31c2c57c9bf5121a33' => __DIR__ . '/../..' . '/lib/meta-box/meta-box-conditional-logic/meta-box-conditional-logic.php',
-        '25191c4b0600832bbf3070f0dc0cb7cb' => __DIR__ . '/../..' . '/lib/meta-box/meta-box-group/meta-box-group.php',
-        '8c7c94d5e9a1f773ebc921ef27ed7b71' => __DIR__ . '/../..' . '/lib/meta-box/meta-box-include-exclude/meta-box-include-exclude.php',
-        '2f9980cb114e539d3b77117951fef197' => __DIR__ . '/../..' . '/lib/meta-box/meta-box-show-hide/meta-box-show-hide.php',
-        '0ff37db1889dbd9e62776afa3abd12ce' => __DIR__ . '/../..' . '/lib/meta-box/mb-settings-page/mb-settings-page.php',
-        '04adf0ee41c969c55b6634808e8b121e' => __DIR__ . '/../..' . '/lib/meta-box/meta-box-tabs/meta-box-tabs.php',
+        '42f21a986a071bc268819b02ac75329d' => __DIR__ . '/..' . '/meta-box/meta-box/meta-box.php',
+        'b5856825679c115c71547b0272deaac3' => __DIR__ . '/..' . '/meta-box/mb-admin-columns/mb-admin-columns.php',
+        '025a5bb7399f0c997097d1021281c7f3' => __DIR__ . '/..' . '/meta-box/meta-box-columns/meta-box-columns.php',
+        '3b3ae0b9ebddbddca4a4871522e94e94' => __DIR__ . '/..' . '/meta-box/meta-box-conditional-logic/meta-box-conditional-logic.php',
+        'edcc153a806b7ccc783ee600bce341a8' => __DIR__ . '/..' . '/meta-box/meta-box-group/meta-box-group.php',
+        'c19a17ecabf454d7a624f87c83f08186' => __DIR__ . '/..' . '/meta-box/meta-box-include-exclude/meta-box-include-exclude.php',
+        '801b2d802e0fd0a97de6730c2744a301' => __DIR__ . '/..' . '/meta-box/meta-box-show-hide/meta-box-show-hide.php',
+        'cd96a11db28ed30d1198d6eeb46fb5ed' => __DIR__ . '/..' . '/meta-box/mb-settings-page/mb-settings-page.php',
+        '0990ebd9b5b5f48c2d93ef6b8e3d3cb4' => __DIR__ . '/..' . '/meta-box/meta-box-tabs/meta-box-tabs.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -102,10 +102,10 @@ class ComposerStaticInite42ea528137d3c61bda48e39362698e9
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInite42ea528137d3c61bda48e39362698e9::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInite42ea528137d3c61bda48e39362698e9::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInite42ea528137d3c61bda48e39362698e9::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInite42ea528137d3c61bda48e39362698e9::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInite446079fa2cc77fc71ba2d2a1334bc0c::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInite446079fa2cc77fc71ba2d2a1334bc0c::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInite446079fa2cc77fc71ba2d2a1334bc0c::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInite446079fa2cc77fc71ba2d2a1334bc0c::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -1,8 +1,4 @@
 sources/
-vendor/*
-!vendor/autoload.php
-!vendor/composer
-vendor/composer/installers
-.phpunit.result.cache
+.*.cache
 node_modules/
 build/
