@@ -6,6 +6,5 @@
 
 // import 'fullcalendar/main.js';
 // import 'fullcalendar/main.css';
-// import 'fullcalendar-scheduler/main.js';
+import 'fullcalendar-scheduler/main.js';
 import 'fullcalendar-scheduler/main.css';
-// import './local.js';

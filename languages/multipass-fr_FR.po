@@ -1754,8 +1754,8 @@ msgstr "Voir les prestations"
 msgid "Online Shop (WooCommerce)"
 msgstr "Boutique en ligne (WooCommerce)"
 
-#: includes/js/calendar.js:1 src/fullcalendar/calendar.js:74
-#: includes/js/calendar.js:126
+#: includes/calendar/calendar.js:1 src/fullcalendar/calendar.js:74
+#: includes/calendar/calendar.js:126
 msgid "Edit"
 msgstr "Modifier"
 

@@ -339,12 +339,12 @@ class Mltp_Calendar {
 	}
 
 	public static function render_calendar_page() {
-		wp_enqueue_style( 'fullcalendar-main', plugins_url( 'includes/js/fullcalendar.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION );
-		wp_enqueue_style( 'mltp-calendar', plugins_url( 'includes/js/calendar.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION );
+		wp_enqueue_style( 'fullcalendar-main', plugins_url( 'includes/fullcalendar/fullcalendar.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION );
+		wp_enqueue_style( 'mltp-calendar', plugins_url( 'includes/calendar/calendar.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION );
 
-		// wp_enqueue_script( 'mltp-calendar-main', plugins_url( 'includes/js/fullcalendar.js', MULTIPASS_FILE ) );
+		// wp_enqueue_script( 'mltp-calendar-main', plugins_url( 'includes/fullcalendar/fullcalendar.js', MULTIPASS_FILE ) );
 		wp_enqueue_script( 'fullcalendar-cdn', 'https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.0/main.min.js' );
-		wp_enqueue_script( 'mltp-calendar', plugins_url( 'includes/js/calendar.js', MULTIPASS_FILE ), array( 'jquery' ), MULTIPASS_VERSION );
+		wp_enqueue_script( 'mltp-calendar', plugins_url( 'includes/calendar/calendar.js', MULTIPASS_FILE ), array( 'jquery' ), MULTIPASS_VERSION );
 
 		$calendar_resources = self::get_calendar_resources( true );
 		$main_count         = ( empty( $calendar_resources['main_count'] ) ) ? null : $calendar_resources['main_count'];

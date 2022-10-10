@@ -8,8 +8,8 @@ const config = {
 	entry: {
     '../public/js/public': './src/public/index.js',
     '../admin/js/admin': './src/admin/index.js',
-    '../includes/js/fullcalendar': './src/fullcalendar/fullcalendar-library.js',
-    '../includes/js/calendar': './src/fullcalendar/calendar.js',
+    '../includes/fullcalendar/fullcalendar': './src/fullcalendar/fullcalendar-library.js',
+    '../includes/calendar/calendar': './src/fullcalendar/calendar.js',
 	},
 	output: {
     filename: '[name].js',
