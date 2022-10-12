@@ -339,7 +339,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		if ( $properties ) {
 			$check = reset( $properties );
 			if ( ! empty( $check ) && preg_match( '/^Elite Royal Apartment/', $check['name'] ) ) {
-				error_log( 'Properties contain demo data, force fetch again' );
+				error_log( 'Properties fetched from Lodgify were demo data, abort.' );
 			} else {
 				return $properties;
 			}
