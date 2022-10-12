@@ -304,7 +304,6 @@ class Mltp_Calendar {
 			)
 		);
 
-
 	}
 
 	/**

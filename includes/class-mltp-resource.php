@@ -791,7 +791,7 @@ class Mltp_Resource {
 				'edit-tags.php?taxonomy=resource-type', // string $menu_slug,
 			);
 		}
-		add_action('resource-type_pre_add_form', 'MultiPass::back_to_multipass_button');
+		add_action( 'resource-type_pre_add_form', 'MultiPass::back_to_multipass_button' );
 
 		MultiPass::register_terms(
 			'resource-type',

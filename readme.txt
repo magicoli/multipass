@@ -69,6 +69,7 @@ WARNING: **Make a full backup of your website and databases** before installing 
 = Unreleased =
 * new filter 'multipass_load_modules', allow loading modules from other plugins
 * new Lodgify bookings sync
+* addded src/bin/build.sh and src/bin/deploy.sh
 * added Mltp_Prestation summary() method
 * added option to create custom roles
 * added MultiPass Reader, Manager and Administrator capabilities sets * reorganised admin menu (defaults to Calendar)

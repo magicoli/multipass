@@ -766,7 +766,7 @@ class Mltp_Prestation {
 				'edit-tags.php?taxonomy=prestation-status', // string $menu_slug,
 			);
 		}
-		add_action('prestation_status_pre_add_form', 'MultiPass::back_to_multipass_button');
+		add_action( 'prestation_status_pre_add_form', 'MultiPass::back_to_multipass_button' );
 
 		/**
 		 * statuses, we use basically the same terminology as
@@ -935,7 +935,7 @@ class Mltp_Prestation {
 				'ID'          => $item_post->ID,
 				'date'        => $item_post->post_date,
 				'description' => reset( $meta['description'] ),
-				'type'        => is_array($meta['type']) ? reset( $meta['type'] ) : $meta['type'],
+				'type'        => is_array( $meta['type'] ) ? reset( $meta['type'] ) : $meta['type'],
 				'dates'       => $dates,
 				'subtotal'    => isset( $price['sub_total'] ) ? $price['sub_total'] : null,
 				'discount'    => isset( $discount['amount'] ) ? $discount['amount'] : null,
@@ -943,7 +943,7 @@ class Mltp_Prestation {
 				'deposit'     => ( is_array( $deposit ) & ! empty( $deposit['amount'] ) ) ? $deposit['amount'] : null,
 				'paid'        => reset( $meta['paid'] ),
 				'balance'     => reset( $meta['balance'] ),
-				'source'      => is_array($meta['source']) ? reset( $meta['source'] ) : $meta['source'],
+				'source'      => is_array( $meta['source'] ) ? reset( $meta['source'] ) : $meta['source'],
 				'links'       => $links,
 				'notes'       => get_post_meta( $item_post->ID, 'notes', true ),
 			);

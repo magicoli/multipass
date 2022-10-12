@@ -302,7 +302,7 @@ class Mltp_Item {
 				'phone'   => null,
 				'email'   => null,
 			),
-			(empty($customer_info)) ? [] : $customer_info,
+			( empty( $customer_info ) ) ? array() : $customer_info,
 		);
 
 		$customer_html = '';
@@ -951,7 +951,7 @@ class Mltp_Item {
 				'edit-tags.php?taxonomy=mltp_detail-source', // string $menu_slug,
 			);
 		}
-		add_action('mltp_detail-source_pre_add_form', 'MultiPass::back_to_multipass_button');
+		add_action( 'mltp_detail-source_pre_add_form', 'MultiPass::back_to_multipass_button' );
 
 	}
 

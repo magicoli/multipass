@@ -3,7 +3,7 @@
         'name' => 'magicoli/multipass',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'b85d22e9527f9c3782c688c3886e5de3b7c9432a',
+        'reference' => '17565095fd75676165239c7737ad9641d0ef0e18',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -40,7 +40,7 @@
         'magicoli/multipass' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'b85d22e9527f9c3782c688c3886e5de3b7c9432a',
+            'reference' => '17565095fd75676165239c7737ad9641d0ef0e18',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
