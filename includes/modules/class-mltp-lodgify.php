@@ -33,7 +33,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 	public function __construct() {
 		$this->prefix  = 'lodgify_';
 		$this->api_url = 'https://api.lodgify.com';
-		$this->api_key = $this->get_option( 'lodgify_api_key' );
+		$this->api_key = self::get_option( 'lodgify_api_key' );
 
 		$this->locale = MultiPass::get_locale();
 
@@ -98,6 +98,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			'capability' => 'manage_options',
 			'style'      => 'no-boxes',
 			'icon_url'   => 'dashicons-admin-generic',
+			// 'columns' => 1,
 		);
 
 		return $settings_pages;
@@ -156,7 +157,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			),
 		);
 
-		if ( $this->get_option( 'api_key_verified' ) === true ) {
+		if ( self::get_option( 'api_key_verified' ) === true ) {
 			// if( ! empty ( $this->api_key ) ) {
 			$meta_boxes['multipass-lodgify-resources'] = array(
 				'name'           => __( 'Resources', 'multipass' ),
@@ -408,7 +409,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		return $json_data;
 	}
 
-	function get_option( $option, $default = false ) {
+	static function get_option( $option, $default = false ) {
 		if ( preg_match( '/:/', $option ) ) {
 			return MultiPass::get_option( $option, $default );
 		} else {
@@ -439,7 +440,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			return false;
 		}
 		if ( $api_key == $oldapi_key ) {
-			wp_cache_set( 'multipass_lodgify-api_key_verified', $this->get_option( 'api_key_verified' ) );
+			wp_cache_set( 'multipass_lodgify-api_key_verified', self::get_option( 'api_key_verified' ) );
 			return $api_key; // we assume it has already been checked
 		}
 
