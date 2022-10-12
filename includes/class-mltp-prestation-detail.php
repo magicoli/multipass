@@ -302,7 +302,7 @@ class Mltp_Item {
 				'phone'   => null,
 				'email'   => null,
 			),
-			$customer_info
+			(empty($customer_info)) ? [] : $customer_info,
 		);
 
 		$customer_html = '';
