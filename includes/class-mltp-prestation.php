@@ -921,7 +921,7 @@ class Mltp_Prestation {
 				'ID'          => $item_post->ID,
 				'date'        => $item_post->post_date,
 				'description' => reset( $meta['description'] ),
-				'type'        => reset( $meta['type'] ),
+				'type'        => is_array($meta['type']) ? reset( $meta['type'] ) : $meta['type'],
 				'dates'       => $dates,
 				'subtotal'    => isset( $price['sub_total'] ) ? $price['sub_total'] : null,
 				'discount'    => isset( $discount['amount'] ) ? $discount['amount'] : null,
@@ -929,7 +929,7 @@ class Mltp_Prestation {
 				'deposit'     => ( is_array( $deposit ) & ! empty( $deposit['amount'] ) ) ? $deposit['amount'] : null,
 				'paid'        => reset( $meta['paid'] ),
 				'balance'     => reset( $meta['balance'] ),
-				'source'      => reset( $meta['source'] ),
+				'source'      => is_array($meta['source']) ? reset( $meta['source'] ) : $meta['source'],
 				'links'       => $links,
 				'notes'       => get_post_meta( $item_post->ID, 'notes', true ),
 			);
