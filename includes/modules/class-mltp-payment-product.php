@@ -511,7 +511,7 @@ class Mltp_Payment_Product {
 		$output  = 'Test payment links:';
 		$output .= '<ul>';
 		foreach ( $links as $link ) {
-			$output .= sprintf( '<li><a target="_blank" href="%1$s">%1$s<a></li>', $link );
+			$output .= sprintf( '<li><a target="_blank" href="%1$s">%1$s</a></li>', $link );
 			// code...
 		}
 		$output .= '</ul>';
