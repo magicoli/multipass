@@ -36,69 +36,80 @@ class Mltp_Payment_Product {
 		// add_filter( 'woocommerce_product_single_add_to_cart_text', __CLASS__ . '::single_add_to_cart_button', 10, 2);
 
 		// Settings page
+		add_filter( 'rwmb_meta_boxes', __CLASS__ . '::register_settings_fields' );
 		add_filter( 'rwmb_meta_boxes', __CLASS__ . '::register_fields' );
 
 	}
 
-	static function register_fields( $meta_boxes ) {
+	static function register_settings_fields( $meta_boxes ) {
 		$prefix = 'woocommerce_';
 
 		$pp       = self::get_payment_products();
 		$pp_count = count( $pp );
 
 		// $meta_boxes['woocommerce_settings']['fields'][] =  [
-		$meta_boxes[] = array(
-			'title'          => __( 'Payment Products', 'multipass' ),
-			'id'             => 'multipass-payments',
-			'settings_pages' => array( 'multipass-settings' ),
-			'tab'            => 'woocommerce',
-			'fields'         => array(
-				array(
-					'name'     => __( 'Payment products', 'multipass' ),
-					'id'       => 'products',
-					'type'     => 'custom_html',
-					'callback' => __CLASS__ . '::payment_products_list',
-					'desc'     => sprintf(
-						'<p>%s</p><p>%s</p>',
-						__( 'Payment products are used to provide a payment gateway for prestation not handled by WooCommerce (like deposits, custom items or prestation items handled by an external website).', 'multipass' ),
-						join(
-							'<br/>',
-							array(
-								__( 'To enable a product as payment, check the "Payment Only" option on product edit page and set its price to 0 (zero).', 'multipass' ),
-								__( 'Enabling Payment Only will disable fixed product price and add amount and reference fields to product page.', 'multipass' ),
-								__( 'Only one Payment Only product is needed by MultiPass plugin.', 'multipass' ),
-							),
+		$meta_boxes['multipass-woocommerce']['fields'] += array(
+			array(
+				'name'     => __( 'Payment products', 'multipass' ),
+				'id'       => 'products',
+				'type'     => 'custom_html',
+				'callback' => __CLASS__ . '::payment_products_list',
+				'desc'     => sprintf(
+					'<p>%s</p><p>%s</p>',
+					__( 'Payment products are used to provide a payment gateway for prestation not handled by WooCommerce (like deposits, custom items or prestation items handled by an external website).', 'multipass' ),
+					join(
+						'<br/>',
+						array(
+							__( 'To enable a product as payment, check the "Payment Only" option on product edit page and set its price to 0 (zero).', 'multipass' ),
+							__( 'Enabling Payment Only will disable fixed product price and add amount and reference fields to product page.', 'multipass' ),
+							__( 'Only one Payment Only product is needed by MultiPass plugin.', 'multipass' ),
 						),
 					),
 				),
-				array(
-					'name'              => __( 'Default product', 'multipass' ),
-					'id'                => $prefix . 'default_product',
-					'type'              => ( $pp_count > 0 ) ? 'select' : 'custom_html',
-					'std'               => ( $pp_count > 0 ) ? array_key_first( $pp ) : __( 'Create a payment product first', 'multipass' ),
-					'options'           => $pp,
-					'placeholder'       => __( 'Select a product', 'multipass' ),
-					'desc'              => __( 'Used to generate payment links.', 'multipass' ),
-					'sanitize_callback' => __CLASS__ . '::rewrite_slug_validation',
+			),
+			array(
+				'name'              => __( 'Default product', 'multipass' ),
+				'id'                => $prefix . 'default_product',
+				'type'              => ( $pp_count > 0 ) ? 'select' : 'custom_html',
+				'std'               => ( $pp_count > 0 ) ? array_key_first( $pp ) : __( 'Create a payment product first', 'multipass' ),
+				'options'           => $pp,
+				'placeholder'       => __( 'Select a product', 'multipass' ),
+				'desc'              => __( 'Used to generate payment links.', 'multipass' ),
+				'sanitize_callback' => __CLASS__ . '::rewrite_slug_validation',
+			),
+			array(
+				'name'                  => __( 'Link prefix', 'multipass' ),
+				'id'                    => $prefix . 'rewrite_slug',
+				'type'                  => 'text',
+				'size'                  => 10,
+				// TRANSLATORS: slug used to generate payment links
+				'std'                   => __( 'pay', 'multipass' ),
+				'desc' => sprintf(
+					__('Generated payment URLs will folllow the form %s.', 'multipass' ),
+					sprintf(
+						'<nobr><code>%s</code></nobr>',
+						// get_home_url(null, 'prefix/booking_id/amount'),
+						self::payment_link('booking_id', 'amount'),
+					)
 				),
-				array(
-					'name'                  => __( 'Payment link slug', 'multipass' ),
-					'id'                    => $prefix . 'rewrite_slug',
-					'type'                  => 'text',
-					'size'                  => 10,
-					// TRANSLATORS: slug used to generate payment links
-					'std'                   => __( 'pay', 'multipass' ),
-					// 'desc' => __('Used to generate payment links.', 'multipass' ),
-						'sanitize_callback' => __CLASS__ . '::rewrite_slug_validation',
-				),
-				array(
-					'name' => __( 'Debug', 'multipass' ),
-					'id'   => $prefix . 'debug',
-					'type' => 'custom_html',
-					'std'  => self::generate_payment_link_tests(),
-				),
+				'sanitize_callback' => __CLASS__ . '::rewrite_slug_validation',
 			),
 		);
+
+		if ( get_option( 'multipass_debug', false ) ) {
+			$meta_boxes['multipass-woocommerce']['fields'][] = array(
+				// 'name' => __( 'Debug', 'multipass' ),
+				'id'   => $prefix . 'multipass-woocommerce-debug',
+				'type' => 'custom_html',
+				'std'  => self::generate_payment_link_tests(),
+			);
+		}
+
+		return $meta_boxes;
+	}
+
+	static function register_fields( $meta_boxes ) {
+		$prefix = 'woocommerce_';
 
 		$meta_boxes['prestation-cpt']['fields'][] = array(
 			'name'     => __( 'Payment link', 'multipass' ),
@@ -488,7 +499,8 @@ class Mltp_Payment_Product {
 	}
 
 	static function payment_link( $reference = null, $amount = null, $language = null ) {
-		$slug = __( MultiPass::get_option( 'woocommerce_rewrite_slug' ), 'multipass' );
+
+		$slug = Mltp_WooCommerce::get_option( 'woocommerce_rewrite_slug', __('pay', 'multipass' ) );
 		// if(!empty($language)) $slug = "$language/$slug";
 		if ( empty( $reference ) ) {
 			return get_home_url( null, "$slug/" );

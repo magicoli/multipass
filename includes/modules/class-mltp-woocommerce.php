@@ -152,39 +152,8 @@ class Mltp_WooCommerce extends Mltp_Modules {
 	function register_fields( $meta_boxes ) {
 		// WooCommerce settings
 
-		$prefix = 'woocommerce_';
-
-		$meta_boxes['multipass-settings']['fields']['currency_options'] = array(
-			'name' => __( 'Currency Options', 'multipass' ),
-			'id'   => $prefix . 'currency',
-			'type' => 'custom_html',
-			'std'  => sprintf(
-				__( 'Set currency options in %1$sWooCommerce settings page%2$s', 'multipass' ),
-				'<a href="' . get_admin_url( null, 'admin.php?page=wc-settings#pricing_options-description' ) . '">',
-				'</a>',
-			),
-		);
-
-		$meta_boxes['woocommerce_settings'] = array(
-			'title'          => __( 'WooCommerce Settings', 'multipass' ),
-			'id'             => 'multipass-woocommerce',
-			'settings_pages' => array( 'multipass-settings' ),
-			'tab'            => 'woocommerce',
-			'fields'         => array(
-				array(
-					'name'              => __( 'Synchronize now', 'multipass' ),
-					'id'                => $prefix . 'sync_orders',
-					'type'              => 'switch',
-					'desc'              => __( 'Sync orders and prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multipass' ),
-					'style'             => 'rounded',
-					'sanitize_callback' => 'Mltp_WooCommerce::sync_orders_validation',
-					'save_field'        => false,
-				),
-			),
-		);
-
-		$wc_term    = get_term_by( 'slug', 'woocommerce', 'mltp_detail-source' );
-		$wc_term_id = ( $wc_term ) ? get_term_by( 'slug', 'woocommerce', 'mltp_detail-source' )->term_id : 'woocommerce';
+		// $wc_term    = get_term_by( 'slug', 'woocommerce', 'mltp_detail-source' );
+		// $wc_term_id = ( $wc_term ) ? get_term_by( 'slug', 'woocommerce', 'mltp_detail-source' )->term_id : 'woocommerce';
 		// Order info on detail
 
 		// Prestation info on WC Orders
@@ -265,7 +234,16 @@ class Mltp_WooCommerce extends Mltp_Modules {
 	 * @return array                  Updated settings.
 	 */
 	function register_settings_pages( $settings_pages ) {
-		$settings_pages['multipass-settings']['tabs']['woocommerce'] = 'WooCommerce';
+		$settings_pages[] = array(
+			'menu_title' => __( 'WooCommerce', 'multipass' ),
+			'id'         => 'multipass-woocommerce',
+			'position'   => 25,
+			'parent'     => 'multipass',
+			'capability' => 'manage_options',
+			'style'      => 'no-boxes',
+			'icon_url'   => 'dashicons-admin-generic',
+			// 'columns' => 1,
+		);
 
 		return $settings_pages;
 	}
@@ -273,12 +251,39 @@ class Mltp_WooCommerce extends Mltp_Modules {
 	function register_settings_fields( $meta_boxes ) {
 		$prefix = 'woocommerce_';
 
-		$meta_boxes['multipass-woocommerce-settings'] = array(
+		$meta_boxes['multipass-settings']['fields']['currency_options'] = array(
+			'name' => __( 'Currency Options', 'multipass' ),
+			'id'   => $prefix . 'currency',
+			'type' => 'custom_html',
+			'std'  => sprintf(
+				__( 'Set currency options in %1$sWooCommerce settings page%2$s', 'multipass' ),
+				'<a href="' . get_admin_url( null, 'admin.php?page=wc-settings#pricing_options-description' ) . '">',
+				'</a>',
+			),
+		);
+
+		$meta_boxes['multipass-woocommerce'] = array(
+			'title'          => __( 'Payment Products', 'multipass' ),
+			'id'             => 'multipass-woocommerce-payments',
+			'settings_pages' => array( 'multipass-woocommerce' ),
+			'fields' => array(), // Placeholder, fields will be added later.
+		);
+
+		$meta_boxes[] = array(
 			'title'          => __( 'WooCommerce Settings', 'multipass' ),
-			'id'             => 'multipass-woocommerce-settings',
-			'settings_pages' => array( 'multipass-settings' ),
-			'tab'            => 'woocommerce',
-			'fields'         => array(),
+			'id'             => 'multipass-woocommerce-sync',
+			'settings_pages' => array( 'multipass-woocommerce' ),
+			'fields'         => array(
+				array(
+					'name'              => __( 'Synchronize now', 'multipass' ),
+					'id'                => $prefix . 'sync_orders',
+					'type'              => 'switch',
+					'desc'              => __( 'Sync orders and prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multipass' ),
+					'style'             => 'rounded',
+					'sanitize_callback' => 'Mltp_WooCommerce::sync_orders_validation',
+					'save_field'        => false,
+				),
+			),
 		);
 
 		return $meta_boxes;
@@ -819,6 +824,14 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		if ( $query->have_posts() ) {
 			$query->the_post();
 			return get_the_ID();
+		}
+	}
+
+	static function get_option( $option, $default = false ) {
+		if ( preg_match( '/:/', $option ) ) {
+			return MultiPass::get_option( $option, $default );
+		} else {
+			return MultiPass::get_option( 'multipass-woocommerce:' . $option, $default );
 		}
 	}
 }
