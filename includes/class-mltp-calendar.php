@@ -237,7 +237,7 @@ class Mltp_Calendar {
 		$labels = array(
 			'name'                       => esc_html__( 'Calendar Sections', 'multipass' ),
 			'singular_name'              => esc_html__( 'Calendar Section', 'multipass' ),
-			'menu_name'                  => esc_html__( 'Calendar Sections', 'multipass' ),
+			'menu_name'                  => esc_html__( 'Sections', 'multipass' ),
 			'search_items'               => esc_html__( 'Search Calendar Sections', 'multipass' ),
 			'popular_items'              => esc_html__( 'Popular Calendar Sections', 'multipass' ),
 			'all_items'                  => esc_html__( 'All Calendar Sections', 'multipass' ),
@@ -258,7 +258,7 @@ class Mltp_Calendar {
 			'items_list'                 => esc_html__( 'Calendar Sections list', 'multipass' ),
 			'most_used'                  => esc_html__( 'Most Used', 'multipass' ),
 			'back_to_items'              => esc_html__( '&larr; Go to Calendar Sections', 'multipass' ),
-			'text_domain'                => esc_html__( 'multipass', 'multipass' ),
+			'text_domain'                => 'multipass',
 		);
 		$args   = array(
 			'label'              => esc_html__( 'Calendar Sections', 'multipass' ),
@@ -268,7 +268,7 @@ class Mltp_Calendar {
 			'publicly_queryable' => true,
 			'hierarchical'       => false,
 			'show_ui'            => true,
-			'show_in_menu'       => false,
+			'show_in_menu'       => true,
 			'show_in_nav_menus'  => true,
 			'show_in_rest'       => true,
 			'show_tagcloud'      => true,
@@ -285,6 +285,16 @@ class Mltp_Calendar {
 		);
 		register_taxonomy( 'calendar-section', array( 'mltp_resource' ), $args );
 
+		if ( get_option( 'multipass_debug', false ) ) {
+			add_submenu_page(
+				'multipass', // string $parent_slug,
+				$labels['name'], // string $page_title,
+				'<span class="dashicons dashicons-admin-tools"></span> ' . $labels['menu_name'], // string $menu_title,
+				'manage_options', // string $capability,
+				'edit-tags.php?taxonomy=calendar-section', // string $menu_slug,
+			);
+		}
+
 		MultiPass::register_terms(
 			'calendar-section',
 			array(
@@ -293,6 +303,7 @@ class Mltp_Calendar {
 				'options' => __( 'Options', 'multipass' ),
 			)
 		);
+
 
 	}
 

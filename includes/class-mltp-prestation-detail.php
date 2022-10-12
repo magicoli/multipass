@@ -942,6 +942,16 @@ class Mltp_Item {
 
 		MultiPass::register_terms( 'mltp_detail-source' );
 
+		if ( get_option( 'multipass_debug', false ) ) {
+			add_submenu_page(
+				'multipass', // string $parent_slug,
+				$labels['name'], // string $page_title,
+				'<span class="dashicons dashicons-admin-tools"></span> ' . $labels['menu_name'], // string $menu_title,
+				'manage_options', // string $capability,
+				'edit-tags.php?taxonomy=mltp_detail-source', // string $menu_slug,
+			);
+		}
+
 	}
 
 	static function insert_mltp_detail_data( $data, $postarr, $unsanitized_postarr, $update ) {

@@ -734,7 +734,7 @@ class Mltp_Resource {
 		$labels = array(
 			'name'                       => esc_html__( 'Resource Types', 'multipass' ),
 			'singular_name'              => esc_html__( 'Resource Type', 'multipass' ),
-			'menu_name'                  => esc_html__( 'Resource Types', 'multipass' ),
+			'menu_name'                  => esc_html__( 'Types', 'multipass' ),
 			'search_items'               => esc_html__( 'Search types', 'multipass' ),
 			'popular_items'              => esc_html__( 'Popular types', 'multipass' ),
 			'all_items'                  => esc_html__( 'All types', 'multipass' ),
@@ -781,6 +781,16 @@ class Mltp_Resource {
 			),
 		);
 		register_taxonomy( 'resource-type', array( 'mltp_prestation', 'product', 'mltp_resource', 'mltp_detail' ), $args );
+
+		if ( get_option( 'multipass_debug', false ) ) {
+			add_submenu_page(
+				'multipass', // string $parent_slug,
+				$labels['name'], // string $page_title,
+				'<span class="dashicons dashicons-admin-tools"></span> ' . $labels['menu_name'], // string $menu_title,
+				'manage_options', // string $capability,
+				'edit-tags.php?taxonomy=resource-type', // string $menu_slug,
+			);
+		}
 
 		MultiPass::register_terms(
 			'resource-type',

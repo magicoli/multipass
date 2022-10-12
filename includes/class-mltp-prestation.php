@@ -150,6 +150,7 @@ class Mltp_Prestation {
 				'hook'      => 'rwmb_meta_boxes',
 				'callback'  => 'register_fields',
 			),
+
 			array(
 				'hook'          => 'wp_insert_post_data',
 				'callback'      => 'new_post_random_slug',
@@ -264,6 +265,8 @@ class Mltp_Prestation {
 			'has_archive'         => true,
 			'rest_base'           => '',
 			'show_in_menu'        => 'multipass',
+			// 'show_in_menu'        => true,
+			// 'menu_position' => 25,
 			'capability_type'     => 'mltp_prestation',
 			'supports'            => array( 'revisions' ),
 			'taxonomies'          => array(),
@@ -705,7 +708,7 @@ class Mltp_Prestation {
 		$labels = array(
 			'name'                       => esc_html__( 'Prestation statuses', 'multipass' ),
 			'singular_name'              => esc_html__( 'Prestation status', 'multipass' ),
-			'menu_name'                  => esc_html__( 'Prestation statuses', 'multipass' ),
+			'menu_name'                  => esc_html__( 'Statuses', 'multipass' ),
 			'search_items'               => esc_html__( 'Search statuses', 'multipass' ),
 			'popular_items'              => esc_html__( 'Popular statuses', 'multipass' ),
 			'all_items'                  => esc_html__( 'All statuses', 'multipass' ),
@@ -753,6 +756,16 @@ class Mltp_Prestation {
 			),
 		);
 		register_taxonomy( 'prestation-status', array( 'mltp_prestation' ), $args );
+
+		if ( get_option( 'multipass_debug', false ) ) {
+			add_submenu_page(
+				'multipass', // string $parent_slug,
+				$labels['name'], // string $page_title,
+				'<span class="dashicons dashicons-admin-tools"></span> ' . $labels['menu_name'], // string $menu_title,
+				'manage_options', // string $capability,
+				'edit-tags.php?taxonomy=prestation-status', // string $menu_slug,
+			);
+		}
 
 		/**
 		 * statuses, we use basically the same terminology as
