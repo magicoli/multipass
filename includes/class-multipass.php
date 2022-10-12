@@ -91,6 +91,10 @@ class MultiPass {
 		}
 		define( 'MLTP_FLAGSLUGS', $slugs );
 
+		if ( ! defined( 'RELATIVE_MEDIUM' ) ) {
+			define( 'RELATIVE_MEDIUM', 130 );
+		}
+
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -370,13 +374,12 @@ class MultiPass {
 			} else {
 				$search_currency = $currency;
 			}
-			if(empty($search_currency)) {
+			if ( empty( $search_currency ) ) {
 				$symbol = null;
 			} else {
 				$symbols = Currency\Util\CurrencySymbolMapping::values();
 				$symbol  = ( ! empty( $symbols[ $search_currency ] ) ) ? $symbols[ $search_currency ] : $currency;
 			}
-
 		}
 
 		wp_cache_set( 'get_currency_symbol-' . $currency, $symbol );
@@ -506,13 +509,26 @@ class MultiPass {
 		return null;
 	}
 
-	static function format_date( $timestamp, $datetype = 'RELATIVE_MEDIUM', $timetype = 'NONE' ) {
-		$DateType = constant( "IntlDateFormatter::$datetype" );
-		$TimeType = constant( "IntlDateFormatter::$timetype" );
+	static function IntlDateConstant( $constant, $default = null ) {
+		if ( defined( "IntlDateFormatter::$constant" ) ) {
+			return constant( "IntlDateFormatter::$constant" );
+		}
+
+		if ( defined( $constant ) ) {
+			return constant( $constant );
+		}
+
+		return null;
+	}
+
+	static function format_date( $timestamp, $datetype_str = 'RELATIVE_MEDIUM', $timetype_str = 'NONE' ) {
+		$datetype = self::IntlDateConstant( $datetype_str );
+		$timetype = self::IntlDateConstant( $timetype_str );
+
 		if ( empty( $timestamp ) ) {
 			return null;
 		}
-		$formatter = new IntlDateFormatter( get_locale(), $DateType, $TimeType );
+		$formatter = new IntlDateFormatter( get_locale(), $datetype, $timetype );
 		$formatted = $formatter->format( $timestamp );
 		return $formatted;
 	}
@@ -528,7 +544,7 @@ class MultiPass {
 		return date( 'Y-m-d\TH:i:s', round( $timestamp / 3600 ) * 3600 );
 	}
 
-	static function format_date_range( $dates = array(), $datetype = 'RELATIVE_MEDIUM', $timetype = 'NONE' ) {
+	static function format_date_range( $dates = array(), $datetype_str = 'RELATIVE_MEDIUM', $timetype_str = 'NONE' ) {
 		if ( empty( $dates ) ) {
 			return;
 		}
@@ -538,10 +554,10 @@ class MultiPass {
 		$dates = array_filter( $dates );
 
 		if ( count( $dates ) == 2 ) {
-			$DateType = constant( 'IntlDateFormatter::' . preg_replace( '/RELATIVE_/', '', $datetype ) );
-			$TimeType = constant( 'IntlDateFormatter::' . preg_replace( '/RELATIVE_/', '', $timetype ) );
+			$datetype = constant( 'IntlDateFormatter::' . preg_replace( '/RELATIVE_/', '', $datetype_str ) );
+			$timetype = constant( 'IntlDateFormatter::' . preg_replace( '/RELATIVE_/', '', $timetype_str ) );
 			$ranger   = new OpenPsa\Ranger\Ranger( get_locale() );
-			$ranger->setDateType( $DateType )->setTimeType( $TimeType );
+			$ranger->setDateType( $datetype )->setTimeType( $timetype );
 			$from   = ( is_array( $dates['from'] ) ) ? $dates['from']['timestamp'] : $dates['from'];
 			$to     = ( is_array( $dates['to'] ) ) ? $dates['to']['timestamp'] : $dates['to'];
 			$string = $ranger->format(
@@ -551,11 +567,11 @@ class MultiPass {
 			return $string;
 		}
 
-		$DateType  = constant( "IntlDateFormatter::$datetype" );
-		$TimeType  = constant( "IntlDateFormatter::$timetype" );
+		$datetype  = constant( "IntlDateFormatter::$datetype_str" );
+		$timetype  = constant( "IntlDateFormatter::$timetype_str" );
 		$formatted = array();
 		foreach ( $dates as $date ) {
-			$formatter   = new IntlDateFormatter( get_locale(), $DateType, $TimeType );
+			$formatter   = new IntlDateFormatter( get_locale(), $datetype, $timetype );
 			$formatted[] = $formatter->format( $date['timestamp'] );
 		}
 		return join( ', ', $formatted );
