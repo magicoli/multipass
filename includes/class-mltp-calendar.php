@@ -289,7 +289,7 @@ class Mltp_Calendar {
 			'calendar-section',
 			array(
 				// 'none'   => _x( 'None', 'Calendar section', 'multipass' ),
-				'main'    => __( 'Main', 'multipass' ),
+				'main'    => _x( 'Main', 'Calendar', 'multipass' ),
 				'options' => __( 'Options', 'multipass' ),
 			)
 		);
