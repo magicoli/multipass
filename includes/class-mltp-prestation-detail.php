@@ -951,6 +951,7 @@ class Mltp_Item {
 				'edit-tags.php?taxonomy=mltp_detail-source', // string $menu_slug,
 			);
 		}
+		add_action('mltp_detail-source_pre_add_form', 'MultiPass::back_to_multipass_button');
 
 	}
 
