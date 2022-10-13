@@ -596,14 +596,32 @@ class Mltp_Calendar {
 		wp_die();
 	}
 
+	/**
+	 * Create an uuid from souce and source id. Optional disambiguation data can
+	 * be provided with $extra argument.
+	 *
+	 * @param  string $source       source slug.
+	 * @param  string $id           source id (as provided by the source).
+	 * @param  string $extra        optional disambiguation info.
+	 * @return string               hashed data.
+	 */
+	static function hash_source_uuid( $source, $id, $extra = null ) {
+		if ( empty( $source ) || empty( $id ) ) {
+			return false;
+		}
+		$array = array_filter( array( $source, $id, $optional ) );
+
+		return md5( join( ':', $array ) );
+	}
+
 	static function get_the_modal( $item_id ) {
 		$event = new Mltp_Event( $item_id );
 		if ( ! $event ) {
 			return false;
 		}
 
-		$html  = '';
-		$data  = array(
+		$html = '';
+		$data = array(
 			_x( 'Contact', '(noun)', '(noun)', 'multipass' ) => MultiPass::price( $event->contact ),
 			_x( 'Email', '(noun)', 'multipass' ) => MultiPass::price( $event->email ),
 			_x( 'Phone', '(noun)', 'multipass' ) => MultiPass::price( $event->phone ),
