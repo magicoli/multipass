@@ -2,3 +2,6 @@ sources/
 .*.cache
 node_modules/
 build/
+*.css.map
+*.js.map
+*.asset.php

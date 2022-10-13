@@ -1,20 +1,20 @@
-const defaultConfig = require("@wordpress/scripts/config/webpack.config");
-const path = require('path');
-const CopyPlugin = require("copy-webpack-plugin");
+const defaultConfig = require( "@wordpress/scripts/config/webpack.config" );
+const path          = require( 'path' );
+const CopyPlugin    = require( "copy-webpack-plugin" );
 
 // Configuration object.
 const config = {
-  ...defaultConfig,
+	...defaultConfig,
 	entry: {
-    '../public/js/public': './src/public/index.js',
-    '../admin/js/admin': './src/admin/index.js',
-    '../includes/fullcalendar/fullcalendar': './src/fullcalendar/fullcalendar-library.js',
-    '../includes/calendar/calendar': './src/fullcalendar/calendar.js',
+		'../public/js/public': './src/public/index.js',
+		'../admin/js/admin': './src/admin/index.js',
+		'../includes/fullcalendar/fullcalendar': './src/fullcalendar/fullcalendar-library.js',
+		'../includes/calendar/calendar': './src/fullcalendar/calendar.js',
 	},
 	output: {
-    filename: '[name].js',
-    // Specify the path to the JS files.
-    path: path.resolve( __dirname, 'build' )
+		filename: '[name].js',
+		// Specify the path to the JS files.
+		path: path.resolve( __dirname, 'build' )
 	},
 }
 

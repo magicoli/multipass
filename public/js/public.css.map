@@ -1,1 +1,0 @@
-{"version":3,"file":"../public/js/public.css","mappings":";;;AAAA;EACE;EACA;EACA;AACF,C","sources":["webpack://multipass/./src/public/public.scss"],"sourcesContent":[".prestation-summary .price {\n  text-align: right;\n  white-space: nowrap;\n  vertical-align: bottom;\n}\n"],"names":[],"sourceRoot":""}
