@@ -755,21 +755,21 @@ class Mltp_Lodgify extends Mltp_Modules {
 			// ");
 
 			$item_args = array(
-				'source'         => 'lodgify',
-				'lodgify_uuid'   => join( '-', array( $booking['id'], $booking['user_id'], $booking['property_id'] ) ),
-				'lodgify_id'   => $booking['id'],
-				'source_id'      => $booking['id'],
+				'source'              => 'lodgify',
+				'lodgify_uuid'        => join( '-', array( $booking['id'], $booking['user_id'], $booking['property_id'] ) ),
+				'lodgify_id'          => $booking['id'],
+				'source_id'           => $booking['id'],
 				'lodgify_property_id' => $booking['property_id'],
-				'source_url'     => $source_url,
-				'origin'         => $origin,
-				'origin_url'     => $origin_url,
-				'edit_url'       => get_edit_post_link( $prestation->id ),
-				'view_url'       => get_edit_post_link( $prestation->id ),
-				'resource_id'    => $resource_id,
-				'status'         => $status,
-				'confirmed'      => $confirmed,
-				'description'    => $description,
-				'source_details' => array(
+				'source_url'          => $source_url,
+				'origin'              => $origin,
+				'origin_url'          => $origin_url,
+				'edit_url'            => get_edit_post_link( $prestation->id ),
+				'view_url'            => get_edit_post_link( $prestation->id ),
+				'resource_id'         => $resource_id,
+				'status'              => $status,
+				'confirmed'           => $confirmed,
+				'description'         => $description,
+				'source_details'      => array(
 					'rooms'         => $booking['rooms'],
 					'language'      => $booking['language'],
 					'created'       => strtotime( $booking['created_at'] ),
@@ -780,30 +780,30 @@ class Mltp_Lodgify extends Mltp_Modules {
 					'currency_code' => $booking['currency_code'],
 					'quote'         => $booking['quote'],
 				),
-				'prestation_id'  => $prestation->id,
-				'customer'       => array(
+				'prestation_id'       => $prestation->id,
+				'customer'            => array(
 					// TODO: try to get WP user if exists
 					// 'user_id' => $customer_id,
 					'name'  => $booking['guest']['name'],
 					'email' => $booking['guest']['email'],
 					'phone' => $booking['guest']['phone'],
 				),
-				'dates'          => $dates,
-				'attendees'      => $attendees,
+				'dates'               => $dates,
+				'attendees'           => $attendees,
 				// // 'beds' => $beds,
-				'price'          => array(
+				'price'               => array(
 					// 'quantity'  => 1,
 					'unit'      => $subtotal,
 					'sub_total' => $subtotal,
 				),
-				'discount'       => $discount,
-				'total'          => $booking['total_amount'],
+				'discount'            => $discount,
+				'total'               => $booking['total_amount'],
 				// // TODO: ensure paid status is updated immediatly, not after second time save
 				// //
-				'paid'           => $booking['total_paid'],
-				'balance'        => $balance,
-				'type'           => 'booking',
-				'debug'          => $booking,
+				'paid'                => $booking['total_paid'],
+				'balance'             => $balance,
+				'type'                => 'booking',
+				'debug'               => $booking,
 			);
 
 			$mltp_detail = new Mltp_Item( $item_args, true );

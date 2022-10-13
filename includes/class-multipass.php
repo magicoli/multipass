@@ -853,7 +853,7 @@ class MultiPass {
 	}
 
 	public static function get_sources() {
-		return apply_filters('multipass_register_terms_mltp_detail-source', []);
+		return apply_filters( 'multipass_register_terms_mltp_detail-source', array() );
 
 	}
 

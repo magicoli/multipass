@@ -266,7 +266,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			'title'          => __( 'Payment Products', 'multipass' ),
 			'id'             => 'multipass-woocommerce-payments',
 			'settings_pages' => array( 'multipass-woocommerce' ),
-			'fields' => array(), // Placeholder, fields will be added later.
+			'fields'         => array(), // Placeholder, fields will be added later.
 		);
 
 		$meta_boxes[] = array(

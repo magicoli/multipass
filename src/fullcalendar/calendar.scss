@@ -56,7 +56,12 @@
     border-top-right-radius: 1.5em;
     border-bottom-right-radius: 1.5em;
   }
-
+  .fc-event:not(.fc-event-start) {
+    border-left: none;
+  }
+  .fc-event:not(.fc-event-end) {
+    border-right: none;
+  }
   .fc-datagrid-cell-frame,
   .fc-timeline-lane-frame {
     min-height: 2.5rem;
@@ -118,8 +123,17 @@
       .fc-event-title-container {
         padding-left: 0.5em;
         padding-right: 0.5em;
+        overflow: hidden;
+        scrollbar-width: none !important;  /* Firefox */
+        -ms-overflow-style: none !important;  /* IE and Edge */
       }
 
+    }
+
+    .fc-timeline-event:hover {
+      transform: scale(1.2);
+      transition: ease-in, 250ms;
+      z-index: 10;
     }
 
     .status-paid-some {
@@ -155,7 +169,7 @@
       }
       .fc-event-title-container {
         white-space: nowrap;
-        overflow-y: hidden;
+        // overflow-y: hidden;
         margin-left: 0;
       }
     }
