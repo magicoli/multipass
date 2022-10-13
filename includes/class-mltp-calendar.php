@@ -363,7 +363,7 @@ class Mltp_Calendar {
 				'
 				#mltp-calendar .fc-datagrid-body tr:nth-of-type(-n+%1$s):not(:first-of-type) .fc-datagrid-cell-frame,
 				#mltp-calendar .fc-scrollgrid-sync-table tr:nth-of-type(-n+%1$s):not(:first-of-type) .fc-timeline-lane-frame {
-					min-height: 3.5rem;
+					min-height: 3.7rem;
 				}
 				#mltp-calendar .fc-scrollgrid-sync-table  tr:nth-of-type(-n+%1$s):not(:first-of-type) .fc-event {
 					font-size: 1.2rem;
