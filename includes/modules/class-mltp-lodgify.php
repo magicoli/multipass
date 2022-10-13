@@ -757,8 +757,9 @@ class Mltp_Lodgify extends Mltp_Modules {
 			$item_args = array(
 				'source'         => 'lodgify',
 				'lodgify_uuid'   => join( '-', array( $booking['id'], $booking['user_id'], $booking['property_id'] ) ),
+				'lodgify_id'   => $booking['id'],
 				'source_id'      => $booking['id'],
-				'source_item_id' => $booking['property_id'],
+				'lodgify_property_id' => $booking['property_id'],
 				'source_url'     => $source_url,
 				'origin'         => $origin,
 				'origin_url'     => $origin_url,

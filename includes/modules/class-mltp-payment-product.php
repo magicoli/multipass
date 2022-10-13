@@ -98,10 +98,10 @@ class Mltp_Payment_Product {
 
 		if ( get_option( 'multipass_debug', false ) ) {
 			$meta_boxes['multipass-woocommerce']['fields'][] = array(
-				// 'name' => __( 'Debug', 'multipass' ),
+				'name' => __( 'Payments test', 'multipass' ),
 				'id'   => $prefix . 'multipass-woocommerce-debug',
 				'type' => 'custom_html',
-				'std'  => self::generate_payment_link_tests(),
+				'std'  => self::generate_payment_test_links(),
 			);
 		}
 
@@ -509,27 +509,84 @@ class Mltp_Payment_Product {
 		}
 	}
 
-	static function generate_payment_link_tests() {
+	static function generate_payment_test_links() {
+		$sources = MultiPass::get_sources();
+		// error_log('sources ' . print_r($sources, true));
+
 		$links[] = self::payment_link();
 		$links[] = self::payment_link( '123' );
-		$links[] = self::payment_link( 24459 );
 		$links[] = self::payment_link( '123', '45.6' );
 		$links[] = self::payment_link( '123', '45,6' );
-		$links[] = self::payment_link( 'mwvo' );
-		$links[] = self::payment_link( 'mwvo', 123.45 );
-		$links[] = self::payment_link( 'B4520009' );
-		$links[] = self::payment_link( 'B4520009', 123.45 );
+		$links[] = '';
+		$query_args = array(
+			'post_type'  => 'mltp_prestation',
+			'post_status' => 'publish',
+			// 'numberposts' => 1,
+			// 'orderby'    => 'post_date',
+			'metakey' => 'from',
+			'orderby' => 'metavalue_num',
+			'order'      => 'asc',
+			'meta_query' => array(
+				'relation' => 'AND',
+				array(
+					'key'   => 'from',
+					'compare' => '>=',
+					'value' => time(),
+				),
+				array(
+					'key'   => 'balance',
+					'compare' => '>',
+					'value' => 0,
+				),
+			),
+		);
+		$posts = get_posts( $query_args );
+		$post = reset($posts);
 
-		$output  = 'Test payment links:';
-		$output .= '<ul>';
+		if($post) {
+			// error_log('found ' . count($posts) . ' ' . print_r(reset($posts), true));
+			$links[] = self::payment_link( $post->ID );
+			$links[] = self::payment_link( $post->post_name );
+			$links[] = self::payment_link( $post->post_name, round(get_post_meta($post->ID, 'balance', true), 2) );
+		}
+
+		// foreach($sources as $source => $source_name) {
+		// 	$posts = get_posts( array_merge_recursive( $query_args, array(
+		// 		'post_type'  => 'mltp_detail',
+		// 		'meta_query' => array(
+		// 			array(
+		// 				'key'   => 'source',
+		// 				'compare' => '=',
+		// 				'value' => $source,
+		// 			),
+		// 		)
+		// 	)));
+		// 	$posts = get_posts( $query_args );
+		// 	$post = reset($posts);
+		// 	if($post) {
+		// 		error_log("$source: " . print_r(get_post_meta($post->ID), true));
+		// 		error_log("$source: " . print_r(get_post_meta($post->ID, $source . '_uuid', true), true));
+		// 		// error_log(print_r(get_post_meta($post->ID, 'deposit', true), true));
+		// 		// $links[] = self::payment_link( $post->post_name, round(get_post_meta($post->ID, 'deposit', true), 2) );
+		// 	}
+		// }
+
+		// $links[] = self::payment_link( 'mwvo' );
+		// $links[] = self::payment_link( 'mwvo', 123.45 );
+		// $links[] = self::payment_link( 'B4520009' );
+		// $links[] = self::payment_link( 'B4520009', 123.45 );
+
+		// $output  = '';
+		// $output  = 'Test payment links:';
+		// $output = '<ul>';
 		foreach ( $links as $link ) {
-			$output .= sprintf( '<li><a target="_blank" href="%1$s">%1$s</a></li>', $link );
+			$output[] = sprintf( '<a target="_blank" href="%1$s">%1$s</a>', $link );
 			// code...
 		}
-		$output .= '</ul>';
+		// $output .= '</ul>';
 		// return $output;
 		if ( ! empty( $output ) ) {
-			return "$output";
+			return join('<br/>', $output);
 		}
 		// error_log(print_r($query, true));
 	}
