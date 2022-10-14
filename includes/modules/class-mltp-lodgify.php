@@ -704,7 +704,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 				$booking['status']        = 'closed';
 			} else {
 				// $source_url = 'https://app.lodgify.com/#/reservation/inbox/B' . $booking['id'];
-				$source_url = MultiPass::origin_url( 'lodgify', $booking['id'] );
+				$source_url = MultiPass::source_edit_url( 'lodgify', $booking['id'] );
 			}
 
 			$p_replace = array(
@@ -735,7 +735,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 				// default:
 				// $origin_url = $source_url;
 			}
-			$origin_url = MultiPass::origin_url( $origin, $origin_id, $source_url );
+			$origin_url = MultiPass::source_edit_url( $origin, $origin_id, $source_url );
 			$item_args[$origin . '_edit_url'] = $origin_url;
 
 			$prestation_args = array(

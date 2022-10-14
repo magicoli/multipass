@@ -1032,12 +1032,12 @@ class Mltp_Item {
 		foreach (MultiPass::get_registered_sources() as $source => $source_name) {
 			$source_id = get_post_meta( $post_id, $source . '_id', true );
 			$updates[$source . '_uuid'] = MultiPass::hash_source_uuid($source, $source_id);
-			$updates[$source . '_url'] = MultiPass::origin_url( $source, $source_id );
-			error_log(print_r(array(
-				$source . '_id'=> $source_id,
-				$source . '_uuid' => $updates[$source . '_uuid'],
-				$source . '_url' => $updates[$source . '_url'],
-			), true));
+			$updates[$source . '_edit_url'] = MultiPass::source_edit_url( $source, $source_id );
+			// error_log(print_r(array(
+			// 	$source . '_id'=> $source_id,
+			// 	$source . '_uuid' => $updates[$source . '_uuid'],
+			// 	$source . '_url' => $updates[$source . '_url'],
+			// ), true));
 		}
 
 		$price   = get_post_meta( $post_id, 'price', true );

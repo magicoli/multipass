@@ -798,34 +798,43 @@ class MultiPass {
 		return $editable_roles;
 	}
 
-	public static function origin_url( $origin, $origin_id, $default = null ) {
-		if ( empty( $origin ) || empty( $origin_id ) ) {
+	public static function source_edit_url( $source, $source_id, $default = null ) {
+		if ( empty( $source ) || empty( $source_id ) ) {
 			return $default;
 		}
 
-		switch ( $origin ) {
+		switch ( $source ) {
 			case 'airbnb':
-				$origin_url = 'https://www.airbnb.fr/hosting/reservations/details/HMPJMKS2P4' . $origin_id;
+				$source_url = 'https://www.airbnb.fr/hosting/reservations/details/HMPJMKS2P4' . $source_id;
 				break;
 
 			case 'booking':
-				$origin_url = 'https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/booking.html?res_id=' . $origin_id;
+				$source_url = 'https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/booking.html?res_id=' . $source_id;
 				break;
 
 			case 'expedia':
-				$origin_url = 'https://apps.expediapartnercentral.com/lodging/bookings?bookingItemId=' . $origin_id;
+				$source_url = 'https://apps.expediapartnercentral.com/lodging/bookings?bookingItemId=' . $source_id;
 				break;
 
 			case 'lodgify':
-				$origin_url = 'https://app.lodgify.com/#/reservation/inbox/B' . $origin_id;
+				$source_url = 'https://app.lodgify.com/#/reservation/inbox/B' . $source_id;
+				break;
+
+			case 'woocommerce':
+				if(current_user_can( 'edit_post', $source_id )) {
+					$order = wc_get_order( $source_id );
+					if($order) {
+						$source_url = $order->get_edit_order_url();
+					}
+				}
 				break;
 
 			default:
-				$origin_url = $default;
+				$source_url = $default;
 		}
 
-		// $origin_url = apply_filters('multipass_origin_url', $origin_url, $origin, $origin_id, $default);
-		return $origin_url;
+		// $source_url = apply_filters('multipass_source_url', $source_url, $source, $source_id, $default);
+		return $source_url;
 	}
 
 	public static function sanitize_email( $email ) {
