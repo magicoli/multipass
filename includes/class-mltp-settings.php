@@ -424,7 +424,7 @@ class Mltp_Settings {
 					'id'         => $prefix . 'debug',
 					'type'       => 'custom_html',
 					'save_field' => false,
-					'callback'   => array( $this, 'debug_html' ),
+					'callback'   => array( $this, 'render_post_debug' ),
 				),
 			),
 		);
@@ -432,15 +432,21 @@ class Mltp_Settings {
 		return $meta_boxes;
 	}
 
-	function debug_html( $value, $field ) {
+	function render_post_debug( $value, $field ) {
 
-		if ( empty( $value ) ) {
-			$post_id = get_the_ID();
-			$value   = get_post_meta( $post_id, 'debug', true );
-			if ( is_array( $value ) ) {
-				$value = '<pre>' . print_r( $value, true ) . '</pre>';
-			}
+		$post_id = get_the_ID();
+		$value   = get_post_meta( $post_id );
+		if ( is_array( $value ) ) {
+			$value = '<pre>' . print_r( $value, true ) . '</pre>';
 		}
+
+		// if ( empty( $value ) ) {
+		// 	$post_id = get_the_ID();
+		// 	$value   = get_post_meta( $post_id, 'debug', true );
+		// 	if ( is_array( $value ) ) {
+		// 		$value = '<pre>' . print_r( $value, true ) . '</pre>';
+		// 	}
+		// }
 
 		return $value;
 		// return "debug";

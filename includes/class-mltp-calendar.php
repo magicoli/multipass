@@ -615,6 +615,25 @@ class Mltp_Calendar {
 			__( 'Deposit', 'multipass' )         => MultiPass::price( $event->deposit ),
 			__( 'Balance', 'multipass' )         => MultiPass::price( $event->balance ),
 		);
+
+		if(get_option('multipass_debug') && current_user_can('manage_options')) {
+			$extra['Source'] = get_post_meta( $event->id, 'source', true );
+			$extra['Source ID'] = get_post_meta($event->id, 'source_id', true);
+			$extra['Origin'] = get_post_meta( $event->id, 'origin', true );
+			$extra['Origin ID'] = get_post_meta( $event->id, 'origin_id', true );
+			$extra['Debug'] = '<pre>' . print_r( MultiPass::get_registered_sources(), true ) . '</pre>';
+			$extra = array();
+			foreach ( MultiPass::get_registered_sources() as $source => $source_name ) {
+				$source_id                   = get_post_meta( $event->id, $source . '_id', true );
+				$extra[ "$source_name ID" ]   = $source_id;
+				$extra[ "$source_name UUID" ] = get_post_meta( $event->id, $source . '_uuid', true );
+				$extra[ "$source_name hash" ] = MultiPass::hash_source_uuid( $source, $source_id );
+				$extra[ "$source_name edit url" ] = get_post_meta( $event->id, $source . '_edit_url', true );
+				$extra[ "$source_name view url" ] = get_post_meta( $event->id, $source . '_view_url', true );
+			}
+			$data = array_merge($data, array_filter($extra));
+		}
+
 		$html .= '<span class="description">' . $event->description . '</span>';
 		$html .= '<table class="modal-summary">';
 		foreach ( $data as $row => $value ) {
