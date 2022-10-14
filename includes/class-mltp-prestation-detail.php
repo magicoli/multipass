@@ -1014,6 +1014,32 @@ class Mltp_Item {
 		update_post_meta( $post_id, 'customer_display', $customer_html );
 
 		$updates = array();
+
+		foreach(array('source', 'origin') as $param) {
+			$source = get_post_meta( $post_id, $param, true );
+			$source_id = get_post_meta( $post_id, $param . '_id', true );
+			if(!empty($source_id)) {
+				error_log("$source id $source_id");
+				if(empty(get_post_meta( $post_id, $source . '_id', true ))) {
+					error_log("updating " . $source . '_id'. " with" . $source_id);
+					$updates[$source . '_id'] = $source_id;
+				} else {
+					error_log( $source . '_id'. " already stored " . get_post_meta( $post_id, $source . '_id', true ) );
+				}
+			}
+		}
+		error_log('sources ' . print_r(MultiPass::get_registered_sources(), true));
+		foreach (MultiPass::get_registered_sources() as $source => $source_name) {
+			$source_id = get_post_meta( $post_id, $source . '_id', true );
+			$updates[$source . '_uuid'] = MultiPass::hash_source_uuid($source, $source_id);
+			$updates[$source . '_url'] = MultiPass::origin_url( $source, $source_id );
+			error_log(print_r(array(
+				$source . '_id'=> $source_id,
+				$source . '_uuid' => $updates[$source . '_uuid'],
+				$source . '_url' => $updates[$source . '_url'],
+			), true));
+		}
+
 		$price   = get_post_meta( $post_id, 'price', true );
 		if ( $price ) {
 			$unit_price       = isset( $price['unit'] ) ? $price['unit'] : null;

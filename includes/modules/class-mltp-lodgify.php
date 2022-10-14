@@ -618,6 +618,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		$bookings = $api_response['items'];
 
 		foreach ( $bookings as $key => $booking ) {
+			$item_args = array();
 			$resource_id = Mltp_Resource::get_resource_id( 'lodgify', $booking['property_id'] );
 			if ( ! $resource_id ) {
 				// No resource associated with this property.
@@ -717,6 +718,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 				case 'airbnb':
 					$origin_details = json_decode( $booking['source_text'] );
 					$origin_id      = $origin_details->confirmationCode;
+					$sources['airbnb_id'] = $origin_id;
 					// $origin_url = (empty($origin_id)) ? $source_url : 'https://www.airbnb.fr/hosting/reservations/details/HMPJMKS2P4' . $origin_id;
 					break;
 				// if(!empty($origin_details['confirmationCode'])) {
@@ -726,6 +728,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 				case 'booking':
 					$origin_details = explode( '|', $booking['source_text'] );
 					$origin_id      = $origin_details[0];
+					$item_args['bookingcom_id'] = $origin_id;
 					// $origin_url = (empty($origin_id)) ? $source_url : 'https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/booking.html?res_id=' . $origin_id;
 					break;
 
@@ -733,6 +736,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 				// $origin_url = $source_url;
 			}
 			$origin_url = MultiPass::origin_url( $origin, $origin_id, $source_url );
+			$item_args[$origin . '_edit_url'] = $origin_url;
 
 			$prestation_args = array(
 				'customer_name'  => $booking['guest']['name'],
@@ -754,7 +758,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			// edit " . get_edit_post_link($prestation->id) . "
 			// ");
 
-			$item_args = array(
+			$item_args = array_merge(array(
 				'source'              => 'lodgify',
 				'lodgify_uuid'        => join( '-', array( $booking['id'], $booking['user_id'], $booking['property_id'] ) ),
 				'lodgify_id'          => $booking['id'],
@@ -803,8 +807,8 @@ class Mltp_Lodgify extends Mltp_Modules {
 				'paid'                => $booking['total_paid'],
 				'balance'             => $balance,
 				'type'                => 'booking',
-				'debug'               => $booking,
-			);
+				// 'debug'               => $booking,
+			), $item_args);
 
 			$mltp_detail = new Mltp_Item( $item_args, true );
 			$prestation->update();
