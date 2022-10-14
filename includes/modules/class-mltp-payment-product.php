@@ -510,7 +510,7 @@ class Mltp_Payment_Product {
 	}
 
 	static function generate_payment_test_links() {
-		$sources = MultiPass::get_sources();
+		$sources = MultiPass::get_registered_sources();
 		// error_log('sources ' . print_r($sources, true));
 
 		$links[]    = self::payment_link();

@@ -852,9 +852,20 @@ class MultiPass {
 		);
 	}
 
-	public static function get_sources() {
-		return apply_filters( 'multipass_register_terms_mltp_detail-source', array() );
 
+	public static function get_registered_sources() {
+		$sources = array();
+		$terms = get_terms('mltp_detail-source');
+		foreach($terms as $term) {
+			$sources[$term->slug] = $term->name;
+		}
+		/**
+		 * We used to register sources with filters, but I'm not sure it is still
+		 * necessary since we now use taxonomy terms.
+		 */
+		// $sources = apply_filters( 'multipass_register_terms_mltp_detail-source', $sources );
+
+		return $sources;
 	}
 
 }
