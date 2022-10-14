@@ -883,9 +883,10 @@ class MultiPass {
 		if ( empty( $source ) || empty( $id ) ) {
 			return false;
 		}
-		$array = array_filter( array( $source, $id, $optional ) );
 
-		return md5( join( ':', $array ) );
+		$hash = md5( json_encode(array_filter( array( $source, $id, $extra ) ) ) );
+
+		return $hash;
 	}
 
 }
