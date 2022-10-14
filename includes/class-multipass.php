@@ -868,4 +868,24 @@ class MultiPass {
 		return $sources;
 	}
 
+	/**
+	 * Create an uuid from souce and source id. Optional disambiguation data can
+	 * be provided with $extra argument. All arguments must be persistent, i.e.
+	 * they cannot change in the future, whatever modification is made to the
+	 * source.
+	 *
+	 * @param  string $source       source slug.
+	 * @param  string $id           source id (as provided by the source).
+	 * @param  string $extra        optional disambiguation info.
+	 * @return string               hashed data.
+	 */
+	static function hash_source_uuid( $source, $id, $extra = null ) {
+		if ( empty( $source ) || empty( $id ) ) {
+			return false;
+		}
+		$array = array_filter( array( $source, $id, $optional ) );
+
+		return md5( join( ':', $array ) );
+	}
+
 }
