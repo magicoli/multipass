@@ -561,8 +561,6 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 		$order = wc_get_order( $post_id ); // make sure it is a wc object, not only a post
 		foreach ( $order->get_items() as $item_id => $item ) {
-			// $uuid = wp_hash( 'woocommerce-' . get_current_blog_id() ) . '-' . $post_id . '-'  . $item_id;
-			$uuid       = join( '-', array( get_current_blog_id(), $post_id, $item_id ) );
 			$product    = $item->get_product();
 			$product_id = $product->get_id();
 
@@ -644,12 +642,12 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 			$args = array(
 				'source'           => 'woocommerce',
-				'source_id'        => "$post_id",
-				'source_item_id'   => "$item_id",
-				'source_edit_url'         => $order->get_edit_order_url(),
-				// 'woocommerce_uuid' => $uuid,
+				'source_id'        => $post_id,
+				'woocommerce_uuid' => MultiPass::hash_source_uuid('woocommerce', $post_id, $item_id),
 				'date'             => $post->post_date,
+				'source_item_id'   => "$item_id",
 				// 'view_url'         => $order->get_view_order_url(),
+				// 'edit_url'         => $order->get_edit_order_url(),
 				'resource_id'      => self::get_resource( $product_id ),
 
 				'description'      => "$description",

@@ -1328,6 +1328,7 @@ class Mltp_Item {
 					return false;
 				}
 				$source = $args['source'];
+				$source_id = $args['source_id'];
 				$uuid_field = $args['source'] . '_uuid';
 
 				$source_term_id = get_term_by( 'slug', $args['source'], 'mltp_detail-source' );
