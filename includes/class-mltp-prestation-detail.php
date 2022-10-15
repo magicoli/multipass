@@ -52,11 +52,8 @@ class Mltp_Item {
 		if ( empty( $args ) ) {
 			return false;
 		}
+
 		$this->post = $this->get( $args, $update );
-		if ( $this->post ) {
-			$this->id   = $this->post->ID;
-			$this->name = $this->post->post_title;
-		}
 	}
 
 	/**
@@ -1330,6 +1327,7 @@ class Mltp_Item {
 					error_log( 'source cannot be empty, abort.' );
 					return false;
 				}
+				$source = $args['source'];
 				$uuid_field = $args['source'] . '_uuid';
 
 				$source_term_id = get_term_by( 'slug', $args['source'], 'mltp_detail-source' );
@@ -1339,10 +1337,18 @@ class Mltp_Item {
 				}
 
 				if ( empty( $args[ $uuid_field ] ) ) {
-					error_log( "$uuid_field cannot be empty when source is $args[source], abort." );
-					return false;
+					$source_id = empty( $args[$source . '_id'] ) ? $args['source_id'] : $args[$source . '_id'];
+					if (empty($source_id)) {
+						error_log( "${source}_id cannot be empty for $source, abort." );
+						return false;
+					}
+					$args[ $uuid_field ] = MultiPass::hash_source_uuid($source, $source_id);
 				}
 				$uuid_value = $args[ $uuid_field ];
+
+				if( empty( $args[$source . '_edit_url'] ) ) {
+					$args[$source . '_edit_url'] = MultiPass::source_edit_url( $source, $source_id, $default = null );
+				}
 
 				if ( ! empty( $args['dates']['from'] ) ) {
 					$args['dates']['from'] = round( $args['dates']['from'] / 86400 ) * 86400;
