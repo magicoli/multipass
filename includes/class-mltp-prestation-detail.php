@@ -1424,37 +1424,56 @@ class Mltp_Item {
 
 		}
 
+		if ( $post ) {
+			$this->id   = $post->ID;
+			$this->name = $post->post_title;
+			$this->post = $post;
+		} else {
+			$this->id = null;
+			$this->post = null;
+		}
+
 		if ( is_array( $args ) & ! empty( $args ) && ( empty( $post_id ) || $update ) ) {
 			$args['from'] = $from;
 			$args['to']   = $to;
 
-			$postarr = array(
-				'ID'          => $post_id,
-				'post_author' => ( empty( $args['customer']['user_id'] ) ) ? null : $args['customer']['user_id'],
-				'post_date'   => ( empty( $post_id ) && isset( $args['date'] ) ) ? $args['date'] : null,
-				'post_title'  => sprintf(
-					'%s #%s-%s',
-					$args['description'],
-					$args['source_id'],
-					$args['source_item_id'],
-				),
-				// 'post_date_gmt' => esc_attr($args['date_gmt']),
-				'post_type'   => 'mltp_detail',
-				'post_status' => 'publish',
-				'meta_input'  => $args,
-				'tax_input'   => array(
-					'mltp_detail-source' => $args['source'],
-				),
-			);
-
-			$post_id = wp_insert_post( $postarr );
-			$post    = get_post( $post_id );
+			return $this->update($args);
 		}
-		// if(!empty($post)) {
-		// $this->post = $post;
-		// $this->id = $post->ID;
-		// }
+
 		return $post;
+	}
+
+	function update( $args ) {
+		$post_id = $this->id;
+
+		$postarr = array(
+			'ID'          => $post_id,
+			'post_author' => ( empty( $args['customer']['user_id'] ) ) ? null : $args['customer']['user_id'],
+			'post_date'   => ( empty( $post_id ) && isset( $args['date'] ) ) ? $args['date'] : null,
+			'post_title'  => $args['description'],
+			// 	'%s #%s-%s',
+			// 	$args['description'],
+			// 	$args['source_id'],
+			// 	$args['source_item_id'],
+			// ),
+			// 'post_date_gmt' => esc_attr($args['date_gmt']),
+			'post_type'   => 'mltp_detail',
+			'post_status' => 'publish',
+			'meta_input'  => $args,
+			'tax_input'   => array(
+				'mltp_detail-source' => $args['source'],
+			),
+		);
+
+		$this->id = wp_insert_post( $postarr );
+		if(is_wp_error($this->id)) return $this->id;
+
+		$this->post = get_post( $this->id );
+		if( ! is_wp_error($this->post) ) {
+			$this->name = $this->post->post_title;
+		}
+
+		return $this->post;
 	}
 }
 
