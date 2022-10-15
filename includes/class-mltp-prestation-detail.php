@@ -1141,9 +1141,6 @@ class Mltp_Item {
 
 			wp_update_post( $post_update );
 		}
-		// $metas['subtotal'] = get_post_meta($post_id, 'prestation_id', true);
-		// $part = new Mltp_Item($post);
-		// $item->set_prestation();
 
 		add_action( current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3 );
 	}
@@ -1180,125 +1177,6 @@ class Mltp_Item {
 		//
 		// }
 		// return $check;
-	}
-
-	function set_prestation( $post = null ) {
-		$post = $this->post;
-		if ( $post->post_type != 'mltp_detail' ) {
-			return;
-		}
-		if ( $post->post_status == 'trash' ) {
-			return; // TODO: update previously linked prestation
-		}
-
-		// // remove_action(current_action(), __CLASS__ . '::wp_insert_post_action');
-
-		$item_id    = get_post_meta( $post->ID, 'prestation_id', true );
-		$prestation = get_post( $item_id );
-
-		$user_info = get_post_meta( $post->ID, 'customer' );
-
-		// $user_info = MultiPass::get_user_info_by_info($user_info);
-		// error_log('user info ' . print_r($user_info, true));
-		// if($user) {
-		// $user_info = array_replace($user_info, array_filter(array(
-		// 'name' => $user->display_name,
-		// 'email' => $user->user_email,
-		// 'phone' => get_user_meta($user->ID, 'billing_phone'),
-		// )));
-		// }
-
-		// $customer_id = get_post_meta($this->id, '_customer_user', true);
-		// $customer = get_user_by('id', $customer_id);
-		// if($customer) {
-		// $customer_name = $customer->display_name;
-		// $customer_email = $customer->user_email;
-		// error_log("customer " . print_r($customer, true));
-		// } else {
-		// $customer_name = trim(get_post_meta($this->id, '_billing_first_name', true) . ' ' . get_post_meta($this->id, '_billing_last_name', true));
-		// $customer_email = get_post_meta($this->id, '_billing_email', true);
-		// }
-		//
-		// if(empty($item_id) || ! $prestation) {
-		// $args = array(
-		// 'post_type' => 'mltp_prestation',
-		// 'post_status__in' => [ 'pending', 'on-hold', 'deposit', 'partial', 'unpaid', 'processing' ],
-		// 'orderby' => 'post_date',
-		// 'order' => 'desc',
-		// );
-		// if($customer) {
-		// $args['meta_query'] = array(
-		// array(
-		// 'key' => 'customer_id',
-		// 'value' => $customer_id,
-		// )
-		// );
-		// } else if (!empty($customer_email)) {
-		// $args['meta_query'] = array(
-		// 'relation' => 'OR',
-		// array(
-		// 'key' => 'customer_email',
-		// 'value' => $customer_email,
-		// ),
-		// array(
-		// 'key' => 'attendee_email',
-		// 'value' => $customer_email,
-		// ),
-		// );
-		// } else if (!empty($customer_name)) {
-		// $args['meta_query'] = array(
-		// 'relation' => 'OR',
-		// array(
-		// 'key' => 'customer_name',
-		// 'value' => $customer_name,
-		// ),
-		// array(
-		// 'key' => 'attendee_name',
-		// 'value' => $customer_name,
-		// ),
-		// );
-		// }
-		// $prestations = get_posts($args);
-		// if($prestations) {
-		// $prestation = $prestations[0];
-		// $item_id = $prestation->ID;
-		// error_log("$prestation->ID $prestation->post_title " . print_r($prestation, true));
-		// update_post_meta( $this->id, 'prestation_id', $item_id );
-		// }
-		// }
-		//
-		// if(empty($item_id) || ! $prestation) {
-		// $this->postarr = array(
-		// 'post_author' => $this->post->get_customer_id(),
-		// 'post_date' => $this->post->get_date_created(),
-		// 'post_date_gmt' => $this->post->post_date_gmt,
-		// 'post_type' => 'mltp_prestation',
-		// 'post_status' => 'publish',
-		// 'meta_input' => array(
-		// 'prestation_id' => $item_id,
-		// 'customer_id' => $customer_id,
-		// 'customer_name' => $customer_name,
-		// 'customer_email' => $customer_email,
-		// ),
-		// );
-		// $item_id = wp_insert_post($this->postarr);
-		// update_post_meta( $this->id, 'prestation_id', $item_id );
-		// foreach ($this->postarr['meta_input'] as $key => $value) update_post_meta( $this->id, $key, $value );
-		// }
-		//
-		// if(!empty($item_id)) {
-		// $meta = array(
-		// 'prestation_id' => $item_id,
-		// 'customer_id' => $customer_id,
-		// 'customer_name' => $customer_name,
-		// 'customer_email' => $customer_email,
-		// );
-		// foreach ($meta as $key => $value) update_post_meta( $this->id, $key, $value );
-		// Mltp_Item::update_prestation_mltp_details($item_id, get_post($item_id), true );
-		// }
-		//
-		// // add_action(current_action(), __CLASS__ . '::wp_insert_post_action', 10, 3);
-		return;
 	}
 
 	function get( $args, $update = false ) {
