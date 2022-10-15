@@ -1116,6 +1116,12 @@ class Mltp_Item {
 				$attendees
 			);
 			$total_attendees = $count['adults'] + $count['children'] + $count['babies'];
+			if( !is_numeric($count['adults']) || ! is_numeric($count['adults']) || ! is_numeric($count['adults']) ) {
+				error_log(
+					"non numeric value in $count[adults] + $count[children] + $count[babies] = $total_attendees\n"
+					. 'adults ' . print_r($count['adults']) . ' children ' . print_r($count['children'], true) . ' babies ' . print_r($count['babies'], true)
+			);
+			}
 			if ( $total_attendees == 0 ) {
 				$total_attendees = null;
 			}
@@ -1209,7 +1215,7 @@ class Mltp_Item {
 		}
 		return $args;
 	}
-	
+
 	function get( $args, $update = false ) {
 		$post_id = null;
 		$post    = null;
@@ -1232,33 +1238,9 @@ class Mltp_Item {
 				break;
 
 			case 'array':
-				if ( empty( $args['source'] ) ) {
-					error_log( 'source cannot be empty, abort.' );
-					return false;
-				}
-				$source = $args['source'];
-				$source_id = $args['source_id'];
+				$args = self::sanitize_sources($args);
 				$uuid_field = $args['source'] . '_uuid';
-
-				$source_term_id = get_term_by( 'slug', $args['source'], 'mltp_detail-source' );
-				if ( ! $source_term_id ) {
-					// error_log( 'unknown source ' . $args['source'] . ', abort' );
-					return;
-				}
-
-				if ( empty( $args[ $uuid_field ] ) ) {
-					$source_id = empty( $args[$source . '_id'] ) ? $args['source_id'] : $args[$source . '_id'];
-					if (empty($source_id)) {
-						error_log( "${source}_id cannot be empty for $source, abort." );
-						return false;
-					}
-					$args[ $uuid_field ] = MultiPass::hash_source_uuid($source, $source_id);
-				}
 				$uuid_value = $args[ $uuid_field ];
-
-				if( empty( $args[$source . '_edit_url'] ) ) {
-					$args[$source . '_edit_url'] = MultiPass::source_edit_url( $source, $source_id, $default = null );
-				}
 
 				if ( ! empty( $args['dates']['from'] ) ) {
 					$args['dates']['from'] = round( $args['dates']['from'] / 86400 ) * 86400;
@@ -1362,11 +1344,33 @@ class Mltp_Item {
 	function update( $args ) {
 		$post_id = $this->id;
 
-		$postarr = array(
+		$args = self::sanitize_sources($args);
+
+		$description = (empty($args['description'])) ? $this->name : $args['description'];
+
+		if(empty($args['description'])) {
+			$post_title = $this->name;
+		} else {
+			$post_title = (empty($args['description'])) ? $this->name : $description;
+			// $title = preg_replace('/,.*/', '', $title);
+			// $post_title = "$description, ${guests_total}p $date_range";
+			$dates = array(
+				'from' => (!empty($args['from'])) ? $args['from'] : null,
+				'to' => (!empty($args['to'])) ? $args['to'] : null,
+			);
+			$info = array_filter(array(
+				$post_title,
+				( ! empty($args['attendees']) && is_array($args['attendees']) &! empty($args['attendees']['total']) ) ? $args['attendees']['total'] . 'p' : null,
+				( ! empty($dates) ) ? MultiPass::format_date_range( $dates ) : null,
+			));
+			$post_title = join(', ', $info);
+		}
+
+		$postarr = array_filter(array(
 			'ID'          => $post_id,
 			'post_author' => ( empty( $args['customer']['user_id'] ) ) ? null : $args['customer']['user_id'],
 			'post_date'   => ( empty( $post_id ) && isset( $args['date'] ) ) ? $args['date'] : null,
-			'post_title'  => $args['description'],
+			'post_title'  => $post_title,
 			// 	'%s #%s-%s',
 			// 	$args['description'],
 			// 	$args['source_id'],
@@ -1376,10 +1380,14 @@ class Mltp_Item {
 			'post_type'   => 'mltp_detail',
 			'post_status' => 'publish',
 			'meta_input'  => $args,
-			'tax_input'   => array(
+		));
+		if(!empty($args['source'])) {
+			$postarr['tax_input'] = array(
 				'mltp_detail-source' => $args['source'],
-			),
-		);
+			);
+		}
+
+		// error_log(print_r($postarr, true));
 
 		$this->id = wp_insert_post( $postarr );
 		if(is_wp_error($this->id)) return $this->id;

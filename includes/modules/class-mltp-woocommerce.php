@@ -569,16 +569,17 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				$category = $terms[0]->name;
 			}
 
-			$description = join(
-				' ',
-				array_filter(
-					array(
-						// isset( $category ) ? $category : '',
-						$item->get_name(),
-						isset( $variation ) ? $variation->get_formatted_name() : '',
-					)
-				)
-			);
+			$description = $item->get_name();
+			// $description = join(
+			// 	' ',
+			// 	array_filter(
+			// 		array(
+			// 			// isset( $category ) ? $category : '',
+			// 			$item->get_name(),
+			// 			isset( $variation ) ? $variation->get_formatted_name() : '',
+			// 		)
+			// 	)
+			// );
 
 			$from  = null;
 			$to    = null;
@@ -598,13 +599,13 @@ class Mltp_WooCommerce extends Mltp_Modules {
 					$from = empty( $dates ) ? null : min( $dates );
 					$to   = empty( $dates ) ? null : max( $dates );
 
-					$description .= ' ' . MultiPass::format_date_range(
-						array(
-							'from' => $from,
-							'to'   => $to,
-						),
-						'SHORT'
-					);
+					// $description .= ' ' . MultiPass::format_date_range(
+					// 	array(
+					// 		'from' => $from,
+					// 		'to'   => $to,
+					// 	),
+					// 	'SHORT'
+					// );
 				}
 
 				// TODO: get attendees and beds counts
@@ -629,7 +630,13 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			$paid       = ( in_array( $order->get_status(), array( 'completed', 'processing' ) ) ) ? $total : null;
 			$balance    = $total - $paid;
 
-			$type = ( Mltp_Payment_Product::is_payment_product( $product ) ) ? 'payment' : $product->get_type();
+			if( Mltp_Payment_Product::is_payment_product( $product ) ) {
+				$type = 'payment';
+				$description .= ' #' . $order->ID;
+			} else {
+				$type = $product->get_type();
+			}
+
 			// switch ( $type ) {
 			// 	case 'booking':
 			// 		$description = '[' . __( 'Booking', 'multipass' ) . '] ' . $description;
@@ -643,7 +650,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			$args = array(
 				'source'           => 'woocommerce',
 				'source_id'        => $post_id,
-				'woocommerce_uuid' => MultiPass::hash_source_uuid('woocommerce', $post_id, $item_id),
+				'woocommerce_uuid' => MultiPass::hash_source_uuid('woocommerce', $order->ID, $item_id),
 				'date'             => $post->post_date,
 				'source_item_id'   => "$item_id",
 				// 'view_url'         => $order->get_view_order_url(),
@@ -688,7 +695,6 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				'type'             => $type,
 
 			);
-
 			$details[] = $args;
 			$all_dates = array_merge( $all_dates, array_values( $dates ) );
 		}

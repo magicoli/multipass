@@ -821,12 +821,12 @@ class MultiPass {
 				break;
 
 			case 'woocommerce':
-				if(current_user_can( 'edit_post', $source_id )) {
+				// if(current_user_can( 'edit_post', $source_id )) {
 					$order = wc_get_order( $source_id );
 					if($order) {
 						$source_url = $order->get_edit_order_url();
 					}
-				}
+				// }
 				break;
 
 			default:
