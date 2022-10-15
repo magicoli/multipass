@@ -1025,16 +1025,11 @@ class Mltp_Item {
 				}
 			}
 		}
-		// error_log('sources ' . print_r(MultiPass::get_registered_sources(), true));
+
 		foreach (MultiPass::get_registered_sources() as $source => $source_name) {
 			$source_id = get_post_meta( $post_id, $source . '_id', true );
 			$updates[$source . '_uuid'] = MultiPass::hash_source_uuid($source, $source_id);
 			$updates[$source . '_edit_url'] = MultiPass::source_edit_url( $source, $source_id );
-			// error_log(print_r(array(
-			// 	$source . '_id'=> $source_id,
-			// 	$source . '_uuid' => $updates[$source . '_uuid'],
-			// 	$source . '_url' => $updates[$source . '_url'],
-			// ), true));
 		}
 
 		$price   = get_post_meta( $post_id, 'price', true );
@@ -1115,20 +1110,15 @@ class Mltp_Item {
 				),
 				$attendees
 			);
-			$total_attendees = $count['adults'] + $count['children'] + $count['babies'];
-			if( !is_numeric($count['adults']) || ! is_numeric($count['adults']) || ! is_numeric($count['adults']) ) {
-				error_log(
-					"non numeric value in $count[adults] + $count[children] + $count[babies] = $total_attendees\n"
-					. 'adults ' . print_r($count['adults']) . ' children ' . print_r($count['children'], true) . ' babies ' . print_r($count['babies'], true)
-			);
+			unset($count['total']);
+			$sum = array_sum($count);
+			if ( $sum == 0 ) {
+				$sum = null;
 			}
-			if ( $total_attendees == 0 ) {
-				$total_attendees = null;
+			if ( ! empty($sum) && $sum != $attendees['total'] ) {
+				$attendees['total']   = $sum;
 			}
-			if ( $total_attendees != $attendees['total'] ) {
-				$attendees['total']   = $total_attendees;
-				$updates['attendees'] = $attendees;
-			}
+			$updates['attendees'] = $attendees;
 		}
 
 		if ( ! empty( $updates ) ) {
@@ -1186,33 +1176,29 @@ class Mltp_Item {
 	}
 
 	static function sanitize_sources($args) {
-		if ( empty( $args['source'] ) ) {
-			error_log( 'source cannot be empty, abort.' );
-			return false;
-		}
-		$source = $args['source'];
-		$source_id = $args['source_id'];
-		$uuid_field = $args['source'] . '_uuid';
+		if(!is_array($args)) return $args;
 
-		$source_term_id = get_term_by( 'slug', $args['source'], 'mltp_detail-source' );
-		if ( ! $source_term_id ) {
-			// error_log( 'unknown source ' . $args['source'] . ', abort' );
-			return;
-		}
-
-		if ( empty( $args[ $uuid_field ] ) ) {
+		if(!empty($args['source'])) {
+			$source = $args['source'];
 			$source_id = empty( $args[$source . '_id'] ) ? $args['source_id'] : $args[$source . '_id'];
-			if (empty($source_id)) {
-				error_log( "${source}_id cannot be empty for $source, abort." );
-				return false;
+			if (empty($source) || empty($source_id)) {
+				return $args;
 			}
-			$args[ $uuid_field ] = MultiPass::hash_source_uuid($source, $source_id);
-		}
-		$uuid_value = $args[ $uuid_field ];
 
-		if( empty( $args[$source . '_edit_url'] ) ) {
-			$args[$source . '_edit_url'] = MultiPass::source_edit_url( $source, $source_id, $default = null );
+			$args['source_id'] = $source_id;
+			$args[$source . '_id'] = $source_id;
+			$uuid_field = $args['source'] . '_uuid';
+
+			if ( empty( $args[ $uuid_field ] ) ) {
+				$args[ $uuid_field ] = MultiPass::hash_source_uuid($source, $source_id);
+			}
+			$uuid_value = $args[ $uuid_field ];
+
+			if( empty( $args[$source . '_edit_url'] ) ) {
+				$args[$source . '_edit_url'] = MultiPass::source_edit_url( $source, $source_id, $default = null );
+			}
 		}
+
 		return $args;
 	}
 
@@ -1238,7 +1224,23 @@ class Mltp_Item {
 				break;
 
 			case 'array':
+				if ( empty( $args['source'] ) ) {
+					error_log( 'source cannot be empty, abort ' . print_r($args, true) );
+					return false;
+				}
+				$source_term_id = get_term_by( 'slug', $args['source'], 'mltp_detail-source' );
+				if ( ! $source_term_id ) {
+					// not sure about that
+					error_log( 'unknown source ' . $args['source'] . ', abort ' . print_r($args, true) );
+					return;
+				}
+
 				$args = self::sanitize_sources($args);
+				if (empty($args['source_id'])) {
+					error_log( "source id cannot not be empty, abort (in $source detail)." );
+					return $args;
+				}
+
 				$uuid_field = $args['source'] . '_uuid';
 				$uuid_value = $args[ $uuid_field ];
 
@@ -1254,7 +1256,7 @@ class Mltp_Item {
 				// error_log("looking by $uuid_field = $uuid_value");
 				$query_args = array(
 					'post_type'   => 'mltp_detail',
-					'post_status' => 'publish',
+					// 'post_status' => 'publish',
 					'numberposts' => 1,
 					'orderby'     => 'post_date',
 					'order'       => 'asc',
@@ -1276,9 +1278,13 @@ class Mltp_Item {
 				);
 				$posts      = get_posts( $query_args );
 
-				// if (! $posts)
-				// error_log("looking by resource $args[resource_id] and dates from $from to $to");
+				if (! $posts) {
+					$debug_query = $query_args;
+					$query_args = null;
+				}
+
 				if ( ! $posts & ! empty( $from ) & ! empty( $to ) & ! empty( $args['resource_id'] ) ) {
+					// error_log("trying with " . print_r($args, true));
 					// error_log("looking by resource $args[resource_id] and dates from $from to $to");
 
 					$query_args = array(
@@ -1332,10 +1338,16 @@ class Mltp_Item {
 		}
 
 		if ( is_array( $args ) & ! empty( $args ) && ( empty( $post_id ) || $update ) ) {
+			// $create = (empty($post_id));
 			$args['from'] = $from;
 			$args['to']   = $to;
 
-			return $this->update($args);
+			$post = $this->update($args);
+
+			// if($create) {
+			// 	error_log("nothing found with $uuid_field = $uuid_value, create new one $post->ID " . print_r(get_post_meta($post->ID), true));
+			// }
+
 		}
 
 		return $post;

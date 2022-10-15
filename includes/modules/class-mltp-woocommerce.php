@@ -649,8 +649,8 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 			$args = array(
 				'source'           => 'woocommerce',
-				'source_id'        => $post_id,
-				'woocommerce_uuid' => MultiPass::hash_source_uuid('woocommerce', $order->ID, $item_id),
+				'source_id'        => "$post_id/$item_id",
+				// 'woocommerce_uuid' => MultiPass::hash_source_uuid('woocommerce', $order->ID, $item_id),
 				'date'             => $post->post_date,
 				'source_item_id'   => "$item_id",
 				// 'view_url'         => $order->get_view_order_url(),
@@ -729,6 +729,9 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 			foreach ( $details as $key => $detail ) {
 				$detail['prestation_id'] = $prestation->id;
+				// if('payment' === $type) {
+				// 	error_log('detail ' . print_r($detail, true));
+				// }
 				$mltp_detail             = new Mltp_Item( $detail, $update );
 			}
 
