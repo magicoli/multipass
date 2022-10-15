@@ -575,7 +575,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				' ',
 				array_filter(
 					array(
-						isset( $category ) ? $category : '',
+						// isset( $category ) ? $category : '',
 						$item->get_name(),
 						isset( $variation ) ? $variation->get_formatted_name() : '',
 					)
@@ -632,15 +632,15 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			$balance    = $total - $paid;
 
 			$type = ( Mltp_Payment_Product::is_payment_product( $product ) ) ? 'payment' : $product->get_type();
-			switch ( $type ) {
-				case 'booking':
-					$description = '[' . __( 'Booking', 'multipass' ) . '] ' . $description;
-					break;
-
-				case 'payment':
-					$description = '[' . __( 'Payment', 'multipass' ) . '] ' . $description;
-					break;
-			}
+			// switch ( $type ) {
+			// 	case 'booking':
+			// 		$description = '[' . __( 'Booking', 'multipass' ) . '] ' . $description;
+			// 		break;
+			//
+			// 	case 'payment':
+			// 		$description = '[' . __( 'Payment', 'multipass' ) . '] ' . $description;
+			// 		break;
+			// }
 
 			$args = array(
 				'source'           => 'woocommerce',
@@ -711,6 +711,11 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				// TODO: add items from and to, avoid merging unrelated orders
 			)
 		);
+
+		// if(! empty($prestation->name)) {
+		// 	// TODO: replace payment details title by "<prestation name> (<payment
+		// 	// product name>)".
+		// }
 
 		if ( $prestation ) {
 			update_post_meta( $post_id, 'prestation_id', $prestation->id );
