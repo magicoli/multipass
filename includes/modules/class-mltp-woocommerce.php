@@ -644,12 +644,12 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 			$args = array(
 				'source'           => 'woocommerce',
-				'woocommerce_uuid' => $uuid,
-				'date'             => $post->post_date,
 				'source_id'        => "$post_id",
 				'source_item_id'   => "$item_id",
+				'source_edit_url'         => $order->get_edit_order_url(),
+				// 'woocommerce_uuid' => $uuid,
+				'date'             => $post->post_date,
 				// 'view_url'         => $order->get_view_order_url(),
-				'edit_url'         => $order->get_edit_order_url(),
 				'resource_id'      => self::get_resource( $product_id ),
 
 				'description'      => "$description",
