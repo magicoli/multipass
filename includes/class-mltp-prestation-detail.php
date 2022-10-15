@@ -1179,6 +1179,37 @@ class Mltp_Item {
 		// return $check;
 	}
 
+	static function sanitize_sources($args) {
+		if ( empty( $args['source'] ) ) {
+			error_log( 'source cannot be empty, abort.' );
+			return false;
+		}
+		$source = $args['source'];
+		$source_id = $args['source_id'];
+		$uuid_field = $args['source'] . '_uuid';
+
+		$source_term_id = get_term_by( 'slug', $args['source'], 'mltp_detail-source' );
+		if ( ! $source_term_id ) {
+			// error_log( 'unknown source ' . $args['source'] . ', abort' );
+			return;
+		}
+
+		if ( empty( $args[ $uuid_field ] ) ) {
+			$source_id = empty( $args[$source . '_id'] ) ? $args['source_id'] : $args[$source . '_id'];
+			if (empty($source_id)) {
+				error_log( "${source}_id cannot be empty for $source, abort." );
+				return false;
+			}
+			$args[ $uuid_field ] = MultiPass::hash_source_uuid($source, $source_id);
+		}
+		$uuid_value = $args[ $uuid_field ];
+
+		if( empty( $args[$source . '_edit_url'] ) ) {
+			$args[$source . '_edit_url'] = MultiPass::source_edit_url( $source, $source_id, $default = null );
+		}
+		return $args;
+	}
+	
 	function get( $args, $update = false ) {
 		$post_id = null;
 		$post    = null;
