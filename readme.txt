@@ -66,7 +66,7 @@ WARNING: **Make a full backup of your website and databases** before installing 
 
 == Changelog ==
 
-= Unreleased =
+= Unreleased (0.2-alpha.489) =
 * new filter 'multipass_load_modules', allow loading modules from other plugins
 * new Lodgify bookings sync
 * addded src/bin/build.sh and src/bin/deploy.sh
