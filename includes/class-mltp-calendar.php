@@ -601,21 +601,38 @@ class Mltp_Calendar {
 		if ( ! $event ) {
 			return false;
 		}
-
+		$event->total = round($event->total, 2);
+		$event->subtotal = round($event->subtotal, 2);
 		$html = '';
 		$data = array(
-			_x( 'Contact', '(noun)', '(noun)', 'multipass' ) => MultiPass::price( $event->contact ),
-			_x( 'Email', '(noun)', 'multipass' ) => MultiPass::price( $event->email ),
-			_x( 'Phone', '(noun)', 'multipass' ) => MultiPass::price( $event->phone ),
-			__( 'Check in', 'multipass' )        => MultiPass::format_date( $event->display_start ),
-			__( 'Check out', 'multipass' )       => MultiPass::format_date( $event->display_end ),
-			__( 'Subtotal', 'multipass' )        => MultiPass::price( $event->subtotal ),
-			__( 'Discount', 'multipass' )        => MultiPass::price( $event->discount ),
-			__( 'Total', 'multipass' )           => MultiPass::price( $event->total ),
-			__( 'Deposit', 'multipass' )         => MultiPass::price( $event->deposit ),
-			__( 'Balance', 'multipass' )         => MultiPass::price( $event->balance ),
+			'booking' => array(
+				__( 'Check in', 'multipass' )        => MultiPass::format_date( $event->display_start ),
+				__( 'Check out', 'multipass' )       => MultiPass::format_date( $event->display_end ),
+			),
+			'prices' => array(
+				__( 'Subtotal', 'multipass' )        => ( $event->subtotal === $event->total ) ? null : MultiPass::price( $event->subtotal ),
+				__( 'Discount', 'multipass' )        => MultiPass::price( $event->discount ),
+				__( 'Total', 'multipass' )           => MultiPass::price( $event->total ),
+				__( 'Deposit', 'multipass' )         => MultiPass::price( $event->deposit ),
+				__( 'Paid', 'multipass' )         => MultiPass::price( $event->paid ),
+				__( 'Balance', 'multipass' )         => MultiPass::price( $event->balance ),
+			),
+			'contact' => array(
+				_x( 'Contact', '(noun)', '(noun)', 'multipass' ) => $event->contact,
+				_x( 'Email', '(noun)', 'multipass' ) => $event->email,
+				_x( 'Phone', '(noun)', 'multipass' ) => $event->phone,
+			),
 		);
-
+		$rows = array();
+		foreach($data as $section => $lines) {
+			$lines = array_filter($lines);
+			if(empty($lines)) continue;
+			// if(!empty($rows)) {
+				// $rows[$section] = 'divider';
+			// }
+			$rows = array_merge($rows, array('divider'), $lines);
+		}
+		// $rows = array_filter($rows);
 		if(get_option('multipass_debug') && current_user_can('manage_options')) {
 			$extra['Source'] = get_post_meta( $event->id, 'source', true );
 			$extra['Source ID'] = get_post_meta($event->id, 'source_id', true);
@@ -632,33 +649,74 @@ class Mltp_Calendar {
 				$extra[ "$source_name edit url" ] = get_post_meta( $event->id, $source . '_edit_url', true );
 				$extra[ "$source_name view url" ] = get_post_meta( $event->id, $source . '_view_url', true );
 			}
-			$data = array_merge($data, array_filter($extra));
+			$rows = array_merge($rows, array('divider'), array_filter($extra));
 		}
 
-		$html .= '<span class="description">' . $event->description . '</span>';
+		// error_log(print_r($event, true));
+
+		// $prestation_id = get_post_meta($event->post->ID, 'prestation_'
+		$html .= '<span class="description">' . $event->title . '</span>';
 		$html .= '<table class="modal-summary">';
-		foreach ( $data as $row => $value ) {
-			$html .= sprintf(
-				'<tr><th>%s</th><td>%s</td></tr>',
-				$row,
-				$value,
-			);
+		foreach ( $rows as $row => $value ) {
+			if( 'divider' === $value ) {
+				$html .= sprintf(
+					'<tr class="%s"><td colspan=2>%s</td></tr>',
+					is_numeric($row) ? '' : $row,
+					'<hr>',
+				);
+			} else {
+				$html .= sprintf(
+					'<tr><th>%s</th><td>%s</td></tr>',
+					is_numeric($row) ? '' : $row,
+					$value,
+				);
+			}
 		}
 		$html .= '<table>';
-		$links = array_filter(
-			array(
-				// 'view' => array(
-				// 'label' => __('View', 'multipass'),
-				// 'url' => empty($event->view_url) ? null : $event->view_url,
-				// 'icon' => 'post',
-				// ),
-				'details' => array(
-					'label' => __( 'Details', 'multipass' ),
-					'url'   => empty( $event->edit_url ) ? null : $event->edit_url,
-					'icon'  => 'edit',
-				),
-			)
-		);
+		$prestation_id = get_post_meta($event->post->ID, 'prestation_id', true);
+		$links =  array();
+
+		if(current_user_can('edit_post', $prestation_id)) {
+			$links['prestation'] = array(
+				'label' => __('Prestation', 'multipass'),
+				'url' => get_edit_post_link($prestation_id),
+				'icon' => 'edit-page',
+			);
+		}
+		if(current_user_can('edit_post', $event->id)) {
+			$links['item'] = array(
+				'label' => __('This rental', 'multipass'),
+				'url' => get_edit_post_link($event->id),
+				'icon' => 'welcome-write-blog',
+			);
+		}
+
+		foreach ( MultiPass::get_registered_sources() as $source => $source_name ) {
+			$source_url = get_post_meta( $event->id, $source . '_edit_url', true );
+			if(!empty($source_url)) {
+				$links['booking'] = array(
+					'label' => sprintf(__('View on %s', 'multipass'), $source_name),
+					'url' => $source_url,
+					'icon' => 'external',
+				);
+			}
+		}
+
+		// $links = array_filter(
+		// 	array(
+		// 		// 'prestation' => get_edit_post_link()
+		// 		// 'view' => array(
+		// 		// 'label' => __('View', 'multipass'),
+		// 		// 'url' => empty($event->view_url) ? null : $event->view_url,
+		// 		// 'icon' => 'post',
+		// 		// ),
+		// 		'details' => array(
+		// 			'label' => __( 'Details', 'multipass' ),
+		// 			'url'   => empty( $event->edit_url ) ? null : $event->edit_url,
+		// 			'icon'  => 'edit',
+		// 		),
+		// 	)
+		// );
 		if ( ! empty( $event->source ) ) {
 			$links['source'] = array(
 				'label' => sprintf(
