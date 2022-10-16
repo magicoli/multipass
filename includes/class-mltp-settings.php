@@ -400,7 +400,7 @@ class Mltp_Settings {
 	}
 
 	function register_fields( $meta_boxes ) {
-		if ( ! get_option( 'multipass_debug', false ) ) {
+		if ( ! MultiPass::debug() ) {
 			return $meta_boxes;
 		}
 

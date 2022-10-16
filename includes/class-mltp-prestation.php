@@ -757,7 +757,7 @@ class Mltp_Prestation {
 		);
 		register_taxonomy( 'prestation-status', array( 'mltp_prestation' ), $args );
 
-		if ( get_option( 'multipass_debug', false ) ) {
+		if ( MultiPass::debug() ) {
 			add_submenu_page(
 				'multipass', // string $parent_slug,
 				$labels['name'], // string $page_title,

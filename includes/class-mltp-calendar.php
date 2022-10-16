@@ -285,7 +285,7 @@ class Mltp_Calendar {
 		);
 		register_taxonomy( 'calendar-section', array( 'mltp_resource' ), $args );
 
-		if ( get_option( 'multipass_debug', false ) ) {
+		if ( MultiPass::debug() ) {
 			add_submenu_page(
 				'multipass', // string $parent_slug,
 				$labels['name'], // string $page_title,
@@ -633,7 +633,7 @@ class Mltp_Calendar {
 			$rows = array_merge($rows, array('divider'), $lines);
 		}
 		// $rows = array_filter($rows);
-		if(get_option('multipass_debug') && current_user_can('manage_options')) {
+		if( MultiPass::debug() ) {
 			$extra['Source'] = get_post_meta( $event->id, 'source', true );
 			$extra['Source ID'] = get_post_meta($event->id, 'source_id', true);
 			$extra['Origin'] = get_post_meta( $event->id, 'origin', true );

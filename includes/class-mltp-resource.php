@@ -782,7 +782,7 @@ class Mltp_Resource {
 		);
 		register_taxonomy( 'resource-type', array( 'mltp_prestation', 'product', 'mltp_resource', 'mltp_detail' ), $args );
 
-		if ( get_option( 'multipass_debug', false ) ) {
+		if ( MultiPass::debug() ) {
 			add_submenu_page(
 				'multipass', // string $parent_slug,
 				$labels['name'], // string $page_title,

@@ -96,7 +96,7 @@ class Mltp_Payment_Product {
 			),
 		);
 
-		if ( get_option( 'multipass_debug', false ) ) {
+		if ( MultiPass::debug() ) {
 			$meta_boxes['multipass-woocommerce']['fields'][] = array(
 				'name' => __( 'Payments test', 'multipass' ),
 				'id'   => $prefix . 'multipass-woocommerce-debug',

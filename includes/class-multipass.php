@@ -902,4 +902,13 @@ class MultiPass {
 		return $hash;
 	}
 
+	static function debug($string = null) {
+		if( ! get_option('multipass_debug' ) || ! current_user_can('manage_options') ) return false;
+
+		if(!empty($string)) {
+			error_log($string);
+		}
+
+		return true;
+	}
 }

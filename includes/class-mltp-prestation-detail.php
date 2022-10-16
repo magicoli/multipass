@@ -940,7 +940,7 @@ class Mltp_Item {
 
 		MultiPass::register_terms( 'mltp_detail-source' );
 
-		if ( get_option( 'multipass_debug', false ) ) {
+		if ( MultiPass::debug() ) {
 			add_submenu_page(
 				'multipass', // string $parent_slug,
 				$labels['name'], // string $page_title,
