@@ -461,69 +461,69 @@ class Mltp_Lodgify extends Mltp_Modules {
 		return $api_key;
 	}
 
-	/**
-	 * Get closed periods, complementary to get_bookings(), as API method
-	 * /v2/reservations/bookings does not return dates blocked manually, and v1
-	 * api doesn't return details.
-	 *
-	 * @return array API response as array
-	 */
-	function get_closed_periods() {
-		$cache_key = sanitize_title( __CLASS__ . '-' . __METHOD__ );
-		$closed    = wp_cache_get( $cache_key );
-		if ( $closed ) {
-			return $closed;
-		}
-
-		$closed = array();
-		// foreach($props as $propertyId => $prop) {
-		$api_query = array(
-			'start'          => date( 'Y-m-d', strtotime( 'first day of last month' ) ),
-			'end'            => date( 'Y-m-d', strtotime( 'last day of next month' ) ),
-			// 'end' => date('Y-m-d', strtotime('last day of next month + 2 years') ),
-			'includeDetails' => true,
-		);
-		$response  = $this->api_request( '/v2/availability', $api_query );
-		if ( is_wp_error( $response ) ) {
-			$error_id = sanitize_title( __CLASS__ . '-' . __METHOD__ );
-			$message  = sprintf( __( '%1$s failed (%2$s).', 'multipass' ), $error_id, $response->get_error_message() );
-			add_settings_error( $error_id, $error_id, $message, 'error' );
-			return $response;
-		}
-
-		foreach ( $response as $avail ) {
-			$periods     = $avail['periods'];
-			$property_id = $avail['property_id'];
-			$resource    = Mltp_Resource::get_resource( 'lodgify', $property_id );
-			if ( ! $resource ) {
-				continue;
-			}
-
-			$closed[ $property_id ] = array(
-				'user_id'      => $avail['user_id'],
-				'property_id'  => $avail['property_id'],
-				'room_type_id' => $avail['room_type_id'],
-			);
-			foreach ( $periods as $period_key => $period ) {
-				if ( $period['available'] ) {
-					continue;
-				}
-				if ( empty( $period['closed_period'] ) ) {
-					// Not available, but there is a booking associated
-					continue;
-				}
-				$period['source_url']                = 'https://app.lodgify.com/#/reservation/calendar/multi/closed-period/' . $period['closed_period']['id'];
-				$closed[ $property_id ]['periods'][] = $period;
-			}
-			if ( empty( $closed[ $property_id ]['periods'] ) ) {
-				unset( $closed[ $property_id ] );
-			}
-		}
-		// }
-
-		wp_cache_set( $cache_key, $closed );
-		return $closed;
-	}
+	// /**
+	//  * Get closed periods, complementary to get_bookings(), as API method
+	//  * /v2/reservations/bookings does not return dates blocked manually, and v1
+	//  * api doesn't return details.
+	//  *
+	//  * @return array API response as array
+	//  */
+	// function get_closed_periods() {
+	// 	$cache_key = sanitize_title( __CLASS__ . '-' . __METHOD__ );
+	// 	$closed    = wp_cache_get( $cache_key );
+	// 	if ( $closed ) {
+	// 		return $closed;
+	// 	}
+	//
+	// 	$closed = array();
+	// 	// foreach($props as $propertyId => $prop) {
+	// 	$api_query = array(
+	// 		'start'          => date( 'Y-m-d', strtotime( 'first day of last month' ) ),
+	// 		'end'            => date( 'Y-m-d', strtotime( 'last day of next month' ) ),
+	// 		// 'end' => date('Y-m-d', strtotime('last day of next month + 2 years') ),
+	// 		'includeDetails' => true,
+	// 	);
+	// 	$response  = $this->api_request( '/v2/availability', $api_query );
+	// 	if ( is_wp_error( $response ) ) {
+	// 		$error_id = sanitize_title( __CLASS__ . '-' . __METHOD__ );
+	// 		$message  = sprintf( __( '%1$s failed (%2$s).', 'multipass' ), $error_id, $response->get_error_message() );
+	// 		add_settings_error( $error_id, $error_id, $message, 'error' );
+	// 		return $response;
+	// 	}
+	//
+	// 	foreach ( $response as $avail ) {
+	// 		$periods     = $avail['periods'];
+	// 		$property_id = $avail['property_id'];
+	// 		$resource    = Mltp_Resource::get_resource( 'lodgify', $property_id );
+	// 		if ( ! $resource ) {
+	// 			continue;
+	// 		}
+	//
+	// 		$closed[ $property_id ] = array(
+	// 			'user_id'      => $avail['user_id'],
+	// 			'property_id'  => $avail['property_id'],
+	// 			'room_type_id' => $avail['room_type_id'],
+	// 		);
+	// 		foreach ( $periods as $period_key => $period ) {
+	// 			if ( $period['available'] ) {
+	// 				continue;
+	// 			}
+	// 			if ( empty( $period['closed_period'] ) ) {
+	// 				// Not available, but there is a booking associated
+	// 				continue;
+	// 			}
+	// 			$period['source_url']                = 'https://app.lodgify.com/#/reservation/calendar/multi/closed-period/' . $period['closed_period']['id'];
+	// 			$closed[ $property_id ]['periods'][] = $period;
+	// 		}
+	// 		if ( empty( $closed[ $property_id ]['periods'] ) ) {
+	// 			unset( $closed[ $property_id ] );
+	// 		}
+	// 	}
+	// 	// }
+	//
+	// 	wp_cache_set( $cache_key, $closed );
+	// 	return $closed;
+	// }
 
 
 	/**
