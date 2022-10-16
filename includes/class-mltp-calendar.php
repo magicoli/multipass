@@ -564,7 +564,7 @@ class Mltp_Calendar {
 					// $calendar = get_the_terms($item_id, )
 					$e = array(
 						'id'          => 'item-' . $item_id,
-						'title'       => get_the_title( $prestation_id ),
+						'title'       => html_entity_decode(get_the_title( $prestation_id )),
 						'description' => 'this is a long description',
 						'modal'       => self::get_the_modal( $item_id ),
 						'start'       => $begin,
@@ -582,6 +582,7 @@ class Mltp_Calendar {
 				}
 			}
 		}
+
 		if ( $hide_undefined ) {
 			array_shift( $resources );
 		}
