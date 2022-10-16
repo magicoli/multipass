@@ -387,7 +387,6 @@ class Mltp_Lodgify extends Mltp_Modules {
 		} else {
 			$url = $this->api_url . "$path?" . http_build_query( $args );
 		}
-
 		$options  = array(
 			// 'method'  => 'GET',
 			'timeout' => 10,
@@ -398,11 +397,15 @@ class Mltp_Lodgify extends Mltp_Modules {
 			),
 		);
 		$response = wp_remote_get( $url, $options );
+
 		if ( is_wp_error( $response ) ) {
+			error_log(__CLASS__ . '::' . __METHOD__ .  ' fail ' . $response['response']['code'] . ' ' . $response->get_error_message() . " $url" );
 			return $response;
 		} elseif ( $response['response']['code'] != 200 ) {
-			return new WP_Error( __FUNCTION__ . '-wrongresponse', 'Response code ' . $response['response']['code'] );
+			error_log(__CLASS__ . '::' . __METHOD__ .  ' fail ' . $response['response']['code'] );
+			return new WP_Error( __FUNCTION__ . '-wrongresponse', 'Response code ' . $response['response']['code'] . " $url" );
 		} else {
+			MultiPass::debug( __CLASS__ . '::' . __METHOD__ .  " success $url" );
 			$json_data = json_decode( $response['body'], true );
 		}
 

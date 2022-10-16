@@ -1372,7 +1372,15 @@ class Mltp_Item {
 			if ( ! $prestation ) error_log( 'could not find prestation by args ' . json_encode($args));
 		}
 		if( ! $prestation ) {
-			// error_log("coult not find nor create prestation");
+			$args = array_intersect( array(
+				'prestation_id'  => null,
+				'customer_id'    => null,
+				'customer_name'  => null,
+				'customer_email' => null,
+				'from'           => null,
+				'to'             => null,
+			), $args );
+			error_log("coult not find nor create prestation with " . json_encode($args));
 			return false;
 		}
 		$args['prestation_id'] = ($prestation) ? $prestation->id : null;
