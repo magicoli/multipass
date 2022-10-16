@@ -1013,27 +1013,27 @@ class Mltp_Item {
 
 		$updates = array();
 
-		foreach(array('source', 'origin') as $received_source) {
-			$source = get_post_meta( $post_id, $received_source, true );
+		foreach ( array( 'source', 'origin' ) as $received_source ) {
+			$source    = get_post_meta( $post_id, $received_source, true );
 			$source_id = get_post_meta( $post_id, $received_source . '_id', true );
-			if(!empty($source_id)) {
+			if ( ! empty( $source_id ) ) {
 				// error_log("$source id $source_id");
-				if(empty(get_post_meta( $post_id, $source . '_id', true ))) {
+				if ( empty( get_post_meta( $post_id, $source . '_id', true ) ) ) {
 					// error_log("updating " . $source . '_id'. " with" . $source_id);
-					$updates[$source . '_id'] = $source_id;
-				// } else {
-				// 	error_log( $source . '_id'. " already stored " . get_post_meta( $post_id, $source . '_id', true ) );
+					$updates[ $source . '_id' ] = $source_id;
+					// } else {
+					// error_log( $source . '_id'. " already stored " . get_post_meta( $post_id, $source . '_id', true ) );
 				}
 			}
 		}
 
-		foreach (MultiPass::get_registered_sources() as $source => $source_name) {
-			$source_id = get_post_meta( $post_id, $source . '_id', true );
-			$updates[$source . '_uuid'] = MultiPass::hash_source_uuid($source, $source_id);
-			$updates[$source . '_edit_url'] = MultiPass::source_edit_url( $source, $source_id );
+		foreach ( MultiPass::get_registered_sources() as $source => $source_name ) {
+			$source_id                        = get_post_meta( $post_id, $source . '_id', true );
+			$updates[ $source . '_uuid' ]     = MultiPass::hash_source_uuid( $source, $source_id );
+			$updates[ $source . '_edit_url' ] = MultiPass::source_edit_url( $source, $source_id );
 		}
 
-		$price   = get_post_meta( $post_id, 'price', true );
+		$price = get_post_meta( $post_id, 'price', true );
 		if ( $price ) {
 			$unit_price       = isset( $price['unit'] ) ? $price['unit'] : null;
 			$qty              = isset( $price['quantity'] ) ? $price['quantity'] : ( isset( $price['unit'] ) ? 1 : null );
@@ -1097,13 +1097,13 @@ class Mltp_Item {
 		$attendees = ( ! is_array( $attendees ) ) ? array( 'total' => $attendees ) : $attendees;
 		$attendees = empty( $attendees ) ? array() : $attendees;
 		if ( $attendees ) {
-			$attendees       = array_replace(
+			$attendees = array_replace(
 				array(
 					'total' => null,
 				),
 				$attendees
 			);
-			$count           = array_replace(
+			$count     = array_replace(
 				array(
 					'adults'   => 0,
 					'children' => 0,
@@ -1111,13 +1111,13 @@ class Mltp_Item {
 				),
 				$attendees
 			);
-			unset($count['total']);
-			$sum = array_sum($count);
+			unset( $count['total'] );
+			$sum = array_sum( $count );
 			if ( $sum == 0 ) {
 				$sum = null;
 			}
-			if ( ! empty($sum) && $sum != $attendees['total'] ) {
-				$attendees['total']   = $sum;
+			if ( ! empty( $sum ) && $sum != $attendees['total'] ) {
+				$attendees['total'] = $sum;
 			}
 			$updates['attendees'] = $attendees;
 		}
@@ -1176,27 +1176,29 @@ class Mltp_Item {
 		// return $check;
 	}
 
-	static function sanitize_sources($args) {
-		if(!is_array($args)) return $args;
+	static function sanitize_sources( $args ) {
+		if ( ! is_array( $args ) ) {
+			return $args;
+		}
 
-		if(!empty($args['source'])) {
-			$source = $args['source'];
-			$source_id = empty( $args[$source . '_id'] ) ? $args['source_id'] : $args[$source . '_id'];
-			if (empty($source) || empty($source_id)) {
+		if ( ! empty( $args['source'] ) ) {
+			$source    = $args['source'];
+			$source_id = empty( $args[ $source . '_id' ] ) ? $args['source_id'] : $args[ $source . '_id' ];
+			if ( empty( $source ) || empty( $source_id ) ) {
 				return $args;
 			}
 
-			$args['source_id'] = $source_id;
-			$args[$source . '_id'] = $source_id;
-			$uuid_field = $args['source'] . '_uuid';
+			$args['source_id']       = $source_id;
+			$args[ $source . '_id' ] = $source_id;
+			$uuid_field              = $args['source'] . '_uuid';
 
 			if ( empty( $args[ $uuid_field ] ) ) {
-				$args[ $uuid_field ] = MultiPass::hash_source_uuid($source, $source_id);
+				$args[ $uuid_field ] = MultiPass::hash_source_uuid( $source, $source_id );
 			}
 			$uuid_value = $args[ $uuid_field ];
 
-			if( empty( $args[$source . '_edit_url'] ) ) {
-				$args[$source . '_edit_url'] = MultiPass::source_edit_url( $source, $source_id, $default = null );
+			if ( empty( $args[ $source . '_edit_url' ] ) ) {
+				$args[ $source . '_edit_url' ] = MultiPass::source_edit_url( $source, $source_id, $default = null );
 			}
 		}
 
@@ -1226,18 +1228,18 @@ class Mltp_Item {
 
 			case 'array':
 				if ( empty( $args['source'] ) ) {
-					error_log( 'source cannot be empty, abort ' . print_r($args, true) );
+					error_log( 'source cannot be empty, abort ' . print_r( $args, true ) );
 					return false;
 				}
 				$source_term_id = get_term_by( 'slug', $args['source'], 'mltp_detail-source' );
 				if ( ! $source_term_id ) {
 					// not sure about that
-					error_log( 'unknown source ' . $args['source'] . ', abort ' . print_r($args, true) );
+					error_log( 'unknown source ' . $args['source'] . ', abort ' . print_r( $args, true ) );
 					return;
 				}
 
-				$args = self::sanitize_sources($args);
-				if (empty($args['source_id'])) {
+				$args = self::sanitize_sources( $args );
+				if ( empty( $args['source_id'] ) ) {
 					error_log( "source id cannot not be empty, abort (in $source detail)." );
 					return $args;
 				}
@@ -1279,9 +1281,9 @@ class Mltp_Item {
 				);
 				$posts      = get_posts( $query_args );
 
-				if (! $posts) {
+				if ( ! $posts ) {
 					$debug_query = $query_args;
-					$query_args = null;
+					$query_args  = null;
 				}
 
 				if ( ! $posts & ! empty( $from ) & ! empty( $to ) & ! empty( $args['resource_id'] ) ) {
@@ -1334,7 +1336,7 @@ class Mltp_Item {
 			$this->name = $post->post_title;
 			$this->post = $post;
 		} else {
-			$this->id = null;
+			$this->id   = null;
 			$this->post = null;
 		}
 
@@ -1343,10 +1345,10 @@ class Mltp_Item {
 			$args['from'] = $from;
 			$args['to']   = $to;
 
-			$post = $this->update($args);
+			$post = $this->update( $args );
 
 			// if($create) {
-			// 	error_log("nothing found with $uuid_field = $uuid_value, create new one $post->ID " . print_r(get_post_meta($post->ID), true));
+			// error_log("nothing found with $uuid_field = $uuid_value, create new one $post->ID " . print_r(get_post_meta($post->ID), true));
 			// }
 
 		}
@@ -1357,68 +1359,79 @@ class Mltp_Item {
 	function update( $args ) {
 		$post_id = $this->id;
 
-		$args = self::sanitize_sources($args);
+		$args = self::sanitize_sources( $args );
 
-		$description = (empty($args['description'])) ? $this->name : $args['description'];
+		$description = ( empty( $args['description'] ) ) ? $this->name : $args['description'];
 
-		$prestation = false;
-		$prestation_id = get_post_meta($this->id, 'prestation_id', true);
+		$prestation    = false;
+		$prestation_id = get_post_meta( $this->id, 'prestation_id', true );
 		if ( ! empty( $prestation_id ) ) {
-			$prestation = new Mltp_Prestation($prestation_id);
-			if ( ! $prestation ) error_log( 'could not find prestation by id ' . $prestation_id);
+			$prestation = new Mltp_Prestation( $prestation_id );
+			if ( ! $prestation ) {
+				error_log( 'could not find prestation by id ' . $prestation_id );
+			}
 		}
-		if( ! $prestation ) {
-			$prestation = new Mltp_Prestation($args);
-			if ( ! $prestation ) error_log( 'could not find prestation by args ' . json_encode($args));
+		if ( ! $prestation ) {
+			$prestation = new Mltp_Prestation( $args );
+			if ( ! $prestation ) {
+				error_log( 'could not find prestation by args ' . json_encode( $args ) );
+			}
 		}
-		if( ! $prestation ) {
-			$args = array_intersect( array(
-				'prestation_id'  => null,
-				'customer_id'    => null,
-				'customer_name'  => null,
-				'customer_email' => null,
-				'from'           => null,
-				'to'             => null,
-			), $args );
-			error_log("coult not find nor create prestation with " . json_encode($args));
+		if ( ! $prestation ) {
+			$args = array_intersect(
+				array(
+					'prestation_id'  => null,
+					'customer_id'    => null,
+					'customer_name'  => null,
+					'customer_email' => null,
+					'from'           => null,
+					'to'             => null,
+				),
+				$args
+			);
+			error_log( 'coult not find nor create prestation with ' . json_encode( $args ) );
 			return false;
 		}
-		$args['prestation_id'] = ($prestation) ? $prestation->id : null;
+		$args['prestation_id'] = ( $prestation ) ? $prestation->id : null;
 
-		if(empty($args['description'])) {
+		if ( empty( $args['description'] ) ) {
 			$post_title = $this->name;
 		} else {
-			$post_title = (empty($args['description'])) ? $this->name : $description;
+			$post_title = ( empty( $args['description'] ) ) ? $this->name : $description;
 			// $title = preg_replace('/,.*/', '', $title);
 			// $post_title = "$description, ${guests_total}p $date_range";
-			$dates = array(
-				'from' => (!empty($args['from'])) ? $args['from'] : null,
-				'to' => (!empty($args['to'])) ? $args['to'] : null,
+			$dates      = array(
+				'from' => ( ! empty( $args['from'] ) ) ? $args['from'] : null,
+				'to'   => ( ! empty( $args['to'] ) ) ? $args['to'] : null,
 			);
-			$info = array_filter(array(
-				$post_title,
-				( ! empty($args['attendees']) && is_array($args['attendees']) &! empty($args['attendees']['total']) ) ? $args['attendees']['total'] . 'p' : null,
-				( ! empty($dates) ) ? MultiPass::format_date_range( $dates ) : null,
-			));
-			$post_title = join(', ', $info);
+			$info       = array_filter(
+				array(
+					$post_title,
+					( ! empty( $args['attendees'] ) && is_array( $args['attendees'] ) & ! empty( $args['attendees']['total'] ) ) ? $args['attendees']['total'] . 'p' : null,
+					( ! empty( $dates ) ) ? MultiPass::format_date_range( $dates ) : null,
+				)
+			);
+			$post_title = join( ', ', $info );
 		}
 
-		$postarr = array_filter(array(
-			'ID'          => $post_id,
-			'post_author' => ( empty( $args['customer']['user_id'] ) ) ? null : $args['customer']['user_id'],
-			'post_date'   => ( empty( $post_id ) && isset( $args['date'] ) ) ? $args['date'] : null,
-			'post_title'  => $post_title,
-			// 	'%s #%s-%s',
-			// 	$args['description'],
-			// 	$args['source_id'],
-			// 	$args['source_item_id'],
-			// ),
-			// 'post_date_gmt' => esc_attr($args['date_gmt']),
-			'post_type'   => 'mltp_detail',
-			'post_status' => 'publish',
-			'meta_input'  => $args,
-		));
-		if(!empty($args['source'])) {
+		$postarr = array_filter(
+			array(
+				'ID'          => $post_id,
+				'post_author' => ( empty( $args['customer']['user_id'] ) ) ? null : $args['customer']['user_id'],
+				'post_date'   => ( empty( $post_id ) && isset( $args['date'] ) ) ? $args['date'] : null,
+				'post_title'  => $post_title,
+				// '%s #%s-%s',
+				// $args['description'],
+				// $args['source_id'],
+				// $args['source_item_id'],
+				// ),
+				// 'post_date_gmt' => esc_attr($args['date_gmt']),
+				'post_type'   => 'mltp_detail',
+				'post_status' => 'publish',
+				'meta_input'  => $args,
+			)
+		);
+		if ( ! empty( $args['source'] ) ) {
 			$postarr['tax_input'] = array(
 				'mltp_detail-source' => $args['source'],
 			);
@@ -1427,14 +1440,18 @@ class Mltp_Item {
 		// error_log(print_r($postarr, true));
 
 		$this->id = wp_insert_post( $postarr );
-		if(is_wp_error($this->id)) return $this->id;
+		if ( is_wp_error( $this->id ) ) {
+			return $this->id;
+		}
 
 		$this->post = get_post( $this->id );
-		if( ! is_wp_error($this->post) ) {
+		if ( ! is_wp_error( $this->post ) ) {
 			$this->name = $this->post->post_title;
 		}
 
-		if($prestation) $prestation->update();
+		if ( $prestation ) {
+			$prestation->update();
+		}
 
 		return $this->post;
 	}

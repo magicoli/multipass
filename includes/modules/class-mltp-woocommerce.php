@@ -571,14 +571,14 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 			$description = $item->get_name();
 			// $description = join(
-			// 	' ',
-			// 	array_filter(
-			// 		array(
-			// 			// isset( $category ) ? $category : '',
-			// 			$item->get_name(),
-			// 			isset( $variation ) ? $variation->get_formatted_name() : '',
-			// 		)
-			// 	)
+			// ' ',
+			// array_filter(
+			// array(
+			// isset( $category ) ? $category : '',
+			// $item->get_name(),
+			// isset( $variation ) ? $variation->get_formatted_name() : '',
+			// )
+			// )
 			// );
 
 			$from  = null;
@@ -600,11 +600,11 @@ class Mltp_WooCommerce extends Mltp_Modules {
 					$to   = empty( $dates ) ? null : max( $dates );
 
 					// $description .= ' ' . MultiPass::format_date_range(
-					// 	array(
-					// 		'from' => $from,
-					// 		'to'   => $to,
-					// 	),
-					// 	'SHORT'
+					// array(
+					// 'from' => $from,
+					// 'to'   => $to,
+					// ),
+					// 'SHORT'
 					// );
 				}
 
@@ -630,36 +630,36 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			$paid       = ( in_array( $order->get_status(), array( 'completed', 'processing' ) ) ) ? $total : null;
 			$balance    = $total - $paid;
 
-			if( Mltp_Payment_Product::is_payment_product( $product ) ) {
-				$type = 'payment';
+			if ( Mltp_Payment_Product::is_payment_product( $product ) ) {
+				$type         = 'payment';
 				$description .= ' #' . $order->ID;
 			} else {
 				$type = $product->get_type();
 			}
 
 			// switch ( $type ) {
-			// 	case 'booking':
-			// 		$description = '[' . __( 'Booking', 'multipass' ) . '] ' . $description;
-			// 		break;
+			// case 'booking':
+			// $description = '[' . __( 'Booking', 'multipass' ) . '] ' . $description;
+			// break;
 			//
-			// 	case 'payment':
-			// 		$description = '[' . __( 'Payment', 'multipass' ) . '] ' . $description;
-			// 		break;
+			// case 'payment':
+			// $description = '[' . __( 'Payment', 'multipass' ) . '] ' . $description;
+			// break;
 			// }
 
 			$args = array(
-				'source'           => 'woocommerce',
-				'source_id'        => "$post_id/$item_id",
+				'source'         => 'woocommerce',
+				'source_id'      => "$post_id/$item_id",
 				// 'woocommerce_uuid' => MultiPass::hash_source_uuid('woocommerce', $order->ID, $item_id),
-				'date'             => $post->post_date,
-				'source_item_id'   => "$item_id",
+				'date'           => $post->post_date,
+				'source_item_id' => "$item_id",
 				// 'view_url'         => $order->get_view_order_url(),
 				// 'edit_url'         => $order->get_edit_order_url(),
-				'resource_id'      => self::get_resource( $product_id ),
+				'resource_id'    => self::get_resource( $product_id ),
 
-				'description'      => "$description",
+				'description'    => "$description",
 
-				'customer'         => array(
+				'customer'       => array(
 					'user_id' => $customer_id,
 					'name'    => $customer_name,
 					'email'   => $customer_email,
@@ -671,28 +671,28 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				// 'email' => $customer_email,
 				// 'phone' => join(', ', $customer_phone),
 				// ),
-				'dates'            => array(
+				'dates'          => array(
 					'from' => $from,
 					'to'   => $to,
 				),
-				'from'             => $from,
-				'to'               => $to,
+				'from'           => $from,
+				'to'             => $to,
 				// 'attendees' => $attendees;
 				// 'beds' => $beds;
 
-				'price'            => array(
+				'price'          => array(
 					'quantity'  => $quantity,
 					'unit'      => $unit_price,
 					'sub_total' => $sub_total,
 				),
-				'subtotal'         => $sub_total, // TODO: replace use of price['subtotal'] by subtotal.
-				'discount'         => $discount,
-				'total'            => $total,
+				'subtotal'       => $sub_total, // TODO: replace use of price['subtotal'] by subtotal.
+				'discount'       => $discount,
+				'total'          => $total,
 				// TODO: ensure paid status is updated immediatly, not after second time save
 				//
-				'paid'             => $paid,
-				'balance'          => $balance,
-				'type'             => $type,
+				'paid'           => $paid,
+				'balance'        => $balance,
+				'type'           => $type,
 
 			);
 			$details[] = $args;
@@ -717,8 +717,8 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		);
 
 		// if(! empty($prestation->name)) {
-		// 	// TODO: replace payment details title by "<prestation name> (<payment
-		// 	// product name>)".
+		// TODO: replace payment details title by "<prestation name> (<payment
+		// product name>)".
 		// }
 
 		if ( $prestation ) {
@@ -730,9 +730,9 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			foreach ( $details as $key => $detail ) {
 				$detail['prestation_id'] = $prestation->id;
 				// if('payment' === $type) {
-				// 	error_log('detail ' . print_r($detail, true));
+				// error_log('detail ' . print_r($detail, true));
 				// }
-				$mltp_detail             = new Mltp_Item( $detail, $update );
+				$mltp_detail = new Mltp_Item( $detail, $update );
 			}
 
 			// TODO: delete remaining "review in progress" parts

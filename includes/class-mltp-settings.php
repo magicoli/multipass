@@ -441,11 +441,11 @@ class Mltp_Settings {
 		}
 
 		// if ( empty( $value ) ) {
-		// 	$post_id = get_the_ID();
-		// 	$value   = get_post_meta( $post_id, 'debug', true );
-		// 	if ( is_array( $value ) ) {
-		// 		$value = '<pre>' . print_r( $value, true ) . '</pre>';
-		// 	}
+		// $post_id = get_the_ID();
+		// $value   = get_post_meta( $post_id, 'debug', true );
+		// if ( is_array( $value ) ) {
+		// $value = '<pre>' . print_r( $value, true ) . '</pre>';
+		// }
 		// }
 
 		return $value;

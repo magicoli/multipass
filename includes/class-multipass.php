@@ -798,7 +798,7 @@ class MultiPass {
 		return $editable_roles;
 	}
 
-	public static function source_edit_url( $source, $source_id, $default = null, $args = [] ) {
+	public static function source_edit_url( $source, $source_id, $default = null, $args = array() ) {
 		if ( empty( $source ) || empty( $source_id ) ) {
 			return $default;
 		}
@@ -817,19 +817,20 @@ class MultiPass {
 				break;
 
 			case 'lodgify':
-				if( ! empty($args['type']) && 'closed' === $args['type'] )
-				$source_url =  'https://app.lodgify.com/#/reservation/calendar/multi/closed-period/' . $source_id;
-				else
-				$source_url = 'https://app.lodgify.com/#/reservation/inbox/B' . $source_id;
+				if ( ! empty( $args['type'] ) && 'closed' === $args['type'] ) {
+					$source_url = 'https://app.lodgify.com/#/reservation/calendar/multi/closed-period/' . $source_id;
+				} else {
+					$source_url = 'https://app.lodgify.com/#/reservation/inbox/B' . $source_id;
+				}
 				break;
 
 			case 'woocommerce':
 				// if(current_user_can( 'edit_post', $source_id )) {
-					$order_id = preg_replace(':/.*:', '', $source_id);
-					$order = wc_get_order( $order_id );
-					if($order) {
-						$source_url = $order->get_edit_order_url();
-					}
+					$order_id = preg_replace( ':/.*:', '', $source_id );
+					$order    = wc_get_order( $order_id );
+				if ( $order ) {
+					$source_url = $order->get_edit_order_url();
+				}
 				// }
 				break;
 
@@ -868,9 +869,9 @@ class MultiPass {
 
 	public static function get_registered_sources() {
 		$sources = array();
-		$terms = get_terms('mltp_detail-source');
-		foreach($terms as $term) {
-			$sources[$term->slug] = $term->name;
+		$terms   = get_terms( 'mltp_detail-source' );
+		foreach ( $terms as $term ) {
+			$sources[ $term->slug ] = $term->name;
 		}
 		/**
 		 * We used to register sources with filters, but I'm not sure it is still
@@ -897,16 +898,18 @@ class MultiPass {
 			return false;
 		}
 
-		$hash = md5( json_encode(array_filter( array( $source, $id, $extra ) ) ) );
+		$hash = md5( json_encode( array_filter( array( $source, $id, $extra ) ) ) );
 
 		return $hash;
 	}
 
-	static function debug($string = null) {
-		if( ! get_option('multipass_debug' ) || ! current_user_can('manage_options') ) return false;
+	static function debug( $string = null ) {
+		if ( ! get_option( 'multipass_debug' ) || ! current_user_can( 'manage_options' ) ) {
+			return false;
+		}
 
-		if(!empty($string)) {
-			error_log($string);
+		if ( ! empty( $string ) ) {
+			error_log( $string );
 		}
 
 		return true;
