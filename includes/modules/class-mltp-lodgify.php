@@ -399,7 +399,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		$response = wp_remote_get( $url, $options );
 
 		if ( is_wp_error( $response ) ) {
-			error_log(__CLASS__ . '::' . __METHOD__ .  ' fail ' . $response['response']['code'] . ' ' . $response->get_error_message() . " $url" );
+			error_log(__CLASS__ . '::' . __METHOD__ .  ' fail ' . $response->get_error_message() . " $url" );
 			return $response;
 		} elseif ( $response['response']['code'] != 200 ) {
 			error_log(__CLASS__ . '::' . __METHOD__ .  ' fail ' . $response['response']['code'] );
