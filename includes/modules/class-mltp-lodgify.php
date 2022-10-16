@@ -340,7 +340,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		if ( $properties ) {
 			$check = reset( $properties );
 			if ( ! empty( $check ) && preg_match( '/^Elite Royal Apartment/', $check['name'] ) ) {
-				error_log( 'Properties fetched from Lodgify were demo data, abort.' );
+				error_log( 'Demo data properties received from Lodgify, ignoring.' );
 			} else {
 				return $properties;
 			}
@@ -700,8 +700,9 @@ class Mltp_Lodgify extends Mltp_Modules {
 			if ( 'AAAAAAAAAAAAAAAAAAAAAA' === $booking['guest']['id'] ) {
 				// TODO: find closed period comment and use it as client name
 				$booking['guest']['name'] = sprintf( __( 'Closed in %s', 'multipass' ), 'Lodgify' );
-				$source_url               = 'https://app.lodgify.com/#/reservation/calendar/multi/closed-period/' . $booking['id'];
+				// $source_url               = 'https://app.lodgify.com/#/reservation/calendar/multi/closed-period/' . $booking['id'];
 				$booking['status']        = 'closed';
+				$source_url = MultiPass::source_edit_url( 'lodgify', $booking['id'], null, [ 'type' => $booking['status'] ] );
 			} else {
 				// $source_url = 'https://app.lodgify.com/#/reservation/inbox/B' . $booking['id'];
 				$source_url = MultiPass::source_edit_url( 'lodgify', $booking['id'] );
@@ -738,18 +739,18 @@ class Mltp_Lodgify extends Mltp_Modules {
 			$origin_url = MultiPass::source_edit_url( $origin, $origin_id, $source_url );
 			$item_args[$origin . '_edit_url'] = $origin_url;
 
-			$prestation_args = array(
-				'customer_name'  => $booking['guest']['name'],
-				'customer_email' => $booking['guest']['email'],
-				'customer_phone' => $booking['guest']['phone'],
-				'source_url'     => $source_url,
-				'origin_url'     => $origin_url,
-				// 'confirmed' => $confirmed,
-				'from'           => $from,
-				'to'             => $to,
-			);
-
-			$prestation = new Mltp_Prestation( $prestation_args, true );
+			// $prestation_args = array(
+			// 	'customer_name'  => $booking['guest']['name'],
+			// 	'customer_email' => $booking['guest']['email'],
+			// 	'customer_phone' => $booking['guest']['phone'],
+			// 	'source_url'     => $source_url,
+			// 	'origin_url'     => $origin_url,
+			// 	// 'confirmed' => $confirmed,
+			// 	'from'           => $from,
+			// 	'to'             => $to,
+			// );
+			//
+			// $prestation = new Mltp_Prestation( $prestation_args, true );
 
 			// error_log("
 			// $description
@@ -759,16 +760,23 @@ class Mltp_Lodgify extends Mltp_Modules {
 			// ");
 
 			$item_args = array_merge(array(
+				'customer_name'  => $booking['guest']['name'],
+				'customer_email' => $booking['guest']['email'],
+				'customer_phone' => $booking['guest']['phone'],
+				// 'confirmed' => $confirmed,
+				'from'           => $from,
+				'to'             => $to,
 				'source'              => 'lodgify',
+				'source_id'           => $booking['id'],
+				'source_url'          => $source_url,
 				'lodgify_uuid'        => join( '-', array( $booking['id'], $booking['user_id'], $booking['property_id'] ) ),
 				'lodgify_id'          => $booking['id'],
-				'source_id'           => $booking['id'],
+				'lodgify_edit_url'		=> $source_url,
 				'lodgify_property_id' => $booking['property_id'],
-				'source_url'          => $source_url,
 				'origin'              => $origin,
 				'origin_url'          => $origin_url,
-				'edit_url'            => get_edit_post_link( $prestation->id ),
-				'view_url'            => get_edit_post_link( $prestation->id ),
+				// 'edit_url'            => get_edit_post_link( $prestation->id ),
+				// 'view_url'            => get_edit_post_link( $prestation->id ),
 				'resource_id'         => $resource_id,
 				'status'              => $status,
 				'confirmed'           => $confirmed,
@@ -784,7 +792,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 					'currency_code' => $booking['currency_code'],
 					'quote'         => $booking['quote'],
 				),
-				'prestation_id'       => $prestation->id,
+				// 'prestation_id'       => (!empty($booking['prestation_id'])) ? ['prestation_id'] : null,
 				'customer'            => array(
 					// TODO: try to get WP user if exists
 					// 'user_id' => $customer_id,
@@ -811,7 +819,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			), $item_args);
 
 			$mltp_detail = new Mltp_Item( $item_args, true );
-			$prestation->update();
+			// $prestation->update();
 
 		}
 

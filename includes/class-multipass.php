@@ -798,7 +798,7 @@ class MultiPass {
 		return $editable_roles;
 	}
 
-	public static function source_edit_url( $source, $source_id, $default = null ) {
+	public static function source_edit_url( $source, $source_id, $default = null, $args = [] ) {
 		if ( empty( $source ) || empty( $source_id ) ) {
 			return $default;
 		}
@@ -817,6 +817,9 @@ class MultiPass {
 				break;
 
 			case 'lodgify':
+				if( ! empty($args['type']) && 'closed' === $args['type'] )
+				$source_url =  'https://app.lodgify.com/#/reservation/calendar/multi/closed-period/' . $source_id;
+				else
 				$source_url = 'https://app.lodgify.com/#/reservation/inbox/B' . $source_id;
 				break;
 

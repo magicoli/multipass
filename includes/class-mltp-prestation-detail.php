@@ -830,7 +830,7 @@ class Mltp_Item {
 					'name'          => __( 'Paid', 'multipass' ),
 					'id'            => $prefix . 'paid',
 					'type'          => 'number',
-					'min'           => 0,
+					// 'min'           => 0,
 					'step'          => 'any',
 					'size'          => 10,
 					'readonly'      => true,
@@ -840,10 +840,11 @@ class Mltp_Item {
 					'name'          => __( 'Balance', 'multipass' ),
 					'id'            => $prefix . 'balance',
 					'type'          => 'number',
-					'min'           => 0,
+					// 'min'           => 0,
 					'step'          => 'any',
 					'size'          => 10,
 					'readonly'      => true,
+					// 'save_field'	=> false,
 					'admin_columns' => array(
 						'position' => 'after paid',
 						'sort'     => true,
@@ -1360,6 +1361,22 @@ class Mltp_Item {
 
 		$description = (empty($args['description'])) ? $this->name : $args['description'];
 
+		$prestation = false;
+		$prestation_id = get_post_meta($this->id, 'prestation_id', true);
+		if ( ! empty( $prestation_id ) ) {
+			$prestation = new Mltp_Prestation($prestation_id);
+			if ( ! $prestation ) error_log( 'could not find prestation by id ' . $prestation_id);
+		}
+		if( ! $prestation ) {
+			$prestation = new Mltp_Prestation($args);
+			if ( ! $prestation ) error_log( 'could not find prestation by args ' . json_encode($args));
+		}
+		if( ! $prestation ) {
+			// error_log("coult not find nor create prestation");
+			return false;
+		}
+		$args['prestation_id'] = ($prestation) ? $prestation->id : null;
+
 		if(empty($args['description'])) {
 			$post_title = $this->name;
 		} else {
@@ -1408,6 +1425,8 @@ class Mltp_Item {
 		if( ! is_wp_error($this->post) ) {
 			$this->name = $this->post->post_title;
 		}
+
+		if($prestation) $prestation->update();
 
 		return $this->post;
 	}
