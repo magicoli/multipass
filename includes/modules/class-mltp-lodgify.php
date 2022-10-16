@@ -547,7 +547,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		$total     = -1;
 		$api_query = array(
 			'offset' => 0,
-			'limit'  => 100,
+			'limit'  => 50,
 			'trash'  => 'false',
 		);
 		$response  = $this->api_request( '/v1/reservation', $api_query );
