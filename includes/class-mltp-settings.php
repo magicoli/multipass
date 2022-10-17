@@ -57,6 +57,7 @@ class Mltp_Settings {
 		);
 
 		$this->caps['mltp_reader'] = array(
+			'mltp_reader',
 			'view_mltp_dashboard',
 			'view_mltp_calendar',
 			// 'delete_mltp_prestations',
@@ -69,7 +70,7 @@ class Mltp_Settings {
 		$this->caps['mltp_manager']       = array_merge(
 			$this->caps['mltp_reader'],
 			array(
-				// 'create_mltp_prestations',
+				'mltp_manager',
 				'edit_mltp_prestation',
 				'edit_mltp_prestations',
 				'edit_others_mltp_prestations',
@@ -87,7 +88,7 @@ class Mltp_Settings {
 		$this->caps['mltp_administrator'] = array_merge(
 			$this->caps['mltp_manager'],
 			array(
-				// 'create_mltp_resources',
+				'mltp_administrator',
 				'edit_mltp_resource',
 				'edit_mltp_resources',
 				'edit_others_mltp_resources',
@@ -503,6 +504,7 @@ class Mltp_Settings {
 				// __($roles[$default], 'multipass'),
 			);
 		}
+
 		return $roles;
 	}
 
@@ -558,7 +560,7 @@ class Mltp_Settings {
 		if ( $this->roles_settings_being_updated() ) {
 			$request = wp_unslash( $_REQUEST );
 			foreach ( $this->roles as $role_slug => $role_name ) {
-				$new_role = ( isset( $request[ $role_slug ] ) ) ? $request[ $role_slug ] : MultiPass::get_option( $role_slug );
+				$new_role = ( isset( $request[ $role_slug ] ) ) ? $request[ $role_slug ] : MultiPass::role( $role_slug );
 				if ( '_create' === $new_role ) {
 					add_role( $role_slug, $role_name, array( 'view_admin_dashboard' => true ) );
 				}

@@ -922,4 +922,8 @@ class MultiPass {
 
 		return true;
 	}
+
+	static function role($role) {
+		return (preg_match('/^mltp_/', $role)) ? MultiPass::get_option($role, $role) : $role;
+	}
 }
