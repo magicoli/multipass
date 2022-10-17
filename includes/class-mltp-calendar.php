@@ -507,8 +507,12 @@ class Mltp_Calendar {
 		if ( $query && $query->have_posts() ) {
 			while ( $query->have_posts() ) {
 				$query->the_post();
+				$item = new Mltp_Item(get_the_ID());
 				$item_id = get_the_ID();
-				$dates   = get_post_meta( get_the_ID(), 'dates', true );
+				$dates = array_filter(array(
+					'from' => (integer)$item->from,
+					'to' => (integer)$item->to,
+				));
 				if ( empty( $dates ) ) {
 					continue;
 				}

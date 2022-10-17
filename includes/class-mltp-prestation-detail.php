@@ -22,26 +22,12 @@
  */
 class Mltp_Item {
 
-	/**
-	 * The array of actions registered with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      array    $actions    The actions registered with WordPress to fire when the plugin loads.
-	 */
-	// protected $actions;
-
-	/**
-	 * The array of filters registered with WordPress.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      array    $filters    The filters registered with WordPress to fire when the plugin loads.
-	 */
-	// protected $filters;
-
-	// protected $ID;
-	// protected $post;
+	public $id;
+	public $name;
+	public $post;
+	public $from;
+	public $to;
+	public $flags;
 
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
@@ -1337,12 +1323,18 @@ class Mltp_Item {
 			$this->id   = $post->ID;
 			$this->name = $post->post_title;
 			$this->post = $post;
-		} else {
-			$this->id   = null;
-			$this->post = null;
+			// $this->name = $this->post->post_title;
+			// $this->dates = get_post_meta($this->id, 'dates', true);
+			$this->from = get_post_meta($this->id, 'from', true);
+			$this->to = get_post_meta($this->id, 'to', true);
+			// $this->type = get_post_meta($this->id, 'type', true);
+			$this->flags = get_post_meta($this->id, 'flags', true);
+		// } else {
+		// 	$this->id   = null;
+		// 	$this->post = null;
 		}
 
-		if ( is_array( $args ) & ! empty( $args ) && ( empty( $post_id ) || $update ) ) {
+		if ( ! empty( $args ) && is_array( $args )  && ( empty( $post_id ) || $update ) ) {
 			// $create = (empty($post_id));
 			$args['from'] = $from;
 			$args['to']   = $to;
@@ -1444,11 +1436,6 @@ class Mltp_Item {
 		$this->id = wp_insert_post( $postarr );
 		if ( is_wp_error( $this->id ) ) {
 			return $this->id;
-		}
-
-		$this->post = get_post( $this->id );
-		if ( ! is_wp_error( $this->post ) ) {
-			$this->name = $this->post->post_title;
 		}
 
 		if ( $prestation ) {
