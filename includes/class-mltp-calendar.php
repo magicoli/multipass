@@ -810,7 +810,7 @@ class Mltp_Calendar {
 	}
 }
 
-class Mltp_Event {
+class Mltp_Event extends Mltp_Item {
 
 	public $id;
 	public $title;
