@@ -1325,16 +1325,16 @@ class Mltp_Item {
 			$this->post = $post;
 			// $this->name = $this->post->post_title;
 			// $this->dates = get_post_meta($this->id, 'dates', true);
-			$this->from = get_post_meta($this->id, 'from', true);
-			$this->to = get_post_meta($this->id, 'to', true);
+			$this->from = get_post_meta( $this->id, 'from', true );
+			$this->to   = get_post_meta( $this->id, 'to', true );
 			// $this->type = get_post_meta($this->id, 'type', true);
-			$this->flags = (integer)get_post_meta($this->id, 'flags', true);
-		// } else {
-		// 	$this->id   = null;
-		// 	$this->post = null;
+			$this->flags = (int) get_post_meta( $this->id, 'flags', true );
+			// } else {
+			// $this->id   = null;
+			// $this->post = null;
 		}
 
-		if ( ! empty( $args ) && is_array( $args )  && ( empty( $post_id ) || $update ) ) {
+		if ( ! empty( $args ) && is_array( $args ) && ( empty( $post_id ) || $update ) ) {
 			// $create = (empty($post_id));
 			$args['from'] = $from;
 			$args['to']   = $to;
@@ -1442,10 +1442,33 @@ class Mltp_Item {
 			$prestation->update();
 		}
 
+		$post = get_post( $this->id );
+		// $this->id   = $post->ID;
+		$this->name = $post->post_title;
+		$this->post = $post;
+		// $this->name = $this->post->post_title;
+		// $this->dates = get_post_meta($this->id, 'dates', true);
+		$this->from = get_post_meta( $this->id, 'from', true );
+		$this->to   = get_post_meta( $this->id, 'to', true );
+		// $this->type = get_post_meta($this->id, 'type', true);
+		$this->flags = (int) get_post_meta( $this->id, 'flags', true );
+
 		return $this->post;
 	}
+
+	public function get_source_url( $source = 'source', $source_id = null, $default = null, $args = array() ) {
+		if ( $this->is_closed() ) {
+			$args['status'] = 'closed-period';
+		}
+		return MultiPass::get_source_url( $source, $source_id, $default, $args );
+	}
+
+	public function get_origin_url() {
+		return $this->get_source_url( 'origin' ) . '?' . __CLASS__ . '&' . __METHOD__;
+	}
+
 	public function is_closed() {
-		return ( (integer)$this->flags & MLTP_CLOSED_PERIOD ) ? true : false;
+		return ( (int) $this->flags & MLTP_CLOSED_PERIOD ) ? true : false;
 	}
 }
 

@@ -825,7 +825,7 @@ class MultiPass {
 				break;
 
 			case 'lodgify':
-				if ( ! empty( $args['type'] ) && 'closed' === $args['type'] ) {
+				if ( ! empty( $args['status'] ) && 'closed-period' === $args['status'] ) {
 					$source_url = 'https://app.lodgify.com/#/reservation/calendar/multi/closed-period/' . $source_id;
 				} else {
 					$source_url = 'https://app.lodgify.com/#/reservation/inbox/B' . $source_id;

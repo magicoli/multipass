@@ -507,12 +507,14 @@ class Mltp_Calendar {
 		if ( $query && $query->have_posts() ) {
 			while ( $query->have_posts() ) {
 				$query->the_post();
-				$item = new Mltp_Item(get_the_ID());
+				$item    = new Mltp_Item( get_the_ID() );
 				$item_id = get_the_ID();
-				$dates = array_filter(array(
-					'from' => (integer)$item->from,
-					'to' => (integer)$item->to,
-				));
+				$dates   = array_filter(
+					array(
+						'from' => (int) $item->from,
+						'to'   => (int) $item->to,
+					)
+				);
 				if ( empty( $dates ) ) {
 					continue;
 				}
@@ -655,24 +657,27 @@ class Mltp_Calendar {
 		}
 		// $rows = array_filter($rows);
 		if ( MultiPass::debug() ) {
-			$extra              = array();
+			$extra = array();
 			// $extra['Source']    = get_post_meta( $event->id, 'source', true ) . ' ' . get_post_meta( $event->id, 'source_id', true );
 			// $extra['Origin']    = get_post_meta( $event->id, 'origin', true ) . ' ' . get_post_meta( $event->id, 'origin_id', true );
 			// $extra['Debug']     = '<pre>' . print_r( MultiPass::get_registered_sources(), true ) . '</pre>';
 
-			$sources = array_merge(array(
-				'source' => 'Source',
-				'origin' => 'Origin',
-			), MultiPass::get_registered_sources() );
+			$sources = array_merge(
+				array(
+					'source' => 'Source',
+					'origin' => 'Origin',
+				),
+				MultiPass::get_registered_sources()
+			);
 			foreach ( $sources as $source => $source_name ) {
 				$source_id                          = get_post_meta( $event->id, $source . '_id', true );
 				$extra[ "$source_name ID" ]         = $source_id;
 				$extra[ "$source_name UUID" ]       = get_post_meta( $event->id, $source . '_uuid', true );
 				$extra[ "$source_name check hash" ] = MultiPass::hash_source_uuid( $source, $source_id );
 				$extra[ "$source_name url" ]        = get_post_meta( $event->id, $source . '_url', true );
-				$extra[ "$source_name url" ]        = MultiPass::get_source_url( $source, $source_id );
-				$extra[ "$source_name edit url" ]   = get_post_meta( $event->id, $source . '_edit_url', true );
-				$extra[ "$source_name view url" ]   = get_post_meta( $event->id, $source . '_view_url', true );
+				$extra[ "$source_name url" ]        = $event->get_source_url( $source, $source_id );
+				// $extra[ "$source_name edit url" ]   = get_post_meta( $event->id, $source . '_edit_url', true );
+				// $extra[ "$source_name view url" ]   = get_post_meta( $event->id, $source . '_view_url', true );
 			}
 
 			$rows = array_merge( $rows, array( 'divider' ), array_filter( $extra ) );
@@ -738,21 +743,21 @@ class Mltp_Calendar {
 			 * closed periods.
 			 */
 			// $overrides = array_filter(
-			// 	array(
-			// 		$event->source => $event->source_url,
-			// 		$event->origin => $event->origin_url,
-			// 	)
+			// array(
+			// $event->source => $event->source_url,
+			// $event->origin => $event->origin_url,
+			// )
 			// );
 			// foreach ( $overrides as $source => $source_url ) {
-			// 	if ( empty( $source ) ) {
-			// 		continue;
-			// 	}
-			// 	$source_name      = ( empty( $sources[ $source ] ) ) ? $source : $sources[ $source ];
-			// 	$links[ $source ] = array(
-			// 		'label' => sprintf( __( 'View on %s', 'multipass' ), $source_name ),
-			// 		'url'   => $source_url,
-			// 		'icon'  => 'external',
-			// 	);
+			// if ( empty( $source ) ) {
+			// continue;
+			// }
+			// $source_name      = ( empty( $sources[ $source ] ) ) ? $source : $sources[ $source ];
+			// $links[ $source ] = array(
+			// 'label' => sprintf( __( 'View on %s', 'multipass' ), $source_name ),
+			// 'url'   => $source_url,
+			// 'icon'  => 'external',
+			// );
 			// }
 			// End quick fix
 
@@ -871,7 +876,7 @@ class Mltp_Event extends Mltp_Item {
 		$this->balance     = get_post_meta( $this->id, 'balance', true );
 		$this->start       = ( isset( $dates['from'] ) ) ? $dates['from'] : null;
 		$this->end         = ( isset( $dates['to'] ) ) ? $dates['to'] : null;
-		$this->flags       = get_post_meta( $this->id, 'flags', true );
+		$this->flags       = (int) get_post_meta( $this->id, 'flags', true );
 		$this->edit_url    = get_post_meta( $this->id, 'edit_url', true );
 		$this->source      = get_post_meta( $this->id, 'source', true );
 		$this->source_url  = get_post_meta( $this->id, 'source_url', true );
