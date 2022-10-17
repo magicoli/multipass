@@ -1444,6 +1444,9 @@ class Mltp_Item {
 
 		return $this->post;
 	}
+	public function is_closed() {
+		return ( (integer)$this->flags & MLTP_CLOSED_PERIOD ) ? true : false;
+	}
 }
 
 $this->loaders[] = new Mltp_Item();
