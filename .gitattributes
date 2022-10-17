@@ -55,3 +55,4 @@ tests export-ignore
 admin/*/*.map export-ignore
 includes/*/*.map export-ignore
 public/*/*.map export-ignore
+src/ export-ignore

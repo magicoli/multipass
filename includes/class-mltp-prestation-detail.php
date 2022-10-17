@@ -1013,6 +1013,8 @@ class Mltp_Item {
 
 		$updates = array();
 
+		$updates['status'] = get_post_meta( $post_id, 'status', true );
+
 		foreach ( array( 'source', 'origin' ) as $received_source ) {
 			$source    = get_post_meta( $post_id, $received_source, true );
 			$source_id = get_post_meta( $post_id, $received_source . '_id', true );

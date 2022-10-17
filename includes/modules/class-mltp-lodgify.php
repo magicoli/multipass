@@ -332,7 +332,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 	function register_sources_filter( $sources ) {
 		$sources['lodgify'] = 'Lodgify';
 		$sources['booking'] = 'Booking.com';
-		$sources['airbnb'] = 'Airbnb';
+		$sources['airbnb']  = 'Airbnb';
 		$sources['expedia'] = 'Expedia';
 		return $sources;
 	}
@@ -707,8 +707,10 @@ class Mltp_Lodgify extends Mltp_Modules {
 				// TODO: find closed period comment and use it as client name
 				$booking['guest']['name'] = sprintf( __( 'Closed in %s', 'multipass' ), 'Lodgify' );
 				// $source_url               = 'https://app.lodgify.com/#/reservation/calendar/multi/closed-period/' . $booking['id'];
-				$booking['status'] = 'closed';
-				$source_url        = MultiPass::source_edit_url( 'lodgify', $booking['id'], null, array( 'type' => $booking['status'] ) );
+				$status = 'closed-period';
+				// $booking['status'] = 'closed';
+				// $booking['closed_period'] = true;
+				$source_url = MultiPass::source_edit_url( 'lodgify', $booking['id'], null, array( 'type' => $status ) );
 			} else {
 				// $source_url = 'https://app.lodgify.com/#/reservation/inbox/B' . $booking['id'];
 				$source_url = MultiPass::source_edit_url( 'lodgify', $booking['id'] );

@@ -54,3 +54,4 @@ tests
 admin/*/*.map
 includes/*/*.map
 public/*/*.map
+src/

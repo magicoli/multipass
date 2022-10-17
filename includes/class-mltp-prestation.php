@@ -1440,7 +1440,7 @@ class Mltp_Prestation {
 
 		$updates['discount']['total'] += $updates['discount']['amount'] + $updates['discount']['managed'];
 
-		if ( $updates['total'] > 0 && $updates['deposit']['percent'] > 0 ) {
+		if ( $updates['total'] > 0 && isset( $updates['deposit']['percent'] ) && $updates['deposit']['percent'] > 0 ) {
 			$updates['deposit']['amount'] = $updates['total'] * $updates['deposit']['percent'] / 100;
 		} else {
 			$updates['deposit']['amount'] = ( empty( $updates['deposit']['amount'] ) ) ? null : $updates['deposit']['amount'];

@@ -1,6 +1,6 @@
 ## Changelog
 
-### Unreleased (0.2-dev.490)
+### Unreleased (0.2-dev.498)
 - new filter 'multipass_load_modules', allow loading modules from other plugins
 - new Lodgify bookings sync
 - added option to create custom roles

@@ -372,7 +372,8 @@ class Mltp_Calendar {
 					line-height: 200%%;
 				}
 				#mltp-calendar .fc-scrollgrid-sync-table  tr:nth-of-type(-n+%1$s):not(:first-of-type) .fc-event-start .fc-event-title-container:before {
-					width: 2em;
+					width: 2.2em;
+					height: 2.2em;
 				}
 				',
 				$main_count,
@@ -527,6 +528,7 @@ class Mltp_Calendar {
 				$prestation_status = ( $prestation->post ) ? $prestation->post->post_status : null;
 				$resource_id       = get_post_meta( get_the_ID(), 'resource_id', true );
 				$resource          = get_post( $resource_id );
+
 				if ( $resource ) {
 					$resource_slug = $resource->post_name;
 				} else {
@@ -537,26 +539,38 @@ class Mltp_Calendar {
 
 				$flags = get_post_meta( get_the_ID(), 'flags', true );
 				$flags = empty( $flags ) ? 0 : $flags;
-				if ( $prestation ) {
-					$pflags = get_post_meta( $prestation_id, 'flags', true );
-				}
-				$pflags = empty( $pflags ) ? 0 : $pflags;
 
-				$flags = $flags | ( $pflags & MLTP_PAID_SOME ) | ( $pflags & MLTP_PAID_DEPOSIT ) | ( $pflags & MLTP_PAID_ALL ) | ( $pflags & MLTP_CONFIRMED );
+				if ( ! $flags & MLTP_CLOSED_PERIOD ) {
+					if ( $prestation ) {
+						$pflags = get_post_meta( $prestation_id, 'flags', true );
+					}
+					$pflags = empty( $pflags ) ? 0 : $pflags;
+					$flags  = $flags | ( $pflags & MLTP_PAID_SOME ) | ( $pflags & MLTP_PAID_DEPOSIT ) | ( $pflags & MLTP_PAID_ALL ) | ( $pflags & MLTP_CONFIRMED );
+				}
 
 				$classes     = MultiPass::get_flag_slugs( $flags );
+				$classes[]   = sanitize_title( get_post_meta( $item_id, 'status', true ) );
 				$classes     = ( is_array( $classes ) ) ? preg_replace( '/^/', 'status-', $classes ) : array();
 				$source_slug = get_post_meta( $item_id, 'source', true );
 				$origin      = get_post_meta( $item_id, 'origin', true );
 				$origin      = ( empty( $origin ) ) ? get_post_meta( $item_id, 'source', true ) : $origin;
 
-				$classes = array_merge(
-					$classes,
-					array(
-						'prestation-' . $prestation_id,
-						'item-' . $item_id,
-						'resource-' . $resource_slug,
-						'origin-' . $origin,
+				// $closed_period = get_post_meta( get_the_ID(), 'closed_period', true );
+				// $closed_status = get_post_meta( get_the_ID(), 'status', true );
+				// if(12659 === $item_id) {
+				// error_log(print_r(get_post_meta($item_id, 'status'), true));
+				// }
+				// if($closed_period || 'closed' === $closed_status) $classes[] = 'closed-period';
+
+				$classes = array_unique(
+					array_merge(
+						$classes,
+						array(
+							'prestation-' . $prestation_id,
+							'item-' . $item_id,
+							'resource-' . $resource_slug,
+							'origin-' . $origin,
+						)
 					)
 				);
 
@@ -680,7 +694,7 @@ class Mltp_Calendar {
 		$html         .= '<table>';
 		$prestation_id = get_post_meta( $event->post->ID, 'prestation_id', true );
 
-		$links         = array();
+		$links = array();
 
 		if ( current_user_can( 'edit_post', $prestation_id ) ) {
 			$links['prestation'] = array(
@@ -698,11 +712,11 @@ class Mltp_Calendar {
 				'icon'  => 'welcome-write-blog',
 			);
 
-			$sources =MultiPass::get_registered_sources();
+			$sources = MultiPass::get_registered_sources();
 			foreach ( $sources as $source => $source_name ) {
 				$source_url = get_post_meta( $event->id, $source . '_edit_url', true );
 				if ( ! empty( $source_url ) ) {
-					$links[$source] = array(
+					$links[ $source ] = array(
 						'label' => sprintf( __( 'View on %s', 'multipass' ), $source_name ),
 						'url'   => $source_url,
 						'icon'  => 'external',
@@ -716,14 +730,18 @@ class Mltp_Calendar {
 			 * be to use a filter to generate source url, and to pass context like
 			 * closed periods.
 			 */
-			$overrides = array_filter( array(
-				$event->source => $event->source_url,
-				$event->origin => $event->origin_url,
-			));
+			$overrides = array_filter(
+				array(
+					$event->source => $event->source_url,
+					$event->origin => $event->origin_url,
+				)
+			);
 			foreach ( $overrides as $source => $source_url ) {
-				if(empty($source_name)) continue;
-				$source_name = (empty($sources[$source])) ? $source : $sources[$source];
-				$links[$source] = array(
+				if ( empty( $source ) ) {
+					continue;
+				}
+				$source_name      = ( empty( $sources[ $source ] ) ) ? $source : $sources[ $source ];
+				$links[ $source ] = array(
 					'label' => sprintf( __( 'View on %s', 'multipass' ), $source_name ),
 					'url'   => $source_url,
 					'icon'  => 'external',
@@ -732,20 +750,20 @@ class Mltp_Calendar {
 			// End quick fix
 
 			// if ( ! empty( $event->origin ) && $event->origin != $event->source ) {
-			// 	$links['origin'] = array(
-			// 		'label' => sprintf(
-			// 			__( 'Edit on %s', 'multipass' ),
-			// 			$event->origin,
-			// 		),
-			// 		'url'   => $event->origin_url,
-			// 		'icon'  => ( $event->source === 'woocommerce' ) ? 'cart' : 'external',
-			// 	);
+			// $links['origin'] = array(
+			// 'label' => sprintf(
+			// __( 'Edit on %s', 'multipass' ),
+			// $event->origin,
+			// ),
+			// 'url'   => $event->origin_url,
+			// 'icon'  => ( $event->source === 'woocommerce' ) ? 'cart' : 'external',
+			// );
 			// }
 			// if ( ! empty( $links['source']['url'] ) & ! empty( $links['origin']['url'] ) && $links['source']['url'] === $links['origin']['url'] ) {
-			// 	unset( $links['origin'] );
+			// unset( $links['origin'] );
 			// }
 			// if ( ! empty( $links['view']['url'] ) & ! empty( $links['details']['url'] ) && $links['view']['url'] === $links['details']['url'] ) {
-			// 	unset( $links['view'] );
+			// unset( $links['view'] );
 			// }
 
 		}
