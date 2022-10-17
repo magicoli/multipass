@@ -670,6 +670,7 @@ class Mltp_Calendar {
 				$extra[ "$source_name UUID" ]       = get_post_meta( $event->id, $source . '_uuid', true );
 				$extra[ "$source_name check hash" ] = MultiPass::hash_source_uuid( $source, $source_id );
 				$extra[ "$source_name url" ]        = get_post_meta( $event->id, $source . '_url', true );
+				$extra[ "$source_name url" ]        = MultiPass::get_source_url( $source, $source_id );
 				$extra[ "$source_name edit url" ]   = get_post_meta( $event->id, $source . '_edit_url', true );
 				$extra[ "$source_name view url" ]   = get_post_meta( $event->id, $source . '_view_url', true );
 			}

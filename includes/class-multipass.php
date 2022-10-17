@@ -806,7 +806,7 @@ class MultiPass {
 		return $editable_roles;
 	}
 
-	public static function source_edit_url( $source, $source_id, $default = null, $args = array() ) {
+	public static function get_source_url( $source, $source_id, $default = null, $args = array() ) {
 		if ( empty( $source ) || empty( $source_id ) ) {
 			return $default;
 		}

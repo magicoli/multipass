@@ -710,10 +710,10 @@ class Mltp_Lodgify extends Mltp_Modules {
 				$status = 'closed-period';
 				// $booking['status'] = 'closed';
 				// $booking['closed_period'] = true;
-				$source_url = MultiPass::source_edit_url( 'lodgify', $booking['id'], null, array( 'type' => $status ) );
+				$source_url = MultiPass::get_source_url( 'lodgify', $booking['id'], null, array( 'type' => $status ) );
 			} else {
 				// $source_url = 'https://app.lodgify.com/#/reservation/inbox/B' . $booking['id'];
-				$source_url = MultiPass::source_edit_url( 'lodgify', $booking['id'] );
+				$source_url = MultiPass::get_source_url( 'lodgify', $booking['id'] );
 			}
 
 			$p_replace = array(
@@ -744,7 +744,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 				// default:
 				// $origin_url = $source_url;
 			}
-			$origin_url                         = MultiPass::source_edit_url( $origin, $origin_id, $source_url );
+			$origin_url                         = MultiPass::get_source_url( $origin, $origin_id, $source_url );
 			$item_args[ $origin . '_edit_url' ] = $origin_url;
 
 			// $prestation_args = array(

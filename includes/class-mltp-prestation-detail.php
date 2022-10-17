@@ -1018,7 +1018,7 @@ class Mltp_Item {
 		foreach ( MultiPass::get_registered_sources() as $source => $source_name ) {
 			$source_id                        = get_post_meta( $post_id, $source . '_id', true );
 			$updates[ $source . '_uuid' ]     = MultiPass::hash_source_uuid( $source, $source_id );
-			$updates[ $source . '_edit_url' ] = MultiPass::source_edit_url( $source, $source_id );
+			$updates[ $source . '_edit_url' ] = MultiPass::get_source_url( $source, $source_id );
 		}
 
 		$price = get_post_meta( $post_id, 'price', true );
@@ -1186,7 +1186,7 @@ class Mltp_Item {
 			$uuid_value = $args[ $uuid_field ];
 
 			if ( empty( $args[ $source . '_edit_url' ] ) ) {
-				$args[ $source . '_edit_url' ] = MultiPass::source_edit_url( $source, $source_id, $default = null );
+				$args[ $source . '_edit_url' ] = MultiPass::get_source_url( $source, $source_id, $default = null );
 			}
 		}
 
