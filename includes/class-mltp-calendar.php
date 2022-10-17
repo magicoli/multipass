@@ -290,7 +290,7 @@ class Mltp_Calendar {
 				'multipass', // string $parent_slug,
 				$labels['name'], // string $page_title,
 				'<span class="dashicons dashicons-admin-tools"></span> ' . $labels['menu_name'], // string $menu_title,
-				'mltp_manager', // string $capability,
+				'mltp_administrator', // string $capability,
 				'edit-tags.php?taxonomy=calendar-section', // string $menu_slug,
 			);
 		}
