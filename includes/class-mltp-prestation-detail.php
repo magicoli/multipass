@@ -945,7 +945,7 @@ class Mltp_Item {
 				'multipass', // string $parent_slug,
 				$labels['name'], // string $page_title,
 				'<span class="dashicons dashicons-admin-tools"></span> ' . $labels['menu_name'], // string $menu_title,
-				'mltp_manager', // string $capability,
+				'mltp_administrator', // string $capability,
 				'edit-tags.php?taxonomy=mltp_detail-source', // string $menu_slug,
 			);
 		}
