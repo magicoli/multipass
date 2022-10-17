@@ -912,7 +912,7 @@ class MultiPass {
 	}
 
 	static function debug( $string = null ) {
-		if ( ! get_option( 'multipass_debug' ) || ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'mltp_administrator' ) ) {
 			return false;
 		}
 
@@ -920,7 +920,7 @@ class MultiPass {
 			error_log( $string );
 		}
 
-		return true;
+		return get_option( 'multipass_debug' );
 	}
 
 	static function role($role) {
