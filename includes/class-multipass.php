@@ -805,7 +805,7 @@ class MultiPass {
 
 		switch ( $source ) {
 			case 'airbnb':
-				$source_url = 'https://www.airbnb.fr/hosting/reservations/details/HMPJMKS2P4' . $source_id;
+				$source_url = 'https://www.airbnb.fr/hosting/reservations/details/' . $source_id;
 				break;
 
 			case 'booking':
