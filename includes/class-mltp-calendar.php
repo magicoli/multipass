@@ -692,80 +692,67 @@ class Mltp_Calendar {
 				'url'   => get_edit_post_link( $event->id ),
 				'icon'  => 'welcome-write-blog',
 			);
-		}
-
-		foreach ( MultiPass::get_registered_sources() as $source => $source_name ) {
-			$source_url = get_post_meta( $event->id, $source . '_edit_url', true );
-			if ( ! empty( $source_url ) ) {
-				$links['booking'] = array(
-					'label' => sprintf( __( 'View on %s', 'multipass' ), $source_name ),
-					'url'   => $source_url,
-					'icon'  => 'external',
+			foreach ( MultiPass::get_registered_sources() as $source => $source_name ) {
+				$source_url = get_post_meta( $event->id, $source . '_edit_url', true );
+				if ( ! empty( $source_url ) ) {
+					$links['booking'] = array(
+						'label' => sprintf( __( 'View on %s', 'multipass' ), $source_name ),
+						'url'   => $source_url,
+						'icon'  => 'external',
+					);
+				}
+			}
+			if ( ! empty( $event->source ) ) {
+				$links['source'] = array(
+					'label' => sprintf(
+						__( 'Edit on %s', 'multipass' ),
+						$event->source,
+					),
+					'url'   => $event->source_url,
+					'icon'  => ( $event->source === 'woocommerce' ) ? 'cart' : 'external',
 				);
 			}
+
+			if ( ! empty( $event->origin ) && $event->origin != $event->source ) {
+				$links['origin'] = array(
+					'label' => sprintf(
+						__( 'Edit on %s', 'multipass' ),
+						$event->origin,
+					),
+					'url'   => $event->origin_url,
+					'icon'  => ( $event->source === 'woocommerce' ) ? 'cart' : 'external',
+				);
+			}
+			if ( ! empty( $links['source']['url'] ) & ! empty( $links['origin']['url'] ) && $links['source']['url'] === $links['origin']['url'] ) {
+				unset( $links['origin'] );
+			}
+			if ( ! empty( $links['view']['url'] ) & ! empty( $links['details']['url'] ) && $links['view']['url'] === $links['details']['url'] ) {
+				unset( $links['view'] );
+			}
+
 		}
 
-		// $links = array_filter(
-		// array(
-		// 'prestation' => get_edit_post_link()
-		// 'view' => array(
-		// 'label' => __('View', 'multipass'),
-		// 'url' => empty($event->view_url) ? null : $event->view_url,
-		// 'icon' => 'post',
-		// ),
-		// 'details' => array(
-		// 'label' => __( 'Details', 'multipass' ),
-		// 'url'   => empty( $event->edit_url ) ? null : $event->edit_url,
-		// 'icon'  => 'edit',
-		// ),
-		// )
-		// );
-		if ( ! empty( $event->source ) ) {
-			$links['source'] = array(
-				'label' => sprintf(
-					__( 'Edit on %s', 'multipass' ),
-					$event->source,
-				),
-				'url'   => $event->source_url,
-				'icon'  => ( $event->source === 'woocommerce' ) ? 'cart' : 'external',
-			);
-		}
-		if ( ! empty( $event->origin ) && $event->origin != $event->source ) {
-			$links['origin'] = array(
-				'label' => sprintf(
-					__( 'Edit on %s', 'multipass' ),
-					$event->origin,
-				),
-				'url'   => $event->origin_url,
-				'icon'  => ( $event->source === 'woocommerce' ) ? 'cart' : 'external',
-			);
-		}
-		if ( ! empty( $links['source']['url'] ) & ! empty( $links['origin']['url'] ) && $links['source']['url'] === $links['origin']['url'] ) {
-			unset( $links['origin'] );
-		}
-		if ( ! empty( $links['view']['url'] ) & ! empty( $links['details']['url'] ) && $links['view']['url'] === $links['details']['url'] ) {
-			unset( $links['view'] );
-		}
-		$links_html = '';
-		foreach ( $links as $link ) {
-			if ( empty( $link['url'] ) ) {
-				continue;
+		if ( ! empty( $links ) ) {
+			$links_html = '';
+			foreach ( $links as $link ) {
+				if ( empty( $link['url'] ) ) {
+					continue;
+				}
+				$icon        = ( empty( $link['icon'] ) ) ? '' : sprintf(
+					'<span class="dashicons dashicons-%s"></span> ',
+					$link['icon'],
+				);
+				$target      = ( MultiPass::is_external( $link['url'] ) ) ? '_blank' : '_self';
+				$links_html .= sprintf(
+					'<li><a class=button href="%s" target="%s">%s%s</a></li>',
+					$link['url'],
+					$target,
+					$icon,
+					// $link['url'],
+					$link['label'],
+				);
 			}
-			$icon        = ( empty( $link['icon'] ) ) ? '' : sprintf(
-				'<span class="dashicons dashicons-%s"></span> ',
-				$link['icon'],
-			);
-			$target      = ( MultiPass::is_external( $link['url'] ) ) ? '_blank' : '_self';
-			$links_html .= sprintf(
-				'<li><a class=button href="%s" target="%s">%s%s</a></li>',
-				$link['url'],
-				$target,
-				$icon,
-				// $link['url'],
-				$link['label'],
-			);
-		}
-		if ( ! empty( $links_html ) ) {
+
 			$html .= '<ul class="modal-buttons">' . $links_html . '</ul>';
 		}
 
