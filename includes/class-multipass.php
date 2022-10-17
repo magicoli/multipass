@@ -923,7 +923,7 @@ class MultiPass {
 		return get_option( 'multipass_debug' );
 	}
 
-	static function role($role) {
-		return (preg_match('/^mltp_/', $role)) ? MultiPass::get_option($role, $role) : $role;
+	static function role( $role ) {
+		return ( preg_match( '/^mltp_/', $role ) ) ? self::get_option( $role, $role ) : $role;
 	}
 }
