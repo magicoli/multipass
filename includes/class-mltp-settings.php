@@ -58,6 +58,8 @@ class Mltp_Settings {
 
 		$this->caps['mltp_reader'] = array(
 			'mltp_reader',
+			'view_admin_dashboard',     // mandatory to access admin area
+			// 'read', 								// enable profile page and actual admin dashboard
 			'view_mltp_dashboard',
 			'view_mltp_calendar',
 			// 'delete_mltp_prestations',
