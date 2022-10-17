@@ -339,7 +339,7 @@ class Mltp_Calendar {
 	public static function admin_menu_action() {
 		add_submenu_page(
 			'multipass', // string $parent_slug,
-			__( 'Calendar', 'multipass' ), // string $page_title,
+			__( 'MultiPass Calendar', 'multipass' ), // string $page_title,
 			__( 'Calendar', 'multipass' ), // string $menu_title,
 			'view_mltp_calendar', // string $capability,
 			'multipass', // string $menu_slug,
