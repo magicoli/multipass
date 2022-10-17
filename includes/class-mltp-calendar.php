@@ -643,6 +643,7 @@ class Mltp_Calendar {
 			$extra['Origin ID'] = get_post_meta( $event->id, 'origin_id', true );
 			$extra['Debug']     = '<pre>' . print_r( MultiPass::get_registered_sources(), true ) . '</pre>';
 			$extra              = array();
+
 			foreach ( MultiPass::get_registered_sources() as $source => $source_name ) {
 				$source_id                          = get_post_meta( $event->id, $source . '_id', true );
 				$extra[ "$source_name ID" ]         = $source_id;
@@ -652,6 +653,7 @@ class Mltp_Calendar {
 				$extra[ "$source_name edit url" ]   = get_post_meta( $event->id, $source . '_edit_url', true );
 				$extra[ "$source_name view url" ]   = get_post_meta( $event->id, $source . '_view_url', true );
 			}
+
 			$rows = array_merge( $rows, array( 'divider' ), array_filter( $extra ) );
 		}
 
@@ -677,6 +679,7 @@ class Mltp_Calendar {
 		}
 		$html         .= '<table>';
 		$prestation_id = get_post_meta( $event->post->ID, 'prestation_id', true );
+
 		$links         = array();
 
 		if ( current_user_can( 'edit_post', $prestation_id ) ) {
@@ -686,49 +689,64 @@ class Mltp_Calendar {
 				'icon'  => 'edit-page',
 			);
 		}
+
 		if ( current_user_can( 'edit_post', $event->id ) ) {
+
 			$links['item'] = array(
 				'label' => __( 'This rental', 'multipass' ),
 				'url'   => get_edit_post_link( $event->id ),
 				'icon'  => 'welcome-write-blog',
 			);
-			foreach ( MultiPass::get_registered_sources() as $source => $source_name ) {
+
+			$sources =MultiPass::get_registered_sources();
+			foreach ( $sources as $source => $source_name ) {
 				$source_url = get_post_meta( $event->id, $source . '_edit_url', true );
 				if ( ! empty( $source_url ) ) {
-					$links['booking'] = array(
+					$links[$source] = array(
 						'label' => sprintf( __( 'View on %s', 'multipass' ), $source_name ),
 						'url'   => $source_url,
 						'icon'  => 'external',
 					);
 				}
 			}
-			if ( ! empty( $event->source ) ) {
-				$links['source'] = array(
-					'label' => sprintf(
-						__( 'Edit on %s', 'multipass' ),
-						$event->source,
-					),
-					'url'   => $event->source_url,
-					'icon'  => ( $event->source === 'woocommerce' ) ? 'cart' : 'external',
-				);
-			}
 
-			if ( ! empty( $event->origin ) && $event->origin != $event->source ) {
-				$links['origin'] = array(
-					'label' => sprintf(
-						__( 'Edit on %s', 'multipass' ),
-						$event->origin,
-					),
-					'url'   => $event->origin_url,
-					'icon'  => ( $event->source === 'woocommerce' ) ? 'cart' : 'external',
+			/**
+			 * Quick fix to get source url stored by the module instead of calculated
+			 * one, which might differ, e.g. for closed periods. Best approach would
+			 * be to use a filter to generate source url, and to pass context like
+			 * closed periods.
+			 */
+			$overrides = array_filter( array(
+				$event->source => $event->source_url,
+				$event->origin => $event->origin_url,
+			));
+			foreach ( $overrides as $source => $source_url ) {
+				if(empty($source_name)) continue;
+				$source_name = (empty($sources[$source])) ? $source : $sources[$source];
+				$links[$source] = array(
+					'label' => sprintf( __( 'View on %s', 'multipass' ), $source_name ),
+					'url'   => $source_url,
+					'icon'  => 'external',
 				);
 			}
-			if ( ! empty( $links['source']['url'] ) & ! empty( $links['origin']['url'] ) && $links['source']['url'] === $links['origin']['url'] ) {
-				unset( $links['origin'] );
-			}
-			if ( ! empty( $links['view']['url'] ) & ! empty( $links['details']['url'] ) && $links['view']['url'] === $links['details']['url'] ) {
-				unset( $links['view'] );
-			}
+			// End quick fix
+
+			// if ( ! empty( $event->origin ) && $event->origin != $event->source ) {
+			// 	$links['origin'] = array(
+			// 		'label' => sprintf(
+			// 			__( 'Edit on %s', 'multipass' ),
+			// 			$event->origin,
+			// 		),
+			// 		'url'   => $event->origin_url,
+			// 		'icon'  => ( $event->source === 'woocommerce' ) ? 'cart' : 'external',
+			// 	);
+			// }
+			// if ( ! empty( $links['source']['url'] ) & ! empty( $links['origin']['url'] ) && $links['source']['url'] === $links['origin']['url'] ) {
+			// 	unset( $links['origin'] );
+			// }
+			// if ( ! empty( $links['view']['url'] ) & ! empty( $links['details']['url'] ) && $links['view']['url'] === $links['details']['url'] ) {
+			// 	unset( $links['view'] );
+			// }
 
 		}
 

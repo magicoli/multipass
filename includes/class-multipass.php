@@ -877,7 +877,7 @@ class MultiPass {
 		 * We used to register sources with filters, but I'm not sure it is still
 		 * necessary since we now use taxonomy terms.
 		 */
-		// $sources = apply_filters( 'multipass_register_terms_mltp_detail-source', $sources );
+		$sources = apply_filters( 'multipass_register_terms_mltp_detail-source', $sources );
 
 		return $sources;
 	}
