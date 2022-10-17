@@ -1229,7 +1229,7 @@ class Mltp_Item {
 				$args = self::sanitize_sources( $args );
 				if ( empty( $args['source_id'] ) ) {
 					error_log( "source id cannot not be empty, abort (in $source detail)." );
-					return $args;
+					return;
 				}
 
 				$uuid_field = $args['source'] . '_uuid';
@@ -1328,7 +1328,7 @@ class Mltp_Item {
 			$this->from = get_post_meta($this->id, 'from', true);
 			$this->to = get_post_meta($this->id, 'to', true);
 			// $this->type = get_post_meta($this->id, 'type', true);
-			$this->flags = get_post_meta($this->id, 'flags', true);
+			$this->flags = (integer)get_post_meta($this->id, 'flags', true);
 		// } else {
 		// 	$this->id   = null;
 		// 	$this->post = null;
