@@ -651,14 +651,16 @@ class Mltp_Calendar {
 		}
 		// $rows = array_filter($rows);
 		if ( MultiPass::debug() ) {
-			$extra['Source']    = get_post_meta( $event->id, 'source', true );
-			$extra['Source ID'] = get_post_meta( $event->id, 'source_id', true );
-			$extra['Origin']    = get_post_meta( $event->id, 'origin', true );
-			$extra['Origin ID'] = get_post_meta( $event->id, 'origin_id', true );
-			$extra['Debug']     = '<pre>' . print_r( MultiPass::get_registered_sources(), true ) . '</pre>';
 			$extra              = array();
+			// $extra['Source']    = get_post_meta( $event->id, 'source', true ) . ' ' . get_post_meta( $event->id, 'source_id', true );
+			// $extra['Origin']    = get_post_meta( $event->id, 'origin', true ) . ' ' . get_post_meta( $event->id, 'origin_id', true );
+			// $extra['Debug']     = '<pre>' . print_r( MultiPass::get_registered_sources(), true ) . '</pre>';
 
-			foreach ( MultiPass::get_registered_sources() as $source => $source_name ) {
+			$sources = array_merge(array(
+				'source' => 'Source',
+				'origin' => 'Origin',
+			), MultiPass::get_registered_sources() );
+			foreach ( $sources as $source => $source_name ) {
 				$source_id                          = get_post_meta( $event->id, $source . '_id', true );
 				$extra[ "$source_name ID" ]         = $source_id;
 				$extra[ "$source_name UUID" ]       = get_post_meta( $event->id, $source . '_uuid', true );
