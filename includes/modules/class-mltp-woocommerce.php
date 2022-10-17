@@ -239,7 +239,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			'id'         => 'multipass-woocommerce',
 			'position'   => 25,
 			'parent'     => 'multipass',
-			'capability' => 'manage_options',
+			'capability' => 'mltp_administrator',
 			'style'      => 'no-boxes',
 			'icon_url'   => 'dashicons-admin-generic',
 			// 'columns' => 1,

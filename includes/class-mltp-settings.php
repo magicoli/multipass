@@ -234,7 +234,6 @@ class Mltp_Settings {
 	}
 
 	function admin_menu_action() {
-		// $cap = (current_user_can('manage_options')) ? 'manage_options' : 'view_mltp_dashboard';
 		add_menu_page(
 			'MultiPass', // string $page_title,
 			'MultiPass', // string $menu_title,
@@ -281,7 +280,7 @@ class Mltp_Settings {
 		// 'style'       => 'no-boxes',
 		// 'columns'     => 1,
 		// 'icon_url'    => 'dashicons-excerpt-view',
-		// 'capability'    => 'manage_options',
+		// 'capability'    => 'mltp_administrator',
 		// ];
 		// $settings_pages[] = [
 		// ];
@@ -293,7 +292,7 @@ class Mltp_Settings {
 			'option_name' => 'multipass',
 			// 'position'      => 23,
 			'parent'      => 'multipass',
-			'capability'  => 'manage_options',
+			'capability'  => 'mltp_administrator',
 			'style'       => 'no-boxes',
 			'columns'     => 1,
 			'tabs'        => array(
