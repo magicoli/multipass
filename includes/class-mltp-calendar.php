@@ -730,23 +730,23 @@ class Mltp_Calendar {
 			 * be to use a filter to generate source url, and to pass context like
 			 * closed periods.
 			 */
-			$overrides = array_filter(
-				array(
-					$event->source => $event->source_url,
-					$event->origin => $event->origin_url,
-				)
-			);
-			foreach ( $overrides as $source => $source_url ) {
-				if ( empty( $source ) ) {
-					continue;
-				}
-				$source_name      = ( empty( $sources[ $source ] ) ) ? $source : $sources[ $source ];
-				$links[ $source ] = array(
-					'label' => sprintf( __( 'View on %s', 'multipass' ), $source_name ),
-					'url'   => $source_url,
-					'icon'  => 'external',
-				);
-			}
+			// $overrides = array_filter(
+			// 	array(
+			// 		$event->source => $event->source_url,
+			// 		$event->origin => $event->origin_url,
+			// 	)
+			// );
+			// foreach ( $overrides as $source => $source_url ) {
+			// 	if ( empty( $source ) ) {
+			// 		continue;
+			// 	}
+			// 	$source_name      = ( empty( $sources[ $source ] ) ) ? $source : $sources[ $source ];
+			// 	$links[ $source ] = array(
+			// 		'label' => sprintf( __( 'View on %s', 'multipass' ), $source_name ),
+			// 		'url'   => $source_url,
+			// 		'icon'  => 'external',
+			// 	);
+			// }
 			// End quick fix
 
 			// if ( ! empty( $event->origin ) && $event->origin != $event->source ) {
