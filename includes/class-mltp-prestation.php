@@ -834,12 +834,21 @@ class Mltp_Prestation {
 		return $item_posts;
 	}
 
-	public function summary() {
+	public function summary( $context = null ) {
 		if ( ! $this->is_prestation() ) {
 			return;
 		}
 
-		$details = $this->get_details_array();
+		$details        = $this->get_details_array();
+		$total          = get_post_meta( $this->id, 'total', true );
+		$subtotal       = get_post_meta( $this->id, 'subtotal', true );
+		$deposit_rules  = get_post_meta( $this->id, 'deposit', true );
+		$deposit        = ( ! empty( $deposit_rules['amount'] ) ) ? $deposit_rules['amount'] : null;
+		$discount_rules = get_post_meta( $this->id, 'discount', true );
+		$discount       = ( ! empty( $discount_rules['amount'] ) ) ? $discount_rules['amount'] : null;
+		$paid           = get_post_meta( $this->id, 'paid', true );
+		$balance        = get_post_meta( $this->id, 'balance', true );
+
 		$title   = '<tr><th colspan="2">' . $this->name . '</th></tr>';
 		$list    = array( $title );
 		$amounts = array();
@@ -849,47 +858,57 @@ class Mltp_Prestation {
 				'price' => MultiPass::price( $detail['total'] ),
 			);
 		}
-		if ( $this->get_summary_subtotal() != $this->get_summary_total() ) {
+		// if ( ! empty( $this->get_summary_total( true ) ) ) {
+		// $amounts += array(
+		// 'total' => array(
+		// 'desc'  => __( 'Prestation total', 'multipass' ),
+		// 'price' => $this->get_summary_total(),
+		// ),
+		// );
+		// }
+
+		if ( $subtotal != $total ) {
 			$amounts += array(
 				'subtotal' => array(
 					'desc'  => __( 'Prestation subtotal', 'multipass' ),
-					'price' => $this->get_summary_subtotal(),
+					'price' => MultiPass::price( $subtotal ),
 				),
 				'discount' => array(
 					'desc'  => __( 'Prestation discount', 'multipass' ),
-					'price' => $this->get_summary_discount(),
+					'price' => MultiPass::price( $discount ),
 				),
 			);
 		}
-		if ( ! empty( $this->get_summary_total( true ) ) ) {
+
+		if ( ! empty( $total ) ) {
 			$amounts += array(
 				'total' => array(
 					'desc'  => __( 'Prestation total', 'multipass' ),
-					'price' => $this->get_summary_total(),
+					'price' => MultiPass::price( $total ),
 				),
 			);
 		}
-		if ( ! empty( $this->get_summary_deposit() ) ) {
+		if ( ! empty( $deposit ) && $deposit < $paid ) {
 			$amounts += array(
 				'deposit' => array(
 					'desc'  => __( 'Deposit', 'multipass' ),
-					'price' => $this->get_summary_deposit(),
+					'price' => MultiPass::price( $deposit ),
 				),
 			);
 		}
-		if ( ! empty( $this->get_summary_paid() ) ) {
+		if ( ! empty( $paid ) ) {
 			$amounts += array(
 				'paid' => array(
 					'desc'  => __( 'Paid', 'multipass' ),
-					'price' => $this->get_summary_paid(),
+					'price' => MultiPass::price( $paid ),
 				),
 			);
 		}
-		if ( ! empty( $this->get_summary_balance() ) && $this->get_summary_balance() != $this->get_summary_total() ) {
+		if ( ! empty( $balance ) ) {
 			$amounts += array(
 				'balance' => array(
 					'desc'  => __( 'Balance', 'multipass' ),
-					'price' => $this->get_summary_balance(),
+					'price' => MultiPass::price( $balance ),
 				),
 			);
 		}
@@ -920,9 +939,10 @@ class Mltp_Prestation {
 	 * @return array Items formatted as array.
 	 */
 	public function get_details_array() {
-		$item_posts = $this->get_items_as_posts();
 
-		$items = array();
+		$item_posts = $this->get_items_as_posts();
+		$data       = array();
+
 		foreach ( $item_posts as $item_post ) {
 			$meta     = get_post_meta( $item_post->ID );
 			$price    = get_post_meta( $item_post->ID, 'price', true );
@@ -931,7 +951,7 @@ class Mltp_Prestation {
 			$deposit  = get_post_meta( $item_post->ID, 'deposit', true );
 			$links    = Mltp_Item::item_links_html( $item_post, array( 'format' => 'icon' ) );
 
-			$items[] = array(
+			$data[] = array(
 				'ID'          => $item_post->ID,
 				'date'        => $item_post->post_date,
 				'description' => reset( $meta['description'] ),
@@ -949,7 +969,7 @@ class Mltp_Prestation {
 			);
 		}
 
-		return $items;
+		return $data;
 	}
 
 	/**
