@@ -387,16 +387,18 @@ class MultiPass {
 		return $symbol;
 	}
 
-	static function price_with_links( $prestation, $amount, $args = array() ) {
-		if(empty($amount)) return;
-		
-		$output = MultiPass::price( $amount, $args );
-		$links = array(
-			MultiPass::payment_link( $prestation->slug, $amount, null, 'dashicon', 'admin-links' ),
-			MultiPass::payment_mail_link( $prestation, $amount, null, 'dashicon', 'email' )
+	static function price_with_links( $prestation, $amount, $args = array(), $attr = array() ) {
+		if ( empty( $amount ) ) {
+			return;
+		}
+
+		$output = self::price( $amount, $args );
+		$links  = array(
+			self::payment_link( $prestation->slug, $amount, array( 'icon' => 'admin-links' ), array( 'tabindex' => -1 ) ),
+			self::payment_mail_link( $prestation, $amount, array( 'icon' => 'email' ), array( 'tabindex' => -1 ) ),
 		);
-		if(!empty($links)) {
-			$output .= ' <span class="actions price-actions">' . join(' ', $links) . '</span>';
+		if ( ! empty( $links ) ) {
+			$output .= ' <span class="actions price-actions">' . join( ' ', $links ) . '</span>';
 		}
 		return $output;
 	}
@@ -807,8 +809,8 @@ class MultiPass {
 	}
 
 	public static function is_external( $url ) {
-		$urlparts = parse_url(home_url());
-		$domain = $urlparts['host'];
+		$urlparts = parse_url( home_url() );
+		$domain   = $urlparts['host'];
 		// if(!preg_match('/^https?:/', $url )) return $url;
 		$components = parse_url( $url );
 
@@ -949,8 +951,8 @@ class MultiPass {
 		return apply_filters( 'mltp_payment_url', $reference, $amount, $language );
 	}
 
-	static function payment_mail_link( $prestation, $amount = null, $language = null, $format = null, $string = null ) {
-		$payment_url = self::payment_url( $prestation->slug, $amount, $language );
+	static function payment_mail_link( $prestation, $amount = null, $args = array(), $attr = array() ) {
+		$payment_url = self::payment_url( $prestation->slug, $amount, $args );
 
 		$parts   = array_filter(
 			array(
@@ -976,7 +978,7 @@ class MultiPass {
 		. "\n\n$contact\n\n$regards";
 		$mail    = null;
 		$url     = sprintf(
-			'mailto:%s?mailfrom=guadeloupe@gites-mosaiques.com&subject=%s&body=%s&html-body=%s',
+			'mailto:%s?subject=%s&body=%s&html-body=%s',
 			sanitize_email( $mail ),
 			rawurlencode( $subject ),
 			rawurlencode( wp_strip_all_tags( $body ) ),
@@ -984,51 +986,76 @@ class MultiPass {
 			// rawurlencode(wp_strip_all_tags($body)),
 		);
 
-		if ( empty( $string ) ) {
-			$string = __( 'Send payment link by mail', 'multipass' );
+		if ( empty( $args['text'] ) ) {
+			$args['text'] = __( 'Send payment link by mail', 'multipass' );
 		}
-		return self::link( $url, $format, $string );
+		return self::link( $url, $args, $attr );
 	}
 
-	static function payment_link( $reference = null, $amount = null, $language = null, $format = null, $string = null ) {
-		$url = self::payment_url( $reference, $amount, $language );
 
-		if ( empty( $format ) && empty( $string ) ) {
-			return $url;
-		}
-		if ( empty( $string ) ) {
-			$string = __( 'Payment link', 'multipass' );
+	// static function payment_link( $reference = null, $amount = null, $language = null, $format = null, $string = null ) {
+	static function payment_link( $reference = null, $amount = null, $args = array(), $attr = array() ) {
+		$url = self::payment_url( $reference, $amount, $args );
+
+		if ( empty( $args['text'] ) ) {
+			$args['text'] = __( 'Payment link', 'multipass' );
 		}
 
-		return self::link( $url, $format, $string );
+		return self::link( $url, $args, $attr );
 	}
 
-	static function link( $url, $format = null, $string = null ) {
+	static function insert_attr( $html, $attr = array() ) {
+		if ( empty( $html ) ) {
+			return $html;
+		}
+
+		$split     = explode( '>', $html );
+		$split[0] .= ' ' . implode(
+			' ',
+			array_map(
+				function ( $k, $v ) {
+					return $k . '="' . htmlspecialchars( $v ) . '"';
+				},
+				array_keys( $attr ),
+				$attr
+			)
+		);
+		return join( '>', $split );
+	}
+
+	static function link( $url, $args = array(), $attr = array() ) {
 		if ( empty( $url ) ) {
 			return;
 		}
 
-		switch ( $format ) {
-			case 'dashicon':
-				return sprintf(
-					'<a href="%1$s" target="_blank"><span class="dashicons dashicons-%2$s"></span></a>',
-					$url,
-					$string,
-				);
-			break;
+		$attr = array_merge(
+			array(
+				'href' => $url,
+			// 'tabindex' => -1,
+			),
+			$attr
+		);
 
-			// case 'link':
-			default:
-				if ( empty( $string ) ) {
-					$string = $url;
-				}
-				return sprintf(
-					'<a href="%s" target=_blank>%s</a>',
-					$url,
-					$string,
-				);
+		$text = empty( $args['text'] ) ? null : $args['text'];
+		$icon = empty( $args['icon'] ) ? null : $args['icon'];
 
-			// return $url;
+		if ( self::is_external( $url ) ) {
+			$attr['target'] = '_blank';
 		}
+
+		if ( ! empty( $icon ) ) {
+			$attr['title'] = $text;
+			$html          = sprintf(
+				'<a><span class="dashicons dashicons-%s"></span></a>',
+				$icon,
+			);
+			return self::insert_attr( $html, $attr );
+		}
+
+		$html = sprintf(
+			'<a>%s</a>',
+			( empty( $text ) ) ? $url : $text,
+		);
+		return self::insert_attr( $html, $attr );
 	}
 }

@@ -30,7 +30,7 @@ class Mltp_Payment_Product {
 		add_action( 'init', __CLASS__ . '::rewrite_rules' );
 		add_filter( 'query_vars', __CLASS__ . '::query_vars' );
 		add_action( 'template_include', __CLASS__ . '::template_include' );
-		add_filter( 'mltp_payment_url', __CLASS__ . '::payment_link' );
+		add_filter( 'mltp_payment_url', __CLASS__ . '::payment_url' );
 
 		// Set pay button text
 		// add_filter( 'woocommerce_product_add_to_cart_text', __CLASS__ . '::add_to_cart_button', 10, 2);
@@ -90,7 +90,7 @@ class Mltp_Payment_Product {
 					sprintf(
 						'<nobr><code>%s</code></nobr>',
 						// get_home_url(null, 'prefix/booking_id/amount'),
-						self::payment_link( 'booking_id', 'amount' ),
+						self::payment_url( 'booking_id', 'amount' ),
 					)
 				),
 				'sanitize_callback' => __CLASS__ . '::rewrite_slug_validation',
@@ -499,10 +499,10 @@ class Mltp_Payment_Product {
 		return $value;
 	}
 
-	static function payment_link( $reference = null, $amount = null, $language = null ) {
-
+	static function payment_url( $reference = null, $amount = null, $args = array() ) {
 		$slug = Mltp_WooCommerce::get_option( 'woocommerce_rewrite_slug', __( 'pay', 'multipass' ) );
-		// if(!empty($language)) $slug = "$language/$slug";
+
+		$language = ( ! empty( $args['language'] ) ) ? $args['language'] : '';
 		if ( empty( $reference ) ) {
 			return get_home_url( null, "$slug/" );
 		} else {
@@ -514,10 +514,10 @@ class Mltp_Payment_Product {
 		$sources = MultiPass::get_registered_sources();
 		// error_log('sources ' . print_r($sources, true));
 
-		$links[]    = self::payment_link();
-		$links[]    = self::payment_link( '123' );
-		$links[]    = self::payment_link( '123', '45.6' );
-		$links[]    = self::payment_link( '123', '45,6' );
+		$links[]    = MultiPass::payment_url();
+		$links[]    = MultiPass::payment_url( '123' );
+		$links[]    = MultiPass::payment_url( '123', '45.6' );
+		$links[]    = MultiPass::payment_url( '123', '45,6' );
 		$links[]    = '';
 		$query_args = array(
 			'post_type'   => 'mltp_prestation',
@@ -546,9 +546,9 @@ class Mltp_Payment_Product {
 
 		if ( $post ) {
 			// error_log('found ' . count($posts) . ' ' . print_r(reset($posts), true));
-			$links[] = self::payment_link( $post->ID );
-			$links[] = self::payment_link( $post->post_name );
-			$links[] = self::payment_link( $post->post_name, round( get_post_meta( $post->ID, 'balance', true ), 2 ) );
+			$links[] = MultiPass::payment_url( $post->ID );
+			$links[] = MultiPass::payment_url( $post->post_name );
+			$links[] = MultiPass::payment_url( $post->post_name, round( get_post_meta( $post->ID, 'balance', true ), 2 ) );
 		}
 
 		// foreach($sources as $source => $source_name) {
@@ -568,14 +568,14 @@ class Mltp_Payment_Product {
 		// error_log("$source: " . print_r(get_post_meta($post->ID), true));
 		// error_log("$source: " . print_r(get_post_meta($post->ID, $source . '_uuid', true), true));
 		// error_log(print_r(get_post_meta($post->ID, 'deposit', true), true));
-		// $links[] = self::payment_link( $post->post_name, round(get_post_meta($post->ID, 'deposit', true), 2) );
+		// $links[] = MultiPass::payment_url( $post->post_name, round(get_post_meta($post->ID, 'deposit', true), 2) );
 		// }
 		// }
 
-		// $links[] = self::payment_link( 'mwvo' );
-		// $links[] = self::payment_link( 'mwvo', 123.45 );
-		// $links[] = self::payment_link( 'B4520009' );
-		// $links[] = self::payment_link( 'B4520009', 123.45 );
+		// $links[] = MultiPass::payment_url( 'mwvo' );
+		// $links[] = MultiPass::payment_url( 'mwvo', 123.45 );
+		// $links[] = MultiPass::payment_url( 'B4520009' );
+		// $links[] = MultiPass::payment_url( 'B4520009', 123.45 );
 
 		// $output  = '';
 		// $output  = 'Test payment links:';
@@ -613,14 +613,14 @@ class Mltp_Payment_Product {
 			$links[]     = sprintf(
 				'<a class=button href="%2$s" target="blank">%1$s</a> ',
 				sprintf( __( 'Pay deposit (%s)', 'multipass' ), MultiPass::price( $deposit_due ) ),
-				self::payment_link( $reference, $deposit_due ),
+				MultiPass::payment_url( $reference, $deposit_due ),
 			);
 		}
 		if ( $balance > 0 ) {
 			$links[] = sprintf(
 				'<a class=button href="%2$s" target="blank">%1$s</a> ',
 				sprintf( __( 'Pay balance (%s)', 'multipass' ), MultiPass::price( $balance ) ),
-				self::payment_link( $reference, $balance ),
+				MultiPass::payment_url( $reference, $balance ),
 			);
 		}
 		$output = join( ' ', $links );

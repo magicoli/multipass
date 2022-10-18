@@ -618,17 +618,15 @@ class Mltp_Calendar {
 	}
 
 	static function get_the_modal( $item_id ) {
-		$event      = new Mltp_Event( $item_id );
-		$prestation = new Mltp_Prestation( $event->prestation_id );
-		// if(12661 === $item_id) {
-		// MultiPass::debug("prestation: " . print_r(get_post_meta($prestation->post), true));
-		// MultiPass::debug("guests: $prestation->attendees attendees $prestation->attendees");
-		// }
+		$event = new Mltp_Event( $item_id );
 		if ( ! $event ) {
 			return false;
 		}
+
 		$event->total    = round( $event->total, 2 );
 		$event->subtotal = round( $event->subtotal, 2 );
+
+		$prestation = new Mltp_Prestation( $event->prestation_id );
 
 		$html = '';
 		$data = array(
@@ -652,11 +650,6 @@ class Mltp_Calendar {
 				__( 'Deposit balance', 'multipass' )     => MultiPass::price_with_links( $prestation, $prestation->deposit - $prestation->paid ),
 				__( 'Paid', 'multipass' )                => MultiPass::price( $prestation->paid ),
 				__( 'Balance', 'multipass' )             => MultiPass::price_with_links( $prestation, $prestation->balance ),
-				// __( 'Balance', 'multipass' )             => ( ! empty( $prestation->balance ) )
-				// ? MultiPass::price( $prestation->balance )
-				// . ' ' . MultiPass::payment_link( $prestation->slug, $prestation->balance, null, 'dashicon', 'admin-links' )
-				// . ' ' . MultiPass::payment_mail_link( $prestation, $prestation->balance, null, 'dashicon', 'email' )
-				// : null,
 			),
 			'contact'    => array(
 				_x( 'Contact', '(noun)', '(noun)', 'multipass' ) => $event->contact,
