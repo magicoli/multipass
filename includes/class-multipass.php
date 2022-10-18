@@ -388,7 +388,7 @@ class MultiPass {
 	}
 
 	static function price_with_links( $prestation, $amount, $args = array(), $attr = array() ) {
-		if ( empty( $amount ) ) {
+		if ( empty( $amount ) || $amount < 0) {
 			return;
 		}
 
