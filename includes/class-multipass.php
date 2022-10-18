@@ -934,39 +934,35 @@ class MultiPass {
 	static function payment_mail_link( $prestation, $amount = null, $language = null, $format = null, $string = null ) {
 		$payment_url = self::payment_url( $prestation->slug, $amount, $language );
 
-		$parts     = array_filter(
+		$parts   = array_filter(
 			array(
 				$prestation->name,
 				$prestation->guests,
 				self::format_date_range( $prestation->dates, 'RELATIVE_SHORT' ),
 			)
 		);
-		$signature = self::get_option( 'mail_signature' );
-		$subject   = sprintf(
+		$contact = self::get_option( 'mail_contact', __( 'Do not hesitate to reach us by mail or phone with any question.,', 'multipass' ) );
+		$regards = self::get_option( 'mail_regards', __( 'Best regards,', 'multipass' ) . "\n" . wp_get_current_user()->user_firstname );
+
+		$subject = sprintf(
 			'Re: %s (%s)',
 			join( ', ', $parts ),
 			__( 'Payment link', 'multipass' )
 		);
-		$body      = sprintf(
-			__( 'Hello', 'multipass' )
-			. "\n\n" . __( 'Here is the payment link for prestation #%1$s (%2$s):', 'multipass' )
-			. "\n\n%s"
-			. "\n\n" . __( 'You can pay by card, Paypal or wire transfer (from European banks).', 'multipass' )
-			. ' ' . __( 'For wire transfer, please take in account a bank processing delay of 2 to 3 days.', 'multipass' )
-			. "\n\n" . __( 'Do not hesitate to reach us by mail or phone with any question.', 'multipass' )
-			. "\n\n" . __( 'Tropical regards', 'multipass' )
-			. ( ! empty( $signature ) ? "n\n$signature" : null ),
+		$body    = sprintf(
+			__( "Hello\n\nHere is the payment link for the service under reference #%1\$s (%2\$s):\n\n%3\$s\n\nYou can pay by card, Paypal, or bank transfer. For wire transfers, please take into account a bank processing time of 2 to 3 business days.", 'multipass' ),
 			$prestation->slug,
 			self::format_date_range( $prestation->dates, 'RELATIVE_LONG' ),
 			'<ul><li>' . self::link( $payment_url ) . '</li></ul>',
-		);
-		$mail      = null;
-		$url       = sprintf(
+		)
+		. "\n\n$contact\n\n$regards";
+		$mail    = null;
+		$url     = sprintf(
 			'mailto:%s?mailfrom=guadeloupe@gites-mosaiques.com&subject=%s&body=%s&html-body=%s',
 			sanitize_email( $mail ),
 			rawurlencode( $subject ),
 			rawurlencode( wp_strip_all_tags( $body ) ),
-			rawurlencode( preg_replace( ':(\n+)?(</?ul>)(\n+)?:', '$2', $body ) ),
+			rawurlencode( preg_replace( ':[\s\n\r\p{Z}]*(</?ul>)[\s\n\r\p{Z}]*:', '$1', $body ) ),
 			// rawurlencode(wp_strip_all_tags($body)),
 		);
 
