@@ -961,7 +961,7 @@ class MultiPass {
 				self::format_date_range( $prestation->dates, 'RELATIVE_SHORT' ),
 			)
 		);
-		$contact = self::get_option( 'mail_contact', __( 'Do not hesitate to reach us by mail or phone with any question.,', 'multipass' ) );
+		$contact = self::get_option( 'mail_contact', __( 'Do not hesitate to reach us by mail or phone with any question.', 'multipass' ) );
 		$regards = self::get_option( 'mail_regards', __( 'Best regards,', 'multipass' ) . "\n" . wp_get_current_user()->user_firstname );
 
 		$subject = sprintf(

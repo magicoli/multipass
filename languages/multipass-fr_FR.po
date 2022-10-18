@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MultiPass\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/multipass\n"
-"POT-Creation-Date: 2022-10-18T14:59:51-04:00\n"
+"POT-Creation-Date: 2022-10-18T19:05:50-04:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -186,15 +186,15 @@ msgstr "Indéterminé"
 msgid "Resources"
 msgstr "Ressources"
 
-#: includes/class-mltp-calendar.php:636
+#: includes/class-mltp-calendar.php:634
 msgid "Check in"
 msgstr "Arrivée"
 
-#: includes/class-mltp-calendar.php:637
+#: includes/class-mltp-calendar.php:635
 msgid "Check out"
 msgstr "Départ"
 
-#: includes/class-mltp-calendar.php:640
+#: includes/class-mltp-calendar.php:638
 #: includes/class-mltp-prestation-detail.php:690
 #: includes/class-mltp-prestation.php:1003
 #: includes/modules/class-mltp-modules.php:190
@@ -202,7 +202,7 @@ msgstr "Départ"
 msgid "Subtotal"
 msgstr "Sous-total"
 
-#: includes/class-mltp-calendar.php:641
+#: includes/class-mltp-calendar.php:639
 #: includes/class-mltp-prestation-detail.php:700
 #: includes/class-mltp-prestation.php:378
 #: includes/class-mltp-prestation.php:600
@@ -214,23 +214,23 @@ msgstr "Sous-total"
 msgid "Discount"
 msgstr "Remise"
 
-#: includes/class-mltp-calendar.php:642
+#: includes/class-mltp-calendar.php:640
 msgid "Item price"
 msgstr "Prix de l'élément"
 
-#: includes/class-mltp-calendar.php:648 includes/class-mltp-prestation.php:889
+#: includes/class-mltp-calendar.php:646 includes/class-mltp-prestation.php:889
 msgid "Prestation subtotal"
 msgstr "Sous-total de la prestation"
 
-#: includes/class-mltp-calendar.php:649 includes/class-mltp-prestation.php:893
+#: includes/class-mltp-calendar.php:647 includes/class-mltp-prestation.php:893
 msgid "Prestation discount"
 msgstr "Remise de la prestation"
 
-#: includes/class-mltp-calendar.php:650 includes/class-mltp-prestation.php:902
+#: includes/class-mltp-calendar.php:648 includes/class-mltp-prestation.php:902
 msgid "Prestation total"
 msgstr "Total de la prestation"
 
-#: includes/class-mltp-calendar.php:651
+#: includes/class-mltp-calendar.php:649
 #: includes/class-mltp-prestation-detail.php:737
 #: includes/class-mltp-prestation-detail.php:806
 #: includes/class-mltp-prestation.php:406
@@ -241,15 +241,11 @@ msgstr "Total de la prestation"
 msgid "Deposit"
 msgstr "Acompte"
 
-#: includes/class-mltp-calendar.php:652
+#: includes/class-mltp-calendar.php:650
 msgid "Deposit balance"
 msgstr "Solde acompte"
 
-#: includes/class-mltp-calendar.php:653
-msgid "Deposit link"
-msgstr "Lien acompte"
-
-#: includes/class-mltp-calendar.php:656
+#: includes/class-mltp-calendar.php:651
 #: includes/class-mltp-prestation-detail.php:816
 #: includes/class-mltp-prestation.php:630
 #: includes/class-mltp-prestation.php:680
@@ -262,7 +258,7 @@ msgstr "Lien acompte"
 msgid "Paid"
 msgstr "Payé"
 
-#: includes/class-mltp-calendar.php:657
+#: includes/class-mltp-calendar.php:652
 #: includes/class-mltp-prestation-detail.php:826
 #: includes/class-mltp-prestation.php:686
 #: includes/class-mltp-prestation.php:926
@@ -271,27 +267,27 @@ msgstr "Payé"
 msgid "Balance"
 msgstr "Solde"
 
-#: includes/class-mltp-calendar.php:665 includes/class-mltp-prestation.php:333
+#: includes/class-mltp-calendar.php:655 includes/class-mltp-prestation.php:333
 #: includes/class-mltp-prestation.php:1577
 msgctxt "(noun)"
 msgid "Contact"
 msgstr "Contact"
 
-#: includes/class-mltp-calendar.php:666
+#: includes/class-mltp-calendar.php:656
 #: includes/class-mltp-prestation-detail.php:496
 #: includes/class-mltp-prestation-detail.php:533
 msgctxt "(noun)"
 msgid "Email"
 msgstr "E-mail"
 
-#: includes/class-mltp-calendar.php:667
+#: includes/class-mltp-calendar.php:657
 #: includes/class-mltp-prestation-detail.php:502
 #: includes/class-mltp-prestation-detail.php:539
 msgctxt "(noun)"
 msgid "Phone"
 msgstr "Téléphone"
 
-#: includes/class-mltp-calendar.php:736
+#: includes/class-mltp-calendar.php:726
 #: includes/class-mltp-prestation-detail.php:448
 #: includes/class-mltp-prestation.php:233
 #: includes/modules/class-mltp-woocommerce.php:162
@@ -299,23 +295,23 @@ msgstr "Téléphone"
 msgid "Prestation"
 msgstr "Prestation"
 
-#: includes/class-mltp-calendar.php:745
+#: includes/class-mltp-calendar.php:735
 msgid "This rental"
 msgstr "Cette location"
 
-#: includes/class-mltp-calendar.php:755
+#: includes/class-mltp-calendar.php:745
 msgid "View on %s"
 msgstr "Voir sur %s"
 
-#: includes/class-mltp-calendar.php:868
+#: includes/class-mltp-calendar.php:858
 msgid "Event is empty"
 msgstr "L'événement est vide"
 
-#: includes/class-mltp-calendar.php:877
+#: includes/class-mltp-calendar.php:867
 msgid "Event not found"
 msgstr "Événement non trouvé"
 
-#: includes/class-mltp-calendar.php:881
+#: includes/class-mltp-calendar.php:871
 msgid "Not an event"
 msgstr "Pas un événement"
 
@@ -1569,55 +1565,54 @@ msgstr "Tableau vide"
 msgid "Wrong table format"
 msgstr "Mauvais format de table"
 
-#: includes/class-multipass.php:649
+#: includes/class-multipass.php:665
 msgid "(generated by %s)"
 msgstr "(généré par %s)"
 
-#: includes/class-multipass.php:710
+#: includes/class-multipass.php:726
 msgid "%1$s is required by %2$s, it cannot be deleted"
 msgstr "%1$s est requis par %2$s, il ne peut pas être supprimé"
 
-#: includes/class-multipass.php:873
+#: includes/class-multipass.php:893
 msgid "Back to MultiPass"
 msgstr "Retour à MultiPass"
 
-#: includes/class-multipass.php:948 includes/class-multipass.php:986
-#: includes/modules/class-mltp-payment-product.php:116
-msgid "Payment link"
-msgstr "Lien de paiement"
-
-#: includes/class-multipass.php:951
-msgid "Hello"
-msgstr "Bonjour"
-
-#: includes/class-multipass.php:952
-msgid "Here is the payment link for prestation #%1$s (%2$s):"
-msgstr "Voici le lien de paiement pour la prestation #%1$s (%2$s):"
-
-#: includes/class-multipass.php:954
-msgid "You can pay by card, Paypal or wire transfer (from European banks)."
-msgstr ""
-"Vous pouvez payer par carte, Paypal ou virement (depuis une banque "
-"européenne)"
-
-#: includes/class-multipass.php:955
-msgid ""
-"For wire transfer, please take in account a bank processing delay of 2 to 3 "
-"days."
-msgstr ""
-"Pour les virements, merci de prendre en compte un delai bancaire de 2 à 3 "
-"jours."
-
-#: includes/class-multipass.php:956
+#: includes/class-multipass.php:964
 msgid "Do not hesitate to reach us by mail or phone with any question."
 msgstr ""
 "N'hésitez pas à nous contacter par mail ou par téléphone pour toute question."
 
-#: includes/class-multipass.php:957
-msgid "Tropical regards"
-msgstr "Salutations tropicales"
+#: includes/class-multipass.php:965
+msgid "Best regards,"
+msgstr "Meilleures salutations,"
 
-#: includes/class-multipass.php:974
+#: includes/class-multipass.php:970 includes/class-multipass.php:1001
+#: includes/modules/class-mltp-payment-product.php:116
+msgid "Payment link"
+msgstr "Lien de paiement"
+
+#: includes/class-multipass.php:973
+msgid ""
+"Hello\n"
+"\n"
+"Here is the payment link for the service under reference #%1$s (%2$s):\n"
+"\n"
+"%3$s\n"
+"\n"
+"You can pay by card, Paypal, or bank transfer. For wire transfers, please "
+"take into account a bank processing time of 2 to 3 business days."
+msgstr ""
+"Bonjour\n"
+"\n"
+"Voici le lien pour le paiement du service sous référence #%1$s (%2$s):\n"
+"\n"
+"%3$s\n"
+"\n"
+"Vous pouvez payer par carte, Paypal ou virement bancaire. Pour les "
+"virements, veuillez prendre en compte un délai de traitement bancaire de 2 à "
+"3 jours ouvrés."
+
+#: includes/class-multipass.php:990
 msgid "Send payment link by mail"
 msgstr "Envoyer le lien de paiement par mail"
 
@@ -1800,7 +1795,7 @@ msgid "Link prefix"
 msgstr "Préfixe de lien"
 
 #: includes/modules/class-mltp-payment-product.php:87
-#: includes/modules/class-mltp-payment-product.php:504
+#: includes/modules/class-mltp-payment-product.php:503
 msgid "pay"
 msgstr "payer"
 
@@ -1911,6 +1906,30 @@ msgstr ""
 #: includes/modules/class-mltp-woocommerce.php:772
 msgid "Online Shop (WooCommerce)"
 msgstr "Boutique en ligne (WooCommerce)"
+
+#~ msgid "Deposit link"
+#~ msgstr "Lien acompte"
+
+#~ msgid "Hello"
+#~ msgstr "Bonjour"
+
+#~ msgid "Here is the payment link for prestation #%1$s (%2$s):"
+#~ msgstr "Voici le lien de paiement pour la prestation #%1$s (%2$s):"
+
+#~ msgid "You can pay by card, Paypal or wire transfer (from European banks)."
+#~ msgstr ""
+#~ "Vous pouvez payer par carte, Paypal ou virement (depuis une banque "
+#~ "européenne)"
+
+#~ msgid ""
+#~ "For wire transfer, please take in account a bank processing delay of 2 to "
+#~ "3 days."
+#~ msgstr ""
+#~ "Pour les virements, merci de prendre en compte un delai bancaire de 2 à 3 "
+#~ "jours."
+
+#~ msgid "Tropical regards"
+#~ msgstr "Salutations tropicales"
 
 #~ msgid "%1$s failed (%2$s)."
 #~ msgstr "%1$s a échoué (%2$s)."
