@@ -954,15 +954,17 @@ class MultiPass {
 	static function payment_mail_link( $prestation, $amount = null, $args = array(), $attr = array() ) {
 		$payment_url = self::payment_url( $prestation->slug, $amount, $args );
 
-		$parts   = array_filter(
+		$parts          = array_filter(
 			array(
 				$prestation->name,
 				$prestation->guests,
 				self::format_date_range( $prestation->dates, 'RELATIVE_SHORT' ),
 			)
 		);
-		$contact = self::get_option( 'mail_contact', __( 'Do not hesitate to reach us by mail or phone with any question.', 'multipass' ) );
-		$regards = self::get_option( 'mail_regards', __( 'Best regards,', 'multipass' ) . "\n" . wp_get_current_user()->user_firstname );
+		$customer_name  = get_post_meta( $prestation->id, 'customer_name', true );
+		$customer_email = get_post_meta( $prestation->id, 'customer_email', true );
+		$contact        = self::get_option( 'mail_contact', __( 'Do not hesitate to reach us by mail or phone with any question.', 'multipass' ) );
+		$regards        = self::get_option( 'mail_regards', __( 'Best regards,', 'multipass' ) . "\n" . wp_get_current_user()->user_firstname );
 
 		$subject = sprintf(
 			'Re: %s (%s)',
@@ -976,15 +978,15 @@ class MultiPass {
 			'<ul><li>' . self::link( $payment_url ) . '</li></ul>',
 		)
 		. "\n\n$contact\n\n$regards";
-		$mail    = null;
-		$url     = sprintf(
-			'mailto:%s?subject=%s&body=%s&html-body=%s',
-			sanitize_email( $mail ),
-			rawurlencode( $subject ),
-			rawurlencode( wp_strip_all_tags( $body ) ),
-			rawurlencode( preg_replace( ':[\s\n\r\p{Z}]*(</?ul>)[\s\n\r\p{Z}]*:', '$1', $body ) ),
-			// rawurlencode(wp_strip_all_tags($body)),
+
+		$mail_args = array(
+			'subject'   => rawurlencode( $subject ),
+			'body'      => rawurlencode( wp_strip_all_tags( $body ) ),
+			'html-body' => rawurlencode( preg_replace( ':[\s\n\r\p{Z}]*(</?ul>)[\s\n\r\p{Z}]*:', '$1', $body ) ),
 		);
+
+		$mailto = ( ! empty( $customer_email ) ) ? rawurlencode( $customer_name . "<$customer_email>" ) : null;
+		$url    = add_query_arg( $mail_args, 'mailto:' . rawurlencode( $mailto ) );
 
 		if ( empty( $args['text'] ) ) {
 			$args['text'] = __( 'Send payment link by mail', 'multipass' );
