@@ -388,6 +388,8 @@ class MultiPass {
 	}
 
 	static function price_with_links( $prestation, $amount, $args = array() ) {
+		if(empty($amount)) return;
+		
 		$output = MultiPass::price( $amount, $args );
 		$links = array(
 			MultiPass::payment_link( $prestation->slug, $amount, null, 'dashicon', 'admin-links' ),
