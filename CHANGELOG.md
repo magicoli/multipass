@@ -1,8 +1,9 @@
 ## Changelog
 
-### Unreleased (0.2-dev.512)
+### Unreleased (0.2-dev.525)
 - new filter 'multipass_load_modules', allow loading modules from other plugins
 - new Lodgify bookings sync
+- added send payment mail link in calendar modal
 - added option to create custom roles
 - added MultiPass Reader, Manager and Administrator capabilities sets * reorganised admin menu (defaults to Calendar)
 - added source and origin edit links to Calendar modal

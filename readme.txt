@@ -3,7 +3,7 @@ Contributors: magicoli69
 Donate link: https://magiiic.com/support/MultiPass+Plugin
 Tags: hotel, booking, multi-prestations, multi-services, woocommerce, ota, pms, booking engine
 Requires at least: 5.9.0
-Tested up to: 6.0.2
+Tested up to: 6.0.3
 Stable tag: 0.1.2
 License: AGPLv3 or later
 License URI: http://www.gnu.org/licenses/agpl-3.0.txt
@@ -66,9 +66,10 @@ WARNING: **Make a full backup of your website and databases** before installing 
 
 == Changelog ==
 
-= Unreleased (0.2-dev.512) =
+= Unreleased (0.2-dev.525) =
 * new filter 'multipass_load_modules', allow loading modules from other plugins
 * new Lodgify bookings sync
+* added send payment mail link in calendar modal
 * added option to create custom roles
 * added MultiPass Reader, Manager and Administrator capabilities sets * reorganised admin menu (defaults to Calendar)
 * added source and origin edit links to Calendar modal
