@@ -926,4 +926,95 @@ class MultiPass {
 	static function role( $role ) {
 		return ( preg_match( '/^mltp_/', $role ) ) ? self::get_option( $role, $role ) : $role;
 	}
+
+	static function payment_url( $reference = null, $amount = null, $language = null ) {
+		return apply_filters( 'mltp_payment_url', $reference, $amount, $language );
+	}
+
+	static function payment_mail_link( $prestation, $amount = null, $language = null, $format = null, $string = null ) {
+		$payment_url = self::payment_url( $prestation->slug, $amount, $language );
+
+		$parts     = array_filter(
+			array(
+				$prestation->name,
+				$prestation->guests,
+				self::format_date_range( $prestation->dates, 'RELATIVE_SHORT' ),
+			)
+		);
+		$signature = self::get_option( 'mail_signature' );
+		$subject   = sprintf(
+			'Re: %s (%s)',
+			join( ', ', $parts ),
+			__( 'Payment link', 'multipass' )
+		);
+		$body      = sprintf(
+			__( 'Hello', 'multipass' )
+			. "\n\n" . __( 'Here is the payment link for prestation #%1$s (%2$s):', 'multipass' )
+			. "\n\n%s"
+			. "\n\n" . __( 'You can pay by card, Paypal or wire transfer (from European banks).', 'multipass' )
+			. ' ' . __( 'For wire transfer, please take in account a bank processing delay of 2 to 3 days.', 'multipass' )
+			. "\n\n" . __( 'Do not hesitate to reach us by mail or phone with any question.', 'multipass' )
+			. "\n\n" . __( 'Tropical regards', 'multipass' )
+			. ( ! empty( $signature ) ? "n\n$signature" : null ),
+			$prestation->slug,
+			self::format_date_range( $prestation->dates, 'RELATIVE_LONG' ),
+			'<ul><li>' . self::link( $payment_url ) . '</li></ul>',
+		);
+		$mail      = null;
+		$url       = sprintf(
+			'mailto:%s?mailfrom=guadeloupe@gites-mosaiques.com&subject=%s&body=%s&html-body=%s',
+			sanitize_email( $mail ),
+			rawurlencode( $subject ),
+			rawurlencode( wp_strip_all_tags( $body ) ),
+			rawurlencode( preg_replace( ':(\n+)?(</?ul>)(\n+)?:', '$2', $body ) ),
+			// rawurlencode(wp_strip_all_tags($body)),
+		);
+
+		if ( empty( $string ) ) {
+			$string = __( 'Send payment link by mail', 'multipass' );
+		}
+		return self::link( $url, $format, $string );
+	}
+
+	static function payment_link( $reference = null, $amount = null, $language = null, $format = null, $string = null ) {
+		$url = self::payment_url( $reference, $amount, $language );
+
+		if ( empty( $format ) && empty( $string ) ) {
+			return $url;
+		}
+		if ( empty( $string ) ) {
+			$string = __( 'Payment link', 'multipass' );
+		}
+
+		return self::link( $url, $format, $string );
+	}
+
+	static function link( $url, $format = null, $string = null ) {
+		if ( empty( $url ) ) {
+			return;
+		}
+
+		switch ( $format ) {
+			case 'dashicon':
+				return sprintf(
+					'<a href="%1$s" target="_blank"><span class="dashicons dashicons-%2$s"></span></a>',
+					$url,
+					$string,
+				);
+			break;
+
+			// case 'link':
+			default:
+				if ( empty( $string ) ) {
+					$string = $url;
+				}
+				return sprintf(
+					'<a href="%s" target=_blank>%s</a>',
+					$url,
+					$string,
+				);
+
+			// return $url;
+		}
+	}
 }

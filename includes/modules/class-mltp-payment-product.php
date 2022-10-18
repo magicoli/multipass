@@ -30,6 +30,7 @@ class Mltp_Payment_Product {
 		add_action( 'init', __CLASS__ . '::rewrite_rules' );
 		add_filter( 'query_vars', __CLASS__ . '::query_vars' );
 		add_action( 'template_include', __CLASS__ . '::template_include' );
+		add_filter( 'mltp_payment_url', __CLASS__ . '::payment_link' );
 
 		// Set pay button text
 		// add_filter( 'woocommerce_product_add_to_cart_text', __CLASS__ . '::add_to_cart_button', 10, 2);

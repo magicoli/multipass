@@ -618,33 +618,56 @@ class Mltp_Calendar {
 	}
 
 	static function get_the_modal( $item_id ) {
-		$event = new Mltp_Event( $item_id );
+		$event      = new Mltp_Event( $item_id );
+		$prestation = new Mltp_Prestation( $event->prestation_id );
+		// if(12661 === $item_id) {
+		// MultiPass::debug("prestation: " . print_r(get_post_meta($prestation->post), true));
+		// MultiPass::debug("guests: $prestation->attendees attendees $prestation->attendees");
+		// }
 		if ( ! $event ) {
 			return false;
 		}
 		$event->total    = round( $event->total, 2 );
 		$event->subtotal = round( $event->subtotal, 2 );
-		$html            = '';
-		$data            = array(
-			'booking' => array(
+
+		$html = '';
+		$data = array(
+			'booking'    => array(
 				__( 'Check in', 'multipass' )  => MultiPass::format_date( $event->display_start ),
 				__( 'Check out', 'multipass' ) => MultiPass::format_date( $event->display_end ),
 			),
-			'prices'  => array(
-				__( 'Subtotal', 'multipass' ) => ( $event->subtotal === $event->total ) ? null : MultiPass::price( $event->subtotal ),
-				__( 'Discount', 'multipass' ) => MultiPass::price( $event->discount ),
-				__( 'Total', 'multipass' )    => MultiPass::price( $event->total ),
-				__( 'Deposit', 'multipass' )  => MultiPass::price( $event->deposit ),
-				__( 'Paid', 'multipass' )     => MultiPass::price( $event->paid ),
-				__( 'Balance', 'multipass' )  => MultiPass::price( $event->balance ),
+			'prices'     => array(
+				__( 'Subtotal', 'multipass' )   => ( $event->subtotal === $event->total ) ? null : MultiPass::price( $event->subtotal ),
+				__( 'Discount', 'multipass' )   => MultiPass::price( $event->discount ),
+				__( 'Item price', 'multipass' ) => MultiPass::price( $event->total ),
+				// __( 'Deposit', 'multipass' )  => MultiPass::price( $event->deposit ),
+				// __( 'Paid', 'multipass' )     => MultiPass::price( $event->paid ),
+				// __( 'Balance', 'multipass' )  => MultiPass::price( $event->balance ),
 			),
-			'contact' => array(
+			'prestation' => array(
+				__( 'Prestation subtotal', 'multipass' ) => ( $prestation->subtotal === $prestation->total ) ? null : MultiPass::price( $prestation->subtotal ),
+				__( 'Prestation discount', 'multipass' ) => MultiPass::price( $prestation->discount ),
+				__( 'Prestation total', 'multipass' )    => MultiPass::price( $prestation->total ),
+				__( 'Deposit', 'multipass' )             => $prestation->deposit,
+				__( 'Deposit balance', 'multipass' )     => $prestation->deposit - $prestation->paid,
+				__( 'Deposit link', 'multipass' )        => ( $prestation->deposit > $prestation->paid )
+				? MultiPass::price( $prestation->deposit ) . ' ' . MultiPass::payment_link( $prestation->slug, $prestation->deposit - $prestation->paid )
+				: null,
+				__( 'Paid', 'multipass' )                => MultiPass::price( $prestation->paid ),
+				__( 'Balance', 'multipass' )             => ( ! empty( $prestation->balance ) )
+				? MultiPass::price( $prestation->balance )
+				. ' ' . MultiPass::payment_link( $prestation->slug, $prestation->balance, null, 'link' )
+				. ' ' . MultiPass::payment_link( $prestation->slug, $prestation->balance, null, 'dashicon', 'admin-links' )
+				. ' ' . MultiPass::payment_mail_link( $prestation, $prestation->balance, null, 'dashicon', 'email' )
+				: null,
+			),
+			'contact'    => array(
 				_x( 'Contact', '(noun)', '(noun)', 'multipass' ) => $event->contact,
 				_x( 'Email', '(noun)', 'multipass' ) => $event->email,
 				_x( 'Phone', '(noun)', 'multipass' ) => $event->phone,
 			),
 		);
-		$rows            = array();
+		$rows = array();
 		foreach ( $data as $section => $lines ) {
 			$lines = array_filter( $lines );
 			if ( empty( $lines ) ) {
@@ -858,34 +881,37 @@ class Mltp_Event extends Mltp_Item {
 			return new WP_Error( 'wrongtype', __( 'Not an event', 'multipass' ) );
 		}
 
-		$this->id = $this->post->ID;
+		$this->id            = $this->post->ID;
+		$this->prestation_id = get_post_meta( $this->id, 'prestation_id', true );
+		$this->title         = $this->post->post_title;
+		$metas               = get_post_meta( $this->id );
+		if ( 12661 === $this->id ) {
+			// $this->source = 'source' => get_post_meta($this->id, 'source', true);
+			$this->description = get_post_meta( $this->id, 'description', true );
+		}
+		$dates          = get_post_meta( $this->id, 'dates', true );
+		$price          = get_post_meta( $this->id, 'price', true );
+		$this->subtotal = ( isset( $price['sub_total'] ) ) ? $price['sub_total'] : null;
+		$discount       = get_post_meta( $this->id, 'discount', true );
+		$this->discount = ( is_array( $discount ) ) ? ( isset( $discount['amount'] ) ? $discount['amount'] : null ) : $discount;
+		$this->total    = get_post_meta( $this->id, 'total', true );
+		$deposit        = get_post_meta( $this->id, 'deposit', true );
+		$this->deposit  = ( is_array( $deposit ) ) ? ( isset( $deposit['amount'] ) ? $deposit['amount'] : null ) : $deposit;
+		// $this->deposit     = ( isset( $discount['deposit'] ) ) ? $deposit['amount'] : null;
+		$this->paid       = get_post_meta( $this->id, 'paid', true );
+		$this->balance    = get_post_meta( $this->id, 'balance', true );
+		$this->start      = ( isset( $dates['from'] ) ) ? $dates['from'] : null;
+		$this->end        = ( isset( $dates['to'] ) ) ? $dates['to'] : null;
+		$this->flags      = (int) get_post_meta( $this->id, 'flags', true );
+		$this->edit_url   = get_post_meta( $this->id, 'edit_url', true );
+		$this->source     = get_post_meta( $this->id, 'source', true );
+		$this->source_url = get_post_meta( $this->id, 'source_url', true );
+		$this->origin     = get_post_meta( $this->id, 'origin', true );
+		$this->origin_url = get_post_meta( $this->id, 'origin_url', true );
+		$check_in         = ( isset( $dates['check_in'] ) ) ? $dates['check_in'] : null;
+		$check_out        = ( isset( $dates['check_out'] ) ) ? $dates['check_in'] : null;
 
-		$this->title = $this->post->post_title;
-		$metas       = get_post_meta( $this->id );
-		// $this->source = 'source' => get_post_meta($this->id, 'source', true);
-		$this->description = get_post_meta( $this->id, 'description', true );
-		$dates             = get_post_meta( $this->id, 'dates', true );
-		$price             = get_post_meta( $this->id, 'price', true );
-		$this->subtotal    = ( isset( $price['sub_total'] ) ) ? $price['sub_total'] : null;
-		$discount          = get_post_meta( $this->id, 'discount', true );
-		$this->discount    = ( isset( $discount['amount'] ) ) ? $discount['amount'] : null;
-		$this->total       = get_post_meta( $this->id, 'total', true );
-		$deposit           = get_post_meta( $this->id, 'deposit', true );
-		$this->deposit     = ( isset( $discount['deposit'] ) ) ? $deposit['amount'] : null;
-		$this->paid        = get_post_meta( $this->id, 'paid', true );
-		$this->balance     = get_post_meta( $this->id, 'balance', true );
-		$this->start       = ( isset( $dates['from'] ) ) ? $dates['from'] : null;
-		$this->end         = ( isset( $dates['to'] ) ) ? $dates['to'] : null;
-		$this->flags       = (int) get_post_meta( $this->id, 'flags', true );
-		$this->edit_url    = get_post_meta( $this->id, 'edit_url', true );
-		$this->source      = get_post_meta( $this->id, 'source', true );
-		$this->source_url  = get_post_meta( $this->id, 'source_url', true );
-		$this->origin      = get_post_meta( $this->id, 'origin', true );
-		$this->origin_url  = get_post_meta( $this->id, 'origin_url', true );
-		$check_in          = ( isset( $dates['check_in'] ) ) ? $dates['check_in'] : null;
-		$check_out         = ( isset( $dates['check_out'] ) ) ? $dates['check_in'] : null;
-
-		$d         = 86400;
+		$d         = 86400; // nr of seconds in one day
 		$check_in  = ( empty( $check_in ) ) ? ( $d / 2 ) : $check_in;
 		$check_out = ( empty( $check_out ) ) ? ( $d / 2 ) : $check_out;
 

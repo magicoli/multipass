@@ -56,6 +56,22 @@ class Mltp_Prestation {
 			$this->id   = $post->ID;
 			$this->name = $post->post_title;
 			$this->post = $post;
+			$this->slug = $post->post_name;
+
+			$this->dates     = get_post_meta( $this->id, 'dates', true );
+			$this->from      = get_post_meta( $this->id, 'from', true );
+			$this->to        = get_post_meta( $this->id, 'to', true );
+			$this->guests    = get_post_meta( $this->id, 'guests', true );
+			$this->attendees = get_post_meta( $this->id, 'attendees', true );
+
+			$this->subtotal = ( isset( $price['sub_total'] ) ) ? $price['sub_total'] : null;
+			$discount       = get_post_meta( $this->id, 'discount', true );
+			$this->discount = ( is_array( $discount ) ) ? ( isset( $discount['amount'] ) ? $discount['amount'] : null ) : $discount;
+			$this->total    = get_post_meta( $this->id, 'total', true );
+			$deposit        = get_post_meta( $this->id, 'deposit', true );
+			$this->deposit  = ( is_array( $deposit ) ) ? ( isset( $deposit['amount'] ) ? $deposit['amount'] : null ) : $deposit;
+			$this->paid     = get_post_meta( $this->id, 'paid', true );
+			$this->balance  = get_post_meta( $this->id, 'balance', true );
 		}
 	}
 
