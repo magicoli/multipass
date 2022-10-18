@@ -807,8 +807,12 @@ class MultiPass {
 	}
 
 	public static function is_external( $url ) {
+		$urlparts = parse_url(home_url());
+		$domain = $urlparts['host'];
+		// if(!preg_match('/^https?:/', $url )) return $url;
 		$components = parse_url( $url );
-		return ! empty( $components['host'] ) && strcasecmp( $components['host'], 'example.com' ); // empty host will indicate url like '/relative.php'
+
+		return ! empty( $components['host'] ) && strcasecmp( $components['host'], $domain ); // empty host will indicate url like '/relative.php'
 	}
 
 	public static function get_editable_roles() {
