@@ -654,12 +654,12 @@ class Mltp_Calendar {
 				? MultiPass::price( $prestation->deposit ) . ' ' . MultiPass::payment_link( $prestation->slug, $prestation->deposit - $prestation->paid )
 				: null,
 				__( 'Paid', 'multipass' )                => MultiPass::price( $prestation->paid ),
-				__( 'Balance', 'multipass' )             => ( ! empty( $prestation->balance ) )
-				? MultiPass::price( $prestation->balance )
-				. ' ' . MultiPass::payment_link( $prestation->slug, $prestation->balance, null, 'link' )
-				. ' ' . MultiPass::payment_link( $prestation->slug, $prestation->balance, null, 'dashicon', 'admin-links' )
-				. ' ' . MultiPass::payment_mail_link( $prestation, $prestation->balance, null, 'dashicon', 'email' )
-				: null,
+				__( 'Balance', 'multipass' )             => MultiPass::price_with_links( $prestation, $prestation->balance ),
+				// __( 'Balance', 'multipass' )             => ( ! empty( $prestation->balance ) )
+				// ? MultiPass::price( $prestation->balance )
+				// . ' ' . MultiPass::payment_link( $prestation->slug, $prestation->balance, null, 'dashicon', 'admin-links' )
+				// . ' ' . MultiPass::payment_mail_link( $prestation, $prestation->balance, null, 'dashicon', 'email' )
+				// : null,
 			),
 			'contact'    => array(
 				_x( 'Contact', '(noun)', '(noun)', 'multipass' ) => $event->contact,

@@ -387,6 +387,18 @@ class MultiPass {
 		return $symbol;
 	}
 
+	static function price_with_links( $prestation, $amount, $args = array() ) {
+		$output = MultiPass::price( $amount, $args );
+		$links = array(
+			MultiPass::payment_link( $prestation->slug, $amount, null, 'dashicon', 'admin-links' ),
+			MultiPass::payment_mail_link( $prestation, $amount, null, 'dashicon', 'email' )
+		);
+		if(!empty($links)) {
+			$output .= ' <span class="actions price-actions">' . join(' ', $links) . '</span>';
+		}
+		return $output;
+	}
+
 	static function price( $price, $args = array() ) {
 		if ( empty( $price ) && $price !== 0 ) {
 			return;
