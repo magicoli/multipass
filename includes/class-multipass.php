@@ -931,17 +931,38 @@ class MultiPass {
 		return $hash;
 	}
 
-	static function debug( $string = null ) {
-		if ( ! current_user_can( 'mltp_administrator' ) ) {
+	static function debug() {
+		$args = func_get_args();
+		if(empty($args)) return get_option( 'multipass_debug' );
+		if ( ! current_user_can( 'mltp_administrator' ) || ! get_option( 'multipass_debug' ) ) {
 			return false;
 		}
 
-		if ( ! empty( $string ) ) {
-			error_log( $string );
+		foreach( $args as $key=>$arg ) {
+			if( ! is_string($arg) )  {
+				$args[$key] = print_r($arg, true);
+			}
+		}
+		if(empty($args)) {
+			$calling = debug_backtrace()[1]['function'];
+			$args[] = "$calling called " . __FUNCTION__ . ' with empty values';
 		}
 
-		return get_option( 'multipass_debug' );
+		error_log( join(' ', $args ) );
+
+		return true;
 	}
+	// static function debug( $string = null ) {
+	// 	if ( ! current_user_can( 'mltp_administrator' ) ) {
+	// 		return false;
+	// 	}
+	//
+	// 	if ( ! empty( $string ) ) {
+	// 		error_log( $string );
+	// 	}
+	//
+	// 	return get_option( 'multipass_debug' );
+	// }
 
 	static function role( $role ) {
 		return ( preg_match( '/^mltp_/', $role ) ) ? self::get_option( $role, $role ) : $role;
