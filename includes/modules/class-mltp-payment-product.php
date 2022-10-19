@@ -30,7 +30,7 @@ class Mltp_Payment_Product {
 		add_action( 'init', __CLASS__ . '::rewrite_rules' );
 		add_filter( 'query_vars', __CLASS__ . '::query_vars' );
 		add_action( 'template_include', __CLASS__ . '::template_include' );
-		add_filter( 'mltp_payment_url', __CLASS__ . '::payment_url' );
+		add_filter( 'mltp_payment_url', __CLASS__ . '::payment_url', null, 3 );
 
 		// Set pay button text
 		// add_filter( 'woocommerce_product_add_to_cart_text', __CLASS__ . '::add_to_cart_button', 10, 2);
@@ -500,9 +500,9 @@ class Mltp_Payment_Product {
 	}
 
 	static function payment_url( $reference = null, $amount = null, $args = array() ) {
-		$slug = Mltp_WooCommerce::get_option( 'woocommerce_rewrite_slug', __( 'pay', 'multipass' ) );
-
+		$slug     = Mltp_WooCommerce::get_option( 'woocommerce_rewrite_slug', __( 'pay', 'multipass' ) );
 		$language = ( ! empty( $args['language'] ) ) ? $args['language'] : '';
+
 		if ( empty( $reference ) ) {
 			return get_home_url( null, "$slug/" );
 		} else {
@@ -548,7 +548,7 @@ class Mltp_Payment_Product {
 			// error_log('found ' . count($posts) . ' ' . print_r(reset($posts), true));
 			$links[] = MultiPass::payment_url( $post->ID );
 			$links[] = MultiPass::payment_url( $post->post_name );
-			$links[] = MultiPass::payment_url( $post->post_name, round( get_post_meta( $post->ID, 'balance', true ), 2 ) );
+			$links[] = MultiPass::payment_url( $post->post_name, get_post_meta( $post->ID, 'balance', true ) );
 		}
 
 		// foreach($sources as $source => $source_name) {

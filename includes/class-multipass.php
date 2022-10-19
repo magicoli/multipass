@@ -947,8 +947,10 @@ class MultiPass {
 		return ( preg_match( '/^mltp_/', $role ) ) ? self::get_option( $role, $role ) : $role;
 	}
 
-	static function payment_url( $reference = null, $amount = null, $language = null ) {
-		return apply_filters( 'mltp_payment_url', $reference, $amount, $language );
+	static function payment_url( $reference = null, $amount = null, $args = array() ) {
+		$args['from_class'] = __CLASS__;
+
+		return apply_filters( 'mltp_payment_url', $reference, $amount, $args );
 	}
 
 	static function payment_mail_link( $prestation, $amount = null, $args = array(), $attr = array() ) {
