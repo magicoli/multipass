@@ -76,10 +76,22 @@ jQuery( document ).ready(
 
 						data.jsEvent.preventDefault(); // don't let the browser navigate
 
-						$( '<div>' + event.extendedProps.modal + '</div>' ).dialog(
+						// $( '<div id="dialog-' + event.id + '">' + event.extendedProps.modal + '</div>' ).dialog(
+						$( '<div id="dialog">' + event.extendedProps.modal + '</div>' ).dialog(
 							{
 								modal: true,
-								// dialogClass: "no-close",
+								draggable: false,
+								resizable: false,
+								open: function () {
+									$( '.ui-widget-overlay' ).on(
+										'click',
+										function () {
+											$( this ).parents( "body" ).find( ".ui-dialog-content" ).dialog( "close" );
+										}
+									)
+								},
+								hide: { effect: "fade", duration: 300 },
+								show: { effect: "fade", duration: 300 },
 								title: event.title,
 								// showText: false,
 								// closeText : 'Close',
