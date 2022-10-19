@@ -84,6 +84,17 @@ jQuery( document ).ready(
 								// showText: false,
 								// closeText : 'Close',
 								width: 'auto',
+								minWidth: 560,
+								maxWidth: $( window ).width(),
+								height: $( window ).height() - $( '#wpcontent' ).position().top,
+								// minWidth: '500',
+								position: {
+									my: "right top",
+									at: "right top",
+									of: window,
+									within: "#wpcontent",
+									// collision: "fit",
+								},
 								buttons: [
 								// {
 								// text: __('View', 'multipass'),
