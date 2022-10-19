@@ -89,6 +89,8 @@ class Mltp_Lodgify extends Mltp_Modules {
 	}
 
 	function register_settings_pages( $settings_pages ) {
+		$one = 1;
+		$two = 2;
 
 		$settings_pages[] = array(
 			'menu_title' => __( 'Lodgify', 'multipass' ),
@@ -747,27 +749,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			$origin_url                         = MultiPass::get_source_url( $origin, $origin_id, $source_url );
 			$item_args[ $origin . '_edit_url' ] = $origin_url;
 
-			// $prestation_args = array(
-			// 'customer_name'  => $booking['guest']['name'],
-			// 'customer_email' => $booking['guest']['email'],
-			// 'customer_phone' => $booking['guest']['phone'],
-			// 'source_url'     => $source_url,
-			// 'origin_url'     => $origin_url,
-			// 'confirmed' => $confirmed,
-			// 'from'           => $from,
-			// 'to'             => $to,
-			// );
-			//
-			// $prestation = new Mltp_Prestation( $prestation_args, true );
-
-			// error_log("
-			// $description
-			// source $source $source_url
-			// origin $origin $origin_url
-			// edit " . get_edit_post_link($prestation->id) . "
-			// ");
-
-			$item_args = array_merge(
+			$item_args = array_merge_recursive(
 				array(
 					'customer_name'       => $booking['guest']['name'],
 					'customer_email'      => $booking['guest']['email'],
@@ -830,7 +812,37 @@ class Mltp_Lodgify extends Mltp_Modules {
 			);
 
 			$mltp_detail = new Mltp_Item( $item_args, true );
-			// $prestation->update();
+
+			if(MultiPass::debug()) {
+				// MultiPass::debug( __CLASS__,__FUNCTION__, $mltp_detail->id );
+				$metas = array(
+					'prestation_id' => null,
+					'attendee' => null,
+					'attendee_name' => null,
+					'attendee_email' => null,
+					'attendee_phone' => null,
+					'customer' => null,
+					'customer_name' => null,
+					'customer_email' => null,
+					'customer_phone' => null,
+					'guest' => null,
+					'guest_name' => null,
+					'guest_email' => null,
+					'guest_phone' => null,
+				);
+
+				$prestation_id = get_post_meta($mltp_detail->id, 'prestation_id', true);
+				if(12661 === $mltp_detail->id) {
+					$debug['received'] = array_filter($booking);
+					$debug['update'] = array_filter($item_args);
+					foreach($metas as $meta => $value) {
+						$debug['saved_prestation'][$meta] = get_post_meta($prestation_id, $meta, true);
+						$debug['saved_item'][$meta] = get_post_meta($mltp_detail->id, $meta, true);
+					}
+
+					// MultiPass::debug( __CLASS__,__FUNCTION__, $debug );
+				}
+			}
 
 		}
 
