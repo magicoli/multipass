@@ -282,6 +282,12 @@ class Mltp_Calendar {
 				'with_front'   => false,
 				'hierarchical' => false,
 			),
+			// 'default_term' => array(
+			// 	'name' => _x( 'Main', 'Calendar', 'multipass' ),
+			// 	'slug' => 'main',
+			// 	'description' => __('Main calendar', 'multipass'),
+			// ),
+			'built_in' => true,
 		);
 		register_taxonomy( 'calendar-section', array( 'mltp_resource' ), $args );
 
@@ -295,15 +301,20 @@ class Mltp_Calendar {
 			);
 		}
 
-		MultiPass::register_terms(
-			'calendar-section',
-			array(
-				// 'none'   => _x( 'None', 'Calendar section', 'multipass' ),
-				'main'    => _x( 'Main', 'Calendar', 'multipass' ),
-				'options' => __( 'Options', 'multipass' ),
-			)
-		);
-
+		/**
+		 * Should use default_term instead but we must handle renaming.
+		 */
+		$terms   = get_terms( 'mltp_detail-source' );
+		if(empty($terms)) {
+			MultiPass::register_terms(
+				'calendar-section',
+				array(
+					// 'none'   => _x( 'None', 'Calendar section', 'multipass' ),
+					'main'    => _x( 'Main', 'Calendar', 'multipass' ),
+					'options' => __( 'Options', 'multipass' ),
+				)
+			);
+		}
 	}
 
 	/**
