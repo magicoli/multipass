@@ -3,7 +3,7 @@
 /**
  * [Mltp_WooCommerce_Payment description]
  */
-class Mltp_WooCommerce_Payment {
+class Mltp_WooCommerce_Payment extends Mltp_Payment {
 
 	/*
 	* Bootstraps the class and hooks required actions & filters.
@@ -27,8 +27,8 @@ class Mltp_WooCommerce_Payment {
 
 		add_action( 'woocommerce_checkout_create_order_line_item', __CLASS__ . '::add_custom_data_to_order', 10, 4 );
 
-		add_action( 'init', __CLASS__ . '::rewrite_rules' );
-		add_filter( 'query_vars', __CLASS__ . '::query_vars' );
+		add_filter( 'mltp_rewrite_rules', __CLASS__ . '::rewrite_rules_filter' );
+		add_filter( 'query_vars', __CLASS__ . '::wc_query_vars_filter' );
 		add_action( 'template_include', __CLASS__ . '::template_include' );
 		add_filter( 'mltp_payment_url', __CLASS__ . '::payment_url', null, 3 );
 
@@ -76,7 +76,7 @@ class Mltp_WooCommerce_Payment {
 				'options'           => $pp,
 				'placeholder'       => __( 'Select a product', 'multipass' ),
 				'desc'              => __( 'Used to generate payment links.', 'multipass' ),
-				'sanitize_callback' => __CLASS__ . '::rewrite_slug_validation',
+				'sanitize_callback' => __CLASS__ . '::wc_settings_validation_callback',
 			),
 			array(
 				'name'              => __( 'Link prefix', 'multipass' ),
@@ -93,7 +93,7 @@ class Mltp_WooCommerce_Payment {
 						self::payment_url( 'booking_id', 'amount' ),
 					)
 				),
-				'sanitize_callback' => __CLASS__ . '::rewrite_slug_validation',
+				'sanitize_callback' => __CLASS__ . '::wc_settings_validation_callback',
 			),
 		);
 
@@ -261,49 +261,6 @@ class Mltp_WooCommerce_Payment {
 			'',
 		);
 		printf( '<div style="height:0.5em;"></div>' );
-	}
-
-	static function get_payment_reference() {
-		$request = wp_unslash( $_REQUEST );
-		$keys    = array( 'prpay_reference', 'reference', 'booking_id' );
-		foreach ( $keys as $key ) {
-			if ( ! empty( $request[ $key ] ) ) {
-				return sanitize_text_field( $request[ $key ] );
-			}
-		}
-		// for param in
-		// if ( ! empty( $_POST['prpay_reference'] ) ) {
-		// $reference = sanitize_text_field( $_POST['prpay_reference'] );
-		// } elseif ( ! empty( $_REQUEST['reference'] ) ) {
-		// $reference = sanitize_text_field( $_REQUEST['reference'] );
-		// } else {
-		// $reference = null;
-		// }
-		// return $reference;
-	}
-
-	static function get_payment_amount() {
-		$amount  = null;
-		$request = wp_unslash( $_REQUEST );
-		$keys    = array( 'prpay_amount', 'amount', 'nyp' );
-		foreach ( $keys as $key ) {
-			if ( ! empty( $request[ $key ] ) ) {
-				$amount = sanitize_text_field( preg_replace( '/,/', '.', $request[ $key ] ) );
-				break;
-			}
-		}
-
-		// if ( ! empty( $_POST['prpay_amount'] ) ) {
-		// $amount = sanitize_text_field( $_POST['prpay_amount'] );
-		// } elseif ( ! empty( $_REQUEST['amount'] ) ) {
-		// $amount = sanitize_text_field( $_REQUEST['amount'] );
-		// } else {
-		// $amount = null;
-		// }
-		if ( is_numeric( $amount ) ) {
-			return $amount;
-		}
-		// return $amount;
 	}
 
 	static function add_to_cart_validation( $passed, $product_id, $quantity ) {
@@ -477,28 +434,6 @@ class Mltp_WooCommerce_Payment {
 		return ( $product->get_meta( '_prpay' ) == 'yes' ) ? true : false;
 	}
 
-	static function rewrite_slug_validation( $value, $field, $oldvalue ) {
-		switch ( $field['id'] ) {
-			case 'woocommerce_rewrite_slug':
-				$value = sanitize_title( $value );
-				break;
-
-			case 'woocommerce_default_product':
-				$pp = self::get_payment_products();
-				if ( empty( $value ) && count( $pp ) == 1 ) {
-					$value = array_key_first( $pp );
-				}
-				$value = ( get_post_status( $value ) ) ? $value : null;
-				break;
-		}
-
-		if ( $value != $oldvalue ) {
-			set_transient( 'multipass_rewrite_flush', true );
-		}
-
-		return $value;
-	}
-
 	static function payment_url( $reference = null, $amount = null, $args = array() ) {
 		$slug     = Mltp_WooCommerce::get_option( 'woocommerce_rewrite_slug', __( 'pay', 'multipass' ) );
 		$language = ( ! empty( $args['language'] ) ) ? $args['language'] : '';
@@ -510,160 +445,35 @@ class Mltp_WooCommerce_Payment {
 		}
 	}
 
-	static function generate_payment_test_links() {
-		$sources = MultiPass::get_registered_sources();
-		// error_log('sources ' . print_r($sources, true));
-
-		$links[]    = MultiPass::payment_url();
-		$links[]    = MultiPass::payment_url( '123' );
-		$links[]    = MultiPass::payment_url( '123', '45.6' );
-		$links[]    = MultiPass::payment_url( '123', '45,6' );
-		$links[]    = '';
-		$query_args = array(
-			'post_type'   => 'mltp_prestation',
-			'post_status' => 'publish',
-			// 'numberposts' => 1,
-			// 'orderby'    => 'post_date',
-			'metakey'     => 'from',
-			'orderby'     => 'metavalue_num',
-			'order'       => 'asc',
-			'meta_query'  => array(
-				'relation' => 'AND',
-				array(
-					'key'     => 'from',
-					'compare' => '>=',
-					'value'   => time(),
-				),
-				array(
-					'key'     => 'balance',
-					'compare' => '>',
-					'value'   => 0,
-				),
-			),
-		);
-		$posts      = get_posts( $query_args );
-		$post       = reset( $posts );
-
-		if ( $post ) {
-			// error_log('found ' . count($posts) . ' ' . print_r(reset($posts), true));
-			$links[] = MultiPass::payment_url( $post->ID );
-			$links[] = MultiPass::payment_url( $post->post_name );
-			$links[] = MultiPass::payment_url( $post->post_name, get_post_meta( $post->ID, 'balance', true ) );
-		}
-
-		// foreach($sources as $source => $source_name) {
-		// $posts = get_posts( array_merge_recursive( $query_args, array(
-		// 'post_type'  => 'mltp_detail',
-		// 'meta_query' => array(
-		// array(
-		// 'key'   => 'source',
-		// 'compare' => '=',
-		// 'value' => $source,
-		// ),
-		// )
-		// )));
-		// $posts = get_posts( $query_args );
-		// $post = reset($posts);
-		// if($post) {
-		// error_log("$source: " . print_r(get_post_meta($post->ID), true));
-		// error_log("$source: " . print_r(get_post_meta($post->ID, $source . '_uuid', true), true));
-		// error_log(print_r(get_post_meta($post->ID, 'deposit', true), true));
-		// $links[] = MultiPass::payment_url( $post->post_name, round(get_post_meta($post->ID, 'deposit', true), 2) );
-		// }
-		// }
-
-		// $links[] = MultiPass::payment_url( 'mwvo' );
-		// $links[] = MultiPass::payment_url( 'mwvo', 123.45 );
-		// $links[] = MultiPass::payment_url( 'B4520009' );
-		// $links[] = MultiPass::payment_url( 'B4520009', 123.45 );
-
-		// $output  = '';
-		// $output  = 'Test payment links:';
-		// $output = '<ul>';
-		foreach ( $links as $link ) {
-			$output[] = sprintf( '<a target="_blank" href="%1$s">%1$s</a>', $link );
-			// code...
-		}
-		// $output .= '</ul>';
-		// return $output;
-		if ( ! empty( $output ) ) {
-			return join( '<br/>', $output );
-		}
-		// error_log(print_r($query, true));
-	}
-
-	static function get_payment_link() {
-		global $post;
-
-		// $product_id = MultiPass::get_option('woocommerce_default_product');
-		$reference = $post->post_name;
-
-		$balance       = (float) get_post_meta( $post->ID, 'balance', true );
-		$paid          = (float) get_post_meta( $post->ID, 'paid', true );
-		$deposit_array = get_post_meta( $post->ID, 'deposit', true );
-		$deposit       = ( is_array( $deposit_array ) ) ? (float) get_post_meta( $post->ID, 'deposit', true )['total'] : null;
-
-		$deposit = round( $deposit, 2 );
-		$paid    = round( $paid, 2 );
-		$balance = round( $balance, 2 );
-
-		$links = array();
-		if ( $deposit > $paid ) {
-			$deposit_due = $deposit - $paid;
-			$links[]     = sprintf(
-				'<a class=button href="%2$s" target="blank">%1$s</a> ',
-				sprintf( __( 'Pay deposit (%s)', 'multipass' ), MultiPass::price( $deposit_due ) ),
-				MultiPass::payment_url( $reference, $deposit_due ),
-			);
-		}
-		if ( $balance > 0 ) {
-			$links[] = sprintf(
-				'<a class=button href="%2$s" target="blank">%1$s</a> ',
-				sprintf( __( 'Pay balance (%s)', 'multipass' ), MultiPass::price( $balance ) ),
-				MultiPass::payment_url( $reference, $balance ),
-			);
-		}
-		$output = join( ' ', $links );
-		return $output;
-	}
-
-	static function rewrite_rules() {
-		global $wp_query;
-		$pattern_ref   = '([^&/]+)';
-		$pattern_price = '([^&/]+)';
-
+	static function rewrite_rules_filter( $rules ) {
 		$product_id = MultiPass::get_option( 'woocommerce_default_product' );
-		$cart_id    = wc_get_page_id( 'cart' );
 
-		// add_rewrite_tag('%reference%', $pattern_ref, 'reference=');
-		// add_rewrite_tag('%amount%', $pattern_price, 'amount=');
+		$cart_id = wc_get_page_id( 'cart' );
 
-		$slugs[] = MultiPass::get_option( 'woocommerce_rewrite_slug' );
-		$slugs[] = __( $slugs[0], 'multipass' );
-		$slugs   = array_unique( $slugs );
-		foreach ( $slugs as $slug ) {
-			add_rewrite_rule(
-				"^$slug/$pattern_ref/$pattern_price/?$",
-				sprintf(
-					'index.php?page_id=%s&add-to-cart=%s&action=prestation_pay&reference=$matches[1]&amount=$matches[2]',
-					$cart_id,
-					$product_id,
-				),
-				'top',
-			);
-			add_rewrite_rule(
-				"^$slug(/$pattern_ref)?/?$",
-				sprintf(
-					'index.php?destination=%s&action=prestation_pay&reference=$matches[2]',
-					$product_id,
-				),
-				'top',
-			);
+		if ( empty( $product_id ) || empty( $cart_id ) ) {
+			return $rules;
 		}
 
+		$rules['payment_link_with_amount'] = array(
+			'query' => sprintf(
+				'index.php?page_id=%s&add-to-cart=%s&action=prestation_pay&reference=$matches[1]&amount=$matches[2]',
+				$cart_id,
+				$product_id,
+			),
+			'after' => 'top',
+		);
+		$rules['payment_link']             = array(
+			'query' => sprintf(
+				'index.php?destination=%s&action=prestation_pay&reference=$matches[2]',
+				$product_id,
+			),
+			'after' => 'top',
+		);
+
+		return $rules;
 	}
 
-	static function query_vars( $query_vars ) {
+	static function wc_query_vars_filter( $query_vars ) {
 		$query_vars[] = 'add-to-cart';
 		$query_vars[] = 'action';
 		$query_vars[] = 'reference';

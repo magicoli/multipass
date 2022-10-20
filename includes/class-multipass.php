@@ -143,6 +143,7 @@ class MultiPass {
 		require_once MULTIPASS_DIR . 'includes/class-mltp-prestation.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-prestation-detail.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-resource.php';
+		require_once MULTIPASS_DIR . 'includes/class-mltp-payment.php';
 
 		require_once MULTIPASS_DIR . 'includes/class-mltp-settings.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-plugininfo.php';
@@ -933,35 +934,37 @@ class MultiPass {
 
 	static function debug() {
 		$args = func_get_args();
-		if(empty($args)) return get_option( 'multipass_debug' );
+		if ( empty( $args ) ) {
+			return get_option( 'multipass_debug' );
+		}
 		if ( ! current_user_can( 'mltp_administrator' ) || ! get_option( 'multipass_debug' ) ) {
 			return false;
 		}
 
-		foreach( $args as $key=>$arg ) {
-			if( ! is_string($arg) )  {
-				$args[$key] = print_r($arg, true);
+		foreach ( $args as $key => $arg ) {
+			if ( ! is_string( $arg ) ) {
+				$args[ $key ] = print_r( $arg, true );
 			}
 		}
-		if(empty($args)) {
+		if ( empty( $args ) ) {
 			$calling = debug_backtrace()[1]['function'];
-			$args[] = "$calling called " . __FUNCTION__ . ' with empty values';
+			$args[]  = "$calling called " . __FUNCTION__ . ' with empty values';
 		}
 
-		error_log( join(' ', $args ) );
+		error_log( join( ' ', $args ) );
 
 		return true;
 	}
 	// static function debug( $string = null ) {
-	// 	if ( ! current_user_can( 'mltp_administrator' ) ) {
-	// 		return false;
-	// 	}
+	// if ( ! current_user_can( 'mltp_administrator' ) ) {
+	// return false;
+	// }
 	//
-	// 	if ( ! empty( $string ) ) {
-	// 		error_log( $string );
-	// 	}
+	// if ( ! empty( $string ) ) {
+	// error_log( $string );
+	// }
 	//
-	// 	return get_option( 'multipass_debug' );
+	// return get_option( 'multipass_debug' );
 	// }
 
 	static function role( $role ) {

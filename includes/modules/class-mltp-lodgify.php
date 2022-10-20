@@ -813,37 +813,36 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 			$mltp_detail = new Mltp_Item( $item_args, true );
 
-			if(MultiPass::debug()) {
+			if ( MultiPass::debug() ) {
 				// MultiPass::debug( __CLASS__,__FUNCTION__, $mltp_detail->id );
 				$metas = array(
-					'prestation_id' => null,
-					'attendee' => null,
-					'attendee_name' => null,
+					'prestation_id'  => null,
+					'attendee'       => null,
+					'attendee_name'  => null,
 					'attendee_email' => null,
 					'attendee_phone' => null,
-					'customer' => null,
-					'customer_name' => null,
+					'customer'       => null,
+					'customer_name'  => null,
 					'customer_email' => null,
 					'customer_phone' => null,
-					'guest' => null,
-					'guest_name' => null,
-					'guest_email' => null,
-					'guest_phone' => null,
+					'guest'          => null,
+					'guest_name'     => null,
+					'guest_email'    => null,
+					'guest_phone'    => null,
 				);
 
-				$prestation_id = get_post_meta($mltp_detail->id, 'prestation_id', true);
-				if(12661 === $mltp_detail->id) {
-					$debug['received'] = array_filter($booking);
-					$debug['update'] = array_filter($item_args);
-					foreach($metas as $meta => $value) {
-						$debug['saved_prestation'][$meta] = get_post_meta($prestation_id, $meta, true);
-						$debug['saved_item'][$meta] = get_post_meta($mltp_detail->id, $meta, true);
+				$prestation_id = get_post_meta( $mltp_detail->id, 'prestation_id', true );
+				if ( 12661 === $mltp_detail->id ) {
+					$debug['received'] = array_filter( $booking );
+					$debug['update']   = array_filter( $item_args );
+					foreach ( $metas as $meta => $value ) {
+						$debug['saved_prestation'][ $meta ] = get_post_meta( $prestation_id, $meta, true );
+						$debug['saved_item'][ $meta ]       = get_post_meta( $mltp_detail->id, $meta, true );
 					}
 
 					// MultiPass::debug( __CLASS__,__FUNCTION__, $debug );
 				}
 			}
-
 		}
 
 		// if(isset($_REQUEST['lodgify_sync_now']) && $_REQUEST['lodgify_sync_now'] == true) {

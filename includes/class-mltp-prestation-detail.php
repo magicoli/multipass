@@ -40,11 +40,11 @@ class Mltp_Item {
 		}
 
 		$this->post = $this->get( $args, $update );
-		if($this->post) {
-			$this->id = $this->post->ID;
-			$this->customer_name = get_post_meta($this->id, 'customer_name', true);
-			$this->customer_email = get_post_meta($this->id, 'customer_email', true);
-			$this->customer_phone = get_post_meta($this->id, 'customer_phone', true);
+		if ( $this->post ) {
+			$this->id             = $this->post->ID;
+			$this->customer_name  = get_post_meta( $this->id, 'customer_name', true );
+			$this->customer_email = get_post_meta( $this->id, 'customer_email', true );
+			$this->customer_phone = get_post_meta( $this->id, 'customer_phone', true );
 		}
 	}
 

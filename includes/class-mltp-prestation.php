@@ -58,9 +58,9 @@ class Mltp_Prestation {
 			$this->post = $post;
 			$this->slug = $post->post_name;
 
-			$this->customer_name = get_post_meta($this->id, 'customer_name', true);
-			$this->customer_email = get_post_meta($this->id, 'customer_email', true);
-			$this->customer_phone = get_post_meta($this->id, 'customer_phone', true);
+			$this->customer_name  = get_post_meta( $this->id, 'customer_name', true );
+			$this->customer_email = get_post_meta( $this->id, 'customer_email', true );
+			$this->customer_phone = get_post_meta( $this->id, 'customer_phone', true );
 
 			$this->dates     = get_post_meta( $this->id, 'dates', true );
 			$this->from      = get_post_meta( $this->id, 'from', true );
@@ -1722,19 +1722,27 @@ class Mltp_Prestation {
 		$post = false;
 		if ( is_numeric( $args ) ) {
 			$post = get_post( $args );
-			if(12665 === $post->ID) MultiPass::debug("prestation passed as id " . $args);
+			if ( 12665 === $post->ID ) {
+				MultiPass::debug( 'prestation passed as id ' . $args );
+			}
 			if ( 'mltp_prestation' !== $post->post_type ) {
 				return new WP_Error( 'prestation-wrong-type', 'Not a prestation' );
 			}
 		} elseif ( is_object( $args ) && 'mltp_prestation' === $args->post_type ) {
 			$post = $args;
-			if(12665 === $post->ID) MultiPass::debug("prestation passed as object " . $post->ID);
+			if ( 12665 === $post->ID ) {
+				MultiPass::debug( 'prestation passed as object ' . $post->ID );
+			}
 		} elseif ( is_string( $args ) ) {
 			$post = get_page_by_path( $args, OBJECT, 'mltp_prestation' );
-			if(12665 === $post->ID) MultiPass::debug("prestation passed as slug " . $post->ID);
+			if ( 12665 === $post->ID ) {
+				MultiPass::debug( 'prestation passed as slug ' . $post->ID );
+			}
 		}
-		if ( $post && empty($args) ) {
-			if(12665 === $post->ID) MultiPass::debug("prestation found but no args, job finihed " . $post->ID);
+		if ( $post && empty( $args ) ) {
+			if ( 12665 === $post->ID ) {
+				MultiPass::debug( 'prestation found but no args, job finihed ' . $post->ID );
+			}
 			return $post;
 		}
 		if ( is_wp_error( $post ) ) {
@@ -1745,11 +1753,11 @@ class Mltp_Prestation {
 		}
 
 		// if ( ! is_array( $args ) ) {
-		// 	error_log( __CLASS__ . '::' . __METHOD__ . '( ' . print_r( $args, true ) . '): args should be an id, a post or an array' );
-		// 	return false;
+		// error_log( __CLASS__ . '::' . __METHOD__ . '( ' . print_r( $args, true ) . '): args should be an id, a post or an array' );
+		// return false;
 		// }
 
-		if(!$post) {
+		if ( ! $post ) {
 			$args                   = array_merge(
 				array(
 					'prestation_id'  => null,
@@ -1762,7 +1770,7 @@ class Mltp_Prestation {
 				$args
 			);
 			$args['customer_email'] = MultiPass::sanitize_email( $args['customer_email'] );
-			MultiPass::debug("prestation not passed, looking with  " . json_encode($args));
+			MultiPass::debug( 'prestation not passed, looking with  ' . json_encode( $args ) );
 
 			$prestation_id  = $args['prestation_id'];
 			$customer_id    = $args['customer_id'];
@@ -1801,85 +1809,91 @@ class Mltp_Prestation {
 				$query_args['meta_query'] = array(
 					'relation' => 'OR',
 					array(
-					'key'   => 'customer_name',
-					'value' => esc_attr( $customer_name ),
+						'key'   => 'customer_name',
+						'value' => esc_attr( $customer_name ),
 					),
 					array(
-					'key'   => 'contact_name',
-					'value' => esc_attr( $customer_name ),
+						'key'   => 'contact_name',
+						'value' => esc_attr( $customer_name ),
 					),
+				);
+			}
+
+			if ( ! empty( $args['from'] ) ) {
+				$from_query = array(
+					'relation' => 'OR',
+					array(
+						'key'     => 'from',
+						'type'    => 'numeric',
+						'compare' => 'between',
+						'value'   => array(
+							$args['from'] - 3600,
+							$args['to'] + 3600,
+						),
+					),
+					array(
+						'key'     => 'to',
+						'type'    => 'numeric',
+						'compare' => 'between',
+						'value'   => array(
+							$args['from'] - 3600,
+							$args['to'] + 3600,
+						),
+					),
+				);
+
+				if ( empty( $query_args['meta_query'] ) ) {
+					$query_args['meta_query'] = $from_query;
+				} else {
+					$query_args['meta_query'] = array(
+						'relation' => 'AND',
+						$query_args['meta_query'],
+						$from_query,
 					);
 				}
-
-				if ( ! empty( $args['from'] ) ) {
-					$from_query = array(
-						'relation' => 'OR',
-						array(
-							'key'     => 'from',
-							'type'    => 'numeric',
-							'compare' => 'between',
-							'value'   => array(
-								$args['from'] - 3600,
-								$args['to'] + 3600,
-							),
-						),
-						array(
-							'key'     => 'to',
-							'type'    => 'numeric',
-							'compare' => 'between',
-							'value'   => array(
-								$args['from'] - 3600,
-								$args['to'] + 3600,
-							),
-						),
-					);
-
-					if ( empty( $query_args['meta_query'] ) ) {
-						$query_args['meta_query'] = $from_query;
-					} else {
-						$query_args['meta_query'] = array(
-							'relation' => 'AND',
-							$query_args['meta_query'],
-							$from_query,
-						);
-					}
-				}
+			}
 
 				$posts = get_posts( $query_args );
 				$post  = false;
-				if ( $posts ) {
-					$post    = $posts[0];
-					$post_id = $post->ID;
-					// update_post_meta( $order_id, 'prestation_id', $post_id );
-					if(12665 === $post->ID) MultiPass::debug("prestation found with query " . $post->ID);
+			if ( $posts ) {
+				$post    = $posts[0];
+				$post_id = $post->ID;
+				// update_post_meta( $order_id, 'prestation_id', $post_id );
+				if ( 12665 === $post->ID ) {
+					MultiPass::debug( 'prestation found with query ' . $post->ID );
 				}
-
+			}
 		}
-		if ( $post && ! is_array($args) ) {
-			if(12665 === $post->ID) MultiPass::debug("prestation found but no array args, job finihed " . $post->ID);
+		if ( $post && ! is_array( $args ) ) {
+			if ( 12665 === $post->ID ) {
+				MultiPass::debug( 'prestation found but no array args, job finihed ' . $post->ID );
+			}
 			return $post;
 		}
 
 		// Nothing worked so far, create new prestation post.
 		// $meta    = array(
-		// 	'customer_id'    => $customer_id,
-		// 	'customer_name'  => $customer_name,
-		// 	'customer_email' => $customer_email,
-		// 	'customer_phone' => $customer_email,
-		// 	'from'           => $args['from'],
-		// 	'to'             => $args['to'],
+		// 'customer_id'    => $customer_id,
+		// 'customer_name'  => $customer_name,
+		// 'customer_email' => $customer_email,
+		// 'customer_phone' => $customer_email,
+		// 'from'           => $args['from'],
+		// 'to'             => $args['to'],
 		// );
-		$meta = array_intersect(array(
-			'customer_id'    => null,
-			'customer_name'  => null,
-			'customer_email' => null,
-			'customer_phone' => null,
+		$meta = array_intersect(
+			array(
+				'customer_id'    => null,
+				'customer_name'  => null,
+				'customer_email' => null,
+				'customer_phone' => null,
 			// 'from'           => null,
 			// 'to'             => null,
-		), $args);
+			),
+			$args
+		);
 
 		$postarr = array(
-			'ID' => ( $post ) ? $post->ID : null,
+			'ID'          => ( $post ) ? $post->ID : null,
 			'post_author' => $customer_id,
 			'post_date'   => ( empty( $args['date'] ) ) ? null : esc_attr( $args['date'] ),
 			// 'post_date_gmt' => (empty($args['date_gmt'])) ? null : esc_attr( $args['date_gmt'] ),
@@ -1902,33 +1916,33 @@ class Mltp_Prestation {
 
 		$post = get_post( $post_id );
 
-		if(MultiPass::debug()) {
+		if ( MultiPass::debug() ) {
 			// MultiPass::debug( __CLASS__,__FUNCTION__, $mltp_detail->id );
 
-			if(12665 === $post_id) {
+			if ( 12665 === $post_id ) {
 				$metas = array(
-					'prestation_id' => null,
-					'attendee' => null,
-					'attendee_name' => null,
+					'prestation_id'  => null,
+					'attendee'       => null,
+					'attendee_name'  => null,
 					'attendee_email' => null,
 					'attendee_phone' => null,
-					'customer' => null,
-					'customer_name' => null,
+					'customer'       => null,
+					'customer_name'  => null,
 					'customer_email' => null,
 					'customer_phone' => null,
-					'guest' => null,
-					'guest_name' => null,
-					'guest_email' => null,
-					'guest_phone' => null,
+					'guest'          => null,
+					'guest_name'     => null,
+					'guest_email'    => null,
+					'guest_phone'    => null,
 				);
 
-				$debug['received'] = array_filter($args);
-				$debug['update'] = array_intersect($metas, array_filter($args) );
-				foreach($metas as $meta => $value) {
-					$debug['saved_prestation'][$meta] = get_post_meta($prestation_id, $meta, true);
+				$debug['received'] = array_filter( $args );
+				$debug['update']   = array_intersect( $metas, array_filter( $args ) );
+				foreach ( $metas as $meta => $value ) {
+					$debug['saved_prestation'][ $meta ] = get_post_meta( $prestation_id, $meta, true );
 				}
 
-				MultiPass::debug( __CLASS__,__FUNCTION__, $debug );
+				MultiPass::debug( __CLASS__, __FUNCTION__, $debug );
 			}
 		}
 
