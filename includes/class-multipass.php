@@ -837,7 +837,8 @@ class MultiPass {
 				$source_url = 'https://www.airbnb.fr/hosting/reservations/details/' . $source_id;
 				break;
 
-			case 'booking':
+			case 'booking': // deprecated, use 'bookingcom' instead
+			case 'bookingcom':
 				$source_url = 'https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/booking.html?res_id=' . $source_id;
 				break;
 

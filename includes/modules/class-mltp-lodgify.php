@@ -333,7 +333,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 	function register_sources_filter( $sources ) {
 		$sources['lodgify'] = 'Lodgify';
-		$sources['booking'] = 'Booking.com';
+		$sources['bookingcom'] = 'Booking.com';
 		$sources['airbnb']  = 'Airbnb';
 		$sources['expedia'] = 'Expedia';
 		return $sources;
@@ -720,7 +720,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 			$p_replace = array(
 				'/AirbnbIntegration/' => 'airbnb',
-				'/BookingCom/'        => 'booking',
+				'/BookingCom/'        => 'bookingcom',
 				'/Manual/'            => 'lodgify',
 			);
 			$p_keys    = array_keys( $p_replace );
@@ -736,7 +736,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 				// $origin_url =
 				// }
 				//
-				case 'booking':
+				case 'bookingcom':
 					$origin_details             = explode( '|', $booking['source_text'] );
 					$origin_id                  = $origin_details[0];
 					$item_args['bookingcom_id'] = $origin_id;
