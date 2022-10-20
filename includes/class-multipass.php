@@ -163,8 +163,8 @@ class MultiPass {
 		// require_once MULTIPASS_DIR . 'includes/modules/class-mltp-woocommerce.php';
 		// $this->loaders[] = new Mltp_WooCommerce();
 		//
-		// require_once MULTIPASS_DIR . 'includes/modules/class-mltp-payment-product.php';
-		// $this->loaders[] = new Mltp_Payment_Product();
+		// require_once MULTIPASS_DIR . 'includes/modules/class-mltp-woocommerce-payment.php';
+		// $this->loaders[] = new Mltp_WooCommerce_Payment();
 		// }
 
 		if ( get_transient( 'multipass_rewrite_flush' ) || get_transient( 'multipass_rewrite_version' ) != MULTIPASS_VERSION ) {

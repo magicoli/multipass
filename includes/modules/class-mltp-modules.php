@@ -73,7 +73,7 @@ class Mltp_Modules {
 
 		if ( is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 			require_once MULTIPASS_DIR . 'includes/modules/class-mltp-woocommerce.php';
-			require_once MULTIPASS_DIR . 'includes/modules/class-mltp-payment-product.php';
+			require_once MULTIPASS_DIR . 'includes/modules/class-mltp-woocommerce-payment.php';
 		}
 
 		if ( in_array( 'imap', $enabled ) ) {

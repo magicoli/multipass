@@ -1,9 +1,9 @@
 <?php
 
 /**
- * [Mltp_Payment_Product description]
+ * [Mltp_WooCommerce_Payment description]
  */
-class Mltp_Payment_Product {
+class Mltp_WooCommerce_Payment {
 
 	/*
 	* Bootstraps the class and hooks required actions & filters.
@@ -117,7 +117,7 @@ class Mltp_Payment_Product {
 			'id'       => $prefix . 'payment_link',
 			'type'     => 'custom_html',
 			'class'    => 'payment-link',
-			'callback' => 'Mltp_Payment_Product::get_payment_link',
+			'callback' => 'Mltp_WooCommerce_Payment::get_payment_link',
 		// 'visible' => [
 		// 'when'     => [['balance', '>', 0]],
 		// 'relation' => 'or',
@@ -696,4 +696,4 @@ class Mltp_Payment_Product {
 	}
 }
 
-$this->modules[] = new Mltp_Payment_Product();
+$this->modules[] = new Mltp_WooCommerce_Payment();

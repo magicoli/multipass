@@ -432,7 +432,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		// $p_orders_refunded = 0;
 		// $p_orders_subtotal = 0;
 		//
-		// $payment_products = Mltp_Payment_Product::get_payment_products();
+		// $payment_products = Mltp_WooCommerce_Payment::get_payment_products();
 		// if(!is_array($payment_products)) $payment_products = [ $payment_products ];
 		// $excl_tax = false;
 		//
@@ -630,7 +630,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			$paid       = ( in_array( $order->get_status(), array( 'completed', 'processing' ) ) ) ? $total : null;
 			$balance    = $total - $paid;
 
-			if ( Mltp_Payment_Product::is_payment_product( $product ) ) {
+			if ( Mltp_WooCommerce_Payment::is_payment_product( $product ) ) {
 				$type         = 'payment';
 				$description .= ' #' . $order->ID;
 			} else {
