@@ -704,37 +704,37 @@ class MultiPass {
 	}
 
 	// static function unset_taxonomy_row_actions( $actions, $term ) {
-	// 	$delete_protected = get_term_meta( $term->term_id, 'multipass_generated', true );
-	// 	if ( $delete_protected ) {
-	// 		unset( $actions['delete'] );
-	// 	}
+	// $delete_protected = get_term_meta( $term->term_id, 'multipass_generated', true );
+	// if ( $delete_protected ) {
+	// unset( $actions['delete'] );
+	// }
 	//
-	// 	return $actions;
+	// return $actions;
 	// }
 	//
 	// static function remove_delete_edit_term_form( $term, $taxonomy ) {
-	// 	$delete_protected = get_term_meta( $term->term_id, 'multipass_generated', true );
-	// 	if ( $delete_protected ) {
-	// 		echo '<style type="text/css">#delete-link {display: none !important;}</style>';
-	// 	}
+	// $delete_protected = get_term_meta( $term->term_id, 'multipass_generated', true );
+	// if ( $delete_protected ) {
+	// echo '<style type="text/css">#delete-link {display: none !important;}</style>';
+	// }
 	// }
 	//
 	// static function taxonomy_delete_protection( $term_id ) {
-	// 	$delete_protected = get_term_meta( $term_id, 'multipass_generated', true );
+	// $delete_protected = get_term_meta( $term_id, 'multipass_generated', true );
 	//
-	// 	if ( $delete_protected ) {
-	// 		$term    = get_term( $term_id );
-	// 		$message = sprintf( __( '%1$s is required by %2$s, it cannot be deleted' ), $term->name, MULTIPASS_PLUGIN_NAME );
+	// if ( $delete_protected ) {
+	// $term    = get_term( $term_id );
+	// $message = sprintf( __( '%1$s is required by %2$s, it cannot be deleted' ), $term->name, MULTIPASS_PLUGIN_NAME );
 	//
-	// 		$error = new WP_Error();
-	// 		$error->add( 1, $message );
+	// $error = new WP_Error();
+	// $error->add( 1, $message );
 	//
-	// 		if ( is_ajax() ) {
-	// 			wp_die( -1 );
-	// 		} else {
-	// 			wp_die( $message );
-	// 		}
-	// 	}
+	// if ( is_ajax() ) {
+	// wp_die( -1 );
+	// } else {
+	// wp_die( $message );
+	// }
+	// }
 	// }
 
 	/**
@@ -903,10 +903,7 @@ class MultiPass {
 		foreach ( $terms as $term ) {
 			$sources[ $term->slug ] = $term->name;
 		}
-		/**
-		 * We used to register sources with filters, but I'm not sure it is still
-		 * necessary since we now use taxonomy terms.
-		 */
+
 		$sources = apply_filters( 'multipass_register_terms_mltp_detail-source', $sources );
 
 		return $sources;

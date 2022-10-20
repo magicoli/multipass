@@ -171,18 +171,26 @@ class Mltp_Calendar {
 			'tab'            => 'calendar',
 			'fields'         => array(
 				array(
-					'name'            => __( 'Sections Ordering', 'multipass' ),
-					'id'              => $prefix . 'sections_ordering',
-					'type'            => 'taxonomy_advanced',
-					'desc'            => sprintf(
+					'name'              => __( 'Calendars to display', 'multipass' ),
+					'id'                => $prefix . 'sections_ordering',
+					'type'              => 'taxonomy_advanced',
+					'label_description' => sprintf(
+						__( 'Sections to display on %1$sCalendar page%2$s.', 'multipass' ),
+						'<a href="' . get_admin_url( null, 'admin.php?page=multipass' ) . '">',
+						'</a>',
+					),
+					'taxonomy'          => array( 'calendar-section' ),
+					'field_type'        => 'select_advanced',
+					'multiple'          => true,
+					'select_all_none'   => true,
+				),
+				array(
+					'type' => 'custom_html',
+					'std'  => sprintf(
 						__( 'To create or delete sections, go to %1$sCalendar Sections edit page%2$s.', 'multipass' ),
 						'<a href="' . get_admin_url( null, 'edit-tags.php?taxonomy=calendar-section&post_type=prestation' ) . '">',
 						'</a>',
 					),
-					'taxonomy'        => array( 'calendar-section' ),
-					'field_type'      => 'select_advanced',
-					'multiple'        => true,
-					'select_all_none' => true,
 				),
 			),
 		);
@@ -283,11 +291,11 @@ class Mltp_Calendar {
 				'hierarchical' => false,
 			),
 			// 'default_term' => array(
-			// 	'name' => _x( 'Main', 'Calendar', 'multipass' ),
-			// 	'slug' => 'main',
-			// 	'description' => __('Main calendar', 'multipass'),
+			// 'name' => _x( 'Main', 'Calendar', 'multipass' ),
+			// 'slug' => 'main',
+			// 'description' => __('Main calendar', 'multipass'),
 			// ),
-			'built_in' => true,
+			'built_in'           => true,
 		);
 		register_taxonomy( 'calendar-section', array( 'mltp_resource' ), $args );
 
@@ -304,8 +312,8 @@ class Mltp_Calendar {
 		/**
 		 * Should use default_term instead but we must handle renaming.
 		 */
-		$terms   = get_terms( 'mltp_detail-source' );
-		if(empty($terms)) {
+		$terms = get_terms( 'mltp_detail-source' );
+		if ( empty( $terms ) ) {
 			MultiPass::register_terms(
 				'calendar-section',
 				array(

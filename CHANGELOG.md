@@ -1,6 +1,6 @@
 ## Changelog
 
-### Unreleased (0.2-dev.525)
+### Unreleased (0.2-dev.538)
 - new filter 'multipass_load_modules', allow loading modules from other plugins
 - new Lodgify bookings sync
 - added send payment mail link in calendar modal
@@ -18,7 +18,7 @@
 ### 0.1.2 (alpha release)
 
 - Calendar page:
-  - added settings tab, including Sections Ordering field
+  - added settings tab, including Calendars to display field
   - click on envent opens info modal box
   - added origin sign to timeline events (1 letter, ready for icons via css)
   - main section events bigger (in progress)

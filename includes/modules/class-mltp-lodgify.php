@@ -332,10 +332,10 @@ class Mltp_Lodgify extends Mltp_Modules {
 	}
 
 	function register_sources_filter( $sources ) {
-		$sources['lodgify'] = 'Lodgify';
+		$sources['lodgify']    = 'Lodgify';
 		$sources['bookingcom'] = 'Booking.com';
-		$sources['airbnb']  = 'Airbnb';
-		$sources['expedia'] = 'Expedia';
+		$sources['airbnb']     = 'Airbnb';
+		$sources['expedia']    = 'Expedia';
 		return $sources;
 	}
 
