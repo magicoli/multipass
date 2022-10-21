@@ -788,7 +788,7 @@ class Mltp_Resource {
 				$labels['name'], // string $page_title,
 				'<span class="dashicons dashicons-admin-tools"></span> ' . $labels['menu_name'], // string $menu_title,
 				'mltp_administrator', // string $capability,
-				'edit-tags.php?taxonomy=resource-type', // string $menu_slug,
+				'edit-tags.php?taxonomy=resource-type&post_type=mltp_prestation', // string $menu_slug,
 			);
 		}
 		add_action( 'resource-type_pre_add_form', 'MultiPass::back_to_multipass_button' );

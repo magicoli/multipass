@@ -912,7 +912,7 @@ class Mltp_Item {
 			'publicly_queryable' => false,
 			'hierarchical'       => false,
 			'show_ui'            => true, // false,
-			'show_in_menu'       => false,
+			'show_in_menu'       => true,
 			'show_in_nav_menus'  => false,
 			'show_in_rest'       => false,
 			'show_tagcloud'      => false,
@@ -938,7 +938,7 @@ class Mltp_Item {
 				$labels['name'], // string $page_title,
 				'<span class="dashicons dashicons-admin-tools"></span> ' . $labels['menu_name'], // string $menu_title,
 				'mltp_administrator', // string $capability,
-				'edit-tags.php?taxonomy=mltp_detail-source', // string $menu_slug,
+				'edit-tags.php?taxonomy=mltp_detail-source&post_type=mltp_detail', // string $menu_slug,
 			);
 		}
 		add_action( 'mltp_detail-source_pre_add_form', 'MultiPass::back_to_multipass_button' );

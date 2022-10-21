@@ -305,7 +305,7 @@ class Mltp_Calendar {
 				$labels['name'], // string $page_title,
 				'<span class="dashicons dashicons-admin-tools"></span> ' . $labels['menu_name'], // string $menu_title,
 				'mltp_administrator', // string $capability,
-				'edit-tags.php?taxonomy=calendar-section', // string $menu_slug,
+				'edit-tags.php?taxonomy=calendar-section&post_type=mltp_resource', // string $menu_slug,
 			);
 		}
 
