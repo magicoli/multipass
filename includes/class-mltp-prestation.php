@@ -787,7 +787,7 @@ class Mltp_Prestation {
 				'edit-tags.php?taxonomy=prestation-status&post_type=mltp_prestation', // string $menu_slug,
 			);
 		}
-		add_action( 'prestation_status_pre_add_form', 'MultiPass::back_to_multipass_button' );
+		add_action( 'prestation-status_pre_add_form', 'MultiPass::back_to_multipass_button' );
 
 		/**
 		 * statuses, we use basically the same terminology as

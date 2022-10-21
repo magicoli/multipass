@@ -308,6 +308,7 @@ class Mltp_Calendar {
 				'edit-tags.php?taxonomy=calendar-section&post_type=mltp_resource', // string $menu_slug,
 			);
 		}
+		add_action( 'calendar-section_pre_add_form', 'MultiPass::back_to_multipass_button' );
 
 		/**
 		 * Should use default_term instead but we must handle renaming.
