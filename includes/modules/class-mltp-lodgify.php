@@ -344,7 +344,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		$properties    = get_transient( $transient_key );
 		if ( $properties ) {
 			$check = reset( $properties );
-			if ( ! empty( $check ) && preg_match( '/^Elite Royal Apartment/', $check['name'] ) ) {
+			if ( ! empty( $check ) && preg_match( '/^(Elite Royal Apartment|The Freeman)/', $check['name'] ) ) {
 				error_log( 'Demo data properties received from Lodgify, ignoring.' );
 			} else {
 				return $properties;
@@ -560,38 +560,71 @@ class Mltp_Lodgify extends Mltp_Modules {
 		);
 		$response  = $this->api_request( '/v1/reservation', $api_query );
 		if ( is_wp_error( $response ) ) {
-			$error_code = $response->get_error_code();
-			$error_id   = __CLASS__ . '-' . __METHOD__ . '-' . $error_code;
+			$error_id   = __CLASS__ . '-' . __METHOD__ . '-' . $response->get_error_code();
 			error_log( $error_id . ' ' . print_r( $response, true ) );
-			$message = sprintf( __( '%1$s failed with error %2$s: %3$s', 'multipass' ), __CLASS__ . ' ' . __METHOD__ . '()', $error_code, $response->get_error_message() );
+			$message = sprintf( __( '%1$s failed with error %2$s: %3$s', 'multipass' ), __CLASS__ . ' ' . __METHOD__ . '()', $response->get_error_code(), $response->get_error_message() );
 			add_settings_error( $error_id, $error_id, $message, 'error' );
 			return $response;
 		}
 
-		$items = $response['items'];
+		$bookings = $response['items'];
 		$total = $response['total'];
 		$count = count( $response['items'] );
 
-		while ( ! empty( $response['next'] ) ) {
-			$response = $this->api_request( $response['next'] );
-			if ( is_wp_error( $response ) ) {
-				break;
-			}
+		// while ( ! empty( $response['next'] ) ) {
+		// 	$response = $this->api_request( $response['next'] );
+		// 	if ( is_wp_error( $response ) ) {
+		// 		break;
+		// 	}
+		//
+		// 	$count = count( $response['items'] );
+		// 	$items = array_merge( $items, $response['items'] );
+		// }
 
-			$count = count( $response['items'] );
-			$items = array_merge( $items, $response['items'] );
-		}
-		// $closed = $this->get_closed_periods();
+		/**
+		 * Second request with v2 API to get notes and other details not provided by
+		 * v1. This surely could be improved.
+		 */
+		// $api_query = array(
+		// 	'page' => 1,
+		// 	'size'  => $total,
+		// 	'includeTransactions'=> 'true',
+		// 	'includeExternal' => 'true',
+		// 	'includeQuoteDetails'=>'true',
+		// );
+		// $response  = $this->api_request( '/v2/reservations/bookings', $api_query );
+		// if ( is_wp_error( $response ) ) {
+		// 	$error_id   = __CLASS__ . '-' . __METHOD__ . '-second-round-' . $response->get_error_code();
+		// 	error_log( $error_id . ' ' . print_r( $response, true ) );
+		// 	$message = sprintf( __( '%1$s failed with error %2$s: %3$s', 'multipass' ), __CLASS__ . ' ' . __METHOD__ . '()', $error_code, $response->get_error_message() );
+		// 	add_settings_error( $error_id, $error_id, $message, 'error' );
+		// 	return $response;
+		// }
+		//
+		// if ( ! is_wp_error( $response ) ) {
+		// 	foreach($response['items'] as $booking) {
+		// 		if(empty($booking['id'])) continue;
+		// 		$id = $booking['id'];
+		// 		$bookings[$id] = array_merge_recursive(
+		// 			( isset( $bookings[$id] ) ) ? $bookings[$id] : array(),
+		// 			$booking,
+		// 		);
+		// 		MultiPass::debug($booking['notes'], $bookingss[$id]['notes']);
+		// 	}
+		// 	// MultiPass::debug($bookings);
+		// }
 
-		$count = count( $items );
+		$count = count( $bookings );
 		if ( $count < $total ) {
 			error_log( __CLASS__ . '::' . __METHOD__ . "() partial result $count/$total" );
+		} else {
+			error_log( __CLASS__ . '::' . __METHOD__ . "result $count/$total" );
 		}
 
 		$response = array(
 			'total' => $total,
 			'count' => $count,
-			'items' => $items,
+			'items' => $bookings,
 			// 'closed' => $closed,
 		);
 
@@ -635,39 +668,28 @@ class Mltp_Lodgify extends Mltp_Modules {
 		}
 		$bookings = $api_response['items'];
 
-		foreach ( $bookings as $key => $booking ) {
-			$item_args   = array();
-			$resource_id = Mltp_Resource::get_resource_id( 'lodgify', $booking['property_id'] );
-			if ( ! $resource_id ) {
-				// No resource associated with this property.
+		$i = 0;
+		foreach ( $bookings as $key => $data ) {
+			$booking = new Mltp_Lodgify_Booking( $data );
+			if ( is_wp_error( $api_response ) ) {
+				error_log( $booking->get_error_message() );
 				continue;
 			}
-			$resource = new Mltp_Resource( $resource_id );
-			$name     = $resource->name;
-
-			$status = $booking['status'];
-
-			if ( in_array( $status, array( 'Declined', 'Open', 'Unavailable' ) ) ) {
+			if( ! $booking->resource_id ) {
+				// MultiPass::debug('no resource ', $booking);
 				continue;
 			}
 
-			if ( ! in_array( $status, array( 'Booked', 'Tentative' ) ) ) {
-				// TODO: ensure already imported booking status is set accordingly
-				error_log(
-					join(
-						', ',
-						array(
-							'status'   => $booking['status'],
-							'guest'    => $booking['guest']['name'],
-							'property' => $name,
-							'dates'    => $booking['arrival'] . ' - ' . $booking['departure'],
-						)
-					)
-				);
+			if ( in_array( $booking->status, array( 'Declined', 'Open', 'Unavailable' ) ) ) {
+				// MultiPass::debug('wrong status ', $booking);
 				continue;
 			}
 
-			$booking = array_replace_recursive(
+			MultiPass::debug('success ', $booking);
+			if($i++ > 5) break; // DEBUG
+			continue; // DEBUG
+
+			$data = array_replace_recursive(
 				array(
 					'language'      => null,
 					'canceled_at'   => null,
@@ -682,98 +704,26 @@ class Mltp_Lodgify extends Mltp_Modules {
 					// 'amount_paid' => null,
 					// 'amount_due' => null,
 					'user_id'       => null,
+					'notes'       => null,
 				),
-				$booking
+				$data
 			);
-
-			$confirmed = ( in_array( $status, array( 'Booked' ) ) ) ? true : false;
-
-			$from        = strtotime( $booking['arrival'] );
-			$to          = strtotime( $booking['departure'] );
-			$dates       = array(
-				'from' => $from,
-				'to'   => $to,
-			);
-			$date_range  = MultiPass::format_date_range( $dates );
-			$attendees   = $booking['rooms'][0]['people'];
-			$description = sprintf(
-				'%s (%sp, %s)',
-				$name,
-				$attendees,
-				$date_range,
-			);
-			$subtotal    = $booking['subtotals']['stay'] + $booking['subtotals']['fees'] + $booking['subtotals']['addons'];
-			$discount    = ( empty( $booking['subtotals']['promotions'] ) ) ? null : $booking['subtotals']['promotions'];
-			if ( empty( $subtotal ) ) {
-				$subtotal = $booking['total_amount'] - $discount;
-			}
-			if ( ! empty( $booking['amount_due'] ) ) {
-				$balance = $booking['amount_due'];
-			} elseif ( ! empty( $booking['amount_to_pay'] ) ) {
-				$balance = $booking['amount_to_pay'];
-			} else {
-				$balance = $booking['total_amount'] - $booking['total_paid'];
-			}
-
-			if ( 'AAAAAAAAAAAAAAAAAAAAAA' === $booking['guest']['id'] ) {
-				// TODO: find closed period comment and use it as client name
-				$booking['guest']['name'] = sprintf( __( 'Closed in %s', 'multipass' ), 'Lodgify' );
-				// $source_url               = 'https://app.lodgify.com/#/reservation/calendar/multi/closed-period/' . $booking['id'];
-				$status = 'closed-period';
-				// $booking['status'] = 'closed';
-				// $booking['closed_period'] = true;
-				$source_url = MultiPass::get_source_url( 'lodgify', $booking['id'], null, array( 'type' => $status ) );
-			} else {
-				// $source_url = 'https://app.lodgify.com/#/reservation/inbox/B' . $booking['id'];
-				$source_url = MultiPass::get_source_url( 'lodgify', $booking['id'] );
-			}
-
-			$p_replace = array(
-				'/AirbnbIntegration/' => 'airbnb',
-				'/BookingCom/'        => 'bookingcom',
-				'/Manual/'            => 'lodgify',
-			);
-			$p_keys    = array_keys( $p_replace );
-			$origin    = sanitize_title( preg_replace( $p_keys, $p_replace, $booking['source'] ) );
-			switch ( $origin ) {
-				case 'airbnb':
-					$origin_details       = json_decode( $booking['source_text'] );
-					$origin_id            = $origin_details->confirmationCode;
-					$sources['airbnb_id'] = $origin_id;
-					// $origin_url = (empty($origin_id)) ? $source_url : 'https://www.airbnb.fr/hosting/reservations/details/HMPJMKS2P4' . $origin_id;
-					break;
-				// if(!empty($origin_details['confirmationCode'])) {
-				// $origin_url =
-				// }
-				//
-				case 'bookingcom':
-					$origin_details             = explode( '|', $booking['source_text'] );
-					$origin_id                  = $origin_details[0];
-					$item_args['bookingcom_id'] = $origin_id;
-					// $origin_url = (empty($origin_id)) ? $source_url : 'https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/booking.html?res_id=' . $origin_id;
-					break;
-
-				// default:
-				// $origin_url = $source_url;
-			}
-			$origin_url                         = MultiPass::get_source_url( $origin, $origin_id, $source_url );
-			$item_args[ $origin . '_edit_url' ] = $origin_url;
 
 			$item_args = array_merge_recursive(
 				array(
-					'customer_name'       => $booking['guest']['name'],
-					'customer_email'      => $booking['guest']['email'],
-					'customer_phone'      => $booking['guest']['phone'],
+					'customer_name'       => $data['guest']['name'],
+					'customer_email'      => $data['guest']['email'],
+					'customer_phone'      => $data['guest']['phone'],
 					// 'confirmed' => $confirmed,
 					'from'                => $from,
 					'to'                  => $to,
 					'source'              => 'lodgify',
-					'source_id'           => $booking['id'],
+					'source_id'           => $data['id'],
 					'source_url'          => $source_url,
-					'lodgify_uuid'        => join( '-', array( $booking['id'], $booking['user_id'], $booking['property_id'] ) ),
-					'lodgify_id'          => $booking['id'],
+					'lodgify_uuid'        => join( '-', array( $data['id'], $data['user_id'], $data['property_id'] ) ),
+					'lodgify_id'          => $data['id'],
 					'lodgify_edit_url'    => $source_url,
-					'lodgify_property_id' => $booking['property_id'],
+					'lodgify_property_id' => $data['property_id'],
 					'origin'              => $origin,
 					'origin_url'          => $origin_url,
 					// 'edit_url'            => get_edit_post_link( $prestation->id ),
@@ -783,23 +733,23 @@ class Mltp_Lodgify extends Mltp_Modules {
 					'confirmed'           => $confirmed,
 					'description'         => $description,
 					'source_details'      => array(
-						'rooms'         => $booking['rooms'],
-						'language'      => $booking['language'],
-						'created'       => strtotime( $booking['created_at'] ),
-						'updated'       => strtotime( $booking['updated_at'] ),
-						'canceled'      => strtotime( $booking['canceled_at'] ),
-						'is_deleted'    => $booking['is_deleted'],
-						'currency_code' => $booking['currency_code'],
-						'currency_code' => $booking['currency_code'],
-						'quote'         => $booking['quote'],
+						'rooms'         => $data['rooms'],
+						'language'      => $data['language'],
+						'created'       => strtotime( $data['created_at'] ),
+						'updated'       => strtotime( $data['updated_at'] ),
+						'canceled'      => strtotime( $data['canceled_at'] ),
+						'is_deleted'    => $data['is_deleted'],
+						'currency_code' => $data['currency_code'],
+						'currency_code' => $data['currency_code'],
+						'quote'         => $data['quote'],
 					),
-					// 'prestation_id'       => (!empty($booking['prestation_id'])) ? ['prestation_id'] : null,
+					// 'prestation_id'       => (!empty($data['prestation_id'])) ? ['prestation_id'] : null,
 					'customer'            => array(
 						// TODO: try to get WP user if exists
 						// 'user_id' => $customer_id,
-						'name'  => $booking['guest']['name'],
-						'email' => $booking['guest']['email'],
-						'phone' => $booking['guest']['phone'],
+						'name'  => $data['guest']['name'],
+						'email' => $data['guest']['email'],
+						'phone' => $data['guest']['phone'],
 					),
 					'dates'               => $dates,
 					'attendees'           => $attendees,
@@ -810,13 +760,14 @@ class Mltp_Lodgify extends Mltp_Modules {
 						'sub_total' => $subtotal,
 					),
 					'discount'            => $discount,
-					'total'               => $booking['total_amount'],
+					'total'               => $data['total_amount'],
 					// // TODO: ensure paid status is updated immediatly, not after second time save
 					// //
-					'paid'                => $booking['total_paid'],
+					'paid'                => $data['total_paid'],
 					'balance'             => $balance,
 					'type'                => 'booking',
-				// 'debug'               => $booking,
+					'notes'								=> $data['notes'],
+				// 'debug'               => $data,
 				),
 				$item_args
 			);
@@ -839,18 +790,19 @@ class Mltp_Lodgify extends Mltp_Modules {
 					'guest_name'     => null,
 					'guest_email'    => null,
 					'guest_phone'    => null,
+					'notes' => null,
 				);
 
 				$prestation_id = get_post_meta( $mltp_detail->id, 'prestation_id', true );
-				if ( 12661 === $mltp_detail->id ) {
-					$debug['received'] = array_filter( $booking );
+				if ( 12772 === $mltp_detail->id ) {
+					$debug['received'] = array_filter( $data );
 					$debug['update']   = array_filter( $item_args );
 					foreach ( $metas as $meta => $value ) {
 						$debug['saved_prestation'][ $meta ] = get_post_meta( $prestation_id, $meta, true );
 						$debug['saved_item'][ $meta ]       = get_post_meta( $mltp_detail->id, $meta, true );
 					}
 
-					// MultiPass::debug( __CLASS__,__FUNCTION__, $debug );
+					MultiPass::debug( __CLASS__,__FUNCTION__, $debug );
 				}
 			}
 		}
@@ -872,5 +824,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 	}
 
 }
+
+require_once MULTIPASS_DIR . 'includes/modules/class-mltp-lodgify-booking.php';
 
 $this->modules[] = new Mltp_Lodgify();
