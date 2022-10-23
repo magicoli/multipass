@@ -183,12 +183,12 @@ class Mltp_Lodgify extends Mltp_Modules {
 				'settings_pages' => array( 'multipass-lodgify' ),
 				'fields'         => array(
 					array(
-						'name'              => __( 'Synchronize now', 'multipass' ),
-						'id'                => $prefix . 'sync_now',
+						'name'              => __( 'Import now', 'multipass' ),
+						'id'                => $prefix . 'import_now',
 						'type'              => 'switch',
-						'desc'              => __( 'Sync Lodgify bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multipass' ),
+						'desc'              => __( 'Import Lodgify bookings, create or resync matching prestations and entries. Only useful after plugin activation or if out of sync.', 'multipass' ),
 						'style'             => 'rounded',
-						'sanitize_callback' => array( $this, 'sync_now' ),
+						'sanitize_callback' => array( $this, 'import_now' ),
 						'save_field'        => false,
 						'visible'           => array(
 							'when'     => array(
@@ -600,22 +600,32 @@ class Mltp_Lodgify extends Mltp_Modules {
 	}
 
 	/**
-	 * Sync bookings from Lodgify.
+	 * Callback for "Import now" Lodgify settings switch.
 	 *
-	 * TODO: Include blocked dates.
-	 * TODO: Check why existing prestation from other source is not found.
-	 * TODO: Fix bug when name contains '&'.
-	 *
-	 * @param  boolean $value                  Sync now.
-	 * @param  array   $field                  Field from settings.
-	 * @param  [type]  $oldvalue               Always false
+	 * @param  boolean $value      Checkbox value, process is true.
+	 * @param  array   $field      Field from settings.
+	 * @param  boolean $oldvalue  Always void
 	 * @return void
 	 */
-	function sync_now( $value = true, $field = array(), $oldvalue = null ) {
+	function import_now( $value = true, $field = array(), $oldvalue = null ) {
 		if ( ! $value ) {
 			return;
 		}
+		// $this->example_request = new Mltp_Async_Request();
+		// $this->example_request->data( array( $this ) );
+		// $this->example_request->dispatch();
 
+		$this->import();
+	}
+
+	/**
+	 * Import bookings from Lodgify. Create entries for new bookings, update
+	 * exissting ones. Try to match existing prestation (same client, overlapping
+	 * period), create new prestation otherwise.
+	 *
+	 * TODO: Fix bug when name contains special characters.
+	 */
+	function import() {
 		$properties = $this->get_properties();
 
 		$api_response = $this->get_bookings();
@@ -845,7 +855,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 			}
 		}
 
-		// if(isset($_REQUEST['lodgify_sync_now']) && $_REQUEST['lodgify_sync_now'] == true) {
+		// if(isset($_REQUEST['lodgify_import_now']) && $_REQUEST['lodgify_import_now'] == true) {
 		// $orders = wc_get_orders( array(
 		// 'limit'        => -1, // Query all orders
 		// 'orderby'      => 'date',
