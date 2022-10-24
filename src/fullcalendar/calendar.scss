@@ -167,13 +167,15 @@
       .fc-event-title-container:before {
         /*  content: 'B';*/
         display: inline-block;
-        // margin-right: 0.25em;
+        margin-right: 0.25em;
         margin-left: -0.5em;
         background: white;
         border-radius: 1em;
         text-align: center;
         font-weight: 900;
         opacity: 50%;
+        float: left;
+        overflow: hidden;
       }
       .fc-event-title-container {
         white-space: nowrap;
@@ -182,15 +184,45 @@
       }
     }
 
-    // .fc-event-start.origin-hoteldruid .fc-event-title-container:before { content: 'HD'; }
-    .fc-event-start.origin-lodgify .fc-event-title-container:before { content: 'L'; }
-    .fc-event-start.origin-woocommerce .fc-event-title-container:before { content: 'W'; }
+    .fc-event-start .fc-event-title-container::before {
+      background-size: 50%;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
 
-    .fc-event-start.origin-airbnb .fc-event-title-container:before { content: 'Air'; }
-    .fc-event-start.origin-abritel .fc-event-title-container:before { content: 'Abr'; }
-    .fc-event-start.origin-bookingcom .fc-event-title-container:before { content: 'B.'; }
+    // .fc-event-start.origin-hoteldruid .fc-event-title-container:before { content: 'HD'; }
+    // .fc-event-start.origin-lodgify .fc-event-title-container:before { content: 'L'; }
     .fc-event-start.origin-expedia .fc-event-title-container:before { content: 'E'; }
     .fc-event-start.origin-hbook .fc-event-title-container:before { content: 'HB'; }
+
+    .fc-event-start.origin-bookingcom .fc-event-title-container::before {
+      content: ' ';
+      background-image: url('http://dev.gites-mosaiques.com/wp-content/plugins/multipass/images/bookingcom.svg');
+    }
+
+    .fc-event-start.origin-lodgify .fc-event-title-container::before {
+      content: ' ';
+      background-image: url('http://dev.gites-mosaiques.com/wp-content/plugins/multipass/images/lodgify-color.png');
+    }
+
+    .fc-event-start.origin-airbnb .fc-event-title-container::before {
+      content: ' ';
+      background-image: url('http://dev.gites-mosaiques.com/wp-content/plugins/multipass/images/airbnb.png');
+    }
+
+    .fc-event-start.origin-woocommerce .fc-event-title-container::before {
+      content: 'W';
+      color: transparent;
+      background-image: url('http://dev.gites-mosaiques.com/wp-content/plugins/multipass/images/woo.png');
+      background-size: 75%;
+    }
+
+    .fc-event-start.origin-abritel .fc-event-title-container::before,
+    .fc-event-start.origin-homeaway .fc-event-title-container::before {
+      content: ' ';
+      background-image: url('http://dev.gites-mosaiques.com/wp-content/plugins/multipass/images/homeaway.png');
+      background-size: 60%;
+    }
 
   }
 
