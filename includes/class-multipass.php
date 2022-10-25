@@ -573,10 +573,10 @@ class MultiPass {
 		$dates = array_filter( $dates );
 
 		if ( count( $dates ) == 2 ) {
-			if(!isset($dates['from'])) {
-				$dates = array (
+			if ( ! isset( $dates['from'] ) ) {
+				$dates = array(
 					'from' => $dates[0],
-					'to' => $dates[1],
+					'to'   => $dates[1],
 				);
 			}
 			$datetype = constant( 'IntlDateFormatter::' . preg_replace( '/RELATIVE_/', '', $datetype_str ) );

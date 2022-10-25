@@ -560,7 +560,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		);
 		$response  = $this->api_request( '/v1/reservation', $api_query );
 		if ( is_wp_error( $response ) ) {
-			$error_id   = __CLASS__ . '-' . __METHOD__ . '-' . $response->get_error_code();
+			$error_id = __CLASS__ . '-' . __METHOD__ . '-' . $response->get_error_code();
 			error_log( $error_id . ' ' . print_r( $response, true ) );
 			$message = sprintf( __( '%1$s failed with error %2$s: %3$s', 'multipass' ), __CLASS__ . ' ' . __METHOD__ . '()', $response->get_error_code(), $response->get_error_message() );
 			add_settings_error( $error_id, $error_id, $message, 'error' );
@@ -568,17 +568,17 @@ class Mltp_Lodgify extends Mltp_Modules {
 		}
 
 		$bookings = $response['items'];
-		$total = $response['total'];
-		$count = count( $response['items'] );
+		$total    = $response['total'];
+		$count    = count( $response['items'] );
 
 		// while ( ! empty( $response['next'] ) ) {
-		// 	$response = $this->api_request( $response['next'] );
-		// 	if ( is_wp_error( $response ) ) {
-		// 		break;
-		// 	}
+		// $response = $this->api_request( $response['next'] );
+		// if ( is_wp_error( $response ) ) {
+		// break;
+		// }
 		//
-		// 	$count = count( $response['items'] );
-		// 	$items = array_merge( $items, $response['items'] );
+		// $count = count( $response['items'] );
+		// $items = array_merge( $items, $response['items'] );
 		// }
 
 		/**
@@ -586,32 +586,32 @@ class Mltp_Lodgify extends Mltp_Modules {
 		 * v1. This surely could be improved.
 		 */
 		// $api_query = array(
-		// 	'page' => 1,
-		// 	'size'  => $total,
-		// 	'includeTransactions'=> 'true',
-		// 	'includeExternal' => 'true',
-		// 	'includeQuoteDetails'=>'true',
+		// 'page' => 1,
+		// 'size'  => $total,
+		// 'includeTransactions'=> 'true',
+		// 'includeExternal' => 'true',
+		// 'includeQuoteDetails'=>'true',
 		// );
 		// $response  = $this->api_request( '/v2/reservations/bookings', $api_query );
 		// if ( is_wp_error( $response ) ) {
-		// 	$error_id   = __CLASS__ . '-' . __METHOD__ . '-second-round-' . $response->get_error_code();
-		// 	error_log( $error_id . ' ' . print_r( $response, true ) );
-		// 	$message = sprintf( __( '%1$s failed with error %2$s: %3$s', 'multipass' ), __CLASS__ . ' ' . __METHOD__ . '()', $error_code, $response->get_error_message() );
-		// 	add_settings_error( $error_id, $error_id, $message, 'error' );
-		// 	return $response;
+		// $error_id   = __CLASS__ . '-' . __METHOD__ . '-second-round-' . $response->get_error_code();
+		// error_log( $error_id . ' ' . print_r( $response, true ) );
+		// $message = sprintf( __( '%1$s failed with error %2$s: %3$s', 'multipass' ), __CLASS__ . ' ' . __METHOD__ . '()', $error_code, $response->get_error_message() );
+		// add_settings_error( $error_id, $error_id, $message, 'error' );
+		// return $response;
 		// }
 		//
 		// if ( ! is_wp_error( $response ) ) {
-		// 	foreach($response['items'] as $booking) {
-		// 		if(empty($booking['id'])) continue;
-		// 		$id = $booking['id'];
-		// 		$bookings[$id] = array_merge_recursive(
-		// 			( isset( $bookings[$id] ) ) ? $bookings[$id] : array(),
-		// 			$booking,
-		// 		);
-		// 		MultiPass::debug($booking['notes'], $bookingss[$id]['notes']);
-		// 	}
-		// 	// MultiPass::debug($bookings);
+		// foreach($response['items'] as $booking) {
+		// if(empty($booking['id'])) continue;
+		// $id = $booking['id'];
+		// $bookings[$id] = array_merge_recursive(
+		// ( isset( $bookings[$id] ) ) ? $bookings[$id] : array(),
+		// $booking,
+		// );
+		// MultiPass::debug($booking['notes'], $bookingss[$id]['notes']);
+		// }
+		// MultiPass::debug($bookings);
 		// }
 
 		$count = count( $bookings );
@@ -675,7 +675,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 				error_log( $booking->get_error_message() );
 				continue;
 			}
-			if( ! $booking->resource_id ) {
+			if ( ! $booking->status ) {
 				// MultiPass::debug('no resource ', $booking);
 				continue;
 			}
@@ -685,8 +685,10 @@ class Mltp_Lodgify extends Mltp_Modules {
 				continue;
 			}
 
-			MultiPass::debug('success ', $booking);
-			if($i++ > 5) break; // DEBUG
+			MultiPass::debug( 'success ', $booking );
+			if ( $i++ > 5 ) {
+				break; // DEBUG
+			}
 			continue; // DEBUG
 
 			$data = array_replace_recursive(
@@ -704,7 +706,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 					// 'amount_paid' => null,
 					// 'amount_due' => null,
 					'user_id'       => null,
-					'notes'       => null,
+					'notes'         => null,
 				),
 				$data
 			);
@@ -766,7 +768,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 					'paid'                => $data['total_paid'],
 					'balance'             => $balance,
 					'type'                => 'booking',
-					'notes'								=> $data['notes'],
+					'notes'               => $data['notes'],
 				// 'debug'               => $data,
 				),
 				$item_args
@@ -790,7 +792,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 					'guest_name'     => null,
 					'guest_email'    => null,
 					'guest_phone'    => null,
-					'notes' => null,
+					'notes'          => null,
 				);
 
 				$prestation_id = get_post_meta( $mltp_detail->id, 'prestation_id', true );
@@ -802,7 +804,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 						$debug['saved_item'][ $meta ]       = get_post_meta( $mltp_detail->id, $meta, true );
 					}
 
-					MultiPass::debug( __CLASS__,__FUNCTION__, $debug );
+					MultiPass::debug( __CLASS__, __FUNCTION__, $debug );
 				}
 			}
 		}
