@@ -677,7 +677,7 @@ class Mltp_Calendar {
 				__( 'Balance', 'multipass' )             => MultiPass::price_with_links( $prestation, $prestation->balance ),
 			),
 			'notes'    => array(
-				__( 'Notes', 'multipass' ) => $event->notes,
+				__( 'Notes', 'multipass' ) => get_post_meta($prestation->id, 'notes', true),
 			),
 		);
 		$rows = array();

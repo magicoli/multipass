@@ -453,15 +453,15 @@ class Mltp_Prestation {
 			),
 		);
 		$meta_boxes['prestation-notes'] = array(
-			'title'      => __( 'Notes', 'multipass' ),
+			// 'title'      => __( 'Notes', 'multipass' ),
 			'id'         => 'prestation-notes',
 			'post_types' => array( 'mltp_prestation' ),
 			// 'context'    => 'after_title',
-			// 'style'      => 'seamless',
-			'autosave'   => true,
+			'style'      => 'seamless',
+			// 'autosave'   => true,
 			'fields'     => array(
 				array(
-					// 'name'    => __( 'Notes', 'prestations' ),
+					'name'    => __( 'Notes', 'prestations' ),
 					'id'      => $prefix . 'notes',
 					'type'    => 'wysiwyg',
 					'raw'     => false,
@@ -470,15 +470,15 @@ class Mltp_Prestation {
 						'teeny'             => true,
 						'media_buttonsbool' => false,
 					),
-					'columns' => 6,
+					// 'columns' => 6,
 				),
-				array(
-					// 'name'    => __( 'Notes', 'prestations' ),
-					'id'       => $prefix . 'details_notes',
-					'type'     => 'custom_html',
-					'callback' => 'Mltp_Prestation::render_details_notes',
-					'columns'  => 6,
-				),
+				// array(
+				// 	// 'name'    => __( 'Notes', 'prestations' ),
+				// 	'id'       => $prefix . 'details_notes',
+				// 	'type'     => 'custom_html',
+				// 	'callback' => 'Mltp_Prestation::render_details_notes',
+				// 	'columns'  => 6,
+				// ),
 			),
 		);
 
@@ -1416,8 +1416,11 @@ class Mltp_Prestation {
 			if ( ! empty( $item['dates'] ) ) {
 				$dates = array_merge( $dates, array_values( $item['dates'] ) );
 			}
+			if(!empty($item['notes'])) $notes[] = $item['notes'];
 		}
-
+		if(!empty($notes)) {
+			$updates['notes'] = '<p>' . join( '</p><p>', array_unique($notes) ) . '</p>';
+		}
 		if ( is_array( $manual_items ) ) {
 
 			foreach ( $manual_items as $item ) {
