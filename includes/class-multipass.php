@@ -1056,9 +1056,34 @@ class MultiPass {
 		return join( '>', $split );
 	}
 
+	static function is_phone( $string ) {
+		return preg_match('/^\+[0-9 ()\.-]+$/', $string);
+		// $phoneNumberUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+		// $phoneNumberObject = $phoneNumberUtil->parse($string, 'FR');
+		// return $phoneNumberUtil->isValidNumber($phoneNumberObject);
+	}
+
 	static function link( $url, $args = array(), $attr = array() ) {
 		if ( empty( $url ) ) {
 			return;
+		}
+
+		$text = empty( $args['text'] ) ? null : $args['text'];
+		$icon = empty( $args['icon'] ) ? null : $args['icon'];
+		if(is_email($url)) {
+			$text = ( empty($args['text'])) ? $url : $args['text'];
+			$url = "mailto:$url";
+		} else if(MultiPass::is_phone($url)) {
+			$phoneNumberUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+			$phoneNumberObject = $phoneNumberUtil->parse($url, 'FR');
+			$number = $phoneNumberUtil->format($phoneNumberObject, \libphonenumber\PhoneNumberFormat::E164);
+			if(empty($args['text'])) {
+				$text = $phoneNumberUtil->format($phoneNumberObject, \libphonenumber\PhoneNumberFormat::INTERNATIONAL);
+			} else {
+				$text = $args['text'];
+			}
+			// $url = 'tel:' . $number;
+			$url = $phoneNumberUtil->format($phoneNumberObject, \libphonenumber\PhoneNumberFormat::RFC3966);
 		}
 
 		$attr = array_merge(
@@ -1069,8 +1094,6 @@ class MultiPass {
 			$attr
 		);
 
-		$text = empty( $args['text'] ) ? null : $args['text'];
-		$icon = empty( $args['icon'] ) ? null : $args['icon'];
 
 		if ( self::is_external( $url ) ) {
 			$attr['target'] = '_blank';
