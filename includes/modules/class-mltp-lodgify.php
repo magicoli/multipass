@@ -685,90 +685,16 @@ class Mltp_Lodgify extends Mltp_Modules {
 				continue;
 			}
 
-			MultiPass::debug( 'success ', $booking );
+			MultiPass::debug( 'success ', $data, $booking );
 			if ( $i++ > 5 ) {
 				break; // DEBUG
 			}
 			continue; // DEBUG
 
-			$data = array_replace_recursive(
-				array(
-					'language'      => null,
-					'canceled_at'   => null,
-					'currency_code' => null,
-					'quote'         => null,
-					'subtotals'     => array(
-						'promotions' => null,
-						'stay'       => null,
-						'fees'       => null,
-						'addons'     => null,
-					),
-					// 'amount_paid' => null,
-					// 'amount_due' => null,
-					'user_id'       => null,
-					'notes'         => null,
-				),
-				$data
-			);
-
 			$item_args = array_merge_recursive(
 				array(
-					'customer_name'       => $data['guest']['name'],
-					'customer_email'      => $data['guest']['email'],
-					'customer_phone'      => $data['guest']['phone'],
-					// 'confirmed' => $confirmed,
-					'from'                => $from,
-					'to'                  => $to,
-					'source'              => 'lodgify',
-					'source_id'           => $data['id'],
-					'source_url'          => $source_url,
-					'lodgify_uuid'        => join( '-', array( $data['id'], $data['user_id'], $data['property_id'] ) ),
-					'lodgify_id'          => $data['id'],
-					'lodgify_edit_url'    => $source_url,
-					'lodgify_property_id' => $data['property_id'],
-					'origin'              => $origin,
-					'origin_url'          => $origin_url,
-					// 'edit_url'            => get_edit_post_link( $prestation->id ),
-					// 'view_url'            => get_edit_post_link( $prestation->id ),
-					'resource_id'         => $resource_id,
-					'status'              => $status,
-					'confirmed'           => $confirmed,
-					'description'         => $description,
-					'source_details'      => array(
-						'rooms'         => $data['rooms'],
-						'language'      => $data['language'],
-						'created'       => strtotime( $data['created_at'] ),
-						'updated'       => strtotime( $data['updated_at'] ),
-						'canceled'      => strtotime( $data['canceled_at'] ),
-						'is_deleted'    => $data['is_deleted'],
-						'currency_code' => $data['currency_code'],
-						'currency_code' => $data['currency_code'],
-						'quote'         => $data['quote'],
-					),
-					// 'prestation_id'       => (!empty($data['prestation_id'])) ? ['prestation_id'] : null,
-					'customer'            => array(
-						// TODO: try to get WP user if exists
-						// 'user_id' => $customer_id,
-						'name'  => $data['guest']['name'],
-						'email' => $data['guest']['email'],
-						'phone' => $data['guest']['phone'],
-					),
-					'dates'               => $dates,
-					'attendees'           => $attendees,
+					'attendees' => $attendees,
 					// // 'beds' => $beds,
-					'price'               => array(
-						// 'quantity'  => 1,
-						'unit'      => $subtotal,
-						'sub_total' => $subtotal,
-					),
-					'discount'            => $discount,
-					'total'               => $data['total_amount'],
-					// // TODO: ensure paid status is updated immediatly, not after second time save
-					// //
-					'paid'                => $data['total_paid'],
-					'balance'             => $balance,
-					'type'                => 'booking',
-					'notes'               => $data['notes'],
 				// 'debug'               => $data,
 				),
 				$item_args
