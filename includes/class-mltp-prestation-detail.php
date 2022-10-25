@@ -1133,6 +1133,11 @@ class Mltp_Item {
 			wp_update_post( $post_update );
 		}
 
+		$prestation = new Mltp_Prestation($prestation_id);
+		if($prestation) {
+			$prestation->update();
+		}
+		
 		add_action( current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3 );
 	}
 
