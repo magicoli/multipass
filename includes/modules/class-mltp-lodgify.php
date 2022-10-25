@@ -544,7 +544,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 	 * @return array API response as array
 	 */
 	function get_bookings() {
-		ini_set('max_execution_time', 300);
+		ini_set( 'max_execution_time', 300 );
 		$cache_key = sanitize_title( __CLASS__ . '-' . __METHOD__ );
 		$response  = wp_cache_get( $cache_key );
 		if ( $response ) {
@@ -578,7 +578,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 				break;
 			}
 
-			$count = count( $response['items'] );
+			$count    = count( $response['items'] );
 			$bookings = array_merge( $bookings, $response['items'] );
 		}
 
@@ -589,15 +589,15 @@ class Mltp_Lodgify extends Mltp_Modules {
 		// $total = 10; // DEBUG
 		// $bookings = array(); // DEBUG
 		$api_query = array(
-			'page' => 1,
-			'size'  => $total,
-			'includeTransactions'=> 'true',
-			'includeExternal' => 'true',
-			'includeQuoteDetails'=>'true',
+			'page'                => 1,
+			'size'                => $total,
+			'includeTransactions' => 'true',
+			'includeExternal'     => 'true',
+			'includeQuoteDetails' => 'true',
 		);
 		$response  = $this->api_request( '/v2/reservations/bookings', $api_query );
 		if ( is_wp_error( $response ) ) {
-			$error_id   = __CLASS__ . '-' . __METHOD__ . '-second-round-' . $response->get_error_code();
+			$error_id = __CLASS__ . '-' . __METHOD__ . '-second-round-' . $response->get_error_code();
 			error_log( $error_id . ' ' . print_r( $response, true ) );
 			$message = sprintf( __( '%1$s failed with error %2$s: %3$s', 'multipass' ), __CLASS__ . ' ' . __METHOD__ . '()', $response->get_error_code(), $response->get_error_message() );
 			add_settings_error( $error_id, $error_id, $message, 'error' );
@@ -606,11 +606,13 @@ class Mltp_Lodgify extends Mltp_Modules {
 		$bookings = array_merge( $bookings, $response['items'] );
 
 		if ( ! is_wp_error( $response ) ) {
-			foreach($response['items'] as $booking) {
-				if(empty($booking['id'])) continue;
-				$id = $booking['id'];
-				$bookings[$id] = array_merge_recursive(
-					( isset( $bookings[$id] ) ) ? $bookings[$id] : array(),
+			foreach ( $response['items'] as $booking ) {
+				if ( empty( $booking['id'] ) ) {
+					continue;
+				}
+				$id              = $booking['id'];
+				$bookings[ $id ] = array_merge_recursive(
+					( isset( $bookings[ $id ] ) ) ? $bookings[ $id ] : array(),
 					$booking,
 				);
 				// MultiPass::debug($booking['notes'], $bookingss[$id]['notes']);

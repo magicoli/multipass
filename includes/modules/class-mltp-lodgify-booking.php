@@ -36,22 +36,22 @@ class Mltp_Lodgify_Booking {
 		$confirmed = ( in_array( $status, array( 'booked' ) ) ) ? true : false;
 		if ( isset( $data['canceled_at'] ) ) {
 			$canceled = strtotime( $data['canceled_at'] );
-		} else if ( isset( $data['date_deleted'] ) ) {
+		} elseif ( isset( $data['date_deleted'] ) ) {
 			$canceled = strtotime( $data['date_deleted'] );
 		} else {
 			$canceled = null;
 		}
 
-		$from      = strtotime( $data['arrival'] );
-		$to        = strtotime( $data['departure'] );
-		$guests    = ( isset ( $data['people'] ) ) ? $data['people'] : $data['rooms'][0]['people'];
+		$from   = strtotime( $data['arrival'] );
+		$to     = strtotime( $data['departure'] );
+		$guests = ( isset( $data['people'] ) ) ? $data['people'] : $data['rooms'][0]['people'];
 
-		$deposit = null;
+		$deposit          = null;
 		$deposit_due_date = null;
-		if(isset($data['quote']['scheduled_transactions'])) {
-			foreach ($data['quote']['scheduled_transactions'] as $key => $scheduled) {
-				if( 'PrePayment' === $scheduled['type']) {
-					$deposit += $scheduled['amount'];
+		if ( isset( $data['quote']['scheduled_transactions'] ) ) {
+			foreach ( $data['quote']['scheduled_transactions'] as $key => $scheduled ) {
+				if ( 'PrePayment' === $scheduled['type'] ) {
+					$deposit         += $scheduled['amount'];
 					$deposit_due_date = strtotime( $scheduled['due_at'] );
 				}
 			}
@@ -69,8 +69,8 @@ class Mltp_Lodgify_Booking {
 		$subtotal  = $subtotals['stay'] + $subtotals['fees'] + $subtotals['addons'];
 		$discount  = ( empty( $subtotals['promotions'] ) ) ? null : -$subtotals['promotions'];
 
-		$language = isset($data['language']) ? isset($data['language']) : $data['guest']['locale'];
-		$paid      = isset($data['total_paid']) ? $data['total_paid'] : $data['amount_paid'];
+		$language = isset( $data['language'] ) ? isset( $data['language'] ) : $data['guest']['locale'];
+		$paid     = isset( $data['total_paid'] ) ? $data['total_paid'] : $data['amount_paid'];
 
 		if ( empty( $subtotal ) ) {
 			$subtotal = $data['total_amount'] - $discount;
@@ -84,23 +84,23 @@ class Mltp_Lodgify_Booking {
 		}
 
 		$total         = $data['total_amount'];
-		$currency_code = isset($data['currency']['code']) ? $data['currency']['code'] : null;
+		$currency_code = isset( $data['currency']['code'] ) ? $data['currency']['code'] : null;
 
 		if ( isset( $data['guest']['id'] ) && 'AAAAAAAAAAAAAAAAAAAAAA' === $data['guest']['id'] ) {
 			// TODO: find closed period comment and use it as client name
-			$this->title = sprintf( __( 'Closed in %s', 'multipass' ), 'Lodgify' );
-			$status      = 'closed-period';
-			$source_url  = MultiPass::get_source_url( 'lodgify', $data['id'], null, array( 'type' => $status ) );
-			$customer_name = null;
+			$this->title    = sprintf( __( 'Closed in %s', 'multipass' ), 'Lodgify' );
+			$status         = 'closed-period';
+			$source_url     = MultiPass::get_source_url( 'lodgify', $data['id'], null, array( 'type' => $status ) );
+			$customer_name  = null;
 			$customer_email = null;
 			$customer_phone = null;
 		} else {
-			$customer      = $data['guest'];
-			$customer_name = $customer['name'];
+			$customer       = $data['guest'];
+			$customer_name  = $customer['name'];
 			$customer_email = $customer['email'];
 			$customer_phone = $customer['phone'];
-			$customer      = array_filter( $customer );
-			$source_url    = MultiPass::get_source_url( 'lodgify', $data['id'] );
+			$customer       = array_filter( $customer );
+			$source_url     = MultiPass::get_source_url( 'lodgify', $data['id'] );
 		}
 
 		$source    = 'lodgify';
@@ -120,8 +120,8 @@ class Mltp_Lodgify_Booking {
 				break;
 
 			default:
-				$origin    = null;
-				$origin_id = null;
+				$origin     = null;
+				$origin_id  = null;
 				$origin_url = null;
 		}
 
@@ -148,31 +148,31 @@ class Mltp_Lodgify_Booking {
 		$this->to     = $to;
 
 		$this->data = array(
-			'customer_name'  => $customer_name,
-			'customer_email' => $customer_email,
-			'customer_phone' => $customer_phone,
-			'from'           => $from,
-			'to'             => $to,
+			'customer_name'    => $customer_name,
+			'customer_email'   => $customer_email,
+			'customer_phone'   => $customer_phone,
+			'from'             => $from,
+			'to'               => $to,
 			// 'dates'               => array('from'=>$from,'to'=>$to),
-			'source'         => $source,
-			'source_id'      => $source_id,
-			'source_url'     => ( ! empty( $source_id ) ) ? MultiPass::get_source_url( $source, $source_id, $source_url ) : null,
-			'origin'         => $origin,
-			'origin_id'      => $origin_id,
-			'origin_url'     => ( ! empty( $origin_id ) ) ? MultiPass::get_source_url( $origin, $origin_id, $source_url ) : null,
-			'lodgify_id'     => $data['id'],
+			'source'           => $source,
+			'source_id'        => $source_id,
+			'source_url'       => ( ! empty( $source_id ) ) ? MultiPass::get_source_url( $source, $source_id, $source_url ) : null,
+			'origin'           => $origin,
+			'origin_id'        => $origin_id,
+			'origin_url'       => ( ! empty( $origin_id ) ) ? MultiPass::get_source_url( $origin, $origin_id, $source_url ) : null,
+			'lodgify_id'       => $data['id'],
 			// 'lodgify_uuid'        => join( '-', array( $data['id'], $data['user_id'], $data['property_id'] ) ),
 			// 'lodgify_edit_url'    => $source_url,
 			// 'lodgify_property_id' => $data['property_id'],
 
-			'resource_id'    => $resource_id,
-			'resource_name'  => $resource_name,
-			'status'         => $status,
-			'confirmed'      => $confirmed,
-			'description'    => $this->title,
+			'resource_id'      => $resource_id,
+			'resource_name'    => $resource_name,
+			'status'           => $status,
+			'confirmed'        => $confirmed,
+			'description'      => $this->title,
 
-			'language' => $language,
-			'customer'       => array(
+			'language'         => $language,
+			'customer'         => array(
 				// TODO: try to get WP user if exists
 				// 'user_id' => $customer_id,
 				// 'name'  => $data['guest']['name'],
@@ -180,13 +180,13 @@ class Mltp_Lodgify_Booking {
 				// 'phone' => $data['guest']['phone'],
 			),
 			// 'source_details' => array(
-			// 	'rooms'         => $data['rooms'],
-				'created'       => strtotime( $data['created_at'] ),
-				'updated'       => strtotime( $data['updated_at'] ),
-				'canceled'      => $canceled,
-				'is_deleted'    => $data['is_deleted'],
-			// 	'currency_code' => $data['currency_code'],
-			// 	// 'quote'         => $data['quote'],
+			// 'rooms'         => $data['rooms'],
+				'created'      => strtotime( $data['created_at'] ),
+			'updated'          => strtotime( $data['updated_at'] ),
+			'canceled'         => $canceled,
+			'is_deleted'       => $data['is_deleted'],
+			// 'currency_code' => $data['currency_code'],
+			// 'quote'         => $data['quote'],
 			// ),
 			// 'price'               => array(
 			// 'quantity'  => 1,
@@ -194,18 +194,18 @@ class Mltp_Lodgify_Booking {
 			// 'sub_total' => $subtotal,
 			// ),
 
-			'attendees'      => $guests,
+			'attendees'        => $guests,
 			// 'beds' => $beds,
 
-			'subtotal'       => $subtotal,
-			'discount'       => $discount,
-			'total'          => $total,
-			'deposit'        => $deposit,
+			'subtotal'         => $subtotal,
+			'discount'         => $discount,
+			'total'            => $total,
+			'deposit'          => $deposit,
 			'deposit_due_date' => $deposit_due_date,
-			'paid'           => $paid,
-			'balance'        => $balance,
-			'type'           => 'booking',
-			'notes'          => (isset($data['notes'])) ? $data['notes'] : null,
+			'paid'             => $paid,
+			'balance'          => $balance,
+			'type'             => 'booking',
+			'notes'            => ( isset( $data['notes'] ) ) ? $data['notes'] : null,
 		);
 
 	}
@@ -231,15 +231,15 @@ class Mltp_Lodgify_Booking {
 	}
 
 	function save() {
-		if(is_array($this->data)) {
+		if ( is_array( $this->data ) ) {
 			$mltp_detail = new Mltp_Item( $this->data, true );
-			if($mltp_detail) {
+			if ( $mltp_detail ) {
 				$this->id = $mltp_detail->id;
 				return $mltp_detail;
 			}
 		}
 
-		MultiPass::debug('no data', $this);
+		MultiPass::debug( 'no data', $this );
 		return false;
 	}
 

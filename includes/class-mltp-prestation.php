@@ -473,11 +473,11 @@ class Mltp_Prestation {
 					// 'columns' => 6,
 				),
 				// array(
-				// 	// 'name'    => __( 'Notes', 'prestations' ),
-				// 	'id'       => $prefix . 'details_notes',
-				// 	'type'     => 'custom_html',
-				// 	'callback' => 'Mltp_Prestation::render_details_notes',
-				// 	'columns'  => 6,
+				// 'name'    => __( 'Notes', 'prestations' ),
+				// 'id'       => $prefix . 'details_notes',
+				// 'type'     => 'custom_html',
+				// 'callback' => 'Mltp_Prestation::render_details_notes',
+				// 'columns'  => 6,
 				// ),
 			),
 		);
@@ -1416,10 +1416,12 @@ class Mltp_Prestation {
 			if ( ! empty( $item['dates'] ) ) {
 				$dates = array_merge( $dates, array_values( $item['dates'] ) );
 			}
-			if(!empty($item['notes'])) $notes[] = $item['notes'];
+			if ( ! empty( $item['notes'] ) ) {
+				$notes[] = $item['notes'];
+			}
 		}
-		if(!empty($notes)) {
-			$updates['notes'] = '<p>' . join( '</p><p>', array_unique($notes) ) . '</p>';
+		if ( ! empty( $notes ) ) {
+			$updates['notes'] = '<p>' . join( '</p><p>', array_unique( $notes ) ) . '</p>';
 		}
 		if ( is_array( $manual_items ) ) {
 
@@ -1888,10 +1890,10 @@ class Mltp_Prestation {
 		//
 		// if(!empty(array_filter($args))) {
 			// $args = array_replace(array(
-			// 	'customer_id'    => null,
-			// 	'customer_name'  => null,
-			// 	'customer_email' => null,
-			// 	'customer_phone' => null,
+			// 'customer_id'    => null,
+			// 'customer_name'  => null,
+			// 'customer_email' => null,
+			// 'customer_phone' => null,
 			// ), $args);
 			$meta = array(
 				'customer_id'    => $customer_id,
@@ -1903,62 +1905,62 @@ class Mltp_Prestation {
 			);
 			// MultiPass::debug($args, $meta);
 
-		// }
-		$postarr = array(
-			'ID'          => ( $post ) ? $post->ID : null,
-			'post_author' => $customer_id,
-			'post_date'   => ( empty( $args['date'] ) ) ? null : esc_attr( $args['date'] ),
-			// 'post_date_gmt' => (empty($args['date_gmt'])) ? null : esc_attr( $args['date_gmt'] ),
-			'post_type'   => 'mltp_prestation',
-			'post_status' => 'publish',
-			'meta_input'  => $meta,
-		);
+			// }
+			$postarr = array(
+				'ID'          => ( $post ) ? $post->ID : null,
+				'post_author' => $customer_id,
+				'post_date'   => ( empty( $args['date'] ) ) ? null : esc_attr( $args['date'] ),
+				// 'post_date_gmt' => (empty($args['date_gmt'])) ? null : esc_attr( $args['date_gmt'] ),
+				'post_type'   => 'mltp_prestation',
+				'post_status' => 'publish',
+				'meta_input'  => $meta,
+			);
 
-		$post_id = wp_insert_post( $postarr );
-		if ( 0 === $post_id ) {
-			error_log( "\ncould not create prestation " . print_r( $postarr, true ) );
-			return false;
-		}
-		if ( is_wp_error( $post_id ) ) {
-			$error_code    = array_key_first( $user_id->errors );
-			$error_message = $user_id->errors[ $error_code ][0];
-			error_log( "\ncould not create prestation " . print_r( $postarr, true ) . "\n$error_message" );
-			return false;
-		}
-
-		$post = get_post( $post_id );
-
-		if ( MultiPass::debug() ) {
-			// MultiPass::debug( __CLASS__,__FUNCTION__, $mltp_detail->id );
-
-			if ( 12665 === $post_id ) {
-				$metas = array(
-					'prestation_id'  => null,
-					'attendee'       => null,
-					'attendee_name'  => null,
-					'attendee_email' => null,
-					'attendee_phone' => null,
-					'customer'       => null,
-					'customer_name'  => null,
-					'customer_email' => null,
-					'customer_phone' => null,
-					'guest'          => null,
-					'guest_name'     => null,
-					'guest_email'    => null,
-					'guest_phone'    => null,
-				);
-
-				$debug['received'] = array_filter( $args );
-				$debug['update']   = array_intersect( $metas, array_filter( $args ) );
-				foreach ( $metas as $meta => $value ) {
-					$debug['saved_prestation'][ $meta ] = get_post_meta( $prestation_id, $meta, true );
-				}
-
-				MultiPass::debug( __CLASS__, __FUNCTION__, $debug );
+			$post_id = wp_insert_post( $postarr );
+			if ( 0 === $post_id ) {
+				error_log( "\ncould not create prestation " . print_r( $postarr, true ) );
+				return false;
 			}
-		}
+			if ( is_wp_error( $post_id ) ) {
+				$error_code    = array_key_first( $user_id->errors );
+				$error_message = $user_id->errors[ $error_code ][0];
+				error_log( "\ncould not create prestation " . print_r( $postarr, true ) . "\n$error_message" );
+				return false;
+			}
 
-		return $post;
+			$post = get_post( $post_id );
+
+			if ( MultiPass::debug() ) {
+				// MultiPass::debug( __CLASS__,__FUNCTION__, $mltp_detail->id );
+
+				if ( 12665 === $post_id ) {
+					$metas = array(
+						'prestation_id'  => null,
+						'attendee'       => null,
+						'attendee_name'  => null,
+						'attendee_email' => null,
+						'attendee_phone' => null,
+						'customer'       => null,
+						'customer_name'  => null,
+						'customer_email' => null,
+						'customer_phone' => null,
+						'guest'          => null,
+						'guest_name'     => null,
+						'guest_email'    => null,
+						'guest_phone'    => null,
+					);
+
+					$debug['received'] = array_filter( $args );
+					$debug['update']   = array_intersect( $metas, array_filter( $args ) );
+					foreach ( $metas as $meta => $value ) {
+						$debug['saved_prestation'][ $meta ] = get_post_meta( $prestation_id, $meta, true );
+					}
+
+					MultiPass::debug( __CLASS__, __FUNCTION__, $debug );
+				}
+			}
+
+			return $post;
 	}
 
 	static function render_details_notes() {

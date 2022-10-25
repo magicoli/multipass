@@ -982,8 +982,8 @@ class Mltp_Item {
 
 		remove_action( current_action(), __CLASS__ . '::' . __FUNCTION__ );
 
-		$prestation_id   = get_post_meta( $post_id, 'prestation_id', true );
-		$item_info = get_post_meta( $post_id, 'customer', true );
+		$prestation_id = get_post_meta( $post_id, 'prestation_id', true );
+		$item_info     = get_post_meta( $post_id, 'customer', true );
 		if ( $prestation_id ) {
 			$user_info = array_filter(
 				array(
@@ -1133,8 +1133,8 @@ class Mltp_Item {
 			wp_update_post( $post_update );
 		}
 
-		$prestation = new Mltp_Prestation($prestation_id);
-		if($prestation) {
+		$prestation = new Mltp_Prestation( $prestation_id );
+		if ( $prestation ) {
 			$prestation->update();
 		}
 
@@ -1246,7 +1246,7 @@ class Mltp_Item {
 				$uuid_field = $args['source'] . '_uuid';
 				$uuid_value = $args[ $uuid_field ];
 
-				$d = 86400; // one day
+				$d    = 86400; // one day
 				$from = ( empty( $args['from'] ) ) ? null : round( $args['from'] / $d ) * $d;
 				$to   = ( empty( $args['to'] ) ) ? null : round( $args['to'] / $d ) * $d;
 
@@ -1415,7 +1415,9 @@ class Mltp_Item {
 			);
 			$post_title = html_entity_decode( join( ', ', $info ) );
 		}
-		if(empty($args['notes'])) unset($args['notes']); // Do not replace if not provided
+		if ( empty( $args['notes'] ) ) {
+			unset( $args['notes'] ); // Do not replace if not provided
+		}
 
 		$postarr = array_filter(
 			array(
@@ -1502,7 +1504,7 @@ if ( class_exists( '\MBAC\Post' ) ) {
 			switch ( $column ) {
 				case 'dates_admin_list':
 					$from = get_post_meta( $post_id, 'from', true );
-					$to = get_post_meta( $post_id, 'to', true );
+					$to   = get_post_meta( $post_id, 'to', true );
 					echo MultiPass::format_date_range( array( $from, $to ) );
 					break;
 

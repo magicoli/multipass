@@ -262,13 +262,26 @@
   margin-left: -0.2rem;
 }
 
-.modal-summary td .actions,
-.modal-summary td .amount {
-  float: right;
-}
+.modal-summary {
+  td, tr {
+    vertical-align: top
+  }
 
-.modal-summary td .actions ,
-.modal-summary td .actions > a {
-  margin: 0 0.22em;
-  text-decoration: none;
+  td .actions,
+  td .amount {
+    float: right;
+  }
+
+  td .actions ,
+  td .actions > a {
+    margin: 0 0.22em;
+    text-decoration: none;
+  }
+
+  td > *:first-child {
+    margin-top: 0;
+  }
+  td > *:lasst-child {
+    margin-bottom: 0;
+  }
 }
