@@ -394,7 +394,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		}
 		$options  = array(
 			// 'method'  => 'GET',
-			'timeout' => 10,
+			'timeout' => 20,
 			// 'ignore_errors' => true,
 			'headers' => array(
 				'X-ApiKey'        => $this->api_key,
@@ -544,6 +544,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 	 * @return array API response as array
 	 */
 	function get_bookings() {
+		ini_set('max_execution_time', 300);
 		$cache_key = sanitize_title( __CLASS__ . '-' . __METHOD__ );
 		$response  = wp_cache_get( $cache_key );
 		if ( $response ) {
@@ -571,48 +572,51 @@ class Mltp_Lodgify extends Mltp_Modules {
 		$total    = $response['total'];
 		$count    = count( $response['items'] );
 
-		// while ( ! empty( $response['next'] ) ) {
-		// $response = $this->api_request( $response['next'] );
-		// if ( is_wp_error( $response ) ) {
-		// break;
-		// }
-		//
-		// $count = count( $response['items'] );
-		// $items = array_merge( $items, $response['items'] );
-		// }
+		while ( ! empty( $response['next'] ) ) {
+			$response = $this->api_request( $response['next'] );
+			if ( is_wp_error( $response ) ) {
+				break;
+			}
+
+			$count = count( $response['items'] );
+			$bookings = array_merge( $bookings, $response['items'] );
+		}
 
 		/**
 		 * Second request with v2 API to get notes and other details not provided by
 		 * v1. This surely could be improved.
 		 */
-		// $api_query = array(
-		// 'page' => 1,
-		// 'size'  => $total,
-		// 'includeTransactions'=> 'true',
-		// 'includeExternal' => 'true',
-		// 'includeQuoteDetails'=>'true',
-		// );
-		// $response  = $this->api_request( '/v2/reservations/bookings', $api_query );
-		// if ( is_wp_error( $response ) ) {
-		// $error_id   = __CLASS__ . '-' . __METHOD__ . '-second-round-' . $response->get_error_code();
-		// error_log( $error_id . ' ' . print_r( $response, true ) );
-		// $message = sprintf( __( '%1$s failed with error %2$s: %3$s', 'multipass' ), __CLASS__ . ' ' . __METHOD__ . '()', $error_code, $response->get_error_message() );
-		// add_settings_error( $error_id, $error_id, $message, 'error' );
-		// return $response;
-		// }
-		//
-		// if ( ! is_wp_error( $response ) ) {
-		// foreach($response['items'] as $booking) {
-		// if(empty($booking['id'])) continue;
-		// $id = $booking['id'];
-		// $bookings[$id] = array_merge_recursive(
-		// ( isset( $bookings[$id] ) ) ? $bookings[$id] : array(),
-		// $booking,
-		// );
-		// MultiPass::debug($booking['notes'], $bookingss[$id]['notes']);
-		// }
-		// MultiPass::debug($bookings);
-		// }
+		// $total = 10; // DEBUG
+		// $bookings = array(); // DEBUG
+		$api_query = array(
+			'page' => 1,
+			'size'  => $total,
+			'includeTransactions'=> 'true',
+			'includeExternal' => 'true',
+			'includeQuoteDetails'=>'true',
+		);
+		$response  = $this->api_request( '/v2/reservations/bookings', $api_query );
+		if ( is_wp_error( $response ) ) {
+			$error_id   = __CLASS__ . '-' . __METHOD__ . '-second-round-' . $response->get_error_code();
+			error_log( $error_id . ' ' . print_r( $response, true ) );
+			$message = sprintf( __( '%1$s failed with error %2$s: %3$s', 'multipass' ), __CLASS__ . ' ' . __METHOD__ . '()', $response->get_error_code(), $response->get_error_message() );
+			add_settings_error( $error_id, $error_id, $message, 'error' );
+			return $response;
+		}
+		$bookings = array_merge( $bookings, $response['items'] );
+
+		if ( ! is_wp_error( $response ) ) {
+			foreach($response['items'] as $booking) {
+				if(empty($booking['id'])) continue;
+				$id = $booking['id'];
+				$bookings[$id] = array_merge_recursive(
+					( isset( $bookings[$id] ) ) ? $bookings[$id] : array(),
+					$booking,
+				);
+				// MultiPass::debug($booking['notes'], $bookingss[$id]['notes']);
+			}
+			// MultiPass::debug($bookings);
+		}
 
 		$count = count( $bookings );
 		if ( $count < $total ) {
@@ -685,72 +689,9 @@ class Mltp_Lodgify extends Mltp_Modules {
 				continue;
 			}
 
-			MultiPass::debug( 'success ', $data, $booking );
-			if ( $i++ > 5 ) {
-				break; // DEBUG
-			}
-			continue; // DEBUG
-
-			$item_args = array_merge_recursive(
-				array(
-					'attendees' => $attendees,
-					// // 'beds' => $beds,
-				// 'debug'               => $data,
-				),
-				$item_args
-			);
-
-			$mltp_detail = new Mltp_Item( $item_args, true );
-
-			if ( MultiPass::debug() ) {
-				// MultiPass::debug( __CLASS__,__FUNCTION__, $mltp_detail->id );
-				$metas = array(
-					'prestation_id'  => null,
-					'attendee'       => null,
-					'attendee_name'  => null,
-					'attendee_email' => null,
-					'attendee_phone' => null,
-					'customer'       => null,
-					'customer_name'  => null,
-					'customer_email' => null,
-					'customer_phone' => null,
-					'guest'          => null,
-					'guest_name'     => null,
-					'guest_email'    => null,
-					'guest_phone'    => null,
-					'notes'          => null,
-				);
-
-				$prestation_id = get_post_meta( $mltp_detail->id, 'prestation_id', true );
-				if ( 12772 === $mltp_detail->id ) {
-					$debug['received'] = array_filter( $data );
-					$debug['update']   = array_filter( $item_args );
-					foreach ( $metas as $meta => $value ) {
-						$debug['saved_prestation'][ $meta ] = get_post_meta( $prestation_id, $meta, true );
-						$debug['saved_item'][ $meta ]       = get_post_meta( $mltp_detail->id, $meta, true );
-					}
-
-					MultiPass::debug( __CLASS__, __FUNCTION__, $debug );
-				}
-			}
+			$mltp_detail = $booking->save();
 		}
-
-		// if(isset($_REQUEST['lodgify_import_now']) && $_REQUEST['lodgify_import_now'] == true) {
-		// $orders = wc_get_orders( array(
-		// 'limit'        => -1, // Query all orders
-		// 'orderby'      => 'date',
-		// 'order'        => 'ASC',
-		// 'meta_key'     => 'prestation_id', // The postmeta key field
-		// 'meta_compare' => 'NOT EXISTS', // The comparison argument
-		// ));
-		// error_log("found " . count($orders) . " order(s) without prestation");
-		// foreach ($orders as $key => $order) {
-		// $order_post = get_post($order->get_id());
-		// self::update_order_prestation($order_post->ID, $order_post, true);
-		// }
-		// }
 	}
-
 }
 
 require_once MULTIPASS_DIR . 'includes/modules/class-mltp-lodgify-booking.php';

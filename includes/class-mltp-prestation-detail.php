@@ -982,15 +982,15 @@ class Mltp_Item {
 
 		remove_action( current_action(), __CLASS__ . '::' . __FUNCTION__ );
 
-		$item_id   = get_post_meta( $post_id, 'prestation_id', true );
+		$prestation_id   = get_post_meta( $post_id, 'prestation_id', true );
 		$item_info = get_post_meta( $post_id, 'customer', true );
-		if ( $item_id ) {
+		if ( $prestation_id ) {
 			$user_info = array_filter(
 				array(
-					'user_id' => get_post_meta( $item_id, 'customer_id', true ),
-					'name'    => get_post_meta( $item_id, 'attendee_name', true ),
-					'email'   => get_post_meta( $item_id, 'attendee_email', true ),
-					'phone'   => get_post_meta( $item_id, 'attendee_phone', true ),
+					'user_id' => get_post_meta( $prestation_id, 'customer_id', true ),
+					'name'    => get_post_meta( $prestation_id, 'attendee_name', true ),
+					'email'   => get_post_meta( $prestation_id, 'attendee_email', true ),
+					'phone'   => get_post_meta( $prestation_id, 'attendee_phone', true ),
 				)
 			);
 		} else {
@@ -1137,7 +1137,7 @@ class Mltp_Item {
 		if($prestation) {
 			$prestation->update();
 		}
-		
+
 		add_action( current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3 );
 	}
 
@@ -1246,14 +1246,9 @@ class Mltp_Item {
 				$uuid_field = $args['source'] . '_uuid';
 				$uuid_value = $args[ $uuid_field ];
 
-				if ( ! empty( $args['dates']['from'] ) ) {
-					$args['dates']['from'] = round( $args['dates']['from'] / 86400 ) * 86400;
-				}
-				if ( ! empty( $args['dates']['to'] ) ) {
-					$args['dates']['to'] = round( $args['dates']['to'] / 86400 ) * 86400;
-				}
-				$from = ( empty( $args['dates']['from'] ) ) ? null : $args['dates']['from'];
-				$to   = ( empty( $args['dates']['to'] ) ) ? null : $args['dates']['to'];
+				$d = 86400; // one day
+				$from = ( empty( $args['from'] ) ) ? null : round( $args['from'] / $d ) * $d;
+				$to   = ( empty( $args['to'] ) ) ? null : round( $args['to'] / $d ) * $d;
 
 				// error_log("looking by $uuid_field = $uuid_value");
 				$query_args = array(
@@ -1332,7 +1327,7 @@ class Mltp_Item {
 
 		if ( $post ) {
 			$this->id   = $post->ID;
-			$this->name = $post->post_title;
+			$this->name = html_entity_decode( $post->post_title );
 			$this->post = $post;
 			// $this->name = $this->post->post_title;
 			// $this->dates = get_post_meta($this->id, 'dates', true);
@@ -1418,8 +1413,9 @@ class Mltp_Item {
 					( ! empty( $dates ) ) ? MultiPass::format_date_range( $dates ) : null,
 				)
 			);
-			$post_title = join( ', ', $info );
+			$post_title = html_entity_decode( join( ', ', $info ) );
 		}
+		if(empty($args['notes'])) unset($args['notes']); // Do not replace if not provided
 
 		$postarr = array_filter(
 			array(
@@ -1457,7 +1453,7 @@ class Mltp_Item {
 
 		$post = get_post( $this->id );
 		// $this->id   = $post->ID;
-		$this->name = $post->post_title;
+		$this->name = html_entity_decode( $post->post_title );
 		$this->post = $post;
 		// $this->name = $this->post->post_title;
 		// $this->dates = get_post_meta($this->id, 'dates', true);
@@ -1505,7 +1501,9 @@ if ( class_exists( '\MBAC\Post' ) ) {
 		public function show( $column, $post_id ) {
 			switch ( $column ) {
 				case 'dates_admin_list':
-					echo MultiPass::format_date_range( get_post_meta( $post_id, 'dates', true ) );
+					$from = get_post_meta( $post_id, 'from', true );
+					$to = get_post_meta( $post_id, 'to', true );
+					echo MultiPass::format_date_range( array( $from, $to ) );
 					break;
 
 				case 'attendees_display';

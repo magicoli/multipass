@@ -1764,18 +1764,20 @@ class Mltp_Prestation {
 					'customer_id'    => null,
 					'customer_name'  => null,
 					'customer_email' => null,
+					'customer_phone' => null,
 					'from'           => null,
 					'to'             => null,
 				),
 				$args
 			);
 			$args['customer_email'] = MultiPass::sanitize_email( $args['customer_email'] );
-			MultiPass::debug( 'prestation not passed, looking with  ' . json_encode( $args ) );
+			// MultiPass::debug( 'prestation not passed, looking with  ' . json_encode( $args ) );
 
 			$prestation_id  = $args['prestation_id'];
 			$customer_id    = $args['customer_id'];
 			$customer_name  = $args['customer_name'];
 			$customer_email = $args['customer_email'];
+			$customer_phone = $args['customer_phone'];
 
 			// Check by customer id, email or name.
 			$query_args = array(
@@ -1880,18 +1882,25 @@ class Mltp_Prestation {
 		// 'from'           => $args['from'],
 		// 'to'             => $args['to'],
 		// );
-		$meta = array_intersect(
-			array(
-				'customer_id'    => null,
-				'customer_name'  => null,
-				'customer_email' => null,
-				'customer_phone' => null,
-			// 'from'           => null,
-			// 'to'             => null,
-			),
-			$args
-		);
+		//
+		// if(!empty(array_filter($args))) {
+			// $args = array_replace(array(
+			// 	'customer_id'    => null,
+			// 	'customer_name'  => null,
+			// 	'customer_email' => null,
+			// 	'customer_phone' => null,
+			// ), $args);
+			$meta = array(
+				'customer_id'    => $customer_id,
+				'customer_name'  => $customer_name,
+				'customer_email' => $customer_email,
+				'customer_phone' => $customer_phone,
+				// 'from'           => null,
+				// 'to'             => null,
+			);
+			// MultiPass::debug($args, $meta);
 
+		// }
 		$postarr = array(
 			'ID'          => ( $post ) ? $post->ID : null,
 			'post_author' => $customer_id,
