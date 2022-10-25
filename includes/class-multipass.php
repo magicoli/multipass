@@ -1063,6 +1063,20 @@ class MultiPass {
 		// return $phoneNumberUtil->isValidNumber($phoneNumberObject);
 	}
 
+	static function format_phone( $string, $format = 'intl' ) {
+		if ( class_exists( '\libphonenumber\PhoneNumberUtil' ) ) {
+			$phoneNumberUtil   = \libphonenumber\PhoneNumberUtil::getInstance();
+			$phoneNumberObject = $phoneNumberUtil->parse( $string, 'FR' );
+			if ( $format = 'intl' ) {
+				return $phoneNumberUtil->format( $phoneNumberObject, \libphonenumber\PhoneNumberFormat::INTERNATIONAL );
+			} else {
+				return $phoneNumberUtil->format( $phoneNumberObject, \libphonenumber\PhoneNumberFormat::RFC3966 );
+			}
+		} else {
+			return $string;
+		}
+	}
+
 	static function link( $url, $args = array(), $attr = array() ) {
 		if ( empty( $url ) ) {
 			return;
@@ -1074,16 +1088,12 @@ class MultiPass {
 			$text = ( empty( $args['text'] ) ) ? $url : $args['text'];
 			$url  = "mailto:$url";
 		} elseif ( self::is_phone( $url ) ) {
-			$phoneNumberUtil   = \libphonenumber\PhoneNumberUtil::getInstance();
-			$phoneNumberObject = $phoneNumberUtil->parse( $url, 'FR' );
-			$number            = $phoneNumberUtil->format( $phoneNumberObject, \libphonenumber\PhoneNumberFormat::E164 );
 			if ( empty( $args['text'] ) ) {
-				$text = $phoneNumberUtil->format( $phoneNumberObject, \libphonenumber\PhoneNumberFormat::INTERNATIONAL );
+				$text = self::format_phone( $url );
 			} else {
 				$text = $args['text'];
 			}
-			// $url = 'tel:' . $number;
-			$url = $phoneNumberUtil->format( $phoneNumberObject, \libphonenumber\PhoneNumberFormat::RFC3966 );
+			$url = self::format_phone( $url, 'link' );
 		}
 
 		$attr = array_merge(

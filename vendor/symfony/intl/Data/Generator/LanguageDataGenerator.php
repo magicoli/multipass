@@ -96,7 +96,7 @@ class LanguageDataGenerator extends AbstractDataGenerator
      *
      * @var string[]
      */
-    private array $languageCodes = [];
+    private $languageCodes = [];
 
     /**
      * {@inheritdoc}

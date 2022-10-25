@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'libphonenumber\\' => array($vendorDir . '/giggsey/libphonenumber-for-php/src'),
+    'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Component\\Intl\\' => array($vendorDir . '/symfony/intl'),
     'PhpImap\\' => array($vendorDir . '/php-imap/php-imap/src/PhpImap'),

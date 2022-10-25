@@ -66,7 +66,7 @@ WARNING: **Make a full backup of your website and databases** before installing 
 
 == Changelog ==
 
-= Unreleased (0.2-dev.538) =
+= Unreleased (0.2-dev.555) =
 * new filter 'multipass_load_modules', allow loading modules from other plugins
 * new Lodgify bookings sync
 * added send payment mail link in calendar modal

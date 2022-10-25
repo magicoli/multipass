@@ -68,7 +68,7 @@ final class Countries extends ResourceBundle
             self::readEntry(['Names', $alpha2Code]);
 
             return true;
-        } catch (MissingResourceException) {
+        } catch (MissingResourceException $e) {
             return false;
         }
     }
@@ -79,7 +79,7 @@ final class Countries extends ResourceBundle
             self::getAlpha2Code($alpha3Code);
 
             return true;
-        } catch (MissingResourceException) {
+        } catch (MissingResourceException $e) {
             return false;
         }
     }
