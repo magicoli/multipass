@@ -653,6 +653,11 @@ class Mltp_Calendar {
 			'booking'    => array(
 				__( 'Check in', 'multipass' )  => MultiPass::format_date( $event->display_start ),
 				__( 'Check out', 'multipass' ) => MultiPass::format_date( $event->display_end ),
+			// ),
+			// 'contact'    => array(
+				_x( 'Contact', '(noun)', '(noun)', 'multipass' ) => $event->contact,
+				_x( 'Email', '(noun)', 'multipass' ) => MultiPass::link($event->email, null, [ 'tabindex' => -1 ]),
+				_x( 'Phone', '(noun)', 'multipass' ) => MultiPass::link($event->phone, null, [ 'tabindex' => -1 ]),
 			),
 			'prices'     => array(
 				__( 'Subtotal', 'multipass' )   => ( $event->subtotal === $event->total ) ? null : MultiPass::price( $event->subtotal ),
@@ -671,10 +676,8 @@ class Mltp_Calendar {
 				__( 'Paid', 'multipass' )                => MultiPass::price( $prestation->paid ),
 				__( 'Balance', 'multipass' )             => MultiPass::price_with_links( $prestation, $prestation->balance ),
 			),
-			'contact'    => array(
-				_x( 'Contact', '(noun)', '(noun)', 'multipass' ) => $event->contact,
-				_x( 'Email', '(noun)', 'multipass' ) => $event->email,
-				_x( 'Phone', '(noun)', 'multipass' ) => $event->phone,
+			'notes'    => array(
+				__( 'Notes', 'multipass' ) => $event->notes,
 			),
 		);
 		$rows = array();
@@ -920,6 +923,11 @@ class Mltp_Event extends Mltp_Item {
 		$this->origin_url = get_post_meta( $this->id, 'origin_url', true );
 		$check_in         = ( isset( $dates['check_in'] ) ) ? $dates['check_in'] : null;
 		$check_out        = ( isset( $dates['check_out'] ) ) ? $dates['check_in'] : null;
+
+		$this->contact     = get_post_meta( $this->id, 'customer_name', true );
+		$this->email     = get_post_meta( $this->id, 'customer_email', true );
+		$this->phone     = get_post_meta( $this->id, 'customer_phone', true );
+		$this->notes     = get_post_meta( $this->id, 'notes', true );
 
 		$d         = 86400; // nr of seconds in one day
 		$check_in  = ( empty( $check_in ) ) ? ( $d / 2 ) : $check_in;
