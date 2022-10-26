@@ -563,8 +563,10 @@ class Mltp_Calendar {
 					$hide_undefined = false;
 				}
 
-				$flags = get_post_meta( get_the_ID(), 'flags', true );
-				$flags = empty( $flags ) ? 0 : $flags;
+				$flags            = get_post_meta( get_the_ID(), 'flags', true );
+				$flags            = empty( $flags ) ? 0 : $flags;
+				$prestation_flags = get_post_meta( $prestation_id, 'flags', true );
+				$flags            = empty( $prestation_flags ) ? 0 : $prestation_flags;
 
 				if ( ! $flags & MLTP_CLOSED_PERIOD ) {
 					if ( $prestation ) {
@@ -574,9 +576,13 @@ class Mltp_Calendar {
 					$flags  = $flags | ( $pflags & MLTP_PAID_SOME ) | ( $pflags & MLTP_PAID_DEPOSIT ) | ( $pflags & MLTP_PAID_ALL ) | ( $pflags & MLTP_CONFIRMED );
 				}
 
-				$classes     = MultiPass::get_flag_slugs( $flags );
-				$classes[]   = sanitize_title( get_post_meta( $item_id, 'status', true ) );
-				$classes     = ( is_array( $classes ) ) ? preg_replace( '/^/', 'status-', $classes ) : array();
+				$item_classes = MultiPass::get_flag_slugs( $flags );
+				// $classes[]   = sanitize_title( get_post_meta( $item_id, 'status', true ) );
+				$prestation_classes = MultiPass::get_flag_slugs( $prestation_flags );
+				// $classes     = ( is_array( $item_classes ) ) ? preg_replace( '/^/', 'item-', $item_classes ) : array();
+				$classes = ( is_array( $prestation_classes ) ) ? preg_replace( '/^/', 'status-', $prestation_classes ) : array();
+				MultiPass::debug( $prestation_classes, $classes );
+
 				$source_slug = get_post_meta( $item_id, 'source', true );
 				$origin      = get_post_meta( $item_id, 'origin', true );
 				$origin      = ( empty( $origin ) ) ? get_post_meta( $item_id, 'source', true ) : $origin;
