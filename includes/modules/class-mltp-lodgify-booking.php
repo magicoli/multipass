@@ -119,10 +119,10 @@ class Mltp_Lodgify_Booking {
 				// $this->sources['bookingcom_id'] = $origin_id;
 				break;
 
-			default:
-				$origin     = null;
-				$origin_id  = null;
-				$origin_url = null;
+			// default:
+			// 	$origin     = null;
+			// 	$origin_id  = null;
+			// 	$origin_url = null;
 		}
 
 		$this->title = join(
@@ -214,7 +214,7 @@ class Mltp_Lodgify_Booking {
 		$p_replace = array(
 			'/AirbnbIntegration/' => 'airbnb',
 			'/BookingCom/'        => 'bookingcom',
-			'/Manual/'            => 'lodgify',
+			// '/Manual/'            => 'lodgify',
 		);
 		$p_keys    = array_keys( $p_replace );
 

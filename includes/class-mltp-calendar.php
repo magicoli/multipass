@@ -585,7 +585,7 @@ class Mltp_Calendar {
 
 				$source_slug = get_post_meta( $item_id, 'source', true );
 				$origin      = get_post_meta( $item_id, 'origin', true );
-				$origin      = ( empty( $origin ) ) ? get_post_meta( $item_id, 'source', true ) : $origin;
+				// $origin      = ( empty( $origin ) ) ? get_post_meta( $item_id, 'source', true ) : $origin;
 
 				// $closed_period = get_post_meta( get_the_ID(), 'closed_period', true );
 				// $closed_status = get_post_meta( get_the_ID(), 'status', true );
