@@ -762,21 +762,23 @@ class MultiPass {
 		return $locale;
 	}
 
-	public static function get_the_flags( $post_id = null ) {
+	public static function get_the_flag_slugs( $post_id = null, $prefix = '' ) {
 		if ( empty( $post_id ) ) {
 			$post_id = get_the_ID();
 		}
-		$flags = get_post_meta( get_the_ID(), 'flags', true );
+		$flags = (integer)get_post_meta( get_the_ID(), 'flags', true );
 		if ( $flags ) {
-			return self::get_flag_slugs( $flags );
+			return self::get_flag_slugs( $flags, $prefix );
 		}
 	}
 
-	public static function get_flag_slugs( $flags, $format = 'array' ) {
+	public static function get_flag_slugs( $flags, $prefix = '' ) {
+		$flags = empty($flags) ? 0 : $flags;
 		$array = array();
 		$slugs = MLTP_FLAGSLUGS;
 		foreach ( $slugs as $flag => $slug ) {
-			$array[ $flag ] = ( $flags & $flag ) ? $slug : null;
+			if ( empty( $flag ) ) continue;
+			$array[ $flag ] = ( $flags & $flag ) ? "$prefix$slug" : null;
 		}
 
 		return array_filter( $array );
