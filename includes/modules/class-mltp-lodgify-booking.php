@@ -158,7 +158,7 @@ class Mltp_Lodgify_Booking {
 			'source_id'        => $source_id,
 			'source_url'       => ( ! empty( $source_id ) ) ? MultiPass::get_source_url( $source, $source_id, $source_url ) : null,
 			'origin'           => $origin,
-			'origin_id'        => $origin_id,
+			'origin_id'        => ( ! empty( $origin_id ) ) ? $origin_id : null,
 			'origin_url'       => ( ! empty( $origin_id ) ) ? MultiPass::get_source_url( $origin, $origin_id, $source_url ) : null,
 			'lodgify_id'       => $data['id'],
 			// 'lodgify_uuid'        => join( '-', array( $data['id'], $data['user_id'], $data['property_id'] ) ),
@@ -239,7 +239,7 @@ class Mltp_Lodgify_Booking {
 			}
 		}
 
-		MultiPass::debug( 'no data', $this );
+		// MultiPass::debug( 'no data', $this );
 		return false;
 	}
 
