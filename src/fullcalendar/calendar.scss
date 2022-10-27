@@ -144,9 +144,10 @@
 
     .status-confirmed,
     .status-paid-some {
-      color: var(--mltp-color-due);
-      background-color: var(--mltp-background-due);
+      color: var(--mltp-color-confirmed);
+      background-color: var(--mltp-background-confirmed);
     }
+    .status-external,
     .status-paid-external,
     .status-paid-deposit {
       color: var(--mltp-color-deposit);
@@ -156,6 +157,17 @@
       color: var(--mltp-color-paid);
       background-color: var(--mltp-background-paid);
     }
+
+    .status-due {
+      color: var(--mltp-color-due);
+      background-color: var(--mltp-background-due);
+    }
+
+    .status-overdue {
+      color: var(--mltp-color-overdue);
+      background-color: var(--mltp-background-overdue);
+    }
+
     // .status-paid-all {
     //   color: var(--mltp-color-paid);
     //   background-color: var(--mltp-background-paid);
