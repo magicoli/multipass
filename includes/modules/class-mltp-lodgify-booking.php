@@ -106,23 +106,28 @@ class Mltp_Lodgify_Booking {
 		$source    = 'lodgify';
 		$source_id = $data['id'];
 		$origin    = self::sanitize_origin( $data['source'] );
+		$external  = false;
 		switch ( $origin ) {
 			case 'airbnb':
 				$origin_details = json_decode( $data['source_text'] );
 				$origin_id      = $origin_details->confirmationCode;
+				$confirmed      = true;
+				$external       = true;
 				// $this->sources['airbnb_id'] = $origin_id;
 				break;
 
 			case 'bookingcom':
 				$origin_details = explode( '|', $data['source_text'] );
 				$origin_id      = $origin_details[0];
+				$confirmed      = true;
+				$external       = true;
 				// $this->sources['bookingcom_id'] = $origin_id;
 				break;
 
 			// default:
-			// 	$origin     = null;
-			// 	$origin_id  = null;
-			// 	$origin_url = null;
+			// $origin     = null;
+			// $origin_id  = null;
+			// $origin_url = null;
 		}
 
 		$this->title = join(
@@ -169,6 +174,7 @@ class Mltp_Lodgify_Booking {
 			'resource_name'    => $resource_name,
 			'status'           => $status,
 			'confirmed'        => $confirmed,
+			'external'         => $external,
 			'description'      => $this->title,
 
 			'language'         => $language,
@@ -216,7 +222,7 @@ class Mltp_Lodgify_Booking {
 			'/BookingCom/'        => 'bookingcom',
 			// '/Manual/'            => 'lodgify',
 		);
-		$p_keys    = array_keys( $p_replace );
+		$p_keys = array_keys( $p_replace );
 
 		return sanitize_title( preg_replace( $p_keys, $p_replace, $string ) );
 	}

@@ -72,17 +72,21 @@ class MultiPass {
 		$this->js_date_format_short = preg_match( '/^[Fm]/', get_option( 'date_format' ) ) ? 'mm-dd-yy' : 'dd-mm-yy';
 
 		$flags = array(
-			1    => 'MLTP_PAID_SOME',
-			2    => 'MLTP_PAID_DEPOSIT',
-			4    => 'MLTP_PAID_ALL',
-			8    => 'MLTP_PAID_MORE',
-			16   => 'MLTP_REFUNDED',
-			32   => 'MLTP_CONFIRMED',
-			64   => 'MLTP_STARTED',
-			128  => 'MLTP_ENDED', // end date passed, but final invoicing not done
-			256  => 'MLTP_COMPLETED', // final invoicing done
-			512  => 'MLTP_AVAILABLE',
-			1024 => 'MLTP_CLOSED_PERIOD',
+			1     => 'MLTP_PAID_SOME',
+			2     => 'MLTP_PAID_DEPOSIT',
+			4     => 'MLTP_PAID_ALL',
+			8     => 'MLTP_OVERPAID',
+			16    => 'MLTP_REFUNDED',
+			32    => 'MLTP_CONFIRMED',
+			64    => 'MLTP_STARTED',
+			128   => 'MLTP_ENDED', // end date passed, but final invoicing not done
+			256   => 'MLTP_COMPLETED', // all paid, final invoicing done
+			512   => 'MLTP_AVAILABLE',
+			1024  => 'MLTP_CLOSED_PERIOD',
+			2048  => 'MLTP_CANCELED',
+			4096  => 'MLTP_DUE',
+			8192  => 'MLTP_OVERDUE',
+			16384 => 'MLTP_EXTERNAL',
 		);
 		foreach ( $flags as $key => $flag ) {
 			if ( ! defined( $flag ) ) {
@@ -766,18 +770,20 @@ class MultiPass {
 		if ( empty( $post_id ) ) {
 			$post_id = get_the_ID();
 		}
-		$flags = (integer)get_post_meta( get_the_ID(), 'flags', true );
+		$flags = (int) get_post_meta( get_the_ID(), 'flags', true );
 		if ( $flags ) {
 			return self::get_flag_slugs( $flags, $prefix );
 		}
 	}
 
 	public static function get_flag_slugs( $flags, $prefix = '' ) {
-		$flags = empty($flags) ? 0 : $flags;
+		$flags = empty( $flags ) ? 0 : $flags;
 		$array = array();
 		$slugs = MLTP_FLAGSLUGS;
 		foreach ( $slugs as $flag => $slug ) {
-			if ( empty( $flag ) ) continue;
+			if ( empty( $flag ) ) {
+				continue;
+			}
 			$array[ $flag ] = ( $flags & $flag ) ? "$prefix$slug" : null;
 		}
 
@@ -796,10 +802,10 @@ class MultiPass {
 			$flags = $flags | MLTP_CLOSED_PERIOD;
 		} else {
 			if ( $paid > 0 && $total > 0 ) {
-				$flags = $flags | MLTP_PAID_SOME;
-				if ( $deposit > 0 && $paid >= $deposit ) {
-					$flags     = $flags | MLTP_PAID_DEPOSIT;
-					$confirmed = true;
+				if ( ( $paid >= $deposit && $deposit > 0 ) || 0 === $deposit ) {
+					$flags = $flags | MLTP_PAID_DEPOSIT | MLTP_CONFIRMED;
+				} else {
+					$flags = $flags | MLTP_PAID_SOME | MLTP_DUE;
 				}
 				if ( $paid >= $total ) {
 					$flags = $flags | MLTP_PAID_ALL;
@@ -807,12 +813,15 @@ class MultiPass {
 			}
 
 			if ( $paid > $total ) {
-				$flags = $flags | MLTP_PAID_MORE;
+				$flags = $flags | MLTP_OVERPAID;
 			}
 		}
 
 		if ( $confirmed ) {
 			$flags = $flags | MLTP_CONFIRMED;
+		}
+		if ( isset( $args['external'] ) && $args['external'] ) {
+			$flags = $flags | MLTP_EXTERNAL;
 		}
 
 		return $flags;

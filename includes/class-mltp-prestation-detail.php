@@ -1117,7 +1117,19 @@ class Mltp_Item {
 		}
 
 		if ( ! empty( $updates ) ) {
-			$updates['flags']   = MultiPass::set_flags( $updates );
+			$updates['flags'] = MultiPass::set_flags(
+				array_merge(
+					array(
+						'paid'      => get_post_meta( $post_id, 'paid', true ),
+						'deposit'   => get_post_meta( $post_id, 'deposit', true ),
+						'total'     => get_post_meta( $post_id, 'total', true ),
+						'confirmed' => get_post_meta( $post_id, 'confirmed', true ),
+						'external'  => get_post_meta( $post_id, 'external', true ),
+					),
+					$updates
+				)
+			);
+
 			$updates['classes'] = MultiPass::get_flag_slugs( $updates['flags'] );
 
 			$post_update = array(
