@@ -6,14 +6,22 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'setasign\\Fpdi\\' => array($vendorDir . '/setasign/fpdi/src'),
     'libphonenumber\\' => array($vendorDir . '/giggsey/libphonenumber-for-php/src'),
     'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Component\\Intl\\' => array($vendorDir . '/symfony/intl'),
+    'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
+    'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
+    'PhpParser\\' => array($vendorDir . '/nikic/php-parser/lib/PhpParser'),
     'PhpImap\\' => array($vendorDir . '/php-imap/php-imap/src/PhpImap'),
     'OpenPsa\\Ranger\\' => array($vendorDir . '/openpsa/ranger/src'),
     'OomphInc\\ComposerInstallersExtender\\' => array($vendorDir . '/oomphinc/composer-installers-extender/src'),
+    'Mpdf\\' => array($vendorDir . '/mpdf/mpdf/src'),
+    'Http\\Message\\' => array($vendorDir . '/php-http/message-factory/src'),
     'Giggsey\\Locale\\' => array($vendorDir . '/giggsey/locale/src'),
+    'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
+    'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
     'Currency\\Util\\' => array($vendorDir . '/terdia/currency-util/src'),
     'Composer\\Installers\\' => array($vendorDir . '/composer/installers/src/Composer/Installers'),
 );

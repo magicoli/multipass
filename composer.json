@@ -26,7 +26,8 @@
     "erusev/parsedown": "^1.7",
     "openpsa/ranger": "^0.5.4",
     "oomphinc/composer-installers-extender": "^2.0",
-    "giggsey/libphonenumber-for-php": "^8.12"
+    "giggsey/libphonenumber-for-php": "^8.12",
+    "mpdf/mpdf": "^8.1"
   },
   "extra": {
     "installer-paths": {

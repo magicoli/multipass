@@ -149,6 +149,7 @@ class MultiPass {
 		require_once MULTIPASS_DIR . 'includes/class-mltp-prestation-detail.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-resource.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-payment.php';
+		require_once MULTIPASS_DIR . 'includes/class-mltp-pdf.php';
 
 		require_once MULTIPASS_DIR . 'includes/class-mltp-settings.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-plugininfo.php';
@@ -1138,7 +1139,7 @@ class MultiPass {
 	/**
 	 * Placeholder. Will be used to get meta value from update request if any, or
 	 * from current saved meta if no request.
-	 * 
+	 *
 	 * @param  integer  $post_id                Post id.
 	 * @param  string   $meta_key               Meta Key.
 	 * @param  boolean  $update                 Update value passed from callback. Probably not used.
