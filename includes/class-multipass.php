@@ -1134,4 +1134,19 @@ class MultiPass {
 		);
 		return self::insert_attr( $html, $attr );
 	}
+
+	/**
+	 * Placeholder. Will be used to get meta value from update request if any, or
+	 * from current saved meta if no request.
+	 * 
+	 * @param  integer  $post_id                Post id.
+	 * @param  string   $meta_key               Meta Key.
+	 * @param  boolean  $update                 Update value passed from callback. Probably not used.
+	 * @return mixed            Meta value.
+	 */
+	static function get_post_or_update_meta( $post_id, $meta_key, $update = true) {
+		return get_post_meta( $post_id, $meta_key, $update );
+	}
+
+
 }
