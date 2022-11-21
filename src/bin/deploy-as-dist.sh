@@ -8,15 +8,19 @@ then
 fi
 
 PGM=$(basename $0)
+TMP=/tmp/$PGM.$$
 
 for destination in $@
 do
   echo $PGM: updading $destination >&2
-  rsync --delete -Wavz ./ $destination/ --include=vendor/composer/ --exclude-from=.distignore --exclude-from=.gitignore
+  sed -E "s:^([a-z]+)(/|$):/\\1/:" .distignore > $TMP.distignore
+  sed -E "s:^([a-z]+)(/|$):/\\1/:" .gitignore > $TMP.gitignore
+  rsync --delete -Wavz ./ $destination/ --include=vendor/composer/ --exclude-from=$TMP.distignore --exclude-from=$TMP.gitignore
   result=$?
+  rm -f $TMP.gitignore $TMP.distignore
   if [ $result -ne 0 ]
   then
-    echo "error $result while reploying to $destination"
+    echo "error $result while deploying to $destination"
     exit $result
   fi
   echo $PGM: $destination updated >&2
