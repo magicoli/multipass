@@ -990,6 +990,7 @@ class MultiPass {
 
 	static function payment_url( $reference = null, $amount = null, $args = array() ) {
 		$args['from_class'] = __CLASS__;
+		$amount = self::round_amount($amount);
 
 		return apply_filters( 'mltp_payment_url', $reference, $amount, $args );
 	}
@@ -1149,5 +1150,9 @@ class MultiPass {
 		return get_post_meta( $post_id, $meta_key, $update );
 	}
 
-
+	static function round_amount($amount, $precision = 2) {
+		$rounding = apply_filters('mltp_rounding', $precision);
+		$rounded = ( is_numeric($rounding) && is_numeric($amount) )  ? round($amount, $rounding) : $amount;
+		return $rounded;
+	}
 }
