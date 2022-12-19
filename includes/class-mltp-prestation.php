@@ -1512,7 +1512,8 @@ class Mltp_Prestation {
 							$paid_status = 'unpaid';
 						}
 					} else {
-						$post_status = 'pending';
+						// $post_status = 'pending';
+						$post_status = 'publish';
 						if ( $updates['paid'] > 0 ) {
 							$paid_status = 'partial';
 						} else {
