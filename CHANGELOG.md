@@ -1,6 +1,6 @@
 ## Changelog
 
-### Unreleased (0.2-dev.563)
+### Unreleased (0.2-dev.571)
 - new filter 'multipass_load_modules', allow loading modules from other plugins
 - new Lodgify bookings sync
 - added send payment mail link in calendar modal
