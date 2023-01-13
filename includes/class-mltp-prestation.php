@@ -1728,27 +1728,15 @@ class Mltp_Prestation {
 		$post = false;
 		if ( is_numeric( $args ) ) {
 			$post = get_post( $args );
-			if ( 12665 === $post->ID ) {
-				MultiPass::debug( 'prestation passed as id ' . $args );
-			}
 			if ( 'mltp_prestation' !== $post->post_type ) {
 				return new WP_Error( 'prestation-wrong-type', 'Not a prestation' );
 			}
 		} elseif ( is_object( $args ) && 'mltp_prestation' === $args->post_type ) {
 			$post = $args;
-			if ( 12665 === $post->ID ) {
-				MultiPass::debug( 'prestation passed as object ' . $post->ID );
-			}
 		} elseif ( is_string( $args ) ) {
 			$post = get_page_by_path( $args, OBJECT, 'mltp_prestation' );
-			if ( 12665 === $post->ID ) {
-				MultiPass::debug( 'prestation passed as slug ' . $post->ID );
-			}
 		}
 		if ( $post && empty( $args ) ) {
-			if ( 12665 === $post->ID ) {
-				MultiPass::debug( 'prestation found but no args, job finihed ' . $post->ID );
-			}
 			return $post;
 		}
 		if ( is_wp_error( $post ) ) {
@@ -1867,15 +1855,9 @@ class Mltp_Prestation {
 				$post    = $posts[0];
 				$post_id = $post->ID;
 				// update_post_meta( $order_id, 'prestation_id', $post_id );
-				if ( 12665 === $post->ID ) {
-					MultiPass::debug( 'prestation found with query ' . $post->ID );
-				}
 			}
 		}
 		if ( $post && ! is_array( $args ) ) {
-			if ( 12665 === $post->ID ) {
-				MultiPass::debug( 'prestation found but no array args, job finihed ' . $post->ID );
-			}
 			return $post;
 		}
 
@@ -1931,35 +1913,7 @@ class Mltp_Prestation {
 
 			$post = get_post( $post_id );
 
-			if ( MultiPass::debug() ) {
-				// MultiPass::debug( __CLASS__,__FUNCTION__, $mltp_detail->id );
-
-				if ( 12665 === $post_id ) {
-					$metas = array(
-						'prestation_id'  => null,
-						'attendee'       => null,
-						'attendee_name'  => null,
-						'attendee_email' => null,
-						'attendee_phone' => null,
-						'customer'       => null,
-						'customer_name'  => null,
-						'customer_email' => null,
-						'customer_phone' => null,
-						'guest'          => null,
-						'guest_name'     => null,
-						'guest_email'    => null,
-						'guest_phone'    => null,
-					);
-
-					$debug['received'] = array_filter( $args );
-					$debug['update']   = array_intersect( $metas, array_filter( $args ) );
-					foreach ( $metas as $meta => $value ) {
-						$debug['saved_prestation'][ $meta ] = get_post_meta( $prestation_id, $meta, true );
-					}
-
-					MultiPass::debug( __CLASS__, __FUNCTION__, $debug );
-				}
-			}
+			// MultiPass::debug( __CLASS__,__FUNCTION__, $mltp_detail->id );
 
 			return $post;
 	}
