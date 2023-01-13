@@ -1735,6 +1735,11 @@ class Mltp_Prestation {
 			$post = $args;
 		} elseif ( is_string( $args ) ) {
 			$post = get_page_by_path( $args, OBJECT, 'mltp_prestation' );
+		} elseif ( is_array($args) ) {
+			if( ! empty($args['prestation_id']) && is_numeric($args['prestation_id']) ) {
+				$post = get_post( $args['prestation_id'] );
+				if( $post && 'mltp_prestation' === $post->post_type ) return $post;
+			}
 		}
 		if ( $post && empty( $args ) ) {
 			return $post;
@@ -1745,7 +1750,6 @@ class Mltp_Prestation {
 			error_log( "\nCould not get prestation - $error_message" );
 			return false;
 		}
-
 		// if ( ! is_array( $args ) ) {
 		// error_log( __CLASS__ . '::' . __METHOD__ . '( ' . print_r( $args, true ) . '): args should be an id, a post or an array' );
 		// return false;
@@ -1755,6 +1759,7 @@ class Mltp_Prestation {
 			$args                   = array_merge(
 				array(
 					'prestation_id'  => null,
+					'reference_code'  => null,
 					'customer_id'    => null,
 					'customer_name'  => null,
 					'customer_email' => null,

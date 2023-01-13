@@ -705,6 +705,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		$prestation = new Mltp_Prestation(
 			array(
 				'prestation_id'  => $prestation_id,
+				// 'reference_code'  => $reference_code,
 				'customer_id'    => $customer_id,
 				'customer_name'  => $customer_name,
 				'customer_email' => $customer_email,
