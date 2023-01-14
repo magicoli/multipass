@@ -1115,6 +1115,8 @@ class Mltp_Item {
 			}
 			$updates['attendees'] = $attendees;
 		}
+		$updates['dates']['from'] = get_post_meta($post_id, 'from', true);
+		$updates['dates']['to'] = get_post_meta($post_id, 'to', true);
 
 		if ( ! empty( $updates ) ) {
 			$updates['flags'] = MultiPass::set_flags(
