@@ -327,20 +327,14 @@ class Mltp_WooCommerce_Payment extends Mltp_Payment {
 		if ( is_numeric( $prestation ) ) {
 			$prestation = get_post( $prestation );
 		}
+		if(! $prestation) return __('Prestation payment', 'multipass');
 
-		$dates = get_post_meta( $prestation->ID, 'dates', true );
-		$from  = date_i18n( get_option( 'date_format' ), $dates['from'] );
-		$to    = date_i18n( get_option( 'date_format' ), $dates['to'] );
+		$prestation        = new Mltp_Prestation( $prestation );
 
 		$cart_item_name = sprintf(
-			'%s<p class="prestation-details description">%s</p>',
-			$prestation->post_title,
-			sprintf(
-			// TRANSLATORS: from [start date] to [end date] (without time)
-				__( 'from %1$s to %2$s', 'multipass' ),
-				$from,
-				$to,
-			),
+			'%s <p class="prestation-details description">%s</p>',
+			$prestation->name,
+			MultiPass::format_date_range( $prestation->dates ),
 		);
 		return $cart_item_name;
 	}
