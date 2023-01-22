@@ -821,7 +821,7 @@ class Mltp_Item {
 				array(
 					'name'          => __( 'Paid', 'multipass' ),
 					'id'            => $prefix . 'paid',
-					'type'          => 'number',
+					'type'          => 'text',
 					// 'min'           => 0,
 					'step'          => 'any',
 					'size'          => 10,
@@ -831,7 +831,7 @@ class Mltp_Item {
 				array(
 					'name'          => __( 'Balance', 'multipass' ),
 					'id'            => $prefix . 'balance',
-					'type'          => 'number',
+					'type'          => 'text',
 					// 'min'           => 0,
 					'step'          => 'any',
 					'size'          => 10,
