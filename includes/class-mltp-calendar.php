@@ -639,17 +639,17 @@ class Mltp_Calendar {
 
 		$prestation = new Mltp_Prestation( $event->prestation_id );
 
-		$contact['name'] = (empty($prestation->customer_name)) ? $event->contact : $prestation->customer_name;
-		$contact['email'] = (empty($prestation->customer_email)) ? $event->email : $prestation->customer_email;
-		$contact['phone'] = (empty($prestation->customer_phone)) ? $event->phone : $prestation->customer_phone;
+		$contact['name']  = ( empty( $prestation->customer_name ) ) ? $event->contact : $prestation->customer_name;
+		$contact['email'] = ( empty( $prestation->customer_email ) ) ? $event->email : $prestation->customer_email;
+		$contact['phone'] = ( empty( $prestation->customer_phone ) ) ? $event->phone : $prestation->customer_phone;
 
 		$html = '';
 		$data = array(
 			'prestation' => array(
-				__( 'Dates', 'multipass' )    => MultiPass::format_date_range( $prestation->dates ),
+				__( 'Dates', 'multipass' )               => MultiPass::format_date_range( $prestation->dates ),
 				_x( 'Contact', '(noun)', '(noun)', 'multipass' ) => $contact['name'],
-				_x( 'Email', '(noun)', 'multipass' ) => MultiPass::link( $contact['email'], null, array( 'tabindex' => -1 ) ),
-				_x( 'Phone', '(noun)', 'multipass' ) => MultiPass::link( $contact['phone'], null, array( 'tabindex' => -1 ) ),
+				_x( 'Email', '(noun)', 'multipass' )     => MultiPass::link( $contact['email'], null, array( 'tabindex' => -1 ) ),
+				_x( 'Phone', '(noun)', 'multipass' )     => MultiPass::link( $contact['phone'], null, array( 'tabindex' => -1 ) ),
 				// __( 'To', 'multipass' )    => MultiPass::format_date( $prestation->to ),
 				__( 'Prestation subtotal', 'multipass' ) => ( $prestation->subtotal === $prestation->total ) ? null : MultiPass::price( $prestation->subtotal ),
 				__( 'Prestation discount', 'multipass' ) => MultiPass::price( $prestation->discount ),
@@ -660,17 +660,17 @@ class Mltp_Calendar {
 				__( 'Balance', 'multipass' )             => MultiPass::price_with_links( $prestation, $prestation->balance ),
 			),
 			'booking'    => array(
-				__( 'Item', 'multipass' )        => $event->title,
-				__( 'Dates', 'multipass' )        => MultiPass::format_date_range( array($event->display_start, $event->display_end) ),
+				__( 'Item', 'multipass' )          => $event->title,
+				__( 'Dates', 'multipass' )         => MultiPass::format_date_range( array( $event->display_start, $event->display_end ) ),
 				// __( 'Check in', 'multipass' )        => MultiPass::format_date( $event->display_start ),
 				// __( 'Check out', 'multipass' )       => MultiPass::format_date( $event->display_end ),
 				// ),
 				// 'contact'    => array(
 			// ),
 			// 'prices'     => array(
-				__( 'Item subtotal', 'multipass' )   => ( $event->subtotal === $event->total ) ? null : MultiPass::price( $event->subtotal ),
-				__( 'Item discount', 'multipass' )   => MultiPass::price( $event->discount ),
-				__( 'Item total', 'multipass' ) => MultiPass::price( $event->total ),
+				__( 'Item subtotal', 'multipass' ) => ( $event->subtotal === $event->total ) ? null : MultiPass::price( $event->subtotal ),
+				__( 'Item discount', 'multipass' ) => MultiPass::price( $event->discount ),
+				__( 'Item total', 'multipass' )    => MultiPass::price( $event->total ),
 				// __( 'Deposit', 'multipass' )  => MultiPass::price( $event->deposit ),
 				__( 'Item paid', 'multipass' )     => MultiPass::price( $event->paid ),
 				__( 'Item balance', 'multipass' )  => MultiPass::price( $event->balance ),

@@ -31,7 +31,7 @@ class Mltp_WooCommerce_Payment extends Mltp_Payment {
 		add_filter( 'query_vars', __CLASS__ . '::wc_query_vars_filter' );
 		add_action( 'template_include', __CLASS__ . '::template_include' );
 		add_filter( 'mltp_payment_url', __CLASS__ . '::payment_url', null, 3 );
-		add_filter( 'mltp_rounding', __CLASS__ . '::rounding');
+		add_filter( 'mltp_rounding', __CLASS__ . '::rounding' );
 
 		// Set pay button text
 		// add_filter( 'woocommerce_product_add_to_cart_text', __CLASS__ . '::add_to_cart_button', 10, 2);
@@ -327,9 +327,11 @@ class Mltp_WooCommerce_Payment extends Mltp_Payment {
 		if ( is_numeric( $prestation ) ) {
 			$prestation = get_post( $prestation );
 		}
-		if(! $prestation) return __('Prestation payment', 'multipass');
+		if ( ! $prestation ) {
+			return __( 'Prestation payment', 'multipass' );
+		}
 
-		$prestation        = new Mltp_Prestation( $prestation );
+		$prestation = new Mltp_Prestation( $prestation );
 
 		$cart_item_name = sprintf(
 			'%s <p class="prestation-details description">%s</p>',
@@ -429,9 +431,9 @@ class Mltp_WooCommerce_Payment extends Mltp_Payment {
 		return ( $product->get_meta( '_prpay' ) == 'yes' ) ? true : false;
 	}
 
-	static function rounding($precision) {
-		$rounding = get_option('woocommerce_price_num_decimals', $precision);
-		return (is_numeric($rounding)) ? $rounding : $precision;
+	static function rounding( $precision ) {
+		$rounding = get_option( 'woocommerce_price_num_decimals', $precision );
+		return ( is_numeric( $rounding ) ) ? $rounding : $precision;
 	}
 
 	static function payment_url( $reference = null, $amount = null, $args = array() ) {

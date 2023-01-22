@@ -990,7 +990,7 @@ class MultiPass {
 
 	static function payment_url( $reference = null, $amount = null, $args = array() ) {
 		$args['from_class'] = __CLASS__;
-		$amount = self::round_amount($amount);
+		$amount             = self::round_amount( $amount );
 
 		return apply_filters( 'mltp_payment_url', $reference, $amount, $args );
 	}
@@ -1141,18 +1141,18 @@ class MultiPass {
 	 * Placeholder. Will be used to get meta value from update request if any, or
 	 * from current saved meta if no request.
 	 *
-	 * @param  integer  $post_id                Post id.
-	 * @param  string   $meta_key               Meta Key.
-	 * @param  boolean  $update                 Update value passed from callback. Probably not used.
+	 * @param  integer $post_id                Post id.
+	 * @param  string  $meta_key               Meta Key.
+	 * @param  boolean $update                 Update value passed from callback. Probably not used.
 	 * @return mixed            Meta value.
 	 */
-	static function get_post_or_update_meta( $post_id, $meta_key, $update = true) {
+	static function get_post_or_update_meta( $post_id, $meta_key, $update = true ) {
 		return get_post_meta( $post_id, $meta_key, $update );
 	}
 
-	static function round_amount($amount, $precision = 2) {
-		$rounding = apply_filters('mltp_rounding', $precision);
-		$rounded = ( is_numeric($rounding) && is_numeric($amount) )  ? round($amount, $rounding) : $amount;
+	static function round_amount( $amount, $precision = 2 ) {
+		$rounding = apply_filters( 'mltp_rounding', $precision );
+		$rounded  = ( is_numeric( $rounding ) && is_numeric( $amount ) ) ? round( $amount, $rounding ) : $amount;
 		return $rounded;
 	}
 }
