@@ -724,6 +724,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 		if ( $prestation ) {
 			update_post_meta( $post_id, 'prestation_id', $prestation->id );
+			update_post_meta( $post_id, 'reference_code', $prestation->post->post_name );
 			self::update_prestation_orders( $prestation->id, $prestation, true );
 
 			// TODO: mark parts related to this order as review in progress
