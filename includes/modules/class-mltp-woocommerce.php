@@ -119,6 +119,12 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				'callback'      => 'wc_get_orders_handle_prestation_id',
 				'accepted_args' => 2,
 			),
+			array(
+				'component' => $this,
+				'hook' => 'woocommerce_email_subject_new_order',
+				'callback' => 'add_customer_to_email_subject',
+				'accepted_args' => 2,
+			),
 
 			// array(
 			// 'hook' => 'multipass_managed_list',
@@ -217,6 +223,24 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		return $query;
 	}
 
+	/**
+	 * Adds customer first and last name to admin new order email subject
+	 */
+	function add_customer_to_email_subject( $subject, $order ) {
+		if( $this->get_option('woocommerce_add_customer_name') ) {
+			$prestation_id = get_post_meta( $order->get_id(), 'prestation_id', true );
+			if(!empty($prestation_id)) {
+				$prestation = new Mltp_Prestation($prestation_id);
+				$append = trim( $prestation->name . ' ' . ( empty($prestation->guests) ? '' : $prestation->guests . 'p ' ) . MultiPass::format_date_range( $prestation->dates ) );
+			}
+			$append = (empty($append)) ? trim($order->get_billing_first_name() . ' ' . $order->get_billing_last_name()) : $append;
+			$subject = trim($subject . ' ' . $append );
+			$subject = trim($subject);
+		}
+
+		return $subject;
+	}
+
 	static function display_prestation_link( $arg = null, $field = null ) {
 		global $post;
 		$prestation_id = get_post_meta( $post->ID, 'prestation_id', true );
@@ -279,6 +303,15 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			'id'             => 'multipass-woocommerce-sync',
 			'settings_pages' => array( 'multipass-woocommerce' ),
 			'fields'         => array(
+				array(
+					'name'              => __( 'Add customer name to notification subject', 'multipass' ),
+					'id'                => $prefix . 'add_customer_name',
+					'type'              => 'switch',
+					'desc'              => __( 'Append client name to the subject of administrator notification email', 'multipass' ),
+					'style'             => 'rounded',
+					// 'sanitize_callback' => 'Mltp_WooCommerce::sync_orders_validation',
+					'save_field'        => true,
+				),
 				array(
 					'name'              => __( 'Synchronize now', 'multipass' ),
 					'id'                => $prefix . 'sync_orders',
@@ -742,7 +775,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 			foreach ( $details as $key => $detail ) {
 				$detail['prestation_id'] = $prestation->id;
-				MultiPass::debug("prestation->id $prestation->id, prestation->post->post_name " . $prestation->post->post_name, $detail);
+				// MultiPass::debug("prestation->id $prestation->id, prestation->post->post_name " . $prestation->post->post_name, $detail);
 				$detail['description'] = empty($detail['description']) ? NULL : strip_tags($detail['description']);
 				// if('payment' === $type) {
 				// error_log('detail ' . print_r($detail, true));
