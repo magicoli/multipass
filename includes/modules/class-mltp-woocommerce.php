@@ -535,7 +535,6 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 		$prestation_id = get_post_meta( $post_id, 'prestation_id', true );
 		$reference_code = get_post_meta( $post_id, 'reference_code', true );
-		error_log(__METHOD__ . " prestation_id $prestation_id, reference_code $reference_code");
 
 		$customer_id   = get_post_meta( $post_id, '_customer_user', true );
 		$customer      = get_user_by( 'id', $customer_id );
@@ -640,10 +639,14 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 			if ( Mltp_WooCommerce_Payment::is_payment_product( $product ) ) {
 				$type         = 'payment';
-				$description .= ' #' . $post_id;
+				$description .= strip_tags( $description . ' #' . $post_id );
+				$quantity   = 0;
+				// $sub_total  = NULL;
+				$total      = 0;
 			} else {
 				$type = $product->get_type();
 			}
+			$balance    = $total - $paid;
 
 			// switch ( $type ) {
 			// case 'booking':
@@ -731,7 +734,6 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		// }
 
 		if ( $prestation ) {
-			error_log(__METHOD__ . " prestation->id $prestation->id, prestation->post->post_name " . $prestation->post->post_name);
 			update_post_meta( $post_id, 'prestation_id', $prestation->id );
 			update_post_meta( $post_id, 'reference_code', $prestation->post->post_name );
 			self::update_prestation_orders( $prestation->id, $prestation, true );
@@ -740,6 +742,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 			foreach ( $details as $key => $detail ) {
 				$detail['prestation_id'] = $prestation->id;
+				MultiPass::debug("prestation->id $prestation->id, prestation->post->post_name " . $prestation->post->post_name, $detail);
 				// if('payment' === $type) {
 				// error_log('detail ' . print_r($detail, true));
 				// }

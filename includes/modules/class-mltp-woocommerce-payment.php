@@ -381,25 +381,23 @@ class Mltp_WooCommerce_Payment extends Mltp_Payment {
 	 */
 	static function add_reference_field_to_checkout( $checkout ) {
 	  $reference_code = $checkout->get_value( 'reference_code' );
-		if(!empty($reference_code)) {
-			MultiPass::debug("reference_code already set to $reference_code");
-		} else {
+		if( empty($reference_code) ) {
 			foreach ( WC()->cart->get_cart() as $cart_item ) {
 				$product_title = $cart_item['data']->get_title();
 				// error_log($product_title);
 				if ( ! empty( $cart_item['reference_code'] ) ) {
 					$reference_code = $cart_item['reference_code'];
-					MultiPass::debug("reference_code set from cart reference_code $reference_code");
+					// MultiPass::debug("reference_code set from cart reference_code $reference_code");
 					break;
 				}
 				else if ( ! empty( $cart_item['prpay_reference'] ) ) {
 					$reference_code = $cart_item['prpay_reference'];
-					MultiPass::debug("reference_code set from cart prpay_reference $reference_code");
+					// MultiPass::debug("reference_code set from cart prpay_reference $reference_code");
 					break;
 				}
 				else if ( preg_match('/#\S+/', $product_title, $matches) ) {
 					$reference_code = $matches[0];
-					MultiPass::debug("reference_code set from cart title $reference_code");
+					// MultiPass::debug("reference_code set from cart title $reference_code");
 					break;
 				}
 			}
