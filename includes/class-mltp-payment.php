@@ -61,7 +61,7 @@ class Mltp_Payment {
 
 	static function get_payment_reference() {
 		$request = wp_unslash( $_REQUEST );
-		$keys    = array( 'prpay_reference', 'reference', 'booking_id' );
+		$keys    = array( 'prpay_reference', 'reference_code', 'reference', 'booking_id' );
 		foreach ( $keys as $key ) {
 			if ( ! empty( $request[ $key ] ) ) {
 				return sanitize_text_field( $request[ $key ] );

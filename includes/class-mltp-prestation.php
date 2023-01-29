@@ -1724,29 +1724,60 @@ class Mltp_Prestation {
 		if ( empty( $args ) ) {
 			return $args;
 		}
+		$prestation_post = false;
 
-		$post = false;
 		if ( is_numeric( $args ) ) {
-			$post = get_post( $args );
-			if ( 'mltp_prestation' !== $post->post_type ) {
+			$prestation_post = get_post( $args );
+			if ( 'mltp_prestation' !== $prestation_post->post_type ) {
 				return new WP_Error( 'prestation-wrong-type', 'Not a prestation' );
 			}
 		} elseif ( is_object( $args ) && 'mltp_prestation' === $args->post_type ) {
-			$post = $args;
+			$prestation_post = $args;
 		} elseif ( is_string( $args ) ) {
-			$post = get_page_by_path( $args, OBJECT, 'mltp_prestation' );
+			$prestation_post = get_page_by_path( $args, OBJECT, 'mltp_prestation' );
 		} elseif ( is_array( $args ) ) {
-			if ( ! empty( $args['prestation_id'] ) && is_numeric( $args['prestation_id'] ) ) {
-				$post = get_post( $args['prestation_id'] );
-				if ( $post && 'mltp_prestation' === $post->post_type ) {
-					return $post;
+			$search_id = ( ! empty( $args['prestation_id'] ) && is_numeric( $args['prestation_id'] ) ) ? esc_attr($args['prestation_id']) : NULL;
+			$search_code = esc_attr($args['reference_code']);
+
+			if ( ! empty( $search_id ) ) {
+				// MultiPass::debug(__METHOD__, 'looking by id ', $search_id);
+				$prestation_post = get_post( $search_id );
+			} else if ( ! empty( $search_code ) ) {
+				// MultiPass::debug(__METHOD__, 'looking by reference_code ', $search_code );
+				$query_args = array(
+					'name' => $search_code,
+					'post_type'       => 'mltp_prestation',
+					// 'post_status__in' => array( 'publish', 'pending', 'on-hold', 'deposit', 'partial', 'unpaid', 'processing' ),
+					'post_status__in' => array( 'pending', 'on-hold', 'deposit', 'partial', 'unpaid', 'processing' ),
+					'orderby'         => 'post_date',
+					'order'           => 'desc',
+					// 'meta_query' => array(
+					// 	array(
+					// 		'key'   => 'reference_code',
+					// 		'value' => $search_code,
+					// 	),
+					// ),
+				);
+				$prestation_posts = get_posts( $query_args );
+				$prestation_post  = false;
+				if ( $prestation_posts ) {
+					$prestation_post    = $prestation_posts[0];
+					$prestation_id = $prestation_post->ID;
 				}
+
+			}
+
+			if ( $prestation_post && 'mltp_prestation' === $prestation_post->post_type ) {
+				// MultiPass::debug(__METHOD__, 'found ', $prestation_id);
+				return $prestation_post;
+			} else {
+				// MultiPass::debug(__METHOD__, 'not found');
 			}
 		}
-		if ( $post && empty( $args ) ) {
-			return $post;
+		if ( $prestation_post && empty( $args ) ) {
+			return $prestation_post;
 		}
-		if ( is_wp_error( $post ) ) {
+		if ( is_wp_error( $prestation_post ) ) {
 			$error_code    = array_key_first( $user_id->errors );
 			$error_message = $user_id->errors[ $error_code ][0];
 			error_log( "\nCould not get prestation - $error_message" );
@@ -1757,7 +1788,7 @@ class Mltp_Prestation {
 		// return false;
 		// }
 
-		if ( ! $post ) {
+		if ( ! $prestation_post ) {
 			$args                   = array_merge(
 				array(
 					'prestation_id'  => null,
@@ -1856,16 +1887,16 @@ class Mltp_Prestation {
 				}
 			}
 
-				$posts = get_posts( $query_args );
-				$post  = false;
-			if ( $posts ) {
-				$post    = $posts[0];
-				$post_id = $post->ID;
-				// update_post_meta( $order_id, 'prestation_id', $post_id );
+			$prestation_posts = get_posts( $query_args );
+			$prestation_post  = false;
+			if ( $prestation_posts ) {
+				$prestation_post    = $prestation_posts[0];
+				$prestation_id = $prestation_post->ID;
+				// update_post_meta( $order_id, 'prestation_id', $prestation_id );
 			}
 		}
-		if ( $post && ! is_array( $args ) ) {
-			return $post;
+		if ( $prestation_post && ! is_array( $args ) ) {
+			return $prestation_post;
 		}
 
 		// Nothing worked so far, create new prestation post.
@@ -1896,8 +1927,8 @@ class Mltp_Prestation {
 			// MultiPass::debug($args, $meta);
 
 			// }
-			$postarr = array(
-				'ID'          => ( $post ) ? $post->ID : null,
+			$prestation_postarr = array(
+				'ID'          => ( $prestation_post ) ? $prestation_post->ID : null,
 				'post_author' => $customer_id,
 				'post_date'   => ( empty( $args['date'] ) ) ? null : esc_attr( $args['date'] ),
 				// 'post_date_gmt' => (empty($args['date_gmt'])) ? null : esc_attr( $args['date_gmt'] ),
@@ -1906,23 +1937,23 @@ class Mltp_Prestation {
 				'meta_input'  => $meta,
 			);
 
-			$post_id = wp_insert_post( $postarr );
-			if ( 0 === $post_id ) {
-				error_log( "\ncould not create prestation " . print_r( $postarr, true ) );
+			$prestation_id = wp_insert_post( $prestation_postarr );
+			if ( 0 === $prestation_id ) {
+				error_log( "\ncould not create prestation " . print_r( $prestation_postarr, true ) );
 				return false;
 			}
-			if ( is_wp_error( $post_id ) ) {
+			if ( is_wp_error( $prestation_id ) ) {
 				$error_code    = array_key_first( $user_id->errors );
 				$error_message = $user_id->errors[ $error_code ][0];
-				error_log( "\ncould not create prestation " . print_r( $postarr, true ) . "\n$error_message" );
+				error_log( "\ncould not create prestation " . print_r( $prestation_postarr, true ) . "\n$error_message" );
 				return false;
 			}
 
-			$post = get_post( $post_id );
+			$prestation_post = get_post( $prestation_id );
 
 			// MultiPass::debug( __CLASS__,__FUNCTION__, $mltp_detail->id );
 
-			return $post;
+			return $prestation_post;
 	}
 
 	static function render_details_notes() {

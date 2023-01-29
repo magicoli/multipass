@@ -203,7 +203,12 @@ class Mltp_WooCommerce extends Mltp_Modules {
 	}
 
 	static function wc_get_orders_handle_prestation_id( $query, $query_vars ) {
-		if ( ! empty( $query_vars['prestation_id'] ) ) {
+		if ( ! empty( $query_vars['reference_code'] ) ) {
+			$query['meta_query'][] = array(
+				'key'   => 'reference_code',
+				'value' => esc_attr( $query_vars['reference_code'] ),
+			);
+		} else if ( ! empty( $query_vars['prestation_id'] ) ) {
 			$query['meta_query'][] = array(
 				'key'   => 'prestation_id',
 				'value' => esc_attr( $query_vars['prestation_id'] ),
@@ -529,6 +534,9 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		// remove_action(current_action(), __CLASS__ . '::wp_insert_post_action');
 
 		$prestation_id = get_post_meta( $post_id, 'prestation_id', true );
+		$reference_code = get_post_meta( $post_id, 'reference_code', true );
+		error_log(__METHOD__ . " prestation_id $prestation_id, reference_code $reference_code");
+
 		$customer_id   = get_post_meta( $post_id, '_customer_user', true );
 		$customer      = get_user_by( 'id', $customer_id );
 		if ( $customer ) {
@@ -632,7 +640,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 			if ( Mltp_WooCommerce_Payment::is_payment_product( $product ) ) {
 				$type         = 'payment';
-				$description .= ' #' . $order->ID;
+				$description .= ' #' . $post_id;
 			} else {
 				$type = $product->get_type();
 			}
@@ -705,14 +713,14 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		$prestation = new Mltp_Prestation(
 			array(
 				'prestation_id'  => $prestation_id,
-				// 'reference_code'  => $reference_code,
-				'customer_id'    => $customer_id,
-				'customer_name'  => $customer_name,
-				'customer_email' => $customer_email,
-				'date'           => esc_attr( $post->post_date ),
-				'date_gmt'       => esc_attr( $post->post_date_gmt ),
-				'from'           => $from,
-				'to'             => $to,
+				'reference_code'  => $reference_code,
+				// 'customer_id'    => $customer_id,
+				// 'customer_name'  => $customer_name,
+				// 'customer_email' => $customer_email,
+				// 'date'           => esc_attr( $post->post_date ),
+				// 'date_gmt'       => esc_attr( $post->post_date_gmt ),
+				// 'from'           => $from,
+				// 'to'             => $to,
 				// TODO: add items from and to, avoid merging unrelated orders
 			)
 		);
@@ -723,6 +731,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		// }
 
 		if ( $prestation ) {
+			error_log(__METHOD__ . " prestation->id $prestation->id, prestation->post->post_name " . $prestation->post->post_name);
 			update_post_meta( $post_id, 'prestation_id', $prestation->id );
 			update_post_meta( $post_id, 'reference_code', $prestation->post->post_name );
 			self::update_prestation_orders( $prestation->id, $prestation, true );

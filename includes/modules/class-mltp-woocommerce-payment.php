@@ -26,6 +26,9 @@ class Mltp_WooCommerce_Payment extends Mltp_Payment {
 		add_filter( 'woocommerce_get_price_html', __CLASS__ . '::get_price_html', 10, 2 );
 
 		add_action( 'woocommerce_checkout_create_order_line_item', __CLASS__ . '::add_custom_data_to_order', 10, 4 );
+		add_action( 'woocommerce_before_order_notes', __CLASS__ . '::add_reference_field_to_checkout' );
+		add_action( 'woocommerce_checkout_update_order_meta', __CLASS__ . '::save_reference_field_to_order_meta' );
+		add_action( 'woocommerce_order_details_after_order_table', __CLASS__ . '::display_reference_field_on_order_details' );
 
 		add_filter( 'mltp_rewrite_rules', __CLASS__ . '::rewrite_rules_filter' );
 		add_filter( 'query_vars', __CLASS__ . '::wc_query_vars_filter' );
@@ -371,6 +374,66 @@ class Mltp_WooCommerce_Payment extends Mltp_Payment {
 			// 'title' => $values['title'],
 			// ));
 		}
+	}
+
+	/**
+	 * Add a order reference field to the checkout page
+	 */
+	static function add_reference_field_to_checkout( $checkout ) {
+	  $reference_code = $checkout->get_value( 'reference_code' );
+		if(!empty($reference_code)) {
+			MultiPass::debug("reference_code already set to $reference_code");
+		} else {
+			foreach ( WC()->cart->get_cart() as $cart_item ) {
+				$product_title = $cart_item['data']->get_title();
+				// error_log($product_title);
+				if ( ! empty( $cart_item['reference_code'] ) ) {
+					$reference_code = $cart_item['reference_code'];
+					MultiPass::debug("reference_code set from cart reference_code $reference_code");
+					break;
+				}
+				else if ( ! empty( $cart_item['prpay_reference'] ) ) {
+					$reference_code = $cart_item['prpay_reference'];
+					MultiPass::debug("reference_code set from cart prpay_reference $reference_code");
+					break;
+				}
+				else if ( preg_match('/#\S+/', $product_title, $matches) ) {
+					$reference_code = $matches[0];
+					MultiPass::debug("reference_code set from cart title $reference_code");
+					break;
+				}
+			}
+		}
+
+	  if(!empty($reference_code)) {
+			echo '<div id="reference_code_field">';
+	    woocommerce_form_field( 'reference_code', array(
+	      'type'          => 'text',
+	      'class'         => array('my-field-class form-row-wide'),
+	      'label'         => __('Reference Code'),
+	      'placeholder'   => __('Reference Code'),
+	      'custom_attributes' => array( 'readonly' => 'readonly' ),
+	    ), $reference_code );
+	  }
+
+	  echo '</div>';
+	}
+
+	/**
+	 * Show the order reference field in the order details page
+	 */
+	static function save_reference_field_to_order_meta( $order_id ) {
+	    if ( ! empty( $_POST['reference_code'] ) ) {
+				MultiPass::debug("savig order meta reference_code $reference_code");
+	        update_post_meta( $order_id, 'reference_code', sanitize_text_field( $_POST['reference_code'] ) );
+	    }
+	}
+
+	/**
+	 * Show the order reference field in the order details page
+	 */
+	static function display_reference_field_on_order_details( $order ) {
+	    echo '<p><strong>' . __( 'Reference Code', 'multipass' ) . ':</strong> ' . get_post_meta( $order->get_id(), 'reference_code', true ) . '</p>';
 	}
 
 	static function get_price_html( $price_html, $product ) {

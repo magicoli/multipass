@@ -951,10 +951,20 @@ class MultiPass {
 
 	static function debug() {
 		$args = func_get_args();
+		$backtrace = empty(debug_backtrace()[1]['class']) ? '' : debug_backtrace()[1]['class'] . '::';
+		$backtrace .= debug_backtrace()[1]['function']; // . ' (' . debug_backtrace()[1]['line'] . ') ';
+		
 		if ( empty( $args ) ) {
-			return get_option( 'multipass_debug' );
+			// error_log($backtrace . ' empty args');
+			return $multipass_debug;
 		}
-		if ( ! current_user_can( 'mltp_administrator' ) || ! get_option( 'multipass_debug' ) ) {
+		$multipass_debug = get_option( 'multipass_debug' );
+		if ( ! $multipass_debug ) {
+			// error_log($backtrace . ' multipass_debug disabled ' . $multipass_debug );
+			return false;
+		}
+		if ( ! current_user_can( 'mltp_administrator' ) ) {
+			// error_log($backtrace . ' not an administrator' );
 			return false;
 		}
 
@@ -963,12 +973,8 @@ class MultiPass {
 				$args[ $key ] = print_r( $arg, true );
 			}
 		}
-		if ( empty( $args ) ) {
-			$calling = debug_backtrace()[1]['function'];
-			$args[]  = "$calling called " . __FUNCTION__ . ' with empty values';
-		}
 
-		error_log( join( ' ', $args ) );
+		error_log( $backtrace . join( ' ', $args ) );
 
 		return true;
 	}
