@@ -69,6 +69,25 @@ WARNING: **Make a full backup of your website and databases** before installing 
 = 0.2 =
 * new filter 'multipass_load_modules', allow loading modules from other plugins
 * new Lodgify bookings sync
+* added prestation details to woocommerce new order admin notification (optional)
+* added send payment mail link in calendar modal
+* added option to create custom roles
+* added MultiPass Reader, Manager and Administrator capabilities sets * reorganised admin menu (defaults to Calendar)
+* added source and origin edit links to Calendar modal
+* added src/bin/build.sh and src/bin/deploy.sh
+* added Mltp_Prestation summary() method
+* addded src/bin/build.sh and src/bin/deploy.sh
+* added MultiPass Reader, Manager and Administrator capabilities sets * reorganised admin menu (defaults to Calendar)
+* fix html tags in prestation detail title when imported from WooCommerce
+* fix woocommerce payment product adding paid amount to prestation total
+* fix woocommerce order creating new prestation when exsitiong prestation code provided
+* fix PHP 7.4 compatibility
+* fix issues with composer dependencies custom location (revert to
+* fix duplicate details on wc order update, use uuid to identify linked detail
+
+= 0.2 =
+* new filter 'multipass_load_modules', allow loading modules from other plugins
+* new Lodgify bookings sync
 * added send payment mail link in calendar modal
 * added option to create custom roles
 * added MultiPass Reader, Manager and Administrator capabilities sets * reorganised admin menu (defaults to Calendar)
