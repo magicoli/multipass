@@ -1,10 +1,10 @@
-=== MultiPass (dev) ===
+=== MultiPass ===
 Contributors: magicoli69
 Donate link: https://magiiic.com/support/MultiPass+Plugin
 Tags: hotel, booking, multi-prestations, multi-services, woocommerce, ota, pms, booking engine
 Requires at least: 5.9.0
 Tested up to: 6.1.1
-Stable tag: 0.1.2
+Stable tag: 0.2
 License: AGPLv3 or later
 License URI: http://www.gnu.org/licenses/agpl-3.0.txt
 
@@ -66,7 +66,7 @@ WARNING: **Make a full backup of your website and databases** before installing 
 
 == Changelog ==
 
-= Unreleased (0.2-dev.580) =
+= 0.2 =
 * new filter 'multipass_load_modules', allow loading modules from other plugins
 * new Lodgify bookings sync
 * added send payment mail link in calendar modal
@@ -77,6 +77,7 @@ WARNING: **Make a full backup of your website and databases** before installing 
 * added Mltp_Prestation summary() method
 * addded src/bin/build.sh and src/bin/deploy.sh
 * added MultiPass Reader, Manager and Administrator capabilities sets * reorganised admin menu (defaults to Calendar)
+* fix woocommerce payment product adding paid amount to prestation total
 * fix woocommerce order creating new prestation when exsitiong prestation code provided
 * fix PHP 7.4 compatibility
 * fix issues with composer dependencies custom location (revert to
