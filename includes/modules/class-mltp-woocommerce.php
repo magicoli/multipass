@@ -639,7 +639,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 			if ( Mltp_WooCommerce_Payment::is_payment_product( $product ) ) {
 				$type         = 'payment';
-				$description .= strip_tags( $description . ' #' . $post_id );
+				$description .= preg_match('/#/', $description) ? '' : ' #' . ( empty($reference_code) ? $post_id : $reference_code );
 				$quantity   = 0;
 				// $sub_total  = NULL;
 				$total      = 0;
@@ -743,6 +743,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			foreach ( $details as $key => $detail ) {
 				$detail['prestation_id'] = $prestation->id;
 				MultiPass::debug("prestation->id $prestation->id, prestation->post->post_name " . $prestation->post->post_name, $detail);
+				$detail['description'] = empty($detail['description']) ? NULL : strip_tags($detail['description']);
 				// if('payment' === $type) {
 				// error_log('detail ' . print_r($detail, true));
 				// }
