@@ -1,4 +1,4 @@
-# MultiPass
+# MultiPass (dev)
 
 ![Stable 0.2](https://badgen.net/badge/Stable/0.2/00aa00)
 ![WordPress 5.9.0 - 6.1.1](https://badgen.net/badge/WordPress/5.9.0%20-%206.1.1/3858e9)
