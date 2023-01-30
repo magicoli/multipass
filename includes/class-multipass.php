@@ -953,12 +953,12 @@ class MultiPass {
 		$args = func_get_args();
 		$backtrace = empty(debug_backtrace()[1]['class']) ? '' : debug_backtrace()[1]['class'] . '::';
 		$backtrace .= debug_backtrace()[1]['function']; // . ' (' . debug_backtrace()[1]['line'] . ') ';
-		
+
+		$multipass_debug = get_option( 'multipass_debug' );
 		if ( empty( $args ) ) {
 			// error_log($backtrace . ' empty args');
 			return $multipass_debug;
 		}
-		$multipass_debug = get_option( 'multipass_debug' );
 		if ( ! $multipass_debug ) {
 			// error_log($backtrace . ' multipass_debug disabled ' . $multipass_debug );
 			return false;
