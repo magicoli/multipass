@@ -66,6 +66,7 @@ class Mltp_Settings {
 			// 'edit_mltp_prestations',
 			// 'edit_others_mltp_prestations',
 			// 'publish_mltp_prestations',
+			'read_mltp_prestations',
 			// 'read_private_mltp_prestations',
 		);
 
