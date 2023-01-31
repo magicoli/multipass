@@ -1493,7 +1493,8 @@ class Mltp_Prestation {
 		}
 		$updates['deposit']['total'] += $updates['deposit']['amount'] + $updates['deposit']['managed'];
 
-		$updates['balance'] = ( 0 === $updates['total'] - $updates['paid'] ) ? null : $updates['total'] - $updates['paid'];
+		$balance = MultiPass::round_amount($updates['total'] - $updates['paid']);
+		$updates['balance'] = ( 0 === $balance ) ? null : $balance;
 
 		$post_status = $post->post_status;
 
@@ -1501,7 +1502,7 @@ class Mltp_Prestation {
 			case 'publish':
 				if ( $updates['total'] <= 0 ) {
 					$paid_status = 'on-hold';
-				} elseif ( $updates['paid'] < $updates['total'] ) {
+				} elseif ( MultiPass::round_amount($updates['paid']) < MultiPass::round_amount($updates['total']) ) {
 					if ( $updates['paid'] >= $updates['deposit']['total'] ) {
 						$post_status = 'publish';
 						if ( $updates['deposit']['total'] > 0 ) {
