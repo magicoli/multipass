@@ -165,6 +165,7 @@ class MultiPass {
 		 * Make sure to load all modules before calendar
 		 */
 		require_once MULTIPASS_DIR . 'includes/class-mltp-calendar.php';
+		require_once MULTIPASS_DIR . 'includes/class-mltp-api.php';
 
 		// if(is_plugin_active('woocommerce/woocommerce.php')) {
 		// require_once MULTIPASS_DIR . 'includes/modules/class-mltp-woocommerce.php';
