@@ -37,8 +37,18 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 		$this->locale = MultiPass::get_locale();
 
-		// register_activation_hook( MULTIPASS_FILE, __CLASS__ . '::activate' );
-		// register_deactivation_hook( MULTIPASS_FILE, __CLASS__ . '::deactivate' );
+		$this->namespace = 'multipass/v1';
+		$this->route = '/lodgify';
+
+		$this->webhooks_subscribe = array(
+			'rate_change' => true,
+			'availability_change' => true,
+			'booking_new_any_status' => true,
+			'booking_change' => true,
+		);
+
+		register_activation_hook( MULTIPASS_FILE, array($this, 'subscribe_webhooks' ) );
+		register_deactivation_hook( MULTIPASS_FILE, array($this, 'unsubscribe_webhooks' ) );
 	}
 
 	/**
@@ -48,7 +58,12 @@ class Mltp_Lodgify extends Mltp_Modules {
 	 */
 	public function init() {
 
-		$actions = array();
+		$actions = array(
+			array(
+				'hook' => 'rest_api_init',
+				'callback' => 'register_api_callback_route',
+			),
+		);
 
 		$filters = array(
 			array(
@@ -203,6 +218,41 @@ class Mltp_Lodgify extends Mltp_Modules {
 		}
 
 		return $meta_boxes;
+	}
+
+	function register_api_callback_route() {
+		// register_rest_route( 'multipass/v1', '/users/market=(?P<market>[a-zA-Z0-9-]+)/lat=(?P<lat>[a-z0-9 .\-]+)/long=(?P<long>[a-z0-9 .\-]+)', array(
+		//
+		$events = $this->webhooks_subscribe;
+		foreach($events as $event => $subscribe) {
+			if( ! $subscribe ) continue;
+			$route = "$this->route/$event";
+			register_rest_route($this->namespace, $route, array(
+				'methods' => 'POST',
+				'callback' => array($this, 'handle_api_callback'),
+				'permission_callback' => '__return_true',
+			));
+		}
+	}
+
+	function handle_api_callback(WP_REST_Request $request) {
+		// error_log(__METHOD__ . ' ' . print_r($request, true) );
+		// $callback_url = $request->get_param('callback_url');
+		$parameters = $request->get_params();
+		$route = $request->get_route();
+		$event = str_replace( "/$this->namespace$this->route/", '', $route );
+		// Perform actions with the received callback URL, such as saving it to the database or triggering an event.
+		$debug = array(
+			// 'message' => 'Callback URL registered.',
+			// 'callback_url' => $callback_url,
+			'route' => $route,
+			'event' => $event,
+			'content_type' => $request->get_content_type(),
+			'body' => $request->get_body(),
+			'parameters' => $parameters,
+		);
+		error_log(print_r($debug, true));
+		return 'OK';
 	}
 
 	function resource_group_fields() {
@@ -387,13 +437,16 @@ class Mltp_Lodgify extends Mltp_Modules {
 	}
 
 	function api_request( $path, $args = array() ) {
+		$method = ( empty($args['method'])) ? 'GET' : $args['method'];
+		unset($args['method']);
+
 		if ( preg_match( '~^[a-z]+://~', $path ) ) {
 			$url = $path;
 		} else {
-			$url = $this->api_url . "$path?" . http_build_query( $args );
+			$url = $this->api_url . $path . ( empty($args) ? '' : '?' . http_build_query( $args ) );
 		}
 		$options  = array(
-			// 'method'  => 'GET',
+			'method'  => $method,
 			'timeout' => 20,
 			// 'ignore_errors' => true,
 			'headers' => array(
@@ -401,16 +454,27 @@ class Mltp_Lodgify extends Mltp_Modules {
 				'Accept-Language' => $this->locale,
 			),
 		);
-		$response = wp_remote_get( $url, $options );
+
+		if( 'GET' === $method ) {
+			if( ! empty($args)) {
+				$url = $url . '?' . http_build_query( $args );
+			}
+		} else {
+			$options = array_merge_recursive($options, $args);
+			if(is_array($options['body'])) {
+				$options['body'] = json_encode($options['body'], JSON_UNESCAPED_SLASHES);
+			}
+		}
+		$response = wp_remote_request( $url, $options );
 
 		if ( is_wp_error( $response ) ) {
 			error_log( __CLASS__ . '::' . __METHOD__ . ' fail ' . $response->get_error_message() . " $url" );
 			return $response;
-		} elseif ( $response['response']['code'] != 200 ) {
+		} elseif ( $response['response']['code'] != 200 && $response['response']['code'] != 201 ) {
 			error_log( __CLASS__ . '::' . __METHOD__ . ' fail ' . $response['response']['code'] );
 			return new WP_Error( __FUNCTION__ . '-wrongresponse', 'Response code ' . $response['response']['code'] . " $url" );
 		} else {
-			MultiPass::debug( __CLASS__ . '::' . __METHOD__ . " success $url" );
+			// MultiPass::debug( __CLASS__ . '::' . __METHOD__ . " success $url" );
 			$json_data = json_decode( $response['body'], true );
 		}
 
@@ -449,6 +513,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 		}
 		if ( $api_key == $oldapi_key ) {
 			wp_cache_set( 'multipass_lodgify-api_key_verified', self::get_option( 'api_key_verified' ) );
+			$this->subscribe_webhooks();
 			return $api_key; // we assume it has already been checked
 		}
 
@@ -465,8 +530,84 @@ class Mltp_Lodgify extends Mltp_Modules {
 			return false;
 		}
 
+		$this->subscribe_webhooks();
+
 		wp_cache_set( 'multipass_lodgify-api_key_verified', true );
 		return $api_key;
+	}
+
+	/**
+	 * Subscribe to Lodgify webhooks
+	 * @return void
+	 */
+	function subscribe_webhooks() {
+		if( get_transient( 'multipass_lodgify-subscribed' ) == $this->webhooks_subscribe ) return;
+		$transient_value = $this->webhooks_subscribe;
+
+		$this->callback_url = get_rest_url(NULL, $this->namespace . $this->route);
+		$subscribe = $this->webhooks_subscribe;
+		$unsubscribe = array();
+		/*
+		 * Get currently subscribed hooks
+		 */
+		$response  = $this->api_request( '/webhooks/v1/list', [] );
+		if($response) {
+			foreach ( $response as $subscription ) {
+				$event = $subscription['event'];
+				$event_callback_url = $this->callback_url . '/' . $event;
+				if( $subscription['url'] != $event_callback_url && $subscription['url'] != $this->callback_url ) {
+					continue;
+				}
+				if(isset($subscribe[$event]) && true === $subscribe[$event] ) {
+					unset($subscribe[$event]);
+				} else {
+					unset($subscribe[$event]);
+					$unsubscribe[$event] = $subscription['id'];
+				}
+			}
+		}
+		MultiPass::debug('subscribe', $subscribe, 'unsubscribe', $unsubscribe);
+
+		foreach($subscribe as $event => $subscribe) {
+			$event_callback_url = $this->callback_url . '/' . $event;
+			$body = json_encode(array(
+				'target_url' => $event_callback_url,
+				'event' => $event,
+			),  JSON_UNESCAPED_SLASHES);
+			$params = array(
+				'method' => 'POST',
+				'body' => $body,
+				'headers' => [
+			    'accept' => 'application/json',
+			    'content-type' => 'application/*+json',
+			  ],
+			);
+			$response  = $this->api_request( '/webhooks/v1/subscribe', $params );
+
+			// error_log(print_r($response, true));
+		}
+		foreach($unsubscribe as $event => $id) {
+			$body = array(
+				'id' => $id,
+			);
+			$params = array(
+				'method' => 'DELETE',
+				'body' => $body,
+				'headers' => [
+					'accept' => 'application/json',
+					'content-type' => 'application/*+json',
+					],
+			);
+			$response  = $this->api_request( '/webhooks/v1/unsubscribe', $params );
+		}
+
+		set_transient( 'multipass_lodgify-subscribed', $transient_value, 3600 );
+	}
+
+	function unsubscribe_webhooks() {
+		$this->webhooks_subscribe = array();
+		$this->subscribe_webhooks();
+		delete_transient( 'multipass_lodgify-subscribed' );
 	}
 
 	// /**

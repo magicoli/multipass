@@ -47,10 +47,10 @@ class Mltp_API extends Mltp_Loader {
 	 */
 	public function __construct() {
 		$this->actions = array(
-			array(
-				'hook' => 'rest_api_init',
-				'callback' => 'register_api_callback_route',
-			),
+			// array(
+			// 	'hook' => 'rest_api_init',
+			// 	'callback' => 'register_api_callback_route',
+			// ),
 		);
 
 		$this->filters = array();
@@ -67,7 +67,7 @@ class Mltp_API extends Mltp_Loader {
 	}
 
 	function handle_api_callback(WP_REST_Request $request) {
-		error_log(__METHOD__ . ' ' . print_r($request, true) );
+		// error_log(__METHOD__ . ' ' . print_r($request, true) );
 		$callback_url = $request->get_param('callback_url');
 		$parameters = $request->get_params();
 		// Perform actions with the received callback URL, such as saving it to the database or triggering an event.
