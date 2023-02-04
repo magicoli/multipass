@@ -655,7 +655,7 @@ class Mltp_Calendar {
 				__( 'Prestation discount', 'multipass' ) => MultiPass::price( $prestation->discount ),
 				__( 'Prestation total', 'multipass' )    => MultiPass::price( $prestation->total ),
 				__( 'Deposit', 'multipass' )             => MultiPass::price( $prestation->deposit ),
-				__( 'Deposit balance', 'multipass' )     => MultiPass::price_with_links( $prestation, $prestation->deposit - $prestation->paid ),
+				__( 'Deposit balance', 'multipass' )     => is_numeric($prestation->deposit) ? MultiPass::price_with_links( $prestation, $prestation->deposit - $prestation->paid ) : NULL,
 				__( 'Paid', 'multipass' )                => MultiPass::price( $prestation->paid ),
 				__( 'Balance', 'multipass' )             => MultiPass::price_with_links( $prestation, $prestation->balance ),
 			),
