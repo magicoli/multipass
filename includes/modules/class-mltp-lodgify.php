@@ -241,20 +241,38 @@ class Mltp_Lodgify extends Mltp_Modules {
 	function handle_api_callback(WP_REST_Request $request) {
 		// error_log(__METHOD__ . ' ' . print_r($request, true) );
 		// $callback_url = $request->get_param('callback_url');
-		$data = $request->get_params();
+		$datas = $request->get_params();
 		$route = $request->get_route();
 		$event = str_replace( "/$this->namespace$this->route/", '', $route );
+		foreach( $datas as $data ) {
+			if(!isset($data['action'])) continue;
+
+			switch ($data['action']) {
+				case 'booking_new_any_status':
+				case 'booking_change':
+				$booking = new Mltp_Lodgify_Booking($data);
+				$result = $booking->save();
+
+				break;
+
+				default:
+				error_log('unmanaged action ' . $data['action']);
+			}
+
+			// error_log(print_r($data, true));
+		}
+
 		// Perform actions with the received callback URL, such as saving it to the database or triggering an event.
-		$debug = array(
-			// 'message' => 'Callback URL registered.',
-			// 'callback_url' => $callback_url,
-			'route' => $route,
-			'event' => $event,
-			'remote' => $_SERVER['REMOTE_ADDR'],
-			'content_type' => $request->get_content_type(),
-			'data' => $data,
-		);
-		error_log(print_r($debug, true));
+		// $debug = array(
+		// 	// 'message' => 'Callback URL registered.',
+		// 	// 'callback_url' => $callback_url,
+		// 	'route' => $route,
+		// 	'event' => $event,
+		// 	'remote' => $_SERVER['REMOTE_ADDR'],
+		// 	'content_type' => $request->get_content_type(),
+		// 	'data' => $data,
+		// );
+		// error_log(print_r($debug, true));
 		return 'OK';
 	}
 
@@ -820,23 +838,46 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 		$i = 0;
 		foreach ( $bookings as $key => $data ) {
-			$booking = new Mltp_Lodgify_Booking( $data );
-			if ( is_wp_error( $api_response ) ) {
-				error_log( $booking->get_error_message() );
-				continue;
-			}
-			if ( ! $booking->status ) {
-				// MultiPass::debug('no resource ', $booking);
-				continue;
-			}
-
-			if ( in_array( $booking->status, array( 'Declined', 'Open', 'Unavailable' ) ) ) {
-				// MultiPass::debug('wrong status ', $booking);
-				continue;
-			}
-
-			$mltp_detail = $booking->save();
+			$booking = $this->save_booking($data);
+			// $booking = new Mltp_Lodgify_Booking( $data );
+			// if ( is_wp_error( $api_response ) ) {
+			// 	error_log( $booking->get_error_message() );
+			// 	continue;
+			// }
+			// if ( ! $booking->status ) {
+			// 	// MultiPass::debug('no resource ', $booking);
+			// 	continue;
+			// }
+			//
+			// if ( in_array( $booking->status, array( 'Declined', 'Open', 'Unavailable' ) ) ) {
+			// 	// MultiPass::debug('wrong status ', $booking);
+			// 	continue;
+			// }
+			//
+			// $mltp_detail = $booking->save();
 		}
+	}
+
+	function save_booking( $data ) {
+		if( ! is_array($data) || empty($data) ) {
+			MultiPass::debug('empty data ');
+			return;
+		}
+		$booking = new Mltp_Lodgify_Booking( $data );
+
+		if ( ! $booking->status ) {
+			MultiPass::debug('no resource ', $booking);
+			return $booking;
+		}
+
+		if ( in_array( $booking->status, array( 'Declined', 'Open', 'Unavailable' ) ) ) {
+			MultiPass::debug('wrong status ', $booking);
+			return $booking;
+		}
+
+		$mltp_detail = $booking->save();
+
+		return $booking;
 	}
 }
 

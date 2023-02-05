@@ -1433,6 +1433,15 @@ class Mltp_Item {
 			unset( $args['notes'] ); // Do not replace if not provided
 		}
 
+		switch($args['status']) {
+			case 'declined':
+			$post_status = $args['status'];
+			break;
+
+			default:
+			$post_status = 'publish';
+		}
+
 		$postarr = array_filter(
 			array(
 				'ID'          => $post_id,
@@ -1446,7 +1455,7 @@ class Mltp_Item {
 				// ),
 				// 'post_date_gmt' => esc_attr($args['date_gmt']),
 				'post_type'   => 'mltp_detail',
-				'post_status' => 'publish',
+				'post_status' => $post_status,
 				'meta_input'  => $args,
 			)
 		);
