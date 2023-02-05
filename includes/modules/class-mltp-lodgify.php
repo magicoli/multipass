@@ -40,12 +40,15 @@ class Mltp_Lodgify extends Mltp_Modules {
 		$this->namespace = 'multipass/v1';
 		$this->route = '/lodgify';
 
-		$this->webhooks_subscribe = array(
+		$this->webhooks_subscribe = ( filter_var( $_SERVER['SERVER_ADDR'],
+		FILTER_VALIDATE_IP,
+		FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE |  FILTER_FLAG_NO_RES_RANGE
+		) ) ? array(
 			'rate_change' => true,
 			'availability_change' => true,
 			'booking_new_any_status' => true,
 			'booking_change' => true,
-		);
+		) :  array();
 
 		register_activation_hook( MULTIPASS_FILE, array($this, 'subscribe_webhooks' ) );
 		register_deactivation_hook( MULTIPASS_FILE, array($this, 'unsubscribe_webhooks' ) );
@@ -238,7 +241,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 	function handle_api_callback(WP_REST_Request $request) {
 		// error_log(__METHOD__ . ' ' . print_r($request, true) );
 		// $callback_url = $request->get_param('callback_url');
-		$parameters = $request->get_params();
+		$data = $request->get_params();
 		$route = $request->get_route();
 		$event = str_replace( "/$this->namespace$this->route/", '', $route );
 		// Perform actions with the received callback URL, such as saving it to the database or triggering an event.
@@ -247,9 +250,9 @@ class Mltp_Lodgify extends Mltp_Modules {
 			// 'callback_url' => $callback_url,
 			'route' => $route,
 			'event' => $event,
+			'remote' => $_SERVER['REMOTE_ADDR'],
 			'content_type' => $request->get_content_type(),
-			'body' => $request->get_body(),
-			'parameters' => $parameters,
+			'data' => $data,
 		);
 		error_log(print_r($debug, true));
 		return 'OK';
