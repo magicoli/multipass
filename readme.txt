@@ -1,4 +1,4 @@
-=== MultiPass (dev) ===
+=== MultiPass ===
 Contributors: magicoli69
 Donate link: https://magiiic.com/support/MultiPass+Plugin
 Tags: hotel, booking, multi-prestations, multi-services, woocommerce, ota, pms, booking engine
@@ -66,6 +66,8 @@ WARNING: **Make a full backup of your website and databases** before installing 
 
 == Changelog ==
 
+= 0.3 =
+* new handle Lodgify API new booking and booking change events
 * added prestation details to woocommerce new order admin notification (optional)
 * fix prestation balance rounding
 * fix html tags in prestation detail title when imported from WooCommerce
