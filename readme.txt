@@ -4,7 +4,7 @@ Donate link: https://magiiic.com/support/MultiPass+Plugin
 Tags: hotel, booking, multi-prestations, multi-services, woocommerce, ota, pms, booking engine
 Requires at least: 5.9.0
 Tested up to: 6.1.1
-Stable tag: 0.2
+Stable tag: 0.3
 License: AGPLv3 or later
 License URI: http://www.gnu.org/licenses/agpl-3.0.txt
 
@@ -66,9 +66,11 @@ WARNING: **Make a full backup of your website and databases** before installing 
 
 == Changelog ==
 
-= Unreleased (0.3-dev.585) =
 * added prestation details to woocommerce new order admin notification (optional)
+* fix prestation balance rounding
 * fix html tags in prestation detail title when imported from WooCommerce
+* register to Lodgify webhooks, debug received data
+* make prestations viewable in front end for multipass roles
 
 = 0.2 =
 * new filter 'multipass_load_modules', allow loading modules from other plugins
