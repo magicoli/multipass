@@ -235,7 +235,7 @@ class Mltp_Lodgify_Booking {
 		$resource_name = $resource->name;
 		$status        = self::sanitize_status( $booking_data['status'] );
 
-		if ( ! in_array( $status, array( 'booked', 'option', 'declined' ) ) ) {
+		if ( ! in_array( $status, array( 'booked', 'option', 'declined', 'open' ) ) ) {
 			error_log('unmanaged status ' . $status);
 			return false;
 		}

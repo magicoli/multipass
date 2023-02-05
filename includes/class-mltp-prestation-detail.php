@@ -1267,7 +1267,7 @@ class Mltp_Item {
 				// error_log("looking by $uuid_field = $uuid_value");
 				$query_args = array(
 					'post_type'   => 'mltp_detail',
-					// 'post_status' => 'publish',
+					'post_status' => array( 'publish', 'open', 'canceled' ),
 					'numberposts' => 1,
 					'orderby'     => 'post_date',
 					'order'       => 'asc',
@@ -1300,7 +1300,7 @@ class Mltp_Item {
 
 					$query_args = array(
 						'post_type'  => 'mltp_detail',
-						// 'post_status' => 'publish',
+						'post_status' => array( 'publish', 'open', 'canceled' ),
 						// 'numberposts' => 1,
 						'orderby'    => 'post_date',
 						'order'      => 'asc',
@@ -1434,8 +1434,12 @@ class Mltp_Item {
 		}
 
 		switch($args['status']) {
+			case 'open':
+			$post_status = 'open';
+			break;
+
 			case 'declined':
-			$post_status = $args['status'];
+			$post_status = 'canceled';
 			break;
 
 			default:
