@@ -975,7 +975,7 @@ class MultiPass {
 			}
 		}
 
-		error_log( $backtrace . join( ' ', $args ) );
+		error_log( $backtrace . ' ' . join( ' ', $args ) );
 
 		return true;
 	}
