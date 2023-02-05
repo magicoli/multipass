@@ -1518,7 +1518,17 @@ class Mltp_Prestation {
 		$balance = MultiPass::round_amount($updates['total'] - $updates['paid']);
 		$updates['balance'] = ( 0 === $balance ) ? null : $balance;
 
-		$post_status = $post->post_status;
+		$post_status = $post->status;
+		if(empty($details_statuses)) {
+			$post_status = 'canceled';
+		} else if(isset($details_statuses['publish'])) {
+			$post_status = 'publish';
+		} else if(isset($details_statuses['open'])) {
+			$post_status = 'open';
+		} else if(isset($details_statuses['canceled'])) {
+			$post_status = 'canceled';
+		}
+		MultiPass::debug($post_status);
 
 		switch ( $post->post_status ) {
 			case 'publish':
