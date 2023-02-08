@@ -51,7 +51,10 @@ class Mltp_Lodgify_Booking {
 		$from   = strtotime( $data['arrival'] );
 		$to     = strtotime( $data['departure'] );
 		$guests = ( isset( $data['people'] ) ) ? $data['people'] : $data['rooms'][0]['people'];
-
+		error_log('data ' . print_r($data, true));
+		// if(isset($data['id'])) {
+		//
+		// }
 		$deposit          = null;
 		$deposit_due_date = null;
 		if ( isset( $data['quote']['scheduled_transactions'] ) ) {
@@ -224,7 +227,6 @@ class Mltp_Lodgify_Booking {
 
 	function format_api_data( $data = array() ) {
 		$booking_data = $data['booking'];
-		// MultiPass::debug( $data );
 
 		$resource_id = Mltp_Resource::get_resource_id( 'lodgify', $booking_data['property_id'] );
 		if ( ! $resource_id ) {
@@ -398,7 +400,7 @@ class Mltp_Lodgify_Booking {
 			// 'sub_total' => $subtotal,
 			// ),
 
-			'attendees'        => $guests,
+			// 'attendees'        => $guests,
 			// 'beds' => $beds,
 
 			'subtotal'         => $subtotal,
@@ -411,6 +413,17 @@ class Mltp_Lodgify_Booking {
 			'type'             => 'booking',
 			'notes'            => ( isset( $booking_data['notes'] ) ) ? $booking_data['notes'] : null,
 		);
+
+		$mltp_detail = new Mltp_Item( $this->data, true );
+		if ( $mltp_detail ) {
+			$this->id = $mltp_detail->id;
+			$attendees = get_post_meta($mltp_detail->id, 'attendees', true);
+			if(empty($attendees)) {
+				$this->data['guests'] = $guests;
+			} else {
+				$this->data['guests'] = array_merge($attendees, [ 'total' => $guests ]);
+			}
+		}
 
 	}
 

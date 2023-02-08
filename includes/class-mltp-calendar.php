@@ -637,6 +637,37 @@ class Mltp_Calendar {
 		$event->total    = round( $event->total, 2 );
 		$event->subtotal = round( $event->subtotal, 2 );
 
+		$guests_data = array_filter( get_post_meta( $event->id, 'attendees', true ) );
+		$guests = empty($guests_data['total']) ? '' : $guests_data['total'];
+		unset($guests_data['total']);
+		$guests_array = array();
+		foreach ($guests_data as $type => $count) {
+			$guests_array[] = $count . ' ' . __($type, 'multipass');
+		}
+		if( ! empty($guests_array)) {
+			$guests = sprintf(
+				'%s (%s)',
+				 implode(', ', $guests_array),
+				 (empty($guests)) ? array_sum($guests_data) : $guests,
+			 );
+		}
+
+		$beds_data = get_post_meta( $event->id, 'beds', true );
+		if( empty($beds_data) ) {
+			$beds = null;
+		} else {
+			$beds_data = array_filter($beds_data);
+			$beds = empty($beds_data['total']) ? '' : $beds_data['total'];
+			unset($beds_data['total']);
+			$beds_array = array();
+			foreach ($beds_data as $type => $count) {
+				$beds_array[] = $count . ' ' . __($type, 'multipass');
+			}
+			if( ! empty($beds_array)) {
+				$beds = implode(', ', $beds_array);
+			}
+		}
+
 		$prestation = new Mltp_Prestation( $event->prestation_id );
 
 		$contact['name']  = ( empty( $prestation->customer_name ) ) ? $event->contact : $prestation->customer_name;
@@ -674,6 +705,8 @@ class Mltp_Calendar {
 				// __( 'Deposit', 'multipass' )  => MultiPass::price( $event->deposit ),
 				__( 'Item paid', 'multipass' )     => MultiPass::price( $event->paid ),
 				__( 'Item balance', 'multipass' )  => MultiPass::price( $event->balance ),
+				__( 'Guests', 'multipass' )  => $guests,
+				__( 'Beds', 'multipass' )  => $beds,
 			),
 			'notes'      => array(
 				__( 'Notes', 'multipass' ) => get_post_meta( $prestation->id, 'notes', true ),

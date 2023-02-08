@@ -252,7 +252,6 @@ class Mltp_Lodgify extends Mltp_Modules {
 				case 'booking_change':
 				$booking = new Mltp_Lodgify_Booking($data);
 				$result = $booking->save();
-
 				break;
 
 				default:
