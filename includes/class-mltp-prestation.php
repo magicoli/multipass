@@ -1528,7 +1528,7 @@ class Mltp_Prestation {
 		} else if(isset($details_statuses['canceled'])) {
 			$post_status = 'canceled';
 		}
-		MultiPass::debug($post_status);
+		// MultiPass::debug($post_status);
 
 		switch ( $post->post_status ) {
 			case 'publish':
