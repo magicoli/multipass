@@ -1177,4 +1177,40 @@ class MultiPass {
 		return (empty($labels[$label])) ? __($label, $domain) : translate_nooped_plural($labels[$label], $count, $domain);
 	}
 
+	/**
+	 * Format an array of numbers as a comprehensive string.
+	 *
+	 * @param  array $data				count data as 'label' => count,
+	 * @param  string $format 		output format ('long', 'long_with_total, 'total')
+	 * @return string          		n label 1, n label 2...
+	 */
+	static function format_count($data, $format = 'long') {
+		if(empty($data)) return null;
+
+		$total = empty($data['total']) ? '' : $data['total'];
+		unset($data['total']);
+		if('total' === $format) {
+			return $total;
+		}
+		$output_array = array();
+		foreach ($data as $type => $count) {
+			$output_array[] = $count . ' ' . MultiPass::n_label($type, $count);
+		}
+		if( ! empty($output_array) ) {
+			if ( count($output_array) > 1 && 'long_with_total' === $format ) {
+				$output = sprintf(
+					'%s (%s)',
+					(empty($total)) ? array_sum($data) : $total,
+					implode(', ', $output_array),
+				);
+			} else {
+				$output = implode(', ', $output_array);
+			}
+		} else {
+			$output = $total;
+		}
+
+		return $output;
+	}
+
 }

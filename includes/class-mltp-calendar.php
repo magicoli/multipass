@@ -637,41 +637,8 @@ class Mltp_Calendar {
 		$event->total    = round( $event->total, 2 );
 		$event->subtotal = round( $event->subtotal, 2 );
 
-
-		$guests_data = array_filter( get_post_meta( $event->id, 'attendees', true ) );
-		$guests = empty($guests_data['total']) ? '' : $guests_data['total'];
-		unset($guests_data['total']);
-		$guests_array = array();
-		foreach ($guests_data as $type => $count) {
-			$guests_array[] = $count . ' ' . MultiPass::n_label($type, $count);
-		}
-		if( ! empty($guests_array) ) {
-			if ( count($guests_array) > 1 ) {
-				$guests = sprintf(
-					'%s (%s)',
-					(empty($guests)) ? array_sum($guests_data) : $guests,
-					implode(', ', $guests_array),
-				);
-			} else {
-				$guests = implode(', ', $guests_array);
-			}
-		}
-
-		$beds_data = get_post_meta( $event->id, 'beds', true );
-		if( empty($beds_data) ) {
-			$beds = null;
-		} else {
-			$beds_data = array_filter($beds_data);
-			$beds = empty($beds_data['total']) ? '' : $beds_data['total'];
-			unset($beds_data['total']);
-			$beds_array = array();
-			foreach ($beds_data as $type => $count) {
-				$beds_array[] = $count . ' ' . MultiPass::n_label($type, $count);
-			}
-			if( ! empty($beds_array)) {
-				$beds = implode(', ', $beds_array);
-			}
-		}
+		$guests = MultiPass::format_count( get_post_meta( $event->id, 'attendees', true ), 'long_with_total' );
+		$beds = MultiPass::format_count( get_post_meta( $event->id, 'beds', true ) );
 
 		$prestation = new Mltp_Prestation( $event->prestation_id );
 
