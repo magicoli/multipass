@@ -1162,4 +1162,19 @@ class MultiPass {
 		$rounded  = ( is_numeric( $rounding ) && is_numeric( $amount ) ) ? round( $amount, $rounding ) : $amount;
 		return $rounded;
 	}
+
+	static function n_label($label, $count, $domain = 'multipass') {
+		$labels = array(
+			'adults' => _n_noop('adult', 'adults', 'multipass'),
+			'children' => _n_noop('child', 'children', 'multipass'),
+			'babies' => _n_noop('baby', 'babies', 'multipass'),
+			'baby' => _n_noop('baby', 'babies', 'multipass'),
+			'double' => _n_noop('double bed', 'double beds', 'multipass'),
+			'single' => _n_noop('single bed', 'single beds', 'multipass'),
+			'baby' => _n_noop('baby bed', 'baby beds', 'multipass'),
+		);
+
+		return (empty($labels[$label])) ? __($label, $domain) : translate_nooped_plural($labels[$label], $count, $domain);
+	}
+
 }

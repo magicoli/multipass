@@ -628,20 +628,6 @@ class Mltp_Calendar {
 		wp_die();
 	}
 
-	static function n_label($label, $count, $domain = 'multipass') {
-		$labels = array(
-			'adults' => _n_noop('adult', 'adults', 'multipass'),
-			'children' => _n_noop('child', 'children', 'multipass'),
-			'babies' => _n_noop('baby', 'babies', 'multipass'),
-			'baby' => _n_noop('baby', 'babies', 'multipass'),
-			'double' => _n_noop('double bed', 'double beds', 'multipass'),
-			'single' => _n_noop('single bed', 'single beds', 'multipass'),
-			'baby' => _n_noop('baby bed', 'baby beds', 'multipass'),
-		);
-
-		return (empty($labels[$label])) ? __($label, $domain) : translate_nooped_plural($labels[$label], $count, $domain);
-	}
-
 	static function get_the_modal( $item_id ) {
 		$event = new Mltp_Event( $item_id );
 		if ( ! $event ) {
@@ -657,7 +643,7 @@ class Mltp_Calendar {
 		unset($guests_data['total']);
 		$guests_array = array();
 		foreach ($guests_data as $type => $count) {
-			$guests_array[] = $count . ' ' . self::n_label($type, $count);
+			$guests_array[] = $count . ' ' . MultiPass::n_label($type, $count);
 		}
 		if( ! empty($guests_array) ) {
 			if ( count($guests_array) > 1 ) {
@@ -680,7 +666,7 @@ class Mltp_Calendar {
 			unset($beds_data['total']);
 			$beds_array = array();
 			foreach ($beds_data as $type => $count) {
-				$beds_array[] = $count . ' ' . self::n_label($type, $count);
+				$beds_array[] = $count . ' ' . MultiPass::n_label($type, $count);
 			}
 			if( ! empty($beds_array)) {
 				$beds = implode(', ', $beds_array);
