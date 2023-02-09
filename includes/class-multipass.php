@@ -951,8 +951,8 @@ class MultiPass {
 	}
 
 	static function debug() {
-		$args = func_get_args();
-		$backtrace = empty(debug_backtrace()[1]['class']) ? '' : debug_backtrace()[1]['class'] . '::';
+		$args       = func_get_args();
+		$backtrace  = empty( debug_backtrace()[1]['class'] ) ? '' : debug_backtrace()[1]['class'] . '::';
 		$backtrace .= debug_backtrace()[1]['function']; // . ' (' . debug_backtrace()[1]['line'] . ') ';
 
 		$multipass_debug = get_option( 'multipass_debug' );
@@ -1163,48 +1163,50 @@ class MultiPass {
 		return $rounded;
 	}
 
-	static function n_label($label, $count, $domain = 'multipass') {
+	static function n_label( $label, $count, $domain = 'multipass' ) {
 		$labels = array(
-			'adults' => _n_noop('adult', 'adults', 'multipass'),
-			'children' => _n_noop('child', 'children', 'multipass'),
-			'babies' => _n_noop('baby', 'babies', 'multipass'),
-			'baby' => _n_noop('baby', 'babies', 'multipass'),
-			'double' => _n_noop('double bed', 'double beds', 'multipass'),
-			'single' => _n_noop('single bed', 'single beds', 'multipass'),
-			'baby' => _n_noop('baby bed', 'baby beds', 'multipass'),
+			'adults'   => _n_noop( 'adult', 'adults', 'multipass' ),
+			'children' => _n_noop( 'child', 'children', 'multipass' ),
+			'babies'   => _n_noop( 'baby', 'babies', 'multipass' ),
+			'baby'     => _n_noop( 'baby', 'babies', 'multipass' ),
+			'double'   => _n_noop( 'double bed', 'double beds', 'multipass' ),
+			'single'   => _n_noop( 'single bed', 'single beds', 'multipass' ),
+			'baby'     => _n_noop( 'baby bed', 'baby beds', 'multipass' ),
 		);
 
-		return (empty($labels[$label])) ? __($label, $domain) : translate_nooped_plural($labels[$label], $count, $domain);
+		return ( empty( $labels[ $label ] ) ) ? __( $label, $domain ) : translate_nooped_plural( $labels[ $label ], $count, $domain );
 	}
 
 	/**
 	 * Format an array of numbers as a comprehensive string.
 	 *
-	 * @param  array $data				count data as 'label' => count,
-	 * @param  string $format 		output format ('long', 'long_with_total, 'total')
-	 * @return string          		n label 1, n label 2...
+	 * @param  array  $data              count data as 'label' => count,
+	 * @param  string $format       output format ('long', 'long_with_total, 'total')
+	 * @return string               n label 1, n label 2...
 	 */
-	static function format_count($data, $format = 'long') {
-		if(empty($data)) return null;
+	static function format_count( $data, $format = 'long' ) {
+		if ( empty( $data ) ) {
+			return null;
+		}
 
-		$total = empty($data['total']) ? '' : $data['total'];
-		unset($data['total']);
-		if('total' === $format) {
+		$total = empty( $data['total'] ) ? '' : $data['total'];
+		unset( $data['total'] );
+		if ( 'total' === $format ) {
 			return $total;
 		}
 		$output_array = array();
-		foreach ($data as $type => $count) {
-			$output_array[] = $count . ' ' . MultiPass::n_label($type, $count);
+		foreach ( $data as $type => $count ) {
+			$output_array[] = $count . ' ' . self::n_label( $type, $count );
 		}
-		if( ! empty($output_array) ) {
-			if ( count($output_array) > 1 && 'long_with_total' === $format ) {
+		if ( ! empty( $output_array ) ) {
+			if ( count( $output_array ) > 1 && 'long_with_total' === $format ) {
 				$output = sprintf(
 					'%s (%s)',
-					(empty($total)) ? array_sum($data) : $total,
-					implode(', ', $output_array),
+					( empty( $total ) ) ? array_sum( $data ) : $total,
+					implode( ', ', $output_array ),
 				);
 			} else {
-				$output = implode(', ', $output_array);
+				$output = implode( ', ', $output_array );
 			}
 		} else {
 			$output = $total;

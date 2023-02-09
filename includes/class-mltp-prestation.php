@@ -274,8 +274,8 @@ class Mltp_Prestation {
 			'description'         => '',
 			'public'              => false,
 			'hierarchical'        => false,
-			'exclude_from_search' => ! current_user_can('mltp_reader'),
-			'publicly_queryable'  => current_user_can('mltp_reader'),
+			'exclude_from_search' => ! current_user_can( 'mltp_reader' ),
+			'publicly_queryable'  => current_user_can( 'mltp_reader' ),
 			'show_ui'             => true,
 			'show_in_nav_menus'   => true,
 			'show_in_admin_bar'   => true,
@@ -298,22 +298,28 @@ class Mltp_Prestation {
 
 		register_post_type( 'mltp_prestation', $args );
 
-		register_post_status('canceled', array(
-			'label' => __('Canceled', 'multipass'),
-			'label_count' => _n_noop(
-				'Canceled <span class="count">(%s)</span>',
-				'Canceled <span class="count">(%s)</span>',
-			),
-			'show_in_admin_status_list' => true,
-		));
-		register_post_status('open', array(
-			'label' => __('Open', 'multipass'),
-			'label_count' => _n_noop(
-				'Open <span class="count">(%s)</span>',
-				'Open <span class="count">(%s)</span>',
-			),
-			'show_in_admin_status_list' => true,
-		));
+		register_post_status(
+			'canceled',
+			array(
+				'label'                     => __( 'Canceled', 'multipass' ),
+				'label_count'               => _n_noop(
+					'Canceled <span class="count">(%s)</span>',
+					'Canceled <span class="count">(%s)</span>',
+				),
+				'show_in_admin_status_list' => true,
+			)
+		);
+		register_post_status(
+			'open',
+			array(
+				'label'                     => __( 'Open', 'multipass' ),
+				'label_count'               => _n_noop(
+					'Open <span class="count">(%s)</span>',
+					'Open <span class="count">(%s)</span>',
+				),
+				'show_in_admin_status_list' => true,
+			)
+		);
 
 	}
 
@@ -821,7 +827,7 @@ class Mltp_Prestation {
 
 			// Closed (not modifiable except refunds, not available for new order inclusion).
 				'completed'      => array( 'name' => __( 'Completed', 'multipass' ) ), // paid and finished.
-				'canceled'      => array( 'name' => __( 'Canceled', 'multipass' ) ),
+				'canceled'       => array( 'name' => __( 'Canceled', 'multipass' ) ),
 				'refunded'       => array( 'name' => __( 'Refunded', 'multipass' ) ),
 				'failed'         => array( 'name' => __( 'Failed', 'multipass' ) ), // shouldn't need that at prestation level.
 
@@ -998,11 +1004,11 @@ class Mltp_Prestation {
 				'dates'       => $dates,
 				'subtotal'    => isset( $price['sub_total'] ) ? $price['sub_total'] : null,
 				'discount'    => isset( $discount['amount'] ) ? $discount['amount'] : null,
-				'total'       => is_array($meta['total']) ? reset( $meta['total'] ) : null,
+				'total'       => is_array( $meta['total'] ) ? reset( $meta['total'] ) : null,
 				'deposit'     => ( is_array( $deposit ) & ! empty( $deposit['amount'] ) ) ? $deposit['amount'] : null,
 				'paid'        => is_array( $meta['paid'] ) ? reset( $meta['paid'] ) : null,
 				'balance'     => is_array( $meta['balance'] ) ? reset( $meta['balance'] ) : null,
-				'source'      => is_array( $meta['source'] ) ? reset( $meta['source'] ) : ( isset($meta['source']) ? $meta['source'] : '' ),
+				'source'      => is_array( $meta['source'] ) ? reset( $meta['source'] ) : ( isset( $meta['source'] ) ? $meta['source'] : '' ),
 				'links'       => $links,
 				'notes'       => get_post_meta( $item_post->ID, 'notes', true ),
 			);
@@ -1427,10 +1433,10 @@ class Mltp_Prestation {
 		$prestation   = new Mltp_Prestation( $post );
 		$mltp_details = $prestation->get_details_array();
 
-		$details_statuses = [];
+		$details_statuses = array();
 		foreach ( $mltp_details as $item ) {
-			$status = get_post_status($item['ID']);
-			$details_statuses[$status] = true;
+			$status                        = get_post_status( $item['ID'] );
+			$details_statuses[ $status ]   = true;
 			$updates['discount']['total'] += empty( $item['discount'] ) ? 0 : $item['discount'];
 			$updates['subtotal']          += empty( $item['subtotal'] ) ? 0 : $item['subtotal'];
 			$updates['total']             += empty( $item['total'] ) ? 0 : $item['total'];
@@ -1515,17 +1521,17 @@ class Mltp_Prestation {
 		}
 		$updates['deposit']['total'] += $updates['deposit']['amount'] + $updates['deposit']['managed'];
 
-		$balance = MultiPass::round_amount($updates['total'] - $updates['paid']);
+		$balance            = MultiPass::round_amount( $updates['total'] - $updates['paid'] );
 		$updates['balance'] = ( 0 === $balance ) ? null : $balance;
 
 		$post_status = $post->status;
-		if(empty($details_statuses)) {
+		if ( empty( $details_statuses ) ) {
 			$post_status = 'canceled';
-		} else if(isset($details_statuses['publish'])) {
+		} elseif ( isset( $details_statuses['publish'] ) ) {
 			$post_status = 'publish';
-		} else if(isset($details_statuses['open'])) {
+		} elseif ( isset( $details_statuses['open'] ) ) {
 			$post_status = 'open';
-		} else if(isset($details_statuses['canceled'])) {
+		} elseif ( isset( $details_statuses['canceled'] ) ) {
 			$post_status = 'canceled';
 		}
 		// MultiPass::debug($post_status);
@@ -1534,7 +1540,7 @@ class Mltp_Prestation {
 			case 'publish':
 				if ( $updates['total'] <= 0 ) {
 					$paid_status = 'on-hold';
-				} elseif ( MultiPass::round_amount($updates['paid']) < MultiPass::round_amount($updates['total']) ) {
+				} elseif ( MultiPass::round_amount( $updates['paid'] ) < MultiPass::round_amount( $updates['total'] ) ) {
 					if ( $updates['paid'] >= $updates['deposit']['total'] ) {
 						if ( $updates['deposit']['total'] > 0 ) {
 							$paid_status = 'deposit';
@@ -1766,35 +1772,34 @@ class Mltp_Prestation {
 		} elseif ( is_string( $args ) ) {
 			$prestation_post = get_page_by_path( $args, OBJECT, 'mltp_prestation' );
 		} elseif ( is_array( $args ) ) {
-			$search_id = ( ! empty( $args['prestation_id'] ) && is_numeric( $args['prestation_id'] ) ) ? esc_attr($args['prestation_id']) : NULL;
-			$search_code = esc_attr($args['reference_code']);
+			$search_id   = ( ! empty( $args['prestation_id'] ) && is_numeric( $args['prestation_id'] ) ) ? esc_attr( $args['prestation_id'] ) : null;
+			$search_code = esc_attr( $args['reference_code'] );
 
 			if ( ! empty( $search_id ) ) {
 				// MultiPass::debug(__METHOD__, 'looking by id ', $search_id);
 				$prestation_post = get_post( $search_id );
-			} else if ( ! empty( $search_code ) ) {
+			} elseif ( ! empty( $search_code ) ) {
 				// MultiPass::debug(__METHOD__, 'looking by reference_code ', $search_code );
 				$query_args = array(
-					'name' => $search_code,
+					'name'            => $search_code,
 					'post_type'       => 'mltp_prestation',
 					// 'post_status__in' => array( 'publish', 'pending', 'on-hold', 'deposit', 'partial', 'unpaid', 'processing' ),
 					'post_status__in' => array( 'pending', 'on-hold', 'deposit', 'partial', 'unpaid', 'processing' ),
 					'orderby'         => 'post_date',
 					'order'           => 'desc',
 					// 'meta_query' => array(
-					// 	array(
-					// 		'key'   => 'reference_code',
-					// 		'value' => $search_code,
-					// 	),
+					// array(
+					// 'key'   => 'reference_code',
+					// 'value' => $search_code,
+					// ),
 					// ),
 				);
 				$prestation_posts = get_posts( $query_args );
 				$prestation_post  = false;
 				if ( $prestation_posts ) {
-					$prestation_post    = $prestation_posts[0];
-					$prestation_id = $prestation_post->ID;
+					$prestation_post = $prestation_posts[0];
+					$prestation_id   = $prestation_post->ID;
 				}
-
 			}
 
 			if ( $prestation_post && 'mltp_prestation' === $prestation_post->post_type ) {
@@ -1920,8 +1925,8 @@ class Mltp_Prestation {
 			$prestation_posts = get_posts( $query_args );
 			$prestation_post  = false;
 			if ( $prestation_posts ) {
-				$prestation_post    = $prestation_posts[0];
-				$prestation_id = $prestation_post->ID;
+				$prestation_post = $prestation_posts[0];
+				$prestation_id   = $prestation_post->ID;
 				// update_post_meta( $order_id, 'prestation_id', $prestation_id );
 			}
 		}

@@ -638,7 +638,7 @@ class Mltp_Calendar {
 		$event->subtotal = round( $event->subtotal, 2 );
 
 		$guests = MultiPass::format_count( get_post_meta( $event->id, 'attendees', true ), 'long_with_total' );
-		$beds = MultiPass::format_count( get_post_meta( $event->id, 'beds', true ) );
+		$beds   = MultiPass::format_count( get_post_meta( $event->id, 'beds', true ) );
 
 		$prestation = new Mltp_Prestation( $event->prestation_id );
 
@@ -658,7 +658,7 @@ class Mltp_Calendar {
 				__( 'Prestation discount', 'multipass' ) => MultiPass::price( $prestation->discount ),
 				__( 'Prestation total', 'multipass' )    => MultiPass::price( $prestation->total ),
 				__( 'Deposit', 'multipass' )             => MultiPass::price( $prestation->deposit ),
-				__( 'Deposit balance', 'multipass' )     => is_numeric($prestation->deposit) ? MultiPass::price_with_links( $prestation, $prestation->deposit - $prestation->paid ) : NULL,
+				__( 'Deposit balance', 'multipass' )     => is_numeric( $prestation->deposit ) ? MultiPass::price_with_links( $prestation, $prestation->deposit - $prestation->paid ) : null,
 				__( 'Paid', 'multipass' )                => MultiPass::price( $prestation->paid ),
 				__( 'Balance', 'multipass' )             => MultiPass::price_with_links( $prestation, $prestation->balance ),
 			),
@@ -677,8 +677,8 @@ class Mltp_Calendar {
 				// __( 'Deposit', 'multipass' )  => MultiPass::price( $event->deposit ),
 				__( 'Item paid', 'multipass' )     => MultiPass::price( $event->paid ),
 				__( 'Item balance', 'multipass' )  => MultiPass::price( $event->balance ),
-				__( 'Guests', 'multipass' )  => $guests,
-				__( 'Beds', 'multipass' )  => $beds,
+				__( 'Guests', 'multipass' )        => $guests,
+				__( 'Beds', 'multipass' )          => $beds,
 			),
 			'notes'      => array(
 				__( 'Notes', 'multipass' ) => get_post_meta( $prestation->id, 'notes', true ),

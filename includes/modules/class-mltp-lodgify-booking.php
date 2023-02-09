@@ -20,8 +20,8 @@ class Mltp_Lodgify_Booking {
 	}
 
 	function format( $data = array() ) {
-		if( ! empty($data['booking']) ) {
-			return $this->format_api_data($data);
+		if ( ! empty( $data['booking'] ) ) {
+			return $this->format_api_data( $data );
 		}
 
 		// MultiPass::debug( $data );
@@ -51,7 +51,7 @@ class Mltp_Lodgify_Booking {
 		$from   = strtotime( $data['arrival'] );
 		$to     = strtotime( $data['departure'] );
 		$guests = ( isset( $data['people'] ) ) ? $data['people'] : $data['rooms'][0]['people'];
-		error_log('data ' . print_r($data, true));
+		error_log( 'data ' . print_r( $data, true ) );
 		// if(isset($data['id'])) {
 		//
 		// }
@@ -230,7 +230,7 @@ class Mltp_Lodgify_Booking {
 
 		$resource_id = Mltp_Resource::get_resource_id( 'lodgify', $booking_data['property_id'] );
 		if ( ! $resource_id ) {
-			MultiPass::debug('no resource for property ', $booking_data['property_id']);
+			MultiPass::debug( 'no resource for property ', $booking_data['property_id'] );
 			return false;
 		}
 		$resource      = new Mltp_Resource( $resource_id );
@@ -238,7 +238,7 @@ class Mltp_Lodgify_Booking {
 		$status        = self::sanitize_status( $booking_data['status'] );
 
 		if ( ! in_array( $status, array( 'booked', 'option', 'declined', 'open' ) ) ) {
-			error_log('unmanaged status ' . $status);
+			error_log( 'unmanaged status ' . $status );
 			return false;
 		}
 
@@ -269,19 +269,19 @@ class Mltp_Lodgify_Booking {
 		}
 
 		$amount_gross = $data['current_order']['amount_gross'];
-		$subtotals = array(
+		$subtotals    = array(
 			'stay'       => $amount_gross['total_room_rate_amount'],
 			'fees'       => $amount_gross['total_fees_amount'],
-			'taxes'       => $amount_gross['total_taxes_amount'],
+			'taxes'      => $amount_gross['total_taxes_amount'],
 			'promotions' => $amount_gross['total_promotions_amount'],
 		);
-		$subtotal  = $subtotals['stay'] + $subtotals['fees'] + $subtotals['taxes'];
-		$discount  = ( empty( $subtotals['promotions'] ) ) ? null : -$subtotals['promotions'];
+		$subtotal     = $subtotals['stay'] + $subtotals['fees'] + $subtotals['taxes'];
+		$discount     = ( empty( $subtotals['promotions'] ) ) ? null : -$subtotals['promotions'];
 
 		$language = isset( $data['language'] ) ? isset( $data['language'] ) : $data['guest']['locale'];
 
-		$total         = array_sum($subtotals);
-		$paid     = array_sum($data['total_transactions']);
+		$total   = array_sum( $subtotals );
+		$paid    = array_sum( $data['total_transactions'] );
 		$balance = $data['balance_due'];
 
 		$currency_code = $data['current_order']['currency_code'];
@@ -416,12 +416,12 @@ class Mltp_Lodgify_Booking {
 
 		$mltp_detail = new Mltp_Item( $this->data, true );
 		if ( $mltp_detail ) {
-			$this->id = $mltp_detail->id;
-			$attendees = get_post_meta($mltp_detail->id, 'attendees', true);
-			if(empty($attendees)) {
+			$this->id  = $mltp_detail->id;
+			$attendees = get_post_meta( $mltp_detail->id, 'attendees', true );
+			if ( empty( $attendees ) ) {
 				$this->data['guests'] = $guests;
 			} else {
-				$this->data['guests'] = array_merge($attendees, [ 'total' => $guests ]);
+				$this->data['guests'] = array_merge( $attendees, array( 'total' => $guests ) );
 			}
 		}
 

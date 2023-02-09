@@ -120,9 +120,9 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				'accepted_args' => 2,
 			),
 			array(
-				'component' => $this,
-				'hook' => 'woocommerce_email_subject_new_order',
-				'callback' => 'add_customer_to_email_subject',
+				'component'     => $this,
+				'hook'          => 'woocommerce_email_subject_new_order',
+				'callback'      => 'add_customer_to_email_subject',
 				'accepted_args' => 2,
 			),
 
@@ -214,7 +214,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 				'key'   => 'reference_code',
 				'value' => esc_attr( $query_vars['reference_code'] ),
 			);
-		} else if ( ! empty( $query_vars['prestation_id'] ) ) {
+		} elseif ( ! empty( $query_vars['prestation_id'] ) ) {
 			$query['meta_query'][] = array(
 				'key'   => 'prestation_id',
 				'value' => esc_attr( $query_vars['prestation_id'] ),
@@ -227,15 +227,15 @@ class Mltp_WooCommerce extends Mltp_Modules {
 	 * Adds customer first and last name to admin new order email subject
 	 */
 	function add_customer_to_email_subject( $subject, $order ) {
-		if( $this->get_option('woocommerce_add_customer_name') ) {
+		if ( $this->get_option( 'woocommerce_add_customer_name' ) ) {
 			$prestation_id = get_post_meta( $order->get_id(), 'prestation_id', true );
-			if(!empty($prestation_id)) {
-				$prestation = new Mltp_Prestation($prestation_id);
-				$append = trim( $prestation->name . ' ' . ( empty($prestation->guests) ? '' : $prestation->guests . 'p ' ) . MultiPass::format_date_range( $prestation->dates ) );
+			if ( ! empty( $prestation_id ) ) {
+				$prestation = new Mltp_Prestation( $prestation_id );
+				$append     = trim( $prestation->name . ' ' . ( empty( $prestation->guests ) ? '' : $prestation->guests . 'p ' ) . MultiPass::format_date_range( $prestation->dates ) );
 			}
-			$append = (empty($append)) ? trim($order->get_billing_first_name() . ' ' . $order->get_billing_last_name()) : $append;
-			$subject = trim($subject . ' ' . $append );
-			$subject = trim($subject);
+			$append  = ( empty( $append ) ) ? trim( $order->get_billing_first_name() . ' ' . $order->get_billing_last_name() ) : $append;
+			$subject = trim( $subject . ' ' . $append );
+			$subject = trim( $subject );
 		}
 
 		return $subject;
@@ -304,13 +304,13 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			'settings_pages' => array( 'multipass-woocommerce' ),
 			'fields'         => array(
 				array(
-					'name'              => __( 'Add customer name to notification subject', 'multipass' ),
-					'id'                => $prefix . 'add_customer_name',
-					'type'              => 'switch',
-					'desc'              => __( 'Append client name to the subject of administrator notification email', 'multipass' ),
-					'style'             => 'rounded',
+					'name'       => __( 'Add customer name to notification subject', 'multipass' ),
+					'id'         => $prefix . 'add_customer_name',
+					'type'       => 'switch',
+					'desc'       => __( 'Append client name to the subject of administrator notification email', 'multipass' ),
+					'style'      => 'rounded',
 					// 'sanitize_callback' => 'Mltp_WooCommerce::sync_orders_validation',
-					'save_field'        => true,
+					'save_field' => true,
 				),
 				array(
 					'name'              => __( 'Synchronize now', 'multipass' ),
@@ -566,11 +566,11 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 		// remove_action(current_action(), __CLASS__ . '::wp_insert_post_action');
 
-		$prestation_id = get_post_meta( $post_id, 'prestation_id', true );
+		$prestation_id  = get_post_meta( $post_id, 'prestation_id', true );
 		$reference_code = get_post_meta( $post_id, 'reference_code', true );
 
-		$customer_id   = get_post_meta( $post_id, '_customer_user', true );
-		$customer      = get_user_by( 'id', $customer_id );
+		$customer_id = get_post_meta( $post_id, '_customer_user', true );
+		$customer    = get_user_by( 'id', $customer_id );
 		if ( $customer ) {
 			$customer_name  = $customer->display_name;
 			$customer_email = $customer->user_email;
@@ -672,14 +672,14 @@ class Mltp_WooCommerce extends Mltp_Modules {
 
 			if ( Mltp_WooCommerce_Payment::is_payment_product( $product ) ) {
 				$type         = 'payment';
-				$description .= preg_match('/#/', $description) ? '' : ' #' . ( empty($reference_code) ? $post_id : $reference_code );
-				$quantity   = 0;
+				$description .= preg_match( '/#/', $description ) ? '' : ' #' . ( empty( $reference_code ) ? $post_id : $reference_code );
+				$quantity     = 0;
 				// $sub_total  = NULL;
-				$total      = 0;
+				$total = 0;
 			} else {
 				$type = $product->get_type();
 			}
-			$balance    = $total - $paid;
+			$balance = $total - $paid;
 
 			// switch ( $type ) {
 			// case 'booking':
@@ -749,7 +749,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		$prestation = new Mltp_Prestation(
 			array(
 				'prestation_id'  => $prestation_id,
-				'reference_code'  => $reference_code,
+				'reference_code' => $reference_code,
 				// 'customer_id'    => $customer_id,
 				// 'customer_name'  => $customer_name,
 				// 'customer_email' => $customer_email,
@@ -776,7 +776,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 			foreach ( $details as $key => $detail ) {
 				$detail['prestation_id'] = $prestation->id;
 				// MultiPass::debug("prestation->id $prestation->id, prestation->post->post_name " . $prestation->post->post_name, $detail);
-				$detail['description'] = empty($detail['description']) ? NULL : strip_tags($detail['description']);
+				$detail['description'] = empty( $detail['description'] ) ? null : strip_tags( $detail['description'] );
 				// if('payment' === $type) {
 				// error_log('detail ' . print_r($detail, true));
 				// }

@@ -38,20 +38,21 @@ class Mltp_Lodgify extends Mltp_Modules {
 		$this->locale = MultiPass::get_locale();
 
 		$this->namespace = 'multipass/v1';
-		$this->route = '/lodgify';
+		$this->route     = '/lodgify';
 
-		$this->webhooks_subscribe = ( filter_var( $_SERVER['SERVER_ADDR'],
-		FILTER_VALIDATE_IP,
-		FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE |  FILTER_FLAG_NO_RES_RANGE
+		$this->webhooks_subscribe = ( filter_var(
+			$_SERVER['SERVER_ADDR'],
+			FILTER_VALIDATE_IP,
+			FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
 		) ) ? array(
-			'rate_change' => true,
-			'availability_change' => true,
+			'rate_change'            => true,
+			'availability_change'    => true,
 			'booking_new_any_status' => true,
-			'booking_change' => true,
-		) :  array();
+			'booking_change'         => true,
+		) : array();
 
-		register_activation_hook( MULTIPASS_FILE, array($this, 'subscribe_webhooks' ) );
-		register_deactivation_hook( MULTIPASS_FILE, array($this, 'unsubscribe_webhooks' ) );
+		register_activation_hook( MULTIPASS_FILE, array( $this, 'subscribe_webhooks' ) );
+		register_deactivation_hook( MULTIPASS_FILE, array( $this, 'unsubscribe_webhooks' ) );
 	}
 
 	/**
@@ -63,7 +64,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 		$actions = array(
 			array(
-				'hook' => 'rest_api_init',
+				'hook'     => 'rest_api_init',
 				'callback' => 'register_api_callback_route',
 			),
 		);
@@ -227,35 +228,43 @@ class Mltp_Lodgify extends Mltp_Modules {
 		// register_rest_route( 'multipass/v1', '/users/market=(?P<market>[a-zA-Z0-9-]+)/lat=(?P<lat>[a-z0-9 .\-]+)/long=(?P<long>[a-z0-9 .\-]+)', array(
 		//
 		$events = $this->webhooks_subscribe;
-		foreach($events as $event => $subscribe) {
-			if( ! $subscribe ) continue;
+		foreach ( $events as $event => $subscribe ) {
+			if ( ! $subscribe ) {
+				continue;
+			}
 			$route = "$this->route/$event";
-			register_rest_route($this->namespace, $route, array(
-				'methods' => 'POST',
-				'callback' => array($this, 'handle_api_callback'),
-				'permission_callback' => '__return_true',
-			));
+			register_rest_route(
+				$this->namespace,
+				$route,
+				array(
+					'methods'             => 'POST',
+					'callback'            => array( $this, 'handle_api_callback' ),
+					'permission_callback' => '__return_true',
+				)
+			);
 		}
 	}
 
-	function handle_api_callback(WP_REST_Request $request) {
+	function handle_api_callback( WP_REST_Request $request ) {
 		// error_log(__METHOD__ . ' ' . print_r($request, true) );
 		// $callback_url = $request->get_param('callback_url');
 		$datas = $request->get_params();
 		$route = $request->get_route();
 		$event = str_replace( "/$this->namespace$this->route/", '', $route );
-		foreach( $datas as $data ) {
-			if(!isset($data['action'])) continue;
+		foreach ( $datas as $data ) {
+			if ( ! isset( $data['action'] ) ) {
+				continue;
+			}
 
-			switch ($data['action']) {
+			switch ( $data['action'] ) {
 				case 'booking_new_any_status':
 				case 'booking_change':
-				$booking = new Mltp_Lodgify_Booking($data);
-				$result = $booking->save();
-				break;
+					$booking = new Mltp_Lodgify_Booking( $data );
+					$result  = $booking->save();
+					break;
 
 				default:
-				error_log('unmanaged action ' . $data['action']);
+					error_log( 'unmanaged action ' . $data['action'] );
 			}
 
 			// error_log(print_r($data, true));
@@ -263,13 +272,13 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 		// Perform actions with the received callback URL, such as saving it to the database or triggering an event.
 		// $debug = array(
-		// 	// 'message' => 'Callback URL registered.',
-		// 	// 'callback_url' => $callback_url,
-		// 	'route' => $route,
-		// 	'event' => $event,
-		// 	'remote' => $_SERVER['REMOTE_ADDR'],
-		// 	'content_type' => $request->get_content_type(),
-		// 	'data' => $data,
+		// 'message' => 'Callback URL registered.',
+		// 'callback_url' => $callback_url,
+		// 'route' => $route,
+		// 'event' => $event,
+		// 'remote' => $_SERVER['REMOTE_ADDR'],
+		// 'content_type' => $request->get_content_type(),
+		// 'data' => $data,
 		// );
 		// error_log(print_r($debug, true));
 		return 'OK';
@@ -457,15 +466,15 @@ class Mltp_Lodgify extends Mltp_Modules {
 	}
 
 	function api_request( $path, $args = array() ) {
-		$method = ( empty($args['method'])) ? 'GET' : $args['method'];
-		unset($args['method']);
+		$method = ( empty( $args['method'] ) ) ? 'GET' : $args['method'];
+		unset( $args['method'] );
 
 		if ( preg_match( '~^[a-z]+://~', $path ) ) {
 			$url = $path;
 		} else {
-			$url = $this->api_url . $path . ( empty($args) ? '' : '?' . http_build_query( $args ) );
+			$url = $this->api_url . $path . ( empty( $args ) ? '' : '?' . http_build_query( $args ) );
 		}
-		$options  = array(
+		$options = array(
 			'method'  => $method,
 			'timeout' => 20,
 			// 'ignore_errors' => true,
@@ -475,14 +484,14 @@ class Mltp_Lodgify extends Mltp_Modules {
 			),
 		);
 
-		if( 'GET' === $method ) {
-			if( ! empty($args)) {
+		if ( 'GET' === $method ) {
+			if ( ! empty( $args ) ) {
 				$url = $url . '?' . http_build_query( $args );
 			}
 		} else {
-			$options = array_merge_recursive($options, $args);
-			if(is_array($options['body'])) {
-				$options['body'] = json_encode($options['body'], JSON_UNESCAPED_SLASHES);
+			$options = array_merge_recursive( $options, $args );
+			if ( is_array( $options['body'] ) ) {
+				$options['body'] = json_encode( $options['body'], JSON_UNESCAPED_SLASHES );
 			}
 		}
 		$response = wp_remote_request( $url, $options );
@@ -558,67 +567,73 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 	/**
 	 * Subscribe to Lodgify webhooks
+	 *
 	 * @return void
 	 */
 	function subscribe_webhooks() {
-		if( get_transient( 'multipass_lodgify-subscribed' ) == $this->webhooks_subscribe ) return;
+		if ( get_transient( 'multipass_lodgify-subscribed' ) == $this->webhooks_subscribe ) {
+			return;
+		}
 		$transient_value = $this->webhooks_subscribe;
 
-		$this->callback_url = get_rest_url(NULL, $this->namespace . $this->route);
-		$subscribe = $this->webhooks_subscribe;
-		$unsubscribe = array();
+		$this->callback_url = get_rest_url( null, $this->namespace . $this->route );
+		$subscribe          = $this->webhooks_subscribe;
+		$unsubscribe        = array();
 		/*
 		 * Get currently subscribed hooks
 		 */
-		$response  = $this->api_request( '/webhooks/v1/list', [] );
-		if($response) {
+		$response = $this->api_request( '/webhooks/v1/list', array() );
+		if ( $response ) {
 			foreach ( $response as $subscription ) {
-				$event = $subscription['event'];
+				$event              = $subscription['event'];
 				$event_callback_url = $this->callback_url . '/' . $event;
-				if( $subscription['url'] != $event_callback_url && $subscription['url'] != $this->callback_url ) {
+				if ( $subscription['url'] != $event_callback_url && $subscription['url'] != $this->callback_url ) {
 					continue;
 				}
-				if(isset($subscribe[$event]) && true === $subscribe[$event] ) {
-					unset($subscribe[$event]);
+				if ( isset( $subscribe[ $event ] ) && true === $subscribe[ $event ] ) {
+					unset( $subscribe[ $event ] );
 				} else {
-					unset($subscribe[$event]);
-					$unsubscribe[$event] = $subscription['id'];
+					unset( $subscribe[ $event ] );
+					$unsubscribe[ $event ] = $subscription['id'];
 				}
 			}
 		}
-		MultiPass::debug('subscribe', $subscribe, 'unsubscribe', $unsubscribe);
+		MultiPass::debug( 'subscribe', $subscribe, 'unsubscribe', $unsubscribe );
 
-		foreach($subscribe as $event => $subscribe) {
+		foreach ( $subscribe as $event => $subscribe ) {
 			$event_callback_url = $this->callback_url . '/' . $event;
-			$body = json_encode(array(
-				'target_url' => $event_callback_url,
-				'event' => $event,
-			),  JSON_UNESCAPED_SLASHES);
-			$params = array(
-				'method' => 'POST',
-				'body' => $body,
-				'headers' => [
-			    'accept' => 'application/json',
-			    'content-type' => 'application/*+json',
-			  ],
+			$body               = json_encode(
+				array(
+					'target_url' => $event_callback_url,
+					'event'      => $event,
+				),
+				JSON_UNESCAPED_SLASHES
 			);
-			$response  = $this->api_request( '/webhooks/v1/subscribe', $params );
+			$params             = array(
+				'method'  => 'POST',
+				'body'    => $body,
+				'headers' => array(
+					'accept'       => 'application/json',
+					'content-type' => 'application/*+json',
+				),
+			);
+			$response           = $this->api_request( '/webhooks/v1/subscribe', $params );
 
 			// error_log(print_r($response, true));
 		}
-		foreach($unsubscribe as $event => $id) {
-			$body = array(
+		foreach ( $unsubscribe as $event => $id ) {
+			$body     = array(
 				'id' => $id,
 			);
-			$params = array(
-				'method' => 'DELETE',
-				'body' => $body,
-				'headers' => [
-					'accept' => 'application/json',
+			$params   = array(
+				'method'  => 'DELETE',
+				'body'    => $body,
+				'headers' => array(
+					'accept'       => 'application/json',
 					'content-type' => 'application/*+json',
-					],
+				),
 			);
-			$response  = $this->api_request( '/webhooks/v1/unsubscribe', $params );
+			$response = $this->api_request( '/webhooks/v1/unsubscribe', $params );
 		}
 
 		set_transient( 'multipass_lodgify-subscribed', $transient_value, 3600 );
@@ -837,20 +852,20 @@ class Mltp_Lodgify extends Mltp_Modules {
 
 		$i = 0;
 		foreach ( $bookings as $key => $data ) {
-			$booking = $this->save_booking($data);
+			$booking = $this->save_booking( $data );
 			// $booking = new Mltp_Lodgify_Booking( $data );
 			// if ( is_wp_error( $api_response ) ) {
-			// 	error_log( $booking->get_error_message() );
-			// 	continue;
+			// error_log( $booking->get_error_message() );
+			// continue;
 			// }
 			// if ( ! $booking->status ) {
-			// 	// MultiPass::debug('no resource ', $booking);
-			// 	continue;
+			// MultiPass::debug('no resource ', $booking);
+			// continue;
 			// }
 			//
 			// if ( in_array( $booking->status, array( 'Declined', 'Open', 'Unavailable' ) ) ) {
-			// 	// MultiPass::debug('wrong status ', $booking);
-			// 	continue;
+			// MultiPass::debug('wrong status ', $booking);
+			// continue;
 			// }
 			//
 			// $mltp_detail = $booking->save();
@@ -858,19 +873,19 @@ class Mltp_Lodgify extends Mltp_Modules {
 	}
 
 	function save_booking( $data ) {
-		if( ! is_array($data) || empty($data) ) {
-			MultiPass::debug('empty data ');
+		if ( ! is_array( $data ) || empty( $data ) ) {
+			MultiPass::debug( 'empty data ' );
 			return;
 		}
 		$booking = new Mltp_Lodgify_Booking( $data );
 
 		if ( ! $booking->status ) {
-			MultiPass::debug('no resource ', $booking);
+			MultiPass::debug( 'no resource ', $booking );
 			return $booking;
 		}
 
 		if ( in_array( $booking->status, array( 'Declined', 'Open', 'Unavailable' ) ) ) {
-			MultiPass::debug('wrong status ', $booking);
+			MultiPass::debug( 'wrong status ', $booking );
 			return $booking;
 		}
 

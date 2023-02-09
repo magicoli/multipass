@@ -1287,7 +1287,7 @@ class Mltp_Item {
 						),
 					),
 				);
-				$posts      = get_posts( $query_args );
+				$posts = get_posts( $query_args );
 
 				if ( ! $posts ) {
 					$debug_query = $query_args;
@@ -1299,12 +1299,12 @@ class Mltp_Item {
 					// error_log("looking by resource $args[resource_id] and dates from $from to $to");
 
 					$query_args = array(
-						'post_type'  => 'mltp_detail',
+						'post_type'   => 'mltp_detail',
 						'post_status' => array( 'publish', 'open', 'canceled' ),
 						// 'numberposts' => 1,
-						'orderby'    => 'post_date',
-						'order'      => 'asc',
-						'meta_query' => array(
+						'orderby'     => 'post_date',
+						'order'       => 'asc',
+						'meta_query'  => array(
 							'relation' => 'AND',
 							// array(
 							// 'key'   => 'dates',
@@ -1324,7 +1324,7 @@ class Mltp_Item {
 							),
 						),
 					);
-					$posts      = get_posts( $query_args );
+					$posts = get_posts( $query_args );
 
 				}
 
@@ -1433,17 +1433,17 @@ class Mltp_Item {
 			unset( $args['notes'] ); // Do not replace if not provided
 		}
 
-		switch($args['status']) {
+		switch ( $args['status'] ) {
 			case 'open':
-			$post_status = 'open';
-			break;
+				$post_status = 'open';
+				break;
 
 			case 'declined':
-			$post_status = 'canceled';
-			break;
+				$post_status = 'canceled';
+				break;
 
 			default:
-			$post_status = 'publish';
+				$post_status = 'publish';
 		}
 
 		$postarr = array_filter(
