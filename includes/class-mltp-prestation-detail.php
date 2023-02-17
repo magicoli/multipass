@@ -572,20 +572,34 @@ class Mltp_Item {
 						array(
 							'name'       => __( 'From', 'multipass' ),
 							'id'         => $prefix . 'from',
-							'type'       => 'datetime',
+							'type'       => 'date',
+							'size' => 10,
 							'timestamp'  => true,
 							'js_options' => array(
 								'dateFormat' => $js_date_format_short,
 							),
 						),
 						array(
+							'name'          => __( 'Check in', 'multipass' ),
+							'id'            => $prefix . 'checkin',
+							'size' => 6,
+							'type'       => 'time',
+						),
+						array(
 							'name'       => __( 'To', 'multipass' ),
 							'id'         => $prefix . 'to',
-							'type'       => 'datetime',
+							'type'       => 'date',
+							'size' => 10,
 							'timestamp'  => true,
 							'js_options' => array(
 								'dateFormat' => $js_date_format_short,
 							),
+						),
+						array(
+							'name'          => __( 'Check out', 'multipass' ),
+							'id'            => $prefix . 'checkout',
+							'size' => 6,
+							'type'       => 'time',
 						),
 					),
 				),
@@ -1115,8 +1129,12 @@ class Mltp_Item {
 			}
 			$updates['attendees'] = $attendees;
 		}
-		$updates['dates']['from'] = get_post_meta( $post_id, 'from', true );
-		$updates['dates']['to']   = get_post_meta( $post_id, 'to', true );
+		// $updates['dates'] = get_post_meta( $post_id, 'dates', true ) );
+
+		// $updates['dates']['from'] = get_post_meta( $post_id, 'from', true );
+		// $updates['dates']['to']   = get_post_meta( $post_id, 'to', true );
+		// $updates['dates']['checkin']   = get_post_meta( $post_id, 'checkin', true );
+		// $updates['dates']['checkout']   = get_post_meta( $post_id, 'checkout', true );
 
 		if ( ! empty( $updates ) ) {
 			$updates['flags'] = MultiPass::set_flags(

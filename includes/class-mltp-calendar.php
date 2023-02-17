@@ -639,6 +639,8 @@ class Mltp_Calendar {
 
 		$guests = MultiPass::format_count( get_post_meta( $event->id, 'attendees', true ), 'long_with_total' );
 		$beds   = MultiPass::format_count( get_post_meta( $event->id, 'beds', true ) );
+		$dates = get_post_meta( $event->id, 'dates', true );
+		$event->checkin = isset($dates['checkin']) ? $dates['checkin'] : null;
 
 		$prestation = new Mltp_Prestation( $event->prestation_id );
 		if( ! $prestation->is_prestation() ) {
@@ -667,8 +669,6 @@ class Mltp_Calendar {
 			'booking'    => array(
 				__( 'Item', 'multipass' )          => $event->title,
 				__( 'Dates', 'multipass' )         => MultiPass::format_date_range( array( $event->display_start, $event->display_end ) ),
-				// __( 'Check in', 'multipass' )        => MultiPass::format_date( $event->display_start ),
-				// __( 'Check out', 'multipass' )       => MultiPass::format_date( $event->display_end ),
 				// ),
 				// 'contact'    => array(
 			// ),
@@ -681,6 +681,7 @@ class Mltp_Calendar {
 				__( 'Item balance', 'multipass' )  => MultiPass::price( $event->balance ),
 				__( 'Guests', 'multipass' )        => $guests,
 				__( 'Beds', 'multipass' )          => $beds,
+				__( 'Check in', 'multipass' )          => $event->checkin,
 			),
 			'notes'      => array(
 				__( 'Notes', 'multipass' ) => get_post_meta( $prestation->id, 'notes', true ),
