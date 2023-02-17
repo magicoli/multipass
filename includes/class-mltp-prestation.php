@@ -52,7 +52,7 @@ class Mltp_Prestation {
 	 */
 	public function __construct( $args = null ) {
 		$post = $this->get( $args );
-		if ( $post ) {
+		if ( is_object($post) &! is_wp_error($post) ) {
 			$this->id   = $post->ID;
 			$this->name = $post->post_title;
 			$this->post = $post;
@@ -1313,6 +1313,9 @@ class Mltp_Prestation {
 		if ( ! is_object( $object ) ) {
 			return false;
 		}
+		if( is_wp_error($object) ) {
+			return false;
+		}
 		if ( 'WP_Post' !== get_class( $object ) ) {
 			return false;
 		}
@@ -1764,8 +1767,11 @@ class Mltp_Prestation {
 
 		if ( is_numeric( $args ) ) {
 			$prestation_post = get_post( $args );
+			if( ! isset($prestation_post->post_type) ) {
+				return new WP_Error( 'prestation-wrong-type', "Prestation $args not found" );
+			}
 			if ( 'mltp_prestation' !== $prestation_post->post_type ) {
-				return new WP_Error( 'prestation-wrong-type', 'Not a prestation' );
+				return new WP_Error( 'prestation-wrong-type', "Object $args is not a prestation" );
 			}
 		} elseif ( is_object( $args ) && 'mltp_prestation' === $args->post_type ) {
 			$prestation_post = $args;

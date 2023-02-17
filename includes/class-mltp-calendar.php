@@ -641,7 +641,9 @@ class Mltp_Calendar {
 		$beds   = MultiPass::format_count( get_post_meta( $event->id, 'beds', true ) );
 
 		$prestation = new Mltp_Prestation( $event->prestation_id );
-
+		if( ! $prestation->is_prestation() ) {
+			return false;
+		}
 		$contact['name']  = ( empty( $prestation->customer_name ) ) ? $event->contact : $prestation->customer_name;
 		$contact['email'] = ( empty( $prestation->customer_email ) ) ? $event->email : $prestation->customer_email;
 		$contact['phone'] = ( empty( $prestation->customer_phone ) ) ? $event->phone : $prestation->customer_phone;
