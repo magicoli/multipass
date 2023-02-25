@@ -644,7 +644,8 @@ class Mltp_Calendar {
 
 		$prestation = new Mltp_Prestation( $event->prestation_id );
 		if( ! $prestation->is_prestation() ) {
-			return false;
+			// MultiPass::debug('event', $event->id, 'prestation', $event->prestation_id, 'not a prestation', $prestation);
+			return '';
 		}
 		$contact['name']  = ( empty( $prestation->customer_name ) ) ? $event->contact : $prestation->customer_name;
 		$contact['email'] = ( empty( $prestation->customer_email ) ) ? $event->email : $prestation->customer_email;
@@ -663,7 +664,11 @@ class Mltp_Calendar {
 				__( 'Prestation total', 'multipass' )    => MultiPass::price( $prestation->total ),
 				__( 'Deposit', 'multipass' )             => MultiPass::price( $prestation->deposit ),
 				__( 'Deposit balance', 'multipass' )     => is_numeric( $prestation->deposit ) ? MultiPass::price_with_links( $prestation, $prestation->deposit - $prestation->paid ) : null,
-				__( 'Paid', 'multipass' )                => MultiPass::price( $prestation->paid ),
+				'total_paid'                => empty($prestation->paid) ? null : array(
+					'label' => __( 'Paid', 'multipass' ),
+					'value' => MultiPass::price( $prestation->paid ),
+				),
+				// __( 'Paidz', 'multipass' )                => $prestation->paid,
 				__( 'Balance', 'multipass' )             => MultiPass::price_with_links( $prestation, $prestation->balance ),
 			),
 			'booking'    => array(
@@ -677,8 +682,12 @@ class Mltp_Calendar {
 				__( 'Item discount', 'multipass' ) => MultiPass::price( $event->discount ),
 				__( 'Item total', 'multipass' )    => MultiPass::price( $event->total ),
 				// __( 'Deposit', 'multipass' )  => MultiPass::price( $event->deposit ),
-				__( 'Item paid', 'multipass' )     => MultiPass::price( $event->paid ),
-				__( 'Item balance', 'multipass' )  => MultiPass::price( $event->balance ),
+				// __( 'Item paid', 'multipass' )     => MultiPass::price( $event->paid ),
+				// 'item_paid'                => empty($prestation->paid) ? null : array(
+				// 	'label' => __( 'Item paid', 'multipass' ),
+				// 	'value' => MultiPass::price( $event->paid ),
+				// ),
+				// __( 'Item balance', 'multipass' )  => MultiPass::price( $event->balance ),
 				__( 'Guests', 'multipass' )        => $guests,
 				__( 'Beds', 'multipass' )          => $beds,
 				__( 'Check in', 'multipass' )          => $event->checkin,
@@ -687,6 +696,7 @@ class Mltp_Calendar {
 				__( 'Notes', 'multipass' ) => get_post_meta( $prestation->id, 'notes', true ),
 			),
 		);
+
 		$rows = array();
 		foreach ( $data as $section => $lines ) {
 			$lines = array_filter( $lines );
@@ -698,6 +708,7 @@ class Mltp_Calendar {
 			// }
 			$rows = array_merge( $rows, array( 'divider' ), $lines );
 		}
+
 		// $rows = array_filter($rows);
 		if ( MultiPass::debug() ) {
 			$extra = array();
@@ -739,6 +750,10 @@ class Mltp_Calendar {
 					'<hr>',
 				);
 			} else {
+				if(is_array($value)) {
+					$row = $value['label'];
+					$value = $value['value'];
+				}
 				$html .= sprintf(
 					'<tr><th>%s</th><td>%s</td></tr>',
 					is_numeric( $row ) ? '' : $row,
