@@ -283,6 +283,7 @@ class Mltp_Prestation {
 			'query_var'           => true,
 			'can_export'          => true,
 			'delete_with_user'    => true,
+			'has_archive'         => 'prestations',
 			'has_archive'         => true,
 			'rest_base'           => '',
 			'show_in_menu'        => 'multipass',
@@ -292,6 +293,7 @@ class Mltp_Prestation {
 			'supports'            => array( 'revisions' ),
 			'taxonomies'          => array(),
 			'rewrite'             => array(
+				'slug' => 'prestations',
 				'with_front' => false,
 			),
 		);
