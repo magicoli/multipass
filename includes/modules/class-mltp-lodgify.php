@@ -40,8 +40,9 @@ class Mltp_Lodgify extends Mltp_Modules {
 		$this->namespace = 'multipass/v1';
 		$this->route     = '/lodgify';
 
+		$server_addr = ( empty( $_SERVER['SERVER_ADDR'] ) ) ? null : $_SERVER['SERVER_ADDR'];
 		$this->webhooks_subscribe = ( filter_var(
-			$_SERVER['SERVER_ADDR'],
+			$server_addr,
 			FILTER_VALIDATE_IP,
 			FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
 		) ) ? array(
