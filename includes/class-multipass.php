@@ -131,6 +131,11 @@ class MultiPass {
 		require_once MULTIPASS_DIR . 'vendor/autoload.php';
 
 		/**
+		 * Template overrides
+		 */
+		require_once MULTIPASS_DIR . 'templates/templates.php';
+
+		/**
 		 * The standard plugin classes.
 		 */
 		require_once MULTIPASS_DIR . 'includes/class-mltp-loader.php';
