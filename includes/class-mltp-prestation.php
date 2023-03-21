@@ -1622,9 +1622,13 @@ class Mltp_Prestation {
 	}
 
 	public function rewrite_the_title( $post_title, $post_id ) {
-		if ( 'mltp_prestation' !== get_post_type($post_id) ) {
+		if ( 'mltp_prestation' != get_post_type($post_id) ) {
 			return $post_title;
 		}
+		if ( ! is_single() &! is_archive()) {
+			return $post_title;
+		}
+
 		$prestation = new Mltp_Prestation($post_id);
 		if( ! $prestation->is_prestation() ) return $post_title;
 
