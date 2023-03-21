@@ -171,6 +171,12 @@ class Mltp_Prestation {
 				'hook'      => 'rwmb_meta_boxes',
 				'callback'  => 'register_fields',
 			),
+			array(
+				'component' => $this,
+				'hook' => 'the_title',
+				'callback' => 'rewrite_the_title',
+				'accepted_args' => 2,
+			),
 
 			array(
 				'hook'          => 'wp_insert_post_data',
@@ -1613,6 +1619,37 @@ class Mltp_Prestation {
 		wp_set_object_terms( $post_id, $paid_status, 'prestation-status' );
 
 		add_action( current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3 );
+	}
+
+	public function rewrite_the_title( $post_title, $post_id ) {
+		if ( 'mltp_prestation' !== get_post_type($post_id) ) {
+			return $post_title;
+		}
+		$prestation = new Mltp_Prestation($post_id);
+		if( ! $prestation->is_prestation() ) return $post_title;
+
+		return $prestation->full_title($post_title);
+	}
+
+	public function full_title( $post_title = null ) {
+		if ( ! $this->is_prestation() ) {
+			if ( ! empty($post_title)) return $post_title;
+			if ( ! empty($this->post_title)) return $this->post_title;
+			return;
+		}
+		$title = $this->name;
+		$title = preg_replace('/ *#.*/', '', $title );
+
+		return MultiPass::array_join( array(
+			$title,
+			MultiPass::format_date_range( $this->dates ),
+			array(
+				( ( empty( $this->slug ) ) ? null : "#$this->slug" ),
+				( empty ( $this->origin_id) ) ? null : $this->origin . ' ' . $this->origin_id,
+			),
+		));
+
+		return $title;
 	}
 
 	/**

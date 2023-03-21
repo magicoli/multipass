@@ -551,6 +551,18 @@ class MultiPass {
 		return null;
 	}
 
+	static function array_join( $array, $sep = ', ') {
+		if(!is_array($array)) return $array;
+		
+		foreach ($array as $row) {
+			if(is_array($row)) {
+				$row = self::array_join($row, ' ');
+			}
+			$rows[] = $row;
+		}
+		return str_replace("$sep#", ' #', join($sep, array_filter($rows) ) );
+	}
+
 	static function format_date( $timestamp, $datetype_str = 'RELATIVE_MEDIUM', $timetype_str = 'NONE' ) {
 		$datetype = self::IntlDateConstant( $datetype_str );
 		$timetype = self::IntlDateConstant( $timetype_str );
