@@ -580,12 +580,6 @@ class Mltp_Item {
 							),
 						),
 						array(
-							'name'          => __( 'Check in', 'multipass' ),
-							'id'            => $prefix . 'checkin',
-							'size' => 6,
-							'type'       => 'time',
-						),
-						array(
 							'name'       => __( 'To', 'multipass' ),
 							'id'         => $prefix . 'to',
 							'type'       => 'date',
@@ -595,13 +589,19 @@ class Mltp_Item {
 								'dateFormat' => $js_date_format_short,
 							),
 						),
-						array(
-							'name'          => __( 'Check out', 'multipass' ),
-							'id'            => $prefix . 'checkout',
-							'size' => 6,
-							'type'       => 'time',
-						),
 					),
+				),
+				array(
+					'name'          => __( 'Check in', 'multipass' ),
+					'id'            => $prefix . 'checkin',
+					'size' => 6,
+					'type'       => 'time',
+				),
+				array(
+					'name'          => __( 'Check out', 'multipass' ),
+					'id'            => $prefix . 'checkout',
+					'size' => 6,
+					'type'       => 'time',
 				),
 				array(
 					'name'   => __( 'Number of Attendees', 'multipass' ),
@@ -1131,8 +1131,14 @@ class Mltp_Item {
 		}
 		// $updates['dates'] = get_post_meta( $post_id, 'dates', true ) );
 
-		// $updates['dates']['from'] = get_post_meta( $post_id, 'from', true );
-		// $updates['dates']['to']   = get_post_meta( $post_id, 'to', true );
+		$dates = get_post_meta( $post_id, 'dates', true );
+		if(empty($dates)) {
+			$updates['dates'] = array(
+				'from' => get_post_meta( $post_id, 'from', true ),
+				'to' => get_post_meta( $post_id, 'to', true ),
+			);
+		}
+
 		// $updates['dates']['checkin']   = get_post_meta( $post_id, 'checkin', true );
 		// $updates['dates']['checkout']   = get_post_meta( $post_id, 'checkout', true );
 

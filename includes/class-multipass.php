@@ -563,6 +563,12 @@ class MultiPass {
 		return $formatted;
 	}
 
+	static function timestamp( $date ) {
+		$timestamp = (is_array($date) && isset($date['timestamp'])) ? $date['timestamp'] : $date;
+		return intval($timestamp);
+		// return ( is_integer( $timestamp) &! empty($timestamp)) ? $timestamp : null;
+	}
+
 	static function format_date_iso( $timestamp ) {
 		$timestamp = self::sanitize_timestamp( $timestamp );
 		if ( empty( $timestamp ) ) {
@@ -581,9 +587,9 @@ class MultiPass {
 		if ( ! is_array( $dates ) ) {
 			$dates = array( $dates );
 		}
+		$dates_debug = $dates;
 		$dates = array_filter( $dates );
-
-		if ( count( $dates ) == 2 ) {
+		if ( count( $dates ) == 2 || isset($dates['from'])) {
 			if ( ! isset( $dates['from'] ) ) {
 				$dates = array(
 					'from' => $dates[0],
@@ -594,21 +600,22 @@ class MultiPass {
 			$timetype = constant( 'IntlDateFormatter::' . preg_replace( '/RELATIVE_/', '', $timetype_str ) );
 			$ranger   = new OpenPsa\Ranger\Ranger( get_locale() );
 			$ranger->setDateType( $datetype )->setTimeType( $timetype );
-			$from   = ( is_array( $dates['from'] ) ) ? $dates['from']['timestamp'] : $dates['from'];
-			$to     = ( is_array( $dates['to'] ) ) ? $dates['to']['timestamp'] : $dates['to'];
-			$string = $ranger->format(
-				intval( $from ),
-				intval( $to ),
+			$from   = ( isset( $dates['from'] ) ) ? MultiPass::timestamp($dates['from']) : null;
+			$to   = ( isset( $dates['to'] ) ) ? MultiPass::timestamp($dates['to']) : null;
+			return $ranger->format(
+				$from,
+				$to,
 			);
-			return $string;
 		}
 
 		$datetype  = constant( "IntlDateFormatter::$datetype_str" );
 		$timetype  = constant( "IntlDateFormatter::$timetype_str" );
 		$formatted = array();
-		foreach ( $dates as $date ) {
+		foreach ( $dates as $key => $date ) {
 			$formatter   = new IntlDateFormatter( get_locale(), $datetype, $timetype );
-			$formatted[] = $formatter->format( $date['timestamp'] );
+			if( is_array($date) &! empty($date['timestamp']) ) {
+				$formatted[] = $formatter->format( $date['timestamp'] );
+			}
 		}
 		return join( ', ', $formatted );
 	}

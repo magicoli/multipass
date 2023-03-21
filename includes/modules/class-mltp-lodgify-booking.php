@@ -51,10 +51,7 @@ class Mltp_Lodgify_Booking {
 		$from   = strtotime( $data['arrival'] );
 		$to     = strtotime( $data['departure'] );
 		$guests = ( isset( $data['people'] ) ) ? $data['people'] : $data['rooms'][0]['people'];
-		error_log( 'data ' . print_r( $data, true ) );
-		// if(isset($data['id'])) {
-		//
-		// }
+
 		$deposit          = null;
 		$deposit_due_date = null;
 		if ( isset( $data['quote']['scheduled_transactions'] ) ) {
@@ -158,6 +155,10 @@ class Mltp_Lodgify_Booking {
 
 		$this->status = $status;
 		$this->guests = $guests;
+		$this->dates = array(
+			'from' => $from,
+			'to' => $to,
+		);
 		$this->from   = $from;
 		$this->to     = $to;
 
@@ -165,6 +166,7 @@ class Mltp_Lodgify_Booking {
 			'customer_name'    => $customer_name,
 			'customer_email'   => $customer_email,
 			'customer_phone'   => $customer_phone,
+			'dates'             => [ 'from' => $from, 'to' => $to ],
 			'from'             => $from,
 			'to'               => $to,
 			// 'dates'               => array('from'=>$from,'to'=>$to),
@@ -356,6 +358,7 @@ class Mltp_Lodgify_Booking {
 			'customer_name'    => $customer_name,
 			'customer_email'   => $customer_email,
 			'customer_phone'   => $customer_phone,
+			'dates'             => [ 'from' => $from, 'to' => $to ],
 			'from'             => $from,
 			'to'               => $to,
 			// 'dates'               => array('from'=>$from,'to'=>$to),

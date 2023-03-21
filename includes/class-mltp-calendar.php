@@ -640,7 +640,7 @@ class Mltp_Calendar {
 		$guests = MultiPass::format_count( get_post_meta( $event->id, 'attendees', true ), 'long_with_total' );
 		$beds   = MultiPass::format_count( get_post_meta( $event->id, 'beds', true ) );
 		$dates = get_post_meta( $event->id, 'dates', true );
-		$event->checkin = isset($dates['checkin']) ? $dates['checkin'] : null;
+		$event->checkin = get_post_meta( $event->id, 'checkin', true );
 
 		$prestation = new Mltp_Prestation( $event->prestation_id );
 		if( ! $prestation->is_prestation() ) {
