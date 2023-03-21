@@ -39,7 +39,7 @@ class Mltp_Item {
 			return false;
 		}
 
-		$this->post = $this->get( $args, $update );
+		$this->post = $this->get_post( $args, $update );
 		if ( $this->post ) {
 			$this->id             = $this->post->ID;
 			$this->customer_name  = get_post_meta( $this->id, 'customer_name', true );
@@ -1242,7 +1242,7 @@ class Mltp_Item {
 		return $args;
 	}
 
-	function get( $args, $update = false ) {
+	function get_post( $args, $update = false ) {
 		$post_id = null;
 		$post    = null;
 
