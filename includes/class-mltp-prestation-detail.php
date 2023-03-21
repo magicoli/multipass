@@ -45,6 +45,19 @@ class Mltp_Item {
 			$this->customer_name  = get_post_meta( $this->id, 'customer_name', true );
 			$this->customer_email = get_post_meta( $this->id, 'customer_email', true );
 			$this->customer_phone = get_post_meta( $this->id, 'customer_phone', true );
+			$this->dates = get_post_meta($this->id, 'dates', true);
+			$this->from = get_post_meta( $this->id, 'from', true );
+			$this->to   = get_post_meta( $this->id, 'to', true );
+			if(empty($this->dates)) {
+				$this->dates = array(
+					'from' => [ 'timestamp' => $this->from ],
+					'to' => [ 'timestamp' => $this->to ],
+				);
+			} else {
+				$this->from = MultiPass::timestamp($this->dates['from']);
+				$this->to = MultiPass::timestamp($this->dates['to']);
+			}
+
 		}
 	}
 
@@ -138,6 +151,12 @@ class Mltp_Item {
 				'component' => $this,
 				'hook'      => 'rwmb_meta_boxes',
 				'callback'  => 'register_fields',
+			),
+			array(
+				'component' => $this,
+				'hook' => 'the_title',
+				'callback' => 'rewrite_the_title',
+				'accepted_args' => 2,
 			),
 
 			array(
@@ -959,6 +978,47 @@ class Mltp_Item {
 
 	}
 
+	public function rewrite_the_title( $post_title, $post_id ) {
+		if ( 'mltp_detail' != get_post_type($post_id) || ( ! is_single() &! is_archive() ) ) {
+			return $post_title;
+		}
+		$item = new Mltp_Item($post_id);
+		if( ! $item ) {
+			return $post_title;
+		}
+		// $prestation = new Mltp_Prestation($post_id);
+		// if( ! $prestation->is_prestation() ) return $post_title;
+		return 'item ' . $item->full_title($post_title);
+	}
+
+	public function full_title( $post_title = null ) {
+		if('Mltp_Item' != get_class($this)) {
+				if ( ! empty($post_title)) return $post_title;
+				if ( ! empty($this->post_title)) return $this->post_title;
+				return;
+		}
+
+		$title = empty($this->name) ? $post_title : $this->name;
+		$title = preg_replace('/ *#.+/', '', $title );
+
+		if($this->id == 14096) {
+			error_log(print_r($this, true));
+		}
+
+
+		return MultiPass::array_join( array(
+			$title,
+			MultiPass::format_date_range( $this->dates ),
+			array(
+				( ( empty( $this->slug ) ) ? null : "#$this->slug" ),
+				( empty ( $this->origin_id) ) ? null : $this->origin . ' ' . $this->origin_id,
+			),
+			'<pre>' . print_r($this, true) . '</pre>',
+		));
+
+		return empty($title) ? $post_title : $title;
+	}
+
 	static function insert_mltp_detail_data( $data, $postarr, $unsanitized_postarr, $update ) {
 		if ( ! $update ) {
 			return $data;
@@ -1368,7 +1428,7 @@ class Mltp_Item {
 			$this->name = html_entity_decode( $post->post_title );
 			$this->post = $post;
 			// $this->name = $this->post->post_title;
-			// $this->dates = get_post_meta($this->id, 'dates', true);
+			$this->dates = get_post_meta($this->id, 'dates', true);
 			$this->from = get_post_meta( $this->id, 'from', true );
 			$this->to   = get_post_meta( $this->id, 'to', true );
 			// $this->type = get_post_meta($this->id, 'type', true);
@@ -1378,10 +1438,18 @@ class Mltp_Item {
 			// $this->post = null;
 		}
 
+		if(empty($this->dates)) {
+			$this->dates = array(
+				'from' => $this->from,
+				'to' => $this->to,
+			);
+		}
+
 		if ( ! empty( $args ) && is_array( $args ) && ( empty( $post_id ) || $update ) ) {
 			// $create = (empty($post_id));
 			$args['from'] = $from;
 			$args['to']   = $to;
+			$args['dates']   = $this->dates;
 
 			$post = $this->update( $args );
 
