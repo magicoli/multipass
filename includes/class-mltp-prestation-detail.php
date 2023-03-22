@@ -49,13 +49,17 @@ class Mltp_Item {
 			$this->from = get_post_meta( $this->id, 'from', true );
 			$this->to   = get_post_meta( $this->id, 'to', true );
 			if(empty($this->dates)) {
-				$this->dates = array(
-					'from' => [ 'timestamp' => $this->from ],
-					'to' => [ 'timestamp' => $this->to ],
-				);
+				$this->dates = array_filter(array(
+					'from' => empty($this->from) ? null : [ 'timestamp' => $this->from ],
+					'to' => empty($this->to) ? null : [ 'timestamp' => $this->to ],
+				));
 			} else {
-				$this->from = MultiPass::timestamp($this->dates['from']);
-				$this->to = MultiPass::timestamp($this->dates['to']);
+				$this->from = (empty($this->dates['from'])) ? null : MultiPass::timestamp($this->dates['from']);
+				$this->to = (empty($this->dates['to'])) ? null : MultiPass::timestamp($this->dates['to']);
+				$this->dates = array_filter(array(
+					'from' => empty($this->from) ? null : [ 'timestamp' => $this->from ],
+					'to' => empty($this->to) ? null : [ 'timestamp' => $this->to ],
+				));
 			}
 
 		}
@@ -152,12 +156,6 @@ class Mltp_Item {
 				'hook'      => 'rwmb_meta_boxes',
 				'callback'  => 'register_fields',
 			),
-			array(
-				'component' => $this,
-				'hook' => 'the_title',
-				'callback' => 'rewrite_the_title',
-				'accepted_args' => 2,
-			),
 
 			array(
 				'hook'          => 'wp_insert_post_data',
@@ -175,12 +173,13 @@ class Mltp_Item {
 				'callback'      => 'sanitize_mltp_detail_meta',
 				'accepted_args' => 3,
 			),
-			array(
-				'hook'          => 'sanitize_post_meta_attendee_for_mltp_detail',
-				'callback'      => 'sanitize_mltp_detail_meta',
-				'accepted_args' => 3,
-			),
 
+			// array(
+			// 	'component' => $this,
+			// 	'hook' => 'the_title',
+			// 	'callback' => 'rewrite_the_title',
+			// 	'accepted_args' => 2,
+			// ),
 			array(
 				'hook'     => 'multipass_set_mltp_detail_title',
 				'callback' => 'set_mltp_detail_title',
@@ -978,46 +977,46 @@ class Mltp_Item {
 
 	}
 
-	public function rewrite_the_title( $post_title, $post_id ) {
-		if ( 'mltp_detail' != get_post_type($post_id) || ( ! is_single() &! is_archive() ) ) {
-			return $post_title;
-		}
-		$item = new Mltp_Item($post_id);
-		if( ! $item ) {
-			return $post_title;
-		}
-		// $prestation = new Mltp_Prestation($post_id);
-		// if( ! $prestation->is_prestation() ) return $post_title;
-		return 'item ' . $item->full_title($post_title);
-	}
+	// public function rewrite_the_title( $post_title, $post_id ) {
+	// 	if ( 'mltp_detail' != get_post_type($post_id) || ( ! is_single() &! is_archive() ) ) {
+	// 		return $post_title;
+	// 	}
+	// 	$item = new Mltp_Item($post_id);
+	// 	if( ! $item ) {
+	// 		return $post_title;
+	// 	}
+	// 	// $prestation = new Mltp_Prestation($post_id);
+	// 	// if( ! $prestation->is_prestation() ) return $post_title;
+	// 	return 'item ' . $item->full_title($post_title);
+	// }
 
-	public function full_title( $post_title = null ) {
-		if('Mltp_Item' != get_class($this)) {
-				if ( ! empty($post_title)) return $post_title;
-				if ( ! empty($this->post_title)) return $this->post_title;
-				return;
-		}
-
-		$title = empty($this->name) ? $post_title : $this->name;
-		$title = preg_replace('/ *#.+/', '', $title );
-
-		if($this->id == 14096) {
-			error_log(print_r($this, true));
-		}
-
-
-		return MultiPass::array_join( array(
-			$title,
-			MultiPass::format_date_range( $this->dates ),
-			array(
-				( ( empty( $this->slug ) ) ? null : "#$this->slug" ),
-				( empty ( $this->origin_id) ) ? null : $this->origin . ' ' . $this->origin_id,
-			),
-			'<pre>' . print_r($this, true) . '</pre>',
-		));
-
-		return empty($title) ? $post_title : $title;
-	}
+	// public function full_title( $post_title = null ) {
+	// 	if('Mltp_Item' != get_class($this)) {
+	// 			if ( ! empty($post_title)) return $post_title;
+	// 			if ( ! empty($this->post_title)) return $this->post_title;
+	// 			return;
+	// 	}
+	//
+	// 	$title = empty($this->name) ? $post_title : $this->name;
+	// 	$title = preg_replace('/ *#.+/', '', $title );
+	//
+	// 	if($this->id == 14096) {
+	// 		error_log(print_r($this, true));
+	// 	}
+	//
+	//
+	// 	return MultiPass::array_join( array(
+	// 		$title,
+	// 		MultiPass::format_date_range( $this->dates ),
+	// 		array(
+	// 			( ( empty( $this->slug ) ) ? null : "#$this->slug" ),
+	// 			( empty ( $this->origin_id) ) ? null : $this->origin . ' ' . $this->origin_id,
+	// 		),
+	// 		// '<pre>' . print_r($this, true) . '</pre>',
+	// 	));
+	//
+	// 	return empty($title) ? $post_title : $title;
+	// }
 
 	static function insert_mltp_detail_data( $data, $postarr, $unsanitized_postarr, $update ) {
 		if ( ! $update ) {
@@ -1027,7 +1026,7 @@ class Mltp_Item {
 			return $data;
 		}
 
-		$data = apply_filters( 'multipass_set_mltp_detail_title', $data );
+		// $data = apply_filters( 'multipass_set_mltp_detail_title', $data );
 
 		return $data;
 	}
@@ -1058,18 +1057,30 @@ class Mltp_Item {
 
 		$prestation_id = get_post_meta( $post_id, 'prestation_id', true );
 		$item_info     = get_post_meta( $post_id, 'customer', true );
-		if ( $prestation_id ) {
-			$user_info = array_filter(
+
+		if ( !empty( $prestation_id ) ) {
+			$user_info = array_filter( array_merge(
+				(empty($item_info)) ? [] : $item_info,
 				array(
+					'name' => get_post_meta( $post_id, 'customer_name', true ),
+				),
+				array_filter(array(
 					'user_id' => get_post_meta( $prestation_id, 'customer_id', true ),
 					'name'    => get_post_meta( $prestation_id, 'attendee_name', true ),
 					'email'   => get_post_meta( $prestation_id, 'attendee_email', true ),
 					'phone'   => get_post_meta( $prestation_id, 'attendee_phone', true ),
-				)
-			);
+				)),
+				array_filter(array(
+					'user_id' => get_post_meta( $prestation_id, 'customer_id', true ),
+					'name'    => get_post_meta( $prestation_id, 'customer_name', true ),
+					'email'   => get_post_meta( $prestation_id, 'customer_email', true ),
+					'phone'   => get_post_meta( $prestation_id, 'customer_phone', true ),
+				)),
+			));
 		} else {
 			$user_info = $item_info;
 		}
+
 		if ( $user_info != $item_info ) {
 			// error_log(__FUNCTION__ . '::' . __FUNCTION__ . ' meta ' . print_r($user_info, true));
 			update_post_meta( $post_id, 'customer', $user_info );
@@ -1190,13 +1201,13 @@ class Mltp_Item {
 			$updates['attendees'] = $attendees;
 		}
 		// $updates['dates'] = get_post_meta( $post_id, 'dates', true ) );
-
 		$dates = get_post_meta( $post_id, 'dates', true );
 		if(empty($dates)) {
-			$updates['dates'] = array(
-				'from' => get_post_meta( $post_id, 'from', true ),
-				'to' => get_post_meta( $post_id, 'to', true ),
+			$dates = array(
+				'from' => [ 'timestamp' => get_post_meta( $post_id, 'from', true ) ],
+				'to' => [ 'timestamp' => get_post_meta( $post_id, 'to', true ) ],
 			);
+			$updates['dates'] = $dates;
 		}
 
 		// $updates['dates']['checkin']   = get_post_meta( $post_id, 'checkin', true );
@@ -1218,9 +1229,24 @@ class Mltp_Item {
 
 			$updates['classes'] = MultiPass::get_flag_slugs( $updates['flags'] );
 
+			$resource_id = get_post_meta($post_id, 'resource_id', true);
+			$prestation_slug = get_post_field( 'post_name', $prestation_id );
+			$title_parts = array(
+				get_the_title($resource_id),
+				array(
+					(empty($attendees['total'])) ? null : $attendees['total'] . 'p',
+					MultiPass::format_date_range($dates),
+				),
+				$user_info['name'],
+				// array(
+				// 	// (empty($prestation_slug)) ? null : "#$prestation_slug",
+				// ),
+			);
+			$post_title = html_entity_decode(MultiPass::array_join($title_parts));
+
 			$post_update = array(
 				'ID'         => $post_id,
-				// 'post_title' => trim($display_name . ' ' . "#" . ((empty($post->post_name)) ? $post_id : $post->post_name)),
+				'post_title' => $post_title,
 				// 'post_status' => $post_status,
 				'meta_input' => $updates,
 				// 'tax_input' => array(
@@ -1506,6 +1532,7 @@ class Mltp_Item {
 			$post_title = $this->name;
 		} else {
 			$post_title = ( empty( $args['description'] ) ) ? $this->name : $description;
+			$post_title = preg_replace('/(, | - ).*', '', $post_title);
 			// $title = preg_replace('/,.*/', '', $title);
 			// $post_title = "$description, ${guests_total}p $date_range";
 			$dates      = array(
