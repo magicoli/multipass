@@ -553,7 +553,7 @@ class MultiPass {
 
 	static function array_join( $array, $sep = ', ') {
 		if(!is_array($array)) return $array;
-		
+		$rows = array();
 		foreach ($array as $row) {
 			if(is_array($row)) {
 				$row = self::array_join($row, ' ');
