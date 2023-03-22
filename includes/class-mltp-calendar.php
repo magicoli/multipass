@@ -642,7 +642,8 @@ class Mltp_Calendar {
 		$dates = get_post_meta( $event->id, 'dates', true );
 		$event->checkin = get_post_meta( $event->id, 'checkin', true );
 
-		$prestation = new Mltp_Prestation( $event->prestation_id );
+		$prestation_id = empty($event->prestation_id) ? null : $event->prestation_id;
+		$prestation = new Mltp_Prestation( $prestation_id );
 		if( ! $prestation->is_prestation() ) {
 			// MultiPass::debug('event', $event->id, 'prestation', $event->prestation_id, 'not a prestation', $prestation);
 			return '';
