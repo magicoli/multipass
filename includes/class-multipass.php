@@ -988,6 +988,10 @@ class MultiPass {
 		$backtrace  = empty( debug_backtrace()[1]['class'] ) ? '' : debug_backtrace()[1]['class'] . '::';
 		$backtrace .= debug_backtrace()[1]['function']; // . ' (' . debug_backtrace()[1]['line'] . ') ';
 
+		if ( ! current_user_can( 'mltp_administrator' ) ) {
+			// error_log($backtrace . ' not an administrator' );
+			return false;
+		}
 		$multipass_debug = get_option( 'multipass_debug' );
 		if ( empty( $args ) ) {
 			// error_log($backtrace . ' empty args');
@@ -995,10 +999,6 @@ class MultiPass {
 		}
 		if ( ! $multipass_debug ) {
 			// error_log($backtrace . ' multipass_debug disabled ' . $multipass_debug );
-			return false;
-		}
-		if ( ! current_user_can( 'mltp_administrator' ) ) {
-			// error_log($backtrace . ' not an administrator' );
 			return false;
 		}
 
