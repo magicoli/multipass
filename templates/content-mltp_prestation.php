@@ -13,7 +13,13 @@
 
 // ALter content from here
 
-$content = "<pre>Begin content</pre>" . $content . "<pre>End content</pre>";
+$prestation = new Mltp_Prestation( get_the_ID() );
+
+$content = $content
+. $prestation->full_title()
+// . MultiPass::format_date_range( $prestation->dates )
+. '<pre>' . print_r($prestation, true) . '</pre>';
+
 
 // end alter content
 
