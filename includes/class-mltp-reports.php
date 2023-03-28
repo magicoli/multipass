@@ -140,13 +140,11 @@ class Mltp_Report {
 
 		public function process_action_request() {
 			if ( isset( $_GET['action'] ) && $_GET['action'] === 'mltp_download_csv' ) {
-				if ( ! current_user_can( 'manage_options' ) ) {
-					error_log( 'You do not have permission to access this page.' );
-					wp_die();
+				if ( ! current_user_can( 'mltp_administrator' ) ) {
+          wp_die( 'You do not have permission to access this page.' );
 				}
 				if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'mltp_download_csv' ) ) {
-					error_log( 'Security check failed. Please try again.' );
-					wp_die();
+					wp_die( 'Security check failed. Please try again.' );
 				}
 				$year = isset( $_GET['year'] ) ? intval( $_GET['year'] ) : null;
 				$this->download_csv( $year );
