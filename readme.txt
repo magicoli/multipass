@@ -4,7 +4,7 @@ Donate link: https://magiiic.com/support/MultiPass+Plugin
 Tags: hotel, booking, multi-prestations, multi-services, woocommerce, ota, pms, booking engine
 Requires at least: 5.9.0
 Tested up to: 6.1.1
-Stable tag: 0.3
+Stable tag: 0.4
 License: AGPLv3 or later
 License URI: http://www.gnu.org/licenses/agpl-3.0.txt
 
@@ -65,6 +65,12 @@ WARNING: **Make a full backup of your website and databases** before installing 
 4. WooCommerce must be enabled to handle custom payments.
 
 == Changelog ==
+
+= 0.4 =
+* added number of nights in calendar display
+* added prestation slug to permalink options page
+* added content templates
+* addded guests and beds repartition in calendar popup
 
 = 0.3 =
 * new handle Lodgify API new booking and booking change events

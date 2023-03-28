@@ -1,5 +1,11 @@
 ## Changelog
 
+### 0.4
+- added number of nights in calendar display
+- added prestation slug to permalink options page
+- added content templates
+- addded guests and beds repartition in calendar popup
+
 ### 0.3
 - new handle Lodgify API new booking and booking change events
 - added prestation details to woocommerce new order admin notification (optional)
