@@ -149,6 +149,11 @@ class Mltp_Prestation {
 				'callback' => 'register_post_types',
 			),
 			array(
+				'component' => $this,
+				'hook' => 'admin_init',
+				'callback' => 'register_permalink_options',
+			),
+			array(
 				'hook'     => 'init',
 				'callback' => 'register_taxonomies',
 			),
@@ -299,7 +304,7 @@ class Mltp_Prestation {
 			'supports'            => array( 'revisions' ),
 			'taxonomies'          => array(),
 			'rewrite'             => array(
-				'slug' => 'prestations',
+				'slug' => self::slug(),
 				'with_front' => false,
 			),
 		);
@@ -329,6 +334,73 @@ class Mltp_Prestation {
 			)
 		);
 
+	}
+
+	function register_permalink_options() {
+		if( isset($_POST))
+		self::multipass_permalink_save($_POST);
+
+		// Add the MultiPass section to the permalinks admin page
+		add_settings_section(
+			'mltp-permalink-options', // ID for the section
+			__('MultiPass permalinks', 'multipass'), // Title of the section
+			array($this, 'multipass_permalink_callback'), // Callback function to display the section content
+			'permalink' // Page on which to display the section
+		);
+
+		// Save the MultiPass option value
+		add_settings_field(
+			'mltp_prestation_slug', // ID for the field
+			__('Prestation slug', 'multipass'), // Title of the field
+			array($this, 'mltp_prestation_slug_callback'), // Callback function to display the field content
+			'permalink', // Page on which to display the field
+			'mltp-permalink-options' // Section ID
+		);
+
+		register_setting('permalink', 'mltp_prestation_slug');
+	}
+
+	function multipass_permalink_callback() {
+		// echo '<p>Customize the MultiPass permalink structure:</p>';
+	}
+
+	static function slug() {
+		$slug = get_option('mltp_prestation_slug');
+		$slug = (empty($slug)) ? __('prestations', 'multipass') : $slug;
+		return $slug;
+	}
+
+	function mltp_prestation_slug_callback() {
+		wp_nonce_field('mltp_prestation_slug', 'mltp_prestation_slug_nonce');
+		printf(
+			'<input name="mltp_prestation_slug" id="mltp_prestation_slug" type="text" value="%s" />
+			<p class="description">%s</p>',
+			self::slug(),
+			sprintf(
+				__('Slug prepended to prestations urls, leave empty for default (%s).', 'multipass'),
+				'<code>prestations</code>',
+			),
+		);
+	}
+
+	function multipass_permalink_save($input) {
+		if(isset($input['mltp_prestation_slug']) && isset($input['mltp_prestation_slug_nonce'])) {
+			// Verify the nonce
+			if(!wp_verify_nonce($input['mltp_prestation_slug_nonce'], 'mltp_prestation_slug')) {
+				return $input;
+			}
+
+			$new_slug = sanitize_title($input['mltp_prestation_slug']);
+			$old_slug = get_option('mltp_prestation_slug');
+
+			if($new_slug != $old_slug) {
+				update_option('mltp_prestation_slug', $new_slug);
+			}
+
+			$input['mltp_prestation_slug'] = $new_slug;
+		}
+
+		return $input;
 	}
 
 	/**
