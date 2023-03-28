@@ -1,0 +1,47 @@
+.mltp-report-table {
+  border-collapse: collapse;
+  /* width: 100%; */
+}
+
+.mltp-report-table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.mltp-report-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  min-width: 5rem;
+}
+.mltp-report-table td.number {
+  text-align: right;
+}
+
+.mltp-report-table th.actions,
+.mltp-report-table td.actions {
+  text-align: left;
+  padding: 4px 8px;
+  border: none;
+  background: none;
+  font-weight: normal;
+}
+.mltp-report-table .actions a,
+.mltp-report-table .actions a:hover {
+  text-decoration: none;
+}
+
+.mltp-report-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.mltp-report-current-year {
+  font-weight: bold;
+  background: #eee;
+}
+
+.mltp-report-future-year {
+  color: #999;
+}

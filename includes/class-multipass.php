@@ -171,6 +171,8 @@ class MultiPass {
 		 */
 		require_once MULTIPASS_DIR . 'includes/class-mltp-calendar.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-api.php';
+		require_once MULTIPASS_DIR . 'includes/class-mltp-reports.php';
+
 		/**
 		 * Database updates
 		 */
