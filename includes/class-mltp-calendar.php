@@ -634,6 +634,8 @@ class Mltp_Calendar {
 			return false;
 		}
 
+		$html = '';
+
 		$event->total    = round( $event->total, 2 );
 		$event->subtotal = round( $event->subtotal, 2 );
 
@@ -652,10 +654,28 @@ class Mltp_Calendar {
 		$contact['email'] = ( empty( $prestation->customer_email ) ) ? $event->email : $prestation->customer_email;
 		$contact['phone'] = ( empty( $prestation->customer_phone ) ) ? $event->phone : $prestation->customer_phone;
 
-		$html = '';
+
+		$p_begin = MultiPass::sanitize_timestamp ( isset($prestation->dates['from']) ? $prestation->dates['from'] : $prestation->from );
+		$p_end = MultiPass::sanitize_timestamp ( isset($prestation->dates['to']) ? $prestation->dates['to'] : $prestation->to );
+		// error_log(print_r(array(
+		// 	'begin' => $p_begin,
+		// 	'end' => $p_end,
+		// ), true) );
+		if ( ! empty(isset($prestation->nights))) {
+			$nights = isset($prestation->nights);
+		} else if( ! empty($p_begin) &! empty($p_end) && $p_end > $p_begin ) {
+			$nights = ( (int)$p_end - (int)$p_begin ) / 86400;
+		} else {
+			$nights = null;
+		}
+		$nights = round($nights, 0);
+
 		$data = array(
 			'prestation' => array(
-				__( 'Dates', 'multipass' )               => MultiPass::format_date_range( $prestation->dates ),
+				// __( 'Dates', 'multipass' )               => MultiPass::format_date_range( $prestation->dates ),
+				__( 'Begin', 'multipass' )               => MultiPass::format_date($p_begin),
+				__( 'End', 'multipass' )               => MultiPass::format_date($p_end),
+				__( 'Nights', 'multipass' )               => $nights,
 				_x( 'Contact', '(noun)', '(noun)', 'multipass' ) => $contact['name'],
 				_x( 'Email', '(noun)', 'multipass' )     => MultiPass::link( $contact['email'], null, array( 'tabindex' => -1 ) ),
 				_x( 'Phone', '(noun)', 'multipass' )     => MultiPass::link( $contact['phone'], null, array( 'tabindex' => -1 ) ),
@@ -674,14 +694,13 @@ class Mltp_Calendar {
 			),
 			'booking'    => array(
 				__( 'Item', 'multipass' )          => $event->title,
-				__( 'Dates', 'multipass' )         => MultiPass::format_date_range( array( $event->display_start, $event->display_end ) ),
+				// __( 'Dates', 'multipass' )         => MultiPass::format_date_range( array( $event->display_start, $event->display_end ) ),
+				__( 'Check in', 'multipass' )         => MultiPass::format_date( $event->display_start) . ' ' . @$event->checkin,
+				__( 'Check out', 'multipass' )         => MultiPass::format_date( $event->display_end) . ' ' . @$event->checkout,
 				// ),
 				// 'contact'    => array(
 			// ),
 			// 'prices'     => array(
-				__( 'Item subtotal', 'multipass' ) => ( $event->subtotal === $event->total ) ? null : MultiPass::price( $event->subtotal ),
-				__( 'Item discount', 'multipass' ) => MultiPass::price( $event->discount ),
-				__( 'Item total', 'multipass' )    => MultiPass::price( $event->total ),
 				// __( 'Deposit', 'multipass' )  => MultiPass::price( $event->deposit ),
 				// __( 'Item paid', 'multipass' )     => MultiPass::price( $event->paid ),
 				// 'item_paid'                => empty($prestation->paid) ? null : array(
@@ -691,7 +710,10 @@ class Mltp_Calendar {
 				// __( 'Item balance', 'multipass' )  => MultiPass::price( $event->balance ),
 				__( 'Guests', 'multipass' )        => $guests,
 				__( 'Beds', 'multipass' )          => $beds,
-				__( 'Check in', 'multipass' )          => $event->checkin,
+				// __( 'Check in', 'multipass' )          => $event->checkin,
+				__( 'Item subtotal', 'multipass' ) => ( $event->subtotal === $event->total ) ? null : MultiPass::price( $event->subtotal ),
+				__( 'Item discount', 'multipass' ) => MultiPass::price( $event->discount ),
+				__( 'Item total', 'multipass' )    => MultiPass::price( $event->total ),
 			),
 			'notes'      => array(
 				__( 'Notes', 'multipass' ) => get_post_meta( $prestation->id, 'notes', true ),
@@ -936,8 +958,8 @@ class Mltp_Event extends Mltp_Item {
 		// $this->deposit     = ( isset( $discount['deposit'] ) ) ? $deposit['amount'] : null;
 		$this->paid       = get_post_meta( $this->id, 'paid', true );
 		$this->balance    = get_post_meta( $this->id, 'balance', true );
-		$this->start      = ( isset( $dates['from'] ) ) ? $dates['from'] : null;
-		$this->end        = ( isset( $dates['to'] ) ) ? $dates['to'] : null;
+		$this->start      = ( isset( $dates['from'] ) ) ? $dates['from'] : get_post_meta( $this->id, 'from', true );
+		$this->end        = ( isset( $dates['to'] ) ) ? $dates['to'] : get_post_meta( $this->id, 'to', true );
 		$this->flags      = (int) get_post_meta( $this->id, 'flags', true );
 		$this->edit_url   = get_post_meta( $this->id, 'edit_url', true );
 		$this->source     = get_post_meta( $this->id, 'source', true );
