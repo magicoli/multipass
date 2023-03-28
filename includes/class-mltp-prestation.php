@@ -1007,7 +1007,7 @@ class Mltp_Prestation {
 			$data[] = array(
 				'ID'          => $item_post->ID,
 				'date'        => $item_post->post_date,
-				'description' => reset( $meta['description'] ),
+				'description' => is_array( $meta['description']) ? reset( $meta['description'] ) : $meta['description'],
 				'type'        => is_array( $meta['type'] ) ? reset( $meta['type'] ) : $meta['type'],
 				'dates'       => $dates,
 				'subtotal'    => isset( $price['sub_total'] ) ? $price['sub_total'] : null,
@@ -1341,7 +1341,7 @@ class Mltp_Prestation {
 		return self::is_prestation_post( $this->post );
 	}
 
-	function update() {
+	function update( $args = [] ) {
 		if ( ! $this->post ) {
 			return;
 		}

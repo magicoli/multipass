@@ -1237,7 +1237,7 @@ class Mltp_Item {
 					(empty($attendees['total'])) ? null : $attendees['total'] . 'p',
 					MultiPass::format_date_range($dates),
 				),
-				$user_info['name'],
+				@$user_info['name'],
 				// array(
 				// 	// (empty($prestation_slug)) ? null : "#$prestation_slug",
 				// ),
@@ -1488,7 +1488,7 @@ class Mltp_Item {
 		return $post;
 	}
 
-	function update( $args ) {
+	function update( $args = [] ) {
 		$post_id = $this->id;
 
 		// $debug['removed'] = array_diff($args, $debug['received']);
@@ -1552,7 +1552,7 @@ class Mltp_Item {
 			unset( $args['notes'] ); // Do not replace if not provided
 		}
 
-		switch ( $args['status'] ) {
+		switch ( @$args['status'] ) {
 			case 'open':
 				$post_status = 'open';
 				break;

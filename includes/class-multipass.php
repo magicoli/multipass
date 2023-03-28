@@ -950,7 +950,9 @@ class MultiPass {
 		$sources = array();
 		$terms   = get_terms( 'mltp_detail-source' );
 		foreach ( $terms as $term ) {
-			$sources[ $term->slug ] = $term->name;
+			if(! empty($term->slug) &! empty($term->name) ) {
+				$sources[ $term->slug ] = $term->name;
+			}
 		}
 
 		$sources = apply_filters( 'multipass_register_terms_mltp_detail-source', $sources );
