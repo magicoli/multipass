@@ -171,6 +171,11 @@ class MultiPass {
 		 */
 		require_once MULTIPASS_DIR . 'includes/class-mltp-calendar.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-api.php';
+		/**
+		 * Database updates
+		 */
+
+		require_once MULTIPASS_DIR . 'includes/updates.php';
 
 		// if(is_plugin_active('woocommerce/woocommerce.php')) {
 		// require_once MULTIPASS_DIR . 'includes/modules/class-mltp-woocommerce.php';
