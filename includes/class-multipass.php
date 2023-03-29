@@ -168,6 +168,7 @@ class MultiPass {
 
 		require_once MULTIPASS_DIR . 'includes/class-mltp-settings.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-plugininfo.php';
+		require_once MULTIPASS_DIR . 'includes/class-mltp-taxes.php';
 
 		/**
 		 * Modules

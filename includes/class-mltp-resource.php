@@ -265,7 +265,7 @@ class Mltp_Resource {
 			'supports'            => array( 'title' ),
 			'taxonomies'          => array(),
 			'rewrite'             => array(
-				'slug'       => 'mltp_resource',
+				'slug'       => 'resources',
 				'with_front' => false,
 			),
 		);

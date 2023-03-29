@@ -945,7 +945,7 @@ class Mltp_Prestation {
 		global $post;
 
 		// Check if the post type is mltp_prestation
-		if ( 'mltp_prestation' !== $post->post_type ) {
+		if ( 'mltp_prestation' !== @$post->post_type ) {
 			return;
 		}
 
