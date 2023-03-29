@@ -105,7 +105,17 @@ class MultiPass {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
+		add_action('init', array($this, 'register_session'));
 	}
+
+	function register_session()
+	{
+	  if( !session_id() )
+	  {
+	    session_start();
+	  }
+	}
+
 
 	/**
 	 * Load the required dependencies for this plugin.

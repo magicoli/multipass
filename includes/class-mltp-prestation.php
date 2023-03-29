@@ -168,6 +168,12 @@ class Mltp_Prestation {
 				'hook'     => 'pre_get_posts',
 				'callback' => 'sortable_columns_order',
 			),
+
+			array(
+				'component' => $this,
+				'hook' => 'loop_start',
+				'callback' => 'hide_content_for_unauthorized_users'
+			),
 		);
 
 		$filters = array(
@@ -286,7 +292,7 @@ class Mltp_Prestation {
 			'public'              => false,
 			'hierarchical'        => false,
 			'exclude_from_search' => ! current_user_can( 'mltp_reader' ),
-			'publicly_queryable'  => current_user_can( 'mltp_reader' ),
+			'publicly_queryable'  => true, //current_user_can( 'mltp_reader' ),
 			'show_ui'             => true,
 			'show_in_nav_menus'   => true,
 			'show_in_admin_bar'   => true,
@@ -933,6 +939,91 @@ class Mltp_Prestation {
 				),
 			)
 		);
+	}
+
+	public function hide_content_for_unauthorized_users() {
+		global $post;
+
+		// Check if the post type is mltp_prestation
+		if ( 'mltp_prestation' !== $post->post_type ) {
+			return;
+		}
+
+		// Check if the user has mltp_reader capability
+		if ( current_user_can( 'mltp_reader' ) ) {
+			return;
+		}
+
+		// Get the customer_email value for the current post
+		$customer_email = get_post_meta( $post->ID, 'customer_email', true );
+    $customer_id = get_post_meta( $post->ID, 'customer_id', true );
+
+		// Check if the current user has the same email as the customer_email
+		if ( is_user_logged_in() ) {
+			$current_user = wp_get_current_user();
+			$visitor_email = $current_user->user_email;
+			if ( $customer_email === $visitor_email || $customer_id == $current_user->ID ) {
+				return;
+			}
+		}
+
+		if ( isset( $_SESSION['validated_email'] ) ) {
+			$visitor_email = sanitize_email( $_SESSION['validated_email'] );
+		}
+
+		if ( isset( $_POST['email'] ) && ! empty( $_POST['email'] ) ) {
+			// Verify the nonce
+			if ( ! wp_verify_nonce( $_POST['email_nonce'], 'email_validation' ) ) {
+				$mltp_auth_error = __('Invalid session, please try again', 'multipass');
+				// wp_die( esc_html__( 'Invalid nonce.', 'multipass' ) );
+			} else {
+				$visitor_email = sanitize_email( $_POST['email'] );
+			}
+		}
+
+		if ( isset($visitor_email)) {
+			if ( $customer_email === $visitor_email ) {
+				// The visitor's email matches the customer's email, grant access and store the validated email in a session
+				$_SESSION['validated_email'] = $visitor_email;
+				return;
+			} else {
+				$mltp_auth_error = __('Invalid email, try again', 'multipass');
+			}
+		}
+
+		if(isset($_POST['email'])) {
+			$submitted_mail = $_POST['email'];
+		} else if(isset($_SESSION['validated_email'])) {
+			$submitted_mail = $_SESSION['validated_email'];
+		} else if(is_user_logged_in()) {
+			$submitted_mail = wp_get_current_user()->user_email;
+		}
+		printf('
+			<div class="login mltp-mail-validation-form">
+				<h2>%1$s</h2>
+				<form id=loginform method="post">
+					%2$s
+					<p class="description">
+						%7$s
+					</p>
+					<p>
+						<label for="email">
+							<input type="email" name="email" id="email" placeholder="%3$s" value="%4$s" required>
+						</label>
+						<input type="submit" value="%5$s">
+						%6$s
+					</p>
+				</form>
+			</div>',
+			esc_html__( 'Please provide your email address to access this content:', 'multipass' ),
+			wp_nonce_field( 'email_validation', 'email_nonce', true, false ),
+			esc_html__( 'Your Email', 'multipass' ),
+			(isset($submitted_mail)) ? esc_attr( $submitted_mail, 'multipass') : '',
+			esc_attr__( 'Submit', 'multipass'),
+			( empty($mltp_auth_error)) ? '' : sprintf('<p id=login_error class="error">%s</p>', esc_html($mltp_auth_error) ),
+			__('Only used for validation, it will not be stored and no message will be sent.'),
+		);
+		exit();
 	}
 
 	/**
