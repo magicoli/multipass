@@ -115,6 +115,11 @@ class Mltp_Loader {
 	 */
 	public function init() {
 
+		$this->register_hooks();
+	}
+
+	function register_hooks() {
+
 		foreach ( $this->filters as $hook ) {
 			$hook = array_merge(
 				array(
@@ -138,7 +143,6 @@ class Mltp_Loader {
 			);
 			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
-
 	}
 
 }
