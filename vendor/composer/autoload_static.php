@@ -22,6 +22,7 @@ class ComposerStaticInite446079fa2cc77fc71ba2d2a1334bc0c
         '801b2d802e0fd0a97de6730c2744a301' => __DIR__ . '/..' . '/meta-box/meta-box-show-hide/meta-box-show-hide.php',
         'cd96a11db28ed30d1198d6eeb46fb5ed' => __DIR__ . '/..' . '/meta-box/mb-settings-page/mb-settings-page.php',
         '0990ebd9b5b5f48c2d93ef6b8e3d3cb4' => __DIR__ . '/..' . '/meta-box/meta-box-tabs/meta-box-tabs.php',
+        '806a8426576dd9edf0119b833d59b854' => __DIR__ . '/..' . '/meta-box/mb-term-meta/mb-term-meta.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -54,6 +55,7 @@ class ComposerStaticInite446079fa2cc77fc71ba2d2a1334bc0c
         'M' => 
         array (
             'Mpdf\\' => 5,
+            'MetaBox\\' => 8,
         ),
         'H' => 
         array (
@@ -123,6 +125,10 @@ class ComposerStaticInite446079fa2cc77fc71ba2d2a1334bc0c
         'Mpdf\\' => 
         array (
             0 => __DIR__ . '/..' . '/mpdf/mpdf/src',
+        ),
+        'MetaBox\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/meta-box/meta-box/src',
         ),
         'Http\\Message\\' => 
         array (
@@ -262,6 +268,7 @@ class ComposerStaticInite446079fa2cc77fc71ba2d2a1334bc0c
         'PHPUnit\\Framework\\MockObject\\CannotUseOnlyMethodsException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/MockObject/Exception/CannotUseOnlyMethodsException.php',
         'PHPUnit\\Framework\\MockObject\\ClassAlreadyExistsException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/MockObject/Exception/ClassAlreadyExistsException.php',
         'PHPUnit\\Framework\\MockObject\\ClassIsFinalException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/MockObject/Exception/ClassIsFinalException.php',
+        'PHPUnit\\Framework\\MockObject\\ClassIsReadonlyException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/MockObject/Exception/ClassIsReadonlyException.php',
         'PHPUnit\\Framework\\MockObject\\ConfigurableMethod' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/MockObject/ConfigurableMethod.php',
         'PHPUnit\\Framework\\MockObject\\ConfigurableMethodsAlreadyInitializedException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/MockObject/Exception/ConfigurableMethodsAlreadyInitializedException.php',
         'PHPUnit\\Framework\\MockObject\\DuplicateMethodException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/MockObject/Exception/DuplicateMethodException.php',

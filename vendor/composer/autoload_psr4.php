@@ -18,6 +18,7 @@ return array(
     'OpenPsa\\Ranger\\' => array($vendorDir . '/openpsa/ranger/src'),
     'OomphInc\\ComposerInstallersExtender\\' => array($vendorDir . '/oomphinc/composer-installers-extender/src'),
     'Mpdf\\' => array($vendorDir . '/mpdf/mpdf/src'),
+    'MetaBox\\' => array($vendorDir . '/meta-box/meta-box/src'),
     'Http\\Message\\' => array($vendorDir . '/php-http/message-factory/src'),
     'Giggsey\\Locale\\' => array($vendorDir . '/giggsey/locale/src'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),

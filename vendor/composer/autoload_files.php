@@ -21,4 +21,5 @@ return array(
     '801b2d802e0fd0a97de6730c2744a301' => $vendorDir . '/meta-box/meta-box-show-hide/meta-box-show-hide.php',
     'cd96a11db28ed30d1198d6eeb46fb5ed' => $vendorDir . '/meta-box/mb-settings-page/mb-settings-page.php',
     '0990ebd9b5b5f48c2d93ef6b8e3d3cb4' => $vendorDir . '/meta-box/meta-box-tabs/meta-box-tabs.php',
+    '806a8426576dd9edf0119b833d59b854' => $vendorDir . '/meta-box/mb-term-meta/mb-term-meta.php',
 );
