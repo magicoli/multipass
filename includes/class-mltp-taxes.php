@@ -75,14 +75,19 @@ class Mltp_Tax extends Mltp_Loader {
 		$is_not_default_tax = ( 'edit-tags.php' === $pagenow ) ?  true : [
 			'when'     => [['taxes', '=', '']],
 		];
+		$disabled = ( current_user_can('mltp_administrator') ) ? false : true;
 		$tax_fields = [
 			[
 				'name'    => __( 'Amount', 'multipass' ),
 				'id'      => 'amount',
 				'type'    => 'number',
+				'step' => 'any',
 				// 'columns' => 2,
 				'size' => 8,
 				'visible'  => $is_not_default_tax,
+
+				'readonly' => $disabled,
+
 			],
 			[
 				'name'    => __( 'Type', 'multipass' ),
@@ -96,10 +101,12 @@ class Mltp_Tax extends Mltp_Loader {
 				// 'columns' => 2,
 				'size' => 3,
 				'visible'  => $is_not_default_tax,
+
+				'readonly' => $disabled,
 			],
 			[
-				'name'    => __( 'Included', 'multipass' ),
-				'id'      => 'included',
+				'name'    => __( 'Inclusive', 'multipass' ),
+				'id'      => 'inclusive',
 				'type'    => 'button_group',
 				'options' => [
 					1 => __( 'Yes', 'multipass' ),
@@ -110,6 +117,8 @@ class Mltp_Tax extends Mltp_Loader {
 				// 'columns' => 2,
 				'size' => 1,
 				'visible'  => $is_not_default_tax,
+
+				'readonly' => $disabled,
 			],
 			[
 				'name'     => __( 'Multiply by', 'multipass' ),
@@ -124,6 +133,8 @@ class Mltp_Tax extends Mltp_Loader {
 					'Nights'   => __( 'Nights', 'multipass' ),
 				],
 				'multiple' => true,
+
+				'readonly' => $disabled,
 				'visible'  => ( 'edit-tags.php' === $pagenow ) ? [
 					'when'     => [ ['mltp_tax[type]', '=', 'fixed'] ]
 				] : [
@@ -141,6 +152,8 @@ class Mltp_Tax extends Mltp_Loader {
 					'name'      => '',
 					'id'     => $prefix . 'tax',
 					'type'   => 'group',
+
+				'readonly' => $disabled,
 					// 'clone'             => true,
 					// 'clone_default'     => true,
 					// 'clone_as_multiple' => true,
@@ -171,7 +184,10 @@ class Mltp_Tax extends Mltp_Loader {
 				'field_type' => 'select',
 				// 'columns'    => 3,
 				'size' => 3,
-				'placeholder' => __('Select or set custom values', 'multipass'),
+				'placeholder' => __('Use custom rules', 'multipass'),
+				// 'std' => MultiPass::get_option('default_tax'),
+
+				'readonly' => $disabled,
 			],
 			[
 				'name'    => __( 'Description', 'multipass' ),
@@ -182,6 +198,8 @@ class Mltp_Tax extends Mltp_Loader {
 				'visible'  => [
 					'when'     => [['taxes', '=', '']],
 				],
+
+				'readonly' => $disabled,
 			] ),
 			$tax_fields,
 		);
@@ -193,9 +211,10 @@ class Mltp_Tax extends Mltp_Loader {
 			// 'autosave'   => true,
 			// 'context'    => 'after_title',
 			'style'      => 'seamless',
+			'readonly' => $disabled,
 			'fields' => [
 				[
-					'name'      => __( 'Applicable Taxes', 'multipass' ),
+					'name'      => __( 'Applicable taxes', 'multipass' ),
 					'id'     => $prefix . 'tax',
 					'type'   => 'group',
 					'clone'             => true,
@@ -204,6 +223,7 @@ class Mltp_Tax extends Mltp_Loader {
 					'add_button'        => __( 'Add another tax', 'multipass' ),
 					'fields' => $tax_fields,
 					'class' => 'inline low-gap',
+					'readonly' => $disabled,
 				]
 			],
 		];
