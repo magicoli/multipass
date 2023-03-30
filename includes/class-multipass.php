@@ -110,10 +110,16 @@ class MultiPass {
 
 	function register_session()
 	{
+		if (preg_match('/^\/multipass(\/)?$/', $_SERVER['REQUEST_URI'])) {
+			wp_redirect(admin_url('admin.php?page=multipass'));
+			exit;
+		}
+
 	  if( !session_id() )
 	  {
 	    session_start();
 	  }
+
 	}
 
 
