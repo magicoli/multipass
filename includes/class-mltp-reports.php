@@ -115,8 +115,12 @@ class Mltp_Report {
 			$current_year = date('Y');
 
 			foreach ( $prestations_by_year as $year => $prestations ) {
+        $link = add_query_arg( array(
+          'post_type' => 'mltp_prestation',
+          'year' => $year,
+        ), admin_url( 'edit.php' ) );
 				echo '<tr' . (($year == $current_year) ? ' class="mltp-report-current-year"' : (($year > $current_year) ? ' class="mltp-report-future-year"' : '')) . '>';
-				echo '<td>' . $year . '</td>';
+				echo '<td><a href="' . $link . '">' . $year . '</a></td>';
 				echo '<td class=number>' . count($prestations['prestations']) . '</td>';
 				echo '<td class=number>' . ($prestations['total'] ? MultiPass::price($prestations['total']) : '') . '</td>';
 				// echo '<td class=number>' . ($prestations['discount'] ? MultiPass::price($prestations['discount'], 2) : '') . '</td>';
