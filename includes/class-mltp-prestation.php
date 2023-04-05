@@ -174,6 +174,11 @@ class Mltp_Prestation {
 				'hook' => 'loop_start',
 				'callback' => 'hide_content_for_unauthorized_users'
 			),
+			array(
+				'component' => $this,
+				'hook' => 'restrict_manage_posts',
+				'callback' => 'add_year_dropdown',
+			),
 		);
 
 		$filters = array(
@@ -214,6 +219,11 @@ class Mltp_Prestation {
 			array(
 				'hook'     => 'manage_edit-mltp_prestation_sortable_columns',
 				'callback' => 'sortable_columns',
+			),
+			array(
+				'component' => $this,
+				'hook' => 'parse_query',
+				'callback' => 'filter_by_year',
 			),
 		);
 
@@ -1210,6 +1220,65 @@ class Mltp_Prestation {
 			'links'       => __( 'Actions', 'multipass' ),
 			'debug'       => __( 'Debug', 'multipass' ),
 		);
+	}
+
+	function get_years() {
+		$years = array();
+		$posts = get_posts( array(
+			'post_type'      => 'mltp_prestation',
+			'posts_per_page' => -1,
+			'meta_key'       => 'from',
+			'orderby'        => 'meta_value',
+			'order'          => 'DESC',
+			'fields'         => 'ids',
+			'suppress_filters' => true,
+		) );
+		foreach ( $posts as $post_id ) {
+			$timestamp = MultiPass::timestamp(get_post_meta( $post_id, 'from', true ));
+			if(!empty($timestamp)) {
+				$year = date( 'Y', $timestamp );
+				if ( ! in_array( $year, $years ) ) {
+					$years[] = $year;
+				}
+			}
+		}
+		return $years;
+	}
+
+	/**
+	 * Add filter for 'year' custom field to mltp_prestation admin list
+	 */
+	function add_year_dropdown() {
+		global $typenow;
+		if ( $typenow == 'mltp_prestation' ) {
+			$selected_year = isset( $_GET['year'] ) ? $_GET['year'] : '';
+			$years = $this->get_years();
+			?>
+			<select name="year">
+				<option value=""><?php esc_html_e( 'All Years', 'text-domain' ); ?></option>
+				<?php foreach ( $years as $year ) : ?>
+					<option value="<?php echo esc_attr( $year ); ?>" <?php selected( $selected_year, $year ); ?>><?php echo esc_html( $year ); ?></option>
+				<?php endforeach; ?>
+			</select>
+			<?php
+		}
+	}
+
+	/**
+	 * Filter mltp_prestation posts by 'year' custom field
+	 */
+	function filter_by_year( $query ) {
+		global $pagenow, $typenow;
+		if ( $typenow == 'mltp_prestation' && $pagenow == 'edit.php' &! empty( $_GET['year'] ) ) {
+			$query->query_vars['meta_query'] = array(
+				array(
+					'key'     => 'from',
+					'value'   => array(strtotime($_GET['year'] . '-01-01'), strtotime($_GET['year'] . '-12-31')),
+					'compare' => 'BETWEEN',
+					'type'    => 'NUMERIC',
+				),
+			);
+		}
 	}
 
 	/**
