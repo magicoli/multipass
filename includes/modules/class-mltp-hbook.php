@@ -47,6 +47,7 @@ class Mltp_HBook extends Mltp_Modules {
 	 * @since    0.1.0
 	 */
 	public function __construct() {
+		$this->module = 'hbook';
 		// register_activation_hook( MULTIPASS_FILE, __CLASS__ . '::activate' );
 		// register_deactivation_hook( MULTIPASS_FILE, __CLASS__ . '::deactivate' );
 	}
@@ -102,7 +103,19 @@ class Mltp_HBook extends Mltp_Modules {
 	}
 
 	function register_settings_pages( $settings_pages ) {
-		$settings_pages['multipass-settings']['tabs']['hbook'] = 'HBook';
+
+		$settings_pages[] = array(
+			'menu_title' => __( 'HBook', 'multipass' ),
+			'id'         => 'multipass-hbook',
+			'position'   => 25,
+			'parent'     => 'multipass',
+			'capability' => 'mltp_administrator',
+			'style'      => 'no-boxes',
+			'icon_url'   => 'dashicons-admin-generic',
+			// 'columns' => 1,
+		);
+
+		// $settings_pages['multipass-settings']['tabs']['hbook'] = 'HBook';
 		// error_log(__CLASS__ . ' tabs ' . print_r($settings_pages['multipass-settings']['tabs'], true));
 
 		return $settings_pages;
@@ -114,8 +127,8 @@ class Mltp_HBook extends Mltp_Modules {
 		$meta_boxes[] = array(
 			'title'          => __( 'HBook Settings', 'multipass' ),
 			'id'             => 'hbook-settings',
-			'settings_pages' => array( 'multipass-settings' ),
-			'tab'            => 'hbook',
+			'settings_pages' => 'multipass-hbook',
+			// 'tab'            => 'hbook',
 			'fields'         => array(
 				array(
 					'name'              => __( 'Synchronize now', 'multipass' ),
