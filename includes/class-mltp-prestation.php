@@ -1634,7 +1634,8 @@ class Mltp_Prestation {
 		$updates['discount'] = get_post_meta( $post_id, 'discount', true );
 		$updates['balance']  = get_post_meta( $post_id, 'balance', true );
 		$updates['dates']    = get_post_meta( $post_id, 'dates', true );
-
+		$updates['from']    = get_post_meta( $post_id, 'from', true );
+		$updates['to']    = get_post_meta( $post_id, 'to', true );
 		$updates['subtotal'] = 0;
 		$updates['paid']     = 0;
 		$updates['total']    = 0;
@@ -1746,14 +1747,16 @@ class Mltp_Prestation {
 		$dates = array_filter( $dates );
 
 		if ( ! empty( $dates ) ) {
-			$updates['dates'] = array(
+			$dates = array(
 				'from' => min( $dates ),
 				'to'   => max( $dates ),
 			);
-			if ( $updates['dates']['to'] === $updates['dates']['from'] ) {
-				unset( $updates['dates']['to'] );
+			if ( $dates['to'] === $dates['from'] ) {
+				$dates['to'] = null;
 			}
 		}
+		$updates['from'] = empty($dates['from']) ? null : MultiPass::timestamp($dates['from']);
+		$updates['to'] = empty($dates['to']) ? null : MultiPass::timestamp($dates['to']);
 
 		$updates['discount']['total'] += $updates['discount']['amount'] + $updates['discount']['managed'];
 
