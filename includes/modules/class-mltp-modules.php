@@ -52,7 +52,8 @@ class Mltp_Modules {
 		$this->plugin_slug = 'multipass';
 
 		$this->locale = MultiPass::get_locale();
-
+		$this->module = __CLASS__;
+		
 		$this->load_dependencies();
 
 		// $this->define_admin_hooks();
@@ -62,14 +63,26 @@ class Mltp_Modules {
 		// register_deactivation_hook( MULTIPASS_FILE, __CLASS__ . '::deactivate' );
 	}
 
-	private function load_dependencies() {
-		if ( isset( $_REQUEST['submit'] ) && isset( $_REQUEST['page'] ) && $_REQUEST['page'] == 'multipass' ) {
+	function enabled_modules() {
+		if ( isset( $_REQUEST['submit'] ) && isset( $_REQUEST['page'] ) && $_REQUEST['page'] == 'multipass-settings' ) {
 			$enabled = ( isset( $_REQUEST['modules_enable'] ) ) ? $_REQUEST['modules_enable'] : array();
 		} else {
 			$enabled = MultiPass::get_option( 'modules_enable', array() );
 		}
+		return $enabled;
+	}
 
-		$this->modules = array();
+	function enabled( $module = null ) {
+		$module = (!empty($module)) ? $module : ( !empty($this->module) ? $this->module : null );
+		if(empty($module)) return false;
+
+		$enabled = $this->enabled_modules();
+
+		return in_array( $module, $enabled );
+	}
+
+	private function load_dependencies() {
+		$enabled = $this->enabled_modules();
 
 		if ( is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 			require_once MULTIPASS_DIR . 'includes/modules/class-mltp-woocommerce.php';
