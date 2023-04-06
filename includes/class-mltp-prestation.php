@@ -610,7 +610,7 @@ class Mltp_Prestation {
 			'readonly'   => true,
 			'fields'     => array(
 				array(
-					'name'     => __( 'Items', 'multipass' ),
+					'name'     => __( 'Elements', 'multipass' ),
 					'id'       => $prefix . 'items',
 					'type'     => 'custom_html',
 					'callback' => __CLASS__ . '::items_list',

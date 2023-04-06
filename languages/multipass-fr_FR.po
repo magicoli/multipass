@@ -404,7 +404,7 @@ msgstr "Payer le solde (%s)"
 #: includes/class-mltp-plugininfo.php:137
 #: includes/class-mltp-plugininfo.php:167
 msgid "View details"
-msgstr "Voir les détails"
+msgstr "Voir les éléments"
 
 #: includes/class-mltp-plugininfo.php:165
 msgid "More information about %s"
@@ -427,7 +427,7 @@ msgstr "Modifier sur %s"
 
 #: includes/class-mltp-prestation-detail.php:339
 msgid "Prestation Details"
-msgstr "Détails de prestation"
+msgstr "Éléments de prestation"
 
 #: includes/class-mltp-prestation-detail.php:340
 msgid "Prestation Detail"
@@ -448,7 +448,7 @@ msgstr "Modifier l'élément de prestation"
 
 #: includes/class-mltp-prestation-detail.php:344
 msgid "New Part"
-msgstr "Nouveau détail de prestation"
+msgstr "Nounouvel'élément de prestation"
 
 #: includes/class-mltp-prestation-detail.php:345
 msgid "View Part"
@@ -456,19 +456,19 @@ msgstr "Voir l'élément de prestation"
 
 #: includes/class-mltp-prestation-detail.php:346
 msgid "View Parts"
-msgstr "Voir les détails de prestation"
+msgstr "Voir les éléments de prestation"
 
 #: includes/class-mltp-prestation-detail.php:347
 msgid "Search Parts"
-msgstr "Rechercher dans les détails de prestation"
+msgstr "Rechercher dans les éléments de prestation"
 
 #: includes/class-mltp-prestation-detail.php:348
 msgid "No details found."
-msgstr "Aucun détail trouvé."
+msgstr "Aucun élément trouvé."
 
 #: includes/class-mltp-prestation-detail.php:349
 msgid "No details found in Trash."
-msgstr "Aucun détail trouvé dans la corbeille."
+msgstr "Aucun élément trouvé dans la corbeille."
 
 #: includes/class-mltp-prestation-detail.php:350
 msgid "Parent Part:"
@@ -476,7 +476,7 @@ msgstr "Part parent :"
 
 #: includes/class-mltp-prestation-detail.php:351
 msgid "Details"
-msgstr "Détails"
+msgstr "Éléments"
 
 #: includes/class-mltp-prestation-detail.php:352
 msgid "Parts Archives"
@@ -488,11 +488,11 @@ msgstr "Attributs d'élément"
 
 #: includes/class-mltp-prestation-detail.php:354
 msgid "Insert into prestation detail"
-msgstr "Insérer dans le détail de prestation"
+msgstr "Insérer dans l'élément de prestation"
 
 #: includes/class-mltp-prestation-detail.php:355
 msgid "Uploaded to this prestation detail"
-msgstr "Téléchargé sur ce détail de prestation"
+msgstr "Téléchargé sur cet'élément de prestation"
 
 #: includes/class-mltp-prestation-detail.php:356
 #: includes/class-mltp-prestation.php:261 includes/class-mltp-resource.php:228
@@ -520,7 +520,7 @@ msgstr "Éléments de prestation"
 
 #: includes/class-mltp-prestation-detail.php:361
 msgid "Filter details list"
-msgstr "Filtrer la liste des détails"
+msgstr "Filtrer la liste des éléments"
 
 #: includes/class-mltp-prestation-detail.php:362
 #: includes/class-mltp-prestation.php:266 includes/class-mltp-resource.php:234
@@ -529,11 +529,11 @@ msgstr "Filtrer par date"
 
 #: includes/class-mltp-prestation-detail.php:363
 msgid "Parts list navigation"
-msgstr "Navigation dans la liste des détails de prestation"
+msgstr "Navigation dans la liste des éléments de prestation"
 
 #: includes/class-mltp-prestation-detail.php:364
 msgid "Parts list"
-msgstr "Liste des détails de prestation"
+msgstr "Liste des éléments de prestation"
 
 #: includes/class-mltp-prestation-detail.php:365
 msgid "Part published."
@@ -557,7 +557,7 @@ msgstr "Part mis à jour."
 
 #: includes/class-mltp-prestation-detail.php:370
 msgid "Select a detail"
-msgstr "Sélectionnez un détail"
+msgstr "Sélectionnez un élément"
 
 #: includes/class-mltp-prestation-detail.php:374
 msgid "Parts"
@@ -565,7 +565,7 @@ msgstr "Parts"
 
 #: includes/class-mltp-prestation-detail.php:408
 msgid "Parts fields"
-msgstr "Champs des détails de prestation"
+msgstr "Champs des éléments de prestation"
 
 #: includes/class-mltp-prestation-detail.php:419
 #: includes/class-mltp-prestation-detail.php:915
