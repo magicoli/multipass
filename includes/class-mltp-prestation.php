@@ -1685,6 +1685,13 @@ class Mltp_Prestation {
 			$updates['subtotal']          += empty( $item['subtotal'] ) ? 0 : $item['subtotal'];
 			$updates['total']             += empty( $item['total'] ) ? 0 : $item['total'];
 			$updates['paid']              += empty( $item['paid'] ) ? 0 : $item['paid'];
+			if ( ! empty( $item['from']['timestamp'] ) ) {
+				$dates[] = MultiPass::timestamp( $item['from'] );
+			}
+			if ( ! empty( $item['to'] ) ) {
+				$dates[] = MultiPass::timestamp( $item['to'] );
+			}
+
 			if ( ! empty( $item['dates'] ) ) {
 				$dates = array_merge( $dates, array_values( $item['dates'] ) );
 			}
