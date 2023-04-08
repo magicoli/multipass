@@ -1202,7 +1202,25 @@ class Mltp_Item {
 			$updates['attendees'] = $attendees;
 		}
 		// $updates['dates'] = get_post_meta( $post_id, 'dates', true ) );
-		$dates = get_post_meta( $post_id, 'dates', true );
+		if ( empty( $dates ) ) {
+			$dates = array(
+				'from' => get_post_meta( $post_id, 'from', true ),
+				'to' => get_post_meta( $post_id, 'to', true ),
+			);
+		}
+		foreach ($dates as $key => $date) {
+			$dates[$key] = MultiPass::timestamp($date);
+		}
+		if ( isset($dates['to']) && $dates['to'] === $dates['from'] ) {
+			$dates['to'] = null;
+		}
+		$updates['from'] = empty($dates['from']) ? null : $dates['from'];
+		$updates['to'] = empty($dates['to']) ? null : $dates['to'];
+		$updates['dates'] = array(
+			'from' =>  $updates['from'],
+			'to' => $updates['to'],
+		);
+
 		if(empty($dates)) {
 			$dates = array(
 				'from' => [ 'timestamp' => get_post_meta( $post_id, 'from', true ) ],

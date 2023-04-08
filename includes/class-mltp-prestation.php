@@ -1685,7 +1685,7 @@ class Mltp_Prestation {
 			$updates['subtotal']          += empty( $item['subtotal'] ) ? 0 : $item['subtotal'];
 			$updates['total']             += empty( $item['total'] ) ? 0 : $item['total'];
 			$updates['paid']              += empty( $item['paid'] ) ? 0 : $item['paid'];
-			if ( ! empty( $item['from']['timestamp'] ) ) {
+			if ( ! empty( $item['from'] ) ) {
 				$dates[] = MultiPass::timestamp( $item['from'] );
 			}
 			if ( ! empty( $item['to'] ) ) {
@@ -1725,11 +1725,11 @@ class Mltp_Prestation {
 				}
 				$updates['subtotal'] += (float) $item['quantity'] * (float) $item['unit_price'];
 
-				if ( ! empty( $item['from']['timestamp'] ) ) {
-					$dates[] = $item['from']['timestamp'];
+				if ( ! empty( $item['from'] ) ) {
+					$dates[] = MultiPass::timestamp($item['from']);
 				}
-				if ( ! empty( $item['to']['timestamp'] ) ) {
-					$dates[] = $item['to']['timestamp'];
+				if ( ! empty( $item['to'] ) ) {
+					$dates[] = MultiPass::timestamp( $item['to'] );
 				}
 			}
 		}
@@ -1752,6 +1752,9 @@ class Mltp_Prestation {
 		}
 
 		$dates = array_filter( $dates );
+		foreach ($dates as $key => $date) {
+			$dates[$key] = MultiPass::timestamp($date);
+		}
 
 		if ( ! empty( $dates ) ) {
 			$dates = array(
@@ -1762,8 +1765,13 @@ class Mltp_Prestation {
 				$dates['to'] = null;
 			}
 		}
-		$updates['from'] = empty($dates['from']) ? null : MultiPass::timestamp($dates['from']);
-		$updates['to'] = empty($dates['to']) ? null : MultiPass::timestamp($dates['to']);
+
+		$updates['from'] = $dates['from'];
+		$updates['to'] = $dates['to'];
+		$updates['dates'] = array(
+			'from' =>  $dates['from'],
+			'to' => $dates['to'],
+		);
 
 		$updates['discount']['total'] += $updates['discount']['amount'] + $updates['discount']['managed'];
 
