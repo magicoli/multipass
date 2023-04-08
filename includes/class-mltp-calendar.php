@@ -655,8 +655,8 @@ class Mltp_Calendar {
 		$contact['phone'] = ( empty( $prestation->customer_phone ) ) ? $event->phone : $prestation->customer_phone;
 
 
-		$p_begin = MultiPass::sanitize_timestamp ( isset($prestation->dates['from']) ? $prestation->dates['from'] : $prestation->from );
-		$p_end = MultiPass::sanitize_timestamp ( isset($prestation->dates['to']) ? $prestation->dates['to'] : $prestation->to );
+		$p_begin = MultiPass::timestamp ( isset($prestation->dates['from']) ? $prestation->dates['from'] : $prestation->from );
+		$p_end = MultiPass::timestamp ( isset($prestation->dates['to']) ? $prestation->dates['to'] : $prestation->to );
 		// error_log(print_r(array(
 		// 	'begin' => $p_begin,
 		// 	'end' => $p_end,
@@ -985,8 +985,8 @@ class Mltp_Event extends Mltp_Item {
 		//
 
 		$fix_overnight       = true;
-		$this->start         = MultiPass::sanitize_timestamp( $this->start );
-		$this->end           = MultiPass::sanitize_timestamp( $this->end );
+		$this->start         = MultiPass::timestamp( $this->start );
+		$this->end           = MultiPass::timestamp( $this->end );
 		$this->display_start = ( $fix_overnight ) ? ( round( $this->start / $d ) * $d ) : $this->start;
 		$this->display_end   = ( $fix_overnight ) ? ( round( $this->end / $d ) * $d ) : $this->end;
 

@@ -552,7 +552,13 @@ class MultiPass {
 		delete_transient( $transient_key );
 	}
 
-	static function sanitize_timestamp( $timestamp ) {
+	// static function timestamp( $date ) {
+	// 	$timestamp = (is_array($date) && isset($date['timestamp'])) ? $date['timestamp'] : $date;
+	// 	return empty($timestamp) ? null : intval($timestamp);
+	// 	// return ( is_integer( $timestamp) &! empty($timestamp)) ? $timestamp : null;
+	// }
+
+	static function timestamp( $timestamp ) {
 		if ( is_array( $timestamp ) && isset( $timestamp['timestamp'] ) ) {
 			$timestamp = $timestamp['timestamp'];
 		}
@@ -599,14 +605,8 @@ class MultiPass {
 		return $formatted;
 	}
 
-	static function timestamp( $date ) {
-		$timestamp = (is_array($date) && isset($date['timestamp'])) ? $date['timestamp'] : $date;
-		return intval($timestamp);
-		// return ( is_integer( $timestamp) &! empty($timestamp)) ? $timestamp : null;
-	}
-
 	static function format_date_iso( $timestamp ) {
-		$timestamp = self::sanitize_timestamp( $timestamp );
+		$timestamp = self::timestamp( $timestamp );
 		if ( empty( $timestamp ) ) {
 			return;
 		}
@@ -963,7 +963,6 @@ class MultiPass {
 			__( 'Back to MultiPass' ),
 		);
 	}
-
 
 	public static function get_registered_sources() {
 		$sources = array();
