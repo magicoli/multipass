@@ -1,5 +1,11 @@
 ## Changelog
 
+### Unreleased (0.4.1-dev.647)
+- added taxes taxonomy, added field to prestation, detail and resources
+- added /multipass/ redirecto to multipass admin page
+- fixed "from" and "to" fields not set when saving prestation
+- fixed enabled modules detection after saving modules settings page
+
 ### 0.4
 - added number of nights in calendar display
 - added prestation slug to permalink options page

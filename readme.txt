@@ -1,9 +1,9 @@
-=== MultiPass ===
+=== MultiPass (dev) ===
 Contributors: magicoli69
 Donate link: https://magiiic.com/support/MultiPass+Plugin
 Tags: hotel, booking, multi-prestations, multi-services, woocommerce, ota, pms, booking engine
 Requires at least: 5.9.0
-Tested up to: 6.1.1
+Tested up to: 6.2
 Stable tag: 0.4
 License: AGPLv3 or later
 License URI: http://www.gnu.org/licenses/agpl-3.0.txt
@@ -65,6 +65,12 @@ WARNING: **Make a full backup of your website and databases** before installing 
 4. WooCommerce must be enabled to handle custom payments.
 
 == Changelog ==
+
+= Unreleased (0.4.1-dev.647) =
+* added taxes taxonomy, added field to prestation, detail and resources
+* added /multipass/ redirecto to multipass admin page
+* fixed "from" and "to" fields not set when saving prestation
+* fixed enabled modules detection after saving modules settings page
 
 = 0.4 =
 * added number of nights in calendar display
