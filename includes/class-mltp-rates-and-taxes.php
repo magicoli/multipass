@@ -169,7 +169,9 @@ class Mltp_Rates extends Mltp_Loader {
 			foreach ($dates as $key => $date) {
 				if(isset($date['to'])) $to[] = MultiPass::timestamp($date['to']);
 			}
-			$expired = ( max($to) + 86400 <= current_time('timestamp') );
+			$to = array_filter($to);
+
+			$expired = (empty($to)) ? false : ( max($to) + 86400 <= current_time('timestamp') );
 			$post_status = ( $expired ) ? 'expired' : 'publish';
 		}
 
