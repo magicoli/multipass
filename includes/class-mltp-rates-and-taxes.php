@@ -27,6 +27,14 @@ class Mltp_Rates extends Mltp_Loader {
 	protected $filters;
 
 	public function __construct() {
+		$this->multiply_options = [
+			'quantity' => __( 'quantity', 'multipass' ),
+			'nights'   => __( 'night', 'multipass' ),
+			'guests'   => __( 'guest', 'multipass' ),
+			'adults'   => __( 'adult', 'multipass' ),
+			'children' => __( 'child', 'multipass' ),
+			'babies'   => __( 'baby', 'multipass' ),
+		];
 	}
 
 	public function init() {
@@ -41,6 +49,11 @@ class Mltp_Rates extends Mltp_Loader {
 				'callback'      => 'save_post_action',
 				'accepted_args' => 3,
 			),
+			array(
+				'hook' => 'manage_posts_custom_column',
+				'callback' => 'populate_admin_columns',
+				'accepted_args' => 2,
+			),
 		);
 
 		$this->filters = array(
@@ -48,7 +61,14 @@ class Mltp_Rates extends Mltp_Loader {
 				'hook' => 'rwmb_meta_boxes',
 				'callback' => 'register_fields',
 			),
+			array(
+				'hook' => 'manage_mltp_rate_posts_columns',
+				'callback' => 'add_admin_columns',
+			),
 		);
+
+		// add_action( 'quick_edit_custom_box',  'quick_edit_fields', 10, 2 );
+		// add_action( 'save_post', 'quick_edit_save' );
 
 		$this->register_hooks();
 	}
@@ -126,7 +146,7 @@ class Mltp_Rates extends Mltp_Loader {
 					'Expired <span class="count">(%s)</span>',
 					'Expired <span class="count">(%s)</span>',
 				),
-				'public' => true,
+				// 'public' => true,
 				'show_in_admin_status_list' => true,
 			)
 		);
@@ -138,15 +158,21 @@ class Mltp_Rates extends Mltp_Loader {
 		if( get_post_meta($post_id, 'repeat', true) ) return;
 		// $post = get_post($post_id);
 		$dates = get_post_meta( $post_id, 'dates' );
-		if(empty($dates)) return;
-
-
-		$to = [];
-		foreach ($dates as $key => $date) {
-			if(isset($date['to'])) $to[] = MultiPass::timestamp($date['to']);
+		if( empty($dates) ) {
+			if( 'expired' === $post_status ) {
+				$post_status = 'publish';
+			} else {
+				return;
+			}
+		} else {
+			$to = [];
+			foreach ($dates as $key => $date) {
+				if(isset($date['to'])) $to[] = MultiPass::timestamp($date['to']);
+			}
+			$expired = ( max($to) + 86400 <= current_time('timestamp') );
+			$post_status = ( $expired ) ? 'expired' : 'publish';
 		}
-		$expired = ( max($to) + 86400 <= current_time('timestamp') );
-		$post_status = ( $expired ) ? 'expired' : 'publish';
+
 		if( $post_status === $post->post_status )  return;
 
 		remove_action( current_action(), __CLASS__ . '::' . __FUNCTION__);
@@ -251,7 +277,25 @@ class Mltp_Rates extends Mltp_Loader {
 					'class'             => 'inline',
 					'fields'            => [
 						[
-							'name'       => __( 'Category', 'multipass' ),
+							'name' => __( 'Amount', 'multipass' ),
+							'id'   => $prefix . 'amount',
+							'type' => 'number',
+							'step' => 'any',
+						],
+						[
+							'name'    => __( 'Multiply by', 'multipass' ),
+							'id'      => $prefix . 'multiply_by',
+							'type'    => 'button_group',
+							'options' => $this->multiply_options,
+							// 'std'     => 'nights',
+							'multiple' => true,
+							'visible'    => [
+								'when'     => [['unit', '!=', 'percent']],
+								'relation' => 'or',
+							],
+						],
+						[
+							'name'       => __( 'Apply to', 'multipass' ),
 							'id'         => $prefix . 'category',
 							'type'       => 'taxonomy',
 							'taxonomy'   => ['resource-type'],
@@ -268,26 +312,6 @@ class Mltp_Rates extends Mltp_Loader {
 								'relation' => 'or',
 							],
 						],
-						[
-							'name' => __( 'Amount', 'multipass' ),
-							'id'   => $prefix . 'amount',
-							'type' => 'number',
-							'step' => 'any',
-						],
-						[
-							'name'    => __( 'Multiply by', 'multipass' ),
-							'id'      => $prefix . 'multiply_by',
-							'type'    => 'button_group',
-							'options' => [
-								'quantity' => __( 'Quantity', 'multipass' ),
-								'nights'   => __( 'Nights', 'multipass' ),
-								'guests'   => __( 'Guests total', 'multipass' ),
-								'adults'   => __( 'Adults', 'multipass' ),
-								'children' => __( 'Children', 'multipass' ),
-								'babies'   => __( 'Babies', 'multipass' ),
-							],
-							'std'     => 'nights',
-						],
 					],
 				],
 			],
@@ -296,6 +320,166 @@ class Mltp_Rates extends Mltp_Loader {
 		return $meta_boxes;
 	}
 
+	// add new columns
+	function add_admin_columns( $column_array ) {
+		error_log(print_r($column_array, true));
+		$i = array_search('title', array_keys($column_array)) + 1;
+		$columns = array_merge(
+			array_slice($column_array, 0, $i),
+			array(
+				// 'type' => __('Type', 'multipass'),
+				'dates' => __('Dates', 'multipass'),
+				'rules' => __('Rules', 'multipass'),
+			),
+			array_slice($column_array, $i),
+		);
+		$columns['date'] = __('Publication', 'multipass');
+
+		// $columns[] = array_shift($column_array);
+		// $columns[] = array_shift($column_array);
+		// $columns = array_merge($columns, $column_array);
+		// error_log(print_r($columns, true));
+
+		return $columns;
+	}
+
+	// Populate our new columns with data
+	function populate_admin_columns( $column_name, $post_id ) {
+
+		// if you have to populate more that one columns, use switch()
+		switch( $column_name ) {
+			case 'dates': {
+				$dates = get_post_meta( $post_id, 'dates' );
+				$output = '';
+				foreach ($dates as $key => $date) {
+					if(!empty(MultiPass::timestamp($date['from']))) {
+						$output .= '<li>' . MultiPass::format_date_range( $date ) . '</li>';
+					}
+				}
+				if( ! empty($output ) )
+				echo '<ul>' . $output . '</ul>';
+				break;
+			}
+
+			case 'rules': {
+				$unit = rwmb_meta( 'unit' );
+				$percent_of = rwmb_meta( 'percent_of');
+				$rules = rwmb_meta( 'rules' );
+				foreach ( $rules as $rule ) {
+
+					// Field category:
+					$term_ids = $rule[ 'category' ] ?? [];
+					$terms = [];
+					foreach ( $term_ids as $term_id ) {
+						$term = get_term( $term_id );
+						if( ! is_wp_error($term) ) {
+							$terms[] = sprintf(
+								'<a href="%s">%s</a>',
+								get_term_link( $term ),
+								$term->name,
+							);
+						}
+					}
+					$resource = empty($rule[ 'resource' ]) ? '' : get_the_title($rule[ 'resource' ]);
+
+					if( 'percent' === $unit ) {
+						if( empty($percent_of ) ) {
+							$amount = sprintf(
+								__('%s%% of price', 'multipass'),
+								$rule[ 'amount' ],
+							);
+						} else {
+							$amount = sprintf(
+								__('%s%% of %s rate', 'multipass'),
+								$rule[ 'amount' ],
+							 	get_the_title( $percent_of ),
+							);
+						}
+					} else {
+						$amount = MultiPass::price( $rule[ 'amount' ] );
+					}
+					// $amount = ('percent' === $unit) ? sprintf(
+					// 	__('%s%% of %s', 'multipass'),
+					// 	$rule[ 'amount' ],
+					// 	(empty($percent_of) ? __('price', 'multipass') : get_the_title( $percent_of ) ),
+					// ) : MultiPass::price( $rule[ 'amount' ] );
+
+					$multiply = [];
+					if( ! empty($rule[ 'multiply_by' ])) {
+						$guests = [];
+						foreach ( $rule[ 'multiply_by' ] as $value ) {
+							if(in_array($value, ['adults','children','babies']))
+							$guests[$value] = $this->multiply_options[$value];
+							else
+							$multiply[$value] = $this->multiply_options[$value];
+						}
+						if( ! empty($guests['guests'])) {
+							$guests = [ $multiply['guests'] ];
+						}
+						$multiply['guests'] = join(' ' . __('or', 'multipass') . ' ', $guests);
+						$multiply = array_filter($multiply);
+					}
+					$rules_output[] = sprintf(
+						'<strong>%s %s</strong>%s%s',
+						join(', ', $terms),
+						$resource,
+						$amount,
+						(!empty($multiply) ? ' / ' . join(' / ', $multiply) : '' ),
+					);
+				}
+				echo empty($rules_output) ? '' : '<ul><li>' . join('</li><li>', $rules_output ) . '</li></ul>';
+				break;
+			}
+		}
+	}
+
+	// quick_edit_custom_box allows to add HTML in Quick Edit
+	function quick_edit_fields( $column_name, $post_type ) {
+
+		switch( $column_name ) {
+			case 'price': {
+				?>
+				<fieldset class="inline-edit-col-left">
+					<div class="inline-edit-col">
+						<label>
+							<span class="title">Price</span>
+							<input type="text" name="price">
+						</label>
+					</div>
+					<?php
+					break;
+				}
+				case 'featured': {
+					?>
+					<div class="inline-edit-col">
+						<label>
+							<input type="checkbox" name="featured"> Featured product
+						</label>
+					</div>
+				</fieldset>
+				<?php
+				break;
+			}
+		}
+	}
+
+	// save fields after quick edit
+	function quick_edit_save( $post_id ){
+
+		// check inlint edit nonce
+		if ( ! wp_verify_nonce( $_POST[ '_inline_edit' ], 'inlineeditnonce' ) ) {
+			return;
+		}
+
+		// update the price
+		$price = ! empty( $_POST[ 'price' ] ) ? absint( $_POST[ 'price' ] ) : 0;
+		update_post_meta( $post_id, 'product_price', $price );
+
+		// update checkbox
+		$featured = ( isset( $_POST[ 'featured' ] ) && 'on' == $_POST[ 'featured' ] ) ? 'yes' : 'no';
+		update_post_meta( $post_id, 'product_featured', $featured );
+
+	}
 }
 
 $this->loaders[] = new Mltp_Rates();
