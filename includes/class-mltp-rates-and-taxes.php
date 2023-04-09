@@ -152,6 +152,31 @@ class Mltp_Rates extends Mltp_Loader {
 		);
 	}
 
+	function options_percent_of() {
+		$query_args = array(
+			'post_type'   => 'mltp_rate',
+			'numberposts' => -1,
+			'orderby'     => 'post_date',
+			'order'       => 'asc',
+			'meta_query'  => array(
+				'relation' => 'AND',
+				array(
+					'key'   => 'type',
+					'value' => ['rate'],
+				),
+				array(
+					'key'   => 'unit',
+					'value' => 'currency',
+				),
+			),
+		);
+		$posts = get_posts( $query_args );
+		foreach($posts as $post) {
+			$options[$post->ID] = get_the_title($post->ID);
+		}
+		return $options;
+	}
+
 	public static function save_post_action( $post_id, $post, $update ) {
 		if( 'mltp_rate' !== $post->post_type ) return;
 
@@ -229,9 +254,12 @@ class Mltp_Rates extends Mltp_Loader {
 				[
 					'name'        => __( 'Percent of', 'multipass' ),
 					'id'          => $prefix . 'percent_of',
-					'type'        => 'post',
-					'post_type'   => ['mltp_rate'],
-					'field_type'  => 'select_advanced',
+					'type'  => 'select',
+					// 'type'        => 'post',
+					// 'post_type'   => ['mltp_rate'],
+					// 'field_type'  => 'select_advanced',
+					'options'     => $this->options_percent_of(),
+
 					'placeholder' => __( 'Total price', 'multipass' ),
 					'visible'     => [
 						'when'     => [['unit', '=', 'percent']],
@@ -324,13 +352,12 @@ class Mltp_Rates extends Mltp_Loader {
 
 	// add new columns
 	function add_admin_columns( $column_array ) {
-		error_log(print_r($column_array, true));
 		$i = array_search('title', array_keys($column_array)) + 1;
 		$columns = array_merge(
 			array_slice($column_array, 0, $i),
 			array(
 				// 'type' => __('Type', 'multipass'),
-				'dates' => __('Dates', 'multipass'),
+				'dates' => __('Validity', 'multipass'),
 				'rules' => __('Rules', 'multipass'),
 			),
 			array_slice($column_array, $i),
