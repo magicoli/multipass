@@ -2,19 +2,19 @@
 # This file is distributed under the AGPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: MultiPass 0.4\n"
+"Project-Id-Version: MultiPass (dev) 0.4.1-dev.647\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/multipass\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-04-06T21:43:16+00:00\n"
+"POT-Creation-Date: 2023-04-09T19:49:20+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 
 #. Plugin Name of the plugin
-msgid "MultiPass"
+msgid "MultiPass (dev)"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -179,7 +179,7 @@ msgid "Undefined"
 msgstr ""
 
 #: includes/class-mltp-calendar.php:623
-#: includes/class-mltp-prestation.php:1906
+#: includes/class-mltp-prestation.php:1921
 #: includes/class-mltp-resource.php:211
 #: includes/class-mltp-resource.php:223
 #: includes/class-mltp-resource.php:232
@@ -199,13 +199,12 @@ msgid "End"
 msgstr ""
 
 #: includes/class-mltp-calendar.php:678
-#: includes/class-mltp-taxes.php:133
 msgid "Nights"
 msgstr ""
 
 #: includes/class-mltp-calendar.php:679
 #: includes/class-mltp-prestation.php:458
-#: includes/class-mltp-prestation.php:1905
+#: includes/class-mltp-prestation.php:1920
 msgctxt "(noun)"
 msgid "Contact"
 msgstr ""
@@ -246,7 +245,7 @@ msgstr ""
 #: includes/class-mltp-prestation.php:799
 #: includes/class-mltp-prestation.php:1120
 #: includes/class-mltp-prestation.php:1216
-#: includes/class-mltp-prestation.php:1910
+#: includes/class-mltp-prestation.php:1925
 msgid "Deposit"
 msgstr ""
 
@@ -261,7 +260,7 @@ msgstr ""
 #: includes/class-mltp-prestation.php:938
 #: includes/class-mltp-prestation.php:1128
 #: includes/class-mltp-prestation.php:1217
-#: includes/class-mltp-prestation.php:1911
+#: includes/class-mltp-prestation.php:1926
 #: includes/class-mltp-reports.php:109
 #: includes/class-mltp-reports.php:203
 #: includes/modules/class-mltp-modules.php:207
@@ -274,7 +273,7 @@ msgstr ""
 #: includes/class-mltp-prestation.php:811
 #: includes/class-mltp-prestation.php:1136
 #: includes/class-mltp-prestation.php:1218
-#: includes/class-mltp-prestation.php:1912
+#: includes/class-mltp-prestation.php:1927
 msgid "Balance"
 msgstr ""
 
@@ -293,7 +292,6 @@ msgid "Check out"
 msgstr ""
 
 #: includes/class-mltp-calendar.php:711
-#: includes/class-mltp-taxes.php:128
 msgid "Guests"
 msgstr ""
 
@@ -452,6 +450,7 @@ msgstr ""
 
 #: includes/class-mltp-prestation-detail.php:341
 #: includes/class-mltp-prestation.php:266
+#: includes/class-mltp-rates-and-taxes.php:80
 #: includes/class-mltp-resource.php:213
 msgid "Add New"
 msgstr ""
@@ -516,24 +515,28 @@ msgstr ""
 
 #: includes/class-mltp-prestation-detail.php:356
 #: includes/class-mltp-prestation.php:282
+#: includes/class-mltp-rates-and-taxes.php:95
 #: includes/class-mltp-resource.php:228
 msgid "Featured image"
 msgstr ""
 
 #: includes/class-mltp-prestation-detail.php:357
 #: includes/class-mltp-prestation.php:283
+#: includes/class-mltp-rates-and-taxes.php:96
 #: includes/class-mltp-resource.php:229
 msgid "Set featured image"
 msgstr ""
 
 #: includes/class-mltp-prestation-detail.php:358
 #: includes/class-mltp-prestation.php:284
+#: includes/class-mltp-rates-and-taxes.php:97
 #: includes/class-mltp-resource.php:230
 msgid "Remove featured image"
 msgstr ""
 
 #: includes/class-mltp-prestation-detail.php:359
 #: includes/class-mltp-prestation.php:285
+#: includes/class-mltp-rates-and-taxes.php:98
 #: includes/class-mltp-resource.php:231
 msgid "Use as featured image"
 msgstr ""
@@ -544,6 +547,7 @@ msgstr ""
 
 #: includes/class-mltp-prestation-detail.php:362
 #: includes/class-mltp-prestation.php:287
+#: includes/class-mltp-rates-and-taxes.php:101
 #: includes/class-mltp-resource.php:234
 msgid "Filter by date"
 msgstr ""
@@ -612,7 +616,6 @@ msgstr ""
 #: includes/class-mltp-prestation-detail.php:464
 #: includes/class-mltp-prestation.php:652
 #: includes/class-mltp-prestation.php:1211
-#: includes/class-mltp-taxes.php:193
 #: includes/modules/class-mltp-modules.php:200
 #: includes/modules/class-mltp-woocommerce.php:832
 msgid "Description"
@@ -621,7 +624,7 @@ msgstr ""
 #: includes/class-mltp-prestation-detail.php:486
 #: includes/class-mltp-prestation-detail.php:502
 #: includes/class-mltp-prestation.php:446
-#: includes/class-mltp-prestation.php:1904
+#: includes/class-mltp-prestation.php:1919
 msgid "Customer"
 msgstr ""
 
@@ -647,12 +650,14 @@ msgstr ""
 #: includes/class-mltp-prestation-detail.php:586
 #: includes/class-mltp-prestation.php:473
 #: includes/class-mltp-prestation.php:1212
-#: includes/class-mltp-prestation.php:1907
+#: includes/class-mltp-prestation.php:1922
+#: includes/class-mltp-rates-and-taxes.php:270
 msgid "Dates"
 msgstr ""
 
 #: includes/class-mltp-prestation-detail.php:592
 #: includes/class-mltp-prestation.php:479
+#: includes/class-mltp-rates-and-taxes.php:278
 #: includes/class-mltp-reports.php:199
 #: includes/modules/class-mltp-modules.php:201
 #: includes/modules/class-mltp-woocommerce-payment.php:453
@@ -663,6 +668,7 @@ msgstr ""
 #: includes/class-mltp-prestation-detail.php:602
 #: includes/class-mltp-prestation.php:490
 #: includes/class-mltp-prestation.php:677
+#: includes/class-mltp-rates-and-taxes.php:284
 #: includes/class-mltp-reports.php:200
 #: includes/modules/class-mltp-modules.php:202
 #: includes/modules/class-mltp-woocommerce.php:834
@@ -677,7 +683,7 @@ msgstr ""
 #: includes/class-mltp-prestation-detail.php:763
 #: includes/class-mltp-prestation.php:792
 #: includes/class-mltp-prestation.php:1215
-#: includes/class-mltp-prestation.php:1909
+#: includes/class-mltp-prestation.php:1924
 #: includes/class-mltp-reports.php:107
 #: includes/class-mltp-reports.php:202
 #: includes/modules/class-mltp-modules.php:206
@@ -687,19 +693,16 @@ msgstr ""
 
 #: includes/class-mltp-prestation-detail.php:640
 #: includes/class-mltp-resource.php:526
-#: includes/class-mltp-taxes.php:129
 msgid "Adults"
 msgstr ""
 
 #: includes/class-mltp-prestation-detail.php:647
 #: includes/class-mltp-resource.php:527
-#: includes/class-mltp-taxes.php:130
 msgid "Children"
 msgstr ""
 
 #: includes/class-mltp-prestation-detail.php:654
 #: includes/class-mltp-resource.php:528
-#: includes/class-mltp-taxes.php:131
 msgid "Babies"
 msgstr ""
 
@@ -726,7 +729,6 @@ msgstr ""
 
 #: includes/class-mltp-prestation-detail.php:713
 #: includes/class-mltp-prestation.php:695
-#: includes/class-mltp-taxes.php:132
 msgid "Quantity"
 msgstr ""
 
@@ -748,7 +750,8 @@ msgstr ""
 #: includes/class-mltp-prestation.php:725
 #: includes/class-mltp-prestation.php:786
 #: includes/class-mltp-prestation.php:1214
-#: includes/class-mltp-prestation.php:1908
+#: includes/class-mltp-prestation.php:1923
+#: includes/class-mltp-rates-and-taxes.php:230
 #: includes/modules/class-mltp-modules.php:204
 #: includes/modules/class-mltp-woocommerce.php:836
 msgid "Discount"
@@ -770,7 +773,7 @@ msgid "Date"
 msgstr ""
 
 #: includes/class-mltp-prestation-detail.php:825
-#: includes/class-mltp-taxes.php:81
+#: includes/class-mltp-rates-and-taxes.php:310
 msgid "Amount"
 msgstr ""
 
@@ -1031,8 +1034,8 @@ msgstr ""
 
 #: includes/class-mltp-prestation.php:639
 #: includes/class-mltp-prestation.php:1210
+#: includes/class-mltp-rates-and-taxes.php:225
 #: includes/class-mltp-resource.php:332
-#: includes/class-mltp-taxes.php:93
 msgid "Type"
 msgstr ""
 
@@ -1043,6 +1046,7 @@ msgid "Product"
 msgstr ""
 
 #: includes/class-mltp-prestation.php:644
+#: includes/class-mltp-rates-and-taxes.php:336
 #: includes/class-mltp-resource.php:212
 msgid "Resource"
 msgstr ""
@@ -1233,8 +1237,224 @@ msgstr ""
 msgid "All Years"
 msgstr ""
 
-#: includes/class-mltp-prestation.php:1903
+#: includes/class-mltp-prestation.php:1918
 msgid "Title"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:31
+msgid "quantity"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:32
+msgid "night"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:33
+msgid "guest"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:34
+#: includes/class-multipass.php:1218
+msgid "adult"
+msgid_plural "adults"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-mltp-rates-and-taxes.php:35
+#: includes/class-multipass.php:1219
+msgid "child"
+msgid_plural "children"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-mltp-rates-and-taxes.php:36
+#: includes/class-multipass.php:1220
+#: includes/class-multipass.php:1221
+msgid "baby"
+msgid_plural "babies"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-mltp-rates-and-taxes.php:78
+#: includes/class-mltp-rates-and-taxes.php:112
+#: includes/class-mltp-rates-and-taxes.php:219
+msgid "Rates"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:79
+#: includes/class-mltp-rates-and-taxes.php:229
+msgid "Rate"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:81
+msgid "Add New Rate"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:82
+msgid "Edit Rate"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:83
+msgid "New Rate"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:84
+msgid "View Rate"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:85
+msgid "View Rates"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:86
+msgid "Search Rates"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:87
+msgid "No rates found."
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:88
+msgid "No rates found in Trash."
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:89
+msgid "Parent Rate:"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:90
+#: includes/class-mltp-rates-and-taxes.php:99
+msgid "Rates and Taxes"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:91
+msgid "Rate Archives"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:92
+msgid "Rate Attributes"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:93
+msgid "Insert into rate"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:94
+msgid "Uploaded to this rate"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:100
+msgid "Filter rates list"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:102
+msgid "Rates list navigation"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:103
+msgid "Rates list"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:104
+msgid "Rate published."
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:105
+msgid "Rate published privately."
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:106
+msgid "Rate reverted to draft."
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:107
+msgid "Rate scheduled."
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:108
+msgid "Rate updated."
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:109
+#: includes/class-mltp-resource.php:758
+msgid "multipass"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:144
+msgid "expired"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:145
+msgid "Expired <span class=\"count\">(%s)</span>"
+msgid_plural "Expired <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-mltp-rates-and-taxes.php:231
+msgid "Extra"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:232
+msgid "Tax"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:245
+#: includes/class-mltp-resource.php:396
+msgid "Unit"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:249
+msgid "%"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:250
+msgid "€"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:255
+msgid "Percent of"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:263
+msgid "Total price"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:292
+msgid "Repeat"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:300
+#: includes/class-mltp-rates-and-taxes.php:361
+#: includes/class-mltp-resource.php:372
+msgid "Rules"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:316
+msgid "Multiply by"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:328
+msgid "Apply to"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:360
+msgid "Validity"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:365
+msgid "Publication"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:417
+msgid "%s%% of price"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:422
+msgid "%s%% of %s rate"
+msgstr ""
+
+#: includes/class-mltp-rates-and-taxes.php:448
+msgid "or"
 msgstr ""
 
 #: includes/class-mltp-reports.php:15
@@ -1414,10 +1634,6 @@ msgstr ""
 msgid "Get prices from Parent"
 msgstr ""
 
-#: includes/class-mltp-resource.php:372
-msgid "Rules"
-msgstr ""
-
 #: includes/class-mltp-resource.php:379
 msgid "Enable booking"
 msgstr ""
@@ -1442,10 +1658,6 @@ msgstr ""
 #: includes/class-mltp-resource.php:402
 msgctxt "booking time unit"
 msgid "Overnight"
-msgstr ""
-
-#: includes/class-mltp-resource.php:396
-msgid "Unit"
 msgstr ""
 
 #: includes/class-mltp-resource.php:407
@@ -1609,10 +1821,6 @@ msgstr ""
 msgid "&larr; Go to types"
 msgstr ""
 
-#: includes/class-mltp-resource.php:758
-msgid "multipass"
-msgstr ""
-
 #: includes/class-mltp-resource.php:800
 msgid "Catering"
 msgstr ""
@@ -1731,104 +1939,29 @@ msgstr ""
 msgid "Wrong table format"
 msgstr ""
 
-#: includes/class-mltp-taxes.php:28
-#: includes/class-mltp-taxes.php:38
-#: includes/class-mltp-taxes.php:208
-msgid "Taxes"
-msgstr ""
-
-#: includes/class-mltp-taxes.php:29
-#: includes/class-mltp-taxes.php:180
-msgid "Tax"
-msgstr ""
-
-#: includes/class-mltp-taxes.php:30
-msgid "Search Tax"
-msgstr ""
-
-#: includes/class-mltp-taxes.php:31
-msgid "All Tax"
-msgstr ""
-
-#: includes/class-mltp-taxes.php:32
-msgid "Parent Tax"
-msgstr ""
-
-#: includes/class-mltp-taxes.php:33
-msgid "Parent Tax:"
-msgstr ""
-
-#: includes/class-mltp-taxes.php:34
-msgid "Edit Tax"
-msgstr ""
-
-#: includes/class-mltp-taxes.php:35
-msgid "Update Tax"
-msgstr ""
-
-#: includes/class-mltp-taxes.php:36
-msgid "Add New Tax"
-msgstr ""
-
-#: includes/class-mltp-taxes.php:37
-msgid "New Tax Name"
-msgstr ""
-
-#: includes/class-mltp-taxes.php:98
-msgid "%"
-msgstr ""
-
-#: includes/class-mltp-taxes.php:108
-msgid "Inclusive"
-msgstr ""
-
-#: includes/class-mltp-taxes.php:112
-msgid "Yes"
-msgstr ""
-
-#: includes/class-mltp-taxes.php:113
-msgid "No"
-msgstr ""
-
-#: includes/class-mltp-taxes.php:124
-msgid "Multiply by"
-msgstr ""
-
-#: includes/class-mltp-taxes.php:187
-msgid "Use custom rules"
-msgstr ""
-
-#: includes/class-mltp-taxes.php:217
-msgid "Applicable taxes"
-msgstr ""
-
-#: includes/class-mltp-taxes.php:223
-msgid "Add another tax"
-msgstr ""
-
-#: includes/class-multipass.php:727
+#: includes/class-multipass.php:728
 msgid "(generated by %s)"
 msgstr ""
 
-#: includes/class-multipass.php:963
+#: includes/class-multipass.php:964
 msgid "Back to MultiPass"
 msgstr ""
 
-#: includes/class-multipass.php:1084
+#: includes/class-multipass.php:1067
 msgid "Do not hesitate to reach us by mail or phone with any question."
 msgstr ""
 
-#: includes/class-multipass.php:1085
+#: includes/class-multipass.php:1068
 msgid "Best regards,"
 msgstr ""
 
-#: includes/class-multipass.php:1090
-#: includes/class-multipass.php:1121
+#: includes/class-multipass.php:1073
+#: includes/class-multipass.php:1104
 #: includes/modules/class-mltp-woocommerce-payment.php:120
 msgid "Payment link"
 msgstr ""
 
-#: includes/class-multipass.php:1093
+#: includes/class-multipass.php:1076
 msgid ""
 "Hello\n"
 "\n"
@@ -1839,42 +1972,23 @@ msgid ""
 "You can pay by card, Paypal, or bank transfer. For wire transfers, please take into account a bank processing time of 2 to 3 business days."
 msgstr ""
 
-#: includes/class-multipass.php:1110
+#: includes/class-multipass.php:1093
 msgid "Send payment link by mail"
 msgstr ""
 
-#: includes/class-multipass.php:1235
-msgid "adult"
-msgid_plural "adults"
-msgstr[0] ""
-msgstr[1] ""
-
-#: includes/class-multipass.php:1236
-msgid "child"
-msgid_plural "children"
-msgstr[0] ""
-msgstr[1] ""
-
-#: includes/class-multipass.php:1237
-#: includes/class-multipass.php:1238
-msgid "baby"
-msgid_plural "babies"
-msgstr[0] ""
-msgstr[1] ""
-
-#: includes/class-multipass.php:1239
+#: includes/class-multipass.php:1222
 msgid "double bed"
 msgid_plural "double beds"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-multipass.php:1240
+#: includes/class-multipass.php:1223
 msgid "single bed"
 msgid_plural "single beds"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-multipass.php:1241
+#: includes/class-multipass.php:1224
 msgid "baby bed"
 msgid_plural "baby beds"
 msgstr[0] ""
