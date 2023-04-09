@@ -172,6 +172,7 @@ class MultiPass {
 		require_once MULTIPASS_DIR . 'includes/class-mltp-rates-and-taxes.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-payment.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-pdf.php';
+		require_once MULTIPASS_DIR . 'includes/class-mltp-text-templates.php';
 
 		require_once MULTIPASS_DIR . 'includes/class-mltp-settings.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-plugininfo.php';
