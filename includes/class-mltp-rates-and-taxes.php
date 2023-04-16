@@ -153,6 +153,7 @@ class Mltp_Rates extends Mltp_Loader {
 	}
 
 	function options_percent_of() {
+		$options = [];
 		$query_args = array(
 			'post_type'   => 'mltp_rate',
 			'numberposts' => -1,
