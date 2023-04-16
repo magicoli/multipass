@@ -112,7 +112,7 @@ class Mltp_Rates extends Mltp_Loader {
 			'label'               => esc_html__( 'Rates', 'multipass' ),
 			'labels'              => $labels,
 			'description'         => '',
-			'public'              => true,
+			'public'              => false,
 			'hierarchical'        => false,
 			'exclude_from_search' => true,
 			'publicly_queryable'  => false,
@@ -358,7 +358,8 @@ class Mltp_Rates extends Mltp_Loader {
 			array_slice($column_array, 0, $i),
 			array(
 				// 'type' => __('Type', 'multipass'),
-				'dates' => __('Validity', 'multipass'),
+				'dates' => __('Dates of stay', 'multipass'),
+				'dates' => __('Dates of stay', 'multipass'),
 				'rules' => __('Rules', 'multipass'),
 			),
 			array_slice($column_array, $i),
