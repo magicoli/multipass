@@ -156,10 +156,17 @@ class Mltp_Report {
 		}
 
     private function download_csv( $year ) {
+
+      $date_format_short = preg_match( '/^[Fm]/', get_option( 'date_format' ) ) ? 'm/d/Y' : 'd/m/Y';
+
 			$args = array(
 				'post_type'      => 'mltp_prestation',
 				'post_status'    => 'publish',
 				'posts_per_page' => -1,
+        'meta_key' => 'from',
+        'meta_type' => 'NUMERIC',
+        'order_by' => 'meta_value_num',
+        'order' => 'ASC',
 				'meta_query'     => array(
 					array(
 						'key'     => 'from',
@@ -193,43 +200,94 @@ class Mltp_Report {
 
 			$output = fopen('php://output', 'w');
 
-			fputcsv($output, array(
-				__('Id', 'multipass'),
-				__('Customer Name', 'multipass'),
-				__('From', 'multipass'),
-				__('To', 'multipass'),
-				__('Subtotal', 'multipass'),
-				__('Total', 'multipass'),
-				__('Paid', 'multipass'),
-				__('Due', 'multipass'),
-				__('Status', 'multipass'),
-			));
+      $columns = array(
+        'from' => __('From', 'multipass'),
+        'to' => __('To', 'multipass'),
+        'code' => __('Code', 'multipass'),
+				'origin' => __('Origin', 'multipass'),
+				'name' => __('Name', 'multipass'),
+				'element' => __('Element', 'multipass'),
+				'guests' => __('Guests', 'multipass'),
+				'adults' => __('Adults', 'multipass'),
+				'children' => __('Children', 'multipass'),
+				'subtotal' => __('Subtotal', 'multipass'),
+				'total' => __('Total', 'multipass'),
+				'paid' => __('Paid', 'multipass'),
+				// 'refunded' => __('Refunded', 'multipass'),
+				'balance' => __('Balance', 'multipass'),
+				// 'status' => __('Status', 'multipass'),
+			);
+      fputcsv($output, $columns);
 
 			// Add the prestation data to the CSV
 			foreach ($prestations as $prestation) {
 				$meta = get_post_meta($prestation->ID);
+        $row = array_merge(array_fill_keys(array_keys($columns), null), array(
+          'code' => $prestation->post_name, // get_permalink($meta['page_id'][0]);
+          'name' => array_shift(array_filter(array(
+            $meta['contact_name'][0],
+            $meta['customer_name'][0],
+            $meta['display_name'][0],
+          ))),
+          'from' => date_i18n('Y-m-d', MultiPass::timestamp($meta['from'][0])),
+          'to' => date_i18n('Y-m-d', MultiPass::timestamp($meta['to'][0])),
+          // 'subtotal' => number_format_i18n($meta['subtotal'][0], 2),
+          'total' => number_format_i18n($meta['total'][0], 2),
+          'paid' => number_format_i18n($meta['paid'][0], 2),
+          // 'refunded' => number_format_i18n($meta['refunded'][0], 2),
+          'balance' => number_format_i18n($meta['balance'][0], 2),
+        ));
+				// $status = $prestation->post_status;
 
-				$page_slug = get_permalink($meta['page_id'][0]);
-				$customer_name = $meta['customer_name'][0];
-				// $date_from = date_i18n(get_option('date_format'), $meta['from'][0]['from']);
-				// $date_to = date_i18n(get_option('date_format'), $meta['from'][0]['to']);
-				$subtotal = $meta['subtotal'][0];
-				$total = $meta['total'][0];
-				$paid = $meta['paid'][0];
-				$due = $meta['due'][0];
-				$status = $meta['status'][0];
+				fputcsv($output, $row);
 
-				fputcsv($output, array(
-					$page_slug,
-					$customer_name,
-					// $date_from,
-					// $date_to,
-					$subtotal,
-					$total,
-					$paid,
-					$due,
-					$status,
-				));
+        $elements = get_posts( array(
+          'post_type'      => 'mltp_detail',
+          'post_status'    => 'publish',
+          'posts_per_page' => -1,
+          'meta_key' => 'from',
+          'meta_type' => 'NUMERIC',
+          'order_by' => 'meta_value_num',
+          'order' => 'ASC',
+          'meta_query'     => array(
+            array(
+              'key'     => 'prestation_id',
+              'value'   => $prestation->ID,
+            ),
+          ),
+        ));
+        foreach($elements as $element) {
+          $e_meta = get_post_meta($element->ID);
+          $attendees = isset($e_meta['attendees'][0]) ? $e_meta['attendees'][0] : [];
+          if ( is_string($attendees) ) {
+            if ( is_array(unserialize($attendees)) ) {
+              $attendees = unserialize($attendees);
+            }
+          }
+          $attendees = array_merge(array(
+            'total' => null,
+            'adults' => null,
+            'children' => null,
+          ), $attendees);
+          $attendees['adults']  = preg_replace('/^([0-9]+)<.*/', '\\1', $attendees['adults'] );
+          // error_log(print_r($attendees, true) . "\njson_deccode: " . print_r(json_decode($attendees, true), true) );
+          // error_long(json_encode("''"))
+          $e_row = array_merge(array_fill_keys(array_keys($columns), null), array(
+            'code' => $prestation->post_name . '-' . $element->ID, // get_permalink($e_meta['page_id'][0]);
+            'origin' => ( isset($e_meta['origin'][0]) && in_array( $e_meta['origin'][0], [ 'airbnb', 'booking', 'bookingcom' ] ) ) ? $e_meta['origin'][0] : '',
+            'element' => $element->post_title,
+            'from' => date_i18n('Y-m-d', MultiPass::timestamp($e_meta['from'][0])),
+            'to' => date_i18n('Y-m-d', MultiPass::timestamp($e_meta['to'][0])),
+            'subtotal' => number_format_i18n($e_meta['total'][0], 2),
+            'guests' => $attendees['total'],
+            'adults' => $attendees['adults'],
+            'children' => $attendees['children'],
+            // 'paid' => number_format_i18n($e_meta['paid'][0], 2),
+            // 'refunded' => number_format_i18n($e_meta['refunded'][0], 2),
+            // 'balance' => number_format_i18n($e_meta['balance'][0], 2),
+          ));
+          fputcsv($output, $e_row);
+        }
 			}
 
 			// Close the output stream
