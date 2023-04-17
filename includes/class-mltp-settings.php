@@ -438,9 +438,18 @@ class Mltp_Settings {
 	function render_post_debug( $value, $field ) {
 
 		$post_id = get_the_ID();
-		$value   = get_post_meta( $post_id );
-		if ( is_array( $value ) ) {
-			$value = '<pre>' . print_r( $value, true ) . '</pre>';
+		$values   = get_post_meta( $post_id, null, true );
+		if ( is_array( $values ) ) {
+			foreach($values as $key => $value) {
+				if(count($value) === 1) {
+					$value = reset($value);
+				}
+				if ( $unserialized = unserialize($value) ) {
+					$value = $unserialized;
+				}
+				$output[$key] = $value;
+			}
+			$output = '<pre>' . print_r( $output, true ) . '</pre>';
 		}
 
 		// if ( empty( $value ) ) {
@@ -451,7 +460,7 @@ class Mltp_Settings {
 		// }
 		// }
 
-		return $value;
+		return $output;
 		// return "debug";
 	}
 
