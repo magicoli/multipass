@@ -211,6 +211,7 @@ class Mltp_Report {
 				'adults' => __('Adults', 'multipass'),
 				'children' => __('Children', 'multipass'),
 				'subtotal' => __('Subtotal', 'multipass'),
+				'commission' => __('Commission', 'multipass'),
         'part_paid' => __('Part paid', 'multipass'),
 				'total' => __('Total', 'multipass'),
 				'paid' => __('Paid', 'multipass'),
@@ -271,8 +272,17 @@ class Mltp_Report {
             'children' => null,
           ), $attendees);
           $attendees['adults']  = preg_replace('/^([0-9]+)<.*/', '\\1', $attendees['adults'] );
-          // error_log(print_r($attendees, true) . "\njson_deccode: " . print_r(json_decode($attendees, true), true) );
-          // error_long(json_encode("''"))
+          $commission = isset($e_meta['commission'][0]) ? $e_meta['commission'][0] : 0;
+          if(empty($commission)) {
+            $commission = 0;
+            $payments = isset($e_meta['payment'][0]) ? $e_meta['payment'][0] : [];
+            if(is_string($payments)) $payments = unserialize($payments);
+            foreach($payments as $payment) {
+              if( isset($payment['method']) && preg_match('/commission/', $payment['method'])) {
+                $commission += $payment['amount'];
+              }
+            }
+          }
           $e_row = array_merge(array_fill_keys(array_keys($columns), null), array(
             'code' => $prestation->post_name,
             'part_id' => $element->ID,
@@ -281,6 +291,7 @@ class Mltp_Report {
             'from' => date_i18n('Y-m-d', MultiPass::timestamp($e_meta['from'][0])),
             'to' => date_i18n('Y-m-d', MultiPass::timestamp($e_meta['to'][0])),
             'subtotal' => empty($e_meta['total'][0]) ? null : number_format_i18n($e_meta['total'][0], 2),
+            'commission' => empty($commission) ? null : number_format_i18n($commission, 2),
             'guests' => $attendees['total'],
             'adults' => $attendees['adults'],
             'children' => $attendees['children'],

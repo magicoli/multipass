@@ -893,6 +893,20 @@ class Mltp_Item {
 					),
 				),
 				array(
+					'name'          => __( 'Commission', 'multipass' ),
+					'id'            => $prefix . 'commission',
+					'type'          => 'text',
+					// 'min'           => 0,
+					'step'          => 'any',
+					'size'          => 10,
+					'readonly'      => true,
+					// 'save_field'	=> false,
+					'admin_columns' => array(
+						'position' => 'after paid',
+						'sort'     => true,
+					),
+				),
+				array(
 					'name'          => __( 'Status', 'multipass' ),
 					'id'            => $prefix . 'status',
 					'type'          => 'taxonomy',
