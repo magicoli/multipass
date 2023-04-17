@@ -417,7 +417,7 @@ class Mltp_Item {
 					'callback' => 'MultiPass::title_html',
 				),
 				array(
-					'name'          => __( 'Source', 'multipass' ),
+					'name'          => __( 'External source', 'multipass' ),
 					'id'            => $prefix . 'source',
 					'type'          => 'taxonomy',
 					'taxonomy'      => array( 'mltp_detail-source' ),
@@ -428,6 +428,23 @@ class Mltp_Item {
 						'sort'       => true,
 						'searchable' => true,
 						'filterable' => true,
+					),
+				),
+				array(
+					'name'          => __( 'Local resource', 'multipass' ),
+					'id'            => $prefix . 'resource_id',
+					'type'          => 'post',
+					'post_type'     => array( 'mltp_resource' ),
+					'field_type'    => 'select_advanced',
+					'admin_columns' => array(
+						'position'   => 'after title',
+						// 'title'      => 'Customer',
+						'sort'       => true,
+						'searchable' => true,
+					),
+					'visible'  => array(
+						'when'     => array( array( 'source', '=', '' ) ),
+						'relation' => 'and',
 					),
 				),
 				array(
@@ -1201,7 +1218,7 @@ class Mltp_Item {
 			}
 			$updates['attendees'] = $attendees;
 		}
-		// $updates['dates'] = get_post_meta( $post_id, 'dates', true ) );
+		$dates = isset($_REQUEST['dates']) ? $_REQUEST['dates'] : null; // get_post_meta( $post_id, 'dates', true );
 		if ( empty( $dates ) ) {
 			$dates = array(
 				'from' => get_post_meta( $post_id, 'from', true ),
@@ -1251,15 +1268,15 @@ class Mltp_Item {
 			$resource_id = get_post_meta($post_id, 'resource_id', true);
 			$prestation_slug = get_post_field( 'post_name', $prestation_id );
 			$title_parts = array(
-				get_the_title($resource_id),
+				array(
+					get_the_title($resource_id),
+				),
 				array(
 					(empty($attendees['total'])) ? null : $attendees['total'] . 'p',
 					MultiPass::format_date_range($dates),
+					// (empty($prestation_slug)) ? null : "#$prestation_slug",
 				),
-				@$user_info['name'],
-				// array(
-				// 	// (empty($prestation_slug)) ? null : "#$prestation_slug",
-				// ),
+				// @$user_info['name'],
 			);
 			$post_title = html_entity_decode(MultiPass::array_join($title_parts));
 

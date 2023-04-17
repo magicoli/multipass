@@ -1170,7 +1170,16 @@ class Mltp_Prestation {
 		$data       = array();
 
 		foreach ( $item_posts as $item_post ) {
-			$meta     = get_post_meta( $item_post->ID );
+			$meta     = array_merge(
+				array(
+					'description' => $item_post->post_title,
+					'type' => null,
+					'source' => null,
+				),
+				get_post_meta( $item_post->ID ),
+			);
+			if(!isset($meta['description'])) error_log(print_r($meta, true));
+
 			$price    = get_post_meta( $item_post->ID, 'price', true );
 			$dates    = get_post_meta( $item_post->ID, 'dates', true );
 			$discount = get_post_meta( $item_post->ID, 'discount', true );
@@ -1180,7 +1189,7 @@ class Mltp_Prestation {
 			$data[] = array(
 				'ID'          => $item_post->ID,
 				'date'        => $item_post->post_date,
-				'description' => is_array( $meta['description']) ? reset( $meta['description'] ) : $meta['description'],
+				'description' => empty( $meta['description'] ) ? $item_post->post_title : ( is_array( $meta['description']) ? reset( $meta['description'] ) : $meta['description'] ),
 				'type'        => is_array( $meta['type'] ) ? reset( $meta['type'] ) : $meta['type'],
 				'dates'       => $dates,
 				'subtotal'    => isset( $price['sub_total'] ) ? $price['sub_total'] : null,

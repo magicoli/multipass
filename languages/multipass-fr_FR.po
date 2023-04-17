@@ -1512,11 +1512,11 @@ msgstr "Rechercher dans les ressources"
 
 #: includes/class-mltp-resource.php:220
 msgid "No resources found."
-msgstr "Aucun ressource trouvé."
+msgstr "Aucune ressource trouvée."
 
 #: includes/class-mltp-resource.php:221
 msgid "No resources found in Trash."
-msgstr "Aucun ressource trouvé dans la corbeille."
+msgstr "Aucune ressource trouvée dans la corbeille."
 
 #: includes/class-mltp-resource.php:222
 msgid "Parent Resource:"
