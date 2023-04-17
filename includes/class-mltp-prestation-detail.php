@@ -842,7 +842,7 @@ class Mltp_Item {
 							'name' => __( 'Amount', 'multipass' ),
 							'id'   => $prefix . 'amount',
 							'type' => 'number',
-							'min'  => 0,
+							'min'  => 'any',
 							'step' => 'any',
 							'size' => 10,
 						),
