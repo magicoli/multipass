@@ -1179,6 +1179,7 @@ class Mltp_Item {
 
 			$paid = (float) get_post_meta( $post_id, 'paid', true );
 			if ( is_array( $payments ) ) {
+				$paid = 0;
 				foreach ( $payments as $key => $payment ) {
 					if ( isset( $payment['amount'] ) ) {
 						$paid += (float) $payment['amount'];
