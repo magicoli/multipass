@@ -633,6 +633,9 @@ class MultiPass {
 					'to'   => $dates[1],
 				);
 			}
+			if(empty($dates['to'])) {
+				return self::format_date($dates['from']);
+			}
 			$datetype = constant( 'IntlDateFormatter::' . preg_replace( '/RELATIVE_/', '', $datetype_str ) );
 			$timetype = constant( 'IntlDateFormatter::' . preg_replace( '/RELATIVE_/', '', $timetype_str ) );
 			$ranger   = new OpenPsa\Ranger\Ranger( get_locale() );
