@@ -163,11 +163,10 @@ class Mltp_Report {
 				'post_type'      => 'mltp_prestation',
 				'post_status'    => 'publish',
 				'posts_per_page' => -1,
-        'meta_key' => 'from',
-        'meta_type' => 'NUMERIC',
-        'order_by' => 'meta_value_num',
         'order' => 'ASC',
-				'meta_query'     => array(
+        'orderby' => 'meta_value',
+        'meta_key' => 'from',
+        'meta_query'     => array(
 					array(
 						'key'     => 'from',
 						'value'   => array(strtotime($year . '-01-01'), strtotime($year . '-12-31')),
@@ -203,7 +202,8 @@ class Mltp_Report {
       $columns = array(
         'from' => __('From', 'multipass'),
         'to' => __('To', 'multipass'),
-        'code' => __('Code', 'multipass'),
+        'code' => __('Booking code', 'multipass'),
+        'part_id' => __('Part ID', 'multipass'),
 				'origin' => __('Origin', 'multipass'),
 				'name' => __('Name', 'multipass'),
 				'description' => __('Description', 'multipass'),
@@ -274,7 +274,8 @@ class Mltp_Report {
           // error_log(print_r($attendees, true) . "\njson_deccode: " . print_r(json_decode($attendees, true), true) );
           // error_long(json_encode("''"))
           $e_row = array_merge(array_fill_keys(array_keys($columns), null), array(
-            'code' => $prestation->post_name . '-' . $element->ID, // get_permalink($e_meta['page_id'][0]);
+            'code' => $prestation->post_name,
+            'part_id' => $element->ID,
             'origin' => ( isset($e_meta['origin'][0]) && in_array( $e_meta['origin'][0], [ 'airbnb', 'booking', 'bookingcom' ] ) ) ? $e_meta['origin'][0] : '',
             'description' => empty($e_meta['description'][0]) ? $element->post_title : $e_meta['description'][0],
             'from' => date_i18n('Y-m-d', MultiPass::timestamp($e_meta['from'][0])),
