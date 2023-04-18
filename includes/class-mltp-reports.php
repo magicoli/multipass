@@ -14,14 +14,14 @@ class Mltp_Report {
 					'multipass',
             __( 'Reports', 'multipass' ), // page title
             __( 'Reports', 'multipass' ), // menu title
-						'mltp_administrator',
+						'mltp_manager',
             'multipass-reports', // menu slug
             array( $this, 'render_page' ) // callback function
         );
     }
 
     public function render_page() {
-			if ( ! current_user_can('manage_options') ) {
+			if ( ! current_user_can('mltp_manager') ) {
 				wp_die( __('You do not have sufficient permissions to access this page.') );
 			}
 
@@ -144,7 +144,7 @@ class Mltp_Report {
 
 		public function process_action_request() {
 			if ( isset( $_GET['action'] ) && $_GET['action'] === 'mltp_download_csv' ) {
-				if ( ! current_user_can( 'mltp_administrator' ) ) {
+				if ( ! current_user_can( 'mltp_manager' ) ) {
           wp_die( 'You do not have permission to access this page.' );
 				}
 				if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'mltp_download_csv' ) ) {
