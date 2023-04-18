@@ -234,10 +234,10 @@ class Mltp_Report {
           'from' => empty($meta['from'][0]) ? null : date_i18n('Y-m-d', MultiPass::timestamp($meta['from'][0])),
           'to' => empty($meta['to'][0]) ? null : date_i18n('Y-m-d', MultiPass::timestamp($meta['to'][0])),
           // 'subtotal' => number_format_i18n($meta['subtotal'][0], 2),
-          'total' => number_format_i18n($meta['total'][0], 2),
-          'paid' => number_format_i18n($meta['paid'][0], 2),
+          'total' => empty($meta['total'][0]) ? null : number_format_i18n($meta['total'][0], 2),
+          'paid' => empty($meta['paid'][0]) ? null : number_format_i18n($meta['paid'][0], 2),
           // 'refunded' => number_format_i18n($meta['refunded'][0], 2),
-          'balance' => number_format_i18n($meta['balance'][0], 2),
+          'balance' => empty($meta['balance'][0]) ? null : number_format_i18n($meta['balance'][0], 2),
         ));
 				// $status = $prestation->post_status;
 
@@ -292,9 +292,9 @@ class Mltp_Report {
             'to' => empty($e_meta['to'][0]) ? null : date_i18n('Y-m-d', MultiPass::timestamp($e_meta['to'][0])),
             'subtotal' => empty($e_meta['total'][0]) ? null : number_format_i18n($e_meta['total'][0], 2),
             'commission' => empty($commission) ? null : number_format_i18n($commission, 2),
-            'guests' => $attendees['total'],
-            'adults' => $attendees['adults'],
-            'children' => $attendees['children'],
+            'guests' => empty($attendees['total']) ? null : $attendees['total'],
+            'adults' => empty($attendees['adults']) ? null : $attendees['adults'],
+            'children' => empty($attendees['children']) ? null : $attendees['children'],
             'part_paid' => empty($e_meta['paid'][0]) ? null : number_format_i18n($e_meta['paid'][0], 2),
             // 'refunded' => number_format_i18n($e_meta['refunded'][0], 2),
             // 'balance' => number_format_i18n($e_meta['balance'][0], 2),
