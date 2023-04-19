@@ -211,19 +211,30 @@ class Mltp_Report {
 				'adults' => __('Adults', 'multipass'),
 				'children' => __('Children', 'multipass'),
 				'subtotal' => __('Subtotal', 'multipass'),
-				'commission' => __('Commission', 'multipass'),
-        'part_paid' => __('Part paid', 'multipass'),
 				'total' => __('Total', 'multipass'),
+        'part_paid' => __('Part paid', 'multipass'),
 				'paid' => __('Paid', 'multipass'),
 				// 'refunded' => __('Refunded', 'multipass'),
 				'balance' => __('Balance', 'multipass'),
+        'commission' => __('Comm.', 'multipass'),
 				// 'status' => __('Status', 'multipass'),
 			);
       fputcsv($output, $columns);
 
+      $sum_total = 0;
+      $sum_paid = 0;
+      $sum_balance = 0;
+
 			// Add the prestation data to the CSV
 			foreach ($prestations as $prestation) {
 				$meta = get_post_meta($prestation->ID);
+        $total = empty($meta['total'][0]) ? 0 : $meta['total'][0];
+        $paid = empty($meta['paid'][0]) ? 0 : $meta['paid'][0];
+        $balance = empty($meta['balance'][0]) ? 0 : $meta['balance'][0];
+        $sum_total += $total;
+        $sum_paid += $paid;
+        $sum_balance += $balance;
+
         $row = array_merge(array_fill_keys(array_keys($columns), null), array(
           'code' => $prestation->post_name, // get_permalink($meta['page_id'][0]);
           'name' => array_shift(array_filter(array(
@@ -233,11 +244,11 @@ class Mltp_Report {
           ))),
           'from' => empty($meta['from'][0]) ? null : date_i18n('Y-m-d', MultiPass::timestamp($meta['from'][0])),
           'to' => empty($meta['to'][0]) ? null : date_i18n('Y-m-d', MultiPass::timestamp($meta['to'][0])),
-          // 'subtotal' => number_format_i18n($meta['subtotal'][0], 2),
-          'total' => empty($meta['total'][0]) ? null : number_format_i18n($meta['total'][0], 2),
-          'paid' => empty($meta['paid'][0]) ? null : number_format_i18n($meta['paid'][0], 2),
+          // 'discount' => empty($discount) ? null : number_format_i18n($discount),
+          'total' => empty($total) ? null : number_format_i18n($total),
+          'paid' => empty($paid) ? null : number_format_i18n($paid),
           // 'refunded' => number_format_i18n($meta['refunded'][0], 2),
-          'balance' => empty($meta['balance'][0]) ? null : number_format_i18n($meta['balance'][0], 2),
+          'balance' => empty($balance) ? null : number_format_i18n($balance),
         ));
 				// $status = $prestation->post_status;
 
@@ -291,7 +302,7 @@ class Mltp_Report {
             'from' => empty($e_meta['from'][0]) ? null : date_i18n('Y-m-d', MultiPass::timestamp($e_meta['from'][0])),
             'to' => empty($e_meta['to'][0]) ? null : date_i18n('Y-m-d', MultiPass::timestamp($e_meta['to'][0])),
             'subtotal' => empty($e_meta['total'][0]) ? null : number_format_i18n($e_meta['total'][0], 2),
-            'commission' => empty($commission) ? null : number_format_i18n($commission, 2),
+            'commission' => empty($commission) ? null : number_format_i18n((float)$commission, 2),
             'guests' => empty($attendees['total']) ? null : $attendees['total'],
             'adults' => empty($attendees['adults']) ? null : $attendees['adults'],
             'children' => empty($attendees['children']) ? null : $attendees['children'],
@@ -302,6 +313,16 @@ class Mltp_Report {
           fputcsv($output, $e_row);
         }
 			}
+
+      $t_row = array_merge(array_fill_keys(array_keys($columns), null), array(
+        'name' => __('Grand total', 'multipass'),
+        // 'subtotal' => number_format_i18n($meta['subtotal'][0], 2),
+        'total' => number_format_i18n($sum_total, 2),
+        'paid' => number_format_i18n($sum_paid, 2),
+        // 'refunded' => number_format_i18n($meta['refunded'][0], 2),
+        'balance' => number_format_i18n($sum_balance, 2),
+      ));
+      fputcsv($output, $t_row);
 
 			// Close the output stream
 			fclose($output);
