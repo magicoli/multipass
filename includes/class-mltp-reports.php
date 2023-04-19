@@ -211,12 +211,12 @@ class Mltp_Report {
 				'adults' => __('Adults', 'multipass'),
 				'children' => __('Children', 'multipass'),
 				'subtotal' => __('Subtotal', 'multipass'),
-				'total' => __('Total', 'multipass'),
         'part_paid' => __('Part paid', 'multipass'),
+        'commission' => __('Comm.', 'multipass'),
+				'total' => __('Total', 'multipass'),
 				'paid' => __('Paid', 'multipass'),
 				// 'refunded' => __('Refunded', 'multipass'),
 				'balance' => __('Balance', 'multipass'),
-        'commission' => __('Comm.', 'multipass'),
 				// 'status' => __('Status', 'multipass'),
 			);
       fputcsv($output, $columns);
