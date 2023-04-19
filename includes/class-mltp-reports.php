@@ -315,6 +315,8 @@ class Mltp_Report {
 			}
 
       $t_row = array_merge(array_fill_keys(array_keys($columns), null), array(
+        'from' => '               ', // avoid truncated date on csv import
+        'to' => '               ', // avoid truncated date on csv import
         'name' => __('Grand total', 'multipass'),
         // 'subtotal' => number_format_i18n($meta['subtotal'][0], 2),
         'total' => number_format_i18n($sum_total, 2),
