@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MultiPass\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/multipass\n"
-"POT-Creation-Date: 2023-04-19T23:26:49+00:00\n"
+"POT-Creation-Date: 2023-04-19T23:39:22+00:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1489,7 +1489,7 @@ msgstr "Rien à exporter pour l'année %s"
 
 #: includes/class-mltp-reports.php:205
 msgid "Booking code"
-msgstr "Code réservation"
+msgstr "Code résa"
 
 #: includes/class-mltp-reports.php:206
 msgid "Part ID"
