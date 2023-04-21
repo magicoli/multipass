@@ -403,7 +403,7 @@ class Mltp_Rates extends Mltp_Loader {
 					$terms = [];
 					foreach ( $term_ids as $term_id ) {
 						$term = get_term( $term_id );
-						if( ! is_wp_error($term) ) {
+						if( $term && ! is_wp_error($term) ) {
 							$terms[] = sprintf(
 								'<a href="%s">%s</a>',
 								get_term_link( $term ),
