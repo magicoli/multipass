@@ -263,7 +263,7 @@ class Mltp_Resource {
 			'menu_icon'           => 'dashicons-admin-generic',
 			'capability_type'     => 'mltp_resource',
 			'supports'            => array( 'title' ),
-			'taxonomies'          => array(),
+			'taxonomies'          => ['resource-type'],
 			'rewrite'             => array(
 				'slug'       => 'resources',
 				'with_front' => false,
@@ -780,7 +780,7 @@ class Mltp_Resource {
 				'hierarchical' => false,
 			),
 		);
-		register_taxonomy( 'resource-type', array( 'mltp_prestation', 'product', 'mltp_resource', 'mltp_detail' ), $args );
+		register_taxonomy( 'resource-type', [ 'mltp_resource' ], $args );
 
 		if ( MultiPass::debug() ) {
 			add_submenu_page(
