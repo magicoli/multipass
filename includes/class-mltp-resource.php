@@ -793,16 +793,20 @@ class Mltp_Resource {
 		}
 		add_action( 'resource-type_pre_add_form', 'MultiPass::back_to_multipass_button' );
 
-		MultiPass::register_terms(
-			'resource-type',
-			array(
-				'booking'  => __( 'Booking', 'multipass' ),
-				'catering' => __( 'Catering', 'multipass' ),
-				'service'  => __( 'Service', 'multipass' ),
-				'product'  => __( 'Product', 'multipass' ),
-			)
-		);
-
+		$terms = get_terms( array(
+		    'taxonomy'   => 'resource-type',
+		    'hide_empty' => false,
+		) );
+		if(is_wp_error($terms) || empty($terms)) {
+			MultiPass::register_terms(
+				'resource-type',
+				array(
+					'lodging'  => __( 'Lodging', 'multipass' ),
+					'catering' => __( 'Catering', 'multipass' ),
+					'rental'  => __( 'Rental', 'multipass' ),
+				)
+			);
+		}
 	}
 
 	/**
