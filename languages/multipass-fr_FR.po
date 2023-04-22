@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MultiPass\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/multipass\n"
-"POT-Creation-Date: 2023-04-22T09:19:59+00:00\n"
+"POT-Creation-Date: 2023-04-22T15:09:34+00:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -152,7 +152,7 @@ msgstr "Filtrer la liste des sections"
 
 #: includes/class-mltp-calendar.php:267
 #: includes/class-mltp-prestation-detail.php:967
-#: includes/class-mltp-prestation.php:871 includes/class-mltp-resource.php:757
+#: includes/class-mltp-prestation.php:871 includes/class-mltp-resource.php:793
 msgid "Most Used"
 msgstr "Les plus utilisés"
 
@@ -182,9 +182,9 @@ msgid "Undefined"
 msgstr "Indéterminé"
 
 #: includes/class-mltp-calendar.php:623 includes/class-mltp-prestation.php:1930
-#: includes/class-mltp-resource.php:211 includes/class-mltp-resource.php:223
-#: includes/class-mltp-resource.php:232 includes/class-mltp-resource.php:246
-#: includes/class-mltp-resource.php:287
+#: includes/class-mltp-resource.php:218 includes/class-mltp-resource.php:230
+#: includes/class-mltp-resource.php:239 includes/class-mltp-resource.php:253
+#: includes/class-mltp-resource.php:322
 #: includes/modules/class-mltp-lodgify.php:185
 #: includes/modules/class-mltp-lodgify.php:192
 msgid "Resources"
@@ -445,7 +445,7 @@ msgstr "Élément de prestation"
 #: includes/class-mltp-prestation-detail.php:341
 #: includes/class-mltp-prestation.php:266
 #: includes/class-mltp-rates-and-taxes.php:80
-#: includes/class-mltp-resource.php:213
+#: includes/class-mltp-resource.php:220
 msgid "Add New"
 msgstr "Ajouter"
 
@@ -510,28 +510,28 @@ msgstr "Téléchargé sur cet élément"
 #: includes/class-mltp-prestation-detail.php:356
 #: includes/class-mltp-prestation.php:282
 #: includes/class-mltp-rates-and-taxes.php:95
-#: includes/class-mltp-resource.php:228
+#: includes/class-mltp-resource.php:235
 msgid "Featured image"
 msgstr "Image mise en avant"
 
 #: includes/class-mltp-prestation-detail.php:357
 #: includes/class-mltp-prestation.php:283
 #: includes/class-mltp-rates-and-taxes.php:96
-#: includes/class-mltp-resource.php:229
+#: includes/class-mltp-resource.php:236
 msgid "Set featured image"
 msgstr "Définir l'image mise en avant"
 
 #: includes/class-mltp-prestation-detail.php:358
 #: includes/class-mltp-prestation.php:284
 #: includes/class-mltp-rates-and-taxes.php:97
-#: includes/class-mltp-resource.php:230
+#: includes/class-mltp-resource.php:237
 msgid "Remove featured image"
 msgstr "Supprimer l'image mise en avant"
 
 #: includes/class-mltp-prestation-detail.php:359
 #: includes/class-mltp-prestation.php:285
 #: includes/class-mltp-rates-and-taxes.php:98
-#: includes/class-mltp-resource.php:231
+#: includes/class-mltp-resource.php:238
 msgid "Use as featured image"
 msgstr "Utiliser comme image mise en avant"
 
@@ -542,7 +542,7 @@ msgstr "Filtrer la liste des éléments"
 #: includes/class-mltp-prestation-detail.php:362
 #: includes/class-mltp-prestation.php:287
 #: includes/class-mltp-rates-and-taxes.php:101
-#: includes/class-mltp-resource.php:234
+#: includes/class-mltp-resource.php:241
 msgid "Filter by date"
 msgstr "Filtrer par date"
 
@@ -1000,7 +1000,7 @@ msgstr "Permaliens MultiPass"
 
 #: includes/class-mltp-prestation.php:370
 msgid "Prestation slug"
-msgstr "Slug the la prestation"
+msgstr "Préfixe des prestations"
 
 #: includes/class-mltp-prestation.php:385
 msgid "prestations"
@@ -1041,21 +1041,22 @@ msgstr ""
 #: includes/class-mltp-prestation.php:639
 #: includes/class-mltp-prestation.php:1219
 #: includes/class-mltp-rates-and-taxes.php:226
+#: includes/class-mltp-resource.php:369
 msgid "Type"
 msgstr "Type"
 
-#: includes/class-mltp-prestation.php:643 includes/class-mltp-resource.php:804
+#: includes/class-mltp-prestation.php:643
 #: includes/modules/class-mltp-woocommerce.php:189
 msgid "Product"
 msgstr "Produit"
 
 #: includes/class-mltp-prestation.php:644
 #: includes/class-mltp-rates-and-taxes.php:337
-#: includes/class-mltp-resource.php:212
+#: includes/class-mltp-resource.php:219
 msgid "Resource"
 msgstr "Ressource"
 
-#: includes/class-mltp-prestation.php:645 includes/class-mltp-resource.php:801
+#: includes/class-mltp-prestation.php:645
 msgid "Booking"
 msgstr "Réservation"
 
@@ -1378,7 +1379,7 @@ msgid "Rate updated."
 msgstr "Tarif mis à jour."
 
 #: includes/class-mltp-rates-and-taxes.php:109
-#: includes/class-mltp-resource.php:759
+#: includes/class-mltp-resource.php:795
 msgid "multipass"
 msgstr "multipass"
 
@@ -1507,206 +1508,214 @@ msgstr "Comm."
 msgid "Grand total"
 msgstr "Grand total"
 
-#: includes/class-mltp-resource.php:214
+#: includes/class-mltp-resource.php:221
 msgid "Add New Resource"
 msgstr "Ajouter une nouvelle ressource"
 
-#: includes/class-mltp-resource.php:215
+#: includes/class-mltp-resource.php:222
 msgid "Edit Resource"
 msgstr "Modifier la ressource"
 
-#: includes/class-mltp-resource.php:216
+#: includes/class-mltp-resource.php:223
 msgid "New Resource"
 msgstr "Nouvelle ressource"
 
-#: includes/class-mltp-resource.php:217
+#: includes/class-mltp-resource.php:224
 msgid "View Resource"
 msgstr "Voir me ressource"
 
-#: includes/class-mltp-resource.php:218
+#: includes/class-mltp-resource.php:225
 msgid "View Resources"
 msgstr "Voir les ressources"
 
-#: includes/class-mltp-resource.php:219
+#: includes/class-mltp-resource.php:226
 msgid "Search Resources"
 msgstr "Rechercher dans les ressources"
 
-#: includes/class-mltp-resource.php:220
+#: includes/class-mltp-resource.php:227
 msgid "No resources found."
 msgstr "Aucune ressource trouvée."
 
-#: includes/class-mltp-resource.php:221
+#: includes/class-mltp-resource.php:228
 msgid "No resources found in Trash."
 msgstr "Aucune ressource trouvée dans la corbeille."
 
-#: includes/class-mltp-resource.php:222
+#: includes/class-mltp-resource.php:229
 msgid "Parent Resource:"
 msgstr "Ressource parente :"
 
-#: includes/class-mltp-resource.php:224
+#: includes/class-mltp-resource.php:231
 msgid "Resource Archives"
 msgstr "Archives des ressources"
 
-#: includes/class-mltp-resource.php:225
+#: includes/class-mltp-resource.php:232
 msgid "Resource Attributes"
 msgstr "Attributs d'ressource"
 
-#: includes/class-mltp-resource.php:226
+#: includes/class-mltp-resource.php:233
 msgid "Insert into resource"
 msgstr "Insérer dans me ressource"
 
-#: includes/class-mltp-resource.php:227
+#: includes/class-mltp-resource.php:234
 msgid "Uploaded to this resource"
 msgstr "Téléchargé sur ce ressource"
 
-#: includes/class-mltp-resource.php:233
+#: includes/class-mltp-resource.php:240
 msgid "Filter resources list"
 msgstr "Filtrer la liste des ressources"
 
-#: includes/class-mltp-resource.php:235
+#: includes/class-mltp-resource.php:242
 msgid "Resources list navigation"
 msgstr "Navigation dans la liste des ressources"
 
-#: includes/class-mltp-resource.php:236
+#: includes/class-mltp-resource.php:243
 msgid "Resources list"
 msgstr "Liste des ressources"
 
-#: includes/class-mltp-resource.php:237
+#: includes/class-mltp-resource.php:244
 msgid "Resource published."
 msgstr "Associaiton publiée."
 
-#: includes/class-mltp-resource.php:238
+#: includes/class-mltp-resource.php:245
 msgid "Resource published privately."
 msgstr "Associaiton publiée en privé."
 
-#: includes/class-mltp-resource.php:239
+#: includes/class-mltp-resource.php:246
 msgid "Resource reverted to draft."
 msgstr "Ressource remise en brouillon."
 
-#: includes/class-mltp-resource.php:240
+#: includes/class-mltp-resource.php:247
 msgid "Resource scheduled."
 msgstr "Ressource planifiée."
 
-#: includes/class-mltp-resource.php:241
+#: includes/class-mltp-resource.php:248
 msgid "Resource updated."
 msgstr "Ressource mise à jour."
 
-#: includes/class-mltp-resource.php:242
+#: includes/class-mltp-resource.php:249
 msgid "Select a resource"
 msgstr "Sélectionnez une ressource"
 
-#: includes/class-mltp-resource.php:293
+#: includes/class-mltp-resource.php:292
+msgid "resource"
+msgstr "ressource"
+
+#: includes/class-mltp-resource.php:328
 msgid "Page"
 msgstr "Page"
 
-#: includes/class-mltp-resource.php:298
+#: includes/class-mltp-resource.php:333
 msgid "Select a page"
 msgstr "Sélectionnez une page"
 
-#: includes/class-mltp-resource.php:310 includes/class-mltp-settings.php:292
-#: includes/class-mltp-settings.php:469
+#: includes/class-mltp-resource.php:345 includes/class-mltp-settings.php:292
+#: includes/class-mltp-settings.php:471
 msgid "Settings"
 msgstr "Réglages"
 
-#: includes/class-mltp-resource.php:316 includes/class-mltp-settings.php:337
+#: includes/class-mltp-resource.php:351 includes/class-mltp-settings.php:337
 msgid "Position"
 msgstr "Position"
 
-#: includes/class-mltp-resource.php:736 includes/class-mltp-resource.php:762
-msgid "Resource Types"
-msgstr "Types de ressources"
-
-#: includes/class-mltp-resource.php:737
+#: includes/class-mltp-resource.php:361 includes/class-mltp-resource.php:773
 msgid "Resource Type"
 msgstr "Type de ressource"
 
-#: includes/class-mltp-resource.php:738
+#: includes/class-mltp-resource.php:772 includes/class-mltp-resource.php:798
+msgid "Resource Types"
+msgstr "Types de ressources"
+
+#: includes/class-mltp-resource.php:774
 msgid "Types"
 msgstr "Types"
 
-#: includes/class-mltp-resource.php:739
+#: includes/class-mltp-resource.php:775
 msgid "Search types"
 msgstr "Rechercher dans les types"
 
-#: includes/class-mltp-resource.php:740
+#: includes/class-mltp-resource.php:776
 msgid "Popular types"
 msgstr "Types populaires"
 
-#: includes/class-mltp-resource.php:741
+#: includes/class-mltp-resource.php:777
 msgid "All types"
 msgstr "Tous les types"
 
-#: includes/class-mltp-resource.php:742
+#: includes/class-mltp-resource.php:778
 msgid "Parent type"
 msgstr "Type parent"
 
-#: includes/class-mltp-resource.php:743
+#: includes/class-mltp-resource.php:779
 msgid "Parent type:"
 msgstr "Type parent :"
 
-#: includes/class-mltp-resource.php:744
+#: includes/class-mltp-resource.php:780
 msgid "Edit type"
 msgstr "Modifier le type"
 
-#: includes/class-mltp-resource.php:745
+#: includes/class-mltp-resource.php:781
 msgid "View type"
 msgstr "Voir le type"
 
-#: includes/class-mltp-resource.php:746
+#: includes/class-mltp-resource.php:782
 msgid "Update type"
 msgstr "Mettre à jour le type"
 
-#: includes/class-mltp-resource.php:747
+#: includes/class-mltp-resource.php:783
 msgid "Add New type"
 msgstr "Ajouter un type"
 
-#: includes/class-mltp-resource.php:748
+#: includes/class-mltp-resource.php:784
 msgid "New type Name"
 msgstr "Nom du nouveau type"
 
-#: includes/class-mltp-resource.php:749
+#: includes/class-mltp-resource.php:785
 msgid "Separate types with commas"
 msgstr "Séparez les types par des virgules"
 
-#: includes/class-mltp-resource.php:750
+#: includes/class-mltp-resource.php:786
 msgid "Add or remove types"
 msgstr "Ajouter ou supprimer des types"
 
-#: includes/class-mltp-resource.php:751
+#: includes/class-mltp-resource.php:787
 msgid "Choose most used types"
 msgstr "Choisissez parmi les types les plus utilisés"
 
-#: includes/class-mltp-resource.php:752
+#: includes/class-mltp-resource.php:788
 msgid "No types found."
 msgstr "Aucun type trouvé."
 
-#: includes/class-mltp-resource.php:753
+#: includes/class-mltp-resource.php:789
 msgid "No types"
 msgstr "Aucun type"
 
-#: includes/class-mltp-resource.php:754
+#: includes/class-mltp-resource.php:790
 msgid "Filter by type"
 msgstr "Filtrer par type"
 
-#: includes/class-mltp-resource.php:755
+#: includes/class-mltp-resource.php:791
 msgid "Resource Types list pagination"
 msgstr "Pagination des types de ressource"
 
-#: includes/class-mltp-resource.php:756
+#: includes/class-mltp-resource.php:792
 msgid "Resource Types list"
 msgstr "Liste des types de ressource"
 
-#: includes/class-mltp-resource.php:758
+#: includes/class-mltp-resource.php:794
 msgid "&larr; Go to types"
 msgstr "&larr; Aller aux types"
 
-#: includes/class-mltp-resource.php:802
+#: includes/class-mltp-resource.php:843
+msgid "Lodging"
+msgstr "Hébergement"
+
+#: includes/class-mltp-resource.php:844
 msgid "Catering"
 msgstr "Restauration"
 
-#: includes/class-mltp-resource.php:803
-msgid "Service"
-msgstr "Service"
+#: includes/class-mltp-resource.php:845
+msgid "Rental"
+msgstr "Location"
 
 #: includes/class-mltp-settings.php:54
 msgid "MultiPass Reader"
@@ -1786,19 +1795,19 @@ msgstr "Administrateur"
 msgid "Debug data"
 msgstr "Donnés de débogage"
 
-#: includes/class-mltp-settings.php:495
+#: includes/class-mltp-settings.php:497
 msgid "&rarr; Create \"%s\" role"
 msgstr "&rarr; Créer le rôle \"%s\""
 
-#: includes/class-mltp-settings.php:513
+#: includes/class-mltp-settings.php:515
 msgid "%s (default)"
 msgstr "%s (par défault)"
 
-#: includes/class-mltp-settings.php:544
+#: includes/class-mltp-settings.php:546
 msgid ", and %s more..."
 msgstr ", et %s de plus..."
 
-#: includes/class-mltp-settings.php:559
+#: includes/class-mltp-settings.php:561
 msgid "Currently %1$s allowed user: %2$s%3$s"
 msgid_plural "Currently %1$s allowed users: %2$s%3$s"
 msgstr[0] "Actuellement %s utilisateur autorisé: %s%s"
@@ -2215,6 +2224,9 @@ msgid "%s title / %s updated"
 msgid_plural "%s titles / %s updated"
 msgstr[0] "%s titre / %s modifié"
 msgstr[1] "%s titres / %s modifiés"
+
+#~ msgid "Service"
+#~ msgstr "Service"
 
 #~ msgid "Get rules from"
 #~ msgstr "Utilisez les règles de"

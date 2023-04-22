@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-04-22T09:19:59+00:00\n"
+"POT-Creation-Date: 2023-04-22T15:09:34+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 
@@ -149,7 +149,7 @@ msgstr ""
 #: includes/class-mltp-calendar.php:267
 #: includes/class-mltp-prestation-detail.php:967
 #: includes/class-mltp-prestation.php:871
-#: includes/class-mltp-resource.php:757
+#: includes/class-mltp-resource.php:793
 msgid "Most Used"
 msgstr ""
 
@@ -180,11 +180,11 @@ msgstr ""
 
 #: includes/class-mltp-calendar.php:623
 #: includes/class-mltp-prestation.php:1930
-#: includes/class-mltp-resource.php:211
-#: includes/class-mltp-resource.php:223
-#: includes/class-mltp-resource.php:232
-#: includes/class-mltp-resource.php:246
-#: includes/class-mltp-resource.php:287
+#: includes/class-mltp-resource.php:218
+#: includes/class-mltp-resource.php:230
+#: includes/class-mltp-resource.php:239
+#: includes/class-mltp-resource.php:253
+#: includes/class-mltp-resource.php:322
 #: includes/modules/class-mltp-lodgify.php:185
 #: includes/modules/class-mltp-lodgify.php:192
 msgid "Resources"
@@ -453,7 +453,7 @@ msgstr ""
 #: includes/class-mltp-prestation-detail.php:341
 #: includes/class-mltp-prestation.php:266
 #: includes/class-mltp-rates-and-taxes.php:80
-#: includes/class-mltp-resource.php:213
+#: includes/class-mltp-resource.php:220
 msgid "Add New"
 msgstr ""
 
@@ -518,28 +518,28 @@ msgstr ""
 #: includes/class-mltp-prestation-detail.php:356
 #: includes/class-mltp-prestation.php:282
 #: includes/class-mltp-rates-and-taxes.php:95
-#: includes/class-mltp-resource.php:228
+#: includes/class-mltp-resource.php:235
 msgid "Featured image"
 msgstr ""
 
 #: includes/class-mltp-prestation-detail.php:357
 #: includes/class-mltp-prestation.php:283
 #: includes/class-mltp-rates-and-taxes.php:96
-#: includes/class-mltp-resource.php:229
+#: includes/class-mltp-resource.php:236
 msgid "Set featured image"
 msgstr ""
 
 #: includes/class-mltp-prestation-detail.php:358
 #: includes/class-mltp-prestation.php:284
 #: includes/class-mltp-rates-and-taxes.php:97
-#: includes/class-mltp-resource.php:230
+#: includes/class-mltp-resource.php:237
 msgid "Remove featured image"
 msgstr ""
 
 #: includes/class-mltp-prestation-detail.php:359
 #: includes/class-mltp-prestation.php:285
 #: includes/class-mltp-rates-and-taxes.php:98
-#: includes/class-mltp-resource.php:231
+#: includes/class-mltp-resource.php:238
 msgid "Use as featured image"
 msgstr ""
 
@@ -550,7 +550,7 @@ msgstr ""
 #: includes/class-mltp-prestation-detail.php:362
 #: includes/class-mltp-prestation.php:287
 #: includes/class-mltp-rates-and-taxes.php:101
-#: includes/class-mltp-resource.php:234
+#: includes/class-mltp-resource.php:241
 msgid "Filter by date"
 msgstr ""
 
@@ -1048,23 +1048,22 @@ msgstr ""
 #: includes/class-mltp-prestation.php:639
 #: includes/class-mltp-prestation.php:1219
 #: includes/class-mltp-rates-and-taxes.php:226
+#: includes/class-mltp-resource.php:369
 msgid "Type"
 msgstr ""
 
 #: includes/class-mltp-prestation.php:643
-#: includes/class-mltp-resource.php:804
 #: includes/modules/class-mltp-woocommerce.php:189
 msgid "Product"
 msgstr ""
 
 #: includes/class-mltp-prestation.php:644
 #: includes/class-mltp-rates-and-taxes.php:337
-#: includes/class-mltp-resource.php:212
+#: includes/class-mltp-resource.php:219
 msgid "Resource"
 msgstr ""
 
 #: includes/class-mltp-prestation.php:645
-#: includes/class-mltp-resource.php:801
 msgid "Booking"
 msgstr ""
 
@@ -1388,7 +1387,7 @@ msgid "Rate updated."
 msgstr ""
 
 #: includes/class-mltp-rates-and-taxes.php:109
-#: includes/class-mltp-resource.php:759
+#: includes/class-mltp-resource.php:795
 msgid "multipass"
 msgstr ""
 
@@ -1518,208 +1517,217 @@ msgstr ""
 msgid "Grand total"
 msgstr ""
 
-#: includes/class-mltp-resource.php:214
+#: includes/class-mltp-resource.php:221
 msgid "Add New Resource"
 msgstr ""
 
-#: includes/class-mltp-resource.php:215
+#: includes/class-mltp-resource.php:222
 msgid "Edit Resource"
 msgstr ""
 
-#: includes/class-mltp-resource.php:216
+#: includes/class-mltp-resource.php:223
 msgid "New Resource"
 msgstr ""
 
-#: includes/class-mltp-resource.php:217
+#: includes/class-mltp-resource.php:224
 msgid "View Resource"
 msgstr ""
 
-#: includes/class-mltp-resource.php:218
+#: includes/class-mltp-resource.php:225
 msgid "View Resources"
 msgstr ""
 
-#: includes/class-mltp-resource.php:219
+#: includes/class-mltp-resource.php:226
 msgid "Search Resources"
 msgstr ""
 
-#: includes/class-mltp-resource.php:220
+#: includes/class-mltp-resource.php:227
 msgid "No resources found."
 msgstr ""
 
-#: includes/class-mltp-resource.php:221
+#: includes/class-mltp-resource.php:228
 msgid "No resources found in Trash."
 msgstr ""
 
-#: includes/class-mltp-resource.php:222
+#: includes/class-mltp-resource.php:229
 msgid "Parent Resource:"
 msgstr ""
 
-#: includes/class-mltp-resource.php:224
+#: includes/class-mltp-resource.php:231
 msgid "Resource Archives"
 msgstr ""
 
-#: includes/class-mltp-resource.php:225
+#: includes/class-mltp-resource.php:232
 msgid "Resource Attributes"
 msgstr ""
 
-#: includes/class-mltp-resource.php:226
+#: includes/class-mltp-resource.php:233
 msgid "Insert into resource"
 msgstr ""
 
-#: includes/class-mltp-resource.php:227
+#: includes/class-mltp-resource.php:234
 msgid "Uploaded to this resource"
 msgstr ""
 
-#: includes/class-mltp-resource.php:233
+#: includes/class-mltp-resource.php:240
 msgid "Filter resources list"
 msgstr ""
 
-#: includes/class-mltp-resource.php:235
+#: includes/class-mltp-resource.php:242
 msgid "Resources list navigation"
 msgstr ""
 
-#: includes/class-mltp-resource.php:236
+#: includes/class-mltp-resource.php:243
 msgid "Resources list"
 msgstr ""
 
-#: includes/class-mltp-resource.php:237
+#: includes/class-mltp-resource.php:244
 msgid "Resource published."
 msgstr ""
 
-#: includes/class-mltp-resource.php:238
+#: includes/class-mltp-resource.php:245
 msgid "Resource published privately."
 msgstr ""
 
-#: includes/class-mltp-resource.php:239
+#: includes/class-mltp-resource.php:246
 msgid "Resource reverted to draft."
 msgstr ""
 
-#: includes/class-mltp-resource.php:240
+#: includes/class-mltp-resource.php:247
 msgid "Resource scheduled."
 msgstr ""
 
-#: includes/class-mltp-resource.php:241
+#: includes/class-mltp-resource.php:248
 msgid "Resource updated."
 msgstr ""
 
-#: includes/class-mltp-resource.php:242
+#: includes/class-mltp-resource.php:249
 msgid "Select a resource"
 msgstr ""
 
-#: includes/class-mltp-resource.php:293
+#: includes/class-mltp-resource.php:292
+msgid "resource"
+msgstr ""
+
+#: includes/class-mltp-resource.php:328
 msgid "Page"
 msgstr ""
 
-#: includes/class-mltp-resource.php:298
+#: includes/class-mltp-resource.php:333
 msgid "Select a page"
 msgstr ""
 
-#: includes/class-mltp-resource.php:310
+#: includes/class-mltp-resource.php:345
 #: includes/class-mltp-settings.php:292
-#: includes/class-mltp-settings.php:469
+#: includes/class-mltp-settings.php:471
 msgid "Settings"
 msgstr ""
 
-#: includes/class-mltp-resource.php:316
+#: includes/class-mltp-resource.php:351
 #: includes/class-mltp-settings.php:337
 msgid "Position"
 msgstr ""
 
-#: includes/class-mltp-resource.php:736
-#: includes/class-mltp-resource.php:762
-msgid "Resource Types"
-msgstr ""
-
-#: includes/class-mltp-resource.php:737
+#: includes/class-mltp-resource.php:361
+#: includes/class-mltp-resource.php:773
 msgid "Resource Type"
 msgstr ""
 
-#: includes/class-mltp-resource.php:738
+#: includes/class-mltp-resource.php:772
+#: includes/class-mltp-resource.php:798
+msgid "Resource Types"
+msgstr ""
+
+#: includes/class-mltp-resource.php:774
 msgid "Types"
 msgstr ""
 
-#: includes/class-mltp-resource.php:739
+#: includes/class-mltp-resource.php:775
 msgid "Search types"
 msgstr ""
 
-#: includes/class-mltp-resource.php:740
+#: includes/class-mltp-resource.php:776
 msgid "Popular types"
 msgstr ""
 
-#: includes/class-mltp-resource.php:741
+#: includes/class-mltp-resource.php:777
 msgid "All types"
 msgstr ""
 
-#: includes/class-mltp-resource.php:742
+#: includes/class-mltp-resource.php:778
 msgid "Parent type"
 msgstr ""
 
-#: includes/class-mltp-resource.php:743
+#: includes/class-mltp-resource.php:779
 msgid "Parent type:"
 msgstr ""
 
-#: includes/class-mltp-resource.php:744
+#: includes/class-mltp-resource.php:780
 msgid "Edit type"
 msgstr ""
 
-#: includes/class-mltp-resource.php:745
+#: includes/class-mltp-resource.php:781
 msgid "View type"
 msgstr ""
 
-#: includes/class-mltp-resource.php:746
+#: includes/class-mltp-resource.php:782
 msgid "Update type"
 msgstr ""
 
-#: includes/class-mltp-resource.php:747
+#: includes/class-mltp-resource.php:783
 msgid "Add New type"
 msgstr ""
 
-#: includes/class-mltp-resource.php:748
+#: includes/class-mltp-resource.php:784
 msgid "New type Name"
 msgstr ""
 
-#: includes/class-mltp-resource.php:749
+#: includes/class-mltp-resource.php:785
 msgid "Separate types with commas"
 msgstr ""
 
-#: includes/class-mltp-resource.php:750
+#: includes/class-mltp-resource.php:786
 msgid "Add or remove types"
 msgstr ""
 
-#: includes/class-mltp-resource.php:751
+#: includes/class-mltp-resource.php:787
 msgid "Choose most used types"
 msgstr ""
 
-#: includes/class-mltp-resource.php:752
+#: includes/class-mltp-resource.php:788
 msgid "No types found."
 msgstr ""
 
-#: includes/class-mltp-resource.php:753
+#: includes/class-mltp-resource.php:789
 msgid "No types"
 msgstr ""
 
-#: includes/class-mltp-resource.php:754
+#: includes/class-mltp-resource.php:790
 msgid "Filter by type"
 msgstr ""
 
-#: includes/class-mltp-resource.php:755
+#: includes/class-mltp-resource.php:791
 msgid "Resource Types list pagination"
 msgstr ""
 
-#: includes/class-mltp-resource.php:756
+#: includes/class-mltp-resource.php:792
 msgid "Resource Types list"
 msgstr ""
 
-#: includes/class-mltp-resource.php:758
+#: includes/class-mltp-resource.php:794
 msgid "&larr; Go to types"
 msgstr ""
 
-#: includes/class-mltp-resource.php:802
+#: includes/class-mltp-resource.php:843
+msgid "Lodging"
+msgstr ""
+
+#: includes/class-mltp-resource.php:844
 msgid "Catering"
 msgstr ""
 
-#: includes/class-mltp-resource.php:803
-msgid "Service"
+#: includes/class-mltp-resource.php:845
+msgid "Rental"
 msgstr ""
 
 #: includes/class-mltp-settings.php:54
@@ -1802,19 +1810,19 @@ msgstr ""
 msgid "Debug data"
 msgstr ""
 
-#: includes/class-mltp-settings.php:495
+#: includes/class-mltp-settings.php:497
 msgid "&rarr; Create \"%s\" role"
 msgstr ""
 
-#: includes/class-mltp-settings.php:513
+#: includes/class-mltp-settings.php:515
 msgid "%s (default)"
 msgstr ""
 
-#: includes/class-mltp-settings.php:544
+#: includes/class-mltp-settings.php:546
 msgid ", and %s more..."
 msgstr ""
 
-#: includes/class-mltp-settings.php:559
+#: includes/class-mltp-settings.php:561
 msgid "Currently %1$s allowed user: %2$s%3$s"
 msgid_plural "Currently %1$s allowed users: %2$s%3$s"
 msgstr[0] ""
