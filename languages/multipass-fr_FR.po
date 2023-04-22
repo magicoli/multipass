@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MultiPass\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/multipass\n"
-"POT-Creation-Date: 2023-04-19T23:39:22+00:00\n"
+"POT-Creation-Date: 2023-04-22T09:19:59+00:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -152,7 +152,7 @@ msgstr "Filtrer la liste des sections"
 
 #: includes/class-mltp-calendar.php:267
 #: includes/class-mltp-prestation-detail.php:967
-#: includes/class-mltp-prestation.php:871 includes/class-mltp-resource.php:756
+#: includes/class-mltp-prestation.php:871 includes/class-mltp-resource.php:757
 msgid "Most Used"
 msgstr "Les plus utilisés"
 
@@ -184,7 +184,7 @@ msgstr "Indéterminé"
 #: includes/class-mltp-calendar.php:623 includes/class-mltp-prestation.php:1930
 #: includes/class-mltp-resource.php:211 includes/class-mltp-resource.php:223
 #: includes/class-mltp-resource.php:232 includes/class-mltp-resource.php:246
-#: includes/class-mltp-resource.php:286
+#: includes/class-mltp-resource.php:287
 #: includes/modules/class-mltp-lodgify.php:185
 #: includes/modules/class-mltp-lodgify.php:192
 msgid "Resources"
@@ -257,7 +257,7 @@ msgstr "Solde acompte"
 #: includes/class-mltp-prestation.php:1128
 #: includes/class-mltp-prestation.php:1226
 #: includes/class-mltp-prestation.php:1935 includes/class-mltp-reports.php:109
-#: includes/class-mltp-reports.php:216
+#: includes/class-mltp-reports.php:217
 #: includes/modules/class-mltp-modules.php:207
 #: includes/modules/class-mltp-woocommerce.php:839
 msgid "Paid"
@@ -268,7 +268,7 @@ msgstr "Payé"
 #: includes/class-mltp-prestation.php:811
 #: includes/class-mltp-prestation.php:1136
 #: includes/class-mltp-prestation.php:1227
-#: includes/class-mltp-prestation.php:1936 includes/class-mltp-reports.php:218
+#: includes/class-mltp-prestation.php:1936 includes/class-mltp-reports.php:219
 msgid "Balance"
 msgstr "Solde"
 
@@ -679,24 +679,23 @@ msgstr "Nombre de participants"
 #: includes/class-mltp-prestation.php:792
 #: includes/class-mltp-prestation.php:1224
 #: includes/class-mltp-prestation.php:1933 includes/class-mltp-reports.php:107
-#: includes/class-mltp-reports.php:214
+#: includes/class-mltp-reports.php:216
 #: includes/modules/class-mltp-modules.php:206
 #: includes/modules/class-mltp-woocommerce.php:838
 msgid "Total"
 msgstr "Total"
 
 #: includes/class-mltp-prestation-detail.php:657
-#: includes/class-mltp-reports.php:211 includes/class-mltp-resource.php:526
+#: includes/class-mltp-reports.php:211
 msgid "Adults"
 msgstr "Adultes"
 
 #: includes/class-mltp-prestation-detail.php:664
-#: includes/class-mltp-reports.php:212 includes/class-mltp-resource.php:527
+#: includes/class-mltp-reports.php:212
 msgid "Children"
 msgstr "Enfants"
 
 #: includes/class-mltp-prestation-detail.php:671
-#: includes/class-mltp-resource.php:528
 msgid "Babies"
 msgstr "Bébés"
 
@@ -1042,11 +1041,10 @@ msgstr ""
 #: includes/class-mltp-prestation.php:639
 #: includes/class-mltp-prestation.php:1219
 #: includes/class-mltp-rates-and-taxes.php:226
-#: includes/class-mltp-resource.php:332
 msgid "Type"
 msgstr "Type"
 
-#: includes/class-mltp-prestation.php:643 includes/class-mltp-resource.php:802
+#: includes/class-mltp-prestation.php:643 includes/class-mltp-resource.php:804
 #: includes/modules/class-mltp-woocommerce.php:189
 msgid "Product"
 msgstr "Produit"
@@ -1057,7 +1055,7 @@ msgstr "Produit"
 msgid "Resource"
 msgstr "Ressource"
 
-#: includes/class-mltp-prestation.php:645 includes/class-mltp-resource.php:799
+#: includes/class-mltp-prestation.php:645 includes/class-mltp-resource.php:801
 msgid "Booking"
 msgstr "Réservation"
 
@@ -1380,7 +1378,7 @@ msgid "Rate updated."
 msgstr "Tarif mis à jour."
 
 #: includes/class-mltp-rates-and-taxes.php:109
-#: includes/class-mltp-resource.php:758
+#: includes/class-mltp-resource.php:759
 msgid "multipass"
 msgstr "multipass"
 
@@ -1403,7 +1401,6 @@ msgid "Tax"
 msgstr "Tax"
 
 #: includes/class-mltp-rates-and-taxes.php:246
-#: includes/class-mltp-resource.php:396
 msgid "Unit"
 msgstr "Unité"
 
@@ -1429,7 +1426,6 @@ msgstr "Répéter"
 
 #: includes/class-mltp-rates-and-taxes.php:301
 #: includes/class-mltp-rates-and-taxes.php:363
-#: includes/class-mltp-resource.php:372
 msgid "Rules"
 msgstr "Règles"
 
@@ -1499,21 +1495,21 @@ msgstr "ID part"
 msgid "Origin"
 msgstr "Origine"
 
-#: includes/class-mltp-reports.php:215
+#: includes/class-mltp-reports.php:214
 msgid "Part paid"
 msgstr "Pmt. part"
 
-#: includes/class-mltp-reports.php:219
+#: includes/class-mltp-reports.php:215
 msgid "Comm."
 msgstr "Comm."
 
-#: includes/class-mltp-reports.php:318
+#: includes/class-mltp-reports.php:320
 msgid "Grand total"
 msgstr "Grand total"
 
 #: includes/class-mltp-resource.php:214
 msgid "Add New Resource"
-msgstr "Ajouter un nouveau ressource"
+msgstr "Ajouter une nouvelle ressource"
 
 #: includes/class-mltp-resource.php:215
 msgid "Edit Resource"
@@ -1521,7 +1517,7 @@ msgstr "Modifier la ressource"
 
 #: includes/class-mltp-resource.php:216
 msgid "New Resource"
-msgstr "Nouveau ressource"
+msgstr "Nouvelle ressource"
 
 #: includes/class-mltp-resource.php:217
 msgid "View Resource"
@@ -1599,248 +1595,116 @@ msgstr "Ressource mise à jour."
 msgid "Select a resource"
 msgstr "Sélectionnez une ressource"
 
-#: includes/class-mltp-resource.php:292
+#: includes/class-mltp-resource.php:293
 msgid "Page"
 msgstr "Page"
 
-#: includes/class-mltp-resource.php:297
+#: includes/class-mltp-resource.php:298
 msgid "Select a page"
 msgstr "Sélectionnez une page"
 
-#: includes/class-mltp-resource.php:309 includes/class-mltp-resource.php:354
-#: includes/class-mltp-settings.php:292 includes/class-mltp-settings.php:469
+#: includes/class-mltp-resource.php:310 includes/class-mltp-settings.php:292
+#: includes/class-mltp-settings.php:469
 msgid "Settings"
 msgstr "Réglages"
 
-#: includes/class-mltp-resource.php:315 includes/class-mltp-settings.php:337
+#: includes/class-mltp-resource.php:316 includes/class-mltp-settings.php:337
 msgid "Position"
 msgstr "Position"
 
-#: includes/class-mltp-resource.php:325 includes/class-mltp-resource.php:736
-msgid "Resource Type"
-msgstr "Type de ressource"
-
-#: includes/class-mltp-resource.php:339
-msgid "Get rules from"
-msgstr "Utilisez les règles de"
-
-#: includes/class-mltp-resource.php:342
-msgctxt "option for \"Get rules from\" select field"
-msgid "Custom"
-msgstr "Personnalisées"
-
-#: includes/class-mltp-resource.php:345
-msgid "Get prices from"
-msgstr "Utilisez les prix de"
-
-#: includes/class-mltp-resource.php:348
-msgctxt "option for \"Get prices from\" select field"
-msgid "Custom"
-msgstr "Personnalisés"
-
-#: includes/class-mltp-resource.php:359
-msgid "Get rules from Parent"
-msgstr "Utilisez les règles du parent"
-
-#: includes/class-mltp-resource.php:364
-msgid "Get prices from Parent"
-msgstr "Utiliser les prix du parent"
-
-#: includes/class-mltp-resource.php:379
-msgid "Enable booking"
-msgstr "Activer la réservation"
-
-#: includes/class-mltp-resource.php:389
-msgid ""
-"Default, minimum and maximum durations are counted in hours when unit is "
-"\"%1$s\", days for \"%2$s\" or \"%3$s\". Hours can be divided (1.5, "
-"0.25...), days cannot (1, 2..). Set maximum to 0 or empty for unlimited "
-"duration."
-msgstr ""
-"Les durées par défaut, minimum et maximum sont comptées en heures lorsque "
-"l'unité de réservation est \"%s\", et en jours pour \"%s\" et \"%s\". Les "
-"heures sont divisibles (1,5 - 0,25...), les jours non-divisibles (1 - 2 "
-"- ...). Réglez le maximum sur zéro ou vide pour une durée illimitée."
-
-#: includes/class-mltp-resource.php:390 includes/class-mltp-resource.php:400
-msgctxt "booking time unit"
-msgid "Hour"
-msgstr "Horaire"
-
-#: includes/class-mltp-resource.php:391 includes/class-mltp-resource.php:401
-msgctxt "booking time unit"
-msgid "Day"
-msgstr "À la journée"
-
-#: includes/class-mltp-resource.php:392 includes/class-mltp-resource.php:402
-msgctxt "booking time unit"
-msgid "Overnight"
-msgstr "À la nuitée"
-
-#: includes/class-mltp-resource.php:407
-msgid "Default Duration"
-msgstr "Durée par défaut"
-
-#: includes/class-mltp-resource.php:415
-msgid "Min Duration"
-msgstr "Durée minimum"
-
-#: includes/class-mltp-resource.php:423
-msgid "Max Duration"
-msgstr "Durée maximum"
-
-#: includes/class-mltp-resource.php:431
-msgid "Min Time"
-msgstr "Heure minimum"
-
-#: includes/class-mltp-resource.php:441
-msgid "Max Time"
-msgstr "Heure maximum"
-
-#: includes/class-mltp-resource.php:461
-msgid "Enable attendees number"
-msgstr "Activer le nombre de participants"
-
-#: includes/class-mltp-resource.php:472
-msgid "Allow simultaneous bookings (for restaurants, shows...)"
-msgstr ""
-"Autoriser les réservations simultanées (pour les restaurants, spectacles...)"
-
-#: includes/class-mltp-resource.php:486
-msgid "Total capacity"
-msgstr "Capacité totale"
-
-#: includes/class-mltp-resource.php:492 includes/class-mltp-resource.php:541
-#: includes/class-mltp-resource.php:577
-msgid "Min"
-msgstr "Min"
-
-#: includes/class-mltp-resource.php:499 includes/class-mltp-resource.php:548
-#: includes/class-mltp-resource.php:588
-msgid "Max"
-msgstr "Max"
-
-#: includes/class-mltp-resource.php:519
-msgid "Attendee Type"
-msgstr "Catégorie de participant"
-
-#: includes/class-mltp-resource.php:533
-msgid "Count in total"
-msgstr "Inclure dans le total"
-
-#: includes/class-mltp-resource.php:571
-msgid "Enable quantity"
-msgstr "Activer la quantité"
-
-#: includes/class-mltp-resource.php:602
-msgid "Prices"
-msgstr "Prix"
-
-#: includes/class-mltp-resource.php:610
-msgid "Fixed"
-msgstr "Fixe"
-
-#: includes/class-mltp-resource.php:619
-msgid "Per Quantity"
-msgstr "Par quantité"
-
-#: includes/class-mltp-resource.php:632
-msgid "Per Booking unit"
-msgstr "Par unité de réservation"
-
-#: includes/class-mltp-resource.php:645
-msgid "Per Attendee"
-msgstr "Par participant"
-
-#: includes/class-mltp-resource.php:735 includes/class-mltp-resource.php:761
+#: includes/class-mltp-resource.php:736 includes/class-mltp-resource.php:762
 msgid "Resource Types"
 msgstr "Types de ressources"
 
 #: includes/class-mltp-resource.php:737
+msgid "Resource Type"
+msgstr "Type de ressource"
+
+#: includes/class-mltp-resource.php:738
 msgid "Types"
 msgstr "Types"
 
-#: includes/class-mltp-resource.php:738
+#: includes/class-mltp-resource.php:739
 msgid "Search types"
 msgstr "Rechercher dans les types"
 
-#: includes/class-mltp-resource.php:739
+#: includes/class-mltp-resource.php:740
 msgid "Popular types"
 msgstr "Types populaires"
 
-#: includes/class-mltp-resource.php:740
+#: includes/class-mltp-resource.php:741
 msgid "All types"
 msgstr "Tous les types"
 
-#: includes/class-mltp-resource.php:741
+#: includes/class-mltp-resource.php:742
 msgid "Parent type"
 msgstr "Type parent"
 
-#: includes/class-mltp-resource.php:742
+#: includes/class-mltp-resource.php:743
 msgid "Parent type:"
 msgstr "Type parent :"
 
-#: includes/class-mltp-resource.php:743
+#: includes/class-mltp-resource.php:744
 msgid "Edit type"
 msgstr "Modifier le type"
 
-#: includes/class-mltp-resource.php:744
+#: includes/class-mltp-resource.php:745
 msgid "View type"
 msgstr "Voir le type"
 
-#: includes/class-mltp-resource.php:745
+#: includes/class-mltp-resource.php:746
 msgid "Update type"
 msgstr "Mettre à jour le type"
 
-#: includes/class-mltp-resource.php:746
+#: includes/class-mltp-resource.php:747
 msgid "Add New type"
 msgstr "Ajouter un type"
 
-#: includes/class-mltp-resource.php:747
+#: includes/class-mltp-resource.php:748
 msgid "New type Name"
 msgstr "Nom du nouveau type"
 
-#: includes/class-mltp-resource.php:748
+#: includes/class-mltp-resource.php:749
 msgid "Separate types with commas"
 msgstr "Séparez les types par des virgules"
 
-#: includes/class-mltp-resource.php:749
+#: includes/class-mltp-resource.php:750
 msgid "Add or remove types"
 msgstr "Ajouter ou supprimer des types"
 
-#: includes/class-mltp-resource.php:750
+#: includes/class-mltp-resource.php:751
 msgid "Choose most used types"
 msgstr "Choisissez parmi les types les plus utilisés"
 
-#: includes/class-mltp-resource.php:751
+#: includes/class-mltp-resource.php:752
 msgid "No types found."
 msgstr "Aucun type trouvé."
 
-#: includes/class-mltp-resource.php:752
+#: includes/class-mltp-resource.php:753
 msgid "No types"
 msgstr "Aucun type"
 
-#: includes/class-mltp-resource.php:753
+#: includes/class-mltp-resource.php:754
 msgid "Filter by type"
 msgstr "Filtrer par type"
 
-#: includes/class-mltp-resource.php:754
+#: includes/class-mltp-resource.php:755
 msgid "Resource Types list pagination"
 msgstr "Pagination des types de ressource"
 
-#: includes/class-mltp-resource.php:755
+#: includes/class-mltp-resource.php:756
 msgid "Resource Types list"
 msgstr "Liste des types de ressource"
 
-#: includes/class-mltp-resource.php:757
+#: includes/class-mltp-resource.php:758
 msgid "&larr; Go to types"
 msgstr "&larr; Aller aux types"
 
-#: includes/class-mltp-resource.php:800
+#: includes/class-mltp-resource.php:802
 msgid "Catering"
 msgstr "Restauration"
 
-#: includes/class-mltp-resource.php:801
+#: includes/class-mltp-resource.php:803
 msgid "Service"
 msgstr "Service"
 
@@ -2351,6 +2215,108 @@ msgid "%s title / %s updated"
 msgid_plural "%s titles / %s updated"
 msgstr[0] "%s titre / %s modifié"
 msgstr[1] "%s titres / %s modifiés"
+
+#~ msgid "Get rules from"
+#~ msgstr "Utilisez les règles de"
+
+#~ msgctxt "option for \"Get rules from\" select field"
+#~ msgid "Custom"
+#~ msgstr "Personnalisées"
+
+#~ msgid "Get prices from"
+#~ msgstr "Utilisez les prix de"
+
+#~ msgctxt "option for \"Get prices from\" select field"
+#~ msgid "Custom"
+#~ msgstr "Personnalisés"
+
+#~ msgid "Get rules from Parent"
+#~ msgstr "Utilisez les règles du parent"
+
+#~ msgid "Get prices from Parent"
+#~ msgstr "Utiliser les prix du parent"
+
+#~ msgid "Enable booking"
+#~ msgstr "Activer la réservation"
+
+#~ msgid ""
+#~ "Default, minimum and maximum durations are counted in hours when unit is "
+#~ "\"%1$s\", days for \"%2$s\" or \"%3$s\". Hours can be divided (1.5, "
+#~ "0.25...), days cannot (1, 2..). Set maximum to 0 or empty for unlimited "
+#~ "duration."
+#~ msgstr ""
+#~ "Les durées par défaut, minimum et maximum sont comptées en heures lorsque "
+#~ "l'unité de réservation est \"%s\", et en jours pour \"%s\" et \"%s\". Les "
+#~ "heures sont divisibles (1,5 - 0,25...), les jours non-divisibles (1 - 2 "
+#~ "- ...). Réglez le maximum sur zéro ou vide pour une durée illimitée."
+
+#~ msgctxt "booking time unit"
+#~ msgid "Hour"
+#~ msgstr "Horaire"
+
+#~ msgctxt "booking time unit"
+#~ msgid "Day"
+#~ msgstr "À la journée"
+
+#~ msgctxt "booking time unit"
+#~ msgid "Overnight"
+#~ msgstr "À la nuitée"
+
+#~ msgid "Default Duration"
+#~ msgstr "Durée par défaut"
+
+#~ msgid "Min Duration"
+#~ msgstr "Durée minimum"
+
+#~ msgid "Max Duration"
+#~ msgstr "Durée maximum"
+
+#~ msgid "Min Time"
+#~ msgstr "Heure minimum"
+
+#~ msgid "Max Time"
+#~ msgstr "Heure maximum"
+
+#~ msgid "Enable attendees number"
+#~ msgstr "Activer le nombre de participants"
+
+#~ msgid "Allow simultaneous bookings (for restaurants, shows...)"
+#~ msgstr ""
+#~ "Autoriser les réservations simultanées (pour les restaurants, "
+#~ "spectacles...)"
+
+#~ msgid "Total capacity"
+#~ msgstr "Capacité totale"
+
+#~ msgid "Min"
+#~ msgstr "Min"
+
+#~ msgid "Max"
+#~ msgstr "Max"
+
+#~ msgid "Attendee Type"
+#~ msgstr "Catégorie de participant"
+
+#~ msgid "Count in total"
+#~ msgstr "Inclure dans le total"
+
+#~ msgid "Enable quantity"
+#~ msgstr "Activer la quantité"
+
+#~ msgid "Prices"
+#~ msgstr "Prix"
+
+#~ msgid "Fixed"
+#~ msgstr "Fixe"
+
+#~ msgid "Per Quantity"
+#~ msgstr "Par quantité"
+
+#~ msgid "Per Booking unit"
+#~ msgstr "Par unité de réservation"
+
+#~ msgid "Per Attendee"
+#~ msgstr "Par participant"
 
 #~ msgid "Validity"
 #~ msgstr "Validité"
