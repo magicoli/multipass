@@ -439,12 +439,14 @@ class Mltp_Settings {
 
 		$post_id = get_the_ID();
 		$values   = get_post_meta( $post_id, null, true );
+		$output = [];
+
 		if ( is_array( $values ) ) {
 			foreach($values as $key => $value) {
 				if(count($value) === 1) {
 					$value = reset($value);
 				}
-				if ( $unserialized = unserialize($value) ) {
+				if(is_string($value) && $unserialized = unserialize($value) ) {
 					$value = $unserialized;
 				}
 				$output[$key] = $value;
