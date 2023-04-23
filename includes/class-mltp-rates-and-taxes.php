@@ -27,13 +27,10 @@ class Mltp_Rates extends Mltp_Loader {
 	protected $filters;
 
 	public function __construct() {
-		$this->multiply_options = array(
-			'quantity' => __( 'quantity', 'multipass' ),
-			'nights'   => __( 'night', 'multipass' ),
-			'guests'   => __( 'guest', 'multipass' ),
-			'adults'   => __( 'adult', 'multipass' ),
-			'children' => __( 'child', 'multipass' ),
-			'babies'   => __( 'baby', 'multipass' ),
+		$this->guest_types = array(
+			'adults'   => __( 'adults', 'multipass' ),
+			'children' => __( 'children', 'multipass' ),
+			'babies'   => __( 'babies', 'multipass' ),
 		);
 	}
 
@@ -253,31 +250,6 @@ class Mltp_Rates extends Mltp_Loader {
 					// ],
 				),
 				array(
-					'name'     => __( 'Unit', 'multipass' ),
-					'id'       => $prefix . 'unit',
-					'type'     => 'button_group',
-					'options'  => array(
-						'percent'  => __( '%', 'multipass' ),
-						'currency' => __( '€', 'multipass' ),
-					),
-					'required' => true,
-				),
-				array(
-					'name'        => __( 'Percent of', 'multipass' ),
-					'id'          => $prefix . 'percent_of',
-					'type'        => 'select',
-					// 'type'        => 'post',
-					// 'post_type'   => ['mltp_rate'],
-					// 'field_type'  => 'select_advanced',
-					'options'     => $this->options_percent_of(),
-
-					'placeholder' => __( 'Total price', 'multipass' ),
-					'visible'     => array(
-						'when'     => array( array( 'unit', '=', 'percent' ) ),
-						'relation' => 'or',
-					),
-				),
-				array(
 					'name'              => __( 'Dates', 'multipass' ),
 					'id'                => $prefix . 'dates',
 					'type'              => 'group',
@@ -324,21 +296,61 @@ class Mltp_Rates extends Mltp_Loader {
 							'step' => 'any',
 						),
 						array(
+							'name'     => __( 'Unit', 'multipass' ),
+							'id'       => $prefix . 'unit',
+							'type'     => 'button_group',
+							'sdt' => 'currency',
+							'options'  => array(
+								'percent'  => __( '%', 'multipass' ),
+								'currency' => __( '€', 'multipass' ),
+							),
+							'required' => true,
+						),
+						array(
+							'name'        => __( 'Percent of', 'multipass' ),
+							'id'          => $prefix . 'percent_of',
+							'type'        => 'select',
+							// 'type'        => 'post',
+							// 'post_type'   => ['mltp_rate'],
+							// 'field_type'  => 'select_advanced',
+							'options'     => $this->options_percent_of(),
+
+							'placeholder' => __( 'Total price', 'multipass' ),
+							'visible'     => array(
+								'when'     => array( array( 'unit', '=', 'percent' ) ),
+								'relation' => 'or',
+							),
+						),
+						array(
 							'name'     => __( 'Multiply by', 'multipass' ),
 							'id'       => $prefix . 'multiply_by',
 							'type'     => 'button_group',
-							'options'  => $this->multiply_options,
+							'options'  => array(
+								'quantity' => __( 'quantity', 'multipass' ),
+								'guests'   => __( 'guests', 'multipass' ),
+								'nights'   => __( 'nights', 'multipass' ),
+							),
 							// 'std'     => 'nights',
 							'multiple' => true,
 							'visible'  => array(
-								'when'     => array( array( 'unit', '!=', 'percent' ) ),
-								'relation' => 'or',
+								'when'     => array( array( 'unit', '=', 'currency' ) ),
+							),
+						),
+						array(
+							'name'     => __( 'Restrict guests to', 'multipass' ),
+							'id'       => $prefix . 'multiply_restrict',
+							'type'     => 'button_group',
+							'options'  => $this->guest_types,
+							// 'std'     => 'nights',
+							'multiple' => true,
+							'visible'  => array(
+								'when'     => array( array( 'multiply_by', 'match', 'guests' ) ),
 							),
 						),
 						array(
 							'name'       => __( 'Apply to', 'multipass' ),
 							'id'         => $prefix . 'category',
-							'type'       => 'taxonomy',
+							'type'       => 'taxonomy_advanced',
 							'taxonomy'   => array( 'resource-type' ),
 							'field_type' => 'select_advanced',
 							'multiple'   => true,
@@ -451,9 +463,9 @@ class Mltp_Rates extends Mltp_Loader {
 						$guests = array();
 						foreach ( $rule['multiply_by'] as $value ) {
 							if ( in_array( $value, array( 'adults', 'children', 'babies' ) ) ) {
-								$guests[ $value ] = $this->multiply_options[ $value ];
+								$guests[ $value ] = $this->guest_types[ $value ];
 							} else {
-								$multiply[ $value ] = $this->multiply_options[ $value ];
+								$multiply[ $value ] = $this->guest_types[ $value ];
 							}
 						}
 						if ( ! empty( $guests['guests'] ) ) {
