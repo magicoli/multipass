@@ -359,7 +359,7 @@ class Mltp_Rates extends Mltp_Loader {
 			array(
 				// 'type' => __('Type', 'multipass'),
 				'dates' => __('Dates of stay', 'multipass'),
-				'dates' => __('Dates of stay', 'multipass'),
+				// 'dates' => __('Dates of stay', 'multipass'),
 				'rules' => __('Rules', 'multipass'),
 			),
 			array_slice($column_array, $i),
