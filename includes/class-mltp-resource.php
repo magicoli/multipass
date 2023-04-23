@@ -161,8 +161,9 @@ class Mltp_Resource {
 			),
 
 			array(
-				'hook'     => 'manage_resource_posts_columns',
+				'hook'     => 'manage_mltp_resource_posts_columns',
 				'callback' => 'add_admin_columns',
+				'priority' => 25,
 			),
 			array(
 				'hook'          => 'term_link',
@@ -253,7 +254,7 @@ class Mltp_Resource {
 			'label'               => esc_html__( 'Resources', 'multipass' ),
 			'labels'              => $labels,
 			'description'         => '',
-			'public'              => true,
+			'public'              => false,
 			'hierarchical'        => true,
 			'exclude_from_search' => false,
 			'publicly_queryable'  => true,
@@ -352,26 +353,28 @@ class Mltp_Resource {
 					'id'            => 'position',
 					'type'          => 'number',
 					'size'          => 5,
-					'admin_columns' => array(
-						'position' => 'after title',
-						'sort'     => true,
-					),
+					// 'admin_columns' => array(
+					// 	'position' => 'after title',
+					// 	'sort'     => true,
+					// ),
 				),
-				array(
-					'name'          => __( 'Resource Type', 'multipass' ),
-					'id'            => $prefix . 'resource_type',
-					'type'          => 'taxonomy',
-					'taxonomy'      => array( 'resource-type' ),
-					'field_type'    => 'hidden',
-					'readonly'      => true,
-					// 'remove_default' => true,
-					'admin_columns' => array(
-						'title'      => __( 'Type', 'multipass' ),
-						'position'   => 'after title',
-						'sort'       => true,
-						'filterable' => true,
-					),
-				),
+				// array(
+				// 	'name'          => __( 'Resource Type', 'multipass' ),
+				// 	'id'            => $prefix . 'resource_type',
+				// 	'type'          => 'taxonomy',
+				// 	'taxonomy'      => array( 'resource-type' ),
+				// 	'field_type'    => 'select_advanced',
+				// 	// 'disabled'      => true,
+				// 	// 'readonly'      => true,
+				// 	// 'hidden' => true,
+				// 	'remove_default' => true,
+				// 	'admin_columns' => array(
+				// 		'title'      => __( 'Type', 'multipass' ),
+				// 		'position'   => 'after title',
+				// 		'sort'       => true,
+				// 		'filterable' => true,
+				// 	),
+				// ),
 				// array(
 				// 'name'        => __( 'Get rules from', 'multipass' ),
 				// 'id'          => $prefix . 'get_rules_from',
@@ -807,7 +810,12 @@ class Mltp_Resource {
 			'show_in_rest'       => true,
 			'show_tagcloud'      => false,
 			'show_in_quick_edit' => true,
-			'show_admin_column'  => false,
+			'show_admin_column'  => true,
+			'admin_columns'  => [
+					'position'   => 'after title',
+					'searchable' => true,
+					'filterable' => true,
+			],
 			'query_var'          => true,
 			'sort'               => false,
 			'meta_box_cb'        => 'post_categories_meta_box',
@@ -856,7 +864,17 @@ class Mltp_Resource {
 	 * @param array $columns Columns.
 	 */
 	public static function add_admin_columns( $columns ) {
-		// $columns['taxonomy-resource-type'] = __( 'Resource Type', 'multipass' );
+
+		$i = array_search('title', array_keys($columns)) + 1;
+		$columns = array_merge(
+			array_slice($columns, 0, $i),
+			array(
+				'taxonomy-resource-type' => __('Resource Category', 'multipass'),
+			),
+			array_slice($columns, $i),
+		);
+		error_log("columns " . print_r($columns, true));
+		$columns['date'] = __('Publication', 'multipass');
 		return $columns;
 	}
 
