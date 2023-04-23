@@ -250,7 +250,7 @@ class Mltp_Rates extends Mltp_Loader {
 					// ],
 				),
 				array(
-					'name'              => __( 'Dates', 'multipass' ),
+					'name'              => __( 'Stay dates', 'multipass' ),
 					'id'                => $prefix . 'dates',
 					'type'              => 'group',
 					'clone'             => true,
@@ -269,16 +269,60 @@ class Mltp_Rates extends Mltp_Loader {
 							'type'      => 'date',
 							'timestamp' => true,
 						),
+						array(
+							'name'      => __( 'Repeat', 'multipass' ),
+							'id'        => $prefix . 'repeat',
+							'type'      => 'switch',
+							'style'     => 'rounded',
+							'on_label'  => 'Yes',
+							'off_label' => 'No',
+						),
 					),
 				),
-				array(
-					'name'      => __( 'Repeat', 'multipass' ),
-					'id'        => $prefix . 'repeat',
-					'type'      => 'switch',
-					'style'     => 'rounded',
-					'on_label'  => 'Yes',
-					'off_label' => 'No',
-				),
+				[
+						'name'   => __( 'Booking time', 'multipass' ),
+						'id'     => $prefix . 'booking_time',
+						'type'   => 'group',
+						'class'  => 'inline',
+						'fields' => [
+								[
+										'name'   => __( 'Maximum', 'multipass' ),
+										'id'     => $prefix . 'max',
+										'type'   => 'number',
+										'size'   => 5,
+										'append' => 'days before stay',
+								],
+								[
+										'name'    => __( 'From (date)', 'multipass' ),
+										'id'      => $prefix . 'from_date',
+										'type'    => 'date',
+										'visible' => [
+												'when'     => [['max', '=', ''], ['from_date', '!=', '']],
+												'relation' => 'or',
+										],
+								],
+								[
+										'type'       => 'divider',
+										'save_field' => false,
+								],
+								[
+										'name'   => __( 'Minimum', 'multipass' ),
+										'id'     => $prefix . 'min',
+										'type'   => 'number',
+										'size'   => 5,
+										'append' => 'days before stay',
+								],
+								[
+										'name'    => __( 'To (date)', 'multipass' ),
+										'id'      => $prefix . 'to_date',
+										'type'    => 'date',
+										'visible' => [
+												'when'     => [['booking_time_min', '=', '']],
+												'relation' => 'or',
+										],
+								],
+						],
+				],
 				array(
 					'name'              => __( 'Rules', 'multipass' ),
 					'id'                => $prefix . 'rules',
