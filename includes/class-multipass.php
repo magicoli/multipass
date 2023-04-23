@@ -105,20 +105,18 @@ class MultiPass {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
-		add_action('init', array($this, 'register_session'));
+		add_action( 'init', array( $this, 'register_session' ) );
 	}
 
-	function register_session()
-	{
-		if (preg_match('/^\/multipass(\/)?$/', $_SERVER['REQUEST_URI'])) {
-			wp_redirect(admin_url('admin.php?page=multipass'));
+	function register_session() {
+		if ( preg_match( '/^\/multipass(\/)?$/', $_SERVER['REQUEST_URI'] ) ) {
+			wp_redirect( admin_url( 'admin.php?page=multipass' ) );
 			exit;
 		}
 
-	  if( !session_id() )
-	  {
-	    session_start();
-	  }
+		if ( ! session_id() ) {
+			session_start();
+		}
 
 	}
 
@@ -554,9 +552,9 @@ class MultiPass {
 	}
 
 	// static function timestamp( $date ) {
-	// 	$timestamp = (is_array($date) && isset($date['timestamp'])) ? $date['timestamp'] : $date;
-	// 	return empty($timestamp) ? null : intval($timestamp);
-	// 	// return ( is_integer( $timestamp) &! empty($timestamp)) ? $timestamp : null;
+	// $timestamp = (is_array($date) && isset($date['timestamp'])) ? $date['timestamp'] : $date;
+	// return empty($timestamp) ? null : intval($timestamp);
+	// return ( is_integer( $timestamp) &! empty($timestamp)) ? $timestamp : null;
 	// }
 
 	static function timestamp( $timestamp ) {
@@ -582,16 +580,18 @@ class MultiPass {
 		return null;
 	}
 
-	static function array_join( $array, $sep = ', ') {
-		if(!is_array($array)) return $array;
+	static function array_join( $array, $sep = ', ' ) {
+		if ( ! is_array( $array ) ) {
+			return $array;
+		}
 		$rows = array();
-		foreach ($array as $row) {
-			if(is_array($row)) {
-				$row = self::array_join($row, ' ');
+		foreach ( $array as $row ) {
+			if ( is_array( $row ) ) {
+				$row = self::array_join( $row, ' ' );
 			}
 			$rows[] = $row;
 		}
-		return str_replace("$sep#", ' #', join($sep, array_filter($rows) ) );
+		return str_replace( "$sep#", ' #', join( $sep, array_filter( $rows ) ) );
 	}
 
 	static function format_date( $timestamp, $datetype_str = 'RELATIVE_MEDIUM', $timetype_str = 'NONE' ) {
@@ -625,23 +625,23 @@ class MultiPass {
 			$dates = array( $dates );
 		}
 		$dates_debug = $dates;
-		$dates = array_filter( $dates );
-		if ( count( $dates ) == 2 || isset($dates['from'])) {
+		$dates       = array_filter( $dates );
+		if ( count( $dates ) == 2 || isset( $dates['from'] ) ) {
 			if ( ! isset( $dates['from'] ) ) {
 				$dates = array(
 					'from' => $dates[0],
 					'to'   => $dates[1],
 				);
 			}
-			if(empty($dates['to'])) {
-				return self::format_date($dates['from']);
+			if ( empty( $dates['to'] ) ) {
+				return self::format_date( $dates['from'] );
 			}
 			$datetype = constant( 'IntlDateFormatter::' . preg_replace( '/RELATIVE_/', '', $datetype_str ) );
 			$timetype = constant( 'IntlDateFormatter::' . preg_replace( '/RELATIVE_/', '', $timetype_str ) );
 			$ranger   = new OpenPsa\Ranger\Ranger( get_locale() );
 			$ranger->setDateType( $datetype )->setTimeType( $timetype );
-			$from   = ( isset( $dates['from'] ) ) ? MultiPass::timestamp($dates['from']) : null;
-			$to   = ( isset( $dates['to'] ) ) ? MultiPass::timestamp($dates['to']) : null;
+			$from = ( isset( $dates['from'] ) ) ? self::timestamp( $dates['from'] ) : null;
+			$to   = ( isset( $dates['to'] ) ) ? self::timestamp( $dates['to'] ) : null;
 			return $ranger->format(
 				$from,
 				$to,
@@ -652,8 +652,8 @@ class MultiPass {
 		$timetype  = constant( "IntlDateFormatter::$timetype_str" );
 		$formatted = array();
 		foreach ( $dates as $key => $date ) {
-			$formatter   = new IntlDateFormatter( get_locale(), $datetype, $timetype );
-			if( is_array($date) &! empty($date['timestamp']) ) {
+			$formatter = new IntlDateFormatter( get_locale(), $datetype, $timetype );
+			if ( is_array( $date ) & ! empty( $date['timestamp'] ) ) {
 				$formatted[] = $formatter->format( $date['timestamp'] );
 			}
 		}
@@ -972,7 +972,7 @@ class MultiPass {
 		$sources = array();
 		$terms   = get_terms( 'mltp_detail-source' );
 		foreach ( $terms as $term ) {
-			if(! empty($term->slug) &! empty($term->name) ) {
+			if ( ! empty( $term->slug ) & ! empty( $term->name ) ) {
 				$sources[ $term->slug ] = $term->name;
 			}
 		}

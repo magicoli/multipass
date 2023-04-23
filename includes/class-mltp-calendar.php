@@ -56,14 +56,6 @@ class Mltp_Calendar {
 	public function init() {
 
 		$actions = array(
-			// array(
-			// 'hook'     => 'init',
-			// 'callback' => 'register_post_types',
-			// ),
-			// array(
-			// 	'hook'     => 'init',
-			// 	'callback' => 'register_taxonomies',
-			// ),
 			array(
 				'hook'     => 'admin_menu',
 				'callback' => 'admin_menu_action',
@@ -93,15 +85,6 @@ class Mltp_Calendar {
 				'callback' => 'register_settings_fields',
 			),
 
-			// array(
-			// 	'hook'     => 'rwmb_meta_boxes',
-			// 	'callback' => 'register_fields',
-			// ),
-
-			// array(
-			// 'hook'     => 'manage_calendar_posts_columns',
-			// 'callback' => 'add_admin_columns',
-			// ),
 			array(
 				'hook'          => 'term_link',
 				'callback'      => 'term_link_filter',
@@ -187,7 +170,7 @@ class Mltp_Calendar {
 				array(
 					'type' => 'custom_html',
 					'std'  => sprintf(
-						__( 'To create or delete sections, go to %1$sCalendar Sections edit page%2$s.', 'multipass' ),
+						__( 'To create or delete sections, go to %1$sResource Categories edit page%2$s.', 'multipass' ),
 						'<a href="' . get_admin_url( null, 'edit-tags.php?taxonomy=resource-type&post_type=prestation' ) . '">',
 						'</a>',
 					),
@@ -196,144 +179,6 @@ class Mltp_Calendar {
 		);
 
 		return $meta_boxes;
-	}
-
-	/**
-	 * Register Calendars fields
-	 *
-	 * @param  array $meta_boxes current metaboxes.
-	 * @return array                updated metaboxes.
-	 */
-	public static function register_fields( $meta_boxes ) {
-		$prefix = '';
-
-		$meta_boxes[] = array(
-			'title'      => __( 'Calendar', 'multipass' ),
-			'id'         => 'calendar',
-			'post_types' => array( 'mltp_resource' ),
-			'context'    => 'side',
-			'priority'   => 'low',
-			'autosave'   => true,
-			'fields'     => array(
-				array(
-					// 'name'           => __( 'Calendar Section', 'prestations' ),
-					'id'             => $prefix . 'calendar_section',
-					'type'           => 'taxonomy',
-					'taxonomy'       => array( 'resource-type' ),
-					'field_type'     => 'select',
-					'remove_default' => true,
-					'placeholder'    => _x( 'None', 'Calendar section', 'multipass' ),
-					'admin_columns'  => array(
-						'position'   => 'after resource_resource_type',
-						'title'      => __( 'Calendar', 'multipass' ),
-						'sort'       => true,
-						'filterable' => true,
-					),
-				),
-			),
-		);
-
-		return $meta_boxes;
-	}
-
-	/**
-	 * Register resource-type taxonomy.
-	 *
-	 * @return void
-	 */
-	public static function register_taxonomies() {
-		$labels = array(
-			'name'                       => esc_html__( 'Calendar Sections', 'multipass' ),
-			'singular_name'              => esc_html__( 'Calendar Section', 'multipass' ),
-			'menu_name'                  => esc_html__( 'Sections', 'multipass' ),
-			'search_items'               => esc_html__( 'Search Calendar Sections', 'multipass' ),
-			'popular_items'              => esc_html__( 'Popular Calendar Sections', 'multipass' ),
-			'all_items'                  => esc_html__( 'All Calendar Sections', 'multipass' ),
-			'parent_item'                => esc_html__( 'Parent Calendar Section', 'multipass' ),
-			'parent_item_colon'          => esc_html__( 'Parent Calendar Section:', 'multipass' ),
-			'edit_item'                  => esc_html__( 'Edit Calendar Section', 'multipass' ),
-			'view_item'                  => esc_html__( 'View Calendar Section', 'multipass' ),
-			'update_item'                => esc_html__( 'Update Calendar Section', 'multipass' ),
-			'add_new_item'               => esc_html__( 'Add New Calendar Section', 'multipass' ),
-			'new_item_name'              => esc_html__( 'New Calendar Section Name', 'multipass' ),
-			'separate_items_with_commas' => esc_html__( 'Separate calendar sections with commas', 'multipass' ),
-			'add_or_remove_items'        => esc_html__( 'Add or remove calendar sections', 'multipass' ),
-			'choose_from_most_used'      => esc_html__( 'Choose most used calendar sections', 'multipass' ),
-			'not_found'                  => esc_html__( 'No calendar sections found.', 'multipass' ),
-			'no_terms'                   => esc_html__( 'No calendar sections', 'multipass' ),
-			'filter_by_item'             => esc_html__( 'Filter by calendar section', 'multipass' ),
-			'items_list_navigation'      => esc_html__( 'Calendar Sections list pagination', 'multipass' ),
-			'items_list'                 => esc_html__( 'Calendar Sections list', 'multipass' ),
-			'most_used'                  => esc_html__( 'Most Used', 'multipass' ),
-			'back_to_items'              => esc_html__( '&larr; Go to Calendar Sections', 'multipass' ),
-			'text_domain'                => 'multipass',
-		);
-		$args   = array(
-			'label'              => esc_html__( 'Calendar Sections', 'multipass' ),
-			'labels'             => $labels,
-			'description'        => '',
-			'public'             => true,
-			'publicly_queryable' => true,
-			'hierarchical'       => false,
-			'show_ui'            => true,
-			'show_in_menu'       => true,
-			'show_in_nav_menus'  => true,
-			'show_in_rest'       => true,
-			'show_tagcloud'      => true,
-			'show_in_quick_edit' => true,
-			'show_admin_column'  => false,
-			'query_var'          => true,
-			'sort'               => false,
-			'meta_box_cb'        => 'post_tags_meta_box',
-			'rest_base'          => '',
-			'rewrite'            => array(
-				'with_front'   => false,
-				'hierarchical' => false,
-			),
-			// 'default_term' => array(
-			// 'name' => _x( 'Main', 'Calendar', 'multipass' ),
-			// 'slug' => 'main',
-			// 'description' => __('Main calendar', 'multipass'),
-			// ),
-			'built_in'           => true,
-		);
-		register_taxonomy( 'resource-type', array( 'mltp_resource' ), $args );
-
-		if ( MultiPass::debug() ) {
-			add_submenu_page(
-				'multipass', // string $parent_slug,
-				$labels['name'], // string $page_title,
-				'<span class="dashicons dashicons-admin-tools"></span> ' . $labels['menu_name'], // string $menu_title,
-				'mltp_administrator', // string $capability,
-				'edit-tags.php?taxonomy=resource-type&post_type=mltp_resource', // string $menu_slug,
-			);
-		}
-		add_action( 'resource-type_pre_add_form', 'MultiPass::back_to_multipass_button' );
-
-		/**
-		 * Should use default_term instead but we must handle renaming.
-		 */
-		$terms = get_terms( 'mltp_detail-source' );
-		if ( empty( $terms ) ) {
-			MultiPass::register_terms(
-				'resource-type',
-				array(
-					// 'none'   => _x( 'None', 'Calendar section', 'multipass' ),
-					'main'    => _x( 'Main', 'Calendar', 'multipass' ),
-					'options' => __( 'Options', 'multipass' ),
-				)
-			);
-		}
-	}
-
-	/**
-	 * Define additional columns for Calendars admin list.
-	 *
-	 * @param array $columns Columns.
-	 */
-	public static function add_admin_columns( $columns ) {
-		// $columns['taxonomy-resource-type'] = __( 'Calendar Type', 'multipass' );
-		return $columns;
 	}
 
 	/**
@@ -404,27 +249,6 @@ class Mltp_Calendar {
 		$content = '(no content yet)';
 		$actions = '';
 
-		// $args  = array(
-		// 'post_type'      => 'mltp_resource',
-		// 'posts_per_page' => -1,
-		// 'post__not_in'   => array( 498 ),
-		// );
-		// $query = new WP_Query( $args );
-		// if ( $query->have_posts() ) {
-		// $actions  = '<span class="navbar">';
-		// $actions .= '<button class="button filter-bookings" data-room="all">ALL</button> ';
-		// while ( $query->have_posts() ) {
-		// $query->the_post();
-		// $actions .= sprintf(
-		// '<button class="button filter-bookings" data-room="all">ALL</button>',
-		// '<button class="button filter-bookings" data-room="%s">%s</button> ',
-		// get_the_ID(),
-		// get_the_title(),
-		// );
-		// }
-		// $actions .= '</span>';
-		// }
-
 		printf(
 			'<div id="mltp-calendar-wrapper" class="wrap">
 				<div id="mltp-placeholder">
@@ -454,8 +278,9 @@ class Mltp_Calendar {
 			$sections_ordering = explode( ',', MultiPass::get_option( 'sections_ordering' ) );
 			$sections          = array_fill_keys( $sections_ordering, array() );
 			foreach ( $terms as $term ) {
-				if(isset($sections[ $term->term_id ]))
-				$sections[ $term->term_id ] = $term;
+				if ( isset( $sections[ $term->term_id ] ) ) {
+					$sections[ $term->term_id ] = $term;
+				}
 			}
 			$sections = array_filter( $sections );
 
@@ -573,13 +398,6 @@ class Mltp_Calendar {
 				$origin      = get_post_meta( $item_id, 'origin', true );
 				// $origin      = ( empty( $origin ) ) ? get_post_meta( $item_id, 'source', true ) : $origin;
 
-				// $closed_period = get_post_meta( get_the_ID(), 'closed_period', true );
-				// $closed_status = get_post_meta( get_the_ID(), 'status', true );
-				// if(12659 === $item_id) {
-				// error_log(print_r(get_post_meta($item_id, 'status'), true));
-				// }
-				// if($closed_period || 'closed' === $closed_status) $classes[] = 'closed-period';
-
 				$classes = array_unique(
 					array_merge(
 						$classes,
@@ -640,14 +458,14 @@ class Mltp_Calendar {
 		$event->total    = round( $event->total, 2 );
 		$event->subtotal = round( $event->subtotal, 2 );
 
-		$guests = MultiPass::format_count( get_post_meta( $event->id, 'attendees', true ), 'long_with_total' );
-		$beds   = MultiPass::format_count( get_post_meta( $event->id, 'beds', true ) );
-		$dates = get_post_meta( $event->id, 'dates', true );
+		$guests         = MultiPass::format_count( get_post_meta( $event->id, 'attendees', true ), 'long_with_total' );
+		$beds           = MultiPass::format_count( get_post_meta( $event->id, 'beds', true ) );
+		$dates          = get_post_meta( $event->id, 'dates', true );
 		$event->checkin = get_post_meta( $event->id, 'checkin', true );
 
-		$prestation_id = empty($event->prestation_id) ? null : $event->prestation_id;
-		$prestation = new Mltp_Prestation( $prestation_id );
-		if( ! $prestation->is_prestation() ) {
+		$prestation_id = empty( $event->prestation_id ) ? null : $event->prestation_id;
+		$prestation    = new Mltp_Prestation( $prestation_id );
+		if ( ! $prestation->is_prestation() ) {
 			// MultiPass::debug('event', $event->id, 'prestation', $event->prestation_id, 'not a prestation', $prestation);
 			return '';
 		}
@@ -655,28 +473,27 @@ class Mltp_Calendar {
 		$contact['email'] = ( empty( $prestation->customer_email ) ) ? $event->email : $prestation->customer_email;
 		$contact['phone'] = ( empty( $prestation->customer_phone ) ) ? $event->phone : $prestation->customer_phone;
 
-
-		$p_begin = MultiPass::timestamp ( isset($prestation->dates['from']) ? $prestation->dates['from'] : $prestation->from );
-		$p_end = MultiPass::timestamp ( isset($prestation->dates['to']) ? $prestation->dates['to'] : $prestation->to );
+		$p_begin = MultiPass::timestamp( isset( $prestation->dates['from'] ) ? $prestation->dates['from'] : $prestation->from );
+		$p_end   = MultiPass::timestamp( isset( $prestation->dates['to'] ) ? $prestation->dates['to'] : $prestation->to );
 		// error_log(print_r(array(
-		// 	'begin' => $p_begin,
-		// 	'end' => $p_end,
+		// 'begin' => $p_begin,
+		// 'end' => $p_end,
 		// ), true) );
-		if ( ! empty(isset($prestation->nights))) {
-			$nights = isset($prestation->nights);
-		} else if( ! empty($p_begin) &! empty($p_end) && $p_end > $p_begin ) {
-			$nights = ( (int)$p_end - (int)$p_begin ) / 86400;
+		if ( ! empty( isset( $prestation->nights ) ) ) {
+			$nights = isset( $prestation->nights );
+		} elseif ( ! empty( $p_begin ) & ! empty( $p_end ) && $p_end > $p_begin ) {
+			$nights = ( (int) $p_end - (int) $p_begin ) / 86400;
 		} else {
 			$nights = null;
 		}
-		$nights = round($nights, 0);
+		$nights = round( $nights, 0 );
 
 		$data = array(
 			'prestation' => array(
 				// __( 'Dates', 'multipass' )               => MultiPass::format_date_range( $prestation->dates ),
-				__( 'Begin', 'multipass' )               => MultiPass::format_date($p_begin),
-				__( 'End', 'multipass' )               => MultiPass::format_date($p_end),
-				__( 'Nights', 'multipass' )               => $nights,
+				__( 'Begin', 'multipass' )               => MultiPass::format_date( $p_begin ),
+				__( 'End', 'multipass' )                 => MultiPass::format_date( $p_end ),
+				__( 'Nights', 'multipass' )              => $nights,
 				_x( 'Contact', '(noun)', '(noun)', 'multipass' ) => $contact['name'],
 				_x( 'Email', '(noun)', 'multipass' )     => MultiPass::link( $contact['email'], null, array( 'tabindex' => -1 ) ),
 				_x( 'Phone', '(noun)', 'multipass' )     => MultiPass::link( $contact['phone'], null, array( 'tabindex' => -1 ) ),
@@ -686,7 +503,7 @@ class Mltp_Calendar {
 				__( 'Prestation total', 'multipass' )    => MultiPass::price( $prestation->total ),
 				__( 'Deposit', 'multipass' )             => MultiPass::price( $prestation->deposit ),
 				__( 'Deposit balance', 'multipass' )     => is_numeric( $prestation->deposit ) ? MultiPass::price_with_links( $prestation, $prestation->deposit - $prestation->paid ) : null,
-				'total_paid'                => empty($prestation->paid) ? null : array(
+				'total_paid'                             => empty( $prestation->paid ) ? null : array(
 					'label' => __( 'Paid', 'multipass' ),
 					'value' => MultiPass::price( $prestation->paid ),
 				),
@@ -696,22 +513,10 @@ class Mltp_Calendar {
 			'booking'    => array(
 				__( 'Item', 'multipass' )          => $event->title,
 				// __( 'Dates', 'multipass' )         => MultiPass::format_date_range( array( $event->display_start, $event->display_end ) ),
-				__( 'Check in', 'multipass' )         => MultiPass::format_date( $event->display_start) . ' ' . @$event->checkin,
-				__( 'Check out', 'multipass' )         => MultiPass::format_date( $event->display_end) . ' ' . @$event->checkout,
-				// ),
-				// 'contact'    => array(
-			// ),
-			// 'prices'     => array(
-				// __( 'Deposit', 'multipass' )  => MultiPass::price( $event->deposit ),
-				// __( 'Item paid', 'multipass' )     => MultiPass::price( $event->paid ),
-				// 'item_paid'                => empty($prestation->paid) ? null : array(
-				// 	'label' => __( 'Item paid', 'multipass' ),
-				// 	'value' => MultiPass::price( $event->paid ),
-				// ),
-				// __( 'Item balance', 'multipass' )  => MultiPass::price( $event->balance ),
+				__( 'Check in', 'multipass' )      => MultiPass::format_date( $event->display_start ) . ' ' . @$event->checkin,
+				__( 'Check out', 'multipass' )     => MultiPass::format_date( $event->display_end ) . ' ' . @$event->checkout,
 				__( 'Guests', 'multipass' )        => $guests,
 				__( 'Beds', 'multipass' )          => $beds,
-				// __( 'Check in', 'multipass' )          => $event->checkin,
 				__( 'Item subtotal', 'multipass' ) => ( $event->subtotal === $event->total ) ? null : MultiPass::price( $event->subtotal ),
 				__( 'Item discount', 'multipass' ) => MultiPass::price( $event->discount ),
 				__( 'Item total', 'multipass' )    => MultiPass::price( $event->total ),
@@ -727,18 +532,12 @@ class Mltp_Calendar {
 			if ( empty( $lines ) ) {
 				continue;
 			}
-			// if(!empty($rows)) {
-				// $rows[$section] = 'divider';
-			// }
 			$rows = array_merge( $rows, array( 'divider' ), $lines );
 		}
 
 		// $rows = array_filter($rows);
 		if ( MultiPass::debug() ) {
 			$extra = array();
-			// $extra['Source']    = get_post_meta( $event->id, 'source', true ) . ' ' . get_post_meta( $event->id, 'source_id', true );
-			// $extra['Origin']    = get_post_meta( $event->id, 'origin', true ) . ' ' . get_post_meta( $event->id, 'origin_id', true );
-			// $extra['Debug']     = '<pre>' . print_r( MultiPass::get_registered_sources(), true ) . '</pre>';
 
 			$sources = array_merge(
 				array(
@@ -774,8 +573,8 @@ class Mltp_Calendar {
 					'<hr>',
 				);
 			} else {
-				if(is_array($value)) {
-					$row = $value['label'];
+				if ( is_array( $value ) ) {
+					$row   = $value['label'];
 					$value = $value['value'];
 				}
 				$html .= sprintf(
@@ -817,49 +616,6 @@ class Mltp_Calendar {
 					);
 				}
 			}
-
-			/**
-			 * Quick fix to get source url stored by the module instead of calculated
-			 * one, which might differ, e.g. for closed periods. Best approach would
-			 * be to use a filter to generate source url, and to pass context like
-			 * closed periods.
-			 */
-			// $overrides = array_filter(
-			// array(
-			// $event->source => $event->source_url,
-			// $event->origin => $event->origin_url,
-			// )
-			// );
-			// foreach ( $overrides as $source => $source_url ) {
-			// if ( empty( $source ) ) {
-			// continue;
-			// }
-			// $source_name      = ( empty( $sources[ $source ] ) ) ? $source : $sources[ $source ];
-			// $links[ $source ] = array(
-			// 'label' => sprintf( __( 'View on %s', 'multipass' ), $source_name ),
-			// 'url'   => $source_url,
-			// 'icon'  => 'external',
-			// );
-			// }
-			// End quick fix
-
-			// if ( ! empty( $event->origin ) && $event->origin != $event->source ) {
-			// $links['origin'] = array(
-			// 'label' => sprintf(
-			// __( 'Edit on %s', 'multipass' ),
-			// $event->origin,
-			// ),
-			// 'url'   => $event->origin_url,
-			// 'icon'  => ( $event->source === 'woocommerce' ) ? 'cart' : 'external',
-			// );
-			// }
-			// if ( ! empty( $links['source']['url'] ) & ! empty( $links['origin']['url'] ) && $links['source']['url'] === $links['origin']['url'] ) {
-			// unset( $links['origin'] );
-			// }
-			// if ( ! empty( $links['view']['url'] ) & ! empty( $links['details']['url'] ) && $links['view']['url'] === $links['details']['url'] ) {
-			// unset( $links['view'] );
-			// }
-
 		}
 
 		if ( ! empty( $links ) ) {
@@ -886,13 +642,6 @@ class Mltp_Calendar {
 			$html .= '<ul class="modal-buttons">' . $links_html . '</ul>';
 		}
 
-		// if ( ! empty( $event->edit_url ) ) {
-		// $html .= sprintf(
-		// '<a href="%s">%s</a>',
-		// $event->edit_url,
-		// __( 'Edit event', 'multipass' ),
-		// );
-		// }
 		return $html;
 	}
 }
