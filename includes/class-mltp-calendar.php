@@ -60,10 +60,10 @@ class Mltp_Calendar {
 			// 'hook'     => 'init',
 			// 'callback' => 'register_post_types',
 			// ),
-			array(
-				'hook'     => 'init',
-				'callback' => 'register_taxonomies',
-			),
+			// array(
+			// 	'hook'     => 'init',
+			// 	'callback' => 'register_taxonomies',
+			// ),
 			array(
 				'hook'     => 'admin_menu',
 				'callback' => 'admin_menu_action',
@@ -93,10 +93,10 @@ class Mltp_Calendar {
 				'callback' => 'register_settings_fields',
 			),
 
-			array(
-				'hook'     => 'rwmb_meta_boxes',
-				'callback' => 'register_fields',
-			),
+			// array(
+			// 	'hook'     => 'rwmb_meta_boxes',
+			// 	'callback' => 'register_fields',
+			// ),
 
 			// array(
 			// 'hook'     => 'manage_calendar_posts_columns',
@@ -179,7 +179,7 @@ class Mltp_Calendar {
 						'<a href="' . get_admin_url( null, 'admin.php?page=multipass' ) . '">',
 						'</a>',
 					),
-					'taxonomy'          => array( 'calendar-section' ),
+					'taxonomy'          => array( 'resource-type' ),
 					'field_type'        => 'select_advanced',
 					'multiple'          => true,
 					'select_all_none'   => true,
@@ -188,7 +188,7 @@ class Mltp_Calendar {
 					'type' => 'custom_html',
 					'std'  => sprintf(
 						__( 'To create or delete sections, go to %1$sCalendar Sections edit page%2$s.', 'multipass' ),
-						'<a href="' . get_admin_url( null, 'edit-tags.php?taxonomy=calendar-section&post_type=prestation' ) . '">',
+						'<a href="' . get_admin_url( null, 'edit-tags.php?taxonomy=resource-type&post_type=prestation' ) . '">',
 						'</a>',
 					),
 				),
@@ -219,7 +219,7 @@ class Mltp_Calendar {
 					// 'name'           => __( 'Calendar Section', 'prestations' ),
 					'id'             => $prefix . 'calendar_section',
 					'type'           => 'taxonomy',
-					'taxonomy'       => array( 'calendar-section' ),
+					'taxonomy'       => array( 'resource-type' ),
 					'field_type'     => 'select',
 					'remove_default' => true,
 					'placeholder'    => _x( 'None', 'Calendar section', 'multipass' ),
@@ -237,7 +237,7 @@ class Mltp_Calendar {
 	}
 
 	/**
-	 * Register calendar-section taxonomy.
+	 * Register resource-type taxonomy.
 	 *
 	 * @return void
 	 */
@@ -297,7 +297,7 @@ class Mltp_Calendar {
 			// ),
 			'built_in'           => true,
 		);
-		register_taxonomy( 'calendar-section', array( 'mltp_resource' ), $args );
+		register_taxonomy( 'resource-type', array( 'mltp_resource' ), $args );
 
 		if ( MultiPass::debug() ) {
 			add_submenu_page(
@@ -305,10 +305,10 @@ class Mltp_Calendar {
 				$labels['name'], // string $page_title,
 				'<span class="dashicons dashicons-admin-tools"></span> ' . $labels['menu_name'], // string $menu_title,
 				'mltp_administrator', // string $capability,
-				'edit-tags.php?taxonomy=calendar-section&post_type=mltp_resource', // string $menu_slug,
+				'edit-tags.php?taxonomy=resource-type&post_type=mltp_resource', // string $menu_slug,
 			);
 		}
-		add_action( 'calendar-section_pre_add_form', 'MultiPass::back_to_multipass_button' );
+		add_action( 'resource-type_pre_add_form', 'MultiPass::back_to_multipass_button' );
 
 		/**
 		 * Should use default_term instead but we must handle renaming.
@@ -316,7 +316,7 @@ class Mltp_Calendar {
 		$terms = get_terms( 'mltp_detail-source' );
 		if ( empty( $terms ) ) {
 			MultiPass::register_terms(
-				'calendar-section',
+				'resource-type',
 				array(
 					// 'none'   => _x( 'None', 'Calendar section', 'multipass' ),
 					'main'    => _x( 'Main', 'Calendar', 'multipass' ),
@@ -332,7 +332,7 @@ class Mltp_Calendar {
 	 * @param array $columns Columns.
 	 */
 	public static function add_admin_columns( $columns ) {
-		// $columns['taxonomy-calendar-section'] = __( 'Calendar Type', 'multipass' );
+		// $columns['taxonomy-resource-type'] = __( 'Calendar Type', 'multipass' );
 		return $columns;
 	}
 
@@ -345,7 +345,7 @@ class Mltp_Calendar {
 	 * @return string             Term link URL.
 	 */
 	public static function term_link_filter( $termlink, $term, $taxonomy ) {
-		if ( 'calendar-section' === $taxonomy || 'resource-type' === $taxonomy ) {
+		if ( 'resource-type' === $taxonomy || 'resource-type' === $taxonomy ) {
 			return add_query_arg(
 				array(
 					$taxonomy => $term->slug,
@@ -446,7 +446,7 @@ class Mltp_Calendar {
 		);
 		$terms       = get_terms(
 			array(
-				'taxonomy'   => 'calendar-section',
+				'taxonomy'   => 'resource-type',
 				'hide_empty' => true,
 			)
 		);
@@ -454,6 +454,7 @@ class Mltp_Calendar {
 			$sections_ordering = explode( ',', MultiPass::get_option( 'sections_ordering' ) );
 			$sections          = array_fill_keys( $sections_ordering, array() );
 			foreach ( $terms as $term ) {
+				if(isset($sections[ $term->term_id ]))
 				$sections[ $term->term_id ] = $term;
 			}
 			$sections = array_filter( $sections );
@@ -475,7 +476,7 @@ class Mltp_Calendar {
 					'order'          => 'ASC',
 					'tax_query'      => array(
 						array(
-							'taxonomy' => 'calendar-section',
+							'taxonomy' => 'resource-type',
 							'field'    => 'term_id',
 							'terms'    => $term->term_id,
 						),

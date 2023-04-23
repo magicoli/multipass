@@ -873,7 +873,6 @@ class Mltp_Resource {
 			),
 			array_slice($columns, $i),
 		);
-		error_log("columns " . print_r($columns, true));
 		$columns['date'] = __('Publication', 'multipass');
 		return $columns;
 	}
