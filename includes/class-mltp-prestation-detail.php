@@ -136,6 +136,7 @@ class Mltp_Item {
 			array(
 				'hook'     => 'init',
 				'callback' => 'register_taxonomies',
+				'priority' => 25,
 			),
 			array(
 				'hook'     => 'admin_init',
@@ -943,9 +944,9 @@ class Mltp_Item {
 
 	static function register_taxonomies() {
 		$labels = array(
-			'name'                       => esc_html__( 'Sources', 'multipass' ),
-			'singular_name'              => esc_html__( 'Source', 'multipass' ),
-			'menu_name'                  => esc_html__( 'Sources', 'multipass' ),
+			'name'                       => esc_html__( 'External Sources', 'multipass' ),
+			'singular_name'              => esc_html__( 'External Source', 'multipass' ),
+			'menu_name'                  => esc_html__( 'External Sources', 'multipass' ),
 			'search_items'               => esc_html__( 'Search sources', 'multipass' ),
 			'popular_items'              => esc_html__( 'Popular sources', 'multipass' ),
 			'all_items'                  => esc_html__( 'All sources', 'multipass' ),

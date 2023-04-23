@@ -962,9 +962,9 @@ class MultiPass {
 
 	public static function back_to_multipass_button( $taxonomy ) {
 		echo sprintf(
-			'<a href="%1$s"><button>%2$s</button></a>',
+			'<a href="%1$s">%2$s</a>',
 			admin_url( 'admin.php?page=multipass' ),
-			__( 'Back to MultiPass' ),
+			__( '&larr; Back to MultiPass' ),
 		);
 	}
 
