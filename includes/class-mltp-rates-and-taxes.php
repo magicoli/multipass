@@ -457,7 +457,7 @@ class Mltp_Rates extends Mltp_Loader {
 				$dates  = get_post_meta( $post_id, 'dates' );
 				$output = '';
 				foreach ( $dates as $key => $date ) {
-					if ( ! empty( MultiPass::timestamp( $date['from'] ) ) ) {
+					if ( ! empty($date['from']) && ! empty( MultiPass::timestamp( $date['from'] ) ) ) {
 						$output .= '<li>' . MultiPass::format_date_range( $date ) . '</li>';
 					}
 				}
