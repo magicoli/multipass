@@ -354,7 +354,7 @@ class Mltp_Rates extends Mltp_Loader {
 							'sdt' => 'currency',
 							'options'  => array(
 								'percent'  => __( '%', 'multipass' ),
-								'currency' => __( '€', 'multipass' ),
+								'currency' => MultiPass::get_currency_symbol(),
 							),
 							'required' => true,
 						),

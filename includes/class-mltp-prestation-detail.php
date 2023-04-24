@@ -776,7 +776,7 @@ class Mltp_Item {
 							'type'    => 'number',
 							'size'    => 10,
 							'step'    => 'any',
-							'prepend' => '€',
+							'prepend' => MultiPass::get_currency_symbol(),
 						),
 					),
 				),
@@ -813,7 +813,7 @@ class Mltp_Item {
 							'id'      => $prefix . 'amount',
 							'type'    => 'number',
 							'size'    => 10,
-							'prepend' => '€',
+							'prepend' => MultiPass::get_currency_symbol(),
 						),
 						array(
 							'id'          => $prefix . 'before',
