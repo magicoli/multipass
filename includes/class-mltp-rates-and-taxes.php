@@ -27,10 +27,18 @@ class Mltp_Rates extends Mltp_Loader {
 	protected $filters;
 
 	public function __construct() {
+		$this->multiply_options = array(
+			'quantity'   => __( 'quantity', 'multipass' ),
+			'nights'   => __( 'night', 'multipass' ),
+			'guests'   => __( 'guest', 'multipass' ),
+			// 'adults'   => __( 'adult', 'multipass' ),
+			// 'children' => __( 'child', 'multipass' ),
+			// 'babies'   => __( 'baby', 'multipass' ),
+		);
 		$this->guest_types = array(
-			'adults'   => __( 'adults', 'multipass' ),
-			'children' => __( 'children', 'multipass' ),
-			'babies'   => __( 'babies', 'multipass' ),
+			'adults'   => __( 'adult', 'multipass' ),
+			'children' => __( 'child', 'multipass' ),
+			'babies'   => __( 'baby', 'multipass' ),
 		);
 	}
 
@@ -370,9 +378,9 @@ class Mltp_Rates extends Mltp_Loader {
 							'id'       => $prefix . 'multiply_by',
 							'type'     => 'button_group',
 							'options'  => array(
-								'quantity' => __( 'quantity', 'multipass' ),
 								'guests'   => __( 'guests', 'multipass' ),
 								'nights'   => __( 'nights', 'multipass' ),
+								// 'quantity' => __( 'quantity', 'multipass' ),
 							),
 							// 'std'     => 'nights',
 							'multiple' => true,
@@ -506,16 +514,23 @@ class Mltp_Rates extends Mltp_Loader {
 					if ( ! empty( $rule['multiply_by'] ) ) {
 						$guests = array();
 						foreach ( $rule['multiply_by'] as $value ) {
-							if ( in_array( $value, array( 'adults', 'children', 'babies' ) ) ) {
-								$guests[ $value ] = $this->guest_types[ $value ];
-							} else {
-								$multiply[ $value ] = $this->guest_types[ $value ];
+							$multiply[$value] = empty($this->multiply_options[$value]) ? $value : $this->multiply_options[$value];
+						}
+						if( ! empty($multiply['guests']) ) {
+							foreach ( $rule['multiply_restrict'] as $value ) {
+									$guests[ $value ] = isset($this->guest_types[ $value ]) ? $this->guest_types[ $value ] : $value;
 							}
+							if ( ! empty( $guests ) ) {
+								$multiply['guests'] = join( ' ' . __( 'or', 'multipass' ) . ' ', $guests );
+								// $guests = array( $multiply['guests'] );
+							}
+							error_log(
+								'multiply by ' . print_r($rule['multiply_by'], true)
+								. 'multiply_restrict ' . print_r($rule['multiply_restrict'], true)
+								. 'multiply ' . print_r($multiply, true)
+								. 'guests ' . print_r($guests, true)
+							);
 						}
-						if ( ! empty( $guests['guests'] ) ) {
-							$guests = array( $multiply['guests'] );
-						}
-						$multiply['guests'] = join( ' ' . __( 'or', 'multipass' ) . ' ', $guests );
 						$multiply           = array_filter( $multiply );
 					}
 					$rules_output[] = sprintf(
