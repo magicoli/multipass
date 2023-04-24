@@ -66,9 +66,10 @@ WARNING: **Make a full backup of your website and databases** before installing 
 
 == Changelog ==
 
-= Unreleased (0.4.1-dev.684) =
+= Unreleased (0.4.1-dev.694) =
 * new reports admin page
 * new Rates and Taxes settings page
+* added booking time to rates
 * added taxes taxonomy, added field to prestation, detail and resources
 * added /multipass/ redirecto to multipass admin page
 * fixed "from" and "to" fields not set when saving prestation
