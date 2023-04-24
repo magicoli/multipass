@@ -524,12 +524,6 @@ class Mltp_Rates extends Mltp_Loader {
 								$multiply['guests'] = join( ' ' . __( 'or', 'multipass' ) . ' ', $guests );
 								// $guests = array( $multiply['guests'] );
 							}
-							error_log(
-								'multiply by ' . print_r($rule['multiply_by'], true)
-								. 'multiply_restrict ' . print_r($rule['multiply_restrict'], true)
-								. 'multiply ' . print_r($multiply, true)
-								. 'guests ' . print_r($guests, true)
-							);
 						}
 						$multiply           = array_filter( $multiply );
 					}
