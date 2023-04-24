@@ -154,13 +154,6 @@ class Mltp_Resource {
 			),
 
 			array(
-				'hook'          => 'post_type_link',
-				'callback'      => 'post_type_link_filter',
-				'priority'      => 1,
-				'accepted_args' => 3,
-			),
-
-			array(
 				'hook'     => 'manage_mltp_resource_posts_columns',
 				'callback' => 'add_admin_columns',
 				'priority' => 25,
@@ -254,8 +247,8 @@ class Mltp_Resource {
 			'label'               => esc_html__( 'Resources', 'multipass' ),
 			'labels'              => $labels,
 			'description'         => '',
-			'public'              => false,
-			'hierarchical'        => true,
+			'public'              => true,
+			'hierarchical'        => false,
 			'exclude_from_search' => false,
 			'publicly_queryable'  => true,
 			'show_ui'             => true,
@@ -273,41 +266,12 @@ class Mltp_Resource {
 			'supports'            => array( 'title' ),
 			'taxonomies'          => array( 'resource-type' ),
 			'rewrite'             => array(
-				'slug'       => '%resource-type%',
-				'with_front' => true,
-				'pages'      => true,
-				'feeds'      => true,
+				'slug'       => 'resource',
+				'with_front' => false,
 			),
 		);
 
 		register_post_type( 'mltp_resource', $args );
-	}
-
-	static function post_type_link_filter( $post_link, $id = 0 ) {
-		$post = get_post( $id );
-
-		if ( is_object( $post ) && $post->post_type == 'mltp_resource' ) {
-			$taxonomy = 'resource-type';
-			$terms    = wp_get_object_terms( $post->ID, $taxonomy );
-			if ( is_wp_error( $terms ) || empty( $terms ) ) {
-				$slug = sanitize_title( __( 'resource', 'multipass' ) );
-			} else {
-				$term               = $terms[0];
-				$slug               = $term->slug;
-				$hierarchical_slugs = array();
-				$ancestors          = get_ancestors( $term->term_id, $taxonomy, 'taxonomy' );
-				foreach ( (array) $ancestors as $ancestor ) {
-					$ancestor_term        = get_term( $ancestor, $taxonomy );
-					$hierarchical_slugs[] = $ancestor_term->slug;
-				}
-				$hierarchical_slugs   = array_reverse( array_filter( $hierarchical_slugs ) );
-				$hierarchical_slugs[] = $slug;
-				$post_link            = str_replace( "%$taxonomy%", implode( '/', $hierarchical_slugs ), $post_link );
-			}
-			$post_link = str_replace( '%resource-type%', $slug, $post_link );
-		}
-
-		return $post_link;
 	}
 
 	/**
@@ -452,10 +416,8 @@ class Mltp_Resource {
 			'meta_box_cb'        => 'post_categories_meta_box',
 			'rest_base'          => '',
 			'rewrite'            => array(
-				'with_front'   => true,
-				'pages'        => true,
-				'feeds'        => true,
-				'hierarchical' => true,
+				'with_front'   => false,
+				'hierarchical' => false,
 			),
 		);
 		register_taxonomy( 'resource-type', array( 'mltp_resource' ), $args );
