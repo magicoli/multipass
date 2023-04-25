@@ -46,10 +46,16 @@ class Mltp_Admin {
 	 * @param      string $plugin_slug       The name of this plugin.
 	 * @param      string $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_slug, $version ) {
+	public function __construct() {
+		$this->plugin_slug = basename(MULTIPASS_DIR);
+		$this->version = MULTIPASS_VERSION;
+	}
 
-		$this->plugin_slug = $plugin_slug;
-
+	public function init() {
+		add_action('wp_enqueue_scripts', [ $this, 'enqueue_scripts' ]);
+		add_action('wp_enqueue_scripts', [ $this, 'enqueue_styles' ]);
+		// $this->enqueue_styles();
+		// $this->enqueue_scripts();
 	}
 
 	/**
@@ -71,3 +77,6 @@ class Mltp_Admin {
 	}
 
 }
+
+$mltp_admin = new Mltp_Admin();
+$mltp_admin->init();

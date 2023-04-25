@@ -182,6 +182,22 @@
   background: var(--mltp-background-paid);
 }
 
+#prestation-summary {
+  .actions,
+  .amount {
+    // display: block;
+    float: right;
+    margin-left: 0.5em;
+  }
+
+  .actions,
+  .actions > a {
+    text-decoration: none;
+  }
+}
+
+
+
 .wp-list-table.multipass-list {
   width: 100%;
   border-collapse: separate;

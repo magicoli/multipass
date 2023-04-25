@@ -1422,7 +1422,8 @@ class Mltp_Prestation {
 		$deposit = get_post_meta( $post->ID, 'deposit', true );
 		$amount  = ( isset( $deposit['total'] ) ) ? $deposit['total'] : null;
 		if ( $amount > 0 ) {
-			return MultiPass::price( $amount );
+			$prestation = new Mltp_Prestation($post->ID);
+			return ($prestation) ? MultiPass::price_with_links( $prestation, $amount ) : MultiPass::price( $amount );
 		}
 	}
 
@@ -1454,7 +1455,10 @@ class Mltp_Prestation {
 	 * @return string  HTML formatted currency amount.
 	 */
 	public function get_summary_balance() {
-		return MultiPass::price( self::get_balance() );
+		$prestation = new Mltp_Prestation(get_post());
+		$amount = $prestation->get_balance();
+
+		return ($prestation) ? MultiPass::price_with_links( $prestation, $amount ) : MultiPass::price( $amount );
 	}
 
 	/**

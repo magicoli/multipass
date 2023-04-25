@@ -433,6 +433,24 @@ class MultiPass {
 			self::payment_link( $prestation->slug, $amount, array( 'icon' => 'admin-links' ), array( 'tabindex' => -1 ) ),
 			self::payment_mail_link( $prestation, $amount, array( 'icon' => 'email' ), array( 'tabindex' => -1 ) ),
 		);
+		if(wp_is_mobile()) {
+			$links[]  = self::payment_link(
+
+				// Charge an existing customer:
+				// https://app.collectforstripe.com/launchApp?action=chargeCustomer&customerId=[stripeCustomerId]&amount=[amountString]&description=[description]&callback=[callbackURL]
+				// https://app.collectforstripe.com/docs#charge-a-customer
+
+				$prestation->slug, $amount, array(
+					'url' => sprintf(
+						// 'https://app.collectforstripe.com/launchApp?action=beginTransaction&amount=%s&description=%s&callback=%s',
+						'https://app.collectforstripe.com/launchApp?action=beginTransaction&amount=%s&description=%s',
+						$amount * 100,
+						$prestation->name,
+					),
+					'icon' => 'smartphone'
+				), array( 'tabindex' => -1 )
+			);
+		}
 		if ( ! empty( $links ) ) {
 			$output .= ' <span class="actions price-actions">' . join( ' ', $links ) . '</span>';
 		}
@@ -1101,7 +1119,7 @@ class MultiPass {
 
 	// static function payment_link( $reference = null, $amount = null, $language = null, $format = null, $string = null ) {
 	static function payment_link( $reference = null, $amount = null, $args = array(), $attr = array() ) {
-		$url = self::payment_url( $reference, $amount, $args );
+		$url = empty($args['url']) ? self::payment_url( $reference, $amount, $args ) : $args['url'];
 
 		if ( empty( $args['text'] ) ) {
 			$args['text'] = __( 'Payment link', 'multipass' );
