@@ -37,6 +37,8 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		$items = self::query( null, $field );
 		$items = array_values( $items );
 
+		$items = apply_filters( 'rwmb_ajax_get_users', $items, $field, $request );
+
 		$data = [ 'items' => $items ];
 
 		// More items for pagination.
@@ -90,7 +92,7 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		return $field;
 	}
 
-	public static function query( $meta, array $field ) : array {
+	public static function query( $meta, array $field ): array {
 		$display_field = $field['display_field'];
 		$args          = wp_parse_args( $field['query_args'], [
 			'orderby' => $display_field,
@@ -160,5 +162,17 @@ class RWMB_User_Field extends RWMB_Object_Choice_Field {
 		}
 
 		return sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html( $text ) );
+	}
+
+	public static function add_new_form( array $field ): string {
+		if ( ! current_user_can( 'create_users' ) ) {
+			return '';
+		}
+
+		return sprintf(
+			'<a href="#" class="rwmb-user-add-button rwmb-modal-add-button" data-url="%s">%s</a>',
+			admin_url( 'user-new.php' ),
+			esc_html__( 'Add New User', 'meta-box' )
+		);
 	}
 }

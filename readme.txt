@@ -3,7 +3,7 @@ Contributors: magicoli69
 Donate link: https://magiiic.com/support/MultiPass+Plugin
 Tags: hotel, booking, multi-prestations, multi-services, woocommerce, ota, pms, booking engine
 Requires at least: 5.9.0
-Tested up to: 6.2
+Tested up to: 6.2.2
 Requires PHP: 7.3
 Stable tag: 0.4
 License: AGPLv3 or later
@@ -67,9 +67,10 @@ WARNING: **Make a full backup of your website and databases** before installing 
 
 == Changelog ==
 
-= Unreleased (0.4.1-dev.696) =
+= Unreleased (0.4.1-dev.700) =
 * new reports admin page
 * new Rates and Taxes settings page
+* added "Connect for Stripe" payment link on mobile devices
 * added booking time to rates
 * added taxes taxonomy, added field to prestation, detail and resources
 * added /multipass/ redirecto to multipass admin page

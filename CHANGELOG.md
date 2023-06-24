@@ -1,8 +1,9 @@
 ## Changelog
 
-### Unreleased (0.4.1-dev.696)
+### Unreleased (0.4.1-dev.700)
 - new reports admin page
 - new Rates and Taxes settings page
+- added "Connect for Stripe" payment link on mobile devices
 - added booking time to rates
 - added taxes taxonomy, added field to prestation, detail and resources
 - added /multipass/ redirecto to multipass admin page
