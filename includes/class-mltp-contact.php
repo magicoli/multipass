@@ -199,7 +199,7 @@ class Mltp_Contact extends Mltp_Loader {
 				[
 					'name'              => __( 'Phone Number', 'multipass' ),
 					'id'                => $prefix . 'phone',
-					'type'              => 'text',
+					'type'              => 'tel',
 					'columns' => 9,
 					'clone'             => true,
 					'clone_as_multiple' => true,
