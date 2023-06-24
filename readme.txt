@@ -4,6 +4,7 @@ Donate link: https://magiiic.com/support/MultiPass+Plugin
 Tags: hotel, booking, multi-prestations, multi-services, woocommerce, ota, pms, booking engine
 Requires at least: 5.9.0
 Tested up to: 6.2
+Requires PHP: 7.3
 Stable tag: 0.4
 License: AGPLv3 or later
 License URI: http://www.gnu.org/licenses/agpl-3.0.txt
