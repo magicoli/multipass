@@ -267,66 +267,56 @@ class Mltp_Contact extends Mltp_Loader {
 							],
 							'columns'       => 4,
 						],
-						[
-							'id'      => $prefix . 'house_number',
-							'type'    => 'hidden',
-							'columns' => 2,
-						],
-						[
-							'id'      => $prefix . 'aeroway',
-							'type'    => 'hidden',
-							'columns' => 5,
-						],
-						[
-							'id'      => $prefix . 'road',
-							'type'    => 'hidden',
-							'columns' => 5,
-						],
-						[
-							'id'      => $prefix . 'neighbourhood',
-							'type'    => 'hidden',
-							'columns' => 6,
-						],
-						[
-							'id'      => $prefix . 'suburb',
-							'type'    => 'hidden',
-							'columns' => 6,
-						],
-						[
-							'id'      => $prefix . 'village',
-							'type'    => 'hidden',
-							'columns' => 3,
-						],
-						[
-							'id'      => $prefix . 'town',
-							'type'    => 'hidden',
-							'columns' => 3,
-						],
-						[
-							'id'      => $prefix . 'locality',
-							'type'    => 'hidden',
-							'columns' => 3,
-						],
-						[
-							'id'      => $prefix . 'county',
-							'type'    => 'hidden',
-							'columns' => 4,
-						],
-						[
-							'id'      => $prefix . 'state',
-							'type'    => 'hidden',
-							'columns' => 4,
-						],
-						[
-							'id'      => $prefix . 'country_code',
-							'type'    => 'hidden',
-							'columns' => 1,
-						],
+						// [
+						// 	'id'      => $prefix . 'house_number',
+						// 	'type'    => 'hidden',
+						// ],
+						// [
+						// 	'id'      => $prefix . 'aeroway',
+						// 	'type'    => 'hidden',
+						// ],
+						// [
+						// 	'id'      => $prefix . 'road',
+						// 	'type'    => 'hidden',
+						// ],
+						// [
+						// 	'id'      => $prefix . 'neighbourhood',
+						// 	'type'    => 'hidden',
+						// ],
+						// [
+						// 	'id'      => $prefix . 'suburb',
+						// 	'type'    => 'hidden',
+						// ],
+						// [
+						// 	'id'      => $prefix . 'village',
+						// 	'type'    => 'hidden',
+						// ],
+						// [
+						// 	'id'      => $prefix . 'town',
+						// 	'type'    => 'hidden',
+						// ],
+						// [
+						// 	'id'      => $prefix . 'locality',
+						// 	'type'    => 'hidden',
+						// ],
+						// [
+						// 	'id'      => $prefix . 'county',
+						// 	'type'    => 'hidden',
+						// ],
+						// [
+						// 	'id'      => $prefix . 'state',
+						// 	'type'    => 'hidden',
+						// ],
+						// [
+						// 	'id'      => $prefix . 'country_code',
+						// 	'type'    => 'hidden',
+						// ],
 						[
 							'id'            => $prefix . 'geocode',
 							'type'          => 'osm',
 							'address_field' => 'address',
-							'language'      => 'fr',
+							'language'       => 'fr',
+							'class'          => 'hidden thisisaclassiuseonlyhere',
 						],
 					],
 				],
