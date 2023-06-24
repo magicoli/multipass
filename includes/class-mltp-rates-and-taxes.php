@@ -28,7 +28,7 @@ class Mltp_Rates extends Mltp_Loader {
 
 	public function __construct() {
 		$this->multiply_options = array(
-			'quantity'   => __( 'quantity', 'multipass' ),
+			'quantity' => __( 'quantity', 'multipass' ),
 			'nights'   => __( 'night', 'multipass' ),
 			'guests'   => __( 'guest', 'multipass' ),
 			// 'adults'   => __( 'adult', 'multipass' ),
@@ -287,50 +287,50 @@ class Mltp_Rates extends Mltp_Loader {
 						),
 					),
 				),
-				[
-						'name'   => __( 'Booking time', 'multipass' ),
-						'id'     => $prefix . 'booking_time',
-						'type'   => 'group',
-						'class'  => 'inline',
-						'fields' => [
-								[
-										'name'   => __( 'Maximum', 'multipass' ),
-										'id'     => $prefix . 'max',
-										'type'   => 'number',
-										'size'   => 5,
-										'append' => 'days before stay',
-								],
-								[
-										'name'    => __( 'From (date)', 'multipass' ),
-										'id'      => $prefix . 'from_date',
-										'type'    => 'date',
-										'visible' => [
-												'when'     => [['max', '=', ''], ['from_date', '!=', '']],
-												'relation' => 'or',
-										],
-								],
-								[
-										'type'       => 'divider',
-										'save_field' => false,
-								],
-								[
-										'name'   => __( 'Minimum', 'multipass' ),
-										'id'     => $prefix . 'min',
-										'type'   => 'number',
-										'size'   => 5,
-										'append' => 'days before stay',
-								],
-								[
-										'name'    => __( 'To (date)', 'multipass' ),
-										'id'      => $prefix . 'to_date',
-										'type'    => 'date',
-										'visible' => [
-												'when'     => [['booking_time_min', '=', '']],
-												'relation' => 'or',
-										],
-								],
-						],
-				],
+				array(
+					'name'   => __( 'Booking time', 'multipass' ),
+					'id'     => $prefix . 'booking_time',
+					'type'   => 'group',
+					'class'  => 'inline',
+					'fields' => array(
+						array(
+							'name'   => __( 'Maximum', 'multipass' ),
+							'id'     => $prefix . 'max',
+							'type'   => 'number',
+							'size'   => 5,
+							'append' => 'days before stay',
+						),
+						array(
+							'name'    => __( 'From (date)', 'multipass' ),
+							'id'      => $prefix . 'from_date',
+							'type'    => 'date',
+							'visible' => array(
+								'when'     => array( array( 'max', '=', '' ), array( 'from_date', '!=', '' ) ),
+								'relation' => 'or',
+							),
+						),
+						array(
+							'type'       => 'divider',
+							'save_field' => false,
+						),
+						array(
+							'name'   => __( 'Minimum', 'multipass' ),
+							'id'     => $prefix . 'min',
+							'type'   => 'number',
+							'size'   => 5,
+							'append' => 'days before stay',
+						),
+						array(
+							'name'    => __( 'To (date)', 'multipass' ),
+							'id'      => $prefix . 'to_date',
+							'type'    => 'date',
+							'visible' => array(
+								'when'     => array( array( 'booking_time_min', '=', '' ) ),
+								'relation' => 'or',
+							),
+						),
+					),
+				),
 				array(
 					'name'              => __( 'Rules', 'multipass' ),
 					'id'                => $prefix . 'rules',
@@ -351,7 +351,7 @@ class Mltp_Rates extends Mltp_Loader {
 							'name'     => __( 'Unit', 'multipass' ),
 							'id'       => $prefix . 'unit',
 							'type'     => 'button_group',
-							'sdt' => 'currency',
+							'sdt'      => 'currency',
 							'options'  => array(
 								'percent'  => __( '%', 'multipass' ),
 								'currency' => MultiPass::get_currency_symbol(),
@@ -378,14 +378,14 @@ class Mltp_Rates extends Mltp_Loader {
 							'id'       => $prefix . 'multiply_by',
 							'type'     => 'button_group',
 							'options'  => array(
-								'guests'   => __( 'guests', 'multipass' ),
-								'nights'   => __( 'nights', 'multipass' ),
+								'guests' => __( 'guests', 'multipass' ),
+								'nights' => __( 'nights', 'multipass' ),
 								// 'quantity' => __( 'quantity', 'multipass' ),
 							),
 							// 'std'     => 'nights',
 							'multiple' => true,
 							'visible'  => array(
-								'when'     => array( array( 'unit', '=', 'currency' ) ),
+								'when' => array( array( 'unit', '=', 'currency' ) ),
 							),
 						),
 						array(
@@ -396,7 +396,7 @@ class Mltp_Rates extends Mltp_Loader {
 							// 'std'     => 'nights',
 							'multiple' => true,
 							'visible'  => array(
-								'when'     => array( array( 'multiply_by', 'match', 'guests' ) ),
+								'when' => array( array( 'multiply_by', 'match', 'guests' ) ),
 							),
 						),
 						array(
@@ -457,7 +457,7 @@ class Mltp_Rates extends Mltp_Loader {
 				$dates  = get_post_meta( $post_id, 'dates' );
 				$output = '';
 				foreach ( $dates as $key => $date ) {
-					if ( ! empty($date['from']) && ! empty( MultiPass::timestamp( $date['from'] ) ) ) {
+					if ( ! empty( $date['from'] ) && ! empty( MultiPass::timestamp( $date['from'] ) ) ) {
 						$output .= '<li>' . MultiPass::format_date_range( $date ) . '</li>';
 					}
 				}
@@ -514,18 +514,18 @@ class Mltp_Rates extends Mltp_Loader {
 					if ( ! empty( $rule['multiply_by'] ) ) {
 						$guests = array();
 						foreach ( $rule['multiply_by'] as $value ) {
-							$multiply[$value] = empty($this->multiply_options[$value]) ? $value : $this->multiply_options[$value];
+							$multiply[ $value ] = empty( $this->multiply_options[ $value ] ) ? $value : $this->multiply_options[ $value ];
 						}
-						if( ! empty($multiply['guests']) ) {
+						if ( ! empty( $multiply['guests'] ) ) {
 							foreach ( $rule['multiply_restrict'] as $value ) {
-									$guests[ $value ] = isset($this->guest_types[ $value ]) ? $this->guest_types[ $value ] : $value;
+									$guests[ $value ] = isset( $this->guest_types[ $value ] ) ? $this->guest_types[ $value ] : $value;
 							}
 							if ( ! empty( $guests ) ) {
 								$multiply['guests'] = join( ' ' . __( 'or', 'multipass' ) . ' ', $guests );
 								// $guests = array( $multiply['guests'] );
 							}
 						}
-						$multiply           = array_filter( $multiply );
+						$multiply = array_filter( $multiply );
 					}
 					$rules_output[] = sprintf(
 						'<strong>%s %s</strong>%s%s',

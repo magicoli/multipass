@@ -32,32 +32,32 @@ class Mltp_PDF extends Mltp_Loader {
 
 		$this->actions = array(
 			array(
-				'hook' => 'wp',
+				'hook'     => 'wp',
 				'callback' => 'remove_post_meta',
 			),
 			array(
-				'hook' => 'template_redirect',
+				'hook'     => 'template_redirect',
 				'callback' => 'view_mltp_prestation_as_pdf',
 			),
 			array(
-				'hook' => 'manage_mltp_prestation_posts_custom_column',
-				'callback' => 'display_pdf_link_in_mltp_prestation_column',
+				'hook'          => 'manage_mltp_prestation_posts_custom_column',
+				'callback'      => 'display_pdf_link_in_mltp_prestation_column',
 				'accepted_args' => 2,
 			),
 			array(
-				'hook' => 'wp_enqueue_scripts',
+				'hook'     => 'wp_enqueue_scripts',
 				'callback' => 'load_font_awesome',
 			),
 		);
 
 		$this->filters = array(
 			array(
-				'hook' => 'manage_mltp_prestation_posts_columns',
+				'hook'     => 'manage_mltp_prestation_posts_columns',
 				'callback' => 'add_pdf_column_to_mltp_prestation',
 			),
 
 			array(
-				'hook' => 'query_vars',
+				'hook'     => 'query_vars',
 				'callback' => 'register_view_query_arg',
 			),
 		);
@@ -66,10 +66,10 @@ class Mltp_PDF extends Mltp_Loader {
 	}
 
 	function remove_post_meta() {
-	    if ( 'mltp_prestation' === get_post_type() ) {
-	        remove_action( 'entry_meta', 'entry_date', 12 );
-	        remove_action( 'entry_meta', 'entry_author', 20 );
-	    }
+		if ( 'mltp_prestation' === get_post_type() ) {
+			remove_action( 'entry_meta', 'entry_date', 12 );
+			remove_action( 'entry_meta', 'entry_author', 20 );
+		}
 	}
 
 	function load_font_awesome() {
@@ -85,7 +85,7 @@ class Mltp_PDF extends Mltp_Loader {
 		if ( 'mltp_prestation' === $post->post_type ) {
 			$pdf_link = add_query_arg( array( 'view' => 'pdf' ), $permalink );
 			// $icon = '<i class="fa-regular fa-file-pdf"></i>';
-			$icon = '<span class="dashicons dashicons-pdf"></span>';
+			$icon      = '<span class="dashicons dashicons-pdf"></span>';
 			$link_text = $icon;
 
 			return sprintf(
@@ -105,46 +105,46 @@ class Mltp_PDF extends Mltp_Loader {
 	}
 
 	function display_pdf_link_in_mltp_prestation_column( $column_name, $post_id ) {
-	    if ( 'pdf_link' === $column_name ) {
-	        $permalink = get_permalink( $post_id );
-	        echo $this->add_pdf_link_to_mltp_prestation( $permalink, get_post( $post_id ) );
-	    }
+		if ( 'pdf_link' === $column_name ) {
+			$permalink = get_permalink( $post_id );
+			echo $this->add_pdf_link_to_mltp_prestation( $permalink, get_post( $post_id ) );
+		}
 	}
 
 
 	// function add_pdf_link_to_mltp_prestation( $actions, $post ) {
 	//
-	// 	if ($post->post_type == 'mltp_prestation') {
-	// 		if ( ! class_exists( 'Mpdf\Mpdf' ) ) {
-	// 			error_log("class not loaded");
-	// 			return $actions;
-	// 		}
+	// if ($post->post_type == 'mltp_prestation') {
+	// if ( ! class_exists( 'Mpdf\Mpdf' ) ) {
+	// error_log("class not loaded");
+	// return $actions;
+	// }
 	//
-	// 		$pdf_url = add_query_arg( array( 'view' => 'pdf' ), get_post_permalink($post) );
-	// 		$pdf_link = '<a href="' . $pdf_url . '" target="_blank">View as PDF</a>';
+	// $pdf_url = add_query_arg( array( 'view' => 'pdf' ), get_post_permalink($post) );
+	// $pdf_link = '<a href="' . $pdf_url . '" target="_blank">View as PDF</a>';
 	//
-	// 		$actions['view_as_pdf'] = $pdf_link;
-	// 	}
-	// 	return $actions;
+	// $actions['view_as_pdf'] = $pdf_link;
+	// }
+	// return $actions;
 	// }
 
 	function view_mltp_prestation_as_pdf() {
-	    global $wp_query;
+		global $wp_query;
 
-			if ( isset( $wp_query->query_vars['view'] ) && 'pdf' === $wp_query->query_vars['view'] ) {
-				$post = get_post();
+		if ( isset( $wp_query->query_vars['view'] ) && 'pdf' === $wp_query->query_vars['view'] ) {
+			$post = get_post();
 
-				$mpdf = new \Mpdf\Mpdf();
+			$mpdf = new \Mpdf\Mpdf();
 
-				// Generate the PDF content
-				$html = '<h1>' . get_the_title() . '</h1>';
-				$html .= '<div>' . get_the_content() . '</div>';
+			// Generate the PDF content
+			$html  = '<h1>' . get_the_title() . '</h1>';
+			$html .= '<div>' . get_the_content() . '</div>';
 
-				$mpdf->WriteHTML( $html );
-				$mpdf->Output( $post->post_name . '.pdf', 'D' );
-				exit;
-			}
+			$mpdf->WriteHTML( $html );
+			$mpdf->Output( $post->post_name . '.pdf', 'D' );
+			exit;
 		}
 	}
+}
 
 	$this->loaders[] = new Mltp_PDF();

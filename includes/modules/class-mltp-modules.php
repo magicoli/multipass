@@ -53,7 +53,7 @@ class Mltp_Modules {
 
 		$this->locale = MultiPass::get_locale();
 		$this->module = __CLASS__;
-		
+
 		$this->load_dependencies();
 
 		// $this->define_admin_hooks();
@@ -73,8 +73,10 @@ class Mltp_Modules {
 	}
 
 	function enabled( $module = null ) {
-		$module = (!empty($module)) ? $module : ( !empty($this->module) ? $this->module : null );
-		if(empty($module)) return false;
+		$module = ( ! empty( $module ) ) ? $module : ( ! empty( $this->module ) ? $this->module : null );
+		if ( empty( $module ) ) {
+			return false;
+		}
 
 		$enabled = $this->enabled_modules();
 

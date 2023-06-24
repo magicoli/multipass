@@ -31,11 +31,9 @@ class Mltp_Text_Templates extends Mltp_Loader {
 
 	public function init() {
 
-		$this->actions = array(
-		);
+		$this->actions = array();
 
-		$this->filters = array(
-		);
+		$this->filters = array();
 
 		$this->register_hooks();
 	}

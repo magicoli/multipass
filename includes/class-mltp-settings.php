@@ -438,18 +438,18 @@ class Mltp_Settings {
 	function render_post_debug( $value, $field ) {
 
 		$post_id = get_the_ID();
-		$values   = get_post_meta( $post_id, null, true );
-		$output = [];
+		$values  = get_post_meta( $post_id, null, true );
+		$output  = array();
 
 		if ( is_array( $values ) ) {
-			foreach($values as $key => $value) {
-				if(count($value) === 1) {
-					$value = reset($value);
+			foreach ( $values as $key => $value ) {
+				if ( count( $value ) === 1 ) {
+					$value = reset( $value );
 				}
-				if(is_string($value) && $unserialized = unserialize($value) ) {
+				if ( is_string( $value ) && $unserialized = unserialize( $value ) ) {
 					$value = $unserialized;
 				}
-				$output[$key] = $value;
+				$output[ $key ] = $value;
 			}
 			$output = '<pre>' . print_r( $output, true ) . '</pre>';
 		}

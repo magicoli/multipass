@@ -52,7 +52,7 @@ class Mltp_Prestation {
 	 */
 	public function __construct( $args = null ) {
 		$post = $this->get( $args );
-		if ( is_object($post) &! is_wp_error($post) ) {
+		if ( is_object( $post ) & ! is_wp_error( $post ) ) {
 			$this->id   = $post->ID;
 			$this->name = $post->post_title;
 			$this->post = $post;
@@ -150,8 +150,8 @@ class Mltp_Prestation {
 			),
 			array(
 				'component' => $this,
-				'hook' => 'admin_init',
-				'callback' => 'register_permalink_options',
+				'hook'      => 'admin_init',
+				'callback'  => 'register_permalink_options',
 			),
 			array(
 				'hook'     => 'init',
@@ -171,13 +171,13 @@ class Mltp_Prestation {
 
 			array(
 				'component' => $this,
-				'hook' => 'loop_start',
-				'callback' => 'hide_content_for_unauthorized_users'
+				'hook'      => 'loop_start',
+				'callback'  => 'hide_content_for_unauthorized_users',
 			),
 			array(
 				'component' => $this,
-				'hook' => 'restrict_manage_posts',
-				'callback' => 'add_year_dropdown',
+				'hook'      => 'restrict_manage_posts',
+				'callback'  => 'add_year_dropdown',
 			),
 		);
 
@@ -188,9 +188,9 @@ class Mltp_Prestation {
 				'callback'  => 'register_fields',
 			),
 			array(
-				'component' => $this,
-				'hook' => 'the_title',
-				'callback' => 'rewrite_the_title',
+				'component'     => $this,
+				'hook'          => 'the_title',
+				'callback'      => 'rewrite_the_title',
 				'accepted_args' => 2,
 			),
 
@@ -222,8 +222,8 @@ class Mltp_Prestation {
 			),
 			array(
 				'component' => $this,
-				'hook' => 'parse_query',
-				'callback' => 'filter_by_year',
+				'hook'      => 'parse_query',
+				'callback'  => 'filter_by_year',
 			),
 		);
 
@@ -302,7 +302,7 @@ class Mltp_Prestation {
 			'public'              => false,
 			'hierarchical'        => false,
 			'exclude_from_search' => ! current_user_can( 'mltp_reader' ),
-			'publicly_queryable'  => true, //current_user_can( 'mltp_reader' ),
+			'publicly_queryable'  => true, // current_user_can( 'mltp_reader' ),
 			'show_ui'             => true,
 			'show_in_nav_menus'   => true,
 			'show_in_admin_bar'   => true,
@@ -320,7 +320,7 @@ class Mltp_Prestation {
 			'supports'            => array( 'revisions' ),
 			'taxonomies'          => array(),
 			'rewrite'             => array(
-				'slug' => self::slug(),
+				'slug'       => self::slug(),
 				'with_front' => false,
 			),
 		);
@@ -353,27 +353,28 @@ class Mltp_Prestation {
 	}
 
 	function register_permalink_options() {
-		if( isset($_POST))
-		self::multipass_permalink_save($_POST);
+		if ( isset( $_POST ) ) {
+			self::multipass_permalink_save( $_POST );
+		}
 
 		// Add the MultiPass section to the permalinks admin page
 		add_settings_section(
 			'mltp-permalink-options', // ID for the section
-			__('MultiPass permalinks', 'multipass'), // Title of the section
-			array($this, 'multipass_permalink_callback'), // Callback function to display the section content
+			__( 'MultiPass permalinks', 'multipass' ), // Title of the section
+			array( $this, 'multipass_permalink_callback' ), // Callback function to display the section content
 			'permalink' // Page on which to display the section
 		);
 
 		// Save the MultiPass option value
 		add_settings_field(
 			'mltp_prestation_slug', // ID for the field
-			__('Prestation slug', 'multipass'), // Title of the field
-			array($this, 'mltp_prestation_slug_callback'), // Callback function to display the field content
+			__( 'Prestation slug', 'multipass' ), // Title of the field
+			array( $this, 'mltp_prestation_slug_callback' ), // Callback function to display the field content
 			'permalink', // Page on which to display the field
 			'mltp-permalink-options' // Section ID
 		);
 
-		register_setting('permalink', 'mltp_prestation_slug');
+		register_setting( 'permalink', 'mltp_prestation_slug' );
 	}
 
 	function multipass_permalink_callback() {
@@ -381,36 +382,36 @@ class Mltp_Prestation {
 	}
 
 	static function slug() {
-		$slug = get_option('mltp_prestation_slug');
-		$slug = (empty($slug)) ? __('prestations', 'multipass') : $slug;
+		$slug = get_option( 'mltp_prestation_slug' );
+		$slug = ( empty( $slug ) ) ? __( 'prestations', 'multipass' ) : $slug;
 		return $slug;
 	}
 
 	function mltp_prestation_slug_callback() {
-		wp_nonce_field('mltp_prestation_slug', 'mltp_prestation_slug_nonce');
+		wp_nonce_field( 'mltp_prestation_slug', 'mltp_prestation_slug_nonce' );
 		printf(
 			'<input name="mltp_prestation_slug" id="mltp_prestation_slug" type="text" value="%s" />
 			<p class="description">%s</p>',
 			self::slug(),
 			sprintf(
-				__('Slug prepended to prestations urls, leave empty for default (%s).', 'multipass'),
+				__( 'Slug prepended to prestations urls, leave empty for default (%s).', 'multipass' ),
 				'<code>prestations</code>',
 			),
 		);
 	}
 
-	function multipass_permalink_save($input) {
-		if(isset($input['mltp_prestation_slug']) && isset($input['mltp_prestation_slug_nonce'])) {
+	function multipass_permalink_save( $input ) {
+		if ( isset( $input['mltp_prestation_slug'] ) && isset( $input['mltp_prestation_slug_nonce'] ) ) {
 			// Verify the nonce
-			if(!wp_verify_nonce($input['mltp_prestation_slug_nonce'], 'mltp_prestation_slug')) {
+			if ( ! wp_verify_nonce( $input['mltp_prestation_slug_nonce'], 'mltp_prestation_slug' ) ) {
 				return $input;
 			}
 
-			$new_slug = sanitize_title($input['mltp_prestation_slug']);
-			$old_slug = get_option('mltp_prestation_slug');
+			$new_slug = sanitize_title( $input['mltp_prestation_slug'] );
+			$old_slug = get_option( 'mltp_prestation_slug' );
 
-			if($new_slug != $old_slug) {
-				update_option('mltp_prestation_slug', $new_slug);
+			if ( $new_slug != $old_slug ) {
+				update_option( 'mltp_prestation_slug', $new_slug );
 			}
 
 			$input['mltp_prestation_slug'] = $new_slug;
@@ -966,11 +967,11 @@ class Mltp_Prestation {
 
 		// Get the customer_email value for the current post
 		$customer_email = get_post_meta( $post->ID, 'customer_email', true );
-    $customer_id = get_post_meta( $post->ID, 'customer_id', true );
+		$customer_id    = get_post_meta( $post->ID, 'customer_id', true );
 
 		// Check if the current user has the same email as the customer_email
 		if ( is_user_logged_in() ) {
-			$current_user = wp_get_current_user();
+			$current_user  = wp_get_current_user();
 			$visitor_email = $current_user->user_email;
 			if ( $customer_email === $visitor_email || $customer_id == $current_user->ID ) {
 				return;
@@ -984,31 +985,32 @@ class Mltp_Prestation {
 		if ( isset( $_POST['email'] ) && ! empty( $_POST['email'] ) ) {
 			// Verify the nonce
 			if ( ! wp_verify_nonce( $_POST['email_nonce'], 'email_validation' ) ) {
-				$mltp_auth_error = __('Invalid session, please try again', 'multipass');
+				$mltp_auth_error = __( 'Invalid session, please try again', 'multipass' );
 				// wp_die( esc_html__( 'Invalid nonce.', 'multipass' ) );
 			} else {
 				$visitor_email = sanitize_email( $_POST['email'] );
 			}
 		}
 
-		if ( isset($visitor_email)) {
+		if ( isset( $visitor_email ) ) {
 			if ( $customer_email === $visitor_email ) {
 				// The visitor's email matches the customer's email, grant access and store the validated email in a session
 				$_SESSION['validated_email'] = $visitor_email;
 				return;
 			} else {
-				$mltp_auth_error = __('Invalid email, try again', 'multipass');
+				$mltp_auth_error = __( 'Invalid email, try again', 'multipass' );
 			}
 		}
 
-		if(isset($_POST['email'])) {
+		if ( isset( $_POST['email'] ) ) {
 			$submitted_mail = $_POST['email'];
-		} else if(isset($_SESSION['validated_email'])) {
+		} elseif ( isset( $_SESSION['validated_email'] ) ) {
 			$submitted_mail = $_SESSION['validated_email'];
-		} else if(is_user_logged_in()) {
+		} elseif ( is_user_logged_in() ) {
 			$submitted_mail = wp_get_current_user()->user_email;
 		}
-		printf('
+		printf(
+			'
 			<div class="login mltp-mail-validation-form">
 				<h2>%1$s</h2>
 				<form id=loginform method="post">
@@ -1028,10 +1030,10 @@ class Mltp_Prestation {
 			esc_html__( 'Please provide your email address to access this content:', 'multipass' ),
 			wp_nonce_field( 'email_validation', 'email_nonce', true, false ),
 			esc_html__( 'Your Email', 'multipass' ),
-			(isset($submitted_mail)) ? esc_attr( $submitted_mail, 'multipass') : '',
-			esc_attr__( 'Submit', 'multipass'),
-			( empty($mltp_auth_error)) ? '' : sprintf('<p id=login_error class="error">%s</p>', esc_html($mltp_auth_error) ),
-			__('Only used for validation, it will not be stored and no message will be sent.'),
+			( isset( $submitted_mail ) ) ? esc_attr( $submitted_mail, 'multipass' ) : '',
+			esc_attr__( 'Submit', 'multipass' ),
+			( empty( $mltp_auth_error ) ) ? '' : sprintf( '<p id=login_error class="error">%s</p>', esc_html( $mltp_auth_error ) ),
+			__( 'Only used for validation, it will not be stored and no message will be sent.' ),
 		);
 		exit();
 	}
@@ -1170,15 +1172,17 @@ class Mltp_Prestation {
 		$data       = array();
 
 		foreach ( $item_posts as $item_post ) {
-			$meta     = array_merge(
+			$meta = array_merge(
 				array(
 					'description' => $item_post->post_title,
-					'type' => null,
-					'source' => null,
+					'type'        => null,
+					'source'      => null,
 				),
 				get_post_meta( $item_post->ID ),
 			);
-			if(!isset($meta['description'])) error_log(print_r($meta, true));
+			if ( ! isset( $meta['description'] ) ) {
+				error_log( print_r( $meta, true ) );
+			}
 
 			$price    = get_post_meta( $item_post->ID, 'price', true );
 			$dates    = get_post_meta( $item_post->ID, 'dates', true );
@@ -1189,7 +1193,7 @@ class Mltp_Prestation {
 			$data[] = array(
 				'ID'          => $item_post->ID,
 				'date'        => $item_post->post_date,
-				'description' => empty( $meta['description'] ) ? $item_post->post_title : ( is_array( $meta['description']) ? reset( $meta['description'] ) : $meta['description'] ),
+				'description' => empty( $meta['description'] ) ? $item_post->post_title : ( is_array( $meta['description'] ) ? reset( $meta['description'] ) : $meta['description'] ),
 				'type'        => is_array( $meta['type'] ) ? reset( $meta['type'] ) : $meta['type'],
 				'dates'       => $dates,
 				'subtotal'    => isset( $price['sub_total'] ) ? $price['sub_total'] : null,
@@ -1233,18 +1237,20 @@ class Mltp_Prestation {
 
 	function get_years() {
 		$years = array();
-		$posts = get_posts( array(
-			'post_type'      => 'mltp_prestation',
-			'posts_per_page' => -1,
-			'meta_key'       => 'from',
-			'orderby'        => 'meta_value',
-			'order'          => 'DESC',
-			'fields'         => 'ids',
-			'suppress_filters' => true,
-		) );
+		$posts = get_posts(
+			array(
+				'post_type'        => 'mltp_prestation',
+				'posts_per_page'   => -1,
+				'meta_key'         => 'from',
+				'orderby'          => 'meta_value',
+				'order'            => 'DESC',
+				'fields'           => 'ids',
+				'suppress_filters' => true,
+			)
+		);
 		foreach ( $posts as $post_id ) {
-			$timestamp = MultiPass::timestamp(get_post_meta( $post_id, 'from', true ));
-			if(!empty($timestamp)) {
+			$timestamp = MultiPass::timestamp( get_post_meta( $post_id, 'from', true ) );
+			if ( ! empty( $timestamp ) ) {
 				$year = date( 'Y', $timestamp );
 				if ( ! in_array( $year, $years ) ) {
 					$years[] = $year;
@@ -1261,7 +1267,7 @@ class Mltp_Prestation {
 		global $typenow;
 		if ( $typenow == 'mltp_prestation' ) {
 			$selected_year = isset( $_GET['year'] ) ? $_GET['year'] : '';
-			$years = $this->get_years();
+			$years         = $this->get_years();
 			?>
 			<select name="year">
 				<option value=""><?php esc_html_e( 'All Years', 'text-domain' ); ?></option>
@@ -1278,11 +1284,11 @@ class Mltp_Prestation {
 	 */
 	function filter_by_year( $query ) {
 		global $pagenow, $typenow;
-		if ( $typenow == 'mltp_prestation' && $pagenow == 'edit.php' &! empty( $_GET['year'] ) ) {
+		if ( $typenow == 'mltp_prestation' && $pagenow == 'edit.php' & ! empty( $_GET['year'] ) ) {
 			$query->query_vars['meta_query'] = array(
 				array(
 					'key'     => 'from',
-					'value'   => array(strtotime($_GET['year'] . '-01-01'), strtotime($_GET['year'] . '-12-31')),
+					'value'   => array( strtotime( $_GET['year'] . '-01-01' ), strtotime( $_GET['year'] . '-12-31' ) ),
 					'compare' => 'BETWEEN',
 					'type'    => 'NUMERIC',
 				),
@@ -1422,8 +1428,8 @@ class Mltp_Prestation {
 		$deposit = get_post_meta( $post->ID, 'deposit', true );
 		$amount  = ( isset( $deposit['total'] ) ) ? $deposit['total'] : null;
 		if ( $amount > 0 ) {
-			$prestation = new Mltp_Prestation($post->ID);
-			return ($prestation) ? MultiPass::price_with_links( $prestation, $amount ) : MultiPass::price( $amount );
+			$prestation = new Mltp_Prestation( $post->ID );
+			return ( $prestation ) ? MultiPass::price_with_links( $prestation, $amount ) : MultiPass::price( $amount );
 		}
 	}
 
@@ -1455,10 +1461,10 @@ class Mltp_Prestation {
 	 * @return string  HTML formatted currency amount.
 	 */
 	public function get_summary_balance() {
-		$prestation = new Mltp_Prestation(get_post());
-		$amount = $prestation->get_balance();
+		$prestation = new Mltp_Prestation( get_post() );
+		$amount     = $prestation->get_balance();
 
-		return ($prestation) ? MultiPass::price_with_links( $prestation, $amount ) : MultiPass::price( $amount );
+		return ( $prestation ) ? MultiPass::price_with_links( $prestation, $amount ) : MultiPass::price( $amount );
 	}
 
 	/**
@@ -1566,7 +1572,7 @@ class Mltp_Prestation {
 		if ( ! is_object( $object ) ) {
 			return false;
 		}
-		if( is_wp_error($object) ) {
+		if ( is_wp_error( $object ) ) {
 			return false;
 		}
 		if ( 'WP_Post' !== get_class( $object ) ) {
@@ -1586,7 +1592,7 @@ class Mltp_Prestation {
 		return self::is_prestation_post( $this->post );
 	}
 
-	function update( $args = [] ) {
+	function update( $args = array() ) {
 		if ( ! $this->post ) {
 			return;
 		}
@@ -1647,8 +1653,8 @@ class Mltp_Prestation {
 		$updates['discount'] = get_post_meta( $post_id, 'discount', true );
 		$updates['balance']  = get_post_meta( $post_id, 'balance', true );
 		$updates['dates']    = get_post_meta( $post_id, 'dates', true );
-		$updates['from']    = get_post_meta( $post_id, 'from', true );
-		$updates['to']    = get_post_meta( $post_id, 'to', true );
+		$updates['from']     = get_post_meta( $post_id, 'from', true );
+		$updates['to']       = get_post_meta( $post_id, 'to', true );
 		$updates['subtotal'] = 0;
 		$updates['paid']     = 0;
 		$updates['total']    = 0;
@@ -1739,7 +1745,7 @@ class Mltp_Prestation {
 				$updates['subtotal'] += (float) $item['quantity'] * (float) $item['unit_price'];
 
 				if ( ! empty( $item['from'] ) ) {
-					$dates[] = MultiPass::timestamp($item['from']);
+					$dates[] = MultiPass::timestamp( $item['from'] );
 				}
 				if ( ! empty( $item['to'] ) ) {
 					$dates[] = MultiPass::timestamp( $item['to'] );
@@ -1765,8 +1771,8 @@ class Mltp_Prestation {
 		}
 
 		$dates = array_filter( $dates );
-		foreach ($dates as $key => $date) {
-			$dates[$key] = MultiPass::timestamp($date);
+		foreach ( $dates as $key => $date ) {
+			$dates[ $key ] = MultiPass::timestamp( $date );
 		}
 
 		if ( ! empty( $dates ) ) {
@@ -1779,11 +1785,11 @@ class Mltp_Prestation {
 			}
 		}
 
-		$updates['from'] = $dates['from'];
-		$updates['to'] = $dates['to'];
+		$updates['from']  = $dates['from'];
+		$updates['to']    = $dates['to'];
 		$updates['dates'] = array(
-			'from' =>  $dates['from'],
-			'to' => $dates['to'],
+			'from' => $dates['from'],
+			'to'   => $dates['to'],
 		);
 
 		$updates['discount']['total'] += $updates['discount']['amount'] + $updates['discount']['managed'];
@@ -1885,36 +1891,44 @@ class Mltp_Prestation {
 	}
 
 	public function rewrite_the_title( $post_title, $post_id ) {
-		if ( 'mltp_prestation' != get_post_type($post_id) ) {
+		if ( 'mltp_prestation' != get_post_type( $post_id ) ) {
 			return $post_title;
 		}
-		if ( ! is_single() &! is_archive()) {
+		if ( ! is_single() & ! is_archive() ) {
 			return $post_title;
 		}
 
-		$prestation = new Mltp_Prestation($post_id);
-		if( ! $prestation->is_prestation() ) return $post_title;
+		$prestation = new Mltp_Prestation( $post_id );
+		if ( ! $prestation->is_prestation() ) {
+			return $post_title;
+		}
 
-		return $prestation->full_title($post_title);
+		return $prestation->full_title( $post_title );
 	}
 
 	public function full_title( $post_title = null ) {
 		if ( ! $this->is_prestation() ) {
-			if ( ! empty($post_title)) return $post_title;
-			if ( ! empty($this->post_title)) return $this->post_title;
+			if ( ! empty( $post_title ) ) {
+				return $post_title;
+			}
+			if ( ! empty( $this->post_title ) ) {
+				return $this->post_title;
+			}
 			return;
 		}
 		$title = $this->name;
-		$title = preg_replace('/ *#.*/', '', $title );
+		$title = preg_replace( '/ *#.*/', '', $title );
 
-		return MultiPass::array_join( array(
-			$title,
-			MultiPass::format_date_range( $this->dates ),
+		return MultiPass::array_join(
 			array(
-				( ( empty( $this->slug ) ) ? null : "#$this->slug" ),
-				( empty ( $this->origin_id) ) ? null : $this->origin . ' ' . $this->origin_id,
-			),
-		));
+				$title,
+				MultiPass::format_date_range( $this->dates ),
+				array(
+					( ( empty( $this->slug ) ) ? null : "#$this->slug" ),
+					( empty( $this->origin_id ) ) ? null : $this->origin . ' ' . $this->origin_id,
+				),
+			)
+		);
 
 		return $title;
 	}
@@ -2073,7 +2087,7 @@ class Mltp_Prestation {
 
 		if ( is_numeric( $args ) ) {
 			$prestation_post = get_post( $args );
-			if( ! isset($prestation_post->post_type) ) {
+			if ( ! isset( $prestation_post->post_type ) ) {
 				return new WP_Error( 'prestation-wrong-type', "Prestation $args not found" );
 			}
 			if ( 'mltp_prestation' !== $prestation_post->post_type ) {

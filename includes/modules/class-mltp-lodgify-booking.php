@@ -155,9 +155,9 @@ class Mltp_Lodgify_Booking {
 
 		$this->status = $status;
 		$this->guests = $guests;
-		$this->dates = array(
+		$this->dates  = array(
 			'from' => $from,
-			'to' => $to,
+			'to'   => $to,
 		);
 		$this->from   = $from;
 		$this->to     = $to;
@@ -166,7 +166,10 @@ class Mltp_Lodgify_Booking {
 			'customer_name'    => $customer_name,
 			'customer_email'   => $customer_email,
 			'customer_phone'   => $customer_phone,
-			'dates'             => [ 'from' => $from, 'to' => $to ],
+			'dates'            => array(
+				'from' => $from,
+				'to'   => $to,
+			),
 			'from'             => $from,
 			'to'               => $to,
 			// 'dates'               => array('from'=>$from,'to'=>$to),
@@ -358,7 +361,10 @@ class Mltp_Lodgify_Booking {
 			'customer_name'    => $customer_name,
 			'customer_email'   => $customer_email,
 			'customer_phone'   => $customer_phone,
-			'dates'             => [ 'from' => $from, 'to' => $to ],
+			'dates'            => array(
+				'from' => $from,
+				'to'   => $to,
+			),
 			'from'             => $from,
 			'to'               => $to,
 			// 'dates'               => array('from'=>$from,'to'=>$to),

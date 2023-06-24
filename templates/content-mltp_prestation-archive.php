@@ -3,6 +3,7 @@
  * Alter content block for MultiPass Prestation excerpt (in archives)
  *
  * Available ariables
+ *
  * @param  object $wp_query
  * @param  string $content          original content
  * @param  string post_name         post slug
