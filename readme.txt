@@ -67,7 +67,7 @@ WARNING: **Make a full backup of your website and databases** before installing 
 
 == Changelog ==
 
-= Unreleased (0.4.1-dev.700) =
+= Unreleased (0.4.1-dev.702) =
 * new reports admin page
 * new Rates and Taxes settings page
 * added "Connect for Stripe" payment link on mobile devices
