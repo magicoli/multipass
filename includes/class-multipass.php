@@ -164,6 +164,7 @@ class MultiPass {
 		 */
 		require_once MULTIPASS_DIR . 'includes/class-mltp-background.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-table.php';
+		require_once MULTIPASS_DIR . 'includes/class-mltp-contact.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-prestation.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-prestation-detail.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-resource.php';
