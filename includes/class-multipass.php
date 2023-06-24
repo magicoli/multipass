@@ -423,16 +423,21 @@ class MultiPass {
 		return $symbol;
 	}
 
+	static function price_actions( $links = [], $prestation, $amount, $args = array(), $attr = array() ) {
+
+		return $links;
+	}
+
 	static function price_with_links( $prestation, $amount, $args = array(), $attr = array() ) {
 		if ( empty( $amount ) || $amount < 0 ) {
 			return;
 		}
 
-		$output = self::price( $amount, $args );
 		$links  = array(
 			self::payment_link( $prestation->slug, $amount, array( 'icon' => 'admin-links' ), array( 'tabindex' => -1 ) ),
 			self::payment_mail_link( $prestation, $amount, array( 'icon' => 'email' ), array( 'tabindex' => -1 ) ),
 		);
+		$output = self::price( $amount, $args );
 		if(wp_is_mobile()) {
 			$links[]  = self::payment_link(
 
