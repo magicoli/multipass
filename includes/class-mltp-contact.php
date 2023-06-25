@@ -88,6 +88,11 @@ class Mltp_Contact extends Mltp_Loader {
 				'hook'     => 'woocommerce_customer_save_address',
 				'callback' => 'profile_update_post_process',
 			),
+			array(
+				'component' => $this,
+				'hook'     => 'woocommerce_save_account_details',
+				'callback' => 'profile_update_post_process',
+			),
 		);
 
 		$this->filters = array(
@@ -669,6 +674,16 @@ class Mltp_Contact extends Mltp_Loader {
 	public function profile_update_post_process($user_id) {
 		// Get the user data
 		$user = get_user_by('ID', $user_id);
+
+		if(
+			current_filter() === 'profile_update'
+			&& (
+				isset($_POST['save-account-details-nonce'])
+				|| isset($_POST['woocommerce-edit-address-nonce'])
+			)
+		) {
+			return;
+		}
 
 		// Check if user data exists
 		if ($user) {
