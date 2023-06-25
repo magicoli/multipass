@@ -971,9 +971,11 @@ class MultiPass {
 	}
 
 	public static function sanitize_address( $fields ) {
-		if(!is_array($fields)) return $fields;
-		foreach ($fields as $field => $value) {
-			$fields[$field] = trim(preg_replace('/ *,( *, *)*/', ', ', preg_replace('/ +/', ' ', $value) ) , ", " );
+		if ( ! is_array( $fields ) ) {
+			return $fields;
+		}
+		foreach ( $fields as $field => $value ) {
+			$fields[ $field ] = trim( preg_replace( '/ *,( *, *)*/', ', ', preg_replace( '/ +/', ' ', $value ) ), ', ' );
 		}
 		return $fields;
 	}

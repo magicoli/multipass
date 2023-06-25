@@ -78,7 +78,7 @@ class Mltp_Contact extends Mltp_Loader {
 	 * @return void
 	 */
 	public static function register_post_types() {
-		$labels = [
+		$labels = array(
 			'name'                     => esc_html__( 'Contacts', 'multipass' ),
 			'singular_name'            => esc_html__( 'Contact', 'multipass' ),
 			'add_new'                  => esc_html__( 'Add New', 'multipass' ),
@@ -111,8 +111,8 @@ class Mltp_Contact extends Mltp_Loader {
 			'item_scheduled'           => esc_html__( 'Contact scheduled.', 'multipass' ),
 			'item_updated'             => esc_html__( 'Contact updated.', 'multipass' ),
 			'text_domain'              => esc_html__( 'multipass', 'multipass' ),
-		];
-		$args = [
+		);
+		$args   = array(
 			'label'               => esc_html__( 'Contacts', 'multipass' ),
 			'labels'              => $labels,
 			'description'         => 'Contacts for MultiPass plugin',
@@ -132,12 +132,12 @@ class Mltp_Contact extends Mltp_Loader {
 			'show_in_menu'        => 'multipass',
 			'menu_icon'           => 'dashicons-admin-users',
 			'capability_type'     => 'mltp_prestation',
-			'supports'            => ['title', 'thumbnail'],
-			'taxonomies'          => [],
-			'rewrite'             => [
+			'supports'            => array( 'title', 'thumbnail' ),
+			'taxonomies'          => array(),
+			'rewrite'             => array(
 				'with_front' => false,
-			],
-		];
+			),
+		);
 
 		register_post_type( 'mltp_contact', $args );
 	}
@@ -145,68 +145,68 @@ class Mltp_Contact extends Mltp_Loader {
 	public function register_fields( $meta_boxes ) {
 		$prefix = '';
 
-		$meta_boxes[] = [
+		$meta_boxes[] = array(
 			'title'      => __( 'Contact fields', 'multipass' ),
 			'id'         => 'contact-fields',
-			'post_types' => ['mltp_contact'],
+			'post_types' => array( 'mltp_contact' ),
 			'context'    => 'after_title',
 			'style'      => 'seamless',
 			'autosave'   => true,
 			'geo'        => true,
-			'fields'     => [
-				[
+			'fields'     => array(
+				array(
 					'name'       => __( 'User', 'multipass' ),
 					'id'         => $prefix . 'user_id',
 					'type'       => 'user',
 					'field_type' => 'select_advanced',
 					'add_new'    => true,
-				],
-				[
+				),
+				array(
 					'name'    => __( 'First Name', 'multipass' ),
 					'id'      => $prefix . 'first_name',
 					'type'    => 'text',
 					'columns' => 6,
-					'visible' => [
-						'when'     => [['user_id', '=', '']],
+					'visible' => array(
+						'when'     => array( array( 'user_id', '=', '' ) ),
 						'relation' => 'or',
-					],
-				],
-				[
+					),
+				),
+				array(
 					'name'    => __( 'Last Name', 'multipass' ),
 					'id'      => $prefix . 'last_name',
 					'type'    => 'text',
 					'columns' => 6,
-					'visible' => [
-						'when'     => [['user_id', '=', '']],
+					'visible' => array(
+						'when'     => array( array( 'user_id', '=', '' ) ),
 						'relation' => 'or',
-					],
-				],
-				[
+					),
+				),
+				array(
 					'name' => __( 'Company', 'multipass' ),
 					'id'   => $prefix . 'company',
 					'type' => 'text',
-				],
-				[
+				),
+				array(
 					'name'          => __( 'Email', 'multipass' ),
 					'id'            => $prefix . 'email',
 					'type'          => 'email',
 					'admin_columns' => 'after title',
-					'visible'       => [
-						'when'     => [['user_id', '=', '']],
+					'visible'       => array(
+						'when'     => array( array( 'user_id', '=', '' ) ),
 						'relation' => 'or',
-					],
-				],
-				[
+					),
+				),
+				array(
 					'name'              => __( 'Phone Number', 'multipass' ),
 					'id'                => $prefix . 'phone',
 					'type'              => 'tel',
-					'columns' => 9,
+					'columns'           => 9,
 					'clone'             => true,
 					'clone_as_multiple' => true,
 					'add_button'        => __( 'Add a phone number', 'multipass' ),
 					'admin_columns'     => 'after title',
-				],
-				[
+				),
+				array(
 					'name'              => __( 'Address', 'multipass' ),
 					'id'                => $prefix . 'address',
 					'type'              => 'group',
@@ -215,124 +215,124 @@ class Mltp_Contact extends Mltp_Loader {
 					'add_button'        => __( 'Add an address', 'multipass' ),
 					'admin_columns'     => 'after title',
 					'sanitize_callback' => 'MultiPass::sanitize_address',
-					'fields'            => [
-						[
+					'fields'            => array(
+						array(
 							'id'          => $prefix . 'address',
 							'type'        => 'text',
 							'placeholder' => __( 'Type address here to search', 'multipass' ),
 							'prepend'     => '<span class="dashicons dashicons-search"></span>',
-						],
-						[
+						),
+						array(
 							'id'          => $prefix . 'building',
 							'type'        => 'text',
 							'placeholder' => __( 'Building', 'multipass' ),
-						],
-						[
+						),
+						array(
 							'id'          => $prefix . 'street',
 							'type'        => 'text',
 							'placeholder' => __( 'Street', 'multipass' ),
 							'binding'     => 'house_number + " " + aeroway + " " + road',
-						],
-						[
+						),
+						array(
 							'id'          => $prefix . 'neighbourhood_suburb',
 							'type'        => 'text',
 							'placeholder' => __( 'Neighbourhood / Suburb', 'multipass' ),
 							'binding'     => 'neighbourhood + " " + suburb',
-						],
-						[
+						),
+						array(
 							'id'          => $prefix . 'postcode',
 							'type'        => 'text',
 							'placeholder' => __( 'Postcode', 'multipass' ),
 							'columns'     => 2,
-						],
-						[
+						),
+						array(
 							'id'          => $prefix . 'village_town_locality',
 							'type'        => 'text',
 							'placeholder' => __( 'Village / Town / Locality', 'multipass' ),
 							'columns'     => 5,
 							'binding'     => 'village + " " + town + " " + locality',
-						],
-						[
+						),
+						array(
 							'id'          => $prefix . 'county_state',
 							'type'        => 'text',
 							'placeholder' => __( 'County / State', 'multipass' ),
 							'columns'     => 5,
 							'binding'     => 'county + " " + state',
-						],
-						[
+						),
+						array(
 							'id'            => $prefix . 'country',
 							'type'          => 'text',
 							'placeholder'   => __( 'Country', 'multipass' ),
-							'admin_columns' => [
+							'admin_columns' => array(
 								'position' => 'after title',
 								'title'    => 'Country',
-							],
+							),
 							'columns'       => 4,
-						],
+						),
 						// [
-						// 	'id'      => $prefix . 'house_number',
-						// 	'type'    => 'hidden',
+						// 'id'      => $prefix . 'house_number',
+						// 'type'    => 'hidden',
 						// ],
 						// [
-						// 	'id'      => $prefix . 'aeroway',
-						// 	'type'    => 'hidden',
+						// 'id'      => $prefix . 'aeroway',
+						// 'type'    => 'hidden',
 						// ],
 						// [
-						// 	'id'      => $prefix . 'road',
-						// 	'type'    => 'hidden',
+						// 'id'      => $prefix . 'road',
+						// 'type'    => 'hidden',
 						// ],
 						// [
-						// 	'id'      => $prefix . 'neighbourhood',
-						// 	'type'    => 'hidden',
+						// 'id'      => $prefix . 'neighbourhood',
+						// 'type'    => 'hidden',
 						// ],
 						// [
-						// 	'id'      => $prefix . 'suburb',
-						// 	'type'    => 'hidden',
+						// 'id'      => $prefix . 'suburb',
+						// 'type'    => 'hidden',
 						// ],
 						// [
-						// 	'id'      => $prefix . 'village',
-						// 	'type'    => 'hidden',
+						// 'id'      => $prefix . 'village',
+						// 'type'    => 'hidden',
 						// ],
 						// [
-						// 	'id'      => $prefix . 'town',
-						// 	'type'    => 'hidden',
+						// 'id'      => $prefix . 'town',
+						// 'type'    => 'hidden',
 						// ],
 						// [
-						// 	'id'      => $prefix . 'locality',
-						// 	'type'    => 'hidden',
+						// 'id'      => $prefix . 'locality',
+						// 'type'    => 'hidden',
 						// ],
 						// [
-						// 	'id'      => $prefix . 'county',
-						// 	'type'    => 'hidden',
+						// 'id'      => $prefix . 'county',
+						// 'type'    => 'hidden',
 						// ],
 						// [
-						// 	'id'      => $prefix . 'state',
-						// 	'type'    => 'hidden',
+						// 'id'      => $prefix . 'state',
+						// 'type'    => 'hidden',
 						// ],
 						// [
-						// 	'id'      => $prefix . 'country_code',
-						// 	'type'    => 'hidden',
+						// 'id'      => $prefix . 'country_code',
+						// 'type'    => 'hidden',
 						// ],
-						[
+						array(
 							'id'            => $prefix . 'geocode',
 							'type'          => 'osm',
 							'address_field' => 'address',
-							'language'       => 'fr',
-							'class'          => 'hidden thisisaclassiuseonlyhere',
-						],
-					],
-				],
-			],
-		];
+							'language'      => 'fr',
+							'class'         => 'hidden thisisaclassiuseonlyhere',
+						),
+					),
+				),
+			),
+		);
 
 		return $meta_boxes;
 	}
 
 	/**
-	* Register contact-status taxonomy.
-	*
-	* @return void
-	*/
+	 * Register contact-status taxonomy.
+	 *
+	 * @return void
+	 */
 	public static function register_taxonomies() {
 	}
 }

@@ -6,13 +6,16 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    '6e3fae29631ef280660b3cdad06f25a8' => $vendorDir . '/symfony/deprecation-contracts/function.php',
+    'a4a119a56e50fbb293281d9a48007e0e' => $vendorDir . '/symfony/polyfill-php80/bootstrap.php',
     '6124b4c8570aa390c21fafd04a26c69f' => $vendorDir . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
+    '53c7be3308b5aa229d03a4dfcf6ca18d' => $vendorDir . '/symfony/intl/Resources/functions.php',
     '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => $vendorDir . '/symfony/polyfill-mbstring/bootstrap.php',
-    'ec07570ca5a812141189b1fa81503674' => $vendorDir . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
     '42f21a986a071bc268819b02ac75329d' => $vendorDir . '/meta-box/meta-box/meta-box.php',
     'b5856825679c115c71547b0272deaac3' => $vendorDir . '/meta-box/mb-admin-columns/mb-admin-columns.php',
     '025a5bb7399f0c997097d1021281c7f3' => $vendorDir . '/meta-box/meta-box-columns/meta-box-columns.php',
     '3b3ae0b9ebddbddca4a4871522e94e94' => $vendorDir . '/meta-box/meta-box-conditional-logic/meta-box-conditional-logic.php',
+    'f21e9e36428aacdfacc41602a539acb5' => $vendorDir . '/meta-box/meta-box-geolocation/meta-box-geolocation.php',
     'edcc153a806b7ccc783ee600bce341a8' => $vendorDir . '/meta-box/meta-box-group/meta-box-group.php',
     'c19a17ecabf454d7a624f87c83f08186' => $vendorDir . '/meta-box/meta-box-include-exclude/meta-box-include-exclude.php',
     '801b2d802e0fd0a97de6730c2744a301' => $vendorDir . '/meta-box/meta-box-show-hide/meta-box-show-hide.php',
