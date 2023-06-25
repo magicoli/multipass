@@ -78,6 +78,16 @@ class Mltp_Contact extends Mltp_Loader {
 				'hook'     => 'save_post',
 				'callback' => 'save_post_process',
 			),
+			array(
+				'component' => $this,
+				'hook'     => 'profile_update',
+				'callback' => 'profile_update_post_process',
+			),
+			array(
+				'component' => $this,
+				'hook'     => 'woocommerce_customer_save_address',
+				'callback' => 'profile_update_post_process',
+			),
 		);
 
 		$this->filters = array(
@@ -575,7 +585,7 @@ class Mltp_Contact extends Mltp_Loader {
 	  }
 	}
 
-	public function import_data_from_wp_users($post_id) {
+	public function import_data_from_wp_users($post_id, $user_id = null) {
 	  // Get the post object
 	  $post = get_post($post_id);
 
@@ -584,7 +594,7 @@ class Mltp_Contact extends Mltp_Loader {
 	    // Get the user_id and email values from the post meta
 			$address_group_id = rwmb_meta('address_group_id', array(), $post_id); // Replace 'address_group_id' with your address group field key
 
-	    $user_id = rwmb_meta('user_id', $this->db_args, $post_id);
+	    $user_id = empty($user_id) ? rwmb_meta('user_id', $this->db_args, $post_id) :  $user_id;
 	    $email = rwmb_meta('email', $this->db_args, $post_id);
 
 	    // Check if user_id is set and fetch the user data
@@ -604,14 +614,18 @@ class Mltp_Contact extends Mltp_Loader {
 	      rwmb_set_meta($post_id, 'email', $user->user_email, $this->db_args);
 
 	      // Import data from user object
-	      rwmb_set_meta($post_id, 'first_name', $user->first_name, $this->db_args);
-	      rwmb_set_meta($post_id, 'last_name', $user->last_name, $this->db_args);
+				$first_name = get_user_meta($user_id, 'billing_first_name', true);
+				$first_name = empty($first_name) ? $user->first_name : $first_name;
+				$last_name = get_user_meta($user_id, 'billing_last_name', true);
+				$last_name = empty($last_name) ? $user->last_name : $last_name;
+				rwmb_set_meta($post_id, 'first_name', $first_name, $this->db_args);
+				rwmb_set_meta($post_id, 'last_name', $last_name, $this->db_args);
 
 	      // Check if WooCommerce is active
-	      if (class_exists('WooCommerce')) {
-
+	      if ( class_exists('WooCommerce')) {
 	        // Import billing_company from user meta
 	        $company = get_user_meta($user->ID, 'billing_company', true);
+
 	        rwmb_set_meta($post_id, 'company', $company, $this->db_args);
 
 	        // Import billing_phone from user meta
@@ -634,7 +648,56 @@ class Mltp_Contact extends Mltp_Loader {
 					rwmb_set_meta($post_id, 'address', [$address], $this->db_args);
 	      }
 	    }
+
+			$title = Mltp_Contact::build_contact_title(array(
+				'first_name' => $first_name,
+				'last_name' => $last_name,
+				'company' => (isset($company)) ? $company : null,
+			));
+
+			// Update the post title only if it is different
+			if ($title !== $post->post_title) {
+				wp_update_post(array(
+					'ID' => $post_id,
+					'post_title' => $title,
+				));
+			}
+
 	  }
+	}
+
+	public function profile_update_post_process($user_id) {
+		// Get the user data
+		$user = get_user_by('ID', $user_id);
+
+		// Check if user data exists
+		if ($user) {
+			// Query the mltp_contact posts
+			global $wpdb;
+			$prepared_statement = $wpdb->prepare(
+				"SELECT ID FROM {$this->table} WHERE user_id = %d OR email = %s",
+				$user_id,
+				$user->user_email,
+			);
+			$ids = $wpdb->get_col($prepared_statement);
+
+			if (empty($ids)) {
+				// TODO: Create a new contact
+			} else {
+				$contacts = get_posts(array(
+					'post_type' => 'mltp_contact',
+					'numberposts' => -1,
+					'post__in' => $ids,
+				));
+
+				// Iterate over the found contacts and import data
+				foreach ($contacts as $contact) {
+					$contact_id = $contact->ID;
+					// Import data from WP users
+					$this->import_data_from_wp_users($contact_id, $user_id);
+				}
+			}
+		}
 	}
 
 }
