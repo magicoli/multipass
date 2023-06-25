@@ -524,6 +524,22 @@ class Mltp_Contact extends Mltp_Loader {
 		);
 	}
 
+	public static function build_contact_title($args = []) {
+		$args = array_merge(array(
+			'first_name' => null,
+			'last_name' => null,
+			'company' => null,
+		), $args);
+		// Build the new title
+		$title = trim($args['first_name'] . ' ' . $args['last_name']);
+		if (!empty($args['company']) && !empty($title)) {
+			$title .= ' - ';
+		}
+		$title .= $args['company'];
+
+		return $title;
+	}
+
 	public function save_post_process($post_id) {
 	  // Check if it is the mltp_contact post type
 	  if (get_post_type($post_id) === 'mltp_contact') {
@@ -537,27 +553,23 @@ class Mltp_Contact extends Mltp_Loader {
 
 	    // Check if the title is empty
 	    if (empty($post->post_title)) {
-	      // Get the values of first_name, last_name, and company
-				$first_name = rwmb_meta( 'first_name', $this->db_args, $post_id );
-	      $last_name = rwmb_meta( 'last_name', $this->db_args, $post_id );
-	      $company = rwmb_meta( 'company', $this->db_args, $post_id );
+				// Get the values of first_name, last_name, and company
+				$title = Mltp_Contact::build_contact_title(array(
+					'first_name' => rwmb_meta( 'first_name', $this->db_args, $post_id ),
+		      'last_name' => rwmb_meta( 'last_name', $this->db_args, $post_id ),
+		      'company' => rwmb_meta( 'company', $this->db_args, $post_id ),
+				));
 
-	      // Build the new title
-	      $title = trim($first_name . ' ' . $last_name);
-	      if (!empty($company) && !empty($title)) {
-	        $title .= ' - ' . $company;
-	      }
-
-	      // Update the post title only if it is different
+				// Update the post title only if it is different
 				if ($title !== $post->post_title) {
 					wp_update_post(array(
 						'ID' => $post_id,
 						'post_title' => $title,
 					));
 				}
+
 			}
-			// rwmb_set_meta($post_id, 'email', 'fakewp@email.org');
-			// rwmb_set_meta( $post_id, 'phone', [ '+123 456 7890' ], $this->db_args );
+
 			add_action('save_post', array($this, 'save_post_process')); // Add the action back after updating the post title
 
 	  }
