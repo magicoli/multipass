@@ -29,7 +29,8 @@
     "openpsa/ranger": "^0.5.4",
     "oomphinc/composer-installers-extender": "^2.0",
     "giggsey/libphonenumber-for-php": "^8.12",
-    "mpdf/mpdf": "^8.1"
+    "mpdf/mpdf": "^8.1",
+    "sabre/dav": "^4.4"
   },
   "extra": {
     "installer-paths": {
