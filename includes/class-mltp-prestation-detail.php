@@ -409,10 +409,13 @@ class Mltp_Item {
 		$js_date_format_short = preg_match( '/^[Fm]/', get_option( 'date_format' ) ) ? 'mm-dd-yy' : 'dd-mm-yy';
 		$prefix               = '';
 
-		$meta_boxes['mltp_detail'] = array(
+		$meta_boxes['mltp_detail_main_box'] = array(
 			'title'      => __( 'Elements fields', 'multipass' ),
-			'id'         => 'mltp_detail',
+			'id'         => 'mltp_detail_main_box',
 			'post_types' => array( 'mltp_detail' ),
+			// 'context'    => 'form_top',
+			'context'    => 'after_title',
+			'priority'   => 'high',
 			'style'      => 'seamless',
 			'fields'     => array(
 				array(
@@ -421,17 +424,25 @@ class Mltp_Item {
 					'callback' => 'MultiPass::title_html',
 				),
 				array(
-					'name'          => __( 'External source', 'multipass' ),
-					'id'            => $prefix . 'source',
-					'type'          => 'taxonomy',
-					'taxonomy'      => array( 'mltp_detail-source' ),
-					'field_type'    => 'select',
-					'placeholder'   => _x( 'None', '(mltp_detail) source', 'multipass' ),
+					'name'          => __( 'Prestation', 'multipass' ),
+					'id'            => $prefix . 'prestation_id',
+					'type'          => 'post',
+					'post_type'     => array( 'mltp_prestation' ),
+					'field_type'    => 'select_advanced',
 					'admin_columns' => array(
-						'position'   => 'replace date',
+						'position'   => 'after title',
+						// 'title'      => 'Customer',
 						'sort'       => true,
 						'searchable' => true,
-						'filterable' => true,
+					),
+				),
+				array(
+					'name'    => __( 'Description', 'multipass' ),
+					'id'      => $prefix . 'description',
+					'type'    => 'text',
+					'visible' => array(
+						'when'     => array( array( 'source', '=', '' ) ),
+						'relation' => 'or',
 					),
 				),
 				array(
@@ -449,6 +460,20 @@ class Mltp_Item {
 					'visible'       => array(
 						'when'     => array( array( 'source', '=', '' ) ),
 						'relation' => 'and',
+					),
+				),
+				array(
+					'name'          => __( 'External source', 'multipass' ),
+					'id'            => $prefix . 'source',
+					'type'          => 'taxonomy',
+					'taxonomy'      => array( 'mltp_detail-source' ),
+					'field_type'    => 'select',
+					'placeholder'   => _x( 'None', '(mltp_detail) source', 'multipass' ),
+					'admin_columns' => array(
+						'position'   => 'replace date',
+						'sort'       => true,
+						'searchable' => true,
+						'filterable' => true,
 					),
 				),
 				array(
@@ -481,28 +506,15 @@ class Mltp_Item {
 						'relation' => 'and',
 					),
 				),
-				array(
-					'name'    => __( 'Description', 'multipass' ),
-					'id'      => $prefix . 'description',
-					'type'    => 'text',
-					'visible' => array(
-						'when'     => array( array( 'source', '=', '' ) ),
-						'relation' => 'or',
-					),
-				),
-				array(
-					'name'          => __( 'Prestation', 'multipass' ),
-					'id'            => $prefix . 'prestation_id',
-					'type'          => 'post',
-					'post_type'     => array( 'mltp_prestation' ),
-					'field_type'    => 'select_advanced',
-					'admin_columns' => array(
-						'position'   => 'after title',
-						// 'title'      => 'Customer',
-						'sort'       => true,
-						'searchable' => true,
-					),
-				),
+			),
+		);
+
+		$meta_boxes['mltp_detail'] = array(
+			'title'      => __( 'Elements fields', 'multipass' ),
+			'id'         => 'mltp_detail',
+			'post_types' => array( 'mltp_detail' ),
+			'style'      => 'seamless',
+			'fields'     => array(
 				array(
 					'name'     => __( 'Customer', 'multipass' ),
 					'id'       => $prefix . 'customer_display',

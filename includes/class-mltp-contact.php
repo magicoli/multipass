@@ -325,6 +325,105 @@ class Mltp_Contact extends Mltp_Loader {
 			),
 		);
 
+		// Contact fields for mltp_prestation and mltp_detail post types
+		$prefix       = 'contacts_';
+		$meta_boxes[] = array(
+			'title'      => __( 'Contacts', 'multipass' ),
+			'id'         => 'contacts',
+			'post_types' => array( 'mltp_prestation', 'mltp_detail' ),
+			'context'    => 'after_title',
+			'priority'   => 'low',
+			'style'      => 'seamless',
+			'fields'     => array(
+				array(
+					'name'    => __( 'Use parent', 'multipass' ),
+					'id'      => $prefix . 'use_parent',
+					'type'    => 'switch',
+					'style'   => 'rounded',
+					'std'     => true,
+					'visible' => array(
+						'when'     => array( array( 'prestation_id', '>', 0 ) ),
+						'relation' => 'or',
+					),
+				),
+				array(
+					'name'              => __( 'Contacts', 'multipass' ),
+					'id'                => $prefix . 'contact',
+					'type'              => 'group',
+					'clone'             => true,
+					'sort_clone'        => true,
+					'clone_default'     => true,
+					'clone_as_multiple' => true,
+					'add_button'        => __( 'Add contact', 'multipass' ),
+					'class'             => 'inline',
+					'fields'            => array(
+						array(
+							'name'     => __( 'Type', 'multipass' ),
+							'id'       => $prefix . 'type',
+							'type'     => 'select',
+							'options'  => array(
+								'main'    => __( 'Main', 'multipass' ),
+								'billing' => __( 'Billing', 'multipass' ),
+								'guest'   => __( 'Guest', 'multipass' ),
+								'other'   => __( 'Other', 'multipass' ),
+							),
+							'std'      => 'main',
+							'required' => true,
+						),
+						array(
+							'name'       => __( 'Contact', 'multipass' ),
+							'id'         => $prefix . 'id',
+							'type'       => 'post',
+							'post_type'  => array( 'mltp_contact' ),
+							'field_type' => 'select_advanced',
+							'add_new'    => true,
+						),
+						array(
+							'name'   => __( 'Name', 'multipass' ),
+							'id'     => $prefix . 'name',
+							'type'   => 'text',
+							'hidden' => array(
+								'when'     => array( array( 'id', '>', 0 ) ),
+								'relation' => 'or',
+							),
+						),
+						array(
+							'name'   => __( 'Phone', 'multipass' ),
+							'id'     => $prefix . 'phone',
+							'type'   => 'text',
+							'hidden' => array(
+								'when'     => array( array( 'id', '>', 0 ) ),
+								'relation' => 'or',
+							),
+						),
+						array(
+							'name'   => __( 'Email', 'multipass' ),
+							'id'     => $prefix . 'email',
+							'type'   => 'email',
+							'hidden' => array(
+								'when'     => array( array( 'id', '>', 0 ) ),
+								'relation' => 'or',
+							),
+						),
+						array(
+							'name'     => __( 'Summary', 'multipass' ),
+							'id'       => $prefix . 'summary',
+							'type'     => 'custom_html',
+							'callback' => 'Mltp_Contacts::summary',
+							'hidden'   => array(
+								'when'     => array( array( 'id', '=', '' ) ),
+								'relation' => 'or',
+							),
+						),
+					),
+					'hidden'            => array(
+						'when'     => array( array( 'prestation_id', '>', 0 ), array( 'use_parent', '=', 1 ) ),
+						'relation' => 'and',
+					),
+				),
+			),
+		);
+
 		return $meta_boxes;
 	}
 

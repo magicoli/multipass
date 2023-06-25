@@ -429,12 +429,12 @@ class Mltp_Prestation {
 	public function register_fields( $meta_boxes ) {
 		$js_date_format_short = preg_match( '/^[Fm]/', get_option( 'date_format' ) ) ? 'mm-dd-yy' : 'dd-mm-yy';
 
-		$prefix                         = '';
-		$meta_boxes['prestation-cpt']   = array(
+		$prefix                       = '';
+		$meta_boxes['prestation-cpt'] = array(
 			'title'      => __( 'Prestations', 'multipass' ),
 			'id'         => 'prestation-fields',
 			'post_types' => array( 'mltp_prestation' ),
-			'context'    => 'after_title',
+			// 'context'    => 'after_title',
 			'style'      => 'seamless',
 			'autosave'   => true,
 			'fields'     => array(
