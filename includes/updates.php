@@ -3,17 +3,16 @@
 // if ( ! defined( 'MLTP_UPDATES' ) ) define('MLTP_UPDATES', 1 );
 // /* Temporary disabled */
 if ( ! defined( 'MLTP_UPDATES' ) ) {
-	define( 'MLTP_UPDATES', 0 );
+	define( 'MLTP_UPDATES', 2 );
 }
 
 if ( get_option( 'multipass_updated' ) < MLTP_UPDATES ) {
-	add_action( 'init', 'multipass_updates' );
+	add_action( 'plugins_loaded', 'multipass_updates' );
 	// multipass_updates();
 }
 
 function multipass_updates( $args = array() ) {
 	$u = get_option( 'multipass_updated' ) + 1;
-
 	$messages = array();
 	if ( ! empty( $args['message'] ) ) {
 		$messages[] = $args['message'];
@@ -31,9 +30,12 @@ function multipass_updates( $args = array() ) {
 				if ( $result != 1 ) {
 					$messages[] = $result;
 				}
-				// update_option('multipass_updated', $u);
+				update_option('multipass_updated', $u);
 			} else {
-				$messages[] = sprintf( __( 'Update %s failed', 'multipass' ), $u );
+				$result = $update();
+				$message = sprintf( __( 'Update %s failed', 'multipass' ), $u );
+				$messages[] = $message;
+				error_log($message);
 				$errors[]   = $u;
 				break;
 			}
@@ -68,6 +70,8 @@ function multipass_updates( $args = array() ) {
  * Force save on existing prestation and detail posts, to update their title.
  */
 function multipass_update_1() {
+	return true; // obsolete, early dev stage
+
 	global $wpdb;
 	$u = 1;
 
@@ -138,4 +142,13 @@ function multipass_update_1() {
 	);
 	error_log( $output );
 	return $output;
+}
+
+/*
+ * Create contact database
+ */
+function multipass_update_2() {
+	$mltp_contacts = new Mltp_Contact();
+	add_action( 'init', array( $mltp_contacts, 'update_tables') );
+	return true;
 }
