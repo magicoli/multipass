@@ -268,7 +268,7 @@ class Mltp_Contact extends Mltp_Loader {
 					'sanitize_callback' => 'MultiPass::sanitize_address',
 					'fields'            => array(
 						array(
-							'id'          => $prefix . 'address',
+							'id'          => $prefix . 'search',
 							'type'        => 'text',
 							'placeholder' => __( 'Type address here to search', 'multipass' ),
 							'prepend'     => '<span class="dashicons dashicons-search"></span>',
@@ -285,7 +285,7 @@ class Mltp_Contact extends Mltp_Loader {
 							'binding'     => 'house_number + " " + aeroway + " " + road',
 						),
 						array(
-							'id'          => $prefix . 'neighbourhood_suburb',
+							'id'          => $prefix . 'neighbourhood',
 							'type'        => 'text',
 							'placeholder' => __( 'Neighbourhood / Suburb', 'multipass' ),
 							'binding'     => 'neighbourhood + " " + suburb',
@@ -297,14 +297,14 @@ class Mltp_Contact extends Mltp_Loader {
 							'columns'     => 2,
 						),
 						array(
-							'id'          => $prefix . 'village_town_locality',
+							'id'          => $prefix . 'city',
 							'type'        => 'text',
 							'placeholder' => __( 'Village / Town / Locality', 'multipass' ),
 							'columns'     => 5,
 							'binding'     => 'village + " " + town + " " + locality',
 						),
 						array(
-							'id'          => $prefix . 'county_state',
+							'id'          => $prefix . 'state',
 							'type'        => 'text',
 							'placeholder' => __( 'County / State', 'multipass' ),
 							'columns'     => 5,
@@ -320,54 +320,10 @@ class Mltp_Contact extends Mltp_Loader {
 							),
 							'columns'       => 4,
 						),
-						// [
-						// 'id'      => $prefix . 'house_number',
-						// 'type'    => 'hidden',
-						// ],
-						// [
-						// 'id'      => $prefix . 'aeroway',
-						// 'type'    => 'hidden',
-						// ],
-						// [
-						// 'id'      => $prefix . 'road',
-						// 'type'    => 'hidden',
-						// ],
-						// [
-						// 'id'      => $prefix . 'neighbourhood',
-						// 'type'    => 'hidden',
-						// ],
-						// [
-						// 'id'      => $prefix . 'suburb',
-						// 'type'    => 'hidden',
-						// ],
-						// [
-						// 'id'      => $prefix . 'village',
-						// 'type'    => 'hidden',
-						// ],
-						// [
-						// 'id'      => $prefix . 'town',
-						// 'type'    => 'hidden',
-						// ],
-						// [
-						// 'id'      => $prefix . 'locality',
-						// 'type'    => 'hidden',
-						// ],
-						// [
-						// 'id'      => $prefix . 'county',
-						// 'type'    => 'hidden',
-						// ],
-						// [
-						// 'id'      => $prefix . 'state',
-						// 'type'    => 'hidden',
-						// ],
-						// [
-						// 'id'      => $prefix . 'country_code',
-						// 'type'    => 'hidden',
-						// ],
 						array(
 							'id'            => $prefix . 'geocode',
 							'type'          => 'osm',
-							'address_field' => 'address',
+							'address_field' => 'search',
 							'language'      => 'fr',
 							'class'         => 'hidden thisisaclassiuseonlyhere',
 						),
@@ -575,10 +531,12 @@ class Mltp_Contact extends Mltp_Loader {
 	    // Get the post object
 	    $post = get_post($post_id);
 
+			remove_action('save_post', array($this, 'save_post_process')); // Remove the action temporarily to prevent recursion
+
+			$this->import_data_from_wp_users($post_id);
+
 	    // Check if the title is empty
 	    if (empty($post->post_title)) {
-				// error_log(__METHOD__ . print_r(get_post_meta($post_id), true));
-
 	      // Get the values of first_name, last_name, and company
 				$first_name = rwmb_meta( 'first_name', $this->db_args, $post_id );
 	      $last_name = rwmb_meta( 'last_name', $this->db_args, $post_id );
@@ -592,17 +550,81 @@ class Mltp_Contact extends Mltp_Loader {
 
 	      // Update the post title only if it is different
 				if ($title !== $post->post_title) {
-					remove_action('save_post', array($this, 'save_post_process')); // Remove the action temporarily to prevent recursion
 					wp_update_post(array(
 						'ID' => $post_id,
 						'post_title' => $title,
 					));
-					add_action('save_post', array($this, 'save_post_process')); // Add the action back after updating the post title
 				}
 			}
+			// rwmb_set_meta($post_id, 'email', 'fakewp@email.org');
+			// rwmb_set_meta( $post_id, 'phone', [ '+123 456 7890' ], $this->db_args );
+			add_action('save_post', array($this, 'save_post_process')); // Add the action back after updating the post title
+
 	  }
 	}
-	// add_action('save_post', 'save_post_process');
+
+	public function import_data_from_wp_users($post_id) {
+	  // Get the post object
+	  $post = get_post($post_id);
+
+	  // Check if it is the mltp_contact post type
+	  if ($post->post_type === 'mltp_contact') {
+	    // Get the user_id and email values from the post meta
+			$address_group_id = rwmb_meta('address_group_id', array(), $post_id); // Replace 'address_group_id' with your address group field key
+
+	    $user_id = rwmb_meta('user_id', $this->db_args, $post_id);
+	    $email = rwmb_meta('email', $this->db_args, $post_id);
+
+	    // Check if user_id is set and fetch the user data
+	    if (!empty($user_id)) {
+	      $user = get_user_by('ID', $user_id);
+	    }
+	    // If user_id is not set, check email and fetch the user data
+	    if ( empty($user) && !empty($email)) {
+	      $user = get_user_by('email', $email);
+	    }
+
+	    // Import the user data into the corresponding fields
+	    if (!empty($user)) {
+
+	      // Import user_id and email using rwmb_set_meta
+	      rwmb_set_meta($post_id, 'user_id', $user->ID, $this->db_args);
+	      rwmb_set_meta($post_id, 'email', $user->user_email, $this->db_args);
+
+	      // Import data from user object
+	      rwmb_set_meta($post_id, 'first_name', $user->first_name, $this->db_args);
+	      rwmb_set_meta($post_id, 'last_name', $user->last_name, $this->db_args);
+
+	      // Check if WooCommerce is active
+	      if (class_exists('WooCommerce')) {
+
+	        // Import billing_company from user meta
+	        $company = get_user_meta($user->ID, 'billing_company', true);
+	        rwmb_set_meta($post_id, 'company', $company, $this->db_args);
+
+	        // Import billing_phone from user meta
+	        $phone = get_user_meta($user->ID, 'billing_phone', true);
+	        rwmb_set_meta($post_id, 'phone', [$phone], $this->db_args);
+
+	        // Import billing address
+					$address = array(
+						'street'  => get_user_meta($user->ID, 'billing_address_1', true),
+						'neighbourhood'  => get_user_meta($user->ID, 'billing_address_2', true),
+						'city'       => get_user_meta($user->ID, 'billing_city', true),
+						'state'      => get_user_meta($user->ID, 'billing_state', true),
+						'postcode'   => get_user_meta($user->ID, 'billing_postcode', true),
+						'country'    => get_user_meta($user->ID, 'billing_country', true),
+					);
+					$countryName = WC()->countries->countries[$address['country']];
+					$address['country'] = (empty($countryName)) ? $address['country'] : $countryName;
+
+					$address['search'] = join(', ', array_filter($address));
+					rwmb_set_meta($post_id, 'address', [$address], $this->db_args);
+	      }
+	    }
+	  }
+	}
+
 }
 
 $this->loaders[] = new Mltp_Contact();
