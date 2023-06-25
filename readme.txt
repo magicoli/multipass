@@ -67,7 +67,7 @@ WARNING: **Make a full backup of your website and databases** before installing 
 
 == Changelog ==
 
-= Unreleased (0.4.1-dev.709) =
+= Unreleased (0.4.1-dev.714) =
 * new contacts list
 * new reports admin page
 * new Rates and Taxes settings page
