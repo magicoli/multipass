@@ -30,7 +30,8 @@
     "oomphinc/composer-installers-extender": "^2.0",
     "giggsey/libphonenumber-for-php": "^8.12",
     "mpdf/mpdf": "^8.1",
-    "sabre/dav": "^4.4"
+    "sabre/dav": "^4.4",
+    "meta-box/mb-custom-table": "dev-master"
   },
   "extra": {
     "installer-paths": {

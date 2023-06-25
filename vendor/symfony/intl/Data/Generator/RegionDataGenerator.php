@@ -66,9 +66,9 @@ class RegionDataGenerator extends AbstractDataGenerator
      *
      * @var string[]
      */
-    private $regionCodes = [];
+    private array $regionCodes = [];
 
-    public static function isValidCountryCode($region)
+    public static function isValidCountryCode(int|string|null $region): bool
     {
         if (isset(self::DENYLIST[$region])) {
             return false;
@@ -82,34 +82,22 @@ class RegionDataGenerator extends AbstractDataGenerator
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function scanLocales(LocaleScanner $scanner, string $sourceDir): array
     {
         return $scanner->scanLocales($sourceDir.'/region');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function compileTemporaryBundles(BundleCompilerInterface $compiler, string $sourceDir, string $tempDir)
+    protected function compileTemporaryBundles(BundleCompilerInterface $compiler, string $sourceDir, string $tempDir): void
     {
         $compiler->compile($sourceDir.'/region', $tempDir);
         $compiler->compile($sourceDir.'/misc/metadata.txt', $tempDir);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function preGenerate()
+    protected function preGenerate(): void
     {
         $this->regionCodes = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function generateDataForLocale(BundleEntryReaderInterface $reader, string $tempDir, string $displayLocale): ?array
     {
         $localeBundle = $reader->read($tempDir, $displayLocale);
@@ -128,17 +116,11 @@ class RegionDataGenerator extends AbstractDataGenerator
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function generateDataForRoot(BundleEntryReaderInterface $reader, string $tempDir): ?array
     {
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function generateDataForMeta(BundleEntryReaderInterface $reader, string $tempDir): ?array
     {
         $metadataBundle = $reader->read($tempDir, 'metadata');
