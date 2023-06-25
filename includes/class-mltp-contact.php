@@ -220,6 +220,7 @@ class Mltp_Contact extends Mltp_Loader {
 							'id'          => $prefix . 'address',
 							'type'        => 'text',
 							'placeholder' => __( 'Type address here to search', 'multipass' ),
+							'prepend'     => '<span class="dashicons dashicons-search"></span>',
 						],
 						[
 							'id'          => $prefix . 'building',
