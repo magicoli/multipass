@@ -22,6 +22,8 @@
  */
 class Mltp_Contact extends Mltp_Loader {
 	protected $db_prefix;
+	protected $table;
+	protected $db_args;
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -54,6 +56,11 @@ class Mltp_Contact extends Mltp_Loader {
 	public function __construct( $args = null ) {
 		global $wpdb;
 		$this->db_prefix = $wpdb->prefix;
+		$this->table = $this->db_prefix . 'mltp_contacts';
+		$this->db_args = [
+			// 'storage_type' => 'custom_table',
+			// 'table'        => $this->table,
+		];
 
 		$this->actions = array(
 			array(
@@ -65,6 +72,11 @@ class Mltp_Contact extends Mltp_Loader {
 				'component' => $this,
 				'hook'     => 'init',
 				'callback' => 'register_taxonomies',
+			),
+			array(
+				'component' => $this,
+				'hook'     => 'save_post',
+				'callback' => 'save_post_process',
 			),
 		);
 
@@ -85,7 +97,7 @@ class Mltp_Contact extends Mltp_Loader {
 	 */
 	function update_tables() {
 		MetaBox\CustomTable\API::create(
-			$this->db_prefix . 'mltp_contacts',   // Table name.
+			$this->table,   // Table name.
 			[                                  // Table columns (without ID).
 				'user_id' => 'INTEGER',
 				'display_name' => 'TEXT',
@@ -182,7 +194,7 @@ class Mltp_Contact extends Mltp_Loader {
 			'post_types' => array( 'mltp_contact' ),
 			'context'    => 'after_title',
 			'storage_type' => 'custom_table',  // Must be 'custom_table'
-			'table'        => $this->db_prefix . 'mltp_contacts',  // Custom table name
+			'table'        => $this->table,  // Custom table name
 			'style'      => 'seamless',
 			'autosave'   => true,
 			'geo'        => true,
@@ -555,6 +567,42 @@ class Mltp_Contact extends Mltp_Loader {
 			)
 		);
 	}
+
+	public function save_post_process($post_id) {
+	  // Check if it is the mltp_contact post type
+	  if (get_post_type($post_id) === 'mltp_contact') {
+
+	    // Get the post object
+	    $post = get_post($post_id);
+
+	    // Check if the title is empty
+	    if (empty($post->post_title)) {
+				// error_log(__METHOD__ . print_r(get_post_meta($post_id), true));
+
+	      // Get the values of first_name, last_name, and company
+				$first_name = rwmb_meta( 'first_name', $this->db_args, $post_id );
+	      $last_name = rwmb_meta( 'last_name', $this->db_args, $post_id );
+	      $company = rwmb_meta( 'company', $this->db_args, $post_id );
+
+	      // Build the new title
+	      $title = trim($first_name . ' ' . $last_name);
+	      if (!empty($company) && !empty($title)) {
+	        $title .= ' - ' . $company;
+	      }
+
+	      // Update the post title only if it is different
+				if ($title !== $post->post_title) {
+					remove_action('save_post', array($this, 'save_post_process')); // Remove the action temporarily to prevent recursion
+					wp_update_post(array(
+						'ID' => $post_id,
+						'post_title' => $title,
+					));
+					add_action('save_post', array($this, 'save_post_process')); // Add the action back after updating the post title
+				}
+			}
+	  }
+	}
+	// add_action('save_post', 'save_post_process');
 }
 
 $this->loaders[] = new Mltp_Contact();
