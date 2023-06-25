@@ -61,7 +61,8 @@
     }
   },
   "require-dev": {
-    "phpunit/phpunit": "^9.5"
+    "phpunit/phpunit": "^9.5",
+    "coenjacobs/mozart": "^0.7.1"
   },
   "scripts": {
     "remove-git-submodules" : "find vendor/ -mindepth 2 -type d -name .git | xargs rm -rf; rmdir vendor/* 2>/dev/null; echo cleaned",
