@@ -970,6 +970,14 @@ class MultiPass {
 		return $source_url;
 	}
 
+	public static function sanitize_address( $fields ) {
+		if(!is_array($fields)) return $fields;
+		foreach ($fields as $field => $value) {
+			$fields[$field] = trim(preg_replace('/ *,( *, *)*/', ', ', preg_replace('/ +/', ' ', $value) ) , ", " );
+		}
+		return $fields;
+	}
+
 	public static function sanitize_email( $email ) {
 		if ( empty( $email ) ) {
 			return null;

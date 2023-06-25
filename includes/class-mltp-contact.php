@@ -214,6 +214,7 @@ class Mltp_Contact extends Mltp_Loader {
 					'clone_as_multiple' => true,
 					'add_button'        => __( 'Add an address', 'multipass' ),
 					'admin_columns'     => 'after title',
+					'sanitize_callback' => 'MultiPass::sanitize_address',
 					'fields'            => [
 						[
 							'id'          => $prefix . 'address',
