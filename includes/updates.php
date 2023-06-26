@@ -12,6 +12,8 @@ if ( get_option( 'multipass_updated' ) < MLTP_UPDATES ) {
 }
 
 function multipass_updates( $args = array() ) {
+	$return = null;
+	$class = null;
 	$u = get_option( 'multipass_updated' ) + 1;
 	$messages = array();
 	if ( ! empty( $args['message'] ) ) {
@@ -150,5 +152,5 @@ function multipass_update_1() {
 function multipass_update_2() {
 	$mltp_contacts = new Mltp_Contact();
 	add_action( 'init', array( $mltp_contacts, 'update_tables') );
-	return true;
+	return __('Table and contact update in progress', 'multipass');
 }

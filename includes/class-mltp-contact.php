@@ -58,8 +58,8 @@ class Mltp_Contact extends Mltp_Loader {
 		$this->db_prefix = $wpdb->prefix;
 		$this->table = $this->db_prefix . 'mltp_contacts';
 		$this->db_args = [
-			// 'storage_type' => 'custom_table',
-			// 'table'        => $this->table,
+			'storage_type' => 'custom_table',
+			'table'        => $this->table,
 		];
 
 		$this->actions = array(
@@ -126,6 +126,9 @@ class Mltp_Contact extends Mltp_Loader {
 			['display_name', 'first_name', 'last_name', 'email', 'phone'],               // List of index keys.
 			true                               // Must be true for models.
 		);
+		MultiPass::admin_notice( __('Tables updated.', 'multipass') );
+
+		add_action( 'wp_loaded', array( $this, 'import_contacts_from_wp_users') );
 	}
 
 	/**
@@ -600,20 +603,22 @@ class Mltp_Contact extends Mltp_Loader {
 			$address_group_id = rwmb_meta('address_group_id', array(), $post_id); // Replace 'address_group_id' with your address group field key
 
 	    $user_id = empty($user_id) ? rwmb_meta('user_id', $this->db_args, $post_id) :  $user_id;
-	    $email = rwmb_meta('email', $this->db_args, $post_id);
+			// Check if user_id is set and fetch the user data
+			if (!empty($user_id)) {
+				$user = get_user_by('ID', $user_id);
+			}
 
-	    // Check if user_id is set and fetch the user data
-	    if (!empty($user_id)) {
-	      $user = get_user_by('ID', $user_id);
-	    }
 	    // If user_id is not set, check email and fetch the user data
 	    if ( empty($user) && !empty($email)) {
+				$email = rwmb_meta('email', $this->db_args, $post_id);
+				if(empty($email)) {
+					return;
+				}
 	      $user = get_user_by('email', $email);
 	    }
 
 	    // Import the user data into the corresponding fields
 	    if (!empty($user)) {
-
 	      // Import user_id and email using rwmb_set_meta
 	      rwmb_set_meta($post_id, 'user_id', $user->ID, $this->db_args);
 	      rwmb_set_meta($post_id, 'email', $user->user_email, $this->db_args);
@@ -692,7 +697,7 @@ class Mltp_Contact extends Mltp_Loader {
 			// Query the mltp_contact posts
 			global $wpdb;
 			$prepared_statement = $wpdb->prepare(
-				"SELECT ID FROM {$this->table} WHERE user_id = %d OR email = %s",
+				"SELECT ID FROM $this->table WHERE user_id = %d OR ( email != '' AND email = %s )",
 				$user_id,
 				$user->user_email,
 			);
@@ -704,7 +709,13 @@ class Mltp_Contact extends Mltp_Loader {
 			  $new_contact_id = wp_insert_post(array(
 			    'post_type' => 'mltp_contact',
 			    'post_status' => 'publish',
-			    'post_title' => 'New Contact', // Set the initial title for the new contact
+			    'post_title' => $user->display_name, // Set the initial title for the new contact
+			    'meta_input' => array(
+						'user_id' => $user->ID,
+						'email' => $user->email,
+						'first_name' => $user->first_name,
+						'last_name' => $user->last_name,
+					),
 			  ));
 
 			  // Import data from WP users for the new contact
@@ -724,6 +735,20 @@ class Mltp_Contact extends Mltp_Loader {
 				}
 			}
 		}
+	}
+
+	public function import_contacts_from_wp_users() {
+	  // Get all users
+	  $users = get_users();
+
+	  // Iterate over the users
+	  foreach ($users as $user) {
+	    // Call the profile_update_post_process method for each user
+	    $this->profile_update_post_process($user->ID);
+	  }
+
+		MultiPass::admin_notice( sprintf( __('%s contacts updated from existing WP users.', 'multipass'), count($users) ) );
+
 	}
 
 }
