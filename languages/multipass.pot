@@ -2,7 +2,7 @@
 # This file is distributed under the AGPLv3.
 msgid ""
 msgstr ""
-"Project-Id-Version: MultiPass (dev) 0.4.1-dev.724\n"
+"Project-Id-Version: MultiPass (dev) 0.5-dev.724\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/multipass\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"

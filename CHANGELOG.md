@@ -1,6 +1,6 @@
 ## Changelog
 
-### Unreleased (0.4.1-dev.724)
+### 0.5
 - new contacts list
 - new reports admin page
 - new Rates and Taxes settings page
