@@ -118,18 +118,21 @@ class Mltp_Contact extends Mltp_Loader {
 			$this->table,   // Table name.
 			array(                                  // Table columns (without ID).
 				'user_id'      => 'INTEGER',
-				'display_name' => 'TEXT',
 				'first_name'   => 'TEXT',
 				'last_name'    => 'TEXT',
+				'fullname' 		 =>  "TEXT AS (TRIM(CONCAT(COALESCE(first_name, ''), ' ', COALESCE(last_name, '')))) STORED",
 				'company'      => 'TEXT',
 				'email'        => 'varchar(100)',
 				'phone'        => 'varchar(100)',
 				'address'      => 'LONGTEXT',
 			),
-			array( 'display_name', 'first_name', 'last_name', 'email', 'phone' ),               // List of index keys.
-			true                               // Must be true for models.
+			array( 'first_name', 'last_name', 'fullname', 'email', 'phone' ),               // List of index keys.
+			// true                               // Must be true for models.
 		);
-		MultiPass::admin_notice( __( 'Tables updated.', 'multipass' ) );
+
+		$notice = __( 'Tables updated.', 'multipass' );
+		error_log($notice);
+		MultiPass::admin_notice( $notice );
 
 		add_action( 'wp_loaded', array( $this, 'import_contacts_from_wp_users' ) );
 		add_action( 'wp_loaded', array( $this, 'migrate_contacts_from_prestation' ) );
@@ -693,8 +696,51 @@ class Mltp_Contact extends Mltp_Loader {
 		}
 	}
 
-	public function get_contact_by_user_id( $user_id ) {
-		if(empty($user_id)) return;
+	public function get_contact_id($data) {
+		$contact_id = null;
+
+		error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? data=" . print_r($data, true));
+
+		if (is_object($data) && property_exists($data, 'ID')) {
+			$contact_id = $data->ID;
+			error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, data=" . print_r($data, true));
+		} else if (is_int($data)) {
+			$contact_id = $data; // This is stupid
+			error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, data=" . print_r($data, true));
+		} else {
+			if (is_string($data) && is_email($data)) {
+				$data['email'] = $data;
+			} elseif (is_string($data)) {
+				$data['name'] = $data;
+			}
+
+			if (isset($data['id']) && is_int($data['id'])) {
+				$contact_id = $data['id'];
+				error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, data=" . print_r($data, true));
+			} elseif (isset($data['user_id']) && is_int($data['user_id'])) {
+				$contact_id = $this->get_contact_id_by_user_id($data['user_id']);
+				error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, data=" . print_r($data, true));
+			} elseif (!empty($data['email']) && is_email($data['email'])) {
+				$contact_id = $this->get_contact_id_by('email', $data['email']);
+				error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, data=" . print_r($data, true));
+			} elseif (!empty($data['name']) && is_string($data['name'])) {
+				$contact_id = $this->get_contact_id_by('name', $data['name']);
+				error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, data=" . print_r($data, true));
+			}
+		}
+
+		if (!empty($contact_id) && get_post_type($contact_id) !== 'mltp_contact') {
+			error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, data=" . print_r($data, true));
+			// error_log("ERROR. Found contact $contact_id but it's not a contact." . get_post_type($contact_id));
+			return false;
+		}
+		error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, data=" . print_r($data, true));
+
+		return $contact_id;
+	}
+
+	public function get_contact_id_by_user_id( $user_id ) {
+		if(empty($user_id)) return false;
 
 		// Query the mltp_contact posts
 		global $wpdb;
@@ -702,20 +748,30 @@ class Mltp_Contact extends Mltp_Loader {
 			"SELECT ID FROM $this->table WHERE user_id = %d ORDER BY id LIMIT 1",
 			$user_id,
 		);
-		return $wpdb->get_var( $prepared_statement );
+		$contact_id = $wpdb->get_var( $prepared_statement );
+		if (!empty($contact_id) && get_post_type($contact_id) !== 'mltp_contact') {
+			return false;
+		}
+		return $contact_id;
 	}
 
-	public function get_contact_by( $field, $value ) {
-		if(empty($field) || empty($value)) return;
+	public function get_contact_id_by( $field, $value ) {
+		if(empty($field) || empty($value)) return false;
 
 		// Query the mltp_contact posts
 		global $wpdb;
 		$prepared_statement = $wpdb->prepare(
-			"SELECT ID FROM $this->table WHERE %d = %d ORDER BY id LIMIT 1",
+			"SELECT ID FROM $this->table WHERE %s = %s ORDER BY id LIMIT 1",
 			$field,
 			$value,
 		);
-		return $wpdb->get_var( $prepared_statement );
+		$contact_id = $wpdb->get_var( $prepared_statement );
+		error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, field=$field, value=$value" );
+		if (!empty($contact_id) && get_post_type($contact_id) !== 'mltp_contact') {
+			return false;
+		}
+		error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, field=$field, value=$value" );
+		return $contact_id;
 	}
 
 	public function migrate_contacts_from_prestation() {
@@ -725,7 +781,7 @@ class Mltp_Contact extends Mltp_Loader {
       'post_type' => 'mltp_prestation',
       'numberposts' => -1,
     ));
-		error_log(__METHOD__ . ' found ' . count($prestations) . ' prestations');
+		// error_log(__METHOD__ . ' found ' . count($prestations) . ' prestations');
 
     // Iterate over the mltp_prestation posts and import data
     foreach ($prestations as $prestation) {
@@ -750,38 +806,43 @@ class Mltp_Contact extends Mltp_Loader {
 					'phone' => get_post_meta($prestation_id, 'customer_phone', true),
 				)),
 			);
-			if(!empty($old_contact['user_id'])) {
-				$old_contact['id'] = $this->get_contact_by_user_id( $old_contact['user_id'] );
-			}
+			error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? old_contact=" . print_r($old_contact, true));
+			$old_contact['id'] = $this->get_contact_id( $old_contact );
+			error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? old_contact=" . print_r($old_contact, true));
+
 			// Get new format contacts if any
 			$contacts = get_post_meta($prestation_id, 'contacts_contact' );
 
-			$found_contact = false;
+			$found_matching_contact = false;
 			foreach($contacts as $key => $contact) {
 				if(
 					( !empty($contact['id']) && $contact['id'] === $old_contact['id'] )
 					|| ( !empty($contact['email']) && $contact['email'] == $old_contact['email'] )
 				) {
-					$found_contact = true;
-					$contacts[$key] = array_merge($old_contact, array_filter($contacts[$key]));
+					$found_matching_contact = true;
+					// error_log("found contact $contact_id by name from " . print_r($data, true));
+					$contact = array_merge($old_contact, array_filter($contacts));
 				};
-
 				$contact['type'] = empty($contact['type']) ? $this->default_type_id : $contact['type'];
 
-				// TODO: Create or update the corresponding mltp_contact
+				// Create or update the corresponding mltp_contact
 				if(empty($contact['id'])) {
 				  $contact_id = $this->create_or_update_contact( $contact );
-					if ($contact_id = 1) {
-						error_log("contact_id = 1; should not happen " . print_r($contact, true));
-					} else if( ! empty($contact_id) ) {
-						$found_contact = true;
-						$contacts[$key]['id'] = $contact_id;
+					if( ! empty($contact_id) ) {
+						$found_matching_contact = true;
+						$contact['id'] = $contact_id;
 					}
 				}
+				$contacts[$key] = $contact;
 			}
-			if( ! $found_contact ) {
-				error_log("could not mach or create contact, using old data " . print_r($old_contact, true));
-				unset($old_contact['id']);
+
+			if ($old_contact['id'] == 15740) {
+				error_log("contact_id = 15740; should not happen, contact old_contact " . print_r($old_contact, true));
+				break;
+			}
+			if( ! $found_matching_contact ) {
+				$old_contact['id'] = $this->create_or_update_contact( $old_contact );
+				// unset($old_contact['id']);
 				$contacts[] = array_filter($old_contact);
 			}
 
@@ -800,6 +861,7 @@ class Mltp_Contact extends Mltp_Loader {
 	    ),
 	    $data
 	  );
+		error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? data=" . print_r($data, true));
 
 	  if (empty(array_filter($data))) {
 	    return null;
@@ -809,16 +871,21 @@ class Mltp_Contact extends Mltp_Loader {
 
 	  if (isset($data['id']) && get_post_type($data['id']) === 'mltp_contact') {
 	    $contact_id = $data['id'];
-			error_log("update contact $contact_id with " . join(", ", array_filter($data)));
+			// error_log("update contact $contact_id with " . join(", ", array_filter($data)));
 	  } else {
-			$contact_id = $this->get_contact_by( 'email', $data['email'] );
-			$data['name'] = empty($data['name']) ? join(", ", array_filter($data)) : $data['name'];
+			unset($data['id']);
+			$contact_id = $this->get_contact_id($data);
+			// if(!empty($data['email'])) {
+			// 	$contact_id = $this->get_contact_id_by( 'email', $data['email'] );
+			// } if(!empty($data['name'])) {
+			// 	$contact_id = $this->get_contact_id_by( 'email', $data['name'] );
+			// }
+			// $data['name'] = empty($data['name']) ? join(", ", array_filter($data)) : $data['name'];
+
 			if( ! empty($contact_id)) {
-				error_log("update contact $contact_id found by mail with " . join(", ", array_filter($data)));
+				// error_log("update contact $contact_id found by mail with " . join(", ", array_filter($data)));
 			} else {
 				// error_log("create new contact with " . join(", ", array_filter($data)));
-				return false;
-
 				$contact_id = wp_insert_post(
 					array(
 						'post_type' => 'mltp_contact',
@@ -829,18 +896,21 @@ class Mltp_Contact extends Mltp_Loader {
 			}
 
 	  }
-		unset($data['id']);
 
 	  if (!$contact_id) {
+			// error_log("could not mach or create contact with data " . print_r($data, true));
 	    return false;
 	  }
 
 	  $contact = get_post($contact_id);
 
 	  if (!$contact) {
+			// error_log("got contact id $contact_id but it's not a contact");
 	    return false;
 	  }
 
+		$data['id'] = $contact_id;
+		// error_log("updating $contact_id with data " . print_r($data, true));
 	  foreach ($data as $key => $new_value) {
 	    $current_value = rwmb_meta($key, $this->db_args, $contact_id);
 
@@ -866,7 +936,7 @@ class Mltp_Contact extends Mltp_Loader {
 	          }
 	          break;
 	      }
-				error_log("rwmb_set_meta($contact_id, $key, " . print_r($new_value, true) . ", " . print_r( $this->db_args, true) . ");");
+
 	      rwmb_set_meta($contact_id, $key, $new_value, $this->db_args);
 	    }
 	  }
@@ -947,7 +1017,9 @@ class Mltp_Contact extends Mltp_Loader {
 			$this->profile_update_post_process( $user->ID );
 		}
 
-		MultiPass::admin_notice( sprintf( __( '%s contacts updated from existing WP users.', 'multipass' ), count( $users ) ) );
+		$notice = sprintf( __( '%s contacts updated from existing WP users.', 'multipass' ), count( $users ) );
+		error_log($notice);
+		MultiPass::admin_notice( $notice );
 
 	}
 
