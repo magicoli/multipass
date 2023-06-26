@@ -384,6 +384,14 @@ class Mltp_Contact extends Mltp_Loader {
 					'clone_as_multiple' => true,
 					'add_button'        => __( 'Add contact', 'multipass' ),
 					'class'             => 'inline',
+					'hidden'            => array(
+						'when'     => array(
+							array( 'prestation_id', '>', 0 ),
+							array( 'use_parent', '=', 1 ),
+							array( 'post_type', '!=', 'mltp_prestation' ),
+						),
+						'relation' => 'and',
+					),
 					'fields'            => array(
 						array(
 							'name'        => __( 'Type', 'multipass' ),
@@ -442,10 +450,6 @@ class Mltp_Contact extends Mltp_Loader {
 								'relation' => 'or',
 							),
 						),
-					),
-					'hidden'            => array(
-						'when'     => array( array( 'prestation_id', '>', 0 ), array( 'use_parent', '=', 1 ) ),
-						'relation' => 'and',
 					),
 				),
 			),
