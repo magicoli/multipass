@@ -712,14 +712,11 @@ class Mltp_Contact extends Mltp_Loader {
 	public function get_contact_id($data) {
 		$contact_id = null;
 
-		error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? data=" . print_r($data, true));
 
 		if (is_object($data) && property_exists($data, 'ID')) {
 			$contact_id = $data->ID;
-			error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, data=" . print_r($data, true));
 		} else if (is_int($data)) {
 			$contact_id = $data; // This is stupid
-			error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, data=" . print_r($data, true));
 		} else {
 			if (is_string($data) && is_email($data)) {
 				$data['email'] = $data;
@@ -729,25 +726,19 @@ class Mltp_Contact extends Mltp_Loader {
 
 			if (isset($data['id']) && is_int($data['id'])) {
 				$contact_id = $data['id'];
-				error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, data=" . print_r($data, true));
 			} elseif (isset($data['user_id']) && is_int($data['user_id'])) {
 				$contact_id = $this->get_contact_id_by_user_id($data['user_id']);
-				error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, data=" . print_r($data, true));
 			} elseif (!empty($data['email']) && is_email($data['email'])) {
 				$contact_id = $this->get_contact_id_by('email', $data['email']);
-				error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, data=" . print_r($data, true));
 			} elseif (!empty($data['name']) && is_string($data['name'])) {
 				$contact_id = $this->get_contact_id_by('name', $data['name']);
-				error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, data=" . print_r($data, true));
 			}
 		}
 
 		if (!empty($contact_id) && get_post_type($contact_id) !== 'mltp_contact') {
-			error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, data=" . print_r($data, true));
 			// error_log("ERROR. Found contact $contact_id but it's not a contact." . get_post_type($contact_id));
 			return false;
 		}
-		error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, data=" . print_r($data, true));
 
 		return $contact_id;
 	}
@@ -779,11 +770,9 @@ class Mltp_Contact extends Mltp_Loader {
 			$value,
 		);
 		$contact_id = $wpdb->get_var( $prepared_statement );
-		error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, field=$field, value=$value" );
 		if (!empty($contact_id) && get_post_type($contact_id) !== 'mltp_contact') {
 			return false;
 		}
-		error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? contact_id=$contact_id, field=$field, value=$value" );
 		return $contact_id;
 	}
 
@@ -819,9 +808,7 @@ class Mltp_Contact extends Mltp_Loader {
 					'phone' => get_post_meta($prestation_id, 'customer_phone', true),
 				)),
 			);
-			error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? old_contact=" . print_r($old_contact, true));
 			$old_contact['id'] = $this->get_contact_id( $old_contact );
-			error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? old_contact=" . print_r($old_contact, true));
 
 			// Get new format contacts if any
 			$contacts = get_post_meta($prestation_id, 'contacts_contact' );
@@ -874,7 +861,6 @@ class Mltp_Contact extends Mltp_Loader {
 	    ),
 	    $data
 	  );
-		error_log(__METHOD__ . ':' . __LINE__ . " jusqu'ici tout va bien? data=" . print_r($data, true));
 
 	  if (empty(array_filter($data))) {
 	    return null;
@@ -923,7 +909,7 @@ class Mltp_Contact extends Mltp_Loader {
 	  }
 
 		$data['id'] = $contact_id;
-		// error_log("updating $contact_id with data " . print_r($data, true));
+
 	  foreach ($data as $key => $new_value) {
 	    $current_value = rwmb_meta($key, $this->db_args, $contact_id);
 
