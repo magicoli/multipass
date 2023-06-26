@@ -56,42 +56,42 @@ class Mltp_Contact extends Mltp_Loader {
 	public function __construct( $args = null ) {
 		global $wpdb;
 		$this->db_prefix = $wpdb->prefix;
-		$this->table = $this->db_prefix . 'mltp_contacts';
-		$this->db_args = [
+		$this->table     = $this->db_prefix . 'mltp_contacts';
+		$this->db_args   = array(
 			'storage_type' => 'custom_table',
 			'table'        => $this->table,
-		];
+		);
 
 		$this->actions = array(
 			array(
 				'component' => $this,
-				'hook'     => 'init',
-				'callback' => 'register_post_types',
+				'hook'      => 'init',
+				'callback'  => 'register_post_types',
 			),
 			array(
 				'component' => $this,
-				'hook'     => 'init',
-				'callback' => 'register_taxonomies',
+				'hook'      => 'init',
+				'callback'  => 'register_taxonomies',
 			),
 			array(
 				'component' => $this,
-				'hook'     => 'save_post',
-				'callback' => 'save_post_process',
+				'hook'      => 'save_post',
+				'callback'  => 'save_post_process',
 			),
 			array(
 				'component' => $this,
-				'hook'     => 'profile_update',
-				'callback' => 'profile_update_post_process',
+				'hook'      => 'profile_update',
+				'callback'  => 'profile_update_post_process',
 			),
 			array(
 				'component' => $this,
-				'hook'     => 'woocommerce_customer_save_address',
-				'callback' => 'profile_update_post_process',
+				'hook'      => 'woocommerce_customer_save_address',
+				'callback'  => 'profile_update_post_process',
 			),
 			array(
 				'component' => $this,
-				'hook'     => 'woocommerce_save_account_details',
-				'callback' => 'profile_update_post_process',
+				'hook'      => 'woocommerce_save_account_details',
+				'callback'  => 'profile_update_post_process',
 			),
 		);
 
@@ -103,7 +103,7 @@ class Mltp_Contact extends Mltp_Loader {
 			),
 		);
 
-		register_activation_hook( MULTIPASS_FILE, array($this, 'update_tables') );
+		register_activation_hook( MULTIPASS_FILE, array( $this, 'update_tables' ) );
 
 	}
 
@@ -113,22 +113,22 @@ class Mltp_Contact extends Mltp_Loader {
 	function update_tables() {
 		MetaBox\CustomTable\API::create(
 			$this->table,   // Table name.
-			[                                  // Table columns (without ID).
-				'user_id' => 'INTEGER',
+			array(                                  // Table columns (without ID).
+				'user_id'      => 'INTEGER',
 				'display_name' => 'TEXT',
-				'first_name' => 'TEXT',
-				'last_name' => 'TEXT',
-				'company' => 'TEXT',
-				'email' => 'varchar(100)',
-				'phone' => 'varchar(100)',
-				'address' => 'LONGTEXT',
-			],
-			['display_name', 'first_name', 'last_name', 'email', 'phone'],               // List of index keys.
+				'first_name'   => 'TEXT',
+				'last_name'    => 'TEXT',
+				'company'      => 'TEXT',
+				'email'        => 'varchar(100)',
+				'phone'        => 'varchar(100)',
+				'address'      => 'LONGTEXT',
+			),
+			array( 'display_name', 'first_name', 'last_name', 'email', 'phone' ),               // List of index keys.
 			true                               // Must be true for models.
 		);
-		MultiPass::admin_notice( __('Tables updated.', 'multipass') );
+		MultiPass::admin_notice( __( 'Tables updated.', 'multipass' ) );
 
-		add_action( 'wp_loaded', array( $this, 'import_contacts_from_wp_users') );
+		add_action( 'wp_loaded', array( $this, 'import_contacts_from_wp_users' ) );
 	}
 
 	/**
@@ -207,16 +207,16 @@ class Mltp_Contact extends Mltp_Loader {
 		$prefix = '';
 
 		$meta_boxes[] = array(
-			'title'      => __( 'Contact fields', 'multipass' ),
-			'id'         => 'contact-fields',
-			'post_types' => array( 'mltp_contact' ),
-			'context'    => 'after_title',
+			'title'        => __( 'Contact fields', 'multipass' ),
+			'id'           => 'contact-fields',
+			'post_types'   => array( 'mltp_contact' ),
+			'context'      => 'after_title',
 			'storage_type' => 'custom_table',  // Must be 'custom_table'
 			'table'        => $this->table,  // Custom table name
-			'style'      => 'seamless',
-			'autosave'   => true,
-			'geo'        => true,
-			'fields'     => array(
+			'style'        => 'seamless',
+			'autosave'     => true,
+			'geo'          => true,
+			'fields'       => array(
 				array(
 					'name'       => __( 'User', 'multipass' ),
 					'id'         => $prefix . 'user_id',
@@ -253,10 +253,10 @@ class Mltp_Contact extends Mltp_Loader {
 					'name'          => __( 'Email', 'multipass' ),
 					'id'            => $prefix . 'email',
 					'type'          => 'email',
-					'admin_columns'     => [
-							'position'   => 'after title',
-							'searchable' => true,
-					],
+					'admin_columns' => array(
+						'position'   => 'after title',
+						'searchable' => true,
+					),
 					'visible'       => array(
 						'when'     => array( array( 'user_id', '=', '' ) ),
 						'relation' => 'or',
@@ -270,10 +270,10 @@ class Mltp_Contact extends Mltp_Loader {
 					'clone'             => true,
 					'clone_as_multiple' => true,
 					'add_button'        => __( 'Add a phone number', 'multipass' ),
-					'admin_columns'     => [
-							'position'   => 'after title',
-							'searchable' => true,
-					],
+					'admin_columns'     => array(
+						'position'   => 'after title',
+						'searchable' => true,
+					),
 				),
 				array(
 					'name'              => __( 'Address', 'multipass' ),
@@ -351,9 +351,9 @@ class Mltp_Contact extends Mltp_Loader {
 		);
 
 		// Contact fields for mltp_prestation and mltp_detail post types
-		$prefix       = 'contacts_';
-		$default_contact_type = get_term_by('name', 'default', 'contact-type');
-		$default_contact_type_id = ($default_contact_type) ? $default_contact_type->term_id : null;
+		$prefix                  = 'contacts_';
+		$default_contact_type    = get_term_by( 'name', 'default', 'contact-type' );
+		$default_contact_type_id = ( $default_contact_type ) ? $default_contact_type->term_id : null;
 
 		$meta_boxes[] = array(
 			'title'      => __( 'Contacts', 'multipass' ),
@@ -385,18 +385,18 @@ class Mltp_Contact extends Mltp_Loader {
 					'add_button'        => __( 'Add contact', 'multipass' ),
 					'class'             => 'inline',
 					'fields'            => array(
-						[
-								'name'       => __( 'Type', 'multipass' ),
-								'id'         => $prefix . 'type',
-								'type'       => 'taxonomy',
-								'taxonomy'   => ['contact-type'],
-								'field_type' => 'select',
-								'add_new'    => true,
-								'placeholder' => __('Select a type', 'multipass'),
-								'required'   => true,
-								'std' => $default_contact_type_id,
+						array(
+							'name'        => __( 'Type', 'multipass' ),
+							'id'          => $prefix . 'type',
+							'type'        => 'taxonomy',
+							'taxonomy'    => array( 'contact-type' ),
+							'field_type'  => 'select',
+							'add_new'     => true,
+							'placeholder' => __( 'Select a type', 'multipass' ),
+							'required'    => true,
+							'std'         => $default_contact_type_id,
 								// 'size' => 1,
-						],
+						),
 						array(
 							'name'       => __( 'Contact', 'multipass' ),
 							'id'         => $prefix . 'id',
@@ -461,7 +461,7 @@ class Mltp_Contact extends Mltp_Loader {
 	 */
 	public static function register_taxonomies() {
 
-		$labels = [
+		$labels = array(
 			'name'                       => esc_html__( 'Contact Types', 'multipass' ),
 			'singular_name'              => esc_html__( 'Contact Type', 'multipass' ),
 			'menu_name'                  => esc_html__( 'Contact Types', 'multipass' ),
@@ -486,8 +486,8 @@ class Mltp_Contact extends Mltp_Loader {
 			'most_used'                  => esc_html__( 'Most Used', 'multipass' ),
 			'back_to_items'              => esc_html__( '&larr; Go to Contact Types', 'multipass' ),
 			'text_domain'                => esc_html__( 'multipass', 'multipass' ),
-		];
-		$args = [
+		);
+		$args   = array(
 			'label'              => esc_html__( 'Contact Types', 'multipass' ),
 			'labels'             => $labels,
 			'description'        => '',
@@ -505,12 +505,12 @@ class Mltp_Contact extends Mltp_Loader {
 			'sort'               => false,
 			'meta_box_cb'        => 'post_tags_meta_box',
 			'rest_base'          => '',
-			'rewrite'            => [
+			'rewrite'            => array(
 				'with_front'   => false,
 				'hierarchical' => false,
-			],
-		];
-		register_taxonomy( 'contact-type', [], $args );
+			),
+		);
+		register_taxonomy( 'contact-type', array(), $args );
 
 		if ( MultiPass::debug() ) {
 			add_submenu_page(
@@ -531,26 +531,29 @@ class Mltp_Contact extends Mltp_Loader {
 			'contact-type',
 			array(
 				// Open (still modifiable, available for new order inclusion).
-				'default'        => array( 'name' => __( 'Default', 'multipass' ) ),  // unpaid or paid less than deposit, not confirmed.
-				'billing'        => array( 'name' => __( 'Billing', 'multipass' ) ), // fully paid and not started.
-				'guest'     => array( 'name' => __( 'Guest', 'multipass' ) ), // paid and started.
+				'default' => array( 'name' => __( 'Default', 'multipass' ) ),  // unpaid or paid less than deposit, not confirmed.
+				'billing' => array( 'name' => __( 'Billing', 'multipass' ) ), // fully paid and not started.
+				'guest'   => array( 'name' => __( 'Guest', 'multipass' ) ), // paid and started.
 				// 'partial'        => array(
-				// 	'name'   => __( 'Partially paid', 'multipass' ),
-				// 	'parent' => 'pending',
+				// 'name'   => __( 'Partially paid', 'multipass' ),
+				// 'parent' => 'pending',
 				// ),
 			)
 		);
 	}
 
-	public static function build_contact_title($args = []) {
-		$args = array_merge(array(
-			'first_name' => null,
-			'last_name' => null,
-			'company' => null,
-		), $args);
+	public static function build_contact_title( $args = array() ) {
+		$args = array_merge(
+			array(
+				'first_name' => null,
+				'last_name'  => null,
+				'company'    => null,
+			),
+			$args
+		);
 		// Build the new title
-		$title = trim($args['first_name'] . ' ' . $args['last_name']);
-		if (!empty($args['company']) && !empty($title)) {
+		$title = trim( $args['first_name'] . ' ' . $args['last_name'] );
+		if ( ! empty( $args['company'] ) && ! empty( $title ) ) {
 			$title .= ' - ';
 		}
 		$title .= $args['company'];
@@ -558,142 +561,148 @@ class Mltp_Contact extends Mltp_Loader {
 		return $title;
 	}
 
-	public function save_post_process($post_id) {
-	  // Check if it is the mltp_contact post type
-	  if (get_post_type($post_id) === 'mltp_contact') {
+	public function save_post_process( $post_id ) {
+		// Check if it is the mltp_contact post type
+		if ( get_post_type( $post_id ) === 'mltp_contact' ) {
 
-	    // Get the post object
-	    $post = get_post($post_id);
+			// Get the post object
+			$post = get_post( $post_id );
 
-			remove_action('save_post', array($this, 'save_post_process')); // Remove the action temporarily to prevent recursion
+			remove_action( 'save_post', array( $this, 'save_post_process' ) ); // Remove the action temporarily to prevent recursion
 
-			$this->import_data_from_wp_users($post_id);
+			$this->import_data_from_wp_users( $post_id );
 
-	    // Check if the title is empty
-	    if (empty($post->post_title)) {
+			// Check if the title is empty
+			if ( empty( $post->post_title ) ) {
 				// Get the values of first_name, last_name, and company
-				$title = Mltp_Contact::build_contact_title(array(
-					'first_name' => rwmb_meta( 'first_name', $this->db_args, $post_id ),
-		      'last_name' => rwmb_meta( 'last_name', $this->db_args, $post_id ),
-		      'company' => rwmb_meta( 'company', $this->db_args, $post_id ),
-				));
+				$title = self::build_contact_title(
+					array(
+						'first_name' => rwmb_meta( 'first_name', $this->db_args, $post_id ),
+						'last_name'  => rwmb_meta( 'last_name', $this->db_args, $post_id ),
+						'company'    => rwmb_meta( 'company', $this->db_args, $post_id ),
+					)
+				);
 
-				// Update the post title only if it is different
-				if ($title !== $post->post_title) {
-					wp_update_post(array(
-						'ID' => $post_id,
-						'post_title' => $title,
-					));
+				  // Update the post title only if it is different
+				if ( $title !== $post->post_title ) {
+					wp_update_post(
+						array(
+							'ID'         => $post_id,
+							'post_title' => $title,
+						)
+					);
 				}
-
 			}
 
-			add_action('save_post', array($this, 'save_post_process')); // Add the action back after updating the post title
+			add_action( 'save_post', array( $this, 'save_post_process' ) ); // Add the action back after updating the post title
 
-	  }
+		}
 	}
 
-	public function import_data_from_wp_users($post_id, $user_id = null) {
-	  // Get the post object
-	  $post = get_post($post_id);
+	public function import_data_from_wp_users( $post_id, $user_id = null ) {
+		// Get the post object
+		$post = get_post( $post_id );
 
-	  // Check if it is the mltp_contact post type
-	  if ($post->post_type === 'mltp_contact') {
-	    // Get the user_id and email values from the post meta
-			$address_group_id = rwmb_meta('address_group_id', array(), $post_id); // Replace 'address_group_id' with your address group field key
+		// Check if it is the mltp_contact post type
+		if ( $post->post_type === 'mltp_contact' ) {
+			// Get the user_id and email values from the post meta
+			$address_group_id = rwmb_meta( 'address_group_id', array(), $post_id ); // Replace 'address_group_id' with your address group field key
 
-	    $user_id = empty($user_id) ? rwmb_meta('user_id', $this->db_args, $post_id) :  $user_id;
+			$user_id = empty( $user_id ) ? rwmb_meta( 'user_id', $this->db_args, $post_id ) : $user_id;
 			// Check if user_id is set and fetch the user data
-			if (!empty($user_id)) {
-				$user = get_user_by('ID', $user_id);
+			if ( ! empty( $user_id ) ) {
+				$user = get_user_by( 'ID', $user_id );
 			}
 
-	    // If user_id is not set, check email and fetch the user data
-	    if ( empty($user) && !empty($email)) {
-				$email = rwmb_meta('email', $this->db_args, $post_id);
-				if(empty($email)) {
+			// If user_id is not set, check email and fetch the user data
+			if ( empty( $user ) && ! empty( $email ) ) {
+				$email = rwmb_meta( 'email', $this->db_args, $post_id );
+				if ( empty( $email ) ) {
 					return;
 				}
-	      $user = get_user_by('email', $email);
-	    }
-
-	    // Import the user data into the corresponding fields
-	    if (!empty($user)) {
-	      // Import user_id and email using rwmb_set_meta
-	      rwmb_set_meta($post_id, 'user_id', $user->ID, $this->db_args);
-	      rwmb_set_meta($post_id, 'email', $user->user_email, $this->db_args);
-
-	      // Import data from user object
-				$first_name = get_user_meta($user_id, 'billing_first_name', true);
-				$first_name = empty($first_name) ? $user->first_name : $first_name;
-				$last_name = get_user_meta($user_id, 'billing_last_name', true);
-				$last_name = empty($last_name) ? $user->last_name : $last_name;
-				rwmb_set_meta($post_id, 'first_name', $first_name, $this->db_args);
-				rwmb_set_meta($post_id, 'last_name', $last_name, $this->db_args);
-
-	      // Check if WooCommerce is active
-	      if ( class_exists('WooCommerce')) {
-	        // Import billing_company from user meta
-	        $company = get_user_meta($user->ID, 'billing_company', true);
-
-	        rwmb_set_meta($post_id, 'company', $company, $this->db_args);
-
-	        // Import billing_phone from user meta
-	        $phone = get_user_meta($user->ID, 'billing_phone', true);
-	        rwmb_set_meta($post_id, 'phone', [$phone], $this->db_args);
-
-	        // Import billing address
-					$address = array(
-						'street'  => get_user_meta($user->ID, 'billing_address_1', true),
-						'neighbourhood'  => get_user_meta($user->ID, 'billing_address_2', true),
-						'city'       => get_user_meta($user->ID, 'billing_city', true),
-						'state'      => get_user_meta($user->ID, 'billing_state', true),
-						'postcode'   => get_user_meta($user->ID, 'billing_postcode', true),
-						'country'    => get_user_meta($user->ID, 'billing_country', true),
-					);
-					if(!empty($address['country'])) {
-						$countryName = WC()->countries->countries[$address['country']];
-						$address['country'] = (empty($countryName)) ? $address['country'] : $countryName;
-					}
-
-					$address['search'] = join(', ', array_filter($address));
-					rwmb_set_meta($post_id, 'address', [$address], $this->db_args);
-	      }
-	    }
-
-			$title = Mltp_Contact::build_contact_title(array(
-				'first_name' => isset($first_name) ? $first_name : '',
-				'last_name' => isset($last_name) ? $last_name : '',
-				'company' => (isset($company)) ? $company : null,
-			));
-
-			// Update the post title only if it is different
-			if ($title !== $post->post_title) {
-				wp_update_post(array(
-					'ID' => $post_id,
-					'post_title' => $title,
-				));
+				$user = get_user_by( 'email', $email );
 			}
 
-	  }
+			// Import the user data into the corresponding fields
+			if ( ! empty( $user ) ) {
+				// Import user_id and email using rwmb_set_meta
+				rwmb_set_meta( $post_id, 'user_id', $user->ID, $this->db_args );
+				rwmb_set_meta( $post_id, 'email', $user->user_email, $this->db_args );
+
+				// Import data from user object
+				$first_name = get_user_meta( $user_id, 'billing_first_name', true );
+				$first_name = empty( $first_name ) ? $user->first_name : $first_name;
+				$last_name  = get_user_meta( $user_id, 'billing_last_name', true );
+				$last_name  = empty( $last_name ) ? $user->last_name : $last_name;
+				rwmb_set_meta( $post_id, 'first_name', $first_name, $this->db_args );
+				rwmb_set_meta( $post_id, 'last_name', $last_name, $this->db_args );
+
+				// Check if WooCommerce is active
+				if ( class_exists( 'WooCommerce' ) ) {
+					// Import billing_company from user meta
+					$company = get_user_meta( $user->ID, 'billing_company', true );
+
+					rwmb_set_meta( $post_id, 'company', $company, $this->db_args );
+
+					// Import billing_phone from user meta
+					$phone = get_user_meta( $user->ID, 'billing_phone', true );
+					rwmb_set_meta( $post_id, 'phone', array( $phone ), $this->db_args );
+
+					// Import billing address
+					$address = array(
+						'street'        => get_user_meta( $user->ID, 'billing_address_1', true ),
+						'neighbourhood' => get_user_meta( $user->ID, 'billing_address_2', true ),
+						'city'          => get_user_meta( $user->ID, 'billing_city', true ),
+						'state'         => get_user_meta( $user->ID, 'billing_state', true ),
+						'postcode'      => get_user_meta( $user->ID, 'billing_postcode', true ),
+						'country'       => get_user_meta( $user->ID, 'billing_country', true ),
+					);
+					if ( ! empty( $address['country'] ) ) {
+						$countryName        = WC()->countries->countries[ $address['country'] ];
+						$address['country'] = ( empty( $countryName ) ) ? $address['country'] : $countryName;
+					}
+
+					$address['search'] = join( ', ', array_filter( $address ) );
+					rwmb_set_meta( $post_id, 'address', array( $address ), $this->db_args );
+				}
+			}
+
+			$title = self::build_contact_title(
+				array(
+					'first_name' => isset( $first_name ) ? $first_name : '',
+					'last_name'  => isset( $last_name ) ? $last_name : '',
+					'company'    => ( isset( $company ) ) ? $company : null,
+				)
+			);
+
+			  // Update the post title only if it is different
+			if ( $title !== $post->post_title ) {
+				wp_update_post(
+					array(
+						'ID'         => $post_id,
+						'post_title' => $title,
+					)
+				);
+			}
+		}
 	}
 
-	public function profile_update_post_process($user_id) {
+	public function profile_update_post_process( $user_id ) {
 		// Get the user data
-		$user = get_user_by('ID', $user_id);
+		$user = get_user_by( 'ID', $user_id );
 
-		if(
+		if (
 			current_filter() === 'profile_update'
 			&& (
-				isset($_POST['save-account-details-nonce'])
-				|| isset($_POST['woocommerce-edit-address-nonce'])
+				isset( $_POST['save-account-details-nonce'] )
+				|| isset( $_POST['woocommerce-edit-address-nonce'] )
 			)
 		) {
 			return;
 		}
 
 		// Check if user data exists
-		if ($user) {
+		if ( $user ) {
 			// Query the mltp_contact posts
 			global $wpdb;
 			$prepared_statement = $wpdb->prepare(
@@ -701,53 +710,57 @@ class Mltp_Contact extends Mltp_Loader {
 				$user_id,
 				$user->user_email,
 			);
-			$ids = $wpdb->get_col($prepared_statement);
+			$ids                = $wpdb->get_col( $prepared_statement );
 
-			if (empty($ids)) {
+			if ( empty( $ids ) ) {
 				// Create a new contact
 
-			  $new_contact_id = wp_insert_post(array(
-			    'post_type' => 'mltp_contact',
-			    'post_status' => 'publish',
-			    'post_title' => $user->display_name, // Set the initial title for the new contact
-			    'meta_input' => array(
-						'user_id' => $user->ID,
-						'email' => $user->email,
-						'first_name' => $user->first_name,
-						'last_name' => $user->last_name,
-					),
-			  ));
+				$new_contact_id = wp_insert_post(
+					array(
+						'post_type'   => 'mltp_contact',
+						'post_status' => 'publish',
+						'post_title'  => $user->display_name, // Set the initial title for the new contact
+						'meta_input'  => array(
+							'user_id'    => $user->ID,
+							'email'      => $user->email,
+							'first_name' => $user->first_name,
+							'last_name'  => $user->last_name,
+						),
+					)
+				);
 
-			  // Import data from WP users for the new contact
-			  $this->import_data_from_wp_users($new_contact_id, $user_id);
+				// Import data from WP users for the new contact
+				$this->import_data_from_wp_users( $new_contact_id, $user_id );
 			} else {
-				$contacts = get_posts(array(
-					'post_type' => 'mltp_contact',
-					'numberposts' => -1,
-					'post__in' => $ids,
-				));
+				$contacts = get_posts(
+					array(
+						'post_type'   => 'mltp_contact',
+						'numberposts' => -1,
+						'post__in'    => $ids,
+					)
+				);
 
 				// Iterate over the found contacts and import data
-				foreach ($contacts as $contact) {
+				foreach ( $contacts as $contact ) {
 					$contact_id = $contact->ID;
 					// Import data from WP users
-					$this->import_data_from_wp_users($contact_id, $user_id);
+					$this->import_data_from_wp_users( $contact_id, $user_id );
 				}
 			}
 		}
 	}
 
 	public function import_contacts_from_wp_users() {
-	  // Get all users
-	  $users = get_users();
+		// Get all users
+		$users = get_users();
 
-	  // Iterate over the users
-	  foreach ($users as $user) {
-	    // Call the profile_update_post_process method for each user
-	    $this->profile_update_post_process($user->ID);
-	  }
+		// Iterate over the users
+		foreach ( $users as $user ) {
+			// Call the profile_update_post_process method for each user
+			$this->profile_update_post_process( $user->ID );
+		}
 
-		MultiPass::admin_notice( sprintf( __('%s contacts updated from existing WP users.', 'multipass'), count($users) ) );
+		MultiPass::admin_notice( sprintf( __( '%s contacts updated from existing WP users.', 'multipass' ), count( $users ) ) );
 
 	}
 

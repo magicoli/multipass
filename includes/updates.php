@@ -12,9 +12,9 @@ if ( get_option( 'multipass_updated' ) < MLTP_UPDATES ) {
 }
 
 function multipass_updates( $args = array() ) {
-	$return = null;
-	$class = null;
-	$u = get_option( 'multipass_updated' ) + 1;
+	$return   = null;
+	$class    = null;
+	$u        = get_option( 'multipass_updated' ) + 1;
 	$messages = array();
 	if ( ! empty( $args['message'] ) ) {
 		$messages[] = $args['message'];
@@ -32,13 +32,13 @@ function multipass_updates( $args = array() ) {
 				if ( $result != 1 ) {
 					$messages[] = $result;
 				}
-				update_option('multipass_updated', $u);
+				update_option( 'multipass_updated', $u );
 			} else {
-				$result = $update();
-				$message = sprintf( __( 'Update %s failed', 'multipass' ), $u );
+				$result     = $update();
+				$message    = sprintf( __( 'Update %s failed', 'multipass' ), $u );
 				$messages[] = $message;
-				error_log($message);
-				$errors[]   = $u;
+				error_log( $message );
+				$errors[] = $u;
 				break;
 			}
 		}
@@ -151,6 +151,6 @@ function multipass_update_1() {
  */
 function multipass_update_2() {
 	$mltp_contacts = new Mltp_Contact();
-	add_action( 'init', array( $mltp_contacts, 'update_tables') );
-	return __('Table and contact update in progress', 'multipass');
+	add_action( 'init', array( $mltp_contacts, 'update_tables' ) );
+	return __( 'Table and contact update in progress', 'multipass' );
 }

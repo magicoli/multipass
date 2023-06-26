@@ -29,12 +29,12 @@ class IntlTestHelper
 {
     /**
      * Should be called before tests that work fine with the stub implementation.
-     *
-     * @return void
      */
     public static function requireIntl(TestCase $testCase, string $minimumIcuVersion = null)
     {
-        $minimumIcuVersion ??= Intl::getIcuStubVersion();
+        if (null === $minimumIcuVersion) {
+            $minimumIcuVersion = Intl::getIcuStubVersion();
+        }
 
         // We only run tests if the version is *one specific version*.
         // This condition is satisfied if
@@ -63,8 +63,6 @@ class IntlTestHelper
     /**
      * Should be called before tests that require a feature-complete intl
      * implementation.
-     *
-     * @return void
      */
     public static function requireFullIntl(TestCase $testCase, string $minimumIcuVersion = null)
     {
@@ -85,8 +83,6 @@ class IntlTestHelper
 
     /**
      * Skips the test unless the current system has a 32bit architecture.
-     *
-     * @return void
      */
     public static function require32Bit(TestCase $testCase)
     {
@@ -97,8 +93,6 @@ class IntlTestHelper
 
     /**
      * Skips the test unless the current system has a 64bit architecture.
-     *
-     * @return void
      */
     public static function require64Bit(TestCase $testCase)
     {
