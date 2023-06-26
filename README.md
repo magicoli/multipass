@@ -1,6 +1,6 @@
 # MultiPass
 
-![Stable 0.4](https://badgen.net/badge/Stable/0.4/00aa00)
+![Stable 0.5](https://badgen.net/badge/Stable/0.5/00aa00)
 ![WordPress 5.9.0 - 6.2.2](https://badgen.net/badge/WordPress/5.9.0%20-%206.2.2/3858e9)
 ![Requires PHP 7.3](https://badgen.net/badge/PHP/7.3/7884bf)
 ![License AGPLv3 or later](https://badgen.net/badge/License/AGPLv3%20or%20later/552b55)

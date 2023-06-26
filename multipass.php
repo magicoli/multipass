@@ -3,7 +3,7 @@
  * Plugin Name:       MultiPass
  * Plugin URI:        https://magiiic.com/wordpress/plugins/multipass/
  * Description:       Manage bookings and other services from different sources (WooCommerce, Lodgify, HBook, OTA, PMS, booking engines...).
- * Version:           0.5
+ * Version:           0.5.1
  * Author:            Magiiic
  * Author URI:        https://magiiic.com/
  * GitHubURL:         https://github.com/magicoli/multipass/

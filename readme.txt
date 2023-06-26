@@ -5,7 +5,7 @@ Tags: hotel, booking, multi-prestations, multi-services, woocommerce, ota, pms, 
 Requires at least: 5.9.0
 Tested up to: 6.2.2
 Requires PHP: 7.3
-Stable tag: 0.5
+Stable tag: 0.5.1
 License: AGPLv3 or later
 License URI: http://www.gnu.org/licenses/agpl-3.0.txt
 
@@ -66,6 +66,8 @@ WARNING: **Make a full backup of your website and databases** before installing 
 4. WooCommerce must be enabled to handle custom payments.
 
 == Changelog ==
+
+= 0.5.1 =
 
 = 0.5 =
 * new contacts list
