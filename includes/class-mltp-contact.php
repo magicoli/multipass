@@ -574,7 +574,7 @@ class Mltp_Contact extends Mltp_Loader {
 
 			remove_action( 'save_post', array( $this, 'save_post_process' ) ); // Remove the action temporarily to prevent recursion
 
-			$this->import_data_from_wp_users( $post_id );
+			$this->sync_contact_from_wp_user( $post_id );
 
 			// Check if the title is empty
 			if ( empty( $post->post_title ) ) {
@@ -603,7 +603,7 @@ class Mltp_Contact extends Mltp_Loader {
 		}
 	}
 
-	public function import_data_from_wp_users( $post_id, $user_id = null ) {
+	public function sync_contact_from_wp_user( $post_id, $user_id = null ) {
 		// Get the post object
 		$post = get_post( $post_id );
 
@@ -734,7 +734,7 @@ class Mltp_Contact extends Mltp_Loader {
 				);
 
 				// Import data from WP users for the new contact
-				$this->import_data_from_wp_users( $new_contact_id, $user_id );
+				$this->sync_contact_from_wp_user( $new_contact_id, $user_id );
 			} else {
 				$contacts = get_posts(
 					array(
@@ -748,7 +748,7 @@ class Mltp_Contact extends Mltp_Loader {
 				foreach ( $contacts as $contact ) {
 					$contact_id = $contact->ID;
 					// Import data from WP users
-					$this->import_data_from_wp_users( $contact_id, $user_id );
+					$this->sync_contact_from_wp_user( $contact_id, $user_id );
 				}
 			}
 		}
