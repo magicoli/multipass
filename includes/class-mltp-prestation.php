@@ -1200,7 +1200,7 @@ class Mltp_Prestation {
 				'discount'    => isset( $discount['amount'] ) ? $discount['amount'] : null,
 				'total'       => ( isset( $meta['total'] ) && is_array( $meta['total'] ) ) ? reset( $meta['total'] ) : null,
 				'deposit'     => ( is_array( $deposit ) & ! empty( $deposit['amount'] ) ) ? $deposit['amount'] : null,
-				'paid'        => ( is_array( $meta['paid'] ) && is_array( $meta['paid'] ) ) ? reset( $meta['paid'] ) : null,
+				'paid'        => ( isset( $meta['paid'] ) && is_array( $meta['paid'] ) ) ? reset( $meta['paid'] ) : null,
 				'balance'     => ( isset( $meta['balance'] ) && is_array( $meta['balance'] ) ) ? reset( $meta['balance'] ) : null,
 				'source'      => is_array( $meta['source'] ) ? reset( $meta['source'] ) : ( isset( $meta['source'] ) ? $meta['source'] : '' ),
 				'links'       => $links,
