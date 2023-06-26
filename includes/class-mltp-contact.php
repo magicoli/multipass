@@ -551,23 +551,33 @@ class Mltp_Contact extends Mltp_Loader {
 		);
 	}
 
-	public static function build_contact_title( $args = array() ) {
-		$args = array_merge(
-			array(
+	public static function merge_name($first_name, $last_name = '', $company = '') {
+		if(is_array($first_name)) {
+			$data = array_merge(array(
 				'first_name' => null,
 				'last_name'  => null,
 				'company'    => null,
-			),
-			$args
-		);
-		// Build the new title
-		$title = trim( $args['first_name'] . ' ' . $args['last_name'] );
-		if ( ! empty( $args['company'] ) && ! empty( $title ) ) {
-			$title .= ' - ';
-		}
-		$title .= $args['company'];
+			),$first_name);
 
-		return $title;
+			$first_name = $data['first_name'];
+			$last_name = $data['last_name'];
+			$company = $data['company'];
+		}
+
+		$name = trim( $first_name . ' ' . $last_name );
+		$name .= ( ( ! empty( $company ) && ! empty( $name ) ) ? ' - ' : '' ) . $company;
+
+		return $name;
+	}
+
+	function split_name($name) {
+		$name = preg_replace('/\s*-\s*.*/', '', $name);
+		$names = explode(' ', $name, 2);
+
+		$first_name = isset($names[0]) ? trim($names[0]) : '';
+		$last_name = isset($names[1]) ? trim($names[1]) : '';
+
+		return array('first_name' => $first_name, 'last_name' => $last_name);
 	}
 
 	public function save_post_process( $post_id ) {
@@ -679,7 +689,7 @@ class Mltp_Contact extends Mltp_Loader {
 				}
 			}
 
-			$title = self::build_contact_title(
+			$title = self::merge_name(
 				array(
 					'first_name' => isset( $first_name ) ? $first_name : '',
 					'last_name'  => isset( $last_name ) ? $last_name : '',
