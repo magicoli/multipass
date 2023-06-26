@@ -33,7 +33,7 @@ class Mltp_Report {
 			} else {
 				$args['result'] = "don't it";
 			}
-				error_log( 'got ' . print_r( $args, true ) );
+				// error_log( 'got ' . print_r( $args, true ) );
 				wp_redirect( admin_url( 'admin.php?page=mltp_prestation_report' ) );
 				exit;
 		}

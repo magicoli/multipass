@@ -1181,7 +1181,7 @@ class Mltp_Prestation {
 				get_post_meta( $item_post->ID ),
 			);
 			if ( ! isset( $meta['description'] ) ) {
-				error_log( print_r( $meta, true ) );
+				// error_log( print_r( $meta, true ) );
 			}
 
 			$price    = get_post_meta( $item_post->ID, 'price', true );
@@ -1198,10 +1198,10 @@ class Mltp_Prestation {
 				'dates'       => $dates,
 				'subtotal'    => isset( $price['sub_total'] ) ? $price['sub_total'] : null,
 				'discount'    => isset( $discount['amount'] ) ? $discount['amount'] : null,
-				'total'       => is_array( $meta['total'] ) ? reset( $meta['total'] ) : null,
+				'total'       => ( isset( $meta['total'] ) && is_array( $meta['total'] ) ) ? reset( $meta['total'] ) : null,
 				'deposit'     => ( is_array( $deposit ) & ! empty( $deposit['amount'] ) ) ? $deposit['amount'] : null,
-				'paid'        => is_array( $meta['paid'] ) ? reset( $meta['paid'] ) : null,
-				'balance'     => is_array( $meta['balance'] ) ? reset( $meta['balance'] ) : null,
+				'paid'        => ( is_array( $meta['paid'] ) && is_array( $meta['paid'] ) ) ? reset( $meta['paid'] ) : null,
+				'balance'     => ( isset( $meta['balance'] ) && is_array( $meta['balance'] ) ) ? reset( $meta['balance'] ) : null,
 				'source'      => is_array( $meta['source'] ) ? reset( $meta['source'] ) : ( isset( $meta['source'] ) ? $meta['source'] : '' ),
 				'links'       => $links,
 				'notes'       => get_post_meta( $item_post->ID, 'notes', true ),
@@ -1785,11 +1785,11 @@ class Mltp_Prestation {
 			}
 		}
 
-		$updates['from']  = $dates['from'];
-		$updates['to']    = $dates['to'];
+		$updates['from']  = (isset($dates['from'])) ? $dates['from'] : null;
+		$updates['to']    = (isset($dates['to'])) ? $dates['to'] : null;
 		$updates['dates'] = array(
-			'from' => $dates['from'],
-			'to'   => $dates['to'],
+			'from' => $updates['from'],
+			'to'   => $updates['to'],
 		);
 
 		$updates['discount']['total'] += $updates['discount']['amount'] + $updates['discount']['managed'];

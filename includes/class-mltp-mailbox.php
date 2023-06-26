@@ -348,7 +348,7 @@ class Mltp_Mailbox_Process extends WP_Background_Process {
 	protected function task( $item ) {
 		set_transient( 'Mltp_Mailbox_wait', true, 0 );
 
-		error_log( __CLASS__ . ' ' . __FUNCTION__ . "($item)" );
+		// error_log( __CLASS__ . ' ' . __FUNCTION__ . "($item)" );
 		call_user_func( $item );
 
 		set_transient( 'Mltp_Mailbox_wait', true, 30 );

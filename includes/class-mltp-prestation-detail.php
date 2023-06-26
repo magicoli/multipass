@@ -1424,19 +1424,19 @@ class Mltp_Item {
 
 			case 'array':
 				if ( empty( $args['source'] ) ) {
-					error_log( 'source cannot be empty, abort ' . print_r( $args, true ) );
+					error_log( __METHOD__ . ' source cannot be empty, abort' );
 					return false;
 				}
 				$source_term_id = get_term_by( 'slug', $args['source'], 'mltp_detail-source' );
 				if ( ! $source_term_id ) {
 					// not sure about that
-					error_log( 'unknown source ' . $args['source'] . ', abort ' . print_r( $args, true ) );
+					// error_log( __METHOD__ . 'unknown source ' . $args['source'] . ', not sure it is an issue' );
 					return;
 				}
 
 				$args = self::sanitize_sources( $args );
 				if ( empty( $args['source_id'] ) ) {
-					error_log( "source id cannot not be empty, abort (in $source detail)." );
+					error_log( __METHOD__ . "source id cannot not be empty, abort (in $source detail)." );
 					return;
 				}
 

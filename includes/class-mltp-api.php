@@ -57,7 +57,7 @@ class Mltp_API extends Mltp_Loader {
 	}
 
 	function register_api_callback_route() {
-		error_log( __METHOD__ );
+		// error_log( __METHOD__ );
 		// register_rest_route( 'multipass/v1', '/users/market=(?P<market>[a-zA-Z0-9-]+)/lat=(?P<lat>[a-z0-9 .\-]+)/long=(?P<long>[a-z0-9 .\-]+)', array(
 		register_rest_route(
 			'multipass/v1',

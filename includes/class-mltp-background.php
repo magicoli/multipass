@@ -157,7 +157,7 @@ class Mltp_Background_Process extends WP_Background_Process {
 	protected function complete() {
 		parent::complete();
 
-		error_log( __CLASS__ . ' ' . __FUNCTION__ . '() ' . print_r( $this, true ) );
+		// error_log( __CLASS__ . ' ' . __FUNCTION__ . '() ' . print_r( $this, true ) );
 		// Show notice to user or perform some other arbitrary task...
 	}
 
