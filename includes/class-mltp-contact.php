@@ -646,8 +646,10 @@ class Mltp_Contact extends Mltp_Loader {
 						'postcode'   => get_user_meta($user->ID, 'billing_postcode', true),
 						'country'    => get_user_meta($user->ID, 'billing_country', true),
 					);
-					$countryName = WC()->countries->countries[$address['country']];
-					$address['country'] = (empty($countryName)) ? $address['country'] : $countryName;
+					if(!empty($address['country'])) {
+						$countryName = WC()->countries->countries[$address['country']];
+						$address['country'] = (empty($countryName)) ? $address['country'] : $countryName;
+					}
 
 					$address['search'] = join(', ', array_filter($address));
 					rwmb_set_meta($post_id, 'address', [$address], $this->db_args);
@@ -655,8 +657,8 @@ class Mltp_Contact extends Mltp_Loader {
 	    }
 
 			$title = Mltp_Contact::build_contact_title(array(
-				'first_name' => $first_name,
-				'last_name' => $last_name,
+				'first_name' => isset($first_name) ? $first_name : '',
+				'last_name' => isset($last_name) ? $last_name : '',
 				'company' => (isset($company)) ? $company : null,
 			));
 
@@ -697,7 +699,16 @@ class Mltp_Contact extends Mltp_Loader {
 			$ids = $wpdb->get_col($prepared_statement);
 
 			if (empty($ids)) {
-				// TODO: Create a new contact
+				// Create a new contact
+
+			  $new_contact_id = wp_insert_post(array(
+			    'post_type' => 'mltp_contact',
+			    'post_status' => 'publish',
+			    'post_title' => 'New Contact', // Set the initial title for the new contact
+			  ));
+
+			  // Import data from WP users for the new contact
+			  $this->import_data_from_wp_users($new_contact_id, $user_id);
 			} else {
 				$contacts = get_posts(array(
 					'post_type' => 'mltp_contact',
