@@ -49,6 +49,7 @@
       "vendor/meta-box/meta-box-include-exclude/meta-box-include-exclude.php",
       "vendor/meta-box/meta-box-show-hide/meta-box-show-hide.php",
       "vendor/meta-box/mb-admin-columns/mb-admin-columns.php",
+      "vendor/meta-box/mb-custom-table/mb-custom-table.php",
       "vendor/meta-box/mb-settings-page/mb-settings-page.php",
       "vendor/meta-box/meta-box-tabs/meta-box-tabs.php",
       "vendor/meta-box/mb-term-meta/mb-term-meta.php"

@@ -1250,17 +1250,17 @@
         },
         {
             "name": "sabre/http",
-            "version": "5.1.6",
-            "version_normalized": "5.1.6.0",
+            "version": "5.1.7",
+            "version_normalized": "5.1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/http.git",
-                "reference": "9976ac34ced206bd6579b7b37b401de9fac98dae"
+                "reference": "b6fa04f42f49156eaab3fb890c79f4c43a9559b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/http/zipball/9976ac34ced206bd6579b7b37b401de9fac98dae",
-                "reference": "9976ac34ced206bd6579b7b37b401de9fac98dae",
+                "url": "https://api.github.com/repos/sabre-io/http/zipball/b6fa04f42f49156eaab3fb890c79f4c43a9559b7",
+                "reference": "b6fa04f42f49156eaab3fb890c79f4c43a9559b7",
                 "shasum": ""
             },
             "require": {
@@ -1279,7 +1279,7 @@
             "suggest": {
                 "ext-curl": " to make http requests with the Client class"
             },
-            "time": "2022-07-15T14:51:14+00:00",
+            "time": "2023-06-26T10:13:00+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1703,17 +1703,17 @@
         },
         {
             "name": "symfony/intl",
-            "version": "v5.4.23",
-            "version_normalized": "5.4.23.0",
+            "version": "v5.4.25",
+            "version_normalized": "5.4.25.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/intl.git",
-                "reference": "962789bbc76c82c266623321ffc24416f574b636"
+                "reference": "4c4cbf57c9623b55e7d19479488bd93fee68450a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/intl/zipball/962789bbc76c82c266623321ffc24416f574b636",
-                "reference": "962789bbc76c82c266623321ffc24416f574b636",
+                "url": "https://api.github.com/repos/symfony/intl/zipball/4c4cbf57c9623b55e7d19479488bd93fee68450a",
+                "reference": "4c4cbf57c9623b55e7d19479488bd93fee68450a",
                 "shasum": ""
             },
             "require": {
@@ -1724,7 +1724,7 @@
             "require-dev": {
                 "symfony/filesystem": "^4.4|^5.0|^6.0"
             },
-            "time": "2023-04-13T10:36:25+00:00",
+            "time": "2023-06-19T09:28:43+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -1774,7 +1774,7 @@
                 "localization"
             ],
             "support": {
-                "source": "https://github.com/symfony/intl/tree/v5.4.23"
+                "source": "https://github.com/symfony/intl/tree/v5.4.25"
             },
             "funding": [
                 {

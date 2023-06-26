@@ -27,6 +27,7 @@ class ComposerStaticInite446079fa2cc77fc71ba2d2a1334bc0c
         'edcc153a806b7ccc783ee600bce341a8' => __DIR__ . '/..' . '/meta-box/meta-box-group/meta-box-group.php',
         'c19a17ecabf454d7a624f87c83f08186' => __DIR__ . '/..' . '/meta-box/meta-box-include-exclude/meta-box-include-exclude.php',
         '801b2d802e0fd0a97de6730c2744a301' => __DIR__ . '/..' . '/meta-box/meta-box-show-hide/meta-box-show-hide.php',
+        '046655e10b19bcc613c19206f29162be' => __DIR__ . '/..' . '/meta-box/mb-custom-table/mb-custom-table.php',
         'cd96a11db28ed30d1198d6eeb46fb5ed' => __DIR__ . '/..' . '/meta-box/mb-settings-page/mb-settings-page.php',
         '0990ebd9b5b5f48c2d93ef6b8e3d3cb4' => __DIR__ . '/..' . '/meta-box/meta-box-tabs/meta-box-tabs.php',
         '806a8426576dd9edf0119b833d59b854' => __DIR__ . '/..' . '/meta-box/mb-term-meta/mb-term-meta.php',
