@@ -68,8 +68,6 @@ WARNING: **Make a full backup of your website and databases** before installing 
 == Changelog ==
 
 = 0.5.1 =
-
-= 0.5 =
 * new contacts list
 * new reports admin page
 * new Rates and Taxes settings page
@@ -77,7 +75,7 @@ WARNING: **Make a full backup of your website and databases** before installing 
 * added booking time to rates
 * added taxes taxonomy, added field to prestation, detail and resources
 * added /multipass/ redirecto to multipass admin page
-* fix permalink conflict (Revert "prefix resource permalink with resource type")
+* fixed permalink conflict (Revert "prefix resource permalink with resource type")
 * fixed "from" and "to" fields not set when saving prestation
 * fixed enabled modules detection after saving modules settings page
 

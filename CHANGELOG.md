@@ -1,8 +1,6 @@
 ## Changelog
 
 ### 0.5.1
-
-### 0.5
 - new contacts list
 - new reports admin page
 - new Rates and Taxes settings page
