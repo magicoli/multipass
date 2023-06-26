@@ -573,35 +573,38 @@ class Mltp_Contact extends Mltp_Loader {
 	public function save_post_process( $post_id ) {
 		// Check if it is the mltp_contact post type
 		if ( get_post_type( $post_id ) === 'mltp_contact' ) {
-
-			// Get the post object
-			$post = get_post( $post_id );
-
 			remove_action( 'save_post', array( $this, 'save_post_process' ) ); // Remove the action temporarily to prevent recursion
 
+			// First sync with user if any
 			$this->sync_contact_from_wp_user( $post_id );
 
+			// Get the updated post object
+			$post = get_post( $post_id );
+
 			// Check if the title is empty
-			if ( empty( $post->post_title ) ) {
-				// Get the values of first_name, last_name, and company
-				$title = self::build_contact_title(
+			$title = self::merge_name(
+				array(
+					'first_name' => rwmb_meta( 'first_name', $this->db_args, $post_id ),
+					'last_name'  => rwmb_meta( 'last_name', $this->db_args, $post_id ),
+					'company'    => rwmb_meta( 'company', $this->db_args, $post_id ),
+				)
+			);
+
+			// $title = empty($title) ? $post->post_title : $title;
+
+			// Update the post title only if it changed and is not empty
+			if ( ! empty($title) && $title !== $post->post_title ) {
+				// error_log("title $post->post_title changed to $title");
+				wp_update_post(
 					array(
-						'first_name' => rwmb_meta( 'first_name', $this->db_args, $post_id ),
-						'last_name'  => rwmb_meta( 'last_name', $this->db_args, $post_id ),
-						'company'    => rwmb_meta( 'company', $this->db_args, $post_id ),
+						'ID'         => $post_id,
+						'post_title' => $title,
 					)
 				);
-
-				  // Update the post title only if it is different
-				if ( $title !== $post->post_title ) {
-					wp_update_post(
-						array(
-							'ID'         => $post_id,
-							'post_title' => $title,
-						)
-					);
-				}
 			}
+			// if ( empty( $post->post_title ) ) {
+			// 	// Get the values of first_name, last_name, and company
+			// }
 
 			add_action( 'save_post', array( $this, 'save_post_process' ) ); // Add the action back after updating the post title
 
