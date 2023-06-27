@@ -594,11 +594,20 @@ class Mltp_Contact extends Mltp_Loader {
 	}
 
 	public function save_post_process( $post_id, $post = null, $update = null ) {
-
-		// Check if it is the mltp_contact post type
-		if ( get_post_type( $post_id ) === 'mltp_contact' ) {
-			$this->set_contact_title($post_id);
+		// $old_meta = get_post_meta($post_id);
+		// error_log("meta " . print_r(get_post_meta($post_id), true));
+		$meta = array(
+			'first_name' => get_post_meta($post_id, 'first_name', true),
+			'last_name' => get_post_meta($post_id, 'last_name', true),
+			'company' => get_post_meta($post_id, 'company', true),
+			'phone' => get_post_meta($post_id, 'phone'),
+			'email' => get_post_meta($post_id, 'email', true),
+		);
+		foreach($meta as $key => $value) {
+			rwmb_set_meta( $post_id, $key, $value, $this->db_args );
 		}
+
+		$this->set_contact_title($post_id);
 
 		return $update;
 	}
@@ -900,26 +909,15 @@ class Mltp_Contact extends Mltp_Loader {
 
 	  $contact_id = null;
 
+		$found_contact_id = null;
 	  if (isset($data['id']) && get_post_type($data['id']) === 'mltp_contact') {
 	    $found_contact_id = $data['id'];
 			// error_log("update contact $found_contact_id with " . join(", ", array_filter($data)));
 	  } else {
 			unset($data['id']);
 			$found_contact_id = $this->get_contact_id($data);
-			// if(!empty($data['email'])) {
-			// 	$found_contact_id = $this->get_contact_id_by( 'email', $data['email'] );
-			// } if(!empty($data['name'])) {
-			// 	$found_contact_id = $this->get_contact_id_by( 'email', $data['name'] );
-			// }
-			// $data['name'] = empty($data['name']) ? join(", ", array_filter($data)) : $data['name'];
-
-			// if( ! empty($found_contact_id)) {
-			// 	// error_log("update contact $found_contact_id found by mail with " . join(", ", array_filter($data)));
-			// } else {
-			// 	// error_log("create new contact with " . join(", ", array_filter($data)));
-			// }
-
 	  }
+		$data['id'] = $found_contact_id;
 
 		$first_name = empty($found_contact_id) ? $data['first_name'] : rwmb_meta('first_name', $this->db_args, $found_contact_id);
 		$last_name = empty($found_contact_id) ? $data['last_name'] : rwmb_meta('last_name', $this->db_args, $found_contact_id);
@@ -927,12 +925,7 @@ class Mltp_Contact extends Mltp_Loader {
 
 		if(empty($first_name . $last_name)) {
 			$split = self::split_name($fullname);
-			$split = array_merge($split, array_filter(array(
-				'first_name' => $data['first_name'],
-				'last_name' => $data['last_name'],
-			)));
 			$data = array_merge($data, array_filter($split));
-			// error_log("contact $found_contact_id split " . $data['name'] . " to " . print_r($split, true) . " data is now " . print_r($data, true));
 		} else {
 			$data = array_merge($data, array(
 				'first_name' => $first_name,
@@ -943,11 +936,13 @@ class Mltp_Contact extends Mltp_Loader {
 
 		$post_title = sanitize_text_field(self::merge_name($data));
 
+		remove_action( 'save_post', array( $this, 'save_post_process' ) ); // Remove the action temporarily to prevent recursion
 		$args = array(
 			'ID' => ( empty($found_contact_id )) ? null : $found_contact_id,
 			'post_type' => 'mltp_contact',
 			'post_status' => 'publish',
 			'post_title' => $post_title,
+			'meta_input' => $data,
 		);
 
 		remove_action( 'save_post', array( $this, 'save_post_process' ) ); // Remove the action temporarily to prevent recursion
