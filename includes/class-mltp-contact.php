@@ -613,6 +613,7 @@ class Mltp_Contact extends Mltp_Loader {
 	}
 
 	public function set_contact_title( $post_id, $post = null ) {
+		// Check if it is the mltp_contact post type
 		if ( get_post_type( $post_id ) === 'mltp_contact' ) {
 			remove_action( 'save_post', array( $this, 'save_post_process' ) ); // Remove the action temporarily to prevent recursion
 
@@ -631,6 +632,10 @@ class Mltp_Contact extends Mltp_Loader {
 
 			// Build the title
 			$title = self::merge_name( $data );
+
+			if(empty($title) && empty($post->post_title)) {
+					$title = sprint_f(__('Insufficient data %s', 'multipass'), $post->ID);
+			}
 
 			// Update the post title only if it changed and is not empty
 			if ( ! empty($title) && $title !== $post->post_title ) {
