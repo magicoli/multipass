@@ -1,4 +1,4 @@
-=== MultiPass ===
+=== MultiPass (dev) ===
 Contributors: magicoli69
 Donate link: https://magiiic.com/support/MultiPass+Plugin
 Tags: hotel, booking, multi-prestations, multi-services, woocommerce, ota, pms, booking engine
@@ -66,6 +66,9 @@ WARNING: **Make a full backup of your website and databases** before installing 
 4. WooCommerce must be enabled to handle custom payments.
 
 == Changelog ==
+
+= Unreleased (0.5.2-dev.753) =
+* fix missing class on activation and db update 2
 
 = 0.5.1 =
 * new contacts list

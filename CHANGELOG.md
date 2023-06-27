@@ -1,5 +1,8 @@
 ## Changelog
 
+### Unreleased (0.5.2-dev.753)
+- fix missing class on activation and db update 2
+
 ### 0.5.1
 - new contacts list
 - new reports admin page
@@ -8,7 +11,7 @@
 - added booking time to rates
 - added taxes taxonomy, added field to prestation, detail and resources
 - added /multipass/ redirecto to multipass admin page
-- fix permalink conflict (Revert "prefix resource permalink with resource type")
+- fixed permalink conflict (Revert "prefix resource permalink with resource type")
 - fixed "from" and "to" fields not set when saving prestation
 - fixed enabled modules detection after saving modules settings page
 
