@@ -237,6 +237,10 @@ class Mltp_Contact extends Mltp_Loader {
 					'id'      => $prefix . 'first_name',
 					'type'    => 'text',
 					'columns' => 6,
+					'admin_columns' => array(
+						'position'   => 'after title',
+						'searchable' => true,
+					),
 					'visible' => array(
 						'when'     => array( array( 'user_id', '=', '' ) ),
 						'relation' => 'or',
@@ -247,6 +251,10 @@ class Mltp_Contact extends Mltp_Loader {
 					'id'      => $prefix . 'last_name',
 					'type'    => 'text',
 					'columns' => 6,
+					'admin_columns' => array(
+						'position'   => 'after first_name',
+						'searchable' => true,
+					),
 					'visible' => array(
 						'when'     => array( array( 'user_id', '=', '' ) ),
 						'relation' => 'or',
@@ -256,13 +264,17 @@ class Mltp_Contact extends Mltp_Loader {
 					'name' => __( 'Company', 'multipass' ),
 					'id'   => $prefix . 'company',
 					'type' => 'text',
+					'admin_columns' => array(
+						'position'   => 'after last_name',
+						'searchable' => true,
+					),
 				),
 				array(
 					'name'          => __( 'Email', 'multipass' ),
 					'id'            => $prefix . 'email',
 					'type'          => 'email',
 					'admin_columns' => array(
-						'position'   => 'after title',
+						'position'   => 'replace date',
 						'searchable' => true,
 					),
 					'visible'       => array(
@@ -279,7 +291,7 @@ class Mltp_Contact extends Mltp_Loader {
 					'clone_as_multiple' => true,
 					'add_button'        => __( 'Add a phone number', 'multipass' ),
 					'admin_columns'     => array(
-						'position'   => 'after title',
+						'position'   => 'after email',
 						'searchable' => true,
 					),
 				),
@@ -581,6 +593,16 @@ class Mltp_Contact extends Mltp_Loader {
 		return array('first_name' => $first_name, 'last_name' => $last_name);
 	}
 
+	public function save_post_process( $post_id, $post = null, $update = null ) {
+
+		// Check if it is the mltp_contact post type
+		if ( get_post_type( $post_id ) === 'mltp_contact' ) {
+			$this->set_contact_title($post_id);
+		}
+
+		return $update;
+	}
+
 	public function set_contact_title( $post_id, $post = null ) {
 		if ( get_post_type( $post_id ) === 'mltp_contact' ) {
 			remove_action( 'save_post', array( $this, 'save_post_process' ) ); // Remove the action temporarily to prevent recursion
@@ -616,16 +638,6 @@ class Mltp_Contact extends Mltp_Loader {
 		// }
 
 		add_action( 'save_post', array( $this, 'save_post_process' ) ); // Add the action back after updating the post title
-	}
-
-	public function save_post_process( $post_id, $post = null, $update = null ) {
-
-		// Check if it is the mltp_contact post type
-		if ( get_post_type( $post_id ) === 'mltp_contact' ) {
-			$this->set_contact_title($post_id);
-		}
-
-		return $update;
 	}
 
 	public function sync_contact_from_wp_user( $contact_id, $user_id = null ) {
@@ -797,7 +809,6 @@ class Mltp_Contact extends Mltp_Loader {
 		$i = 0;
     foreach ($prestations as $prestation) {
 			$i++;
-			error_log(__METHOD__ . " ($i/$c) " . $prestation_id . ' ' . $prestation->post_title);
       $prestation_id = $prestation->ID;
 			// error_log(__METHOD__ . ' prestation ' . $prestation_id );
 
@@ -858,8 +869,6 @@ class Mltp_Contact extends Mltp_Loader {
 			}
 
 			$debug_data = is_array($old_contact) ? json_encode( $old_contact) : print_r($old_contact, true);
-			error_log(__METHOD__ . " ($i/$c) " . $prestation_id . ' ' . $debug_data);
-			continue;
 
 			// Update the mltp_prestation post with the new contact ID
 			rwmb_set_meta( $prestation_id, 'contacts_contact', $contacts );
