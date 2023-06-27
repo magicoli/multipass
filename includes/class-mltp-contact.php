@@ -586,17 +586,17 @@ class Mltp_Contact extends Mltp_Loader {
 		return $name;
 	}
 
-	function split_name( $name ) {
-		$name  = preg_replace( '/\s*-\s*.*/', '', $name );
-		$names = explode( ' ', $name, 2 );
+	function split_name($name) {
+	  $name  = preg_replace('/\s+-\s+.*/', '', $name);
+	  $names = explode(' ', $name, 2);
 
-		$first_name = isset( $names[0] ) ? trim( $names[0] ) : '';
-		$last_name  = isset( $names[1] ) ? trim( $names[1] ) : '';
+	  $first_name = isset($names[0]) ? trim($names[0]) : '';
+	  $last_name  = isset($names[1]) ? trim($names[1]) : '';
 
-		return array(
-			'first_name' => $first_name,
-			'last_name'  => $last_name,
-		);
+	  return array(
+	    'first_name' => $first_name,
+	    'last_name'  => $last_name,
+	  );
 	}
 
 	public function save_post_process( $post_id, $post = null, $update = null ) {
@@ -907,7 +907,6 @@ class Mltp_Contact extends Mltp_Loader {
 			if ( $result ) {
 				$u++;
 			}
-				// else $e++;
 		}
 		error_log( "finished processing, $p prestations scanned, $u contacts updated, $n created ($e errors)" );
 	}
