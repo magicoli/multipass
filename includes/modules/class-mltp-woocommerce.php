@@ -565,7 +565,7 @@ class Mltp_WooCommerce extends Mltp_Modules {
 		}
 
 		// remove_action(current_action(), __CLASS__ . '::wp_insert_post_action');
-		$details = [];
+		$details = array();
 
 		$prestation_id  = get_post_meta( $post_id, 'prestation_id', true );
 		$reference_code = get_post_meta( $post_id, 'reference_code', true );

@@ -56,9 +56,9 @@ class Mltp_Contact extends Mltp_Loader {
 	 */
 	public function __construct( $args = null ) {
 		global $wpdb;
-		$this->db_prefix = $wpdb->prefix;
-		$this->table     = $this->db_prefix . 'mltp_contacts';
-		$this->db_args   = array(
+		$this->db_prefix       = $wpdb->prefix;
+		$this->table           = $this->db_prefix . 'mltp_contacts';
+		$this->db_args         = array(
 			'storage_type' => 'custom_table',
 			'table'        => $this->table,
 		);
@@ -77,9 +77,9 @@ class Mltp_Contact extends Mltp_Loader {
 				'callback'  => 'register_taxonomies',
 			),
 			array(
-				'component' => $this,
-				'hook'      => 'save_post',
-				'callback'  => 'save_post_process',
+				'component'     => $this,
+				'hook'          => 'save_post',
+				'callback'      => 'save_post_process',
 				'accepted_args' => 3,
 			),
 			array(
@@ -118,21 +118,21 @@ class Mltp_Contact extends Mltp_Loader {
 		MB_Custom_Table_API::create(
 			$this->table,   // Table name.
 			array(                                  // Table columns (without ID).
-				'user_id'      => 'INTEGER',
-				'first_name'   => 'TEXT',
-				'last_name'    => 'TEXT',
-				'fullname' 		 =>  "TEXT AS (TRIM(CONCAT(COALESCE(first_name, ''), ' ', COALESCE(last_name, '')))) STORED",
-				'company'      => 'TEXT',
-				'email'        => 'varchar(100)',
-				'phone'        => 'varchar(100)',
-				'address'      => 'LONGTEXT',
+				'user_id'    => 'INTEGER',
+				'first_name' => 'TEXT',
+				'last_name'  => 'TEXT',
+				'fullname'   => "TEXT AS (TRIM(CONCAT(COALESCE(first_name, ''), ' ', COALESCE(last_name, '')))) STORED",
+				'company'    => 'TEXT',
+				'email'      => 'varchar(100)',
+				'phone'      => 'varchar(100)',
+				'address'    => 'LONGTEXT',
 			),
 			array( 'first_name', 'last_name', 'fullname', 'email', 'phone' ),               // List of index keys.
 			true                               // Must be true for models.
 		);
 
 		$notice = __( 'Tables updated.', 'multipass' );
-		error_log($notice);
+		error_log( $notice );
 		MultiPass::admin_notice( $notice );
 
 		add_action( 'wp_loaded', array( $this, 'migrate_contacts_from_prestation' ) );
@@ -233,37 +233,37 @@ class Mltp_Contact extends Mltp_Loader {
 					'add_new'    => true,
 				),
 				array(
-					'name'    => __( 'First Name', 'multipass' ),
-					'id'      => $prefix . 'first_name',
-					'type'    => 'text',
-					'columns' => 6,
+					'name'          => __( 'First Name', 'multipass' ),
+					'id'            => $prefix . 'first_name',
+					'type'          => 'text',
+					'columns'       => 6,
 					'admin_columns' => array(
 						'position'   => 'after title',
 						'searchable' => true,
 					),
-					'visible' => array(
+					'visible'       => array(
 						'when'     => array( array( 'user_id', '=', '' ) ),
 						'relation' => 'or',
 					),
 				),
 				array(
-					'name'    => __( 'Last Name', 'multipass' ),
-					'id'      => $prefix . 'last_name',
-					'type'    => 'text',
-					'columns' => 6,
+					'name'          => __( 'Last Name', 'multipass' ),
+					'id'            => $prefix . 'last_name',
+					'type'          => 'text',
+					'columns'       => 6,
 					'admin_columns' => array(
 						'position'   => 'after first_name',
 						'searchable' => true,
 					),
-					'visible' => array(
+					'visible'       => array(
 						'when'     => array( array( 'user_id', '=', '' ) ),
 						'relation' => 'or',
 					),
 				),
 				array(
-					'name' => __( 'Company', 'multipass' ),
-					'id'   => $prefix . 'company',
-					'type' => 'text',
+					'name'          => __( 'Company', 'multipass' ),
+					'id'            => $prefix . 'company',
+					'type'          => 'text',
 					'admin_columns' => array(
 						'position'   => 'after last_name',
 						'searchable' => true,
@@ -371,7 +371,7 @@ class Mltp_Contact extends Mltp_Loader {
 		);
 
 		// Contact fields for mltp_prestation and mltp_detail post types
-		$prefix                  = 'contacts_';
+		$prefix = 'contacts_';
 
 		$meta_boxes[] = array(
 			'title'      => __( 'Contacts', 'multipass' ),
@@ -564,50 +564,56 @@ class Mltp_Contact extends Mltp_Loader {
 		);
 	}
 
-	public static function merge_name($first_name, $last_name = '', $company = '') {
-		if(is_array($first_name)) {
-			$data = array_merge(array(
-				'first_name' => null,
-				'last_name'  => null,
-				'company'    => null,
-			),$first_name);
+	public static function merge_name( $first_name, $last_name = '', $company = '' ) {
+		if ( is_array( $first_name ) ) {
+			$data = array_merge(
+				array(
+					'first_name' => null,
+					'last_name'  => null,
+					'company'    => null,
+				),
+				$first_name
+			);
 
 			$first_name = $data['first_name'];
-			$last_name = $data['last_name'];
-			$company = $data['company'];
+			$last_name  = $data['last_name'];
+			$company    = $data['company'];
 		}
 
-		$name = trim( $first_name . ' ' . $last_name );
+		$name  = trim( $first_name . ' ' . $last_name );
 		$name .= ( ( ! empty( $company ) && ! empty( $name ) ) ? ' - ' : '' ) . $company;
 
 		return $name;
 	}
 
-	function split_name($name) {
-		$name = preg_replace('/\s*-\s*.*/', '', $name);
-		$names = explode(' ', $name, 2);
+	function split_name( $name ) {
+		$name  = preg_replace( '/\s*-\s*.*/', '', $name );
+		$names = explode( ' ', $name, 2 );
 
-		$first_name = isset($names[0]) ? trim($names[0]) : '';
-		$last_name = isset($names[1]) ? trim($names[1]) : '';
+		$first_name = isset( $names[0] ) ? trim( $names[0] ) : '';
+		$last_name  = isset( $names[1] ) ? trim( $names[1] ) : '';
 
-		return array('first_name' => $first_name, 'last_name' => $last_name);
+		return array(
+			'first_name' => $first_name,
+			'last_name'  => $last_name,
+		);
 	}
 
 	public function save_post_process( $post_id, $post = null, $update = null ) {
 		// $old_meta = get_post_meta($post_id);
 		// error_log("meta " . print_r(get_post_meta($post_id), true));
 		$meta = array(
-			'first_name' => get_post_meta($post_id, 'first_name', true),
-			'last_name' => get_post_meta($post_id, 'last_name', true),
-			'company' => get_post_meta($post_id, 'company', true),
-			'phone' => get_post_meta($post_id, 'phone'),
-			'email' => get_post_meta($post_id, 'email', true),
+			'first_name' => get_post_meta( $post_id, 'first_name', true ),
+			'last_name'  => get_post_meta( $post_id, 'last_name', true ),
+			'company'    => get_post_meta( $post_id, 'company', true ),
+			'phone'      => get_post_meta( $post_id, 'phone' ),
+			'email'      => get_post_meta( $post_id, 'email', true ),
 		);
-		foreach($meta as $key => $value) {
+		foreach ( $meta as $key => $value ) {
 			rwmb_set_meta( $post_id, $key, $value, $this->db_args );
 		}
 
-		$this->set_contact_title($post_id);
+		$this->set_contact_title( $post_id );
 
 		return $update;
 	}
@@ -623,22 +629,22 @@ class Mltp_Contact extends Mltp_Loader {
 			// Get the updated post object
 			$post = get_post( $post_id );
 
-			$data = 				array(
+			$data = array(
 				'first_name' => rwmb_meta( 'first_name', $this->db_args, $post_id ),
 				'last_name'  => rwmb_meta( 'last_name', $this->db_args, $post_id ),
 				'company'    => rwmb_meta( 'company', $this->db_args, $post_id ),
-				'email'    => rwmb_meta( 'email', $this->db_args, $post_id ),
+				'email'      => rwmb_meta( 'email', $this->db_args, $post_id ),
 			);
 
 			// Build the title
 			$title = self::merge_name( $data );
 
-			if(empty($title) && empty($post->post_title)) {
-					$title = sprint_f(__('Insufficient data %s', 'multipass'), $post->ID);
+			if ( empty( $title ) && empty( $post->post_title ) ) {
+					$title = sprint_f( __( 'Insufficient data %s', 'multipass' ), $post->ID );
 			}
 
 			// Update the post title only if it changed and is not empty
-			if ( ! empty($title) && $title !== $post->post_title ) {
+			if ( ! empty( $title ) && $title !== $post->post_title ) {
 				wp_update_post(
 					array(
 						'ID'         => $post_id,
@@ -739,40 +745,42 @@ class Mltp_Contact extends Mltp_Loader {
 		}
 	}
 
-	public function get_contact_id($data) {
-	  $contact_id = null;
+	public function get_contact_id( $data ) {
+		$contact_id = null;
 
-	  if (is_object($data) && property_exists($data, 'ID')) {
-	    $contact_id = $data->ID;
-	  } elseif (is_int($data)) {
-	    $contact_id = $data;
-	  } else {
-	    if (is_string($data) && is_email($data)) {
-	      $data = array('email' => $data);
-	    } elseif (is_string($data)) {
-	      $data = array('name' => $data);
-	    }
+		if ( is_object( $data ) && property_exists( $data, 'ID' ) ) {
+			$contact_id = $data->ID;
+		} elseif ( is_int( $data ) ) {
+			$contact_id = $data;
+		} else {
+			if ( is_string( $data ) && is_email( $data ) ) {
+				$data = array( 'email' => $data );
+			} elseif ( is_string( $data ) ) {
+				$data = array( 'name' => $data );
+			}
 
-	    if (isset($data['id']) && is_int($data['id'])) {
-	      $contact_id = $data['id'];
-	    } elseif (isset($data['user_id']) && is_int($data['user_id'])) {
-	      $contact_id = $this->get_contact_id_by_user_id($data['user_id']);
-	    } elseif (!empty($data['email']) && is_email($data['email'])) {
-	      $contact_id = $this->get_contact_id_by('email', $data['email']);
-	    } elseif (!empty($data['name']) && is_string($data['name'])) {
-	      $contact_id = $this->get_contact_id_by('name', $data['name']);
-	    }
-	  }
+			if ( isset( $data['id'] ) && is_int( $data['id'] ) ) {
+				$contact_id = $data['id'];
+			} elseif ( isset( $data['user_id'] ) && is_int( $data['user_id'] ) ) {
+				$contact_id = $this->get_contact_id_by_user_id( $data['user_id'] );
+			} elseif ( ! empty( $data['email'] ) && is_email( $data['email'] ) ) {
+				$contact_id = $this->get_contact_id_by( 'email', $data['email'] );
+			} elseif ( ! empty( $data['name'] ) && is_string( $data['name'] ) ) {
+				$contact_id = $this->get_contact_id_by( 'name', $data['name'] );
+			}
+		}
 
-	  if (empty($contact_id) || get_post_type($contact_id) !== 'mltp_contact') {
-	    return false;
-	  }
+		if ( empty( $contact_id ) || get_post_type( $contact_id ) !== 'mltp_contact' ) {
+			return false;
+		}
 
-	  return $contact_id;
+		return $contact_id;
 	}
 
 	public function get_contact_id_by_user_id( $user_id ) {
-		if(empty($user_id)) return false;
+		if ( empty( $user_id ) ) {
+			return false;
+		}
 
 		// Query the mltp_contact posts
 		global $wpdb;
@@ -780,225 +788,237 @@ class Mltp_Contact extends Mltp_Loader {
 			"SELECT ID FROM $this->table WHERE user_id = %d ORDER BY id LIMIT 1",
 			$user_id,
 		);
-		$contact_id = $wpdb->get_var( $prepared_statement );
-		if (!empty($contact_id) && get_post_type($contact_id) !== 'mltp_contact') {
+		$contact_id         = $wpdb->get_var( $prepared_statement );
+		if ( ! empty( $contact_id ) && get_post_type( $contact_id ) !== 'mltp_contact' ) {
 			return false;
 		}
 		return $contact_id;
 	}
 
-	public function get_contact_id_by($field, $value) {
-	  if (empty($field) || empty($value)) {
-	    return false;
-	  }
+	public function get_contact_id_by( $field, $value ) {
+		if ( empty( $field ) || empty( $value ) ) {
+			return false;
+		}
 
-	  // Query the mltp_contact posts
-	  global $wpdb;
+		// Query the mltp_contact posts
+		global $wpdb;
 
-	  $column = ($field === 'name') ? 'fullname' : $field;
+		$column = ( $field === 'name' ) ? 'fullname' : $field;
 
-	  $sql = "SELECT ID FROM {$this->table} WHERE {$column} = %s ORDER BY ID;";
-	  $prepared_statement = $wpdb->prepare($sql, $value);
-	  $contact_id = $wpdb->get_var($prepared_statement);
+		$sql                = "SELECT ID FROM {$this->table} WHERE {$column} = %s ORDER BY ID;";
+		$prepared_statement = $wpdb->prepare( $sql, $value );
+		$contact_id         = $wpdb->get_var( $prepared_statement );
 
-	  if (!empty($contact_id) && get_post_type($contact_id) !== 'mltp_contact') {
-	    return false;
-	  }
+		if ( ! empty( $contact_id ) && get_post_type( $contact_id ) !== 'mltp_contact' ) {
+			return false;
+		}
 
-	  return $contact_id;
+		return $contact_id;
 	}
 
 	public function migrate_contacts_from_prestation() {
 
-    // Query the mltp_prestation posts
-    $prestations = get_posts(array(
-      'post_type' => 'mltp_prestation',
-      'numberposts' => -1,
-    ));
+		// Query the mltp_prestation posts
+		$prestations = get_posts(
+			array(
+				'post_type'   => 'mltp_prestation',
+				'numberposts' => -1,
+			)
+		);
 		// error_log(__METHOD__ . ' found ' . count($prestations) . ' prestations');
 
-    // Iterate over the mltp_prestation posts and import data
-  	$c = count($prestations);
+		// Iterate over the mltp_prestation posts and import data
+		$c = count( $prestations );
 		$p = 0;
 		$n = 0;
 		$u = 0;
 		$e = 0;
-    foreach ($prestations as $prestation) {
+		foreach ( $prestations as $prestation ) {
 			$p++;
-      $prestation_id = $prestation->ID;
+			$prestation_id = $prestation->ID;
 			// error_log(__METHOD__ . ' prestation ' . $prestation_id );
 
-      // Get the contact details from the post meta
-			$old_contact = array_merge(
+			// Get the contact details from the post meta
+			$old_contact           = array_merge(
 				array(
-					'id' => null,
-					'user_id' => get_post_meta($prestation_id, 'customer_id', true),
-					'name' => get_post_meta($prestation_id, 'display_name', true),
-					'email' => get_post_meta($prestation_id, 'contact_email', true),
-					'phone' => get_post_meta($prestation_id, 'contact_phone', true),
+					'id'      => null,
+					'user_id' => get_post_meta( $prestation_id, 'customer_id', true ),
+					'name'    => get_post_meta( $prestation_id, 'display_name', true ),
+					'email'   => get_post_meta( $prestation_id, 'contact_email', true ),
+					'phone'   => get_post_meta( $prestation_id, 'contact_phone', true ),
 				),
-				array_filter(array(
-					'name' => get_post_meta($prestation_id, 'contact_name', true),
-				)),
-				array_filter(array(
-					'name' => get_post_meta($prestation_id, 'customer_name', true),
-					'email' => get_post_meta($prestation_id, 'customer_email', true),
-					'phone' => get_post_meta($prestation_id, 'customer_phone', true),
-				)),
+				array_filter(
+					array(
+						'name' => get_post_meta( $prestation_id, 'contact_name', true ),
+					)
+				),
+				array_filter(
+					array(
+						'name'  => get_post_meta( $prestation_id, 'customer_name', true ),
+						'email' => get_post_meta( $prestation_id, 'customer_email', true ),
+						'phone' => get_post_meta( $prestation_id, 'customer_phone', true ),
+					)
+				),
 			);
-			$old_contact['id'] = $this->get_contact_id( $old_contact );
+				$old_contact['id'] = $this->get_contact_id( $old_contact );
 
-			// Get new format contacts if any
-			$contacts = get_post_meta($prestation_id, 'contacts_contact' );
+				// Get new format contacts if any
+				$contacts = get_post_meta( $prestation_id, 'contacts_contact' );
 
-			$found_matching_contact = false;
-			foreach($contacts as $key => $contact) {
-				if(
-					( !empty($contact['id']) && $contact['id'] === $old_contact['id'] )
-					|| ( !empty($contact['email']) && $contact['email'] == $old_contact['email'] )
+				$found_matching_contact = false;
+			foreach ( $contacts as $key => $contact ) {
+				if (
+				( ! empty( $contact['id'] ) && $contact['id'] === $old_contact['id'] )
+				|| ( ! empty( $contact['email'] ) && $contact['email'] == $old_contact['email'] )
 				) {
 					$found_matching_contact = true;
 					// error_log("found contact $contact_id by name from " . print_r($data, true));
-					$contact = array_merge($old_contact, array_filter($contacts));
+					$contact = array_merge( $old_contact, array_filter( $contacts ) );
 				};
-				$contact['type'] = empty($contact['type']) ? $this->default_type_id : $contact['type'];
+				$contact['type'] = empty( $contact['type'] ) ? $this->default_type_id : $contact['type'];
 
 				// Create or update the corresponding mltp_contact
-				if(empty($contact['id'])) {
-				  $contact_id = $this->create_or_update_contact( $contact );
-					if( ! empty($contact_id) ) {
+				if ( empty( $contact['id'] ) ) {
+					$contact_id = $this->create_or_update_contact( $contact );
+					if ( ! empty( $contact_id ) ) {
 						$found_matching_contact = true;
-						$contact['id'] = $contact_id;
+						$contact['id']          = $contact_id;
 					}
 				}
-				$contacts[$key] = $contact;
+				$contacts[ $key ] = $contact;
 			}
 
-			if ($old_contact['id'] == 15740) {
-				error_log("contact_id = 15740; should not happen, contact old_contact " . print_r($old_contact, true) );
+			if ( $old_contact['id'] == 15740 ) {
+				error_log( 'contact_id = 15740; should not happen, contact old_contact ' . print_r( $old_contact, true ) );
 				break;
 			}
-			if( ! $found_matching_contact ) {
+			if ( ! $found_matching_contact ) {
 				$old_contact['id'] = $this->create_or_update_contact( $old_contact );
-				if($old_contact['id'] === false ) $e++;
-				else if ( ! empty($old_contact['id'])) $n++;
+				if ( $old_contact['id'] === false ) {
+					$e++;
+				} elseif ( ! empty( $old_contact['id'] ) ) {
+					$n++;
+				}
 				// unset($old_contact['id']);
-				$contacts[] = array_filter($old_contact);
+				$contacts[] = array_filter( $old_contact );
 			}
-			// Update the mltp_prestation post with the new contact ID
-			$result = rwmb_set_meta( $prestation_id, 'contacts_contact', $contacts );
-			if($result) $u++;
-			// else $e++;
-    }
-		error_log("finished processing, $p prestations scanned, $u contacts updated, $n created ($e errors)");
-  }
+				// Update the mltp_prestation post with the new contact ID
+				$result = rwmb_set_meta( $prestation_id, 'contacts_contact', $contacts );
+			if ( $result ) {
+				$u++;
+			}
+				// else $e++;
+		}
+		error_log( "finished processing, $p prestations scanned, $u contacts updated, $n created ($e errors)" );
+	}
 
-	public function create_or_update_contact($data) {
-	  $data = array_merge(
-	    array(
-	      'id' => null,
-	      'name' => null,
-	      'first_name' => null,
-	      'last_name' => null,
-	      'email' => null,
-	      'phone' => null,
-	    ),
-	    $data
-	  );
+	public function create_or_update_contact( $data ) {
+		$data = array_merge(
+			array(
+				'id'         => null,
+				'name'       => null,
+				'first_name' => null,
+				'last_name'  => null,
+				'email'      => null,
+				'phone'      => null,
+			),
+			$data
+		);
 
-	  if (empty(array_filter($data))) {
-	    return null;
-	  }
+		if ( empty( array_filter( $data ) ) ) {
+			return null;
+		}
 
-	  $contact_id = null;
+		$contact_id = null;
 
 		$found_contact_id = null;
-	  if (isset($data['id']) && get_post_type($data['id']) === 'mltp_contact') {
-	    $found_contact_id = $data['id'];
+		if ( isset( $data['id'] ) && get_post_type( $data['id'] ) === 'mltp_contact' ) {
+			$found_contact_id = $data['id'];
 			// error_log("update contact $found_contact_id with " . join(", ", array_filter($data)));
-	  } else {
-			unset($data['id']);
-			$found_contact_id = $this->get_contact_id($data);
-	  }
+		} else {
+			unset( $data['id'] );
+			$found_contact_id = $this->get_contact_id( $data );
+		}
 		$data['id'] = $found_contact_id;
 
-		$first_name = empty($found_contact_id) ? $data['first_name'] : rwmb_meta('first_name', $this->db_args, $found_contact_id);
-		$last_name = empty($found_contact_id) ? $data['last_name'] : rwmb_meta('last_name', $this->db_args, $found_contact_id);
-		$fullname = empty($found_contact_id) ? $data['name'] : rwmb_meta('fullname', $this->db_args, $found_contact_id);
+		$first_name = empty( $found_contact_id ) ? $data['first_name'] : rwmb_meta( 'first_name', $this->db_args, $found_contact_id );
+		$last_name  = empty( $found_contact_id ) ? $data['last_name'] : rwmb_meta( 'last_name', $this->db_args, $found_contact_id );
+		$fullname   = empty( $found_contact_id ) ? $data['name'] : rwmb_meta( 'fullname', $this->db_args, $found_contact_id );
 
-		if(empty($first_name . $last_name)) {
-			$split = self::split_name($fullname);
-			$data = array_merge($data, array_filter($split));
+		if ( empty( $first_name . $last_name ) ) {
+			$split = self::split_name( $fullname );
+			$data  = array_merge( $data, array_filter( $split ) );
 		} else {
-			$data = array_merge($data, array(
-				'first_name' => $first_name,
-				'last_name' => $last_name,
-			));
+			$data = array_merge(
+				$data,
+				array(
+					'first_name' => $first_name,
+					'last_name'  => $last_name,
+				)
+			);
 		}
-		unset($data['name']); // name column is a virtual stored field, used only to match contact here
+		unset( $data['name'] ); // name column is a virtual stored field, used only to match contact here
 
-		$post_title = sanitize_text_field(self::merge_name($data));
+		$post_title = sanitize_text_field( self::merge_name( $data ) );
 
 		remove_action( 'save_post', array( $this, 'save_post_process' ) ); // Remove the action temporarily to prevent recursion
 		$args = array(
-			'ID' => ( empty($found_contact_id )) ? null : $found_contact_id,
-			'post_type' => 'mltp_contact',
+			'ID'          => ( empty( $found_contact_id ) ) ? null : $found_contact_id,
+			'post_type'   => 'mltp_contact',
 			'post_status' => 'publish',
-			'post_title' => $post_title,
-			'meta_input' => $data,
+			'post_title'  => $post_title,
+			'meta_input'  => $data,
 		);
 
 		remove_action( 'save_post', array( $this, 'save_post_process' ) ); // Remove the action temporarily to prevent recursion
 		$contact_id = wp_insert_post( $args );
 		add_action( 'save_post', array( $this, 'save_post_process' ) ); // Add the action back after updating the post title
 
-
-	  if (!$contact_id) {
+		if ( ! $contact_id ) {
 			// error_log("could not mach or create contact with data " . print_r($data, true));
-	    return false;
-	  }
+			return false;
+		}
 
-	  $contact = get_post($contact_id);
+		$contact = get_post( $contact_id );
 
-
-	  if (!$contact) {
+		if ( ! $contact ) {
 			// error_log("got contact id $contact_id but it's not a contact");
-	    return false;
-	  }
+			return false;
+		}
 
 		$data['id'] = $contact_id;
 
-	  foreach ($data as $key => $new_value) {
-	    $current_value = rwmb_meta($key, $this->db_args, $contact_id);
+		foreach ( $data as $key => $new_value ) {
+			$current_value = rwmb_meta( $key, $this->db_args, $contact_id );
 
-	    if (empty($current_value) && !empty($new_value)) {
-	      switch ($key) {
-	        case 'email':
-	          $new_value = sanitize_email($new_value);
-	          break;
-	        case 'phone':
-	          if (!is_array($new_value)) {
-	            $new_value = [$new_value];
-	          }
-	          $new_value = array_map('sanitize_text_field', $new_value);
-	          break;
+			if ( empty( $current_value ) && ! empty( $new_value ) ) {
+				switch ( $key ) {
+					case 'email':
+						$new_value = sanitize_email( $new_value );
+						break;
+					case 'phone':
+						if ( ! is_array( $new_value ) ) {
+							$new_value = array( $new_value );
+						}
+						$new_value = array_map( 'sanitize_text_field', $new_value );
+						break;
 
-	        default:
-	          if (is_array($new_value)) {
-	            $new_value = array_map('sanitize_text_field', $new_value);
-	          } else {
-	            $new_value = sanitize_text_field($new_value);
-	          }
-	          break;
-	      }
+					default:
+						if ( is_array( $new_value ) ) {
+							$new_value = array_map( 'sanitize_text_field', $new_value );
+						} else {
+							$new_value = sanitize_text_field( $new_value );
+						}
+						break;
+				}
 
 				// update_post_meta( $contact_id, $key, $new_value);
-	      rwmb_set_meta($contact_id, $key, $new_value, $this->db_args);
-	    }
-	  }
-		$contact = get_post($contact_id);
+				rwmb_set_meta( $contact_id, $key, $new_value, $this->db_args );
+			}
+		}
+		$contact = get_post( $contact_id );
 
-	  return $contact_id;
+		return $contact_id;
 	}
 
 	public function profile_update_post_process( $user_id ) {
@@ -1035,10 +1055,10 @@ class Mltp_Contact extends Mltp_Loader {
 						'post_status' => 'publish',
 						'post_title'  => $user->display_name, // Set the initial title for the new contact
 						// 'meta_input'  => array(
-						// 	'user_id'    => $user->ID,
-						// 	'email'      => $user->email,
-						// 	'first_name' => $user->first_name,
-						// 	'last_name'  => $user->last_name,
+						// 'user_id'    => $user->ID,
+						// 'email'      => $user->email,
+						// 'first_name' => $user->first_name,
+						// 'last_name'  => $user->last_name,
 						// ),
 					)
 				);
@@ -1075,7 +1095,7 @@ class Mltp_Contact extends Mltp_Loader {
 		}
 
 		$notice = sprintf( __( '%s contacts updated from existing WP users.', 'multipass' ), count( $users ) );
-		error_log($notice);
+		error_log( $notice );
 		MultiPass::admin_notice( $notice );
 
 	}

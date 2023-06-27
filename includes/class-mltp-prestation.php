@@ -1785,8 +1785,8 @@ class Mltp_Prestation {
 			}
 		}
 
-		$updates['from']  = (isset($dates['from'])) ? $dates['from'] : null;
-		$updates['to']    = (isset($dates['to'])) ? $dates['to'] : null;
+		$updates['from']  = ( isset( $dates['from'] ) ) ? $dates['from'] : null;
+		$updates['to']    = ( isset( $dates['to'] ) ) ? $dates['to'] : null;
 		$updates['dates'] = array(
 			'from' => $updates['from'],
 			'to'   => $updates['to'],
