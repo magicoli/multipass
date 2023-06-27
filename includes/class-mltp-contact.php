@@ -586,17 +586,17 @@ class Mltp_Contact extends Mltp_Loader {
 		return $name;
 	}
 
-	function split_name($name) {
-	  $name  = preg_replace('/\s+-\s+.*/', '', $name);
-	  $names = explode(' ', $name, 2);
+	function split_name( $name ) {
+		$name  = preg_replace( '/\s+-\s+.*/', '', $name );
+		$names = explode( ' ', $name, 2 );
 
-	  $first_name = isset($names[0]) ? trim($names[0]) : '';
-	  $last_name  = isset($names[1]) ? trim($names[1]) : '';
+		$first_name = isset( $names[0] ) ? trim( $names[0] ) : '';
+		$last_name  = isset( $names[1] ) ? trim( $names[1] ) : '';
 
-	  return array(
-	    'first_name' => $first_name,
-	    'last_name'  => $last_name,
-	  );
+		return array(
+			'first_name' => $first_name,
+			'last_name'  => $last_name,
+		);
 	}
 
 	public function save_post_process( $post_id, $post = null, $update = null ) {
@@ -888,27 +888,22 @@ class Mltp_Contact extends Mltp_Loader {
 				$contacts[ $key ] = $contact;
 			}
 
-			if ( $old_contact['id'] == 15740 ) {
-				error_log( 'contact_id = 15740; should not happen, contact old_contact ' . print_r( $old_contact, true ) );
-				break;
-			}
 			if ( ! $found_matching_contact ) {
 				$old_contact['id'] = $this->create_or_update_contact( $old_contact );
-				if ( $old_contact['id'] === false ) {
-					$e++;
-				} elseif ( ! empty( $old_contact['id'] ) ) {
-					$n++;
+				if ( ! empty( $old_contact['id'] ) ) {
+					$u++;
 				}
 				// unset($old_contact['id']);
 				$contacts[] = array_filter( $old_contact );
 			}
-				// Update the mltp_prestation post with the new contact ID
-				$result = rwmb_set_meta( $prestation_id, 'contacts_contact', $contacts );
-			if ( $result ) {
-				$u++;
-			}
+
+			// Update the mltp_prestation post with the new contact ID
+			$result = rwmb_set_meta( $prestation_id, 'contacts_contact', $contacts );
 		}
-		error_log( "finished processing, $p prestations scanned, $u contacts updated, $n created ($e errors)" );
+
+		$notice = sprintf( "Contacts migration processed, $p prestations scanned, $u contacts updated ($e errors)" );
+		error_log( $notice );
+		MultiPass::admin_notice( $notice );
 	}
 
 	public function create_or_update_contact( $data ) {
