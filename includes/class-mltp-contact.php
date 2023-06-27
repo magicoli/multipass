@@ -376,7 +376,7 @@ class Mltp_Contact extends Mltp_Loader {
 		$meta_boxes[] = array(
 			'title'      => __( 'Contacts', 'multipass' ),
 			'id'         => 'contacts',
-			'post_types' => array( 'mltp_prestation', 'mltp_detail' ),
+			'post_types' => 'mltp_prestation', // | 'mltp_prestation', 'mltp_detail' ],
 			'context'    => 'after_title',
 			'priority'   => 'low',
 			'style'      => 'seamless',
