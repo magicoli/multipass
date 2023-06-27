@@ -787,22 +787,25 @@ class Mltp_Contact extends Mltp_Loader {
 		return $contact_id;
 	}
 
-	public function get_contact_id_by( $field, $value ) {
-		if(empty($field) || empty($value)) return false;
+	public function get_contact_id_by($field, $value) {
+	  if (empty($field) || empty($value)) {
+	    return false;
+	  }
 
-		// Query the mltp_contact posts
-		global $wpdb;
+	  // Query the mltp_contact posts
+	  global $wpdb;
 
-		$field = ($field === 'name' ) ? 'fullname' : $field;
+	  $column = ($field === 'name') ? 'fullname' : $field;
 
-		$sql = "SELECT ID FROM {$this->table} WHERE {$field} = %s ORDER BY ID;";
-		$prepared_statement = $wpdb->prepare( $sql, $value );
-		$contact_id = $wpdb->get_var( $prepared_statement );
+	  $sql = "SELECT ID FROM {$this->table} WHERE {$column} = %s ORDER BY ID;";
+	  $prepared_statement = $wpdb->prepare($sql, $value);
+	  $contact_id = $wpdb->get_var($prepared_statement);
 
-		if (!empty($contact_id) && get_post_type($contact_id) !== 'mltp_contact') {
-			return false;
-		}
-		return $contact_id;
+	  if (!empty($contact_id) && get_post_type($contact_id) !== 'mltp_contact') {
+	    return false;
+	  }
+
+	  return $contact_id;
 	}
 
 	public function migrate_contacts_from_prestation() {
