@@ -186,6 +186,7 @@ class Mltp_Prestation {
 				'component' => $this,
 				'hook'      => 'rwmb_meta_boxes',
 				'callback'  => 'register_fields',
+				'priority'  => 5,
 			),
 			array(
 				'component'     => $this,
@@ -317,7 +318,7 @@ class Mltp_Prestation {
 			// 'show_in_menu'        => true,
 			// 'menu_position' => 25,
 			'capability_type'     => 'mltp_prestation',
-			'supports'            => array( 'title' ),
+			'supports'            => array( '' ),
 			'taxonomies'          => array(),
 			'rewrite'             => array(
 				'slug'       => self::slug(),
@@ -432,8 +433,9 @@ class Mltp_Prestation {
 		$prefix                       = '';
 		$meta_boxes['prestation-title'] = array(
 			'title'      => __( 'Prestations', 'multipass' ),
-			'id'         => 'prestation-fields',
+			'id'         => 'prestation-title-fields',
 			'post_types' => array( 'mltp_prestation' ),
+			'context'    => 'form_top',
 			'context'    => 'after_title',
 			'priority' => 'high',
 			'style'      => 'seamless',

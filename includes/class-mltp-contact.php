@@ -104,6 +104,7 @@ class Mltp_Contact extends Mltp_Loader {
 				'component' => $this,
 				'hook'      => 'rwmb_meta_boxes',
 				'callback'  => 'register_fields',
+				// 'priority'  => 20,
 			),
 		);
 
@@ -913,7 +914,7 @@ class Mltp_Contact extends Mltp_Loader {
 				'customer_phone'
 			)"
 		);
-		
+
 		$notice = sprintf( "Contacts migration processed, $p prestations scanned, $u contacts updated ($e errors)" );
 		error_log( $notice );
 		MultiPass::admin_notice( $notice );
