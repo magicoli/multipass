@@ -892,9 +892,28 @@ class Mltp_Contact extends Mltp_Loader {
 			}
 
 			// Update the mltp_prestation post with the new contact ID
-			$result = rwmb_set_meta( $prestation_id, 'contacts_contact', $contacts );
+			rwmb_set_meta( $prestation_id, 'contacts_contact', $contacts );
+
+			// // Delete original meta values used for import
+			// $wpdb->query("DELETE FROM {$wpdb->postmeta}
+			// 	WHERE post_id = $prestation_id
+			// 	AND meta_key IN (
+			// 		'customer_id', 'display_name', 'contact_email', 'contact_phone',
+			// 		'contact_name', 'customer_name', 'customer_email', 'customer_phone'
+			// 	)"
+			// );
+
 		}
 
+		// Delete meta from mltp_details post type
+		$wpdb->query("DELETE FROM {$wpdb->postmeta}
+			WHERE meta_key IN (
+				'customer_id', 'display_name', 'contact_email',
+				'contact_phone', 'contact_name', 'customer_name', 'customer_email',
+				'customer_phone'
+			)"
+		);
+		
 		$notice = sprintf( "Contacts migration processed, $p prestations scanned, $u contacts updated ($e errors)" );
 		error_log( $notice );
 		MultiPass::admin_notice( $notice );
