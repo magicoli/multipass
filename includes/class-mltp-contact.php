@@ -415,7 +415,7 @@ class Mltp_Contact extends Mltp_Loader {
 						array(
 							'name'        => __( 'Type', 'multipass' ),
 							'id'          => 'type',
-							'type'        => 'taxonomy',
+							'type'        => 'taxonomy_advanced',
 							'taxonomy'    => array( 'contact-type' ),
 							'field_type'  => 'select',
 							'add_new'     => true,
