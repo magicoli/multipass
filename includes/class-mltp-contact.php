@@ -819,24 +819,18 @@ class Mltp_Contact extends Mltp_Loader {
 	public function migrate_contacts_from_prestation() {
 
 		// Query the mltp_prestation posts
-		$prestations = get_posts(
-			array(
-				'post_type'   => 'mltp_prestation',
-				'numberposts' => -1,
-			)
-		);
-		// error_log(__METHOD__ . ' found ' . count($prestations) . ' prestations');
+		global $wpdb;
+		$sql = "SELECT ID FROM {$wpdb->posts} WHERE post_type = 'mltp_prestation' ORDER BY CASE WHEN post_status = 'publish' THEN 2 ELSE 1 END, ID;";
+		$prestation_ids = $wpdb->get_col($sql);
 
 		// Iterate over the mltp_prestation posts and import data
-		$c = count( $prestations );
+    $c = count($prestation_ids);
 		$p = 0;
-		$n = 0;
 		$u = 0;
 		$e = 0;
-		foreach ( $prestations as $prestation ) {
+		foreach ( $prestation_ids as $prestation_id ) {
 			$p++;
-			$prestation_id = $prestation->ID;
-			// error_log(__METHOD__ . ' prestation ' . $prestation_id );
+			$prestation = get_post($prestation_id);
 
 			// Get the contact details from the post meta
 			$old_contact           = array_merge(
