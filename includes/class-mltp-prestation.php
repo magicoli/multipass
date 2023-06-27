@@ -317,7 +317,7 @@ class Mltp_Prestation {
 			// 'show_in_menu'        => true,
 			// 'menu_position' => 25,
 			'capability_type'     => 'mltp_prestation',
-			'supports'            => array( 'title', 'revisions' ),
+			'supports'            => array( 'title' ),
 			'taxonomies'          => array(),
 			'rewrite'             => array(
 				'slug'       => self::slug(),
