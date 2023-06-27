@@ -317,7 +317,7 @@ class Mltp_Prestation {
 			// 'show_in_menu'        => true,
 			// 'menu_position' => 25,
 			'capability_type'     => 'mltp_prestation',
-			'supports'            => array( 'revisions' ),
+			'supports'            => array( 'title', 'revisions' ),
 			'taxonomies'          => array(),
 			'rewrite'             => array(
 				'slug'       => self::slug(),
@@ -430,11 +430,12 @@ class Mltp_Prestation {
 		$js_date_format_short = preg_match( '/^[Fm]/', get_option( 'date_format' ) ) ? 'mm-dd-yy' : 'dd-mm-yy';
 
 		$prefix                       = '';
-		$meta_boxes['prestation-cpt'] = array(
+		$meta_boxes['prestation-title'] = array(
 			'title'      => __( 'Prestations', 'multipass' ),
 			'id'         => 'prestation-fields',
 			'post_types' => array( 'mltp_prestation' ),
-			// 'context'    => 'after_title',
+			'context'    => 'after_title',
+			'priority' => 'high',
 			'style'      => 'seamless',
 			'autosave'   => true,
 			'fields'     => array(
@@ -443,33 +444,43 @@ class Mltp_Prestation {
 					'type'     => 'custom_html',
 					'callback' => 'MultiPass::title_html',
 				),
-				array(
-					'name'       => __( 'Customer', 'multipass' ),
-					'id'         => $prefix . 'customer_id',
-					'type'       => 'user',
-					'field_type' => 'select_advanced',
-				),
-				array(
-					'name'        => __( 'Contact name', 'multipass' ),
-					'id'          => $prefix . 'contact_name',
-					'type'        => 'text',
-					'description' => __( 'Leave empty if same as customer name', 'multipass' ),
-				),
-				array(
-					'name' => _x( 'Contact', '(noun)', 'multipass' ),
-					'id'   => $prefix . 'display_name',
-					'type' => 'hidden',
-				),
-				array(
-					'name' => __( 'Contact Email', 'multipass' ),
-					'id'   => $prefix . 'contact_email',
-					'type' => 'email',
-				),
-				array(
-					'name' => __( 'Contact Phone', 'multipass' ),
-					'id'   => $prefix . 'contact_phone',
-					'type' => 'text',
-				),
+			),
+		);
+		$meta_boxes['prestation-cpt'] = array(
+			'title'      => __( 'Prestations', 'multipass' ),
+			'id'         => 'prestation-fields',
+			'post_types' => array( 'mltp_prestation' ),
+			'priority'   => 'low',
+			'style'      => 'seamless',
+			'autosave'   => true,
+			'fields'     => array(
+				// array(
+				// 	'name'       => __( 'Customer', 'multipass' ),
+				// 	'id'         => $prefix . 'customer_id',
+				// 	'type'       => 'user',
+				// 	'field_type' => 'select_advanced',
+				// ),
+				// array(
+				// 	'name'        => __( 'Contact name', 'multipass' ),
+				// 	'id'          => $prefix . 'contact_name',
+				// 	'type'        => 'text',
+				// 	'description' => __( 'Leave empty if same as customer name', 'multipass' ),
+				// ),
+				// array(
+				// 	'name' => _x( 'Contact', '(noun)', 'multipass' ),
+				// 	'id'   => $prefix . 'display_name',
+				// 	'type' => 'hidden',
+				// ),
+				// array(
+				// 	'name' => __( 'Contact Email', 'multipass' ),
+				// 	'id'   => $prefix . 'contact_email',
+				// 	'type' => 'email',
+				// ),
+				// array(
+				// 	'name' => __( 'Contact Phone', 'multipass' ),
+				// 	'id'   => $prefix . 'contact_phone',
+				// 	'type' => 'text',
+				// ),
 				array(
 					'name'   => __( 'Dates', 'multipass' ),
 					'id'     => $prefix . 'dates',

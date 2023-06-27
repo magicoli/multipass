@@ -214,6 +214,7 @@ class Mltp_Contact extends Mltp_Loader {
 	public function register_fields( $meta_boxes ) {
 		$prefix = '';
 
+		// Fields appearing in contact edit page
 		$meta_boxes[] = array(
 			'title'        => __( 'Contact fields', 'multipass' ),
 			'id'           => 'contact-fields',
@@ -372,13 +373,12 @@ class Mltp_Contact extends Mltp_Loader {
 
 		// Contact fields for mltp_prestation and mltp_detail post types
 		$prefix = 'contacts_';
-
 		$meta_boxes[] = array(
 			'title'      => __( 'Contacts', 'multipass' ),
 			'id'         => 'contacts',
 			'post_types' => 'mltp_prestation', // | 'mltp_prestation', 'mltp_detail' ],
 			'context'    => 'after_title',
-			'priority'   => 'low',
+			'priority'   => 'high',
 			'style'      => 'seamless',
 			'fields'     => array(
 				array(
@@ -393,7 +393,7 @@ class Mltp_Contact extends Mltp_Loader {
 					),
 				),
 				array(
-					'name'              => __( 'Contacts', 'multipass' ),
+					'name'              => __( 'Customer', 'multipass' ),
 					'id'                => $prefix . 'contact',
 					'type'              => 'group',
 					'clone'             => true,
