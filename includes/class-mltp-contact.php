@@ -642,12 +642,8 @@ class Mltp_Contact extends Mltp_Loader {
 				);
 			}
 
+			add_action( 'save_post', array( $this, 'save_post_process' ) ); // Add the action back after updating the post title
 		}
-		// if ( empty( $post->post_title ) ) {
-		// 	// Get the values of first_name, last_name, and company
-		// }
-
-		add_action( 'save_post', array( $this, 'save_post_process' ) ); // Add the action back after updating the post title
 	}
 
 	public function sync_contact_from_wp_user( $contact_id, $user_id = null ) {
