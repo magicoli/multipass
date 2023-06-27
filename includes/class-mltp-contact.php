@@ -616,21 +616,18 @@ class Mltp_Contact extends Mltp_Loader {
 			rwmb_set_meta( $post_id, $key, $value, $this->db_args );
 		}
 
-		$this->set_contact_title( $post_id );
+		$this->set_title( $post_id );
 
 		return $update;
 	}
 
-	public function set_contact_title( $post_id, $post = null ) {
-		// Check if it is the mltp_contact post type
+	public function build_title( $post_id ) {
+		$post = get_post( $post_id );
+
+		$title = $post->post_title;
+
 		if ( get_post_type( $post_id ) === 'mltp_contact' ) {
-			remove_action( 'save_post', array( $this, 'save_post_process' ) ); // Remove the action temporarily to prevent recursion
-
-			// First sync with user if any
-			$this->sync_contact_from_wp_user( $post_id );
-
 			// Get the updated post object
-			$post = get_post( $post_id );
 
 			$data = array(
 				'first_name' => rwmb_meta( 'first_name', $this->db_args, $post_id ),
@@ -641,12 +638,28 @@ class Mltp_Contact extends Mltp_Loader {
 
 			// Build the title
 			$title = self::merge_name( $data );
+		}
 
-			if ( empty( $title ) && empty( $post->post_title ) ) {
-					$title = sprint_f( __( 'Insufficient data %s', 'multipass' ), $post->ID );
-			}
+		if ( empty( $title ) && empty( $post->post_title ) ) {
+			$title = sprint_f( __( 'Insufficient data %s', 'multipass' ), $post->ID );
+		}
+
+		return $title;
+	}
+
+	public function set_title( $post_id, $post = null ) {
+		// Check if it is the mltp_contact post type
+		if ( get_post_type( $post_id ) === 'mltp_contact' ) {
+
+			$post = get_post( $post_id );
+
+			// First sync with user if any
+			$this->sync_contact_from_wp_user( $post_id );
+
+			$title = $this->build_title( $post_id );
 
 			// Update the post title only if it changed and is not empty
+			remove_action( 'save_post', array( $this, 'save_post_process' ) ); // Remove the action temporarily to prevent recursion
 			if ( ! empty( $title ) && $title !== $post->post_title ) {
 				wp_update_post(
 					array(
@@ -655,8 +668,8 @@ class Mltp_Contact extends Mltp_Loader {
 					)
 				);
 			}
-
 			add_action( 'save_post', array( $this, 'save_post_process' ) ); // Add the action back after updating the post title
+
 		}
 	}
 
