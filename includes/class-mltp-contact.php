@@ -617,9 +617,10 @@ class Mltp_Contact extends Mltp_Loader {
 				'first_name' => rwmb_meta( 'first_name', $this->db_args, $post_id ),
 				'last_name'  => rwmb_meta( 'last_name', $this->db_args, $post_id ),
 				'company'    => rwmb_meta( 'company', $this->db_args, $post_id ),
+				'email'    => rwmb_meta( 'email', $this->db_args, $post_id ),
 			);
 
-			// Check if the title is empty
+			// Build the title
 			$title = self::merge_name( $data );
 
 			// Update the post title only if it changed and is not empty
@@ -806,9 +807,12 @@ class Mltp_Contact extends Mltp_Loader {
 
     // Iterate over the mltp_prestation posts and import data
   	$c = count($prestations);
-		$i = 0;
+		$p = 0;
+		$n = 0;
+		$u = 0;
+		$e = 0;
     foreach ($prestations as $prestation) {
-			$i++;
+			$p++;
       $prestation_id = $prestation->ID;
 			// error_log(__METHOD__ . ' prestation ' . $prestation_id );
 
@@ -864,16 +868,17 @@ class Mltp_Contact extends Mltp_Loader {
 			}
 			if( ! $found_matching_contact ) {
 				$old_contact['id'] = $this->create_or_update_contact( $old_contact );
+				if($old_contact['id'] === false ) $e++;
+				else if ( ! empty($old_contact['id'])) $n++;
 				// unset($old_contact['id']);
 				$contacts[] = array_filter($old_contact);
 			}
-
-			$debug_data = is_array($old_contact) ? json_encode( $old_contact) : print_r($old_contact, true);
-
 			// Update the mltp_prestation post with the new contact ID
-			rwmb_set_meta( $prestation_id, 'contacts_contact', $contacts );
+			$result = rwmb_set_meta( $prestation_id, 'contacts_contact', $contacts );
+			if($result) $u++;
+			// else $e++;
     }
-		error_log("finished processing");
+		error_log("finished processing, $p prestations scanned, $u contacts updated, $n created ($e errors)");
   }
 
 	public function create_or_update_contact($data) {
