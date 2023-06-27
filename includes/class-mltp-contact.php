@@ -382,17 +382,17 @@ class Mltp_Contact extends Mltp_Loader {
 			'priority'   => 'high',
 			'style'      => 'seamless',
 			'fields'     => array(
-				array(
-					'name'    => __( 'Use parent', 'multipass' ),
-					'id'      => $prefix . 'use_parent',
-					'type'    => 'switch',
-					'style'   => 'rounded',
-					'std'     => true,
-					'visible' => array(
-						'when'     => array( array( 'prestation_id', '>', 0 ) ),
-						'relation' => 'or',
-					),
-				),
+				// array(
+				// 	'name'    => __( 'Use parent', 'multipass' ),
+				// 	'id'      => $prefix . 'use_parent',
+				// 	'type'    => 'switch',
+				// 	'style'   => 'rounded',
+				// 	'std'     => true,
+				// 	'visible' => array(
+				// 		'when'     => array( array( 'prestation_id', '>', 0 ) ),
+				// 		'relation' => 'or',
+				// 	),
+				// ),
 				array(
 					'name'              => __( 'Customer', 'multipass' ),
 					'id'                => $prefix . 'contact',
