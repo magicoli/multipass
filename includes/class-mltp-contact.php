@@ -740,36 +740,35 @@ class Mltp_Contact extends Mltp_Loader {
 	}
 
 	public function get_contact_id($data) {
-		$contact_id = null;
+	  $contact_id = null;
 
+	  if (is_object($data) && property_exists($data, 'ID')) {
+	    $contact_id = $data->ID;
+	  } elseif (is_int($data)) {
+	    $contact_id = $data;
+	  } else {
+	    if (is_string($data) && is_email($data)) {
+	      $data = array('email' => $data);
+	    } elseif (is_string($data)) {
+	      $data = array('name' => $data);
+	    }
 
-		if (is_object($data) && property_exists($data, 'ID')) {
-			$contact_id = $data->ID;
-		} else if (is_int($data)) {
-			$contact_id = $data; // This is stupid
-		} else {
-			if (is_string($data) && is_email($data)) {
-				$data['email'] = $data;
-			} elseif (is_string($data)) {
-				$data['name'] = $data;
-			}
+	    if (isset($data['id']) && is_int($data['id'])) {
+	      $contact_id = $data['id'];
+	    } elseif (isset($data['user_id']) && is_int($data['user_id'])) {
+	      $contact_id = $this->get_contact_id_by_user_id($data['user_id']);
+	    } elseif (!empty($data['email']) && is_email($data['email'])) {
+	      $contact_id = $this->get_contact_id_by('email', $data['email']);
+	    } elseif (!empty($data['name']) && is_string($data['name'])) {
+	      $contact_id = $this->get_contact_id_by('name', $data['name']);
+	    }
+	  }
 
-			if (isset($data['id']) && is_int($data['id'])) {
-				$contact_id = $data['id'];
-			} elseif (isset($data['user_id']) && is_int($data['user_id'])) {
-				$contact_id = $this->get_contact_id_by_user_id($data['user_id']);
-			} elseif (!empty($data['email']) && is_email($data['email'])) {
-				$contact_id = $this->get_contact_id_by('email', $data['email']);
-			} elseif (!empty($data['name']) && is_string($data['name'])) {
-				$contact_id = $this->get_contact_id_by('name', $data['name']);
-			}
-		}
-		if ( empty($contact_id) || get_post_type($contact_id) !== 'mltp_contact') {
-			// error_log("ERROR. Found contact $contact_id but it's not a contact." . get_post_type($contact_id));
-			return false;
-		}
+	  if (empty($contact_id) || get_post_type($contact_id) !== 'mltp_contact') {
+	    return false;
+	  }
 
-		return $contact_id;
+	  return $contact_id;
 	}
 
 	public function get_contact_id_by_user_id( $user_id ) {
