@@ -603,14 +603,16 @@ class Mltp_Contact extends Mltp_Loader {
 	public function save_post_process( $post_id, $post = null, $update = null ) {
 		// $old_meta = get_post_meta($post_id);
 		// error_log("meta " . print_r(get_post_meta($post_id), true));
-		$meta = array(
+		$meta = array_filter(array(
 			'first_name' => get_post_meta( $post_id, 'first_name', true ),
 			'last_name'  => get_post_meta( $post_id, 'last_name', true ),
 			'company'    => get_post_meta( $post_id, 'company', true ),
 			'phone'      => get_post_meta( $post_id, 'phone' ),
 			'email'      => get_post_meta( $post_id, 'email', true ),
-		);
+		));
+
 		foreach ( $meta as $key => $value ) {
+			delete_post_meta( $post_id, $key );
 			rwmb_set_meta( $post_id, $key, $value, $this->db_args );
 		}
 
@@ -907,13 +909,20 @@ class Mltp_Contact extends Mltp_Loader {
 		}
 
 		// Delete meta from mltp_details post type
-		$wpdb->query("DELETE FROM {$wpdb->postmeta}
-			WHERE meta_key IN (
-				'customer_id', 'display_name', 'contact_email',
-				'contact_phone', 'contact_name', 'customer_name', 'customer_email',
-				'customer_phone'
-			)"
-		);
+		$wpdb->query("
+		    DELETE FROM {$wpdb->postmeta}
+		    WHERE (post_id IN (
+		        SELECT ID
+		        FROM {$wpdb->posts}
+		        WHERE post_type = 'mltp_prestation' OR WHERE post_type = 'mltp_detail'
+		    ))
+		    AND meta_key IN (
+		        'customer_id', 'display_name', 'contact_email',
+		        'contact_phone', 'contact_name', 'customer_name', 'customer_email',
+		        'customer_phone', 'first_name', 'last_name'
+		    )
+		");
+
 
 		$notice = sprintf( "Contacts migration processed, $p prestations scanned, $u contacts updated ($e errors)" );
 		error_log( $notice );
