@@ -1,6 +1,6 @@
 ## Changelog
 
-### Unreleased (0.5.2-dev.753)
+### Unreleased (0.5.2-dev.764)
 - fix missing class on activation and db update 2
 
 ### 0.5.1

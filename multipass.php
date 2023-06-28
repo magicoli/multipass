@@ -3,7 +3,7 @@
  * Plugin Name:       MultiPass (dev)
  * Plugin URI:        https://magiiic.com/wordpress/plugins/multipass/
  * Description:       Manage bookings and other services from different sources (WooCommerce, Lodgify, HBook, OTA, PMS, booking engines...).
- * Version:           0.5.2-dev.753
+ * Version:           0.5.2-dev.764
  * Author:            Magiiic
  * Author URI:        https://magiiic.com/
  * GitHubURL:         https://github.com/magicoli/multipass/
@@ -32,7 +32,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'MULTIPASS_VERSION', '0.5' . time() );
+define( 'MULTIPASS_VERSION', '0.5.2-dev.764' . time() );
 define( 'MULTIPASS_FILE', __FILE__ );
 define( 'MULTIPASS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MULTIPASS_PLUGIN_NAME', 'MultiPass' );

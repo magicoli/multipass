@@ -373,7 +373,7 @@ class Mltp_Contact extends Mltp_Loader {
 		);
 
 		// Contact fields for mltp_prestation and mltp_detail post types
-		$prefix = 'contacts_';
+		$prefix       = 'contacts_';
 		$meta_boxes[] = array(
 			'title'      => __( 'Contacts', 'multipass' ),
 			'id'         => 'contacts',
@@ -383,15 +383,15 @@ class Mltp_Contact extends Mltp_Loader {
 			'style'      => 'seamless',
 			'fields'     => array(
 				// array(
-				// 	'name'    => __( 'Use parent', 'multipass' ),
-				// 	'id'      => $prefix . 'use_parent',
-				// 	'type'    => 'switch',
-				// 	'style'   => 'rounded',
-				// 	'std'     => true,
-				// 	'visible' => array(
-				// 		'when'     => array( array( 'prestation_id', '>', 0 ) ),
-				// 		'relation' => 'or',
-				// 	),
+				// 'name'    => __( 'Use parent', 'multipass' ),
+				// 'id'      => $prefix . 'use_parent',
+				// 'type'    => 'switch',
+				// 'style'   => 'rounded',
+				// 'std'     => true,
+				// 'visible' => array(
+				// 'when'     => array( array( 'prestation_id', '>', 0 ) ),
+				// 'relation' => 'or',
+				// ),
 				// ),
 				array(
 					'name'              => __( 'Customer', 'multipass' ),
@@ -603,13 +603,15 @@ class Mltp_Contact extends Mltp_Loader {
 	public function save_post_process( $post_id, $post = null, $update = null ) {
 		// $old_meta = get_post_meta($post_id);
 		// error_log("meta " . print_r(get_post_meta($post_id), true));
-		$meta = array_filter(array(
-			'first_name' => get_post_meta( $post_id, 'first_name', true ),
-			'last_name'  => get_post_meta( $post_id, 'last_name', true ),
-			'company'    => get_post_meta( $post_id, 'company', true ),
-			'phone'      => get_post_meta( $post_id, 'phone' ),
-			'email'      => get_post_meta( $post_id, 'email', true ),
-		));
+		$meta = array_filter(
+			array(
+				'first_name' => get_post_meta( $post_id, 'first_name', true ),
+				'last_name'  => get_post_meta( $post_id, 'last_name', true ),
+				'company'    => get_post_meta( $post_id, 'company', true ),
+				'phone'      => get_post_meta( $post_id, 'phone' ),
+				'email'      => get_post_meta( $post_id, 'email', true ),
+			)
+		);
 
 		foreach ( $meta as $key => $value ) {
 			delete_post_meta( $post_id, $key );
@@ -836,17 +838,17 @@ class Mltp_Contact extends Mltp_Loader {
 
 		// Query the mltp_prestation posts
 		global $wpdb;
-		$sql = "SELECT ID FROM {$wpdb->posts} WHERE post_type = 'mltp_prestation' ORDER BY CASE WHEN post_status = 'publish' THEN 2 ELSE 1 END, ID;";
-		$prestation_ids = $wpdb->get_col($sql);
+		$sql            = "SELECT ID FROM {$wpdb->posts} WHERE post_type = 'mltp_prestation' ORDER BY CASE WHEN post_status = 'publish' THEN 2 ELSE 1 END, ID;";
+		$prestation_ids = $wpdb->get_col( $sql );
 
 		// Iterate over the mltp_prestation posts and import data
-    $c = count($prestation_ids);
+		$c = count( $prestation_ids );
 		$p = 0;
 		$u = 0;
 		$e = 0;
 		foreach ( $prestation_ids as $prestation_id ) {
 			$p++;
-			$prestation = get_post($prestation_id);
+			$prestation = get_post( $prestation_id );
 
 			// Get the contact details from the post meta
 			$old_contact           = array_merge(
@@ -912,17 +914,18 @@ class Mltp_Contact extends Mltp_Loader {
 
 			// // Delete original meta values used for import
 			// $wpdb->query("DELETE FROM {$wpdb->postmeta}
-			// 	WHERE post_id = $prestation_id
-			// 	AND meta_key IN (
-			// 		'customer_id', 'display_name', 'contact_email', 'contact_phone',
-			// 		'contact_name', 'customer_name', 'customer_email', 'customer_phone'
-			// 	)"
+			// WHERE post_id = $prestation_id
+			// AND meta_key IN (
+			// 'customer_id', 'display_name', 'contact_email', 'contact_phone',
+			// 'contact_name', 'customer_name', 'customer_email', 'customer_phone'
+			// )"
 			// );
 
 		}
 
 		// Delete meta from mltp_details post type
-		$wpdb->query("
+		$wpdb->query(
+			"
 		    DELETE FROM {$wpdb->postmeta}
 		    WHERE (post_id IN (
 		        SELECT ID
@@ -934,8 +937,8 @@ class Mltp_Contact extends Mltp_Loader {
 		        'contact_phone', 'contact_name', 'customer_name', 'customer_email',
 		        'customer_phone', 'first_name', 'last_name'
 		    )
-		");
-
+		"
+		);
 
 		$notice = sprintf( "Contacts migration processed, $p prestations scanned, $u contacts updated ($e errors)" );
 		error_log( $notice );

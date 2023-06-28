@@ -430,14 +430,14 @@ class Mltp_Prestation {
 	public function register_fields( $meta_boxes ) {
 		$js_date_format_short = preg_match( '/^[Fm]/', get_option( 'date_format' ) ) ? 'mm-dd-yy' : 'dd-mm-yy';
 
-		$prefix                       = '';
+		$prefix                         = '';
 		$meta_boxes['prestation-title'] = array(
 			'title'      => __( 'Prestations', 'multipass' ),
 			'id'         => 'prestation-title-fields',
 			'post_types' => array( 'mltp_prestation' ),
 			'context'    => 'form_top',
 			'context'    => 'after_title',
-			'priority' => 'high',
+			'priority'   => 'high',
 			'style'      => 'seamless',
 			'autosave'   => true,
 			'fields'     => array(
@@ -448,7 +448,7 @@ class Mltp_Prestation {
 				),
 			),
 		);
-		$meta_boxes['prestation-cpt'] = array(
+		$meta_boxes['prestation-cpt']   = array(
 			'title'      => __( 'Prestations', 'multipass' ),
 			'id'         => 'prestation-fields',
 			'post_types' => array( 'mltp_prestation' ),
@@ -457,31 +457,31 @@ class Mltp_Prestation {
 			'autosave'   => true,
 			'fields'     => array(
 				// array(
-				// 	'name'       => __( 'Customer', 'multipass' ),
-				// 	'id'         => $prefix . 'customer_id',
-				// 	'type'       => 'user',
-				// 	'field_type' => 'select_advanced',
+				// 'name'       => __( 'Customer', 'multipass' ),
+				// 'id'         => $prefix . 'customer_id',
+				// 'type'       => 'user',
+				// 'field_type' => 'select_advanced',
 				// ),
 				// array(
-				// 	'name'        => __( 'Contact name', 'multipass' ),
-				// 	'id'          => $prefix . 'contact_name',
-				// 	'type'        => 'text',
-				// 	'description' => __( 'Leave empty if same as customer name', 'multipass' ),
+				// 'name'        => __( 'Contact name', 'multipass' ),
+				// 'id'          => $prefix . 'contact_name',
+				// 'type'        => 'text',
+				// 'description' => __( 'Leave empty if same as customer name', 'multipass' ),
 				// ),
 				// array(
-				// 	'name' => _x( 'Contact', '(noun)', 'multipass' ),
-				// 	'id'   => $prefix . 'display_name',
-				// 	'type' => 'hidden',
+				// 'name' => _x( 'Contact', '(noun)', 'multipass' ),
+				// 'id'   => $prefix . 'display_name',
+				// 'type' => 'hidden',
 				// ),
 				// array(
-				// 	'name' => __( 'Contact Email', 'multipass' ),
-				// 	'id'   => $prefix . 'contact_email',
-				// 	'type' => 'email',
+				// 'name' => __( 'Contact Email', 'multipass' ),
+				// 'id'   => $prefix . 'contact_email',
+				// 'type' => 'email',
 				// ),
 				// array(
-				// 	'name' => __( 'Contact Phone', 'multipass' ),
-				// 	'id'   => $prefix . 'contact_phone',
-				// 	'type' => 'text',
+				// 'name' => __( 'Contact Phone', 'multipass' ),
+				// 'id'   => $prefix . 'contact_phone',
+				// 'type' => 'text',
 				// ),
 				array(
 					'name'   => __( 'Dates', 'multipass' ),
