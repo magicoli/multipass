@@ -255,10 +255,10 @@ class Mltp_Report {
 						'from'    => empty( $meta['from'][0] ) ? null : date_i18n( 'Y-m-d', MultiPass::timestamp( $meta['from'][0] ) ),
 						'to'      => empty( $meta['to'][0] ) ? null : date_i18n( 'Y-m-d', MultiPass::timestamp( $meta['to'][0] ) ),
 						// 'discount' => empty($discount) ? null : number_format_i18n($discount),
-						'total'   => empty( $total ) ? null : number_format_i18n( $total ),
-						'paid'    => empty( $paid ) ? null : number_format_i18n( $paid ),
+						'total'   => empty( $total ) ? null : number_format_i18n( $total, 2 ),
+						'paid'    => empty( $paid ) ? null : number_format_i18n( $paid, 2 ),
 						// 'refunded' => number_format_i18n($meta['refunded'][0], 2),
-						'balance' => empty( $balance ) ? null : number_format_i18n( $balance ),
+						'balance' => empty( $balance ) ? null : number_format_i18n( $balance, 2 ),
 					)
 				);
 				// $status = $prestation->post_status;
