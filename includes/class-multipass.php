@@ -189,6 +189,7 @@ class MultiPass {
 		require_once MULTIPASS_DIR . 'includes/class-mltp-calendar.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-api.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-reports.php';
+		require_once MULTIPASS_DIR . 'includes/class-mltp-reports-payments.php';
 
 		/**
 		 * Database updates
@@ -641,6 +642,21 @@ class MultiPass {
 		// error_log(date('Y-m-d\TH:i:s', $timestamp ));
 		// return date('Y-m-d\T12:00:00', $timestamp );
 		return date( 'Y-m-d\TH:i:s', round( $timestamp / 3600 ) * 3600 );
+	}
+
+	static function timearray_to_time ( $array ) {
+		if(is_integer($array)) return $array;
+
+		if(isset($array['timestamp'])) return $array['timestamp'];
+
+		if(isset($array['from'])) {
+			return array(
+				'from' => isseet($array['from']) ? self::array_to_time($array['from']) : null,
+				'to' => isset($array['to']) ? self::array_to_time($array['to']) : null,
+			);
+		}
+
+		return false;
 	}
 
 	static function format_date_range( $dates = array(), $datetype_str = 'RELATIVE_MEDIUM', $timetype_str = 'NONE' ) {
