@@ -87,7 +87,8 @@ class Mltp_Payments_Report {
 						'date' => $pay_date,
 						'description' => $description,
 						'amount' => $amount,
-						'prestation' => '<a href="' . get_permalink($relatedPostID) . '">' . $relatedPostTitle . '</a>',
+						'prestation_id' => $relatedPostID,
+						'prestation_title' => $relatedPostTitle,
 						'from' => $from,
 						'to' => $to,
 					);
@@ -95,6 +96,10 @@ class Mltp_Payments_Report {
 			}
 		}
 
+		usort($payments, function($a, $b) {
+		    return $a['date'] - $b['date'];
+		});
+		
 		return $payments;
 	}
 
@@ -104,12 +109,22 @@ class Mltp_Payments_Report {
 		// Retrieve payment data from mltp_prestation post type
 		$payments = self::get_payments();
 
+		$download_url = wp_nonce_url(
+			add_query_arg(
+				array(
+					'action' => 'mltp_download_payments_csv',
+					'year'   => $year,
+				)
+			),
+			'mltp_download_payments_csv',
+		);
+
 		// Display the payment list as a table
 		echo '<div class="wrap">';
 		echo '<h1>Payments</h1>';
 
-    echo '<a href="' . esc_url( add_query_arg( 'action', 'mltp_download_csv' ) ) . '" class="button">' . esc_html( 'Download CSV' ) . '</a>';
-		
+		echo '<a href="' . $download_url . '" class="button">' . __( 'Download CSV', 'multipass' ) . '</a>';
+
 		echo '<table class="wp-list-table widefat fixed striped">';
 		echo '<thead><tr>';
 		echo '<th>' . __('Payment Date', 'multipass') . '</th>';
@@ -123,6 +138,8 @@ class Mltp_Payments_Report {
 		foreach ($payments as $payment) {
 			// list($date, $description, $amount, $prestation, $from, $to) = $payment;
 			extract($payment);
+			$prestation =	'<a href="' . get_permalink($prestation_id) . '">' . esc_html($prestation_title) . '</a>';
+
 			echo '<tr>';
 			echo '<td>' . MultiPass::format_date( $date ) . '</td>';
 			echo '<td>' . $description . '</td>';
@@ -138,16 +155,57 @@ class Mltp_Payments_Report {
 	}
 
 	public function process_action_request() {
-		// if ( isset( $_GET['action'] ) && $_GET['action'] === 'mltp_download_csv' ) {
-		// 	if ( ! current_user_can( 'mltp_manager' ) ) {
-		// 		wp_die( 'You do not have permission to access this page.' );
-		// 	}
-		// 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'mltp_download_csv' ) ) {
-		// 		wp_die( 'Security check failed. Please try again.' );
-		// 	}
-		// 	$year = isset( $_GET['year'] ) ? intval( $_GET['year'] ) : null;
-		// 	$this->download_csv( $year );
-		// }
+		if ( isset( $_GET['action'] ) && $_GET['action'] === 'mltp_download_payments_csv' ) {
+			if ( ! current_user_can( 'mltp_manager' ) ) {
+				wp_die( 'You do not have permission to access this page.' );
+			}
+			if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'mltp_download_payments_csv' ) ) {
+				wp_die( 'Security check failed. Please try again.' );
+			}
+			$year = isset( $_GET['year'] ) ? intval( $_GET['year'] ) : null;
+			$this->download_csv( $year );
+		}
+	}
+
+	private function download_csv( $year ) {
+
+		$payments = self::get_payments();
+
+		$filename = 'payments-' . $year . '.csv';
+
+		header( 'Content-Type: text/csv' );
+		header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
+		header( 'Pragma: no-cache' );
+		header( 'Expires: 0' );
+
+		$output = fopen( 'php://output', 'w' );
+
+		$columns = array(
+			'date' => __('Date', 'multipass'),
+			'description' => __('Description', 'multipass'),
+			'amount' =>  __('Amount', 'multipass'),
+			'prestation' =>  __('Prestation', 'multipass'),
+			'from' =>  __('From', 'multipass'),
+			'to' =>  __('To', 'multipass'),
+		);
+		fputcsv( $output, $columns );
+
+		foreach ( $payments as $payment ) {
+			$row = array(
+				'date' => empty( $payment['date'] ) ? null : date_i18n( 'Y-m-d', $payment['date'] ),
+				'description' => $payment['description'],
+				'amount' => empty( $payment['amount'] ) ? null : number_format_i18n( $payment['amount'],2 ) ,
+				'prestation' => $payment['prestation_title'],
+				'from' => empty( $payment['from'] ) ? null : date_i18n( 'Y-m-d', $payment['from'] ),
+				'to' => empty( $payment['to'] ) ? null : date_i18n( 'Y-m-d', $payment['to'] ),
+			);
+			fputcsv( $output, $row );
+		}
+
+		// Close the output stream
+		fclose( $output );
+
+		die();
 	}
 
 }
