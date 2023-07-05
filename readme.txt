@@ -1,11 +1,11 @@
-=== MultiPass (dev) ===
+=== MultiPass ===
 Contributors: magicoli69
 Donate link: https://magiiic.com/support/MultiPass+Plugin
 Tags: hotel, booking, multi-prestations, multi-services, woocommerce, ota, pms, booking engine
 Requires at least: 5.9.0
 Tested up to: 6.2.2
 Requires PHP: 7.3
-Stable tag: 0.5.1
+Stable tag: 0.6.0
 License: AGPLv3 or later
 License URI: http://www.gnu.org/licenses/agpl-3.0.txt
 
@@ -67,7 +67,9 @@ WARNING: **Make a full backup of your website and databases** before installing 
 
 == Changelog ==
 
-= Unreleased (0.5.2-dev.764) =
+= 0.6.0 =
+* added payment history csv download button
+* added payment history page
 * fix missing class on activation and db update 2
 
 = 0.5.1 =

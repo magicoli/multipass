@@ -1,6 +1,8 @@
 ## Changelog
 
-### Unreleased (0.5.2-dev.764)
+### 0.6.0
+- added payment history csv download button
+- added payment history page
 - fix missing class on activation and db update 2
 
 ### 0.5.1
