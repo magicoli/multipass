@@ -14,7 +14,7 @@ class Mltp_Payments_Report {
 			'multipass',             // parent slug
 			'Payments',              // page title
 			'Payments',              // menu title
-			'manage_options',        // capability
+			'mltp_manager',        // capability
 			'multipass-payments',    // menu slug
 			[ $this, 'display_multipass_payments_page' ], // callback function to display the page
 		);
@@ -99,7 +99,7 @@ class Mltp_Payments_Report {
 		usort($payments, function($a, $b) {
 		    return $a['date'] - $b['date'];
 		});
-		
+
 		return $payments;
 	}
 
@@ -121,9 +121,10 @@ class Mltp_Payments_Report {
 
 		// Display the payment list as a table
 		echo '<div class="wrap">';
-		echo '<h1>Payments</h1>';
+		echo '<h1>' . __('Payments', 'multipass');
+		echo ' <a href="' . $download_url . '" class="button small">' . __( 'Download CSV', 'multipass' ) . '</a>';
+		echo '</h1>';
 
-		echo '<a href="' . $download_url . '" class="button">' . __( 'Download CSV', 'multipass' ) . '</a>';
 
 		echo '<table class="wp-list-table widefat fixed striped">';
 		echo '<thead><tr>';
