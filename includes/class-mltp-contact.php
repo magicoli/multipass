@@ -668,7 +668,7 @@ class Mltp_Contact extends Mltp_Loader {
 		}
 
 		if ( empty( $title ) && empty( $post->post_title ) ) {
-			$title = sprint_f( __( 'Insufficient data %s', 'multipass' ), $post->ID );
+			$title = sprintf( __( 'Insufficient data %s', 'multipass' ), $post->ID );
 		}
 
 		return $title;
