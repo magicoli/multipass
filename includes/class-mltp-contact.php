@@ -61,9 +61,11 @@ class Mltp_Contact extends Mltp_Loader {
 
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $this->table ) );
 		if ( ! $wpdb->get_var( $query ) == $this->table ) {
-			$notice = "Table $this->table does not exist";
+			$notice = "Table $this->table is missing";
 			error_log( __CLASS__ .':' . __METHOD__ . '() ' . $notice );
 			MultiPass::admin_notice( $notice, 'error' );
+			$this->actions = [];
+			$this->filters = [];
 			return;
 		}
 		// $notice = "Table $this->table  is there.";
@@ -150,16 +152,16 @@ class Mltp_Contact extends Mltp_Loader {
 			$error_message = 'Unknown error';
 		}
 		if(!empty($error_message)) {
-			$notice = __( 'Tables update failed.', 'multipass' )
+			$notice = __( 'Tables cration failed.', 'multipass' )
 			. "\n" . $error_message;
+			error_log( __CLASS__ .':' . __METHOD__ . '() ' . $notice );
+			MultiPass::admin_notice( $notice, 'error' );
 		} else {
-			$notice = __( 'Tables updated.', 'multipass' );
+			$notice = __( 'Tables creation succeeded.', 'multipass' );
+			MultiPass::admin_notice( $notice );
+			add_action( 'wp_loaded', array( $this, 'migrate_contacts_from_prestation' ) );
 		}
-		error_log( __CLASS__ .':' . __METHOD__ . '() ' . $notice );
-		MultiPass::admin_notice( $notice );
 
-		add_action( 'wp_loaded', array( $this, 'migrate_contacts_from_prestation' ) );
-		// add_action( 'wp_loaded', array( $this, 'import_contacts_from_wp_users' ) );
 	}
 
 	/**
