@@ -58,6 +58,18 @@ class Mltp_Contact extends Mltp_Loader {
 		global $wpdb;
 		$this->db_prefix       = $wpdb->prefix;
 		$this->table           = $this->db_prefix . 'mltp_contacts';
+
+		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $this->table ) );
+		if ( ! $wpdb->get_var( $query ) == $this->table ) {
+			$notice = "Table $this->table does not exist";
+			error_log( __CLASS__ .':' . __METHOD__ . '() ' . $notice );
+			MultiPass::admin_notice( $notice, 'error' );
+			return;
+		}
+		// $notice = "Table $this->table  is there.";
+		// error_log( __CLASS__ .':' . __METHOD__ . '() ' . $notice );
+		// MultiPass::admin_notice( $notice, 'success' );
+
 		$this->db_args         = array(
 			'storage_type' => 'custom_table',
 			'table'        => $this->table,
@@ -116,7 +128,7 @@ class Mltp_Contact extends Mltp_Loader {
 	 * Create custom table for contacts
 	 */
 	function update_tables() {
-		MB_Custom_Table_API::create(
+		$result = MB_Custom_Table_API::create(
 			$this->table,   // Table name.
 			array(                                  // Table columns (without ID).
 				'user_id'    => 'INTEGER',
@@ -132,8 +144,18 @@ class Mltp_Contact extends Mltp_Loader {
 			true                               // Must be true for models.
 		);
 
-		$notice = __( 'Tables updated.', 'multipass' );
-		error_log( $notice );
+		if(is_wp_error($result)) {
+			$error_message = $result->error_message();
+		} else if (! $result ) {
+			$error_message = 'Unknown error';
+		}
+		if(!empty($error_message)) {
+			$notice = __( 'Tables update failed.', 'multipass' )
+			. "\n" . $error_message;
+		} else {
+			$notice = __( 'Tables updated.', 'multipass' );
+		}
+		error_log( __CLASS__ .':' . __METHOD__ . '() ' . $notice );
 		MultiPass::admin_notice( $notice );
 
 		add_action( 'wp_loaded', array( $this, 'migrate_contacts_from_prestation' ) );
