@@ -61,9 +61,9 @@ class Mltp_Contact extends Mltp_Loader {
 
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $this->table ) );
 		if ( ! $wpdb->get_var( $query ) == $this->table ) {
-			$notice = "Table $this->table is missing";
-			error_log( __CLASS__ .':' . __METHOD__ . '() ' . $notice );
-			MultiPass::admin_notice( $notice, 'error' );
+			// $notice = "Table $this->table is missing";
+			// error_log( __CLASS__ .':' . __METHOD__ . '() ' . $notice );
+			// MultiPass::admin_notice( $notice, 'error' );
 			$this->actions = [];
 			$this->filters = [];
 			return;
@@ -134,22 +134,23 @@ class Mltp_Contact extends Mltp_Loader {
 			$this->table,   // Table name.
 			array(                                  // Table columns (without ID).
 				'user_id'    => 'INTEGER',
-				'first_name' => 'TEXT',
-				'last_name'  => 'TEXT',
-				'fullname'   => "TEXT AS (TRIM(CONCAT(COALESCE(first_name, ''), ' ', COALESCE(last_name, '')))) STORED",
-				'company'    => 'TEXT',
-				'email'      => 'varchar(100)',
-				'phone'      => 'varchar(100)',
+				'first_name' => 'VARCHAR(50)',
+				'last_name'  => 'VARCHAR(50)',
+				// 'fullname'   => "VARCHAR(100) AS (TRIM(CONCAT(COALESCE(first_name, ''), ' ', COALESCE(last_name, '')))) STORED",
+    		'fullname' 	 => "VARCHAR(101) GENERATED ALWAYS AS (CONCAT(first_name,' ',last_name))",
+				'company'    => 'VARCHAR(50)',
+				'email'      => 'VARCHAR(100)',
+				'phone'      => 'VARCHAR(100)',
 				'address'    => 'LONGTEXT',
 			),
-			array( 'first_name', 'last_name', 'fullname', 'email', 'phone' ),               // List of index keys.
+			array( 'first_name', 'last_name', 'email', 'phone' ),               // List of index keys.
 			true                               // Must be true for models.
 		);
 
 		if(is_wp_error($result)) {
 			$error_message = $result->error_message();
-		} else if (! $result ) {
-			$error_message = 'Unknown error';
+		} else if ( ! $result ) {
+			$error_message = 'Unknown error ' . print_r($result, true);
 		}
 		if(!empty($error_message)) {
 			$notice = __( 'Tables cration failed.', 'multipass' )
