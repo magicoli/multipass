@@ -164,7 +164,9 @@ class MultiPass {
 		 */
 		require_once MULTIPASS_DIR . 'includes/class-mltp-background.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-table.php';
-		require_once MULTIPASS_DIR . 'includes/class-mltp-contact.php';
+		if( self::is_private() || self::debug() ) {
+			require_once MULTIPASS_DIR . 'includes/class-mltp-contact.php';
+		}
 		require_once MULTIPASS_DIR . 'includes/class-mltp-prestation.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-prestation-detail.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-resource.php';
@@ -697,8 +699,6 @@ class MultiPass {
 			);
 		}
 
-		$datetype  = constant( "IntlDateFormatter::$datetype_str" );
-		$timetype  = constant( "IntlDateFormatter::$timetype_str" );
 		$formatted = array();
 		foreach ( $dates as $key => $date ) {
 			$formatter = new IntlDateFormatter( get_locale(), $datetype, $timetype );
@@ -1327,4 +1327,23 @@ class MultiPass {
 		return $output;
 	}
 
+	/**
+	 * Check if the given IP address or the server IP address is in a private or
+	 * reserved range, indicating a local/dev environment. Should not be used in
+	 * public releases.
+	 *
+	 * @since 0.6.1
+	 *
+	 * @param string|null $ip Optional. The IP address to check. If not provided, defaults to the server IP address.
+	 * @return bool True if the IP address is in a private or reserved range (local environment), false otherwise (public environment).
+	 */
+	static function is_private($ip = null) {
+		if (empty($ip)) {
+			$ip = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : null;
+		}
+		$is_public = filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
+		return !$is_public;
+	}
 }
+
+MultiPass::is_private();
