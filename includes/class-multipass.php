@@ -666,8 +666,16 @@ class MultiPass {
 		if ( ! is_array( $dates ) ) {
 			$dates = array( $dates );
 		}
+
 		$dates_debug = $dates;
 		$dates       = array_filter( $dates );
+		$datetype_str =  (defined('IntlDateFormatter::' . $datetype_str ))
+		? $datetype_str : preg_replace( '/RELATIVE_/', '', $datetype_str );
+		$timetype_str =  (defined('IntlDateFormatter::' . $timetype_str ))
+		? $timetype_str : preg_replace( '/RELATIVE_/', '', $timetype_str );
+		$datetype  = constant( "IntlDateFormatter::$datetype_str" );
+		$timetype  = constant( "IntlDateFormatter::$timetype_str" );
+
 		if ( count( $dates ) == 2 || isset( $dates['from'] ) ) {
 			if ( ! isset( $dates['from'] ) ) {
 				$dates = array(
@@ -679,13 +687,6 @@ class MultiPass {
 				return self::format_date( $dates['from'] );
 			}
 
-			$datetype_str =  (defined('IntlDateFormatter::' . $datetype_str ))
-			? $datetype_str : preg_replace( '/RELATIVE_/', '', $datetype_str );
-			$timetype_str =  (defined('IntlDateFormatter::' . $timetype_str ))
-			? $timetype_str : preg_replace( '/RELATIVE_/', '', $timetype_str );
-
-			$datetype = constant( 'IntlDateFormatter::' . preg_replace( '/RELATIVE_/', '', $datetype_str ) );
-			$timetype = constant( 'IntlDateFormatter::' . preg_replace( '/RELATIVE_/', '', $timetype_str ) );
 			$ranger   = new OpenPsa\Ranger\Ranger( get_locale() );
 			$ranger->setDateType( $datetype )->setTimeType( $timetype );
 			$from = ( isset( $dates['from'] ) ) ? self::timestamp( $dates['from'] ) : null;
