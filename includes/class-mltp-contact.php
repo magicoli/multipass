@@ -136,14 +136,14 @@ class Mltp_Contact extends Mltp_Loader {
 				'user_id'    => 'INTEGER',
 				'first_name' => 'VARCHAR(50)',
 				'last_name'  => 'VARCHAR(50)',
-				// 'fullname'   => "VARCHAR(100) AS (TRIM(CONCAT(COALESCE(first_name, ''), ' ', COALESCE(last_name, '')))) STORED",
-    		'fullname' 	 => "VARCHAR(101) GENERATED ALWAYS AS (CONCAT(first_name,' ',last_name))",
+				// 'display_name'   => "VARCHAR(100) AS (TRIM(CONCAT(COALESCE(first_name, ''), ' ', COALESCE(last_name, '')))) STORED",
+    		'display_name' 	 => 'VARCHAR(101)',
 				'company'    => 'VARCHAR(50)',
 				'email'      => 'VARCHAR(100)',
 				'phone'      => 'VARCHAR(100)',
 				'address'    => 'LONGTEXT',
 			),
-			array( 'first_name', 'last_name', 'email', 'phone' ),               // List of index keys.
+			array( 'first_name', 'last_name', 'display_name', 'email', 'phone' ),               // List of index keys.
 			true                               // Must be true for models.
 		);
 
@@ -668,7 +668,7 @@ class Mltp_Contact extends Mltp_Loader {
 		}
 
 		if ( empty( $title ) && empty( $post->post_title ) ) {
-			$title = sprintf( __( 'Insufficient data %s', 'multipass' ), $post->ID );
+			$title = sprintf( __( 'Not enough data %s', 'multipass' ), $post->ID );
 		}
 
 		return $title;
@@ -846,7 +846,7 @@ class Mltp_Contact extends Mltp_Loader {
 		// Query the mltp_contact posts
 		global $wpdb;
 
-		$column = ( $field === 'name' ) ? 'fullname' : $field;
+		$column = ( $field === 'name' ) ? 'display_name' : $field;
 
 		$sql                = "SELECT ID FROM {$this->table} WHERE {$column} = %s ORDER BY ID;";
 		$prepared_statement = $wpdb->prepare( $sql, $value );
@@ -1001,10 +1001,10 @@ class Mltp_Contact extends Mltp_Loader {
 
 		$first_name = empty( $found_contact_id ) ? $data['first_name'] : rwmb_meta( 'first_name', $this->db_args, $found_contact_id );
 		$last_name  = empty( $found_contact_id ) ? $data['last_name'] : rwmb_meta( 'last_name', $this->db_args, $found_contact_id );
-		$fullname   = empty( $found_contact_id ) ? $data['name'] : rwmb_meta( 'fullname', $this->db_args, $found_contact_id );
+		$display_name   = empty( $found_contact_id ) ? $data['name'] : rwmb_meta( 'display_name', $this->db_args, $found_contact_id );
 
 		if ( empty( $first_name . $last_name ) ) {
-			$split = self::split_name( $fullname );
+			$split = self::split_name( $display_name );
 			$data  = array_merge( $data, array_filter( $split ) );
 		} else {
 			$data = array_merge(
