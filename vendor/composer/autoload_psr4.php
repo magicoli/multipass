@@ -26,6 +26,7 @@ return array(
     'OpenPsa\\Ranger\\' => array($vendorDir . '/openpsa/ranger/src'),
     'OomphInc\\ComposerInstallersExtender\\' => array($vendorDir . '/oomphinc/composer-installers-extender/src'),
     'Mpdf\\PsrLogAwareTrait\\' => array($vendorDir . '/mpdf/psr-log-aware-trait/src'),
+    'Mpdf\\PsrHttpMessageShim\\' => array($vendorDir . '/mpdf/psr-http-message-shim/src'),
     'Mpdf\\' => array($vendorDir . '/mpdf/mpdf/src'),
     'MetaBox\\' => array($vendorDir . '/meta-box/meta-box/src'),
     'Giggsey\\Locale\\' => array($vendorDir . '/giggsey/locale/src'),

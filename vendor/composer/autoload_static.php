@@ -19,6 +19,7 @@ class ComposerStaticInite446079fa2cc77fc71ba2d2a1334bc0c
         'ebdb698ed4152ae445614b69b5e4bb6a' => __DIR__ . '/..' . '/sabre/http/lib/functions.php',
         '53c7be3308b5aa229d03a4dfcf6ca18d' => __DIR__ . '/..' . '/symfony/intl/Resources/functions.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        'db356362850385d08a5381de2638b5fd' => __DIR__ . '/..' . '/mpdf/mpdf/src/functions.php',
         '42f21a986a071bc268819b02ac75329d' => __DIR__ . '/..' . '/meta-box/meta-box/meta-box.php',
         'b5856825679c115c71547b0272deaac3' => __DIR__ . '/..' . '/meta-box/mb-admin-columns/mb-admin-columns.php',
         '025a5bb7399f0c997097d1021281c7f3' => __DIR__ . '/..' . '/meta-box/meta-box-columns/meta-box-columns.php',
@@ -71,6 +72,7 @@ class ComposerStaticInite446079fa2cc77fc71ba2d2a1334bc0c
         'M' => 
         array (
             'Mpdf\\PsrLogAwareTrait\\' => 22,
+            'Mpdf\\PsrHttpMessageShim\\' => 24,
             'Mpdf\\' => 5,
             'MetaBox\\' => 8,
         ),
@@ -169,6 +171,10 @@ class ComposerStaticInite446079fa2cc77fc71ba2d2a1334bc0c
         'Mpdf\\PsrLogAwareTrait\\' => 
         array (
             0 => __DIR__ . '/..' . '/mpdf/psr-log-aware-trait/src',
+        ),
+        'Mpdf\\PsrHttpMessageShim\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mpdf/psr-http-message-shim/src',
         ),
         'Mpdf\\' => 
         array (

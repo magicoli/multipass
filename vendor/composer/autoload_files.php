@@ -18,6 +18,7 @@ return array(
     'ebdb698ed4152ae445614b69b5e4bb6a' => $vendorDir . '/sabre/http/lib/functions.php',
     '53c7be3308b5aa229d03a4dfcf6ca18d' => $vendorDir . '/symfony/intl/Resources/functions.php',
     '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => $vendorDir . '/symfony/polyfill-mbstring/bootstrap.php',
+    'db356362850385d08a5381de2638b5fd' => $vendorDir . '/mpdf/mpdf/src/functions.php',
     '42f21a986a071bc268819b02ac75329d' => $vendorDir . '/meta-box/meta-box/meta-box.php',
     'b5856825679c115c71547b0272deaac3' => $vendorDir . '/meta-box/mb-admin-columns/mb-admin-columns.php',
     '025a5bb7399f0c997097d1021281c7f3' => $vendorDir . '/meta-box/meta-box-columns/meta-box-columns.php',
