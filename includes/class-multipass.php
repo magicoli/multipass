@@ -1197,8 +1197,14 @@ class MultiPass {
 
 	static function format_phone( $string, $format = 'intl' ) {
 		if ( class_exists( '\libphonenumber\PhoneNumberUtil' ) ) {
-			$phoneNumberUtil   = \libphonenumber\PhoneNumberUtil::getInstance();
-			$phoneNumberObject = $phoneNumberUtil->parse( $string, 'FR' );
+			$phoneNumberUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+			try {
+				$phoneNumberObject = $phoneNumberUtil->parse( $string, 'FR' );
+			} catch ( \Exception $e ) {
+					// String could not be used as a phone number
+					return $string;
+			}
+
 			if ( $format = 'intl' ) {
 				return $phoneNumberUtil->format( $phoneNumberObject, \libphonenumber\PhoneNumberFormat::INTERNATIONAL );
 			} else {
