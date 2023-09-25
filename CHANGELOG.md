@@ -1,5 +1,8 @@
 ## Changelog
 
+### Unreleased (0.6.1-dev.780)
+- fix fatal error with invalid phone numbers
+
 ### 0.6.0
 - added payment history csv download button
 - added payment history page

@@ -164,7 +164,7 @@ class MultiPass {
 		 */
 		require_once MULTIPASS_DIR . 'includes/class-mltp-background.php';
 		require_once MULTIPASS_DIR . 'includes/class-mltp-table.php';
-		if( self::is_private() || self::debug() ) {
+		if ( self::is_private() || self::debug() ) {
 			require_once MULTIPASS_DIR . 'includes/class-mltp-contact.php';
 		}
 		require_once MULTIPASS_DIR . 'includes/class-mltp-prestation.php';
@@ -646,15 +646,19 @@ class MultiPass {
 		return date( 'Y-m-d\TH:i:s', round( $timestamp / 3600 ) * 3600 );
 	}
 
-	static function timearray_to_time ( $array ) {
-		if(is_integer($array)) return $array;
+	static function timearray_to_time( $array ) {
+		if ( is_integer( $array ) ) {
+			return $array;
+		}
 
-		if(isset($array['timestamp'])) return $array['timestamp'];
+		if ( isset( $array['timestamp'] ) ) {
+			return $array['timestamp'];
+		}
 
-		if(isset($array['from'])) {
+		if ( isset( $array['from'] ) ) {
 			return array(
-				'from' => isseet($array['from']) ? self::array_to_time($array['from']) : null,
-				'to' => isset($array['to']) ? self::array_to_time($array['to']) : null,
+				'from' => isseet( $array['from'] ) ? self::array_to_time( $array['from'] ) : null,
+				'to'   => isset( $array['to'] ) ? self::array_to_time( $array['to'] ) : null,
 			);
 		}
 
@@ -669,14 +673,14 @@ class MultiPass {
 			$dates = array( $dates );
 		}
 
-		$dates_debug = $dates;
-		$dates       = array_filter( $dates );
-		$datetype_str =  (defined('IntlDateFormatter::' . $datetype_str ))
+		$dates_debug  = $dates;
+		$dates        = array_filter( $dates );
+		$datetype_str = ( defined( 'IntlDateFormatter::' . $datetype_str ) )
 		? $datetype_str : preg_replace( '/RELATIVE_/', '', $datetype_str );
-		$timetype_str =  (defined('IntlDateFormatter::' . $timetype_str ))
+		$timetype_str = ( defined( 'IntlDateFormatter::' . $timetype_str ) )
 		? $timetype_str : preg_replace( '/RELATIVE_/', '', $timetype_str );
-		$datetype  = constant( "IntlDateFormatter::$datetype_str" );
-		$timetype  = constant( "IntlDateFormatter::$timetype_str" );
+		$datetype     = constant( "IntlDateFormatter::$datetype_str" );
+		$timetype     = constant( "IntlDateFormatter::$timetype_str" );
 
 		if ( count( $dates ) == 2 || isset( $dates['from'] ) ) {
 			if ( ! isset( $dates['from'] ) ) {
@@ -689,7 +693,7 @@ class MultiPass {
 				return self::format_date( $dates['from'] );
 			}
 
-			$ranger   = new OpenPsa\Ranger\Ranger( get_locale() );
+			$ranger = new OpenPsa\Ranger\Ranger( get_locale() );
 			$ranger->setDateType( $datetype )->setTimeType( $timetype );
 			$from = ( isset( $dates['from'] ) ) ? self::timestamp( $dates['from'] ) : null;
 			$to   = ( isset( $dates['to'] ) ) ? self::timestamp( $dates['to'] ) : null;
@@ -1343,12 +1347,12 @@ class MultiPass {
 	 * @param string|null $ip Optional. The IP address to check. If not provided, defaults to the server IP address.
 	 * @return bool True if the IP address is in a private or reserved range (local environment), false otherwise (public environment).
 	 */
-	static function is_private($ip = null) {
-		if (empty($ip)) {
-			$ip = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : null;
+	static function is_private( $ip = null ) {
+		if ( empty( $ip ) ) {
+			$ip = isset( $_SERVER['SERVER_ADDR'] ) ? $_SERVER['SERVER_ADDR'] : null;
 		}
-		$is_public = filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
-		return !$is_public;
+		$is_public = filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE );
+		return ! $is_public;
 	}
 }
 

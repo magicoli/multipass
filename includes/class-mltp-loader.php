@@ -120,7 +120,7 @@ class Mltp_Loader {
 
 	function register_hooks() {
 
-		if(!empty($this->filters)) {
+		if ( ! empty( $this->filters ) ) {
 			foreach ( $this->filters as $hook ) {
 				$hook = array_merge(
 					array(
@@ -134,7 +134,7 @@ class Mltp_Loader {
 			}
 		}
 
-		if(!empty($this->actions)) {
+		if ( ! empty( $this->actions ) ) {
 			foreach ( $this->actions as $hook ) {
 				$hook = array_merge(
 					array(

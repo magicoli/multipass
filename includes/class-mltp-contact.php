@@ -56,16 +56,16 @@ class Mltp_Contact extends Mltp_Loader {
 	 */
 	public function __construct( $args = null ) {
 		global $wpdb;
-		$this->db_prefix       = $wpdb->prefix;
-		$this->table           = $this->db_prefix . 'mltp_contacts';
+		$this->db_prefix = $wpdb->prefix;
+		$this->table     = $this->db_prefix . 'mltp_contacts';
 
 		$query = $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $this->table ) );
 		if ( ! $wpdb->get_var( $query ) == $this->table ) {
 			// $notice = "Table $this->table is missing";
 			// error_log( __CLASS__ .':' . __METHOD__ . '() ' . $notice );
 			// MultiPass::admin_notice( $notice, 'error' );
-			$this->actions = [];
-			$this->filters = [];
+			$this->actions = array();
+			$this->filters = array();
 			return;
 		}
 		// $notice = "Table $this->table  is there.";
@@ -133,29 +133,29 @@ class Mltp_Contact extends Mltp_Loader {
 		$result = MB_Custom_Table_API::create(
 			$this->table,   // Table name.
 			array(                                  // Table columns (without ID).
-				'user_id'    => 'INTEGER',
-				'first_name' => 'VARCHAR(50)',
-				'last_name'  => 'VARCHAR(50)',
+				'user_id'      => 'INTEGER',
+				'first_name'   => 'VARCHAR(50)',
+				'last_name'    => 'VARCHAR(50)',
 				// 'display_name'   => "VARCHAR(100) AS (TRIM(CONCAT(COALESCE(first_name, ''), ' ', COALESCE(last_name, '')))) STORED",
-    		'display_name' 	 => 'VARCHAR(101)',
-				'company'    => 'VARCHAR(50)',
-				'email'      => 'VARCHAR(100)',
-				'phone'      => 'VARCHAR(100)',
-				'address'    => 'LONGTEXT',
+				'display_name' => 'VARCHAR(101)',
+				'company'      => 'VARCHAR(50)',
+				'email'        => 'VARCHAR(100)',
+				'phone'        => 'VARCHAR(100)',
+				'address'      => 'LONGTEXT',
 			),
 			array( 'first_name', 'last_name', 'display_name', 'email', 'phone' ),               // List of index keys.
 			true                               // Must be true for models.
 		);
 
-		if(is_wp_error($result)) {
+		if ( is_wp_error( $result ) ) {
 			$error_message = $result->error_message();
-		} else if ( ! $result ) {
-			$error_message = 'Unknown error ' . print_r($result, true);
+		} elseif ( ! $result ) {
+			$error_message = 'Unknown error ' . print_r( $result, true );
 		}
-		if(!empty($error_message)) {
+		if ( ! empty( $error_message ) ) {
 			$notice = __( 'Tables cration failed.', 'multipass' )
 			. "\n" . $error_message;
-			error_log( __CLASS__ .':' . __METHOD__ . '() ' . $notice );
+			error_log( __CLASS__ . ':' . __METHOD__ . '() ' . $notice );
 			MultiPass::admin_notice( $notice, 'error' );
 		} else {
 			$notice = __( 'Tables creation succeeded.', 'multipass' );
@@ -999,9 +999,9 @@ class Mltp_Contact extends Mltp_Loader {
 		}
 		$data['id'] = $found_contact_id;
 
-		$first_name = empty( $found_contact_id ) ? $data['first_name'] : rwmb_meta( 'first_name', $this->db_args, $found_contact_id );
-		$last_name  = empty( $found_contact_id ) ? $data['last_name'] : rwmb_meta( 'last_name', $this->db_args, $found_contact_id );
-		$display_name   = empty( $found_contact_id ) ? $data['name'] : rwmb_meta( 'display_name', $this->db_args, $found_contact_id );
+		$first_name   = empty( $found_contact_id ) ? $data['first_name'] : rwmb_meta( 'first_name', $this->db_args, $found_contact_id );
+		$last_name    = empty( $found_contact_id ) ? $data['last_name'] : rwmb_meta( 'last_name', $this->db_args, $found_contact_id );
+		$display_name = empty( $found_contact_id ) ? $data['name'] : rwmb_meta( 'display_name', $this->db_args, $found_contact_id );
 
 		if ( empty( $first_name . $last_name ) ) {
 			$split = self::split_name( $display_name );
