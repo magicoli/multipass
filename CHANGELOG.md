@@ -1,6 +1,7 @@
 ## Changelog
 
-### Unreleased (0.6.1-dev.780)
+### Unreleased (0.6.1-dev.782)
+- fix wp_get_current_user() called before being defined in MultiPass::debug()
 - fix fatal error with invalid phone numbers
 
 ### 0.6.0
