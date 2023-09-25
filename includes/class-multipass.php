@@ -1068,9 +1068,9 @@ class MultiPass {
 
 	static function debug() {
 		$args       = func_get_args();
-		$backtrace  = empty( debug_backtrace()[1]['class'] ) ? '' : debug_backtrace()[1]['class'] . '::';
-		$backtrace .= debug_backtrace()[1]['function']; // . ' (' . debug_backtrace()[1]['line'] . ') ';
-
+		// $backtrace  = empty( debug_backtrace()[1]['class'] ) ? '' : debug_backtrace()[1]['class'] . '::';
+		// $backtrace .= debug_backtrace()[1]['function']; // . ' (' . debug_backtrace()[1]['line'] . ') ';
+		if ( ! function_exists('wp_get_current_user')) return false;
 		if ( ! current_user_can( 'mltp_administrator' ) ) {
 			// error_log($backtrace . ' not an administrator' );
 			return false;
@@ -1091,7 +1091,7 @@ class MultiPass {
 			}
 		}
 
-		error_log( $backtrace . ' ' . join( ' ', $args ) );
+		// error_log( $backtrace . ' ' . join( ' ', $args ) );
 
 		return true;
 	}
