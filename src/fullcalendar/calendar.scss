@@ -212,30 +212,30 @@
 
     .fc-event-start.origin-bookingcom .fc-event-title-container::before {
       content: ' ';
-      background-image: url('http://dev.gites-mosaiques.com/wp-content/plugins/multipass/images/bookingcom.svg');
+      background-image: url('http://gites-mosaiques.com/wp-content/plugins/multipass/images/bookingcom.svg');
     }
 
     .fc-event-start.origin-lodgify .fc-event-title-container::before {
       content: ' ';
-      background-image: url('http://dev.gites-mosaiques.com/wp-content/plugins/multipass/images/lodgify-color.png');
+      background-image: url('http://gites-mosaiques.com/wp-content/plugins/multipass/images/lodgify-color.png');
     }
 
     .fc-event-start.origin-airbnb .fc-event-title-container::before {
       content: ' ';
-      background-image: url('http://dev.gites-mosaiques.com/wp-content/plugins/multipass/images/airbnb.png');
+      background-image: url('http://gites-mosaiques.com/wp-content/plugins/multipass/images/airbnb.png');
     }
 
     .fc-event-start.origin-woocommerce .fc-event-title-container::before {
       content: 'W';
       color: transparent;
-      background-image: url('http://dev.gites-mosaiques.com/wp-content/plugins/multipass/images/woo.png');
+      background-image: url('http://gites-mosaiques.com/wp-content/plugins/multipass/images/woo.png');
       background-size: 75%;
     }
 
     .fc-event-start.origin-abritel .fc-event-title-container::before,
     .fc-event-start.origin-homeaway .fc-event-title-container::before {
       content: ' ';
-      background-image: url('http://dev.gites-mosaiques.com/wp-content/plugins/multipass/images/homeaway.png');
+      background-image: url('http://gites-mosaiques.com/wp-content/plugins/multipass/images/homeaway.png');
       background-size: 60%;
     }
 
