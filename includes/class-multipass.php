@@ -1235,7 +1235,7 @@ class MultiPass {
 			} else {
 				$text = $args['text'];
 			}
-			$url = self::format_phone( $url, 'link' );
+			$url = "tel:" . self::format_phone( $url, 'link' );
 		}
 
 		$attr = array_merge(
