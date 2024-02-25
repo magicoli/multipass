@@ -264,6 +264,7 @@ class Mltp_Calendar {
 	}
 
 	public static function get_calendar_resources( $include_count = false ) {
+		error_log(__METHOD__ . " starting");
 		$resources[] = array(
 			'id'    => 0,
 			'title' => __( 'Undefined', 'multipass' ),
@@ -338,6 +339,8 @@ class Mltp_Calendar {
 	}
 
 	public function ajax_feed_events_action() {
+		error_log(__METHOD__ . " starting");
+		$debug_start=time();
 		// Get calendars from taxonomy
 		$events = array();
 
@@ -347,10 +350,12 @@ class Mltp_Calendar {
 			'posts_per_page' => -1,
 			'post_type'      => 'mltp_detail',
 		);
+		error_log(__METHOD__ . " query " . print_r( $args, true) );
 		$query = new WP_Query( $args );
 
 		$hide_undefined = true;
 		if ( $query && $query->have_posts() ) {
+			error_log(__METHOD__ . " start query loop");
 			while ( $query->have_posts() ) {
 				$query->the_post();
 				$item    = new Mltp_Item( get_the_ID() );
@@ -431,6 +436,7 @@ class Mltp_Calendar {
 					array_push( $events, $e );
 				}
 			}
+			error_log(__METHOD__ . " end query loop");
 		}
 
 		if ( $hide_undefined ) {
@@ -444,6 +450,7 @@ class Mltp_Calendar {
 			'events'    => $events,
 		);
 		echo json_encode( $data );
+		error_log(__METHOD__ . " process time " . ( time() - $debug_start ) );
 		wp_die();
 	}
 
@@ -641,7 +648,7 @@ class Mltp_Calendar {
 
 			$html .= '<ul class="modal-buttons">' . $links_html . '</ul>';
 		}
-
+		
 		return $html;
 	}
 }
