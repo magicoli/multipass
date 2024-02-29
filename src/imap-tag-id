@@ -1,0 +1,38 @@
+
+require_once 'vendor/autoload.php';
+
+use PhpImap\Mailbox;
+
+$mailbox = new Mailbox(
+    '{imap.example.com:993/imap/ssl}INBOX', // IMAP server and mailbox folder
+    'user@example.com', // Username for the before configured mailbox
+    'password', // Password for the before configured username
+    __DIR__, // Directory, where attachments will be saved (optional)
+    'UTF-8' // Server encoding (optional)
+);
+
+// Get all emails (messages)
+// PHP.net imap_search criteria: http://php.net/manual/en/function.imap-search.php
+$mailsIds = $mailbox->searchMailbox('ALL');
+if(!$mailsIds) {
+    die('Mailbox is empty');
+}
+
+// Get the first message and save its attachment(s) to disk:
+$mail = $mailbox->getMail($mailsIds[0]);
+
+// Add a custom keyword
+$mailbox->setMailKeywords($mail->id, ['x-multipass-booking-id-1234']);
+
+
+// Retreive data
+
+$keywords = $mailbox->getMailKeywords($mail->id);
+foreach ($keywords as $keyword) {
+    if (strpos($keyword, 'x-multipass-booking-id-') === 0) {
+        $bookingId = str_replace('x-multipass-booking-id-', '', $keyword);
+        // Do something with $bookingId
+    }
+}
+
+
