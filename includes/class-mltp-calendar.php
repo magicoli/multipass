@@ -54,7 +54,6 @@ class Mltp_Calendar {
 	 * @since 1.0.0
 	 */
 	public function init() {
-
 		$actions = array(
 			array(
 				'hook'     => 'admin_menu',
@@ -71,7 +70,14 @@ class Mltp_Calendar {
 				'component' => $this,
 				'callback'  => 'ajax_feed_events_action',
 			),
-
+			
+			array(
+				'hook'      => 'save_post',
+				'component' => $this,
+				'callback'  => 'delete_calendar_modal_cache',
+				'accepted_args' => 3,
+				// 'priority'  => 10,
+			),
 		);
 
 		$filters = array(
@@ -115,7 +121,6 @@ class Mltp_Calendar {
 			);
 			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
-
 	}
 
 	/**
@@ -264,7 +269,6 @@ class Mltp_Calendar {
 	}
 
 	public static function get_calendar_resources( $include_count = false ) {
-		// error_log(__METHOD__ . " starting");
 		$resources[] = array(
 			'id'    => 0,
 			'title' => __( 'Undefined', 'multipass' ),
@@ -339,7 +343,6 @@ class Mltp_Calendar {
 	}
 
 	public function ajax_feed_events_action() {
-		// error_log(__METHOD__ . " starting");
 		$debug_start=time();
 		// Get calendars from taxonomy
 		$events = array();
@@ -350,12 +353,10 @@ class Mltp_Calendar {
 			'posts_per_page' => -1,
 			'post_type'      => 'mltp_detail',
 		);
-		// error_log(__METHOD__ . " query " . print_r( $args, true) );
 		$query = new WP_Query( $args );
 
 		$hide_undefined = true;
 		if ( $query && $query->have_posts() ) {
-			// error_log(__METHOD__ . " start query loop");
 			while ( $query->have_posts() ) {
 				$query->the_post();
 				$item    = new Mltp_Item( get_the_ID() );
@@ -436,7 +437,6 @@ class Mltp_Calendar {
 					array_push( $events, $e );
 				}
 			}
-			// error_log(__METHOD__ . " end query loop");
 		}
 
 		if ( $hide_undefined ) {
@@ -450,7 +450,6 @@ class Mltp_Calendar {
 			'events'    => $events,
 		);
 		echo json_encode( $data );
-		// error_log(__METHOD__ . " process time " . ( time() - $debug_start ) );
 		wp_die();
 	}
 
@@ -462,7 +461,6 @@ class Mltp_Calendar {
 		$transient_key = 'mltp_cal_event_modal_' . $event->id;
 		$html          = get_transient( $transient_key );
 		if ( $html ) {
-			// error_log(__METHOD__ . " TRANSIENT found for event $event->id");
 			return $html;
 		}
 
@@ -478,6 +476,7 @@ class Mltp_Calendar {
 
 		$prestation_id = empty( $event->prestation_id ) ? null : $event->prestation_id;
 		$prestation    = new Mltp_Prestation( $prestation_id );
+
 		if ( ! $prestation->is_prestation() ) {
 			// MultiPass::debug('event', $event->id, 'prestation', $event->prestation_id, 'not a prestation', $prestation);
 			return '';
@@ -488,7 +487,6 @@ class Mltp_Calendar {
 
 		$p_begin = MultiPass::timestamp( isset( $prestation->dates['from'] ) ? $prestation->dates['from'] : $prestation->from );
 		$p_end   = MultiPass::timestamp( isset( $prestation->dates['to'] ) ? $prestation->dates['to'] : $prestation->to );
-		// error_log(print_r(array(
 		// 'begin' => $p_begin,
 		// 'end' => $p_end,
 		// ), true) );
@@ -573,7 +571,6 @@ class Mltp_Calendar {
 			$rows = array_merge( $rows, array( 'divider' ), array_filter( $extra ) );
 		}
 
-		// error_log(print_r($event, true));
 
 		// $prestation_id = get_post_meta($event->post->ID, 'prestation_'
 		$html .= '<span class="description">' . $event->title . '</span>';
@@ -656,12 +653,40 @@ class Mltp_Calendar {
 		}
 		
 		if(!empty($html)) {
-			// error_log(__METHOD__ . " TRANSIENT save event $event->id");
-			set_transient( $transient_key, $html, HOUR_IN_SECONDS );
+			
+			set_transient( $transient_key, $html );
 		}
 
 		return $html;
 	}
+
+	// Method to delete calendar modal when a prestation is updated
+	public function delete_calendar_modal_cache( $post_id, $post ) {
+		if ( 'mltp_detail' === $post->post_type ) {
+			$transient_key = 'mltp_cal_event_modal_' . $post_id;
+			delete_transient( $transient_key );
+		}
+
+		// delete calendar modal cache of mltp_detail posts with matching prestation_id
+
+		if( 'mltp_prestation' === $post->post_type ) {
+			global $wpdb;
+			$prestation_id = $post_id;
+			$post_ids = $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'prestation_id' AND meta_value = %d",
+					$prestation_id
+				)
+			);
+
+			foreach ( $post_ids as $post_id ) {
+				$transient_key = 'mltp_cal_event_modal_' . $post_id;
+				delete_transient( $transient_key );
+			}
+		}
+		
+	}
+
 }
 
 class Mltp_Event extends Mltp_Item {
