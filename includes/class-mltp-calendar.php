@@ -264,7 +264,7 @@ class Mltp_Calendar {
 	}
 
 	public static function get_calendar_resources( $include_count = false ) {
-		error_log(__METHOD__ . " starting");
+		// error_log(__METHOD__ . " starting");
 		$resources[] = array(
 			'id'    => 0,
 			'title' => __( 'Undefined', 'multipass' ),
@@ -339,7 +339,7 @@ class Mltp_Calendar {
 	}
 
 	public function ajax_feed_events_action() {
-		error_log(__METHOD__ . " starting");
+		// error_log(__METHOD__ . " starting");
 		$debug_start=time();
 		// Get calendars from taxonomy
 		$events = array();
@@ -350,12 +350,12 @@ class Mltp_Calendar {
 			'posts_per_page' => -1,
 			'post_type'      => 'mltp_detail',
 		);
-		error_log(__METHOD__ . " query " . print_r( $args, true) );
+		// error_log(__METHOD__ . " query " . print_r( $args, true) );
 		$query = new WP_Query( $args );
 
 		$hide_undefined = true;
 		if ( $query && $query->have_posts() ) {
-			error_log(__METHOD__ . " start query loop");
+			// error_log(__METHOD__ . " start query loop");
 			while ( $query->have_posts() ) {
 				$query->the_post();
 				$item    = new Mltp_Item( get_the_ID() );
@@ -436,7 +436,7 @@ class Mltp_Calendar {
 					array_push( $events, $e );
 				}
 			}
-			error_log(__METHOD__ . " end query loop");
+			// error_log(__METHOD__ . " end query loop");
 		}
 
 		if ( $hide_undefined ) {
@@ -450,7 +450,7 @@ class Mltp_Calendar {
 			'events'    => $events,
 		);
 		echo json_encode( $data );
-		error_log(__METHOD__ . " process time " . ( time() - $debug_start ) );
+		// error_log(__METHOD__ . " process time " . ( time() - $debug_start ) );
 		wp_die();
 	}
 
@@ -458,6 +458,12 @@ class Mltp_Calendar {
 		$event = new Mltp_Event( $item_id );
 		if ( ! $event ) {
 			return false;
+		}
+		$transient_key = 'mltp_cal_event_modal_' . $event->id;
+		$html          = get_transient( $transient_key );
+		if ( $html ) {
+			// error_log(__METHOD__ . " TRANSIENT found for event $event->id");
+			return $html;
 		}
 
 		$html = '';
@@ -649,6 +655,11 @@ class Mltp_Calendar {
 			$html .= '<ul class="modal-buttons">' . $links_html . '</ul>';
 		}
 		
+		if(!empty($html)) {
+			// error_log(__METHOD__ . " TRANSIENT save event $event->id");
+			set_transient( $transient_key, $html, HOUR_IN_SECONDS );
+		}
+
 		return $html;
 	}
 }
