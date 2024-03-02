@@ -24,7 +24,7 @@ jQuery( document ).ready(
 	
 			// Mettez à jour la barre de progression et le texte de progression
 			$("#progress-bar").progressbar("value", percentComplete);
-			$("#progress-text").text(mltp_calendar_feed_data.loadingMessage.replace('%s', percentComplete.toFixed(2) + "%"));
+			$("#progress-text").text(mltp_calendar_feed_data.loadingMessage.replace('%s', percentComplete.toFixed(0) + "%"));
 		}, 10);
 	
 		jQuery.ajax(

@@ -235,7 +235,7 @@ class Mltp_Calendar {
 		// get cached time from transient
 		$cached_time = get_transient('mltp_ajax_feed_process_time');
 		if(!$cached_time || empty($cached_time) || $cached_time == 0) {
-			$cached_time = 45;
+			$cached_time = 30;
 		}
 
 		wp_localize_script('mltp-calendar', 'mltp_calendar_feed_data', array(
