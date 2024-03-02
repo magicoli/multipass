@@ -219,6 +219,8 @@ class Mltp_Calendar {
 	}
 
 	public static function render_calendar_page() {
+		wp_enqueue_script( 'jquery-ui-progressbar' );
+
 		// Full Calendar library
 		wp_enqueue_script( 'fullcalendar-cdn', 'https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.0/main.min.js' );
 		// wp_enqueue_script( 'mltp-calendar-main', plugins_url( 'includes/fullcalendar/fullcalendar.js', MULTIPASS_FILE ) );
@@ -228,6 +230,17 @@ class Mltp_Calendar {
 		wp_enqueue_script( 'mltp-calendar', plugins_url( 'includes/calendar/calendar.js', MULTIPASS_FILE ), array( 'jquery' ), MULTIPASS_VERSION );
 		wp_enqueue_style( 'mltp-calendar', plugins_url( 'includes/calendar/calendar.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION );
 
+		// Transmettez les données à votre script
+		$cached_size_in_mb = 100; /* insérez ici la taille estimée en Mo */;
+		// get cached time from transient
+		$cached_time = get_transient('mltp_ajax_feed_process_time');
+		wp_localize_script('mltp-calendar', 'myScriptData', array(
+			'estimatedTime' => $cached_time,
+			'readyToReceive' => __('Ready to receive data', 'multipass'),
+			'loadingMessage' => __('Loading %s', 'multipass'),
+			'loadingComplete' => __('Calendar loaded successfully', 'multipass'),
+			'errorMessage' => __('An error occurred', 'multipass'),
+		));		
 		$calendar_resources = self::get_calendar_resources( true );
 		$main_count         = ( empty( $calendar_resources['main_count'] ) ) ? null : $calendar_resources['main_count'];
 		if ( $main_count ) {
@@ -256,15 +269,17 @@ class Mltp_Calendar {
 
 		printf(
 			'<div id="mltp-calendar-wrapper" class="wrap">
+				<div id="mltp-calendar"></div>
 				<div id="mltp-placeholder">
 					<h1 class="wp-heading-inline">%s %s</h1>
-					<p>%s <span class="dashicons dashicons-update spin"></span></p>
+					<div class="progress">
+						<span id="progress-text"></span>
+						<span id="progress-bar"></span>
+					</div>
 				</div>
-				<div id="mltp-calendar"></div>
       </div>',
 			get_admin_page_title(),
 			$actions,
-			__( 'Loading in progress, please wait', 'multipass' ),
 		);
 	}
 
@@ -346,6 +361,8 @@ class Mltp_Calendar {
 		$debug_start=time();
 		// Get calendars from taxonomy
 		$events = array();
+
+		$start_time = microtime( true );
 
 		$resources = self::get_calendar_resources();
 
@@ -449,7 +466,15 @@ class Mltp_Calendar {
 			'resources' => $resources,
 			'events'    => $events,
 		);
+
+		$json = json_encode( $data );
+
 		echo json_encode( $data );
+		
+		// store transient with the process time, based on $start_time value passed earlier
+		$process_time = microtime( true ) - $start_time;
+		set_transient( 'mltp_ajax_feed_process_time', $process_time );
+
 		wp_die();
 	}
 
