@@ -253,32 +253,31 @@
 }
 
 #mltp-placeholder {
-  display: grid;
-  min-height: 90vh;
-  grid-template-rows: auto 1fr;
-  
-  .progress {
-    margin: auto;
-    min-width: 20em;
-    max-width: 600px;
-  }
-  .ui-progressbar {
-    display: inline-block;
-    position: relative;
-    height: 20px;
-    width: 100%;
-    background: #eee;
-    border: solid 1px gray;
-  }
-  
-  .ui-progressbar-value {
-    position: absolute;
-    height: 100%;
-    width: 0;
-    background: #0073aa;
-  }
 }
 
+.progress {
+  height: 90vh;
+  padding-top: 10em;
+	margin: auto;
+	width: 20em;
+	// max-width: 600px;
+}
+
+.ui-progressbar {
+	display: inline-block;
+	position: relative;
+	height: 20px;
+	width: 100%;
+	background: #eee;
+	border: solid 1px gray;
+}
+
+.ui-progressbar-value {
+	position: absolute;
+	height: 100%;
+	width: 0;
+	background: #0073aa;
+}
 
 
 .no-close .ui-dialog-titlebar-close {
