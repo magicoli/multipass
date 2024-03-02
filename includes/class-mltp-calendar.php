@@ -234,7 +234,7 @@ class Mltp_Calendar {
 		$cached_size_in_mb = 100; /* insérez ici la taille estimée en Mo */;
 		// get cached time from transient
 		$cached_time = get_transient('mltp_ajax_feed_process_time');
-		if(!$cached_time || empty($cached_time) || $cached_time == 0) {
+		if(!$cached_time || empty($cached_time) || $cached_time == 0) {
 			$cached_time = 45;
 		}
 
