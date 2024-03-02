@@ -234,6 +234,10 @@ class Mltp_Calendar {
 		$cached_size_in_mb = 100; /* insérez ici la taille estimée en Mo */;
 		// get cached time from transient
 		$cached_time = get_transient('mltp_ajax_feed_process_time');
+		if(!$cached_time || empty($cached_time) || $cached_time == 0) {
+			$cached_time = 45;
+		}
+
 		wp_localize_script('mltp-calendar', 'mltp_calendar_feed_data', array(
 			'estimatedTime' => $cached_time,
 			'readyToReceive' => __('Ready to receive data', 'multipass'),
@@ -473,9 +477,6 @@ class Mltp_Calendar {
 		
 		// store transient with the process time, based on $start_time value passed earlier
 		$process_time = microtime( true ) - $start_time;
-		if(!$process_time) {
-			$process_time = 30;
-		}
 		set_transient( 'mltp_ajax_feed_process_time', $process_time );
 
 		wp_die();
