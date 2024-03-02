@@ -473,6 +473,9 @@ class Mltp_Calendar {
 		
 		// store transient with the process time, based on $start_time value passed earlier
 		$process_time = microtime( true ) - $start_time;
+		if(!$process_time) {
+			$process_time = 30;
+		}
 		set_transient( 'mltp_ajax_feed_process_time', $process_time );
 
 		wp_die();
