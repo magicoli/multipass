@@ -234,13 +234,13 @@ class Mltp_Calendar {
 		$cached_size_in_mb = 100; /* insérez ici la taille estimée en Mo */;
 		// get cached time from transient
 		$cached_time = get_transient('mltp_ajax_feed_process_time');
-		wp_localize_script('mltp-calendar', 'myScriptData', array(
+		wp_localize_script('mltp-calendar', 'mltp_calendar_feed_data', array(
 			'estimatedTime' => $cached_time,
 			'readyToReceive' => __('Ready to receive data', 'multipass'),
 			'loadingMessage' => __('Loading %s', 'multipass'),
 			'loadingComplete' => __('Calendar loaded successfully', 'multipass'),
 			'errorMessage' => __('An error occurred', 'multipass'),
-		));		
+		));
 		$calendar_resources = self::get_calendar_resources( true );
 		$main_count         = ( empty( $calendar_resources['main_count'] ) ) ? null : $calendar_resources['main_count'];
 		if ( $main_count ) {
