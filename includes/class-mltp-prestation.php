@@ -973,6 +973,10 @@ class Mltp_Prestation {
 			return;
 		}
 
+		// if ( ! session_id() ) {
+		// 	session_start();
+		// }
+
 		// Check if the user has mltp_reader capability
 		if ( current_user_can( 'mltp_reader' ) ) {
 			return;
@@ -1022,6 +1026,9 @@ class Mltp_Prestation {
 		} elseif ( is_user_logged_in() ) {
 			$submitted_mail = wp_get_current_user()->user_email;
 		}
+
+		// session_write_close();
+
 		printf(
 			'
 			<div class="login mltp-mail-validation-form">

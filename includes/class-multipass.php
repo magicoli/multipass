@@ -113,11 +113,10 @@ class MultiPass {
 			wp_redirect( admin_url( 'admin.php?page=multipass' ) );
 			exit;
 		}
+	}
 
-		if ( ! session_id() ) {
-			session_start();
-		}
-
+	public function __destruct() {
+		session_write_close();
 	}
 
 
