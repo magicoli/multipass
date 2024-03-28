@@ -622,7 +622,7 @@ class MultiPass {
 		return str_replace( "$sep#", ' #', join( $sep, array_filter( $rows ) ) );
 	}
 
-	static function format_date( $timestamp, $datetype_str = 'RELATIVE_MEDIUM', $timetype_str = 'NONE' ) {
+	static function format_date( $timestamp, $datetype_str = 'MEDIUM', $timetype_str = 'NONE' ) {
 		$datetype = self::IntlDateConstant( $datetype_str );
 		$timetype = self::IntlDateConstant( $timetype_str );
 
@@ -664,7 +664,7 @@ class MultiPass {
 		return false;
 	}
 
-	static function format_date_range( $dates = array(), $datetype_str = 'RELATIVE_MEDIUM', $timetype_str = 'NONE' ) {
+	static function format_date_range( $dates = array(), $datetype_str = 'MEDIUM', $timetype_str = 'NONE' ) {
 		if ( empty( $dates ) ) {
 			return;
 		}
