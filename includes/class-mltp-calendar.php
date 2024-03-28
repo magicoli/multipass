@@ -243,7 +243,9 @@ class Mltp_Calendar {
 			'readyToReceive' => __('Ready to receive data', 'multipass'),
 			'loadingMessage' => __('Loading %s', 'multipass'),
 			'loadingComplete' => __('Calendar loaded successfully', 'multipass'),
-			'errorMessage' => __('An error occurred', 'multipass'),
+			'loadingError' => __('Error loading the calendar', 'multipass'),
+			'renderingError' => __('Error rendering the calendar', 'multipass'),
+			'jsonParsingError' => __('JSON parsing error', 'multipass'),
 		));
 		$calendar_resources = self::get_calendar_resources( true );
 		$main_count         = ( empty( $calendar_resources['main_count'] ) ) ? null : $calendar_resources['main_count'];
