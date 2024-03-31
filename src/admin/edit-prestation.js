@@ -35,4 +35,59 @@ jQuery(document).ready(function($) {
             // Mettre à jour les actions ici
         });
     }
+
+    if ($('body').hasClass('post-type-mltp_prestation')) {
+        // Lorsque le lien "Ajouter nouveau" est cliqué
+        $(document).on('click', '.rwmb-modal-add-button', function() {
+            // Obtenez les valeurs que vous voulez passer à l'iframe
+            var dates_from = $('#dates_from').val();
+            var dates_to = $('#dates_to').val();
+            // var prestation_id = wp.data.select("core/editor").getCurrentPostId();
+            var prestation_id = $('#post_ID').val();
+
+            // Attendez que l'iframe soit ajoutée au DOM
+            var checkExist = setInterval(function() {
+                if ($('#rwmb-modal-iframe').length) {
+                    // L'iframe existe, arrêtez l'intervalle
+                    clearInterval(checkExist);
+
+                    // Modifiez l'URL de l'iframe pour inclure les valeurs en tant que paramètres de requête
+                    var iframe = $('#rwmb-modal-iframe')[0];
+                    iframe.src = iframe.src 
+                    + '&dates_from=' + encodeURIComponent(dates_from) 
+                    + '&dates_to=' + encodeURIComponent(dates_to)
+                    + '&prestation_id=' + encodeURIComponent(prestation_id);
+                }
+            }, 100); // vérifiez toutes les 100ms
+        });
+    }
+
+    if ($('body').hasClass('post-type-mltp_detail')) {
+        // Lorsque la page est chargée
+        $(window).on('load', function() {
+            // Obtenez les paramètres de l'URL
+            var urlParams = new URLSearchParams(window.location.search);
+
+            // Vérifiez si 'dates_from' et 'dates_to' sont dans l'URL
+            if (urlParams.has('dates_from') && urlParams.has('dates_to')) {
+                // Obtenez les valeurs de 'dates_from' et 'dates_to' à partir de l'URL
+                var dates_from = urlParams.get('dates_from');
+                var dates_to = urlParams.get('dates_to');
+                var prestation_id = urlParams.get('prestation_id');
+
+                // Attendez que les champs du formulaire soient ajoutés au DOM
+                var checkExist = setInterval(function() {
+                    if ($('#dates_from').length && $('#dates_to').length) {
+                        // Les champs du formulaire existent, arrêtez l'intervalle
+                        clearInterval(checkExist);
+
+                        // Utilisez les valeurs pour remplir les champs du formulaire
+                        $('#dates_from').val(dates_from);
+                        $('#dates_to').val(dates_to);
+                        $('#prestation_id').val(prestation_id).trigger('change');
+                    }
+                }, 100); // vérifiez toutes les 100ms
+            }
+        });
+    }
 });

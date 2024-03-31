@@ -157,6 +157,11 @@ class Mltp_Prestation {
 				'hook'     => 'init',
 				'callback' => 'register_taxonomies',
 			),
+			array(
+				'component' => $this,
+				'hook' => 'mb_relationships_init',
+				'callback' => 'register_relationships',
+			),
 
 			array(
 				'hook'          => 'save_post', // use save_post because save_post_mltp_detail is fired before actual save and meta values are not yet updated.
@@ -513,6 +518,7 @@ class Mltp_Prestation {
 						),
 					),
 				),
+				
 				array(
 					'name'   => __( 'Discount', 'multipass' ),
 					'id'     => $prefix . 'discount',
@@ -852,6 +858,50 @@ class Mltp_Prestation {
 		);
 
 		return $meta_boxes;
+	}
+
+	/**
+	 * Register prestation-task relationship.
+	 */
+	function register_relationships() {
+		MB_Relationships_API::register( [
+			'id'   => 'prestation-task',
+			'from' => [
+				'object_type'  => 'post',
+				'post_type'    => 'mltp_prestation',
+				'admin_column' => [
+					'position' => 'after title',
+					'title'    => __( 'Elements', 'multipass' ),
+					'link'     => 'edit',
+				],
+				'meta_box'     => [
+					'context'  => 'normal',
+					'priority' => 'high',
+					'style'    => 'seamless',
+				],
+				'field'        => [
+					'name'      => __('Prestation', 'multipass'),
+					'max_clone' => '1',
+				],
+			],
+			'to'   => [
+				'object_type'  => 'post',
+				'post_type'    => 'mltp_detail',
+				'admin_column' => [
+					'position' => 'after title',
+					'title'    => __('Prestation', 'multipass'),
+					'link'     => 'edit',
+				],
+				'meta_box'     => [
+					'priority' => 'high',
+					'style'    => 'seamless',
+				],
+				'field'        => [
+					'name'    => __('Elements', 'multipass'),
+					'add_new' => true,
+				],
+			],
+		] );
 	}
 
 	/**

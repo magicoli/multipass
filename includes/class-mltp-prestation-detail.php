@@ -424,29 +424,7 @@ class Mltp_Item {
 					'callback' => 'MultiPass::title_html',
 				),
 				array(
-					'name'          => __( 'Prestation', 'multipass' ),
-					'id'            => $prefix . 'prestation_id',
-					'type'          => 'post',
-					'post_type'     => array( 'mltp_prestation' ),
-					'field_type'    => 'select_advanced',
-					'admin_columns' => array(
-						'position'   => 'after title',
-						// 'title'      => 'Customer',
-						'sort'       => true,
-						'searchable' => true,
-					),
-				),
-				array(
-					'name'    => __( 'Description', 'multipass' ),
-					'id'      => $prefix . 'description',
-					'type'    => 'text',
-					'visible' => array(
-						'when'     => array( array( 'source', '=', '' ) ),
-						'relation' => 'or',
-					),
-				),
-				array(
-					'name'          => __( 'Local resource', 'multipass' ),
+					'name'          => __( 'Resource', 'multipass' ),
 					'id'            => $prefix . 'resource_id',
 					'type'          => 'post',
 					'post_type'     => array( 'mltp_resource' ),
@@ -460,6 +438,28 @@ class Mltp_Item {
 					'visible'       => array(
 						'when'     => array( array( 'source', '=', '' ) ),
 						'relation' => 'and',
+					),
+				),
+				array(
+					'name'    => __( 'Description', 'multipass' ),
+					'id'      => $prefix . 'description',
+					'type'    => 'text',
+					'visible' => array(
+						'when'     => array( array( 'source', '=', '' ) ),
+						'relation' => 'or',
+					),
+				),
+				array(
+					'name'          => __( 'Prestation', 'multipass' ),
+					'id'            => $prefix . 'prestation_id',
+					'type'          => 'post',
+					'post_type'     => array( 'mltp_prestation' ),
+					'field_type'    => 'select_advanced',
+					'admin_columns' => array(
+						'position'   => 'after title',
+						// 'title'      => 'Customer',
+						'sort'       => true,
+						'searchable' => true,
 					),
 				),
 				array(
