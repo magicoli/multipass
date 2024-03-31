@@ -492,7 +492,7 @@ class Mltp_Prestation {
 						array(
 							'prepend'    => __( 'From', 'multipass' ),
 							'id'         => $prefix . 'from',
-							'readonly'   => true,
+							// 'readonly'   => true,
 							'size'       => 10,
 							'type'       => 'date',
 							'timestamp'  => true,
@@ -505,7 +505,7 @@ class Mltp_Prestation {
 							'id'         => $prefix . 'to',
 							'type'       => 'date',
 							'timestamp'  => true,
-							'readonly'   => true,
+							// 'readonly'   => true,
 							'size'       => 10,
 							'js_options' => array(
 								'dateFormat' => $js_date_format_short,
