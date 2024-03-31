@@ -7,11 +7,12 @@
 
 namespace OpenPsa\Ranger;
 
-use PHPUnit_Framework_TestCase;
 use IntlDateFormatter;
 use DateTime;
+use DateTimeImmutable;
+use PHPUnit\Framework\TestCase;
 
-class RangerTest extends PHPUnit_Framework_TestCase
+class RangerTest extends TestCase
 {
     /**
      * @dataProvider providerDateRange
@@ -22,7 +23,7 @@ class RangerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $formatter->format($start, $end));
     }
 
-    public function providerDateRange()
+    public static function providerDateRange()
     {
         return [
             ['en', '2013-10-05', '2013-10-20', 'Oct 5–20, 2013'],
@@ -44,11 +45,20 @@ class RangerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $formatter->format($start, $end));
     }
 
-    public function providerDateTimeRange()
+    private static function get_space() : string
     {
+        if (version_compare(INTL_ICU_VERSION, '72.1', '<')) {
+            return ' '; // Space (U+0020)
+        }
+        return ' '; // Narrow non-breaking space (U+202F)
+    }
+
+    public static function providerDateTimeRange()
+    {
+        $space = self::get_space();
         return [
-            ['en', '2013-10-05 01:01:01', '2013-10-20 00:00:00', 'Oct 5, 2013, 1:01 AM – Oct 20, 2013, 12:00 AM'],
-            ['en', '2013-10-05 10:00:01', '2013-10-05 13:30:00', 'Oct 5, 2013, 10:00 AM – 1:30 PM'],
+            ['en', '2013-10-05 01:01:01', '2013-10-20 00:00:00', 'Oct 5, 2013, 1:01' . $space . 'AM – Oct 20, 2013, 12:00' . $space . 'AM'],
+            ['en', '2013-10-05 10:00:01', '2013-10-05 13:30:00', 'Oct 5, 2013, 10:00' . $space . 'AM – 1:30' . $space . 'PM'],
             ['de', '2013-10-05 01:01:01', '2013-10-20 00:00:00', '05.10.2013, 01:01 – 20.10.2013, 00:00'],
             ['de', '2013-10-05 10:00:01', '2013-10-05 13:30:00', '05.10.2013, 10:00 – 13:30'],
         ];
@@ -64,7 +74,7 @@ class RangerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $formatter->format($start, $end));
     }
 
-    public function providerFullDateRange()
+    public static function providerFullDateRange()
     {
         return [
             ['en', '2013-10-05', '2013-10-20', 'Saturday, October 5 – Sunday, October 20, 2013'],
@@ -86,7 +96,7 @@ class RangerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $formatter->format($start, $end));
     }
 
-    public function providerShortDateRange()
+    public static function providerShortDateRange()
     {
         return [
             ['en', '2012-10-05', '2013-10-20', '10/5/12 – 10/20/13'],
@@ -109,7 +119,8 @@ class RangerTest extends PHPUnit_Framework_TestCase
             ->setTimeType(IntlDateFormatter::SHORT);
 
         $formatted = $ranger->format('2013-10-05 10:00:01', '2013-10-05 13:30:00');
-        $this->assertEquals('October 5, 2013: 10:00 AM -- 1:30 PM', $formatted);
+        $space = self::get_space();
+        $this->assertEquals('October 5, 2013: 10:00' . $space . 'AM -- 1:30' . $space . 'PM', $formatted);
     }
 
     public function testEscapeCharParsing()
@@ -122,7 +133,8 @@ class RangerTest extends PHPUnit_Framework_TestCase
             ->setTimeType(IntlDateFormatter::SHORT);
 
         $formatted = $ranger->format('2013-10-05 10:00:01', '2013-10-05 13:30:00');
-        $this->assertEquals('October 5, 2013, between 10:00 AM and 1:30 PM', $formatted);
+        $space = self::get_space();
+        $this->assertEquals('October 5, 2013, between 10:00' . $space . 'AM and 1:30' . $space . 'PM', $formatted);
     }
 
     public function testDateTime()
@@ -130,6 +142,16 @@ class RangerTest extends PHPUnit_Framework_TestCase
         $ranger = new Ranger('en');
         $start = new DateTime('2013-10-05');
         $end = new DateTime('2013-10-20');
+
+        $formatted = $ranger->format($start, $end);
+        $this->assertEquals('Oct 5–20, 2013', $formatted);
+    }
+
+    public function testDateTimeImmutable()
+    {
+        $ranger = new Ranger('en');
+        $start = new DateTimeImmutable('2013-10-05');
+        $end = new DateTimeImmutable('2013-10-20');
 
         $formatted = $ranger->format($start, $end);
         $this->assertEquals('Oct 5–20, 2013', $formatted);
@@ -157,9 +179,6 @@ class RangerTest extends PHPUnit_Framework_TestCase
 
     public function testOffsetTimezone()
     {
-        if (PHP_MAJOR_VERSION < 7) {
-            $this->markTestSkipped("Timezone offsets not supported in PHP5");
-        }
         $backup = date_default_timezone_get();
         if (!date_default_timezone_set('UTC')) {
             $this->markTestSkipped("Couldn't set timezone");
@@ -173,7 +192,8 @@ class RangerTest extends PHPUnit_Framework_TestCase
         $ranger->setTimeType(IntlDateFormatter::SHORT);
         $formatted = $ranger->format($start, $end);
         date_default_timezone_set($backup);
-        $this->assertEquals('Oct 4, 2013, 7:00 PM – Oct 19, 2013, 7:00 PM', $formatted);
+        $space = self::get_space();
+        $this->assertEquals('Oct 4, 2013, 7:00' . $space . 'PM – Oct 19, 2013, 7:00' . $space . 'PM', $formatted);
     }
 
     /**
@@ -188,15 +208,17 @@ class RangerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $formatter->format($start, $end));
     }
 
-    public function providerNoDate()
+    public static function providerNoDate()
     {
+        $space = self::get_space();
+
         return [
-            ['en', '2013-10-05 10:00:00', '2013-10-05 13:30:00', '10:00 AM – 1:30 PM'],
-            ['en', '2013-10-05 12:20:00', '2013-10-05 13:30:00', '12:20 – 1:30 PM'],
-            ['en', '12:20:00', '13:30:00', '12:20 – 1:30 PM'],
+            ['en', '2013-10-05 10:00:00', '2013-10-05 13:30:00', '10:00' . $space . 'AM – 1:30' . $space . 'PM'],
+            ['en', '2013-10-05 12:20:00', '2013-10-05 13:30:00', '12:20 – 1:30' . $space . 'PM'],
+            ['en', '12:20:00', '13:30:00', '12:20 – 1:30' . $space . 'PM'],
             // get a little weird
-            ['en', '2013-10-05 12:20:00', '2013-10-07 13:30:00', '12:20 – 1:30 PM'],
-            ['en', '2012-06-05 10:20:00', '2013-10-07 13:30:00', '10:20 AM – 1:30 PM'],
+            ['en', '2013-10-05 12:20:00', '2013-10-07 13:30:00', '12:20 – 1:30' . $space . 'PM'],
+            ['en', '2012-06-05 10:20:00', '2013-10-07 13:30:00', '10:20' . $space . 'AM – 1:30' . $space . 'PM'],
         ];
     }
 
@@ -253,5 +275,35 @@ class RangerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Sep 5–12, 2022', $r->format(1662336000.5, 1662940800.5));
         $this->assertEquals('Sep 5–12, 2022', $r->format("1662336000", "1662940800"));
         $this->assertEquals('Sep 5–12, 2022', $r->format("1662336000.5", "1662940800.5"));
+    }
+
+    public function testIssue14()
+    {
+        $r = new Ranger('zh_TW');
+        $r
+            ->setDateType(IntlDateFormatter::MEDIUM)
+            ->setTimeType(IntlDateFormatter::SHORT);
+
+        if (version_compare(INTL_ICU_VERSION, '70.1', '<')) {
+            $day_period = '下午';
+        } else {
+            $day_period = '晚上';
+        }
+        $this->assertEquals('2024年3月29日, ' . $day_period . '7:00', $r->format(1711738800, 1711738800));
+    }
+
+    public function testIssue15()
+    {
+        $r = new Ranger('zh_TW');
+        $r
+        ->setDateType(IntlDateFormatter::MEDIUM)
+        ->setTimeType(IntlDateFormatter::SHORT);
+
+        if (version_compare(INTL_ICU_VERSION, '70.1', '<')) {
+            $day_period = '下午';
+        } else {
+            $day_period = '晚上';
+        }
+        $this->assertEquals('2024年3月29日, ' . $day_period . '7:00 – 2024年3月30日, ' . $day_period . '8:00', $r->format(1711738800, 1711828800));
     }
 }

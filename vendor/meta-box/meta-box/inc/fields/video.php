@@ -8,6 +8,7 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 	public static function admin_enqueue_scripts() {
 		parent::admin_enqueue_scripts();
 		wp_enqueue_style( 'rwmb-video', RWMB_CSS_URL . 'video.css', [ 'rwmb-media' ], RWMB_VER );
+		wp_style_add_data( 'rwmb-video', 'path', RWMB_CSS_DIR . 'video.css' );
 		wp_enqueue_script( 'rwmb-video', RWMB_JS_URL . 'video.js', [ 'rwmb-media' ], RWMB_VER, true );
 		RWMB_Helpers_Field::localize_script_once( 'rwmb-video', 'i18nRwmbVideo', [
 			'extensions' => wp_get_video_extensions(),
@@ -127,6 +128,6 @@ class RWMB_Video_Field extends RWMB_Media_Field {
 	 */
 	public static function print_templates() {
 		parent::print_templates();
-		require_once RWMB_INC_DIR . 'templates/video.php';
+		require RWMB_INC_DIR . 'templates/video.php';
 	}
 }

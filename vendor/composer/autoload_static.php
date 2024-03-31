@@ -13,11 +13,8 @@ class ComposerStaticInite446079fa2cc77fc71ba2d2a1334bc0c
         'a1cce3d26cc15c00fcd0b3354bd72c88' => __DIR__ . '/..' . '/sabre/event/lib/Promise/functions.php',
         '3569eecfeed3bcf0bad3c998a494ecb8' => __DIR__ . '/..' . '/sabre/xml/lib/Deserializer/functions.php',
         '93aa591bc4ca510c520999e34229ee79' => __DIR__ . '/..' . '/sabre/xml/lib/Serializer/functions.php',
-        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         'ebdb698ed4152ae445614b69b5e4bb6a' => __DIR__ . '/..' . '/sabre/http/lib/functions.php',
-        '53c7be3308b5aa229d03a4dfcf6ca18d' => __DIR__ . '/..' . '/symfony/intl/Resources/functions.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'db356362850385d08a5381de2638b5fd' => __DIR__ . '/..' . '/mpdf/mpdf/src/functions.php',
         '42f21a986a071bc268819b02ac75329d' => __DIR__ . '/..' . '/meta-box/meta-box/meta-box.php',
@@ -45,7 +42,6 @@ class ComposerStaticInite446079fa2cc77fc71ba2d2a1334bc0c
         ),
         'S' => 
         array (
-            'Symfony\\Polyfill\\Php80\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Component\\Intl\\' => 23,
             'Sabre\\Xml\\' => 10,
@@ -53,10 +49,7 @@ class ComposerStaticInite446079fa2cc77fc71ba2d2a1334bc0c
             'Sabre\\Uri\\' => 10,
             'Sabre\\HTTP\\' => 11,
             'Sabre\\Event\\' => 12,
-            'Sabre\\DAV\\' => 10,
-            'Sabre\\DAVACL\\' => 13,
-            'Sabre\\CardDAV\\' => 14,
-            'Sabre\\CalDAV\\' => 13,
+            'Sabre\\' => 6,
         ),
         'P' => 
         array (
@@ -100,10 +93,6 @@ class ComposerStaticInite446079fa2cc77fc71ba2d2a1334bc0c
         array (
             0 => __DIR__ . '/..' . '/giggsey/libphonenumber-for-php/src',
         ),
-        'Symfony\\Polyfill\\Php80\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
-        ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
@@ -132,25 +121,13 @@ class ComposerStaticInite446079fa2cc77fc71ba2d2a1334bc0c
         array (
             0 => __DIR__ . '/..' . '/sabre/event/lib',
         ),
-        'Sabre\\DAV\\' => 
+        'Sabre\\' => 
         array (
-            0 => __DIR__ . '/..' . '/sabre/dav/lib/DAV',
-        ),
-        'Sabre\\DAVACL\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/sabre/dav/lib/DAVACL',
-        ),
-        'Sabre\\CardDAV\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/sabre/dav/lib/CardDAV',
-        ),
-        'Sabre\\CalDAV\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/sabre/dav/lib/CalDAV',
+            0 => __DIR__ . '/..' . '/sabre/dav/lib',
         ),
         'Psr\\Log\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+            0 => __DIR__ . '/..' . '/psr/log/src',
         ),
         'Psr\\Http\\Message\\' => 
         array (
@@ -213,16 +190,7 @@ class ComposerStaticInite446079fa2cc77fc71ba2d2a1334bc0c
     );
 
     public static $classMap = array (
-        'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
-        'Collator' => __DIR__ . '/..' . '/symfony/intl/Resources/stubs/Collator.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'IntlDateFormatter' => __DIR__ . '/..' . '/symfony/intl/Resources/stubs/IntlDateFormatter.php',
-        'Locale' => __DIR__ . '/..' . '/symfony/intl/Resources/stubs/Locale.php',
-        'NumberFormatter' => __DIR__ . '/..' . '/symfony/intl/Resources/stubs/NumberFormatter.php',
-        'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
-        'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
-        'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
-        'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
         'WP_Async_Request' => __DIR__ . '/..' . '/deliciousbrains/wp-background-processing/classes/wp-async-request.php',
         'WP_Background_Process' => __DIR__ . '/..' . '/deliciousbrains/wp-background-processing/classes/wp-background-process.php',
     );

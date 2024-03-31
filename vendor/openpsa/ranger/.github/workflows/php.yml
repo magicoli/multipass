@@ -10,7 +10,7 @@ jobs:
   build:
 
     runs-on: Ubuntu-20.04
-    
+
     env:
       extensions: intl
 
@@ -24,6 +24,8 @@ jobs:
           - php: '7.4'
           - php: '8.0'
           - php: '8.1'
+          - php: '8.2'
+          - php: '8.3'
       fail-fast: false
 
     steps:

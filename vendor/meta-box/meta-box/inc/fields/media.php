@@ -13,6 +13,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 			wp_register_script( 'media-grid', includes_url( 'js/media-grid.min.js' ), [ 'media-editor' ], '4.9.7', true );
 		}
 		wp_enqueue_style( 'rwmb-media', RWMB_CSS_URL . 'media.css', [], RWMB_VER );
+		wp_style_add_data( 'rwmb-media', 'path', RWMB_CSS_DIR . 'media.css' );
 		wp_enqueue_script( 'rwmb-media', RWMB_JS_URL . 'media.js', [ 'jquery-ui-sortable', 'underscore', 'backbone', 'media-grid' ], RWMB_VER, true );
 
 		RWMB_Helpers_Field::localize_script_once( 'rwmb-media', 'i18nRwmbMedia', [
@@ -32,9 +33,7 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	}
 
 	public static function add_actions() {
-		// Print HTML templates for Customizer.
-		// Must called here instead of inside html() because content of the field is injected via JavaScript.
-		add_action( 'customize_controls_print_footer_scripts', [ get_called_class(), 'print_templates' ] );
+		add_action( 'print_media_templates', [ get_called_class(), 'print_templates' ] );
 	}
 
 	/**
@@ -75,10 +74,6 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	 * @return string
 	 */
 	public static function html( $meta, $field ) {
-		// Print HTML templates. Runs only when the field is outputted.
-		add_action( 'admin_footer', [ get_called_class(), 'print_templates' ] );
-		add_action( 'wp_footer', [ get_called_class(), 'print_templates' ] );
-
 		$attributes = static::get_attributes( $field, $meta );
 
 		$html = sprintf(
@@ -215,6 +210,6 @@ class RWMB_Media_Field extends RWMB_File_Field {
 	 * Template for media item.
 	 */
 	public static function print_templates() {
-		require_once RWMB_INC_DIR . 'templates/media.php';
+		require RWMB_INC_DIR . 'templates/media.php';
 	}
 }
