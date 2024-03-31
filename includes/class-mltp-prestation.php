@@ -1826,7 +1826,11 @@ class Mltp_Prestation {
 
 		$post_status = $post->status;
 		if ( empty( $details_statuses ) ) {
-			$post_status = 'canceled';
+			if(empty($details_statuses)) {
+				$post_status = 'publish';
+			} else {
+				$post_status = 'canceled';
+			}
 		} elseif ( isset( $details_statuses['publish'] ) ) {
 			$post_status = 'publish';
 		} elseif ( isset( $details_statuses['open'] ) ) {
