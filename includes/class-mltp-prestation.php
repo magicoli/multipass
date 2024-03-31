@@ -881,7 +881,7 @@ class Mltp_Prestation {
 				],
 				'field'        => [
 					'name'      => __('Prestation', 'multipass'),
-					'max_clone' => '1',
+					'max_clone' => 1,
 				],
 			],
 			'to'   => [
@@ -899,6 +899,7 @@ class Mltp_Prestation {
 				'field'        => [
 					'name'    => __('Elements', 'multipass'),
 					'add_new' => true,
+					'multiple' -> false,
 				],
 			],
 		] );

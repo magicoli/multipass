@@ -1,4 +1,6 @@
 jQuery(document).ready(function($) {
+    var userTriggered = false;
+
     // Vérifier si le corps de la page contient les classes nécessaires
     if ($('body').hasClass('post-type-mltp_prestation') || $('body').hasClass('post-type-mltp_detail')) {
         // Lorsque la date de début change
@@ -10,20 +12,23 @@ jQuery(document).ready(function($) {
             $('#dates_to').datepicker('option', 'minDate', startDate);
 
             // Déplacer le focus vers le champ date_to après un court délai
-            setTimeout(function() {
-                $('#dates_to').datepicker('show');
-            }, 100);
+            // if (userTriggered) {
+            //     setTimeout(function() {
+            //         $('#dates_to').datepicker('show');
+            //     }, 100);
+            // }
         });
 
         // Attacher l'événement change aux champs from et to même s'ils sont ajoutés après le chargement de la page
         $(document).on('change', 'input[id^="manual_items_from"]', function() {
+            
             var i = $('input[id^="manual_items_from"]').index(this);
             // Récupérer la date de début
             var startDate = $(this).val();
-
+            
             // Mettre à jour la date minimale pour la date de fin
             $('input[id^="manual_items_to"]').eq(i).datepicker('option', 'minDate', startDate);
-
+            
             // Déplacer le focus vers le champ date_to après un court délai
             setTimeout(function() {
                 $('input[id^="manual_items_to"]').eq(i).datepicker('show');
@@ -47,6 +52,8 @@ jQuery(document).ready(function($) {
 
             // Attendez que l'iframe soit ajoutée au DOM
             var checkExist = setInterval(function() {
+                userTriggered = false;
+
                 if ($('#rwmb-modal-iframe').length) {
                     // L'iframe existe, arrêtez l'intervalle
                     clearInterval(checkExist);
@@ -58,6 +65,7 @@ jQuery(document).ready(function($) {
                     + '&dates_to=' + encodeURIComponent(dates_to)
                     + '&prestation_id=' + encodeURIComponent(prestation_id);
                 }
+                userTriggered = true;
             }, 100); // vérifiez toutes les 100ms
         });
     }
@@ -77,15 +85,22 @@ jQuery(document).ready(function($) {
 
                 // Attendez que les champs du formulaire soient ajoutés au DOM
                 var checkExist = setInterval(function() {
-                    if ($('#dates_from').length && $('#dates_to').length) {
+                    userTriggered = false;
+                    if ($('#dates_from').length) {
                         // Les champs du formulaire existent, arrêtez l'intervalle
                         clearInterval(checkExist);
 
-                        // Utilisez les valeurs pour remplir les champs du formulaire
-                        $('#dates_from').val(dates_from);
-                        $('#dates_to').val(dates_to);
+                        // Utilisez les objets Date pour remplir les champs du formulaire
+                        $('#dates_from').val(dates_from).focus();
+                        $('#dates_to').val(dates_to).focus();
+
                         $('#prestation_id').val(prestation_id).trigger('change');
+                        $('#prestation-task_from').val(prestation_id).trigger('change');
+
+                        $('#dates_to').datepicker('hide');
+                        $('#resource_id').focus();
                     }
+                    userTriggered = true;
                 }, 100); // vérifiez toutes les 100ms
             }
         });
