@@ -7,18 +7,21 @@ jQuery(document).ready(function($) {
         $('#dates_from').change(function() {
             // Récupérer la date de début
             var startDate = $(this).val();
-
             // Mettre à jour la date minimale pour la date de fin
             $('#dates_to').datepicker('option', 'minDate', startDate);
 
-            // Déplacer le focus vers le champ date_to après un court délai
-            // if (userTriggered) {
-            //     setTimeout(function() {
-            //         $('#dates_to').datepicker('show');
-            //     }, 100);
-            // }
-        });
+            // Créer un objet URLSearchParams à partir de l'URL actuelle
+            var urlParams = new URLSearchParams(window.location.search);
 
+            // Vérifier si l'URL contient le paramètre dates_from
+            if (!urlParams.has('dates_from')) {
+                setTimeout(function() {
+                    $('#dates_from').datepicker('hide');
+                    // $('#dates_from').blur();
+                    $('#dates_to').datepicker('show');
+                }, 100);
+            }
+        });
         // Attacher l'événement change aux champs from et to même s'ils sont ajoutés après le chargement de la page
         $(document).on('change', 'input[id^="manual_items_from"]', function() {
             
