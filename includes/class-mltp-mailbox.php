@@ -122,8 +122,8 @@ class Mltp_Mailbox {
 					'id'       => $prefix . 'port',
 					'type'     => 'button_group',
 					'options'  => array(
-						143 => __( '143', 'multipass' ),
-						993 => __( '993', 'multipass' ),
+						143 => '143',
+						993 => '993',
 					),
 					'std'      => 993,
 					'required' => false,

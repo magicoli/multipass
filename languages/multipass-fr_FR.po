@@ -4,30 +4,28 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/multipass\n"
 "POT-Creation-Date: 2023-06-26T02:20:18+00:00\n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
+"Last-Translator: gpt-po v1.0.11\n"
 "Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.0.1\n"
 
 #. Plugin Name of the plugin
-msgid "MultiPass (dev)"
-msgstr "MultiPass (dev)"
+msgid "MultiPass"
+msgstr "MultiPass"
 
 #. Plugin URI of the plugin
 msgid "https://magiiic.com/wordpress/plugins/multipass/"
 msgstr "https://magiiic.com/wordpress/plugins/multipass/"
 
 #. Description of the plugin
-msgid ""
-"Manage bookings and other services from different sources (WooCommerce, "
-"Lodgify, HBook, OTA, PMS, booking engines...)."
+msgid "Manage bookings and other services from different sources (WooCommerce, Lodgify, HBook, OTA, PMS, booking engines...)."
 msgstr ""
-"Gestion des réservations et services depuis différentes sources "
-"(WooCommerce, Lodgify, HBook, OTA, PMS, moteurs de réservation...) ."
+"Gestion des réservations et services depuis différentes sources (WooCommerce, Lodgify, HBook, OTA, PMS, moteurs de "
+"réservation...) ."
 
 #. Author of the plugin
 msgid "Magiiic"
@@ -54,19 +52,36 @@ msgid "Sections to display on %1$sCalendar page%2$s."
 msgstr "Sections à afficher sur %1$sla page Calendrier%2$s."
 
 #: includes/class-mltp-calendar.php:173
-msgid ""
-"To create or delete sections, go to %1$sResource Categories edit page%2$s."
-msgstr ""
-"Pour créer ou supprimer des sections, rendez-vous sur %sla page de gestion "
-"des Catégories de ressources%s."
+msgid "To create or delete sections, go to %1$sResource Categories edit page%2$s."
+msgstr "Pour créer ou supprimer des sections, rendez-vous sur %sla page de gestion des Catégories de ressources%s."
 
 #: includes/class-mltp-calendar.php:207
 msgid "MultiPass Calendar"
 msgstr "Calendrier MultiPass"
 
-#: includes/class-mltp-calendar.php:262
-msgid "Loading in progress, please wait"
-msgstr "Chargement en cours, merci de patienter"
+#: includes/class-mltp-calendar.php:243
+msgid "Ready to receive data"
+msgstr "Prêt à recevoir les données"
+
+#: includes/class-mltp-calendar.php:244
+msgid "Loading %s"
+msgstr "Chargement %s"
+
+#: includes/class-mltp-calendar.php:245
+msgid "Calendar loaded successfully"
+msgstr "Calendrier chargé avec succès"
+
+#: includes/class-mltp-calendar.php:246
+msgid "Error loading the calendar"
+msgstr "Erreur lors du chargement du calendrier"
+
+#: includes/class-mltp-calendar.php:247
+msgid "Error rendering the calendar"
+msgstr "Erreur lors du rendu du calendrier"
+
+#: includes/class-mltp-calendar.php:248
+msgid "JSON parsing error"
+msgstr "Erreur d'analyse JSON"
 
 #: includes/class-mltp-calendar.php:269
 msgid "Undefined"
@@ -92,26 +107,6 @@ msgstr "Fin"
 #: includes/class-mltp-calendar.php:496
 msgid "Nights"
 msgstr "Nuits"
-
-#: includes/class-mltp-calendar.php:497 includes/class-mltp-prestation.php:459
-#: includes/class-mltp-prestation.php:1947
-msgctxt "(noun)"
-msgid "Contact"
-msgstr "Contact"
-
-#: includes/class-mltp-calendar.php:498
-#: includes/class-mltp-prestation-detail.php:554
-#: includes/class-mltp-prestation-detail.php:591
-msgctxt "(noun)"
-msgid "Email"
-msgstr "E-mail"
-
-#: includes/class-mltp-calendar.php:499
-#: includes/class-mltp-prestation-detail.php:560
-#: includes/class-mltp-prestation-detail.php:597
-msgctxt "(noun)"
-msgid "Phone"
-msgstr "Téléphone"
 
 #: includes/class-mltp-calendar.php:501 includes/class-mltp-prestation.php:1101
 msgid "Prestation subtotal"
@@ -232,9 +227,13 @@ msgstr "Événement non trouvé"
 msgid "Not an event"
 msgstr "Pas un événement"
 
-#: includes/class-mltp-contact.php:129
-msgid "Tables updated."
-msgstr "Tables mises à jour."
+#: includes/class-mltp-contact.php:156
+msgid "Tables cration failed."
+msgstr "La création des tables a échoué."
+
+#: includes/class-mltp-contact.php:161
+msgid "Tables creation succeeded."
+msgstr "La création des tables a réussi."
 
 #: includes/class-mltp-contact.php:142 includes/class-mltp-contact.php:154
 #: includes/class-mltp-contact.php:163 includes/class-mltp-contact.php:176
@@ -452,9 +451,12 @@ msgstr "Département / État"
 msgid "Country"
 msgstr "Pays"
 
-#: includes/class-mltp-contact.php:367
-msgid "Use parent"
-msgstr "Utiliser le parent"
+#: includes/class-mltp-prestation-detail.php:519
+#: includes/class-mltp-prestation-detail.php:535
+#: includes/class-mltp-prestation.php:447
+#: includes/class-mltp-prestation.php:1946
+msgid "Customer"
+msgstr "Client"
 
 #: includes/class-mltp-contact.php:385
 msgid "Add contact"
@@ -588,6 +590,10 @@ msgstr "Facturation"
 msgid "Guest"
 msgstr "Invité"
 
+#: includes/class-mltp-contact.php:671
+msgid "Not enough data %s"
+msgstr "Données insuffisantes %s"
+
 #: includes/class-mltp-contact.php:763
 msgid "%s contacts updated from existing WP users."
 msgstr "%s contacts mis à jour depuis les utilisateurs WP."
@@ -623,14 +629,6 @@ msgstr "mail.example.org"
 #: includes/class-mltp-mailbox.php:121
 msgid "Port"
 msgstr "Port"
-
-#: includes/class-mltp-mailbox.php:125
-msgid "143"
-msgstr "143"
-
-#: includes/class-mltp-mailbox.php:126
-msgid "993"
-msgstr "993"
 
 #: includes/class-mltp-mailbox.php:132
 msgid "Encryption"
@@ -799,6 +797,12 @@ msgstr "Sélectionnez un élément"
 msgid "Elements fields"
 msgstr "Champs des éléments"
 
+#: includes/class-mltp-prestation.php:645
+#: includes/class-mltp-rates-and-taxes.php:411
+#: includes/class-mltp-resource.php:213
+msgid "Resource"
+msgstr "Ressource"
+
 #: includes/class-mltp-prestation-detail.php:440
 #: includes/class-mltp-prestation.php:653
 #: includes/class-mltp-prestation.php:1224 includes/class-mltp-reports.php:213
@@ -807,18 +811,9 @@ msgstr "Champs des éléments"
 msgid "Description"
 msgstr "Description"
 
-#: includes/class-mltp-prestation-detail.php:449
-msgid "Local resource"
-msgstr "Ressource locale"
-
 #: includes/class-mltp-prestation-detail.php:466
 msgid "External source"
 msgstr "Source externe"
-
-#: includes/class-mltp-prestation-detail.php:471
-msgctxt "(mltp_detail) source"
-msgid "None"
-msgstr "Aucune"
 
 #: includes/class-mltp-prestation-detail.php:480
 msgid "Source ID"
@@ -831,26 +826,6 @@ msgstr "Identifiant élément source"
 #: includes/class-mltp-prestation-detail.php:500
 msgid "Links"
 msgstr "Liens"
-
-#: includes/class-mltp-prestation-detail.php:519
-#: includes/class-mltp-prestation-detail.php:535
-#: includes/class-mltp-prestation.php:447
-#: includes/class-mltp-prestation.php:1946
-msgid "Customer"
-msgstr "Client"
-
-#: includes/class-mltp-prestation-detail.php:541
-#: includes/class-mltp-prestation-detail.php:578
-msgid "Existing User"
-msgstr "Utilisateur existant"
-
-#: includes/class-mltp-prestation-detail.php:571
-msgid "Attendee"
-msgstr "Participant"
-
-#: includes/class-mltp-prestation-detail.php:575
-msgid "Fill only if different from customer."
-msgstr "Remplir uniquement si différent du client."
 
 #: includes/class-mltp-prestation-detail.php:609
 #: includes/class-mltp-prestation-detail.php:619
@@ -1218,25 +1193,7 @@ msgstr "prestations"
 
 #: includes/class-mltp-prestation.php:397
 msgid "Slug prepended to prestations urls, leave empty for default (%s)."
-msgstr ""
-"Slug précédant les URL de prestations, laissez vide pour la valeur par "
-"défaut (%s)."
-
-#: includes/class-mltp-prestation.php:453
-msgid "Contact name"
-msgstr "Nom du contact"
-
-#: includes/class-mltp-prestation.php:456
-msgid "Leave empty if same as customer name"
-msgstr "Laisser vide si identique au nom du client"
-
-#: includes/class-mltp-prestation.php:464
-msgid "Contact Email"
-msgstr "Email du contact"
-
-#: includes/class-mltp-prestation.php:469
-msgid "Contact Phone"
-msgstr "Téléphone du contact"
+msgstr "Slug précédant les URL de prestations, laissez vide pour la valeur par défaut (%s)."
 
 #: includes/class-mltp-prestation.php:631
 msgid "Manual operations"
@@ -1244,20 +1201,12 @@ msgstr "Opérations manuelles"
 
 #: includes/class-mltp-prestation.php:637
 msgid "Use manual operations only for items not managed by modules."
-msgstr ""
-"Utilisez les opérations manuelles uniquement pour les éléments non gérés par "
-"les modules."
+msgstr "Utilisez les opérations manuelles uniquement pour les éléments non gérés par les modules."
 
 #: includes/class-mltp-prestation.php:644
 #: includes/modules/class-mltp-woocommerce.php:189
 msgid "Product"
 msgstr "Produit"
-
-#: includes/class-mltp-prestation.php:645
-#: includes/class-mltp-rates-and-taxes.php:411
-#: includes/class-mltp-resource.php:213
-msgid "Resource"
-msgstr "Ressource"
 
 #: includes/class-mltp-prestation.php:646
 msgid "Booking"
@@ -1420,11 +1369,8 @@ msgid "Submit"
 msgstr "Envoyer"
 
 #: includes/class-mltp-prestation.php:1036
-msgid ""
-"Only used for validation, it will not be stored and no message will be sent."
-msgstr ""
-"Utilisé uniquement à des fins de validation, elle ne sera pas stockée et "
-"aucun message ne sera envoyé."
+msgid "Only used for validation, it will not be stored and no message will be sent."
+msgstr "Utilisé uniquement à des fins de validation, elle ne sera pas stockée et aucun message ne sera envoyé."
 
 #: includes/class-mltp-prestation.php:1232
 #: includes/modules/class-mltp-modules.php:201
@@ -1688,6 +1634,22 @@ msgstr "%1$s%% du tarif %2$s"
 msgid "or"
 msgstr "ou"
 
+#: includes/class-mltp-reports-payments.php:135
+msgid "Payments"
+msgstr "Paiements"
+
+#: includes/class-mltp-reports-payments.php:136
+msgid "Download CSV"
+msgstr "Télécharger le fichier CSV"
+
+#: includes/class-mltp-reports-payments.php:141
+msgid "Payment Date"
+msgstr "Date de paiement"
+
+#: includes/class-mltp-reports-payments.php:145
+msgid "Prestation Dates"
+msgstr "Dates de prestation"
+
 #: includes/class-mltp-reports.php:15 includes/class-mltp-reports.php:16
 #: includes/class-mltp-reports.php:101
 msgid "Reports"
@@ -1930,11 +1892,6 @@ msgstr "Liste des catégorie"
 msgid "&larr; Go to categories"
 msgstr "&larr; Aller aux catégories"
 
-#: includes/class-mltp-resource.php:446
-msgctxt "Calendar"
-msgid "Main"
-msgstr "Principal"
-
 #: includes/class-mltp-resource.php:447
 msgid "Options"
 msgstr "Options"
@@ -2057,8 +2014,7 @@ msgstr "Retour à MultiPass"
 
 #: includes/class-multipass.php:1106
 msgid "Do not hesitate to reach us by mail or phone with any question."
-msgstr ""
-"N'hésitez pas à nous contacter par mail ou par téléphone pour toute question."
+msgstr "N'hésitez pas à nous contacter par mail ou par téléphone pour toute question."
 
 #: includes/class-multipass.php:1107
 msgid "Best regards,"
@@ -2077,8 +2033,8 @@ msgid ""
 "\n"
 "%3$s\n"
 "\n"
-"You can pay by card, Paypal, or bank transfer. For wire transfers, please "
-"take into account a bank processing time of 2 to 3 business days."
+"You can pay by card, Paypal, or bank transfer. For wire transfers, please take into account a bank processing time of 2 "
+"to 3 business days."
 msgstr ""
 "Bonjour\n"
 "\n"
@@ -2086,9 +2042,8 @@ msgstr ""
 "\n"
 "%3$s\n"
 "\n"
-"Vous pouvez payer par carte, Paypal ou virement bancaire. Pour les "
-"virements, veuillez prendre en compte un délai de traitement bancaire de 2 à "
-"3 jours ouvrés."
+"Vous pouvez payer par carte, Paypal ou virement bancaire. Pour les virements, veuillez prendre en compte un délai de "
+"traitement bancaire de 2 à 3 jours ouvrés."
 
 #: includes/class-multipass.php:1132
 msgid "Send payment link by mail"
@@ -2127,12 +2082,11 @@ msgstr "Synchroniser maintenant"
 
 #: includes/modules/class-mltp-hbook.php:137
 msgid ""
-"Sync HBook bookings with prestations, create prestation if none exist. Only "
-"useful after plugin activation or if out of sync."
+"Sync HBook bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of "
+"sync."
 msgstr ""
-"Synchronisez les réservations HBook avec les prestations, créez des "
-"prestations si aucune n'existe. Uniquement utile après l'activation du "
-"plugin ou en cas de désynchronisation."
+"Synchronisez les réservations HBook avec les prestations, créez des prestations si aucune n'existe. Uniquement utile "
+"après l'activation du plugin ou en cas de désynchronisation."
 
 #: includes/modules/class-mltp-hbook.php:153
 msgid "HBook Accommodations"
@@ -2182,12 +2136,11 @@ msgstr "Importer maintenant"
 
 #: includes/modules/class-mltp-lodgify.php:209
 msgid ""
-"Import Lodgify bookings, create or resync matching prestations and entries. "
-"Only useful after plugin activation or if out of sync."
+"Import Lodgify bookings, create or resync matching prestations and entries. Only useful after plugin activation or if "
+"out of sync."
 msgstr ""
-"Importer les réservations Lodgify, créer ou synchroniser les prestations "
-"correspondantes. Uniquement utile lors de l'activation de l'extension ou en "
-"cas de désynchronisation."
+"Importer les réservations Lodgify, créer ou synchroniser les prestations correspondantes. Uniquement utile lors de "
+"l'activation de l'extension ou en cas de désynchronisation."
 
 #: includes/modules/class-mltp-lodgify.php:301
 msgid "Do not synchronize"
@@ -2247,36 +2200,27 @@ msgstr "Produits de paiement"
 
 #: includes/modules/class-mltp-woocommerce-payment.php:64
 msgid ""
-"Payment products are used to provide a payment gateway for prestation not "
-"handled by WooCommerce (like deposits, custom items or prestation items "
-"handled by an external website)."
+"Payment products are used to provide a payment gateway for prestation not handled by WooCommerce (like deposits, custom "
+"items or prestation items handled by an external website)."
 msgstr ""
-"Les produits de paiement sont utilisés pour fournir une passerelle de "
-"paiement pour des prestations non gérées par WooCommerce (comme les dépôts, "
-"les articles personnalisés ou les prestation items gérés par un site Web "
-"externe)."
+"Les produits de paiement sont utilisés pour fournir une passerelle de paiement pour des prestations non gérées par "
+"WooCommerce (comme les dépôts, les articles personnalisés ou les prestation items gérés par un site Web externe)."
 
 #: includes/modules/class-mltp-woocommerce-payment.php:68
-msgid ""
-"To enable a product as payment, check the \"Payment Only\" option on product "
-"edit page and set its price to 0 (zero)."
+msgid "To enable a product as payment, check the \"Payment Only\" option on product edit page and set its price to 0 (zero)."
 msgstr ""
-"Pour activer un produit en tant que paiement, cochez l'option \"Paiement "
-"uniquement\" sur la page d'édition du produit et définissez son prix sur 0 "
-"(zéro)."
+"Pour activer un produit en tant que paiement, cochez l'option \"Paiement uniquement\" sur la page d'édition du produit "
+"et définissez son prix sur 0 (zéro)."
 
 #: includes/modules/class-mltp-woocommerce-payment.php:69
-msgid ""
-"Enabling Payment Only will disable fixed product price and add amount and "
-"reference fields to product page."
+msgid "Enabling Payment Only will disable fixed product price and add amount and reference fields to product page."
 msgstr ""
-"L'activation du paiement uniquement désactivera le prix fixe du produit et "
-"ajoutera des champs de montant et de référence à la page du produit."
+"L'activation du paiement uniquement désactivera le prix fixe du produit et ajoutera des champs de montant et de "
+"référence à la page du produit."
 
 #: includes/modules/class-mltp-woocommerce-payment.php:70
 msgid "Only one Payment Only product is needed by MultiPass plugin."
-msgstr ""
-"Un seul produit de paiement uniquement est requis par le plug-in MultiPass."
+msgstr "Un seul produit de paiement uniquement est requis par le plug-in MultiPass."
 
 #: includes/modules/class-mltp-woocommerce-payment.php:76
 msgid "Default product"
@@ -2333,7 +2277,7 @@ msgstr "Cochez pour utiliser le produit comme paiement MultiPass."
 
 #: includes/modules/class-mltp-woocommerce-payment.php:232
 msgid "Payment reference: "
-msgstr "Référence du paiemet : "
+msgstr "Référence du paiement :"
 
 #: includes/modules/class-mltp-woocommerce-payment.php:246
 msgid "Payment reference:"
@@ -2349,17 +2293,12 @@ msgid "Amount to pay"
 msgstr "Montant à payer"
 
 #: includes/modules/class-mltp-woocommerce-payment.php:279
-msgid ""
-"\"%s\" could not be added to the cart. Please provide a valid amount to pay."
-msgstr ""
-"\"%s\" n'a pas pu être ajouté au panier. Veuillez fournir un montant valide "
-"à payer."
+msgid "\"%s\" could not be added to the cart. Please provide a valid amount to pay."
+msgstr "\"%s\" n'a pas pu être ajouté au panier. Veuillez fournir un montant valide à payer."
 
 #: includes/modules/class-mltp-woocommerce-payment.php:291
 msgid "\"%s\" could not be added to the cart. Please provide a prestation id."
-msgstr ""
-"\"%s\" n'a pas pu être ajouté au panier. Veuillez fournir un identifiant de "
-"prestation."
+msgstr "\"%s\" n'a pas pu être ajouté au panier. Veuillez fournir un identifiant de prestation."
 
 #: includes/modules/class-mltp-woocommerce-payment.php:334
 msgid "Prestation payment"
@@ -2385,9 +2324,7 @@ msgstr "WooCommerce"
 
 #: includes/modules/class-mltp-woocommerce.php:288
 msgid "Set currency options in %1$sWooCommerce settings page%2$s"
-msgstr ""
-"Définissez les options de devise sur la %1$spage des paramètres "
-"WooCommerce%2$s"
+msgstr "Définissez les options de devise sur la %1$spage des paramètres WooCommerce%2$s"
 
 #: includes/modules/class-mltp-woocommerce.php:295
 msgid "Payment Products"
@@ -2403,17 +2340,13 @@ msgstr "Ajouter le nom du client au sujet du message de notification"
 
 #: includes/modules/class-mltp-woocommerce.php:310
 msgid "Append client name to the subject of administrator notification email"
-msgstr ""
-"Ajouter le nom du client au sujet du message de notification administrateur"
+msgstr "Ajouter le nom du client au sujet du message de notification administrateur"
 
 #: includes/modules/class-mltp-woocommerce.php:319
-msgid ""
-"Sync orders and prestations, create prestation if none exist. Only useful "
-"after plugin activation or if out of sync."
+msgid "Sync orders and prestations, create prestation if none exist. Only useful after plugin activation or if out of sync."
 msgstr ""
-"Synchroniser les commandes et les prestations, créer des prestations si "
-"aucune n'existe. Uniquement utile après l'activation du plugin ou en cas de "
-"désynchronisation."
+"Synchroniser les commandes et les prestations, créer des prestations si aucune n'existe. Uniquement utile après "
+"l'activation du plugin ou en cas de désynchronisation."
 
 #: includes/modules/class-mltp-woocommerce.php:820
 msgid "Online Shop (WooCommerce)"
@@ -2451,15 +2384,41 @@ msgstr[1] "%1$s titres / %2$s modifiés"
 msgid "Table and contact update in progress"
 msgstr "Mise à jour des tables et des contacts en cours"
 
+#: includes/class-mltp-calendar.php:497 includes/class-mltp-prestation.php:459
+#: includes/class-mltp-prestation.php:1947
+msgctxt "(noun)"
+msgid "Contact"
+msgstr "Contact"
+
+#: includes/class-mltp-calendar.php:498
+#: includes/class-mltp-prestation-detail.php:554
+#: includes/class-mltp-prestation-detail.php:591
+msgctxt "(noun)"
+msgid "Email"
+msgstr "E-mail"
+
+#: includes/class-mltp-calendar.php:499
+#: includes/class-mltp-prestation-detail.php:560
+#: includes/class-mltp-prestation-detail.php:597
+msgctxt "(noun)"
+msgid "Phone"
+msgstr "Téléphone"
+
+#: includes/class-mltp-prestation-detail.php:471
+msgctxt "(mltp_detail) source"
+msgid "None"
+msgstr "Aucune"
+
+#: includes/class-mltp-resource.php:446
+msgctxt "Calendar"
+msgid "Main"
+msgstr "Principal"
+
 #~ msgid "€"
 #~ msgstr "€"
 
 #~ msgid "resource"
 #~ msgstr "ressource"
-
-#~ msgctxt "Calendar section"
-#~ msgid "None"
-#~ msgstr "Aucune"
 
 #~ msgid "Calendar Sections"
 #~ msgstr "Sections du calendrier"
@@ -2551,16 +2510,8 @@ msgstr "Mise à jour des tables et des contacts en cours"
 #~ msgid "Get rules from"
 #~ msgstr "Utilisez les règles de"
 
-#~ msgctxt "option for \"Get rules from\" select field"
-#~ msgid "Custom"
-#~ msgstr "Personnalisées"
-
 #~ msgid "Get prices from"
 #~ msgstr "Utilisez les prix de"
-
-#~ msgctxt "option for \"Get prices from\" select field"
-#~ msgid "Custom"
-#~ msgstr "Personnalisés"
 
 #~ msgid "Get rules from Parent"
 #~ msgstr "Utilisez les règles du parent"
@@ -2572,27 +2523,12 @@ msgstr "Mise à jour des tables et des contacts en cours"
 #~ msgstr "Activer la réservation"
 
 #~ msgid ""
-#~ "Default, minimum and maximum durations are counted in hours when unit is "
-#~ "\"%1$s\", days for \"%2$s\" or \"%3$s\". Hours can be divided (1.5, "
-#~ "0.25...), days cannot (1, 2..). Set maximum to 0 or empty for unlimited "
-#~ "duration."
+#~ "Default, minimum and maximum durations are counted in hours when unit is \"%1$s\", days for \"%2$s\" or \"%3$s\". Hours "
+#~ "can be divided (1.5, 0.25...), days cannot (1, 2..). Set maximum to 0 or empty for unlimited duration."
 #~ msgstr ""
-#~ "Les durées par défaut, minimum et maximum sont comptées en heures lorsque "
-#~ "l'unité de réservation est \"%s\", et en jours pour \"%s\" et \"%s\". Les "
-#~ "heures sont divisibles (1,5 - 0,25...), les jours non-divisibles (1 - 2 "
-#~ "- ...). Réglez le maximum sur zéro ou vide pour une durée illimitée."
-
-#~ msgctxt "booking time unit"
-#~ msgid "Hour"
-#~ msgstr "Horaire"
-
-#~ msgctxt "booking time unit"
-#~ msgid "Day"
-#~ msgstr "À la journée"
-
-#~ msgctxt "booking time unit"
-#~ msgid "Overnight"
-#~ msgstr "À la nuitée"
+#~ "Les durées par défaut, minimum et maximum sont comptées en heures lorsque l'unité de réservation est \"%s\", et en "
+#~ "jours pour \"%s\" et \"%s\". Les heures sont divisibles (1,5 - 0,25...), les jours non-divisibles (1 - 2 - ...). Réglez "
+#~ "le maximum sur zéro ou vide pour une durée illimitée."
 
 #~ msgid "Default Duration"
 #~ msgstr "Durée par défaut"
@@ -2613,9 +2549,7 @@ msgstr "Mise à jour des tables et des contacts en cours"
 #~ msgstr "Activer le nombre de participants"
 
 #~ msgid "Allow simultaneous bookings (for restaurants, shows...)"
-#~ msgstr ""
-#~ "Autoriser les réservations simultanées (pour les restaurants, "
-#~ "spectacles...)"
+#~ msgstr "Autoriser les réservations simultanées (pour les restaurants, spectacles...)"
 
 #~ msgid "Total capacity"
 #~ msgstr "Capacité totale"
@@ -2750,16 +2684,10 @@ msgstr "Mise à jour des tables et des contacts en cours"
 #~ msgstr "Voici le lien de paiement pour la prestation #%1$s (%2$s):"
 
 #~ msgid "You can pay by card, Paypal or wire transfer (from European banks)."
-#~ msgstr ""
-#~ "Vous pouvez payer par carte, Paypal ou virement (depuis une banque "
-#~ "européenne)"
+#~ msgstr "Vous pouvez payer par carte, Paypal ou virement (depuis une banque européenne)"
 
-#~ msgid ""
-#~ "For wire transfer, please take in account a bank processing delay of 2 to "
-#~ "3 days."
-#~ msgstr ""
-#~ "Pour les virements, merci de prendre en compte un delai bancaire de 2 à 3 "
-#~ "jours."
+#~ msgid "For wire transfer, please take in account a bank processing delay of 2 to 3 days."
+#~ msgstr "Pour les virements, merci de prendre en compte un delai bancaire de 2 à 3 jours."
 
 #~ msgid "Tropical regards"
 #~ msgstr "Salutations tropicales"
@@ -2823,3 +2751,27 @@ msgstr "Mise à jour des tables et des contacts en cours"
 
 #~ msgid "Use the reference number received during order."
 #~ msgstr "Utilisez le numéro de référence reçu lors de la commande."
+
+#~ msgctxt "Calendar section"
+#~ msgid "None"
+#~ msgstr "Aucune"
+
+#~ msgctxt "option for \"Get rules from\" select field"
+#~ msgid "Custom"
+#~ msgstr "Personnalisées"
+
+#~ msgctxt "option for \"Get prices from\" select field"
+#~ msgid "Custom"
+#~ msgstr "Personnalisés"
+
+#~ msgctxt "booking time unit"
+#~ msgid "Hour"
+#~ msgstr "Horaire"
+
+#~ msgctxt "booking time unit"
+#~ msgid "Day"
+#~ msgstr "À la journée"
+
+#~ msgctxt "booking time unit"
+#~ msgid "Overnight"
+#~ msgstr "À la nuitée"
