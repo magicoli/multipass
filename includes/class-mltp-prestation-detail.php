@@ -393,8 +393,8 @@ class Mltp_Item {
 			'rest_base'           => '',
 			'show_in_menu'        => 'multipass',
 			'menu_icon'           => 'dashicons-admin-generic',
-			'capability_type'     => 'mltp_resource',
-			'supports'            => false,
+			'capability_type'     => 'mltp_prestation',
+			'supports'            => array( '' ),
 			'taxonomies'          => array(),
 			'rewrite'             => array(
 				'slug'       => 'elements',

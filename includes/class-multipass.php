@@ -1355,4 +1355,4 @@ class MultiPass {
 	}
 }
 
-MultiPass::is_private();
+// MultiPass::is_private();

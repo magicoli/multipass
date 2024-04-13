@@ -489,7 +489,10 @@ class Mltp_Calendar {
 		if ( ! $event ) {
 			return false;
 		}
-		$transient_key = 'mltp_cal_event_modal_' . $event->id;
+		$user_id = get_current_user_id();
+		if(empty($user_id)) return false;
+
+		$transient_key = 'mltp_cal_event_modal_' . $user_id . '_' . $event->id;
 		$html          = get_transient( $transient_key );
 		if ( $html ) {
 			return $html;
@@ -646,15 +649,17 @@ class Mltp_Calendar {
 				'icon'  => 'welcome-write-blog',
 			);
 
-			$sources = MultiPass::get_registered_sources();
-			foreach ( $sources as $source => $source_name ) {
-				$source_url = get_post_meta( $event->id, $source . '_edit_url', true );
-				if ( ! empty( $source_url ) ) {
-					$links[ $source ] = array(
-						'label' => sprintf( __( 'View on %s', 'multipass' ), $source_name ),
-						'url'   => $source_url,
-						'icon'  => 'external',
-					);
+			if ( current_user_can( 'mltp_administrator' ) ) {
+				$sources = MultiPass::get_registered_sources();
+				foreach ( $sources as $source => $source_name ) {
+					$source_url = get_post_meta( $event->id, $source . '_edit_url', true );
+					if ( ! empty( $source_url ) ) {
+						$links[ $source ] = array(
+							'label' => sprintf( __( 'View on %s', 'multipass' ), $source_name ),
+							'url'   => $source_url,
+							'icon'  => 'external',
+						);
+					}
 				}
 			}
 		}
