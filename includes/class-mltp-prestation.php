@@ -899,7 +899,7 @@ class Mltp_Prestation {
 				'field'        => [
 					'name'    => __('Elements', 'multipass'),
 					'add_new' => true,
-					'multiple' -> false,
+					'multiple' => false,
 				],
 			],
 		] );
