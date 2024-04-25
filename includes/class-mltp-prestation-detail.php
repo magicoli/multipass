@@ -922,29 +922,29 @@ class Mltp_Item {
 						'sort'     => true,
 					),
 				),
-				array(
-					'name'          => __( 'Status', 'multipass' ),
-					'id'            => $prefix . 'status',
-					'type'          => 'taxonomy',
-					'taxonomy'      => array( 'prestation-status' ),
-					'field_type'    => 'select',
-					'admin_columns' => array(
-						'position'   => 'before source',
-						'sort'       => true,
-						'filterable' => true,
-					),
-				),
-				array(
-					'name'    => __( 'Notes', 'prestations' ),
-					'id'      => $prefix . 'notes',
-					'type'    => 'wysiwyg',
-					'raw'     => false,
-					'options' => array(
-						// 'textarea_rows' => 4,
-						'teeny'             => true,
-						'media_buttonsbool' => false,
-					),
-				),
+				// array(
+				// 	'name'          => __( 'Status', 'multipass' ),
+				// 	'id'            => $prefix . 'status',
+				// 	'type'          => 'taxonomy',
+				// 	'taxonomy'      => array( 'prestation-status' ),
+				// 	'field_type'    => 'select',
+				// 	'admin_columns' => array(
+				// 		'position'   => 'before source',
+				// 		'sort'       => true,
+				// 		'filterable' => true,
+				// 	),
+				// ),
+				// array(
+				// 	'name'    => __( 'Notes', 'prestations' ),
+				// 	'id'      => $prefix . 'notes',
+				// 	'type'    => 'wysiwyg',
+				// 	'raw'     => false,
+				// 	'options' => array(
+				// 		// 'textarea_rows' => 4,
+				// 		'teeny'             => true,
+				// 		'media_buttonsbool' => false,
+				// 	),
+				// ),
 			),
 		);
 
