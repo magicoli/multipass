@@ -76,7 +76,7 @@ class Mltp_Calendar {
 				'component' => $this,
 				'callback'  => 'delete_calendar_modal_cache',
 				'accepted_args' => 3,
-				// 'priority'  => 10,
+				'priority'  => 20,
 			),
 		);
 
@@ -698,27 +698,35 @@ class Mltp_Calendar {
 
 	// Method to delete calendar modal when a prestation is updated
 	public function delete_calendar_modal_cache( $post_id, $post ) {
-		if ( 'mltp_detail' === $post->post_type ) {
-			$transient_key = 'mltp_cal_event_modal_' . $post_id;
-			delete_transient( $transient_key );
+		$post_ids[] = $post_id;
+		if( 'mltp_prestation' === $post->post_type ) {
+			$prestation_id = $post_id;
+			$prestation = $post;
+		} else {
+			$prestation_id = get_post_meta( $post->ID, 'prestation_id', true );
+			if ( ! empty($prestation_id)) {
+				$prestation = get_post($prestation_id);
+				$post_ids[] = $prestation_id;
+			}
 		}
 
 		// delete calendar modal cache of mltp_detail posts with matching prestation_id
+		global $wpdb;
+		$post_ids = array_merge($post_ids, $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'prestation_id' AND meta_value = %d",
+				$prestation_id
+			)),
+		);
 
-		if( 'mltp_prestation' === $post->post_type ) {
-			global $wpdb;
-			$prestation_id = $post_id;
-			$post_ids = $wpdb->get_col(
-				$wpdb->prepare(
-					"SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'prestation_id' AND meta_value = %d",
-					$prestation_id
-				)
-			);
+		$post_ids = array_unique(array_filter($post_ids));
 
-			foreach ( $post_ids as $post_id ) {
-				$transient_key = 'mltp_cal_event_modal_' . $post_id;
-				delete_transient( $transient_key );
-			}
+		$user_id = get_current_user_id();
+		if(empty($user_id)) return false;
+		
+		foreach ( $post_ids as $post_id ) {
+			$transient_key = 'mltp_cal_event_modal_' . $user_id . '_' . $post_id;
+			delete_transient( $transient_key );
 		}
 		
 	}
