@@ -446,7 +446,7 @@ class Mltp_Settings {
 				if ( count( $value ) === 1 ) {
 					$value = reset( $value );
 				}
-				if ( is_string( $value ) && $unserialized = unserialize( $value ) ) {
+				if ( is_string( $value ) && $unserialized = @unserialize( $value ) ) {
 					$value = $unserialized;
 				}
 				$output[ $key ] = $value;
