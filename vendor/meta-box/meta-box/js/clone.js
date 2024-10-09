@@ -8,7 +8,7 @@
 		 * @param $inputs .rwmb-clone element
 		 * @param index Index value
 		 */
-		set: function ( $inputs, index ) {
+		set: function ( $inputs, index, count ) {
 			$inputs.each( function () {
 				var $field = $( this );
 
@@ -21,7 +21,16 @@
 				// ID attribute
 				var id = this.id;
 				if ( id ) {
-					$field.attr( 'id', cloneIndex.replace( index, id, '_', '', true, true ) );
+					id = id.replace( '_rwmb_template', '' );
+
+					// First clone takes the original ID
+					if ( count === 2 ) {
+						$field.attr( 'id', id );
+					}
+
+					if ( count > 2 ) {
+						$field.attr( 'id', cloneIndex.replace( index, id, '_', '', true, true ) );
+					}
 				}
 
 				$field.trigger( 'update_index', index );
@@ -128,16 +137,29 @@
 	 */
 	function clone( $container ) {
 		var $last = $container.children( '.rwmb-clone' ).last(),
-			$clone = $last.clone(),
+			$template = $container.children( '.rwmb-clone-template' ),
+			$clone = $template.clone(),
 			nextIndex = cloneIndex.nextIndex( $container );
 
+		// Add _rwmb_template suffix to ID of fields in template.
+		// so that the first clone will take the original ID.
+		$template.find( rwmb.inputSelectors ).each( function () {
+			this.id = this.id.includes( '_rwmb_template' ) ? this.id : this.id + '_rwmb_template';
+		} );
+		
 		// Clear fields' values.
-		var $inputs = $clone.find( rwmb.inputSelectors );
-		$inputs.each( cloneValue.clear );
-
+		var $inputs = $clone.find( rwmb.inputSelectors );		
+		const count = $container.children( '.rwmb-clone' ).length;
+		
+		// The first clone should keep the default values.
+		if ( count > 1 ) {
+			$inputs.each( cloneValue.clear );
+		}
+		
+		$clone = $clone.removeClass( 'rwmb-clone-template' );
 		// Remove validation errors.
 		$clone.find( 'p.rwmb-error' ).remove();
-
+		
 		// Insert clone.
 		$clone.insertAfter( $last );
 
@@ -145,7 +167,7 @@
 		$clone.trigger( 'clone_instance', nextIndex );
 
 		// Set fields index. Must run before trigger clone event.
-		cloneIndex.set( $inputs, nextIndex );
+		cloneIndex.set( $inputs, nextIndex, count );
 
 		// Set fields' default values: do after index is set to prevent previous radio fields from unchecking.
 		$inputs.each( cloneValue.setDefault );
@@ -167,13 +189,22 @@
 	 */
 	function toggleRemoveButtons( $container ) {
 
-		var $clones = $container.children( '.rwmb-clone' ),
-		    minClone = 1;
+		const $clones = $container.children( '.rwmb-clone' );
+		let minClone = 1;
+		let offset = 1;
+
+		// Add the first clone if data-clone-empty-start = false
+		const cloneEmptyStart = $container[0].dataset.cloneEmptyStart ?? 0;
+
+		// If clone-empty-start is true, we need at least 1 item.
+		if ( cloneEmptyStart == 1 ) {
+			offset = 0;
+		}
 
 		if ( $container.data( 'min-clone' ) ) {
 			minClone = parseInt( $container.data( 'min-clone' ) );
 		}
-		$clones.children( '.remove-clone' ).toggle( $clones.length > minClone );
+		$clones.children( '.remove-clone' ).toggle( $clones.length - offset > minClone );
 
 		// Recursive for nested groups.
 		$container.find( '.rwmb-input' ).each( function () {
@@ -189,7 +220,7 @@
 	 */
 	function toggleAddButton( $container ) {
 		var $button = $container.children( '.add-clone' ),
-			maxClone = parseInt( $container.data( 'max-clone' ) ),
+			maxClone = parseInt( $container.data( 'max-clone' ) ) + 1,
 			numClone = $container.children( '.rwmb-clone' ).length;
 
 		$button.toggle( isNaN( maxClone ) || ( maxClone && numClone < maxClone ) );

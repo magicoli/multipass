@@ -38,21 +38,23 @@ abstract class RWMB_Field {
 		}
 
 		$end = static::end_html( $field );
-		$end = self::filter( 'end_html', $end, $field, $meta );
-
-		$html = self::filter( 'wrapper_html', "$begin$field_html$end", $field, $meta );
+		$end = self::filter( 'end_html', $end, $field, $meta );	
+		$html = self::filter( 'wrapper_html', $begin . $field_html . $end, $field, $meta );
 
 		// Display label and input in DIV and allow user-defined classes to be appended.
 		$classes = "rwmb-field rwmb-{$field['type']}-wrapper " . $field['class'];
-		if ( ! empty( $field['required'] ) ) {
+		$required = $field['required'] || ! empty( $field['attributes']['required'] );
+
+		if ( $required ) {
 			$classes .= ' required';
 		}
 
-		$outer_html = sprintf(
-			$field['before'] . '<div class="%s">%s</div>' . $field['after'],
-			esc_attr( trim( $classes ) ),
-			$html
-		);
+		$classes = esc_attr( trim( $classes ) );
+
+		$outer_html  = $field['before'];
+		$outer_html .= '<div class="' . $classes . '">' . $html . '</div>';
+		$outer_html .= $field['after'];
+
 		$outer_html = self::filter( 'outer_html', $outer_html, $field, $meta );
 
 		echo $outer_html; // phpcs:ignore WordPress.Security.EscapeOutput
@@ -70,7 +72,7 @@ abstract class RWMB_Field {
 		return '';
 	}
 
-	protected static function begin_html( array $field ) : string {
+	protected static function begin_html( array $field ): string {
 		$id       = $field['attributes']['id'] ?? $field['id'];
 		$required = $field['required'] || ! empty( $field['attributes']['required'] );
 
@@ -89,28 +91,30 @@ abstract class RWMB_Field {
 			$label
 		) : '';
 
-		$data_min_clone = is_numeric( $field['min_clone'] ) && $field['min_clone'] > 1 ? ' data-min-clone=' . $field['min_clone'] : '';
-		$data_max_clone = is_numeric( $field['max_clone'] ) && $field['max_clone'] > 1 ? ' data-max-clone=' . $field['max_clone'] : '';
+		$data_min_clone   = is_numeric( $field['min_clone'] ) && $field['min_clone'] > 1 ? ' data-min-clone=' . $field['min_clone'] : '';
+		$data_max_clone   = is_numeric( $field['max_clone'] ) && $field['max_clone'] > 1 ? ' data-max-clone=' . $field['max_clone'] : '';
+		$data_empty_start = $field['clone_empty_start'] ? ' data-clone-empty-start="1"' : ' data-clone-empty-start="0"';
 
 		$input_open = sprintf(
-			'<div class="rwmb-input" %s %s>',
+			'<div class="rwmb-input" %s %s %s>',
 			$data_min_clone,
-			$data_max_clone
+			$data_max_clone,
+			$data_empty_start
 		);
 
 		return $label . $input_open;
 	}
 
-	protected static function end_html( array $field ) : string {
+	protected static function end_html( array $field ): string {
 		return RWMB_Clone::add_clone_button( $field ) . static::input_description( $field ) . '</div>';
 	}
 
-	protected static function label_description( array $field ) : string {
+	protected static function label_description( array $field ): string {
 		$id = $field['id'] ? ' id="' . esc_attr( $field['id'] ) . '-label-description"' : '';
 		return $field['label_description'] ? "<p{$id} class='description'>{$field['label_description']}</p>" : '';
 	}
 
-	protected static function input_description( array $field ) : string {
+	protected static function input_description( array $field ): string {
 		$id = $field['id'] ? ' id="' . esc_attr( $field['id'] ) . '-description"' : '';
 		return $field['desc'] ? "<p{$id} class='description'>{$field['desc']}</p>" : '';
 	}
@@ -167,31 +171,32 @@ abstract class RWMB_Field {
 		if ( empty( $field['id'] ) ) {
 			return '';
 		}
-
 		// Get raw meta.
-		$meta = self::call( $field, 'raw_meta', $post_id );
+		$raw_meta = self::call( $field, 'raw_meta', $post_id );
+		$single_std = self::call( 'get_single_std', $field );
+		$std = self::call( 'get_std', $field );
 
+		$saved = $saved && $field['save_field'];
 		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run).
-		$meta = ! $saved || ! $field['save_field'] ? $field['std'] : $meta;
+		$meta = $saved ? $raw_meta : $std;
 
-		if ( $field['clone'] ) {
-			$meta = Arr::ensure( $meta );
-
-			// Ensure $meta is an array with values so that the foreach loop in self::show() runs properly.
-			if ( empty( $meta ) ) {
-				$meta = [ '' ];
-			}
-
-			if ( $field['multiple'] ) {
-				$first = reset( $meta );
-
-				// If users set std for a cloneable checkbox list field in the Builder, they can only set [value1, value2]. We need to transform it to [[value1, value2]].
-				// In other cases, make sure each value is an array.
-				$meta = is_array( $first ) ? array_map( 'MetaBox\Support\Arr::ensure', $meta ) : [ $meta ];
-			}
-		} elseif ( $field['multiple'] ) {
-			$meta = Arr::ensure( $meta );
+		if ( ! $field['clone'] ) {
+			return $meta;
 		}
+
+		$meta = is_array( $raw_meta ) ? $raw_meta : [];
+
+		// Clone empty start = TRUE, get nothing to display
+		// Clone empty start = FALSE, get all default values to display
+		$std 		= $field['clone_empty_start'] ? [] : $std;
+		$empty_std  = $field['clone_empty_start'] ? [] : Arr::to_depth( $raw_meta, Arr::depth( $std ) );
+
+		if ( empty( $meta ) ) {
+			$meta = $saved ? $empty_std : $std;
+		}
+			
+		// 2. Always prepend a template
+		array_unshift( $meta, $single_std );
 
 		return $meta;
 	}
@@ -309,6 +314,7 @@ abstract class RWMB_Field {
 			'add_button'        => __( '+ Add more', 'meta-box' ),
 			'clone_default'     => false,
 			'clone_as_multiple' => false,
+			'clone_empty_start' => false,
 
 			'class'             => '',
 			'disabled'          => false,
@@ -369,7 +375,7 @@ abstract class RWMB_Field {
 		return $attributes;
 	}
 
-	public static function render_attributes( array $attributes ) : string {
+	public static function render_attributes( array $attributes ): string {
 		$output = '';
 
 		$attributes = array_filter( $attributes, 'RWMB_Helpers_Value::is_valid_for_attribute' );
@@ -574,5 +580,29 @@ abstract class RWMB_Field {
 		}
 
 		return $value;
+	}
+
+	protected static function get_std( array $field ) {
+		$depth = 0;
+
+		if ( $field['multiple'] ) {
+			$depth++;
+		}
+
+		if ( $field['clone'] ) {
+			$depth++;
+		}
+
+		return Arr::to_depth( $field['std'], $depth );
+	}
+
+	protected static function get_single_std( array $field ) {
+		$depth = 0;
+
+		if ( $field['multiple'] ) {
+			$depth++;
+		}
+
+		return Arr::to_depth( $field[ 'std' ], $depth );
 	}
 }
