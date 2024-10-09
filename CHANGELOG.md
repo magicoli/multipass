@@ -1,6 +1,8 @@
 ## Changelog
 
-### Unreleased (0.6.1-dev.782)
+### 0.6.1
+- updated dependencies
+- fix phone link on booking popup
 - fix wp_get_current_user() called before being defined in MultiPass::debug()
 - fix fatal error with invalid phone numbers
 
