@@ -145,6 +145,11 @@ class Mltp_Resource {
 				'callback'      => 'save_post_action',
 				'accepted_args' => 3,
 			),
+			array(
+				'hook'          => 'edited_terms',
+				'callback'      => 'taxonomy_changed_action',
+				'accepted_args' => 3,
+			),
 		);
 
 		$filters = array(
@@ -453,6 +458,14 @@ class Mltp_Resource {
 		}
 	}
 
+	public function taxonomy_changed_action( $term_id, $tt_id, $taxonomy ) {
+		if ( 'resource-type' === $taxonomy ) {
+			// delete transient mltp_resource_options
+			delete_transient('mltp_resource_options');
+		}
+	}
+
+
 	/**
 	 * Define additional columns for Resources admin list.
 	 *
@@ -496,6 +509,9 @@ class Mltp_Resource {
 		if ( ! $post ) {
 			return;
 		}
+		// delete transient mltp_resource_options
+		delete_transient('mltp_resource_options');
+
 		if ( MultiPass::is_new_post() ) { // triggered when opened new post page, empty.
 			return;
 		}
@@ -516,6 +532,11 @@ class Mltp_Resource {
 	 * Return an array of resource posts for select tree field option
 	 */
 	public static function get_resource_options() {
+		$options = get_transient('mltp_resource_options');
+		if ($options !== false) {
+			return $options;
+		}
+
 		$options = array();
 		$terms = get_terms( array( 'taxonomy' => 'resource-type', 'hide_empty' => true ) );
 		$sections_ordering = explode( ',', MultiPass::get_option( 'sections_ordering' ) );
@@ -547,6 +568,8 @@ class Mltp_Resource {
 				'parent' => $parent,
 			);
 		}
+		
+		set_transient('mltp_resource_options', $options, HOUR_IN_SECONDS);
 
 		return $options;
 	}

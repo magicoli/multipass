@@ -1113,17 +1113,25 @@ class Mltp_Prestation {
 	 * Return an array of prestation posts for field option
 	 */
 	public static function get_prestation_options() {
-		$prestations = get_posts(
+		$options = get_transient('mltp_prestation_options');
+		// error_log('mltp_prestation_options transient ' . print_r($options, true));
+		if ($options !== false) {
+			return $options;
+		}
+
+		$options = get_posts(
 			array(
 				'post_type'      => 'mltp_prestation',
 				'posts_per_page' => -1,
 				'post_status'    => array( 'publish', 'open', 'draft' ),
 				'orderby'        => 'post_date',
-				'order'          => 'asc',
+				'order'          => 'desc',
 			)
 		);
-		$prestations = wp_list_pluck( $prestations, 'post_title', 'ID' );
-		return $prestations;
+		$options = wp_list_pluck( $options, 'post_title', 'ID' );
+
+		set_transient('mltp_prestation_options', $options, 12 * HOUR_IN_SECONDS);
+		return $options;
 	}
 	
 	/**
@@ -1702,6 +1710,10 @@ class Mltp_Prestation {
 		if ( ! $post ) {
 			return;
 		}
+
+		// delete transient mltp_prestation_options
+		delete_transient('mltp_prestation_options');
+
 		if ( MultiPass::is_new_post() ) {
 			// triggered when opened new post page, empty.
 			return;
