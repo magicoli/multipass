@@ -512,6 +512,45 @@ class Mltp_Resource {
 		add_action( current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3 );
 	}
 
+	/**
+	 * Return an array of resource posts for select tree field option
+	 */
+	public static function get_resource_options() {
+		$options = array();
+		$terms = get_terms( array( 'taxonomy' => 'resource-type', 'hide_empty' => true ) );
+		$sections_ordering = explode( ',', MultiPass::get_option( 'sections_ordering' ) );
+		$sections          = array_fill_keys( $sections_ordering, array() );
+		foreach ( $terms as $term ) {
+			if ( isset( $sections[ $term->term_id ] ) ) {
+				$options[] = [ 'value' => $term->term_id, 'label' => $term->name ];
+				// $sections[ $term->term_id ] = $term->name;
+			}
+		}
+		$resources = get_posts(
+			array(
+				'posts_per_page' => -1,
+				'post_type'      => 'mltp_resource',
+				'post_status'    => 'publish',
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+			)
+		);
+		foreach ( $resources as $resource ) {
+			$types = wp_get_post_terms( $resource->ID, 'resource-type' );
+			$term = ( ! empty( $types ) && ! is_wp_error( $types ) ) ? $types[0] : null;
+			// If is a child, use parent term
+			$parent = ( ! empty( $term ) && $term->parent ) ? $term->parent : $term->term_id;			
+
+			$options[] = array(
+				'value'  => $resource->ID,
+				'label'  => $resource->post_title,
+				'parent' => $parent,
+			);
+		}
+
+		return $options;
+	}
+
 	public static function get_resource( $source, $source_item_id ) {
 		$resource_id = self::get_resource_id( $source, $source_item_id );
 		if ( $resource_id ) {

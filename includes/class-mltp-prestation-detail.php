@@ -426,9 +426,10 @@ class Mltp_Item {
 				array(
 					'name'          => __( 'Resource', 'multipass' ),
 					'id'            => $prefix . 'resource_id',
-					'type'          => 'post',
-					'post_type'     => array( 'mltp_resource' ),
-					'field_type'    => 'select_advanced',
+					'type'          => 'select',
+					'flatten'	   => false,
+					'options'       => Mltp_Resource::get_resource_options(),
+					'placeholder'   => __( 'Select a resource', 'multipass' ),
 					'admin_columns' => array(
 						'position'   => 'after title',
 						// 'title'      => 'Customer',
