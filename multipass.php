@@ -12,7 +12,7 @@
  * Text Domain:       multipass
  * Domain Path:       /languages
  * Requires at least: 5.9.0
- * Tested up to:      6.0.2
+ * Tested up to:      6.5.2
  * Requires PHP:      7.4
  *
  * @link              https://github.com/magicoli/multipass
