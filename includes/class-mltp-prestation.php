@@ -1110,6 +1110,23 @@ class Mltp_Prestation {
 	}
 
 	/**
+	 * Return an array of prestation posts for field option
+	 */
+	public static function get_prestation_options() {
+		$prestations = get_posts(
+			array(
+				'post_type'      => 'mltp_prestation',
+				'posts_per_page' => -1,
+				'post_status'    => array( 'publish', 'open', 'draft' ),
+				'orderby'        => 'post_date',
+				'order'          => 'asc',
+			)
+		);
+		$prestations = wp_list_pluck( $prestations, 'post_title', 'ID' );
+		return $prestations;
+	}
+	
+	/**
 	 * Get items belonging to this prestation.
 	 *
 	 * @return array Items formatted as array.

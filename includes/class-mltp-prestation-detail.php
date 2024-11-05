@@ -452,9 +452,8 @@ class Mltp_Item {
 				array(
 					'name'          => __( 'Prestation', 'multipass' ),
 					'id'            => $prefix . 'prestation_id',
-					'type'          => 'post',
-					'post_type'     => array( 'mltp_prestation' ),
-					'field_type'    => 'select_advanced',
+					'type'          => 'select_advanced',
+					'options'		=> Mltp_Prestation::get_prestation_options(),
 					'admin_columns' => array(
 						'position'   => 'after title',
 						// 'title'      => 'Customer',
