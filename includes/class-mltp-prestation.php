@@ -1114,12 +1114,12 @@ class Mltp_Prestation {
 	 */
 	public static function get_prestation_options() {
 		$options = get_transient('mltp_prestation_options');
-		// error_log('mltp_prestation_options transient ' . print_r($options, true));
+
 		if ($options !== false) {
 			return $options;
 		}
 
-		$options = get_posts(
+		$posts = get_posts(
 			array(
 				'post_type'      => 'mltp_prestation',
 				'posts_per_page' => -1,
@@ -1128,8 +1128,14 @@ class Mltp_Prestation {
 				'order'          => 'desc',
 			)
 		);
-		$options = wp_list_pluck( $options, 'post_title', 'ID' );
-
+		
+		// $options = wp_list_pluck( $posts, 'post_title', 'ID' );
+		$options = array();
+		foreach ($posts as $post) {
+			$prestation = new Mltp_Prestation($post->ID);
+			$options[$post->ID] = $prestation->full_title();
+		}
+	
 		set_transient('mltp_prestation_options', $options, 12 * HOUR_IN_SECONDS);
 		return $options;
 	}
