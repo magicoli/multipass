@@ -134,7 +134,9 @@ class Mltp_HBook extends Mltp_Modules {
 					'name'              => __( 'Synchronize now', 'multipass' ),
 					'id'                => $prefix . 'sync_bookings',
 					'type'              => 'switch',
-					'desc'              => __( 'Sync HBook bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multipass' ),
+					'disabled'		  => true,
+					'desc' => '<p class="error">' . __('This feature is temporarily disabled, until I find out why the portion of code that should sync bookings has vanished.', 'multipass') . '</p>' 
+					. __( 'Sync HBook bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of sync.', 'multipass' ),
 					'style'             => 'rounded',
 					'sanitize_callback' => 'Mltp_HBook::sync_bookings',
 					'save_field'        => false,
