@@ -151,46 +151,46 @@ class MultiPass {
 		/**
 		 * The standard plugin classes.
 		 */
-		require_once MULTIPASS_DIR . 'includes/class-mltp-loader.php';
-		require_once MULTIPASS_DIR . 'includes/class-mltp-i18n.php';
-		require_once MULTIPASS_DIR . 'admin/class-mltp-admin.php';
-		require_once MULTIPASS_DIR . 'public/class-mltp-public.php';
+		require_once MULTIPASS_DIR . 'includes/class-loader.php';
+		require_once MULTIPASS_DIR . 'includes/class-i18n.php';
+		require_once MULTIPASS_DIR . 'admin/class-admin.php';
+		require_once MULTIPASS_DIR . 'public/class-public.php';
 
 		$this->loader = new Mltp_Loader();
 
 		/**
 		 * Post types.and specific plugin classes.
 		 */
-		require_once MULTIPASS_DIR . 'includes/class-mltp-background.php';
-		require_once MULTIPASS_DIR . 'includes/class-mltp-table.php';
+		require_once MULTIPASS_DIR . 'includes/class-background.php';
+		require_once MULTIPASS_DIR . 'includes/class-table.php';
 		if ( self::is_private() || self::debug() ) {
-			require_once MULTIPASS_DIR . 'includes/class-mltp-contact.php';
+			require_once MULTIPASS_DIR . 'includes/class-contact.php';
 		}
-		require_once MULTIPASS_DIR . 'includes/class-mltp-prestation.php';
-		require_once MULTIPASS_DIR . 'includes/class-mltp-prestation-detail.php';
-		require_once MULTIPASS_DIR . 'includes/class-mltp-resource.php';
-		require_once MULTIPASS_DIR . 'includes/class-mltp-rates-and-taxes.php';
-		require_once MULTIPASS_DIR . 'includes/class-mltp-payment.php';
-		require_once MULTIPASS_DIR . 'includes/class-mltp-pdf.php';
-		require_once MULTIPASS_DIR . 'includes/class-mltp-text-templates.php';
+		require_once MULTIPASS_DIR . 'includes/class-prestation.php';
+		require_once MULTIPASS_DIR . 'includes/class-prestation-detail.php';
+		require_once MULTIPASS_DIR . 'includes/class-resource.php';
+		require_once MULTIPASS_DIR . 'includes/class-rates-and-taxes.php';
+		require_once MULTIPASS_DIR . 'includes/class-payment.php';
+		require_once MULTIPASS_DIR . 'includes/class-pdf.php';
+		require_once MULTIPASS_DIR . 'includes/class-text-templates.php';
 
-		require_once MULTIPASS_DIR . 'includes/class-mltp-settings.php';
-		require_once MULTIPASS_DIR . 'includes/class-mltp-plugininfo.php';
+		require_once MULTIPASS_DIR . 'includes/class-settings.php';
+		require_once MULTIPASS_DIR . 'includes/class-plugininfo.php';
 
 		/**
 		 * Modules
 		 */
-		require_once MULTIPASS_DIR . 'includes/modules/class-mltp-modules.php';
+		require_once MULTIPASS_DIR . 'modules/load-modules.php';
 
 		/**
 		 * Calendar
 		 *
 		 * Make sure to load all modules before calendar
 		 */
-		require_once MULTIPASS_DIR . 'includes/class-mltp-calendar.php';
-		require_once MULTIPASS_DIR . 'includes/class-mltp-api.php';
-		require_once MULTIPASS_DIR . 'includes/class-mltp-reports.php';
-		require_once MULTIPASS_DIR . 'includes/class-mltp-reports-payments.php';
+		require_once MULTIPASS_DIR . 'includes/class-calendar.php';
+		require_once MULTIPASS_DIR . 'includes/class-api.php';
+		require_once MULTIPASS_DIR . 'includes/class-reports.php';
+		require_once MULTIPASS_DIR . 'includes/class-reports-payments.php';
 
 		/**
 		 * Database updates
@@ -199,10 +199,10 @@ class MultiPass {
 		require_once MULTIPASS_DIR . 'includes/updates.php';
 
 		// if(is_plugin_active('woocommerce/woocommerce.php')) {
-		// require_once MULTIPASS_DIR . 'includes/modules/class-mltp-woocommerce.php';
+		// require_once MULTIPASS_DIR . 'modules/module-woocommerce.php';
 		// $this->loaders[] = new Mltp_WooCommerce();
 		//
-		// require_once MULTIPASS_DIR . 'includes/modules/class-mltp-woocommerce-payment.php';
+		// require_once MULTIPASS_DIR . 'modules/module-woocommerce-payment.php';
 		// $this->loaders[] = new Mltp_WooCommerce_Payment();
 		// }
 

@@ -896,6 +896,6 @@ class Mltp_Lodgify extends Mltp_Modules {
 	}
 }
 
-require_once MULTIPASS_DIR . 'includes/modules/class-mltp-lodgify-booking.php';
+require_once MULTIPASS_DIR . 'modules/module-lodgify-booking.php';
 
 $this->modules[] = new Mltp_Lodgify();

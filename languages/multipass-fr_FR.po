@@ -35,1972 +35,1972 @@ msgstr "Magiiic"
 msgid "https://magiiic.com/"
 msgstr "https://magiiic.com/"
 
-#: includes/class-mltp-calendar.php:128 includes/class-mltp-calendar.php:208
+#: includes/class-calendar.php:128 includes/class-calendar.php:208
 msgid "Calendar"
 msgstr "Calendrier"
 
-#: includes/class-mltp-calendar.php:151
+#: includes/class-calendar.php:151
 msgid "Calendar Setttings"
 msgstr "Réglages du calendrier"
 
-#: includes/class-mltp-calendar.php:157
+#: includes/class-calendar.php:157
 msgid "Calendars to display"
 msgstr "Calendriers à afficher"
 
-#: includes/class-mltp-calendar.php:161
+#: includes/class-calendar.php:161
 msgid "Sections to display on %1$sCalendar page%2$s."
 msgstr "Sections à afficher sur %1$sla page Calendrier%2$s."
 
-#: includes/class-mltp-calendar.php:173
+#: includes/class-calendar.php:173
 msgid "To create or delete sections, go to %1$sResource Categories edit page%2$s."
 msgstr "Pour créer ou supprimer des sections, rendez-vous sur %sla page de gestion des Catégories de ressources%s."
 
-#: includes/class-mltp-calendar.php:207
+#: includes/class-calendar.php:207
 msgid "MultiPass Calendar"
 msgstr "Calendrier MultiPass"
 
-#: includes/class-mltp-calendar.php:243
+#: includes/class-calendar.php:243
 msgid "Ready to receive data"
 msgstr "Prêt à recevoir les données"
 
-#: includes/class-mltp-calendar.php:244
+#: includes/class-calendar.php:244
 msgid "Loading %s"
 msgstr "Chargement %s"
 
-#: includes/class-mltp-calendar.php:245
+#: includes/class-calendar.php:245
 msgid "Calendar loaded successfully"
 msgstr "Calendrier chargé avec succès"
 
-#: includes/class-mltp-calendar.php:246
+#: includes/class-calendar.php:246
 msgid "Error loading the calendar"
 msgstr "Erreur lors du chargement du calendrier"
 
-#: includes/class-mltp-calendar.php:247
+#: includes/class-calendar.php:247
 msgid "Error rendering the calendar"
 msgstr "Erreur lors du rendu du calendrier"
 
-#: includes/class-mltp-calendar.php:248
+#: includes/class-calendar.php:248
 msgid "JSON parsing error"
 msgstr "Erreur d'analyse JSON"
 
-#: includes/class-mltp-calendar.php:269
+#: includes/class-calendar.php:269
 msgid "Undefined"
 msgstr "Indéterminé"
 
-#: includes/class-mltp-calendar.php:442 includes/class-mltp-prestation.php:1948
-#: includes/class-mltp-resource.php:212 includes/class-mltp-resource.php:224
-#: includes/class-mltp-resource.php:233 includes/class-mltp-resource.php:247
-#: includes/class-mltp-resource.php:287
-#: includes/modules/class-mltp-lodgify.php:185
-#: includes/modules/class-mltp-lodgify.php:192
+#: includes/class-calendar.php:442 includes/class-prestation.php:1948
+#: includes/class-resource.php:212 includes/class-resource.php:224
+#: includes/class-resource.php:233 includes/class-resource.php:247
+#: includes/class-resource.php:287
+#: modules/module-lodgify.php:185
+#: modules/module-lodgify.php:192
 msgid "Resources"
 msgstr "Ressources"
 
-#: includes/class-mltp-calendar.php:494
+#: includes/class-calendar.php:494
 msgid "Begin"
 msgstr "Début"
 
-#: includes/class-mltp-calendar.php:495
+#: includes/class-calendar.php:495
 msgid "End"
 msgstr "Fin"
 
-#: includes/class-mltp-calendar.php:496
+#: includes/class-calendar.php:496
 msgid "Nights"
 msgstr "Nuits"
 
-#: includes/class-mltp-calendar.php:501 includes/class-mltp-prestation.php:1101
+#: includes/class-calendar.php:501 includes/class-prestation.php:1101
 msgid "Prestation subtotal"
 msgstr "Sous-total de la prestation"
 
-#: includes/class-mltp-calendar.php:502 includes/class-mltp-prestation.php:1105
+#: includes/class-calendar.php:502 includes/class-prestation.php:1105
 msgid "Prestation discount"
 msgstr "Remise de la prestation"
 
-#: includes/class-mltp-calendar.php:503 includes/class-mltp-prestation.php:1114
+#: includes/class-calendar.php:503 includes/class-prestation.php:1114
 msgid "Prestation total"
 msgstr "Total de la prestation"
 
-#: includes/class-mltp-calendar.php:504
-#: includes/class-mltp-prestation-detail.php:809
-#: includes/class-mltp-prestation-detail.php:878
-#: includes/class-mltp-prestation.php:532
-#: includes/class-mltp-prestation.php:800
-#: includes/class-mltp-prestation.php:1122
-#: includes/class-mltp-prestation.php:1229
-#: includes/class-mltp-prestation.php:1952
+#: includes/class-calendar.php:504
+#: includes/class-prestation-detail.php:809
+#: includes/class-prestation-detail.php:878
+#: includes/class-prestation.php:532
+#: includes/class-prestation.php:800
+#: includes/class-prestation.php:1122
+#: includes/class-prestation.php:1229
+#: includes/class-prestation.php:1952
 msgid "Deposit"
 msgstr "Acompte"
 
-#: includes/class-mltp-calendar.php:505
+#: includes/class-calendar.php:505
 msgid "Deposit balance"
 msgstr "Solde acompte"
 
-#: includes/class-mltp-calendar.php:507
-#: includes/class-mltp-prestation-detail.php:888
-#: includes/class-mltp-prestation.php:756
-#: includes/class-mltp-prestation.php:806
-#: includes/class-mltp-prestation.php:939
-#: includes/class-mltp-prestation.php:1130
-#: includes/class-mltp-prestation.php:1230
-#: includes/class-mltp-prestation.php:1953 includes/class-mltp-reports.php:109
-#: includes/class-mltp-reports.php:221
-#: includes/modules/class-mltp-modules.php:209
-#: includes/modules/class-mltp-woocommerce.php:839
+#: includes/class-calendar.php:507
+#: includes/class-prestation-detail.php:888
+#: includes/class-prestation.php:756
+#: includes/class-prestation.php:806
+#: includes/class-prestation.php:939
+#: includes/class-prestation.php:1130
+#: includes/class-prestation.php:1230
+#: includes/class-prestation.php:1953 includes/class-reports.php:109
+#: includes/class-reports.php:221
+#: modules/load-modules.php:209
+#: modules/module-woocommerce.php:839
 msgid "Paid"
 msgstr "Payé"
 
-#: includes/class-mltp-calendar.php:511
-#: includes/class-mltp-prestation-detail.php:898
-#: includes/class-mltp-prestation.php:812
-#: includes/class-mltp-prestation.php:1138
-#: includes/class-mltp-prestation.php:1231
-#: includes/class-mltp-prestation.php:1954 includes/class-mltp-reports.php:223
+#: includes/class-calendar.php:511
+#: includes/class-prestation-detail.php:898
+#: includes/class-prestation.php:812
+#: includes/class-prestation.php:1138
+#: includes/class-prestation.php:1231
+#: includes/class-prestation.php:1954 includes/class-reports.php:223
 msgid "Balance"
 msgstr "Solde"
 
-#: includes/class-mltp-calendar.php:514
+#: includes/class-calendar.php:514
 msgid "Item"
 msgstr "Élément"
 
-#: includes/class-mltp-calendar.php:516
-#: includes/class-mltp-prestation-detail.php:647
+#: includes/class-calendar.php:516
+#: includes/class-prestation-detail.php:647
 msgid "Check in"
 msgstr "Arrivée"
 
-#: includes/class-mltp-calendar.php:517
-#: includes/class-mltp-prestation-detail.php:653
+#: includes/class-calendar.php:517
+#: includes/class-prestation-detail.php:653
 msgid "Check out"
 msgstr "Départ"
 
-#: includes/class-mltp-calendar.php:518 includes/class-mltp-reports.php:214
+#: includes/class-calendar.php:518 includes/class-reports.php:214
 msgid "Guests"
 msgstr "Invités"
 
-#: includes/class-mltp-calendar.php:519
-#: includes/class-mltp-prestation-detail.php:706
+#: includes/class-calendar.php:519
+#: includes/class-prestation-detail.php:706
 msgid "Beds"
 msgstr "Lits"
 
-#: includes/class-mltp-calendar.php:520
+#: includes/class-calendar.php:520
 msgid "Item subtotal"
 msgstr "Sous-total élément"
 
-#: includes/class-mltp-calendar.php:521
+#: includes/class-calendar.php:521
 msgid "Item discount"
 msgstr "Remise élément"
 
-#: includes/class-mltp-calendar.php:522
+#: includes/class-calendar.php:522
 msgid "Item total"
 msgstr "Total élément"
 
-#: includes/class-mltp-calendar.php:525
-#: includes/class-mltp-prestation-detail.php:938
-#: includes/class-mltp-prestation.php:585
+#: includes/class-calendar.php:525
+#: includes/class-prestation-detail.php:938
+#: includes/class-prestation.php:585
 msgid "Notes"
 msgstr "Notes"
 
-#: includes/class-mltp-calendar.php:594
-#: includes/class-mltp-prestation-detail.php:427
-#: includes/class-mltp-prestation.php:265
-#: includes/modules/class-mltp-woocommerce.php:168
-#: includes/modules/class-mltp-woocommerce.php:337
+#: includes/class-calendar.php:594
+#: includes/class-prestation-detail.php:427
+#: includes/class-prestation.php:265
+#: modules/module-woocommerce.php:168
+#: modules/module-woocommerce.php:337
 msgid "Prestation"
 msgstr "Prestation"
 
-#: includes/class-mltp-calendar.php:603
+#: includes/class-calendar.php:603
 msgid "This rental"
 msgstr "Cette location"
 
-#: includes/class-mltp-calendar.php:613
+#: includes/class-calendar.php:613
 msgid "View on %s"
 msgstr "Voir sur %s"
 
-#: includes/class-mltp-calendar.php:676
+#: includes/class-calendar.php:676
 msgid "Event is empty"
 msgstr "L'événement est vide"
 
-#: includes/class-mltp-calendar.php:685
+#: includes/class-calendar.php:685
 msgid "Event not found"
 msgstr "Événement non trouvé"
 
-#: includes/class-mltp-calendar.php:689
+#: includes/class-calendar.php:689
 msgid "Not an event"
 msgstr "Pas un événement"
 
-#: includes/class-mltp-contact.php:156
+#: includes/class-contact.php:156
 msgid "Tables cration failed."
 msgstr "La création des tables a échoué."
 
-#: includes/class-mltp-contact.php:161
+#: includes/class-contact.php:161
 msgid "Tables creation succeeded."
 msgstr "La création des tables a réussi."
 
-#: includes/class-mltp-contact.php:142 includes/class-mltp-contact.php:154
-#: includes/class-mltp-contact.php:163 includes/class-mltp-contact.php:176
-#: includes/class-mltp-contact.php:359 includes/class-mltp-contact.php:378
+#: includes/class-contact.php:142 includes/class-contact.php:154
+#: includes/class-contact.php:163 includes/class-contact.php:176
+#: includes/class-contact.php:359 includes/class-contact.php:378
 msgid "Contacts"
 msgstr "Contacts"
 
-#: includes/class-mltp-contact.php:143 includes/class-mltp-contact.php:401
+#: includes/class-contact.php:143 includes/class-contact.php:401
 msgid "Contact"
 msgstr "Contact"
 
-#: includes/class-mltp-contact.php:144
-#: includes/class-mltp-prestation-detail.php:345
-#: includes/class-mltp-prestation.php:266
-#: includes/class-mltp-rates-and-taxes.php:85
-#: includes/class-mltp-resource.php:214
+#: includes/class-contact.php:144
+#: includes/class-prestation-detail.php:345
+#: includes/class-prestation.php:266
+#: includes/class-rates-and-taxes.php:85
+#: includes/class-resource.php:214
 msgid "Add New"
 msgstr "Ajouter"
 
-#: includes/class-mltp-contact.php:145
+#: includes/class-contact.php:145
 msgid "Add New Contact"
 msgstr "Ajouter un contact"
 
-#: includes/class-mltp-contact.php:146
+#: includes/class-contact.php:146
 msgid "Edit Contact"
 msgstr "Modifier le contact"
 
-#: includes/class-mltp-contact.php:147
+#: includes/class-contact.php:147
 msgid "New Contact"
 msgstr "Nouveau contact"
 
-#: includes/class-mltp-contact.php:148
+#: includes/class-contact.php:148
 msgid "View Contact"
 msgstr "Voir le contact"
 
-#: includes/class-mltp-contact.php:149
+#: includes/class-contact.php:149
 msgid "View Contacts"
 msgstr "Voir les contacts"
 
-#: includes/class-mltp-contact.php:150
+#: includes/class-contact.php:150
 msgid "Search Contacts"
 msgstr "Rechercher des contacts"
 
-#: includes/class-mltp-contact.php:151
+#: includes/class-contact.php:151
 msgid "No contacts found."
 msgstr "Aucun contact trouvé."
 
-#: includes/class-mltp-contact.php:152
+#: includes/class-contact.php:152
 msgid "No contacts found in Trash."
 msgstr "Aucun contact trouvé dans la corbeille."
 
-#: includes/class-mltp-contact.php:153
+#: includes/class-contact.php:153
 msgid "Parent Contact:"
 msgstr "Contact parent :"
 
-#: includes/class-mltp-contact.php:155
+#: includes/class-contact.php:155
 msgid "Contact Archives"
 msgstr "Archives des contacts"
 
-#: includes/class-mltp-contact.php:156
+#: includes/class-contact.php:156
 msgid "Contact Attributes"
 msgstr "Attributs du contact"
 
-#: includes/class-mltp-contact.php:157
+#: includes/class-contact.php:157
 msgid "Insert into contact"
 msgstr "Insérer dans le contact"
 
-#: includes/class-mltp-contact.php:158
+#: includes/class-contact.php:158
 msgid "Uploaded to this contact"
 msgstr "Téléchargé sur ce contact"
 
-#: includes/class-mltp-contact.php:159
-#: includes/class-mltp-prestation-detail.php:360
-#: includes/class-mltp-prestation.php:282
-#: includes/class-mltp-rates-and-taxes.php:100
-#: includes/class-mltp-resource.php:229
+#: includes/class-contact.php:159
+#: includes/class-prestation-detail.php:360
+#: includes/class-prestation.php:282
+#: includes/class-rates-and-taxes.php:100
+#: includes/class-resource.php:229
 msgid "Featured image"
 msgstr "Image mise en avant"
 
-#: includes/class-mltp-contact.php:160
-#: includes/class-mltp-prestation-detail.php:361
-#: includes/class-mltp-prestation.php:283
-#: includes/class-mltp-rates-and-taxes.php:101
-#: includes/class-mltp-resource.php:230
+#: includes/class-contact.php:160
+#: includes/class-prestation-detail.php:361
+#: includes/class-prestation.php:283
+#: includes/class-rates-and-taxes.php:101
+#: includes/class-resource.php:230
 msgid "Set featured image"
 msgstr "Définir l'image mise en avant"
 
-#: includes/class-mltp-contact.php:161
-#: includes/class-mltp-prestation-detail.php:362
-#: includes/class-mltp-prestation.php:284
-#: includes/class-mltp-rates-and-taxes.php:102
-#: includes/class-mltp-resource.php:231
+#: includes/class-contact.php:161
+#: includes/class-prestation-detail.php:362
+#: includes/class-prestation.php:284
+#: includes/class-rates-and-taxes.php:102
+#: includes/class-resource.php:231
 msgid "Remove featured image"
 msgstr "Supprimer l'image mise en avant"
 
-#: includes/class-mltp-contact.php:162
-#: includes/class-mltp-prestation-detail.php:363
-#: includes/class-mltp-prestation.php:285
-#: includes/class-mltp-rates-and-taxes.php:103
-#: includes/class-mltp-resource.php:232
+#: includes/class-contact.php:162
+#: includes/class-prestation-detail.php:363
+#: includes/class-prestation.php:285
+#: includes/class-rates-and-taxes.php:103
+#: includes/class-resource.php:232
 msgid "Use as featured image"
 msgstr "Utiliser comme image mise en avant"
 
-#: includes/class-mltp-contact.php:164
+#: includes/class-contact.php:164
 msgid "Filter contacts list"
 msgstr "Filtrer la liste des contacts"
 
-#: includes/class-mltp-contact.php:165
+#: includes/class-contact.php:165
 msgid "Contacts date filter"
 msgstr "Filtrer les dates des contacts"
 
-#: includes/class-mltp-contact.php:166
+#: includes/class-contact.php:166
 msgid "Contacts list navigation"
 msgstr "Navigation de la liste des contacts"
 
-#: includes/class-mltp-contact.php:167
+#: includes/class-contact.php:167
 msgid "Contacts list"
 msgstr "Liste des contacts"
 
-#: includes/class-mltp-contact.php:168
+#: includes/class-contact.php:168
 msgid "Contact published."
 msgstr "Contact publié."
 
-#: includes/class-mltp-contact.php:169
+#: includes/class-contact.php:169
 msgid "Contact published privately."
 msgstr "Contact publié en privé."
 
-#: includes/class-mltp-contact.php:170
+#: includes/class-contact.php:170
 msgid "Contact reverted to draft."
 msgstr "Contact remis en brouillon."
 
-#: includes/class-mltp-contact.php:171
+#: includes/class-contact.php:171
 msgid "Contact scheduled."
 msgstr "Contact planifié."
 
-#: includes/class-mltp-contact.php:172
+#: includes/class-contact.php:172
 msgid "Contact updated."
 msgstr "Contact mis à jour."
 
-#: includes/class-mltp-contact.php:173 includes/class-mltp-contact.php:488
-#: includes/class-mltp-rates-and-taxes.php:114
-#: includes/class-mltp-resource.php:393
+#: includes/class-contact.php:173 includes/class-contact.php:488
+#: includes/class-rates-and-taxes.php:114
+#: includes/class-resource.php:393
 msgid "multipass"
 msgstr "multipass"
 
-#: includes/class-mltp-contact.php:210
+#: includes/class-contact.php:210
 msgid "Contact fields"
 msgstr "Champs de contacts"
 
-#: includes/class-mltp-contact.php:221
+#: includes/class-contact.php:221
 msgid "User"
 msgstr "Utilisateur"
 
-#: includes/class-mltp-contact.php:228
+#: includes/class-contact.php:228
 msgid "First Name"
 msgstr "Prénom"
 
-#: includes/class-mltp-contact.php:238
+#: includes/class-contact.php:238
 msgid "Last Name"
 msgstr "Nom de famille"
 
-#: includes/class-mltp-contact.php:248
+#: includes/class-contact.php:248
 msgid "Company"
 msgstr "Entreprise"
 
-#: includes/class-mltp-contact.php:253 includes/class-mltp-contact.php:427
+#: includes/class-contact.php:253 includes/class-contact.php:427
 msgid "Email"
 msgstr "E-mail"
 
-#: includes/class-mltp-contact.php:266
+#: includes/class-contact.php:266
 msgid "Phone Number"
 msgstr "Numéro de téléphone"
 
-#: includes/class-mltp-contact.php:272
+#: includes/class-contact.php:272
 msgid "Add a phone number"
 msgstr "Ajouter un numéro"
 
-#: includes/class-mltp-contact.php:279
+#: includes/class-contact.php:279
 msgid "Address"
 msgstr "Adresse"
 
-#: includes/class-mltp-contact.php:284
+#: includes/class-contact.php:284
 msgid "Add an address"
 msgstr "Ajouter une adresse"
 
-#: includes/class-mltp-contact.php:291
+#: includes/class-contact.php:291
 msgid "Type address here to search"
 msgstr "Entrez l'adrese ici pour une recherche"
 
-#: includes/class-mltp-contact.php:297
+#: includes/class-contact.php:297
 msgid "Building"
 msgstr "Bâtiment"
 
-#: includes/class-mltp-contact.php:302
+#: includes/class-contact.php:302
 msgid "Street"
 msgstr "Rue"
 
-#: includes/class-mltp-contact.php:308
+#: includes/class-contact.php:308
 msgid "Neighbourhood / Suburb"
 msgstr "Quartier"
 
-#: includes/class-mltp-contact.php:314
+#: includes/class-contact.php:314
 msgid "Postcode"
 msgstr "Code postal"
 
-#: includes/class-mltp-contact.php:320
+#: includes/class-contact.php:320
 msgid "Village / Town / Locality"
 msgstr "Localité"
 
-#: includes/class-mltp-contact.php:327
+#: includes/class-contact.php:327
 msgid "County / State"
 msgstr "Département / État"
 
-#: includes/class-mltp-contact.php:334
+#: includes/class-contact.php:334
 msgid "Country"
 msgstr "Pays"
 
-#: includes/class-mltp-prestation-detail.php:519
-#: includes/class-mltp-prestation-detail.php:535
-#: includes/class-mltp-prestation.php:447
-#: includes/class-mltp-prestation.php:1946
+#: includes/class-prestation-detail.php:519
+#: includes/class-prestation-detail.php:535
+#: includes/class-prestation.php:447
+#: includes/class-prestation.php:1946
 msgid "Customer"
 msgstr "Client"
 
-#: includes/class-mltp-contact.php:385
+#: includes/class-contact.php:385
 msgid "Add contact"
 msgstr "Ajouter un contact"
 
-#: includes/class-mltp-contact.php:389 includes/class-mltp-prestation.php:640
-#: includes/class-mltp-prestation.php:1223
-#: includes/class-mltp-rates-and-taxes.php:241
+#: includes/class-contact.php:389 includes/class-prestation.php:640
+#: includes/class-prestation.php:1223
+#: includes/class-rates-and-taxes.php:241
 msgid "Type"
 msgstr "Type"
 
-#: includes/class-mltp-contact.php:395 includes/class-mltp-prestation.php:649
+#: includes/class-contact.php:395 includes/class-prestation.php:649
 msgid "Select a type"
 msgstr "Sélectionnez un type"
 
-#: includes/class-mltp-contact.php:409
-#: includes/class-mltp-prestation-detail.php:547
-#: includes/class-mltp-prestation-detail.php:584
-#: includes/class-mltp-reports.php:212
+#: includes/class-contact.php:409
+#: includes/class-prestation-detail.php:547
+#: includes/class-prestation-detail.php:584
+#: includes/class-reports.php:212
 msgid "Name"
 msgstr "Nom"
 
-#: includes/class-mltp-contact.php:418
+#: includes/class-contact.php:418
 msgid "Phone"
 msgstr "Téléphone"
 
-#: includes/class-mltp-contact.php:436 includes/class-mltp-prestation.php:775
+#: includes/class-contact.php:436 includes/class-prestation.php:775
 msgid "Summary"
 msgstr "Résumé"
 
-#: includes/class-mltp-contact.php:465 includes/class-mltp-contact.php:467
-#: includes/class-mltp-contact.php:491
+#: includes/class-contact.php:465 includes/class-contact.php:467
+#: includes/class-contact.php:491
 msgid "Contact Types"
 msgstr "Types de contact"
 
-#: includes/class-mltp-contact.php:466
+#: includes/class-contact.php:466
 msgid "Contact Type"
 msgstr "Type de contact"
 
-#: includes/class-mltp-contact.php:468
+#: includes/class-contact.php:468
 msgid "Search Types"
 msgstr "Rechercher des types"
 
-#: includes/class-mltp-contact.php:469
+#: includes/class-contact.php:469
 msgid "Popular Types"
 msgstr "Types populaires"
 
-#: includes/class-mltp-contact.php:470
+#: includes/class-contact.php:470
 msgid "All Contact Types"
 msgstr "Tous les types"
 
-#: includes/class-mltp-contact.php:471
+#: includes/class-contact.php:471
 msgid "Parent Type"
 msgstr "Type parent"
 
-#: includes/class-mltp-contact.php:472
+#: includes/class-contact.php:472
 msgid "Parent Type:"
 msgstr "Type parent :"
 
-#: includes/class-mltp-contact.php:473
+#: includes/class-contact.php:473
 msgid "Edit Type"
 msgstr "Modifier le type"
 
-#: includes/class-mltp-contact.php:474
+#: includes/class-contact.php:474
 msgid "View Type"
 msgstr "Voir le type"
 
-#: includes/class-mltp-contact.php:475
+#: includes/class-contact.php:475
 msgid "Update Type"
 msgstr "Mettre à jour le type"
 
-#: includes/class-mltp-contact.php:476
+#: includes/class-contact.php:476
 msgid "Add New Type"
 msgstr "Ajouter un type"
 
-#: includes/class-mltp-contact.php:477
+#: includes/class-contact.php:477
 msgid "New Type Name"
 msgstr "Nom du nouveau type"
 
-#: includes/class-mltp-contact.php:478
+#: includes/class-contact.php:478
 msgid "Separate types with commas"
 msgstr "Séparez les types par des virgules"
 
-#: includes/class-mltp-contact.php:479
+#: includes/class-contact.php:479
 msgid "Add or remove contact types"
 msgstr "Ajouter ou supprimer des types"
 
-#: includes/class-mltp-contact.php:480
+#: includes/class-contact.php:480
 msgid "Choose most used types"
 msgstr "Choisissez parmi les types les plus utilisés"
 
-#: includes/class-mltp-contact.php:481
+#: includes/class-contact.php:481
 msgid "No types found."
 msgstr "Aucun type trouvé."
 
-#: includes/class-mltp-contact.php:482
+#: includes/class-contact.php:482
 msgid "No types"
 msgstr "Aucun type"
 
-#: includes/class-mltp-contact.php:483
+#: includes/class-contact.php:483
 msgid "Filter by contact type"
 msgstr "Filtrer par type"
 
-#: includes/class-mltp-contact.php:484
+#: includes/class-contact.php:484
 msgid "Contact Types list pagination"
 msgstr "Pagination des types de contact"
 
-#: includes/class-mltp-contact.php:485
+#: includes/class-contact.php:485
 msgid "Contact Types list"
 msgstr "Liste des types de contact"
 
-#: includes/class-mltp-contact.php:486
-#: includes/class-mltp-prestation-detail.php:983
-#: includes/class-mltp-prestation.php:872 includes/class-mltp-resource.php:391
+#: includes/class-contact.php:486
+#: includes/class-prestation-detail.php:983
+#: includes/class-prestation.php:872 includes/class-resource.php:391
 msgid "Most Used"
 msgstr "Les plus utilisés"
 
-#: includes/class-mltp-contact.php:487
+#: includes/class-contact.php:487
 msgid "&larr; Go to Contact Types"
 msgstr "&larr; Aller aux types de contact"
 
-#: includes/class-mltp-contact.php:534
+#: includes/class-contact.php:534
 msgid "Default"
 msgstr "Défaut"
 
-#: includes/class-mltp-contact.php:535
+#: includes/class-contact.php:535
 msgid "Billing"
 msgstr "Facturation"
 
-#: includes/class-mltp-contact.php:536
+#: includes/class-contact.php:536
 msgid "Guest"
 msgstr "Invité"
 
-#: includes/class-mltp-contact.php:671
+#: includes/class-contact.php:671
 msgid "Not enough data %s"
 msgstr "Données insuffisantes %s"
 
-#: includes/class-mltp-contact.php:763
+#: includes/class-contact.php:763
 msgid "%s contacts updated from existing WP users."
 msgstr "%s contacts mis à jour depuis les utilisateurs WP."
 
-#: includes/class-mltp-i18n.php:37
+#: includes/class-i18n.php:37
 msgid "Select a lodging"
 msgstr "Sélectionnez un logement"
 
-#: includes/class-mltp-i18n.php:38
+#: includes/class-i18n.php:38
 msgid "Select a room"
 msgstr "Sélectionnez une chambre"
 
-#: includes/class-mltp-i18n.php:39
+#: includes/class-i18n.php:39
 msgid "Select an appartment"
 msgstr "Sélectionnez un appartement"
 
-#: includes/class-mltp-i18n.php:40
+#: includes/class-i18n.php:40
 msgid "Do not import"
 msgstr "Ne pas importer"
 
-#: includes/class-mltp-mailbox.php:107
+#: includes/class-mailbox.php:107
 msgid "IMAP Settings"
 msgstr "Paramètres IMAP"
 
-#: includes/class-mltp-mailbox.php:113
+#: includes/class-mailbox.php:113
 msgid "IMAP Server"
 msgstr "Serveur IMAP"
 
-#: includes/class-mltp-mailbox.php:116
+#: includes/class-mailbox.php:116
 msgid "mail.example.org"
 msgstr "mail.example.org"
 
-#: includes/class-mltp-mailbox.php:121
+#: includes/class-mailbox.php:121
 msgid "Port"
 msgstr "Port"
 
-#: includes/class-mltp-mailbox.php:132
+#: includes/class-mailbox.php:132
 msgid "Encryption"
 msgstr "Chiffrement"
 
-#: includes/class-mltp-mailbox.php:136
+#: includes/class-mailbox.php:136
 msgid "TLS/SSL"
 msgstr "TLS/SSL"
 
-#: includes/class-mltp-mailbox.php:142
+#: includes/class-mailbox.php:142
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
-#: includes/class-mltp-mailbox.php:149
+#: includes/class-mailbox.php:149
 msgid "Password"
 msgstr "Mot de passe"
 
-#: includes/class-mltp-mailbox.php:156
+#: includes/class-mailbox.php:156
 msgid "Save Attachments"
 msgstr "Enregistrer les pièces jointes"
 
-#: includes/class-mltp-payment.php:164
+#: includes/class-payment.php:164
 msgid "Pay deposit (%s)"
 msgstr "Payer l'acompte (%s)"
 
-#: includes/class-mltp-payment.php:171
+#: includes/class-payment.php:171
 msgid "Pay balance (%s)"
 msgstr "Payer le solde (%s)"
 
-#: includes/class-mltp-plugininfo.php:137
-#: includes/class-mltp-plugininfo.php:167
+#: includes/class-plugininfo.php:137
+#: includes/class-plugininfo.php:167
 msgid "View details"
 msgstr "Voir les éléments"
 
-#: includes/class-mltp-plugininfo.php:165
+#: includes/class-plugininfo.php:165
 msgid "More information about %s"
 msgstr "Plus d'informations sur% s"
 
-#: includes/class-mltp-prestation-detail.php:222
+#: includes/class-prestation-detail.php:222
 msgid "View"
 msgstr "Voir"
 
-#: includes/class-mltp-prestation-detail.php:228
+#: includes/class-prestation-detail.php:228
 #: includes/calendar/calendar.js:1 src/fullcalendar/calendar.js:75
 #: includes/calendar/calendar.js:127
 msgid "Edit"
 msgstr "Modifier"
 
-#: includes/class-mltp-prestation-detail.php:242
-#: includes/class-mltp-prestation-detail.php:254
+#: includes/class-prestation-detail.php:242
+#: includes/class-prestation-detail.php:254
 msgid "Edit on %s"
 msgstr "Modifier sur %s"
 
-#: includes/class-mltp-prestation-detail.php:343
-#: includes/class-mltp-prestation-detail.php:364
+#: includes/class-prestation-detail.php:343
+#: includes/class-prestation-detail.php:364
 msgid "Prestation Elements"
 msgstr "Éléments de prestation"
 
-#: includes/class-mltp-prestation-detail.php:344
+#: includes/class-prestation-detail.php:344
 msgid "Prestation Element"
 msgstr "Élément de prestation"
 
-#: includes/class-mltp-prestation-detail.php:346
+#: includes/class-prestation-detail.php:346
 msgid "Add New Element"
 msgstr "Ajouter un élément"
 
-#: includes/class-mltp-prestation-detail.php:347
+#: includes/class-prestation-detail.php:347
 msgid "Edit Element"
 msgstr "Modifier l'élément"
 
-#: includes/class-mltp-prestation-detail.php:348
+#: includes/class-prestation-detail.php:348
 msgid "New Element"
 msgstr "Nouvel élément"
 
-#: includes/class-mltp-prestation-detail.php:349
+#: includes/class-prestation-detail.php:349
 msgid "View Element"
 msgstr "Voir l'élément"
 
-#: includes/class-mltp-prestation-detail.php:350
+#: includes/class-prestation-detail.php:350
 msgid "View Elements"
 msgstr "Voir les éléments"
 
-#: includes/class-mltp-prestation-detail.php:351
+#: includes/class-prestation-detail.php:351
 msgid "Search Elements"
 msgstr "Rechercher des éléments"
 
-#: includes/class-mltp-prestation-detail.php:352
+#: includes/class-prestation-detail.php:352
 msgid "No elements found."
 msgstr "Aucun élément trouvé."
 
-#: includes/class-mltp-prestation-detail.php:353
+#: includes/class-prestation-detail.php:353
 msgid "No elements found in Trash."
 msgstr "Aucun élément trouvé dans la corbeille."
 
-#: includes/class-mltp-prestation-detail.php:354
+#: includes/class-prestation-detail.php:354
 msgid "Parent Element:"
 msgstr "Élément parent :"
 
-#: includes/class-mltp-prestation-detail.php:355
-#: includes/class-mltp-prestation-detail.php:378
-#: includes/class-mltp-prestation.php:614
+#: includes/class-prestation-detail.php:355
+#: includes/class-prestation-detail.php:378
+#: includes/class-prestation.php:614
 msgid "Elements"
 msgstr "Éléments"
 
-#: includes/class-mltp-prestation-detail.php:356
+#: includes/class-prestation-detail.php:356
 msgid "Elements Archives"
 msgstr "Archives des éléments"
 
-#: includes/class-mltp-prestation-detail.php:357
+#: includes/class-prestation-detail.php:357
 msgid "Element Attributes"
 msgstr "Attributs d'élément"
 
-#: includes/class-mltp-prestation-detail.php:358
+#: includes/class-prestation-detail.php:358
 msgid "Insert into element"
 msgstr "Insérer dans l'élément"
 
-#: includes/class-mltp-prestation-detail.php:359
+#: includes/class-prestation-detail.php:359
 msgid "Uploaded to this element"
 msgstr "Téléchargé sur cet élément"
 
-#: includes/class-mltp-prestation-detail.php:365
+#: includes/class-prestation-detail.php:365
 msgid "Filter elements list"
 msgstr "Filtrer la liste des éléments"
 
-#: includes/class-mltp-prestation-detail.php:366
-#: includes/class-mltp-prestation.php:287
-#: includes/class-mltp-rates-and-taxes.php:106
-#: includes/class-mltp-resource.php:235
+#: includes/class-prestation-detail.php:366
+#: includes/class-prestation.php:287
+#: includes/class-rates-and-taxes.php:106
+#: includes/class-resource.php:235
 msgid "Filter by date"
 msgstr "Filtrer par date"
 
-#: includes/class-mltp-prestation-detail.php:367
+#: includes/class-prestation-detail.php:367
 msgid "Elements list navigation"
 msgstr "Navigation dans la liste des éléments"
 
-#: includes/class-mltp-prestation-detail.php:368
+#: includes/class-prestation-detail.php:368
 msgid "Elements list"
 msgstr "Liste des éléments"
 
-#: includes/class-mltp-prestation-detail.php:369
+#: includes/class-prestation-detail.php:369
 msgid "Element published."
 msgstr "Élément publié."
 
-#: includes/class-mltp-prestation-detail.php:370
+#: includes/class-prestation-detail.php:370
 msgid "Element published privately."
 msgstr "Élément publié en privé."
 
-#: includes/class-mltp-prestation-detail.php:371
+#: includes/class-prestation-detail.php:371
 msgid "Element reverted to draft."
 msgstr "Élément remis en brouillon."
 
-#: includes/class-mltp-prestation-detail.php:372
+#: includes/class-prestation-detail.php:372
 msgid "Element scheduled."
 msgstr "Élément planifié."
 
-#: includes/class-mltp-prestation-detail.php:373
+#: includes/class-prestation-detail.php:373
 msgid "Element updated."
 msgstr "Élément mis à jour."
 
-#: includes/class-mltp-prestation-detail.php:374
+#: includes/class-prestation-detail.php:374
 msgid "Select an element"
 msgstr "Sélectionnez un élément"
 
-#: includes/class-mltp-prestation-detail.php:413
-#: includes/class-mltp-prestation-detail.php:513
+#: includes/class-prestation-detail.php:413
+#: includes/class-prestation-detail.php:513
 msgid "Elements fields"
 msgstr "Champs des éléments"
 
-#: includes/class-mltp-prestation.php:645
-#: includes/class-mltp-rates-and-taxes.php:411
-#: includes/class-mltp-resource.php:213
+#: includes/class-prestation.php:645
+#: includes/class-rates-and-taxes.php:411
+#: includes/class-resource.php:213
 msgid "Resource"
 msgstr "Ressource"
 
-#: includes/class-mltp-prestation-detail.php:440
-#: includes/class-mltp-prestation.php:653
-#: includes/class-mltp-prestation.php:1224 includes/class-mltp-reports.php:213
-#: includes/modules/class-mltp-modules.php:202
-#: includes/modules/class-mltp-woocommerce.php:832
+#: includes/class-prestation-detail.php:440
+#: includes/class-prestation.php:653
+#: includes/class-prestation.php:1224 includes/class-reports.php:213
+#: modules/load-modules.php:202
+#: modules/module-woocommerce.php:832
 msgid "Description"
 msgstr "Description"
 
-#: includes/class-mltp-prestation-detail.php:466
+#: includes/class-prestation-detail.php:466
 msgid "External source"
 msgstr "Source externe"
 
-#: includes/class-mltp-prestation-detail.php:480
+#: includes/class-prestation-detail.php:480
 msgid "Source ID"
 msgstr "Identifiant source"
 
-#: includes/class-mltp-prestation-detail.php:490
+#: includes/class-prestation-detail.php:490
 msgid "Source Item ID"
 msgstr "Identifiant élément source"
 
-#: includes/class-mltp-prestation-detail.php:500
+#: includes/class-prestation-detail.php:500
 msgid "Links"
 msgstr "Liens"
 
-#: includes/class-mltp-prestation-detail.php:609
-#: includes/class-mltp-prestation-detail.php:619
-#: includes/class-mltp-prestation.php:474
-#: includes/class-mltp-prestation.php:1225
-#: includes/class-mltp-prestation.php:1949
+#: includes/class-prestation-detail.php:609
+#: includes/class-prestation-detail.php:619
+#: includes/class-prestation.php:474
+#: includes/class-prestation.php:1225
+#: includes/class-prestation.php:1949
 msgid "Dates"
 msgstr "Dates"
 
-#: includes/class-mltp-prestation-detail.php:625
-#: includes/class-mltp-prestation.php:480
-#: includes/class-mltp-rates-and-taxes.php:269
-#: includes/class-mltp-reports.php:207
-#: includes/modules/class-mltp-modules.php:203
-#: includes/modules/class-mltp-woocommerce-payment.php:453
-#: includes/modules/class-mltp-woocommerce.php:833
+#: includes/class-prestation-detail.php:625
+#: includes/class-prestation.php:480
+#: includes/class-rates-and-taxes.php:269
+#: includes/class-reports.php:207
+#: modules/load-modules.php:203
+#: modules/module-woocommerce-payment.php:453
+#: modules/module-woocommerce.php:833
 msgid "From"
 msgstr "Du"
 
-#: includes/class-mltp-prestation-detail.php:635
-#: includes/class-mltp-prestation.php:491
-#: includes/class-mltp-prestation.php:678
-#: includes/class-mltp-rates-and-taxes.php:275
-#: includes/class-mltp-reports.php:208
-#: includes/modules/class-mltp-modules.php:204
-#: includes/modules/class-mltp-woocommerce.php:834
+#: includes/class-prestation-detail.php:635
+#: includes/class-prestation.php:491
+#: includes/class-prestation.php:678
+#: includes/class-rates-and-taxes.php:275
+#: includes/class-reports.php:208
+#: modules/load-modules.php:204
+#: modules/module-woocommerce.php:834
 msgid "To"
 msgstr "Au"
 
-#: includes/class-mltp-prestation-detail.php:659
+#: includes/class-prestation-detail.php:659
 msgid "Number of Attendees"
 msgstr "Nombre de participants"
 
-#: includes/class-mltp-prestation-detail.php:665
-#: includes/class-mltp-prestation-detail.php:796
-#: includes/class-mltp-prestation.php:793
-#: includes/class-mltp-prestation.php:1228
-#: includes/class-mltp-prestation.php:1951 includes/class-mltp-reports.php:107
-#: includes/class-mltp-reports.php:220
-#: includes/modules/class-mltp-modules.php:208
-#: includes/modules/class-mltp-woocommerce.php:838
+#: includes/class-prestation-detail.php:665
+#: includes/class-prestation-detail.php:796
+#: includes/class-prestation.php:793
+#: includes/class-prestation.php:1228
+#: includes/class-prestation.php:1951 includes/class-reports.php:107
+#: includes/class-reports.php:220
+#: modules/load-modules.php:208
+#: modules/module-woocommerce.php:838
 msgid "Total"
 msgstr "Total"
 
-#: includes/class-mltp-prestation-detail.php:673
-#: includes/class-mltp-reports.php:215
+#: includes/class-prestation-detail.php:673
+#: includes/class-reports.php:215
 msgid "Adults"
 msgstr "Adultes"
 
-#: includes/class-mltp-prestation-detail.php:680
-#: includes/class-mltp-reports.php:216
+#: includes/class-prestation-detail.php:680
+#: includes/class-reports.php:216
 msgid "Children"
 msgstr "Enfants"
 
-#: includes/class-mltp-prestation-detail.php:687
+#: includes/class-prestation-detail.php:687
 msgid "Babies"
 msgstr "Bébés"
 
-#: includes/class-mltp-prestation-detail.php:696
+#: includes/class-prestation-detail.php:696
 msgid "# Attendees"
 msgstr "# Participants"
 
-#: includes/class-mltp-prestation-detail.php:712
+#: includes/class-prestation-detail.php:712
 msgid "Double"
 msgstr "Doubles"
 
-#: includes/class-mltp-prestation-detail.php:719
+#: includes/class-prestation-detail.php:719
 msgid "Single"
 msgstr "Simples"
 
-#: includes/class-mltp-prestation-detail.php:726
+#: includes/class-prestation-detail.php:726
 msgid "Baby"
 msgstr "Bébé"
 
-#: includes/class-mltp-prestation-detail.php:740
-#: includes/class-mltp-prestation.php:741
+#: includes/class-prestation-detail.php:740
+#: includes/class-prestation.php:741
 msgid "Price"
 msgstr "Prix"
 
-#: includes/class-mltp-prestation-detail.php:746
-#: includes/class-mltp-prestation.php:696
+#: includes/class-prestation-detail.php:746
+#: includes/class-prestation.php:696
 msgid "Quantity"
 msgstr "Quantité"
 
-#: includes/class-mltp-prestation-detail.php:754
-#: includes/class-mltp-prestation.php:711
+#: includes/class-prestation-detail.php:754
+#: includes/class-prestation.php:711
 msgid "Unit Price"
 msgstr "Prix unitaire"
 
-#: includes/class-mltp-prestation-detail.php:762
-#: includes/class-mltp-prestation.php:1226 includes/class-mltp-reports.php:217
-#: includes/modules/class-mltp-modules.php:205
-#: includes/modules/class-mltp-woocommerce.php:835
+#: includes/class-prestation-detail.php:762
+#: includes/class-prestation.php:1226 includes/class-reports.php:217
+#: modules/load-modules.php:205
+#: modules/module-woocommerce.php:835
 msgid "Subtotal"
 msgstr "Sous-total"
 
-#: includes/class-mltp-prestation-detail.php:772
-#: includes/class-mltp-prestation.php:504
-#: includes/class-mltp-prestation.php:726
-#: includes/class-mltp-prestation.php:787
-#: includes/class-mltp-prestation.php:1227
-#: includes/class-mltp-prestation.php:1950
-#: includes/class-mltp-rates-and-taxes.php:246
-#: includes/modules/class-mltp-modules.php:206
-#: includes/modules/class-mltp-woocommerce.php:836
+#: includes/class-prestation-detail.php:772
+#: includes/class-prestation.php:504
+#: includes/class-prestation.php:726
+#: includes/class-prestation.php:787
+#: includes/class-prestation.php:1227
+#: includes/class-prestation.php:1950
+#: includes/class-rates-and-taxes.php:246
+#: modules/load-modules.php:206
+#: modules/module-woocommerce.php:836
 msgid "Discount"
 msgstr "Remise"
 
-#: includes/class-mltp-prestation-detail.php:833
-#: includes/class-mltp-prestation.php:561
+#: includes/class-prestation-detail.php:833
+#: includes/class-prestation.php:561
 msgid "Before"
 msgstr "Avant"
 
-#: includes/class-mltp-prestation-detail.php:842
-#: includes/class-mltp-prestation.php:647
+#: includes/class-prestation-detail.php:842
+#: includes/class-prestation.php:647
 msgid "Payment"
 msgstr "Paiement"
 
-#: includes/class-mltp-prestation-detail.php:849
-#: includes/class-mltp-prestation.php:659
+#: includes/class-prestation-detail.php:849
+#: includes/class-prestation.php:659
 msgid "Date"
 msgstr "Date"
 
-#: includes/class-mltp-prestation-detail.php:858
-#: includes/class-mltp-rates-and-taxes.php:345
+#: includes/class-prestation-detail.php:858
+#: includes/class-rates-and-taxes.php:345
 msgid "Amount"
 msgstr "Montant"
 
-#: includes/class-mltp-prestation-detail.php:866
+#: includes/class-prestation-detail.php:866
 msgid "Method"
 msgstr "Méthode"
 
-#: includes/class-mltp-prestation-detail.php:871
+#: includes/class-prestation-detail.php:871
 msgid "Reference"
 msgstr "Référence"
 
-#: includes/class-mltp-prestation-detail.php:912
+#: includes/class-prestation-detail.php:912
 msgid "Commission"
 msgstr "Commission"
 
-#: includes/class-mltp-prestation-detail.php:926
-#: includes/class-mltp-prestation.php:825
-#: includes/modules/class-mltp-modules.php:210
-#: includes/modules/class-mltp-woocommerce.php:840
+#: includes/class-prestation-detail.php:926
+#: includes/class-prestation.php:825
+#: modules/load-modules.php:210
+#: modules/module-woocommerce.php:840
 msgid "Status"
 msgstr "Statut"
 
-#: includes/class-mltp-prestation-detail.php:962
-#: includes/class-mltp-prestation-detail.php:964
+#: includes/class-prestation-detail.php:962
+#: includes/class-prestation-detail.php:964
 msgid "External Sources"
 msgstr "Sources externes"
 
-#: includes/class-mltp-prestation-detail.php:963
+#: includes/class-prestation-detail.php:963
 msgid "External Source"
 msgstr "Source externe"
 
-#: includes/class-mltp-prestation-detail.php:965
+#: includes/class-prestation-detail.php:965
 msgid "Search sources"
 msgstr "Rechercher des sources"
 
-#: includes/class-mltp-prestation-detail.php:966
+#: includes/class-prestation-detail.php:966
 msgid "Popular sources"
 msgstr "Sources populaires"
 
-#: includes/class-mltp-prestation-detail.php:967
+#: includes/class-prestation-detail.php:967
 msgid "All sources"
 msgstr "Toutes les sources"
 
-#: includes/class-mltp-prestation-detail.php:968
+#: includes/class-prestation-detail.php:968
 msgid "Parent source"
 msgstr "Source parente"
 
-#: includes/class-mltp-prestation-detail.php:969
+#: includes/class-prestation-detail.php:969
 msgid "Parent source:"
 msgstr "Source parente :"
 
-#: includes/class-mltp-prestation-detail.php:970
+#: includes/class-prestation-detail.php:970
 msgid "Edit source"
 msgstr "Modifier la source"
 
-#: includes/class-mltp-prestation-detail.php:971
+#: includes/class-prestation-detail.php:971
 msgid "View source"
 msgstr "Voir la source"
 
-#: includes/class-mltp-prestation-detail.php:972
+#: includes/class-prestation-detail.php:972
 msgid "Update source"
 msgstr "Mettre à jour la source"
 
-#: includes/class-mltp-prestation-detail.php:973
+#: includes/class-prestation-detail.php:973
 msgid "Add New source"
 msgstr "Ajouter une nouvelle source"
 
-#: includes/class-mltp-prestation-detail.php:974
+#: includes/class-prestation-detail.php:974
 msgid "New source Name"
 msgstr "Nom de la nouvelle source"
 
-#: includes/class-mltp-prestation-detail.php:975
+#: includes/class-prestation-detail.php:975
 msgid "Separate sources with commas"
 msgstr "Séparez les sources avec des virgules"
 
-#: includes/class-mltp-prestation-detail.php:976
+#: includes/class-prestation-detail.php:976
 msgid "Add or remove sources"
 msgstr "Ajouter ou enlever des sources"
 
-#: includes/class-mltp-prestation-detail.php:977
+#: includes/class-prestation-detail.php:977
 msgid "Choose most used sources"
 msgstr "Choisissez les sources les plus utilisées"
 
-#: includes/class-mltp-prestation-detail.php:978
+#: includes/class-prestation-detail.php:978
 msgid "No sources found."
 msgstr "Aucun source trouvée."
 
-#: includes/class-mltp-prestation-detail.php:979
+#: includes/class-prestation-detail.php:979
 msgid "No sources"
 msgstr "Aucune source"
 
-#: includes/class-mltp-prestation-detail.php:980
+#: includes/class-prestation-detail.php:980
 msgid "Filter by detail source"
 msgstr "Filtrer par élément"
 
-#: includes/class-mltp-prestation-detail.php:981
+#: includes/class-prestation-detail.php:981
 msgid "Sources list pagination"
 msgstr "Pagination de la liste des sources"
 
-#: includes/class-mltp-prestation-detail.php:982
+#: includes/class-prestation-detail.php:982
 msgid "Sources list"
 msgstr "Liste des sources"
 
-#: includes/class-mltp-prestation-detail.php:984
+#: includes/class-prestation-detail.php:984
 msgid "&larr; Go to sources"
 msgstr "&larr; Aller aux source"
 
-#: includes/class-mltp-prestation-detail.php:988
+#: includes/class-prestation-detail.php:988
 msgid "Sources"
 msgstr "Sources"
 
-#: includes/class-mltp-prestation.php:264
-#: includes/class-mltp-prestation.php:276
-#: includes/class-mltp-prestation.php:277
-#: includes/class-mltp-prestation.php:299
-#: includes/class-mltp-prestation.php:434
+#: includes/class-prestation.php:264
+#: includes/class-prestation.php:276
+#: includes/class-prestation.php:277
+#: includes/class-prestation.php:299
+#: includes/class-prestation.php:434
 msgid "Prestations"
 msgstr "Prestations"
 
-#: includes/class-mltp-prestation.php:267
+#: includes/class-prestation.php:267
 msgid "Add new prestation"
 msgstr "Ajouter une nouvelle prestation"
 
-#: includes/class-mltp-prestation.php:268
+#: includes/class-prestation.php:268
 msgid "Edit Prestation"
 msgstr "Modifier la prestation"
 
-#: includes/class-mltp-prestation.php:269
+#: includes/class-prestation.php:269
 msgid "New Prestation"
 msgstr "Nouvelle Prestation"
 
-#: includes/class-mltp-prestation.php:270
+#: includes/class-prestation.php:270
 msgid "View Prestation"
 msgstr "Voir la prestation"
 
-#: includes/class-mltp-prestation.php:271
+#: includes/class-prestation.php:271
 msgid "View Prestations"
 msgstr "Voir les prestations"
 
-#: includes/class-mltp-prestation.php:272
+#: includes/class-prestation.php:272
 msgid "Search Prestations"
 msgstr "Rechercher des prestations"
 
-#: includes/class-mltp-prestation.php:273
+#: includes/class-prestation.php:273
 msgid "No prestations found"
 msgstr "Aucune prestation trouvée"
 
-#: includes/class-mltp-prestation.php:274
+#: includes/class-prestation.php:274
 msgid "No prestations found in Trash"
 msgstr "Aucune prestation trouvée dans la corbeille"
 
-#: includes/class-mltp-prestation.php:275
+#: includes/class-prestation.php:275
 msgid "Parent Prestation:"
 msgstr "Prestation parente :"
 
-#: includes/class-mltp-prestation.php:278
+#: includes/class-prestation.php:278
 msgid "Prestation Archives"
 msgstr "Archives des prestations"
 
-#: includes/class-mltp-prestation.php:279
+#: includes/class-prestation.php:279
 msgid "Prestation Attributes"
 msgstr "Attributs de prestation"
 
-#: includes/class-mltp-prestation.php:280
+#: includes/class-prestation.php:280
 msgid "Insert into prestation"
 msgstr "Insérer dans la prestation"
 
-#: includes/class-mltp-prestation.php:281
+#: includes/class-prestation.php:281
 msgid "Uploaded to this prestation"
 msgstr "Téléchargé sur cette prestation"
 
-#: includes/class-mltp-prestation.php:286
+#: includes/class-prestation.php:286
 msgid "Filter prestations list"
 msgstr "Filtrer la liste des prestations"
 
-#: includes/class-mltp-prestation.php:288
+#: includes/class-prestation.php:288
 msgid "Prestations list navigation"
 msgstr "Navigation dans la liste des prestations"
 
-#: includes/class-mltp-prestation.php:289
+#: includes/class-prestation.php:289
 msgid "Prestations list"
 msgstr "Liste des prestations"
 
-#: includes/class-mltp-prestation.php:290
+#: includes/class-prestation.php:290
 msgid "Prestation published"
 msgstr "Prestation publiée"
 
-#: includes/class-mltp-prestation.php:291
+#: includes/class-prestation.php:291
 msgid "Prestation published privately"
 msgstr "Prestation publiée en privé"
 
-#: includes/class-mltp-prestation.php:292
+#: includes/class-prestation.php:292
 msgid "Prestation reverted to draft"
 msgstr "Prestation remise en brouillon"
 
-#: includes/class-mltp-prestation.php:293
+#: includes/class-prestation.php:293
 msgid "Prestation scheduled"
 msgstr "Prestation planifiée"
 
-#: includes/class-mltp-prestation.php:294
+#: includes/class-prestation.php:294
 msgid "Prestation updated"
 msgstr "Prestation mise à jour"
 
-#: includes/class-mltp-prestation.php:295
+#: includes/class-prestation.php:295
 msgid "Select a prestation"
 msgstr "Sélectionnez une prestation"
 
-#: includes/class-mltp-prestation.php:333
-#: includes/class-mltp-prestation.php:927
+#: includes/class-prestation.php:333
+#: includes/class-prestation.php:927
 msgid "Canceled"
 msgstr "Annulé"
 
-#: includes/class-mltp-prestation.php:334
+#: includes/class-prestation.php:334
 msgid "Canceled <span class=\"count\">(%s)</span>"
 msgid_plural "Canceled <span class=\"count\">(%s)</span>"
 msgstr[0] "Annulé <span class=\"count\">(%s)</span>"
 msgstr[1] "Annulés <span class=\"count\">(%s)</span>"
 
-#: includes/class-mltp-prestation.php:344
+#: includes/class-prestation.php:344
 msgid "Open"
 msgstr "Ouvert"
 
-#: includes/class-mltp-prestation.php:345
+#: includes/class-prestation.php:345
 msgid "Open <span class=\"count\">(%s)</span>"
 msgid_plural "Open <span class=\"count\">(%s)</span>"
 msgstr[0] "Ouvert <span class=\"count\">(%s)</span>"
 msgstr[1] "Ouverts <span class=\"count\">(%s)</span>"
 
-#: includes/class-mltp-prestation.php:363
+#: includes/class-prestation.php:363
 msgid "MultiPass permalinks"
 msgstr "Permaliens MultiPass"
 
-#: includes/class-mltp-prestation.php:371
+#: includes/class-prestation.php:371
 msgid "Prestation slug"
 msgstr "Préfixe des prestations"
 
-#: includes/class-mltp-prestation.php:386
+#: includes/class-prestation.php:386
 msgid "prestations"
 msgstr "prestations"
 
-#: includes/class-mltp-prestation.php:397
+#: includes/class-prestation.php:397
 msgid "Slug prepended to prestations urls, leave empty for default (%s)."
 msgstr "Slug précédant les URL de prestations, laissez vide pour la valeur par défaut (%s)."
 
-#: includes/class-mltp-prestation.php:631
+#: includes/class-prestation.php:631
 msgid "Manual operations"
 msgstr "Opérations manuelles"
 
-#: includes/class-mltp-prestation.php:637
+#: includes/class-prestation.php:637
 msgid "Use manual operations only for items not managed by modules."
 msgstr "Utilisez les opérations manuelles uniquement pour les éléments non gérés par les modules."
 
-#: includes/class-mltp-prestation.php:644
-#: includes/modules/class-mltp-woocommerce.php:189
+#: includes/class-prestation.php:644
+#: modules/module-woocommerce.php:189
 msgid "Product"
 msgstr "Produit"
 
-#: includes/class-mltp-prestation.php:646
+#: includes/class-prestation.php:646
 msgid "Booking"
 msgstr "Réservation"
 
-#: includes/class-mltp-prestation.php:781
+#: includes/class-prestation.php:781
 msgid "Regular Price"
 msgstr "Prix de base"
 
-#: includes/class-mltp-prestation.php:819
+#: includes/class-prestation.php:819
 msgid "Reference #"
 msgstr "Référence #"
 
-#: includes/class-mltp-prestation.php:851
-#: includes/class-mltp-prestation.php:877
+#: includes/class-prestation.php:851
+#: includes/class-prestation.php:877
 msgid "Prestation statuses"
 msgstr "Statuts de prestation"
 
-#: includes/class-mltp-prestation.php:852
+#: includes/class-prestation.php:852
 msgid "Prestation status"
 msgstr "Statut de la prestation"
 
-#: includes/class-mltp-prestation.php:853
+#: includes/class-prestation.php:853
 msgid "Statuses"
 msgstr "Statuts"
 
-#: includes/class-mltp-prestation.php:854
+#: includes/class-prestation.php:854
 msgid "Search statuses"
 msgstr "Rechercher des statuts"
 
-#: includes/class-mltp-prestation.php:855
+#: includes/class-prestation.php:855
 msgid "Popular statuses"
 msgstr "Statuts populaires"
 
-#: includes/class-mltp-prestation.php:856
+#: includes/class-prestation.php:856
 msgid "All statuses"
 msgstr "Tous les statuts"
 
-#: includes/class-mltp-prestation.php:857
-#: includes/class-mltp-prestation.php:858
+#: includes/class-prestation.php:857
+#: includes/class-prestation.php:858
 msgid "Parent Prestation status"
 msgstr "Statut de prestation parente"
 
-#: includes/class-mltp-prestation.php:859
+#: includes/class-prestation.php:859
 msgid "Edit Prestation status"
 msgstr "Modifier le statut de prestation"
 
-#: includes/class-mltp-prestation.php:860
+#: includes/class-prestation.php:860
 msgid "View Prestation status"
 msgstr "Afficher le statut de prestation"
 
-#: includes/class-mltp-prestation.php:861
+#: includes/class-prestation.php:861
 msgid "Update Prestation status"
 msgstr "Mettre à jour le statut de prestation"
 
-#: includes/class-mltp-prestation.php:862
+#: includes/class-prestation.php:862
 msgid "Add new prestation status"
 msgstr "Ajouter un nouveau statut de prestation"
 
-#: includes/class-mltp-prestation.php:863
+#: includes/class-prestation.php:863
 msgid "New prestation status name"
 msgstr "Nom du nouveau statut de prestation"
 
-#: includes/class-mltp-prestation.php:864
+#: includes/class-prestation.php:864
 msgid "Separate statuses with commas"
 msgstr "Séparez les statuts par des virgules"
 
-#: includes/class-mltp-prestation.php:865
+#: includes/class-prestation.php:865
 msgid "Add or remove statuses"
 msgstr "Ajouter ou supprimer des statuts"
 
-#: includes/class-mltp-prestation.php:866
+#: includes/class-prestation.php:866
 msgid "Choose most used statuses"
 msgstr "Choisissez parmi les statuts les plus utilisés"
 
-#: includes/class-mltp-prestation.php:867
+#: includes/class-prestation.php:867
 msgid "No status found"
 msgstr "Aucun statut trouvé"
 
-#: includes/class-mltp-prestation.php:868
+#: includes/class-prestation.php:868
 msgid "No status"
 msgstr "Aucun statut"
 
-#: includes/class-mltp-prestation.php:869
+#: includes/class-prestation.php:869
 msgid "Filter by prestation status"
 msgstr "Filtrer par statut de prestation"
 
-#: includes/class-mltp-prestation.php:870
+#: includes/class-prestation.php:870
 msgid "Prestation statuses list pagination"
 msgstr "Pagination de la liste des statuts de prestation"
 
-#: includes/class-mltp-prestation.php:871
+#: includes/class-prestation.php:871
 msgid "Prestation statuses list"
 msgstr "Liste des statuts de prestation"
 
-#: includes/class-mltp-prestation.php:873
+#: includes/class-prestation.php:873
 msgid "Back to statuses"
 msgstr "Retour aux statuts"
 
-#: includes/class-mltp-prestation.php:921
+#: includes/class-prestation.php:921
 msgid "Pending payment"
 msgstr "En attente de paiement"
 
-#: includes/class-mltp-prestation.php:922
+#: includes/class-prestation.php:922
 msgid "On hold"
 msgstr "En attente"
 
-#: includes/class-mltp-prestation.php:923
+#: includes/class-prestation.php:923
 msgid "Processing"
 msgstr "En cours"
 
-#: includes/class-mltp-prestation.php:926
+#: includes/class-prestation.php:926
 msgid "Completed"
 msgstr "Terminé"
 
-#: includes/class-mltp-prestation.php:928
-#: includes/modules/class-mltp-modules.php:207
-#: includes/modules/class-mltp-woocommerce.php:837
+#: includes/class-prestation.php:928
+#: modules/load-modules.php:207
+#: modules/module-woocommerce.php:837
 msgid "Refunded"
 msgstr "Remboursé"
 
-#: includes/class-mltp-prestation.php:929
+#: includes/class-prestation.php:929
 msgid "Failed"
 msgstr "Échoué"
 
-#: includes/class-mltp-prestation.php:932
+#: includes/class-prestation.php:932
 msgid "Draft"
 msgstr "Brouillon"
 
-#: includes/class-mltp-prestation.php:935
+#: includes/class-prestation.php:935
 msgid "Deposit paid"
 msgstr "Acompte payé"
 
-#: includes/class-mltp-prestation.php:944
+#: includes/class-prestation.php:944
 msgid "Unpaid"
 msgstr "Non payé"
 
-#: includes/class-mltp-prestation.php:948
+#: includes/class-prestation.php:948
 msgid "Partially paid"
 msgstr "Partiellement payé"
 
-#: includes/class-mltp-prestation.php:988
+#: includes/class-prestation.php:988
 msgid "Invalid session, please try again"
 msgstr "Session invalide, veuillez réessayer"
 
-#: includes/class-mltp-prestation.php:1001
+#: includes/class-prestation.php:1001
 msgid "Invalid email, try again"
 msgstr "E-mail non valide, veuillez réessayer"
 
-#: includes/class-mltp-prestation.php:1030
+#: includes/class-prestation.php:1030
 msgid "Please provide your email address to access this content:"
 msgstr "Veuillez fournir votre adresse e-mail pour accéder à ce contenu :"
 
-#: includes/class-mltp-prestation.php:1032
+#: includes/class-prestation.php:1032
 msgid "Your Email"
 msgstr "Votre e-mail"
 
-#: includes/class-mltp-prestation.php:1034
+#: includes/class-prestation.php:1034
 msgid "Submit"
 msgstr "Envoyer"
 
-#: includes/class-mltp-prestation.php:1036
+#: includes/class-prestation.php:1036
 msgid "Only used for validation, it will not be stored and no message will be sent."
 msgstr "Utilisé uniquement à des fins de validation, elle ne sera pas stockée et aucun message ne sera envoyé."
 
-#: includes/class-mltp-prestation.php:1232
-#: includes/modules/class-mltp-modules.php:201
-#: includes/modules/class-mltp-woocommerce.php:831
+#: includes/class-prestation.php:1232
+#: modules/load-modules.php:201
+#: modules/module-woocommerce.php:831
 msgid "Source"
 msgstr "Source"
 
-#: includes/class-mltp-prestation.php:1233
+#: includes/class-prestation.php:1233
 msgid "Actions"
 msgstr "Actions"
 
-#: includes/class-mltp-prestation.php:1234 includes/class-mltp-settings.php:413
+#: includes/class-prestation.php:1234 includes/class-settings.php:413
 msgid "Debug"
 msgstr "Débogage"
 
-#: includes/class-mltp-prestation.php:1273
+#: includes/class-prestation.php:1273
 msgid "All Years"
 msgstr "Toutes les années"
 
-#: includes/class-mltp-prestation.php:1945
+#: includes/class-prestation.php:1945
 msgid "Title"
 msgstr "Titre"
 
-#: includes/class-mltp-rates-and-taxes.php:31
+#: includes/class-rates-and-taxes.php:31
 msgid "quantity"
 msgstr "quantité"
 
-#: includes/class-mltp-rates-and-taxes.php:32
+#: includes/class-rates-and-taxes.php:32
 msgid "night"
 msgstr "nuit"
 
-#: includes/class-mltp-rates-and-taxes.php:33
+#: includes/class-rates-and-taxes.php:33
 msgid "guest"
 msgstr "invité"
 
-#: includes/class-mltp-rates-and-taxes.php:39 includes/class-multipass.php:1257
+#: includes/class-rates-and-taxes.php:39 includes/class-multipass.php:1257
 msgid "adult"
 msgid_plural "adults"
 msgstr[0] "adulte"
 msgstr[1] "adultes"
 
-#: includes/class-mltp-rates-and-taxes.php:40 includes/class-multipass.php:1258
+#: includes/class-rates-and-taxes.php:40 includes/class-multipass.php:1258
 msgid "child"
 msgid_plural "children"
 msgstr[0] "enfant"
 msgstr[1] "enfants"
 
-#: includes/class-mltp-rates-and-taxes.php:41 includes/class-multipass.php:1259
+#: includes/class-rates-and-taxes.php:41 includes/class-multipass.php:1259
 #: includes/class-multipass.php:1260
 msgid "baby"
 msgid_plural "babies"
 msgstr[0] "bébé"
 msgstr[1] "bébés"
 
-#: includes/class-mltp-rates-and-taxes.php:83
-#: includes/class-mltp-rates-and-taxes.php:117
-#: includes/class-mltp-rates-and-taxes.php:235
+#: includes/class-rates-and-taxes.php:83
+#: includes/class-rates-and-taxes.php:117
+#: includes/class-rates-and-taxes.php:235
 msgid "Rates"
 msgstr "Tarifs"
 
-#: includes/class-mltp-rates-and-taxes.php:84
-#: includes/class-mltp-rates-and-taxes.php:245
+#: includes/class-rates-and-taxes.php:84
+#: includes/class-rates-and-taxes.php:245
 msgid "Rate"
 msgstr "Tarif"
 
-#: includes/class-mltp-rates-and-taxes.php:86
+#: includes/class-rates-and-taxes.php:86
 msgid "Add New Rate"
 msgstr "Ajouter un tarif"
 
-#: includes/class-mltp-rates-and-taxes.php:87
+#: includes/class-rates-and-taxes.php:87
 msgid "Edit Rate"
 msgstr "Modifier le tarif"
 
-#: includes/class-mltp-rates-and-taxes.php:88
+#: includes/class-rates-and-taxes.php:88
 msgid "New Rate"
 msgstr "Nouveau tarif"
 
-#: includes/class-mltp-rates-and-taxes.php:89
+#: includes/class-rates-and-taxes.php:89
 msgid "View Rate"
 msgstr "Voir le tarif"
 
-#: includes/class-mltp-rates-and-taxes.php:90
+#: includes/class-rates-and-taxes.php:90
 msgid "View Rates"
 msgstr "Voir les tarifs"
 
-#: includes/class-mltp-rates-and-taxes.php:91
+#: includes/class-rates-and-taxes.php:91
 msgid "Search Rates"
 msgstr "Rechercher des tarifs"
 
-#: includes/class-mltp-rates-and-taxes.php:92
+#: includes/class-rates-and-taxes.php:92
 msgid "No rates found."
 msgstr "Aucun tarif trouvé."
 
-#: includes/class-mltp-rates-and-taxes.php:93
+#: includes/class-rates-and-taxes.php:93
 msgid "No rates found in Trash."
 msgstr "Aucun tarif trouvé dans la corbeille."
 
-#: includes/class-mltp-rates-and-taxes.php:94
+#: includes/class-rates-and-taxes.php:94
 msgid "Parent Rate:"
 msgstr "Tarif parent :"
 
-#: includes/class-mltp-rates-and-taxes.php:95
-#: includes/class-mltp-rates-and-taxes.php:104
+#: includes/class-rates-and-taxes.php:95
+#: includes/class-rates-and-taxes.php:104
 msgid "Rates and Taxes"
 msgstr "Tarifs et taxes"
 
-#: includes/class-mltp-rates-and-taxes.php:96
+#: includes/class-rates-and-taxes.php:96
 msgid "Rate Archives"
 msgstr "Archives des tarifs"
 
-#: includes/class-mltp-rates-and-taxes.php:97
+#: includes/class-rates-and-taxes.php:97
 msgid "Rate Attributes"
 msgstr "Attributs du tarif"
 
-#: includes/class-mltp-rates-and-taxes.php:98
+#: includes/class-rates-and-taxes.php:98
 msgid "Insert into rate"
 msgstr "Insérer dans le tarif"
 
-#: includes/class-mltp-rates-and-taxes.php:99
+#: includes/class-rates-and-taxes.php:99
 msgid "Uploaded to this rate"
 msgstr "Téléchargé sur ce tarif"
 
-#: includes/class-mltp-rates-and-taxes.php:105
+#: includes/class-rates-and-taxes.php:105
 msgid "Filter rates list"
 msgstr "Filtrer la liste des tarifs"
 
-#: includes/class-mltp-rates-and-taxes.php:107
+#: includes/class-rates-and-taxes.php:107
 msgid "Rates list navigation"
 msgstr "Navigation dans la liste des tarifs"
 
-#: includes/class-mltp-rates-and-taxes.php:108
+#: includes/class-rates-and-taxes.php:108
 msgid "Rates list"
 msgstr "Liste des tarifs"
 
-#: includes/class-mltp-rates-and-taxes.php:109
+#: includes/class-rates-and-taxes.php:109
 msgid "Rate published."
 msgstr "Tarif publié."
 
-#: includes/class-mltp-rates-and-taxes.php:110
+#: includes/class-rates-and-taxes.php:110
 msgid "Rate published privately."
 msgstr "Tarif publié en privé."
 
-#: includes/class-mltp-rates-and-taxes.php:111
+#: includes/class-rates-and-taxes.php:111
 msgid "Rate reverted to draft."
 msgstr "Tarif remis en brouillon."
 
-#: includes/class-mltp-rates-and-taxes.php:112
+#: includes/class-rates-and-taxes.php:112
 msgid "Rate scheduled."
 msgstr "Tarif planifié."
 
-#: includes/class-mltp-rates-and-taxes.php:113
+#: includes/class-rates-and-taxes.php:113
 msgid "Rate updated."
 msgstr "Tarif mis à jour."
 
-#: includes/class-mltp-rates-and-taxes.php:149
+#: includes/class-rates-and-taxes.php:149
 msgid "expired"
 msgstr "expiré"
 
-#: includes/class-mltp-rates-and-taxes.php:150
+#: includes/class-rates-and-taxes.php:150
 msgid "Expired <span class=\"count\">(%s)</span>"
 msgid_plural "Expired <span class=\"count\">(%s)</span>"
 msgstr[0] "Expiré <span class=\"count\">(%s)</span>"
 msgstr[1] "Expirés <span class=\"count\">(%s)</span>"
 
-#: includes/class-mltp-rates-and-taxes.php:247
+#: includes/class-rates-and-taxes.php:247
 msgid "Extra"
 msgstr "Extra"
 
-#: includes/class-mltp-rates-and-taxes.php:248
+#: includes/class-rates-and-taxes.php:248
 msgid "Tax"
 msgstr "Tax"
 
-#: includes/class-mltp-rates-and-taxes.php:261
+#: includes/class-rates-and-taxes.php:261
 msgid "Stay dates"
 msgstr "Dates de séjour"
 
-#: includes/class-mltp-rates-and-taxes.php:281
+#: includes/class-rates-and-taxes.php:281
 msgid "Repeat"
 msgstr "Répéter"
 
-#: includes/class-mltp-rates-and-taxes.php:291
+#: includes/class-rates-and-taxes.php:291
 msgid "Booking time"
 msgstr "Date de réservation"
 
-#: includes/class-mltp-rates-and-taxes.php:297
+#: includes/class-rates-and-taxes.php:297
 msgid "Maximum"
 msgstr "Maximum"
 
-#: includes/class-mltp-rates-and-taxes.php:304
+#: includes/class-rates-and-taxes.php:304
 msgid "From (date)"
 msgstr "Du (date)"
 
-#: includes/class-mltp-rates-and-taxes.php:317
+#: includes/class-rates-and-taxes.php:317
 msgid "Minimum"
 msgstr "Minimum"
 
-#: includes/class-mltp-rates-and-taxes.php:324
+#: includes/class-rates-and-taxes.php:324
 msgid "To (date)"
 msgstr "Au (date)"
 
-#: includes/class-mltp-rates-and-taxes.php:335
-#: includes/class-mltp-rates-and-taxes.php:437
+#: includes/class-rates-and-taxes.php:335
+#: includes/class-rates-and-taxes.php:437
 msgid "Rules"
 msgstr "Règles"
 
-#: includes/class-mltp-rates-and-taxes.php:351
+#: includes/class-rates-and-taxes.php:351
 msgid "Unit"
 msgstr "Unité"
 
-#: includes/class-mltp-rates-and-taxes.php:356
+#: includes/class-rates-and-taxes.php:356
 msgid "%"
 msgstr "%"
 
-#: includes/class-mltp-rates-and-taxes.php:362
+#: includes/class-rates-and-taxes.php:362
 msgid "Percent of"
 msgstr "Pourcentage de"
 
-#: includes/class-mltp-rates-and-taxes.php:370
+#: includes/class-rates-and-taxes.php:370
 msgid "Total price"
 msgstr "Prix total"
 
-#: includes/class-mltp-rates-and-taxes.php:377
+#: includes/class-rates-and-taxes.php:377
 msgid "Multiply by"
 msgstr "Multiplié par"
 
-#: includes/class-mltp-rates-and-taxes.php:381
+#: includes/class-rates-and-taxes.php:381
 msgid "guests"
 msgstr "invités"
 
-#: includes/class-mltp-rates-and-taxes.php:382
+#: includes/class-rates-and-taxes.php:382
 msgid "nights"
 msgstr "nuits"
 
-#: includes/class-mltp-rates-and-taxes.php:392
+#: includes/class-rates-and-taxes.php:392
 msgid "Restrict guests to"
 msgstr "Limiter les invités à"
 
-#: includes/class-mltp-rates-and-taxes.php:403
+#: includes/class-rates-and-taxes.php:403
 msgid "Apply to"
 msgstr "Appliquer à"
 
-#: includes/class-mltp-rates-and-taxes.php:435
+#: includes/class-rates-and-taxes.php:435
 msgid "Dates of stay"
 msgstr "Dates du séjour"
 
-#: includes/class-mltp-rates-and-taxes.php:441
-#: includes/class-mltp-resource.php:471
+#: includes/class-rates-and-taxes.php:441
+#: includes/class-resource.php:471
 msgid "Publication"
 msgstr "Publication"
 
-#: includes/class-mltp-rates-and-taxes.php:494
+#: includes/class-rates-and-taxes.php:494
 msgid "%s%% of price"
 msgstr "%s%% du prix"
 
-#: includes/class-mltp-rates-and-taxes.php:499
+#: includes/class-rates-and-taxes.php:499
 #| msgid "%s%% of %s rate"
 msgid "%1$s%% of %2$s rate"
 msgstr "%1$s%% du tarif %2$s"
 
-#: includes/class-mltp-rates-and-taxes.php:524
+#: includes/class-rates-and-taxes.php:524
 msgid "or"
 msgstr "ou"
 
-#: includes/class-mltp-reports-payments.php:135
+#: includes/class-reports-payments.php:135
 msgid "Payments"
 msgstr "Paiements"
 
-#: includes/class-mltp-reports-payments.php:136
+#: includes/class-reports-payments.php:136
 msgid "Download CSV"
 msgstr "Télécharger le fichier CSV"
 
-#: includes/class-mltp-reports-payments.php:141
+#: includes/class-reports-payments.php:141
 msgid "Payment Date"
 msgstr "Date de paiement"
 
-#: includes/class-mltp-reports-payments.php:145
+#: includes/class-reports-payments.php:145
 msgid "Prestation Dates"
 msgstr "Dates de prestation"
 
-#: includes/class-mltp-reports.php:15 includes/class-mltp-reports.php:16
-#: includes/class-mltp-reports.php:101
+#: includes/class-reports.php:15 includes/class-reports.php:16
+#: includes/class-reports.php:101
 msgid "Reports"
 msgstr "Rapports"
 
-#: includes/class-mltp-reports.php:25
+#: includes/class-reports.php:25
 msgid "You do not have sufficient permissions to access this page."
 msgstr "Vous n'avez pas les droits suffissants pour accéer à cette page."
 
-#: includes/class-mltp-reports.php:105
+#: includes/class-reports.php:105
 msgid "Year"
 msgstr "Année"
 
-#: includes/class-mltp-reports.php:106
+#: includes/class-reports.php:106
 msgid "Count"
 msgstr "Décompte"
 
-#: includes/class-mltp-reports.php:142
+#: includes/class-reports.php:142
 msgid "CSV"
 msgstr "CSV"
 
-#: includes/class-mltp-reports.php:187
+#: includes/class-reports.php:187
 msgid "Nothing to export for year %s"
 msgstr "Rien à exporter pour l'année %s"
 
-#: includes/class-mltp-reports.php:209
+#: includes/class-reports.php:209
 msgid "Booking code"
 msgstr "Code résa"
 
-#: includes/class-mltp-reports.php:210
+#: includes/class-reports.php:210
 msgid "Part ID"
 msgstr "ID part"
 
-#: includes/class-mltp-reports.php:211
+#: includes/class-reports.php:211
 msgid "Origin"
 msgstr "Origine"
 
-#: includes/class-mltp-reports.php:218
+#: includes/class-reports.php:218
 msgid "Part paid"
 msgstr "Pmt. part"
 
-#: includes/class-mltp-reports.php:219
+#: includes/class-reports.php:219
 msgid "Comm."
 msgstr "Comm."
 
-#: includes/class-mltp-reports.php:343
+#: includes/class-reports.php:343
 msgid "Grand total"
 msgstr "Grand total"
 
-#: includes/class-mltp-resource.php:215
+#: includes/class-resource.php:215
 msgid "Add New Resource"
 msgstr "Ajouter une nouvelle ressource"
 
-#: includes/class-mltp-resource.php:216
+#: includes/class-resource.php:216
 msgid "Edit Resource"
 msgstr "Modifier la ressource"
 
-#: includes/class-mltp-resource.php:217
+#: includes/class-resource.php:217
 msgid "New Resource"
 msgstr "Nouvelle ressource"
 
-#: includes/class-mltp-resource.php:218
+#: includes/class-resource.php:218
 msgid "View Resource"
 msgstr "Voir me ressource"
 
-#: includes/class-mltp-resource.php:219
+#: includes/class-resource.php:219
 msgid "View Resources"
 msgstr "Voir les ressources"
 
-#: includes/class-mltp-resource.php:220
+#: includes/class-resource.php:220
 msgid "Search Resources"
 msgstr "Rechercher des ressources"
 
-#: includes/class-mltp-resource.php:221
+#: includes/class-resource.php:221
 msgid "No resources found."
 msgstr "Aucune ressource trouvée."
 
-#: includes/class-mltp-resource.php:222
+#: includes/class-resource.php:222
 msgid "No resources found in Trash."
 msgstr "Aucune ressource trouvée dans la corbeille."
 
-#: includes/class-mltp-resource.php:223
+#: includes/class-resource.php:223
 msgid "Parent Resource:"
 msgstr "Ressource parente :"
 
-#: includes/class-mltp-resource.php:225
+#: includes/class-resource.php:225
 msgid "Resource Archives"
 msgstr "Archives des ressources"
 
-#: includes/class-mltp-resource.php:226
+#: includes/class-resource.php:226
 msgid "Resource Attributes"
 msgstr "Attributs d'ressource"
 
-#: includes/class-mltp-resource.php:227
+#: includes/class-resource.php:227
 msgid "Insert into resource"
 msgstr "Insérer dans me ressource"
 
-#: includes/class-mltp-resource.php:228
+#: includes/class-resource.php:228
 msgid "Uploaded to this resource"
 msgstr "Téléchargé sur ce ressource"
 
-#: includes/class-mltp-resource.php:234
+#: includes/class-resource.php:234
 msgid "Filter resources list"
 msgstr "Filtrer la liste des ressources"
 
-#: includes/class-mltp-resource.php:236
+#: includes/class-resource.php:236
 msgid "Resources list navigation"
 msgstr "Navigation dans la liste des ressources"
 
-#: includes/class-mltp-resource.php:237
+#: includes/class-resource.php:237
 msgid "Resources list"
 msgstr "Liste des ressources"
 
-#: includes/class-mltp-resource.php:238
+#: includes/class-resource.php:238
 msgid "Resource published."
 msgstr "Associaiton publiée."
 
-#: includes/class-mltp-resource.php:239
+#: includes/class-resource.php:239
 msgid "Resource published privately."
 msgstr "Associaiton publiée en privé."
 
-#: includes/class-mltp-resource.php:240
+#: includes/class-resource.php:240
 msgid "Resource reverted to draft."
 msgstr "Ressource remise en brouillon."
 
-#: includes/class-mltp-resource.php:241
+#: includes/class-resource.php:241
 msgid "Resource scheduled."
 msgstr "Ressource planifiée."
 
-#: includes/class-mltp-resource.php:242
+#: includes/class-resource.php:242
 msgid "Resource updated."
 msgstr "Ressource mise à jour."
 
-#: includes/class-mltp-resource.php:243
+#: includes/class-resource.php:243
 msgid "Select a resource"
 msgstr "Sélectionnez une ressource"
 
-#: includes/class-mltp-resource.php:293
+#: includes/class-resource.php:293
 msgid "Page"
 msgstr "Page"
 
-#: includes/class-mltp-resource.php:298
+#: includes/class-resource.php:298
 msgid "Select a page"
 msgstr "Sélectionnez une page"
 
-#: includes/class-mltp-resource.php:310 includes/class-mltp-settings.php:292
-#: includes/class-mltp-settings.php:471
+#: includes/class-resource.php:310 includes/class-settings.php:292
+#: includes/class-settings.php:471
 msgid "Settings"
 msgstr "Réglages"
 
-#: includes/class-mltp-resource.php:316 includes/class-mltp-settings.php:337
+#: includes/class-resource.php:316 includes/class-settings.php:337
 msgid "Position"
 msgstr "Position"
 
-#: includes/class-mltp-resource.php:370 includes/class-mltp-resource.php:396
+#: includes/class-resource.php:370 includes/class-resource.php:396
 msgid "Resource Categories"
 msgstr "Catégories de ressources"
 
-#: includes/class-mltp-resource.php:371 includes/class-mltp-resource.php:467
+#: includes/class-resource.php:371 includes/class-resource.php:467
 msgid "Resource Category"
 msgstr "Catégorie de ressource"
 
-#: includes/class-mltp-resource.php:372
+#: includes/class-resource.php:372
 msgid "Categories"
 msgstr "Catégories"
 
-#: includes/class-mltp-resource.php:373
+#: includes/class-resource.php:373
 msgid "Search categories"
 msgstr "Rechercher des catégories"
 
-#: includes/class-mltp-resource.php:374
+#: includes/class-resource.php:374
 msgid "Popular categories"
 msgstr "Catégories populaires"
 
-#: includes/class-mltp-resource.php:375
+#: includes/class-resource.php:375
 msgid "All categories"
 msgstr "Toutes les catégories"
 
-#: includes/class-mltp-resource.php:376
+#: includes/class-resource.php:376
 msgid "Parent category"
 msgstr "Catégorie parente"
 
-#: includes/class-mltp-resource.php:377
+#: includes/class-resource.php:377
 msgid "Parent category:"
 msgstr "Catégorie parente :"
 
-#: includes/class-mltp-resource.php:378
+#: includes/class-resource.php:378
 msgid "Edit category"
 msgstr "Modifier la catégorie"
 
-#: includes/class-mltp-resource.php:379
+#: includes/class-resource.php:379
 msgid "View category"
 msgstr "Voir la catégorie"
 
-#: includes/class-mltp-resource.php:380
+#: includes/class-resource.php:380
 msgid "Update category"
 msgstr "Mettre à jour la catégorie"
 
-#: includes/class-mltp-resource.php:381
+#: includes/class-resource.php:381
 msgid "Add New category"
 msgstr "Ajouter une catégorie"
 
-#: includes/class-mltp-resource.php:382
+#: includes/class-resource.php:382
 msgid "New category Name"
 msgstr "Nom de la catégorie"
 
-#: includes/class-mltp-resource.php:383
+#: includes/class-resource.php:383
 msgid "Separate categories with commas"
 msgstr "Séparez les catégories avec des virgules"
 
-#: includes/class-mltp-resource.php:384
+#: includes/class-resource.php:384
 msgid "Add or remove categories"
 msgstr "Ajouter ou enlever des catégories"
 
-#: includes/class-mltp-resource.php:385
+#: includes/class-resource.php:385
 msgid "Choose most used categories"
 msgstr "Choisissez les catégories les plus utilisées"
 
-#: includes/class-mltp-resource.php:386
+#: includes/class-resource.php:386
 msgid "No categories found."
 msgstr "Aucune catégorie trouvée."
 
-#: includes/class-mltp-resource.php:387
+#: includes/class-resource.php:387
 msgid "No categories"
 msgstr "Aucune catégorie"
 
-#: includes/class-mltp-resource.php:388
+#: includes/class-resource.php:388
 msgid "Filter by category"
 msgstr "Filtrer par catégorie"
 
-#: includes/class-mltp-resource.php:389
+#: includes/class-resource.php:389
 msgid "Categories list pagination"
 msgstr "Pagination de la liste des catégories"
 
-#: includes/class-mltp-resource.php:390
+#: includes/class-resource.php:390
 msgid "Categories list"
 msgstr "Liste des catégorie"
 
-#: includes/class-mltp-resource.php:392
+#: includes/class-resource.php:392
 msgid "&larr; Go to categories"
 msgstr "&larr; Aller aux catégories"
 
-#: includes/class-mltp-resource.php:447
+#: includes/class-resource.php:447
 msgid "Options"
 msgstr "Options"
 
-#: includes/class-mltp-settings.php:54
+#: includes/class-settings.php:54
 msgid "MultiPass Reader"
 msgstr "Lecteur MultiPass"
 
-#: includes/class-mltp-settings.php:55
+#: includes/class-settings.php:55
 msgid "MultiPass Manager"
 msgstr "Gestionnaire MultiPass"
 
-#: includes/class-mltp-settings.php:56
+#: includes/class-settings.php:56
 msgid "MultiPass Administrator"
 msgstr "Administrateur MultiPass"
 
-#: includes/class-mltp-settings.php:293
+#: includes/class-settings.php:293
 msgid "MultiPass Settings"
 msgstr "Réglages MultiPass"
 
-#: includes/class-mltp-settings.php:302 includes/class-mltp-settings.php:318
+#: includes/class-settings.php:302 includes/class-settings.php:318
 msgid "General"
 msgstr "Général"
 
-#: includes/class-mltp-settings.php:303
+#: includes/class-settings.php:303
 msgid "Roles"
 msgstr "Rôles"
 
-#: includes/class-mltp-settings.php:324
-#: includes/modules/class-mltp-woocommerce.php:284
+#: includes/class-settings.php:324
+#: modules/module-woocommerce.php:284
 msgid "Currency Options"
 msgstr "Options de devise"
 
-#: includes/class-mltp-settings.php:330
+#: includes/class-settings.php:330
 msgid "Code"
 msgstr "Code"
 
-#: includes/class-mltp-settings.php:342
+#: includes/class-settings.php:342
 msgid "Left"
 msgstr "Gauche"
 
-#: includes/class-mltp-settings.php:343
+#: includes/class-settings.php:343
 msgid "Right"
 msgstr "Droite"
 
-#: includes/class-mltp-settings.php:344
+#: includes/class-settings.php:344
 msgid "Left with space"
 msgstr "Gauche avec espace"
 
-#: includes/class-mltp-settings.php:345
+#: includes/class-settings.php:345
 msgid "Right with space"
 msgstr "Droite avec espace"
 
-#: includes/class-mltp-settings.php:350
+#: includes/class-settings.php:350
 msgid "Decimals"
 msgstr "Décimales"
 
-#: includes/class-mltp-settings.php:364
+#: includes/class-settings.php:364
 msgid "Roles Settings"
 msgstr "Réglages des rôles"
 
-#: includes/class-mltp-settings.php:370
+#: includes/class-settings.php:370
 msgid "Reader"
 msgstr "Lecteur"
 
-#: includes/class-mltp-settings.php:376 includes/class-mltp-settings.php:386
-#: includes/class-mltp-settings.php:396
+#: includes/class-settings.php:376 includes/class-settings.php:386
+#: includes/class-settings.php:396
 msgid "Select a role"
 msgstr "Sélectionnez un rôle"
 
-#: includes/class-mltp-settings.php:380
+#: includes/class-settings.php:380
 msgid "Manager"
 msgstr "Gestionnaire"
 
-#: includes/class-mltp-settings.php:390
+#: includes/class-settings.php:390
 msgid "Administrator"
 msgstr "Administrateur"
 
-#: includes/class-mltp-settings.php:414
+#: includes/class-settings.php:414
 msgid "Debug data"
 msgstr "Donnés de débogage"
 
-#: includes/class-mltp-settings.php:497
+#: includes/class-settings.php:497
 msgid "&rarr; Create \"%s\" role"
 msgstr "&rarr; Créer le rôle \"%s\""
 
-#: includes/class-mltp-settings.php:515
+#: includes/class-settings.php:515
 msgid "%s (default)"
 msgstr "%s (par défault)"
 
-#: includes/class-mltp-settings.php:546
+#: includes/class-settings.php:546
 msgid ", and %s more..."
 msgstr ", et %s de plus..."
 
-#: includes/class-mltp-settings.php:561
+#: includes/class-settings.php:561
 msgid "Currently %1$s allowed user: %2$s%3$s"
 msgid_plural "Currently %1$s allowed users: %2$s%3$s"
 msgstr[0] "Actuellement %s utilisateur autorisé: %s%s"
 msgstr[1] "Actuellement %s utilisateurs autorisés: %s%s"
 
-#: includes/class-mltp-table.php:20
+#: includes/class-table.php:20
 msgid "Not an array"
 msgstr "Pas un tableau"
 
-#: includes/class-mltp-table.php:23
+#: includes/class-table.php:23
 msgid "Empty table"
 msgstr "Tableau vide"
 
-#: includes/class-mltp-table.php:28
+#: includes/class-table.php:28
 msgid "Wrong table format"
 msgstr "Mauvais format de table"
 
@@ -2021,7 +2021,7 @@ msgid "Best regards,"
 msgstr "Meilleures salutations,"
 
 #: includes/class-multipass.php:1112 includes/class-multipass.php:1143
-#: includes/modules/class-mltp-woocommerce-payment.php:120
+#: modules/module-woocommerce-payment.php:120
 msgid "Payment link"
 msgstr "Lien de paiement"
 
@@ -2067,20 +2067,20 @@ msgid_plural "baby beds"
 msgstr[0] "lit bébé"
 msgstr[1] "lits bébés"
 
-#: includes/modules/class-mltp-hbook.php:108
+#: modules/module-hbook.php:108
 msgid "HBook"
 msgstr "HBook"
 
-#: includes/modules/class-mltp-hbook.php:128
+#: modules/module-hbook.php:128
 msgid "HBook Settings"
 msgstr "Paramètres HBook"
 
-#: includes/modules/class-mltp-hbook.php:134
-#: includes/modules/class-mltp-woocommerce.php:316
+#: modules/module-hbook.php:134
+#: modules/module-woocommerce.php:316
 msgid "Synchronize now"
 msgstr "Synchroniser maintenant"
 
-#: includes/modules/class-mltp-hbook.php:137
+#: modules/module-hbook.php:137
 msgid ""
 "Sync HBook bookings with prestations, create prestation if none exist. Only useful after plugin activation or if out of "
 "sync."
@@ -2088,53 +2088,53 @@ msgstr ""
 "Synchronisez les réservations HBook avec les prestations, créez des prestations si aucune n'existe. Uniquement utile "
 "après l'activation du plugin ou en cas de désynchronisation."
 
-#: includes/modules/class-mltp-hbook.php:153
+#: modules/module-hbook.php:153
 msgid "HBook Accommodations"
 msgstr "Hébergements HBook"
 
-#: includes/modules/class-mltp-hbook.php:157
+#: modules/module-hbook.php:157
 msgid "Select an accommodation"
 msgstr "Sélectionnez un hébergement"
 
-#: includes/modules/class-mltp-lodgify-booking.php:97
-#: includes/modules/class-mltp-lodgify-booking.php:296
+#: modules/module-lodgify-booking.php:97
+#: modules/module-lodgify-booking.php:296
 msgid "Closed in %s"
 msgstr "Fermé dans %s"
 
-#: includes/modules/class-mltp-lodgify.php:116
-#: includes/modules/class-mltp-modules.php:175
+#: modules/module-lodgify.php:116
+#: modules/load-modules.php:175
 msgid "Lodgify"
 msgstr "Lodgify"
 
-#: includes/modules/class-mltp-lodgify.php:135
+#: modules/module-lodgify.php:135
 msgid "Lodgify Settings"
 msgstr "Paramètres Lodgify"
 
-#: includes/modules/class-mltp-lodgify.php:141
+#: modules/module-lodgify.php:141
 msgid "API Key"
 msgstr "Clé API"
 
-#: includes/modules/class-mltp-lodgify.php:147
+#: modules/module-lodgify.php:147
 msgid "API key is valid"
 msgstr "La clé API est valide"
 
-#: includes/modules/class-mltp-lodgify.php:161
+#: modules/module-lodgify.php:161
 msgid "An API key is required to connect to Lodgify."
 msgstr "Une clé API est requise pour la connexion à Lodgify."
 
-#: includes/modules/class-mltp-lodgify.php:163
+#: modules/module-lodgify.php:163
 msgid "Get your API key from Logdify Settings page > Public API"
 msgstr "Obtenez votre clé API depuis les réglages Lodgify > API publique"
 
-#: includes/modules/class-mltp-lodgify.php:201
+#: modules/module-lodgify.php:201
 msgid "Synchronize"
 msgstr "Synchroniser"
 
-#: includes/modules/class-mltp-lodgify.php:206
+#: modules/module-lodgify.php:206
 msgid "Import now"
 msgstr "Importer maintenant"
 
-#: includes/modules/class-mltp-lodgify.php:209
+#: modules/module-lodgify.php:209
 msgid ""
 "Import Lodgify bookings, create or resync matching prestations and entries. Only useful after plugin activation or if "
 "out of sync."
@@ -2142,63 +2142,63 @@ msgstr ""
 "Importer les réservations Lodgify, créer ou synchroniser les prestations correspondantes. Uniquement utile lors de "
 "l'activation de l'extension ou en cas de désynchronisation."
 
-#: includes/modules/class-mltp-lodgify.php:301
+#: modules/module-lodgify.php:301
 msgid "Do not synchronize"
 msgstr "Ne pas synchroniser"
 
-#: includes/modules/class-mltp-lodgify.php:388
+#: modules/module-lodgify.php:388
 msgid "Lodgify Property"
 msgstr "Propriété Lodgify"
 
-#: includes/modules/class-mltp-lodgify.php:555
+#: modules/module-lodgify.php:555
 msgid "API Key verification failed (%s)."
 msgstr "La vérification de la clé API a échoué (%s)."
 
-#: includes/modules/class-mltp-lodgify.php:743
-#: includes/modules/class-mltp-lodgify.php:779
+#: modules/module-lodgify.php:743
+#: modules/module-lodgify.php:779
 msgid "%1$s failed with error %2$s: %3$s"
 msgstr "%1$s a échoué avec l'erreur %2$s : %3$s"
 
-#: includes/modules/class-mltp-modules.php:164
+#: modules/load-modules.php:164
 msgid "MultiPass Modules"
 msgstr "Modules MultiPass"
 
-#: includes/modules/class-mltp-modules.php:170
+#: modules/load-modules.php:170
 msgid "Modules"
 msgstr "Modules"
 
-#: includes/modules/class-mltp-modules.php:174
+#: modules/load-modules.php:174
 msgid "Mail Processing"
 msgstr "Traitement du courrier"
 
-#: includes/modules/class-mltp-modules.php:176
+#: modules/load-modules.php:176
 msgid "HBook Plugin"
 msgstr "Extension HBook"
 
-#: includes/modules/class-mltp-modules.php:186
+#: modules/load-modules.php:186
 msgid "External"
 msgstr "Externe"
 
-#: includes/modules/class-mltp-modules.php:188
-#: includes/modules/class-mltp-woocommerce.php:822
+#: modules/load-modules.php:188
+#: modules/module-woocommerce.php:822
 msgid "Empty list"
 msgstr "Liste vide"
 
-#: includes/modules/class-mltp-modules.php:199
-#: includes/modules/class-mltp-woocommerce.php:829
+#: modules/load-modules.php:199
+#: modules/module-woocommerce.php:829
 msgid "ID"
 msgstr "ID"
 
-#: includes/modules/class-mltp-modules.php:200
-#: includes/modules/class-mltp-woocommerce.php:830
+#: modules/load-modules.php:200
+#: modules/module-woocommerce.php:830
 msgid "Created"
 msgstr "Créé"
 
-#: includes/modules/class-mltp-woocommerce-payment.php:58
+#: modules/module-woocommerce-payment.php:58
 msgid "Payment products"
 msgstr "Produits de paiement"
 
-#: includes/modules/class-mltp-woocommerce-payment.php:64
+#: modules/module-woocommerce-payment.php:64
 msgid ""
 "Payment products are used to provide a payment gateway for prestation not handled by WooCommerce (like deposits, custom "
 "items or prestation items handled by an external website)."
@@ -2206,149 +2206,149 @@ msgstr ""
 "Les produits de paiement sont utilisés pour fournir une passerelle de paiement pour des prestations non gérées par "
 "WooCommerce (comme les dépôts, les articles personnalisés ou les prestation items gérés par un site Web externe)."
 
-#: includes/modules/class-mltp-woocommerce-payment.php:68
+#: modules/module-woocommerce-payment.php:68
 msgid "To enable a product as payment, check the \"Payment Only\" option on product edit page and set its price to 0 (zero)."
 msgstr ""
 "Pour activer un produit en tant que paiement, cochez l'option \"Paiement uniquement\" sur la page d'édition du produit "
 "et définissez son prix sur 0 (zéro)."
 
-#: includes/modules/class-mltp-woocommerce-payment.php:69
+#: modules/module-woocommerce-payment.php:69
 msgid "Enabling Payment Only will disable fixed product price and add amount and reference fields to product page."
 msgstr ""
 "L'activation du paiement uniquement désactivera le prix fixe du produit et ajoutera des champs de montant et de "
 "référence à la page du produit."
 
-#: includes/modules/class-mltp-woocommerce-payment.php:70
+#: modules/module-woocommerce-payment.php:70
 msgid "Only one Payment Only product is needed by MultiPass plugin."
 msgstr "Un seul produit de paiement uniquement est requis par le plug-in MultiPass."
 
-#: includes/modules/class-mltp-woocommerce-payment.php:76
+#: modules/module-woocommerce-payment.php:76
 msgid "Default product"
 msgstr "Produit par défaut"
 
-#: includes/modules/class-mltp-woocommerce-payment.php:79
+#: modules/module-woocommerce-payment.php:79
 msgid "Create a payment product first"
 msgstr "Créez d'abord un produit de paiement"
 
-#: includes/modules/class-mltp-woocommerce-payment.php:81
-#: includes/modules/class-mltp-woocommerce.php:194
+#: modules/module-woocommerce-payment.php:81
+#: modules/module-woocommerce.php:194
 msgid "Select a product"
 msgstr "Sélectionnez un produit"
 
-#: includes/modules/class-mltp-woocommerce-payment.php:82
+#: modules/module-woocommerce-payment.php:82
 msgid "Used to generate payment links."
 msgstr "Utilisé pour générer des liens de paiement."
 
-#: includes/modules/class-mltp-woocommerce-payment.php:86
+#: modules/module-woocommerce-payment.php:86
 msgid "Link prefix"
 msgstr "Préfixe de lien"
 
-#: includes/modules/class-mltp-woocommerce-payment.php:91
-#: includes/modules/class-mltp-woocommerce-payment.php:503
+#: modules/module-woocommerce-payment.php:91
+#: modules/module-woocommerce-payment.php:503
 msgid "pay"
 msgstr "payer"
 
-#: includes/modules/class-mltp-woocommerce-payment.php:93
+#: modules/module-woocommerce-payment.php:93
 msgid "Generated payment URLs will folllow the form %s."
 msgstr "Les URLs de paiement générées suivent la forme %s."
 
-#: includes/modules/class-mltp-woocommerce-payment.php:106
+#: modules/module-woocommerce-payment.php:106
 msgid "Payments test"
 msgstr "Tests paiements"
 
-#: includes/modules/class-mltp-woocommerce-payment.php:168
+#: modules/module-woocommerce-payment.php:168
 msgid "%1$s product enabled: %2$s"
 msgid_plural "%1$s products enabled: %2$s"
 msgstr[0] "%1$s produit activé : %2$s"
 msgstr[1] "%1$s produits activés : %2$s"
 
-#: includes/modules/class-mltp-woocommerce-payment.php:177
-#: includes/modules/class-mltp-woocommerce-payment.php:184
+#: modules/module-woocommerce-payment.php:177
+#: modules/module-woocommerce-payment.php:184
 msgid "Pay prestation"
 msgstr "Prestations payantes"
 
-#: includes/modules/class-mltp-woocommerce-payment.php:201
+#: modules/module-woocommerce-payment.php:201
 msgid "%s payment"
 msgstr "Paiement %s"
 
-#: includes/modules/class-mltp-woocommerce-payment.php:202
+#: modules/module-woocommerce-payment.php:202
 msgid "Check to use product as MultiPass payment."
 msgstr "Cochez pour utiliser le produit comme paiement MultiPass."
 
-#: includes/modules/class-mltp-woocommerce-payment.php:232
+#: modules/module-woocommerce-payment.php:232
 msgid "Payment reference: "
 msgstr "Référence du paiement :"
 
-#: includes/modules/class-mltp-woocommerce-payment.php:246
+#: modules/module-woocommerce-payment.php:246
 msgid "Payment reference:"
 msgstr "Référence du paiement :"
 
-#: includes/modules/class-mltp-woocommerce-payment.php:247
+#: modules/module-woocommerce-payment.php:247
 msgid "Enter a payment id"
 msgstr "Saisissez un identifiant de paiement"
 
-#: includes/modules/class-mltp-woocommerce-payment.php:261
-#: includes/modules/class-mltp-woocommerce-payment.php:264
+#: modules/module-woocommerce-payment.php:261
+#: modules/module-woocommerce-payment.php:264
 msgid "Amount to pay"
 msgstr "Montant à payer"
 
-#: includes/modules/class-mltp-woocommerce-payment.php:279
+#: modules/module-woocommerce-payment.php:279
 msgid "\"%s\" could not be added to the cart. Please provide a valid amount to pay."
 msgstr "\"%s\" n'a pas pu être ajouté au panier. Veuillez fournir un montant valide à payer."
 
-#: includes/modules/class-mltp-woocommerce-payment.php:291
+#: modules/module-woocommerce-payment.php:291
 msgid "\"%s\" could not be added to the cart. Please provide a prestation id."
 msgstr "\"%s\" n'a pas pu être ajouté au panier. Veuillez fournir un identifiant de prestation."
 
-#: includes/modules/class-mltp-woocommerce-payment.php:334
+#: modules/module-woocommerce-payment.php:334
 msgid "Prestation payment"
 msgstr "Paiement de la prestation"
 
-#: includes/modules/class-mltp-woocommerce-payment.php:359
+#: modules/module-woocommerce-payment.php:359
 msgid "Reference # %s"
 msgstr "Référence # %s"
 
-#: includes/modules/class-mltp-woocommerce-payment.php:411
-#: includes/modules/class-mltp-woocommerce-payment.php:412
-#: includes/modules/class-mltp-woocommerce-payment.php:436
+#: modules/module-woocommerce-payment.php:411
+#: modules/module-woocommerce-payment.php:412
+#: modules/module-woocommerce-payment.php:436
 msgid "Reference Code"
 msgstr "Code de référence"
 
-#: includes/modules/class-mltp-woocommerce.php:253
+#: modules/module-woocommerce.php:253
 msgid "View prestation"
 msgstr "Voir les prestations"
 
-#: includes/modules/class-mltp-woocommerce.php:267
+#: modules/module-woocommerce.php:267
 msgid "WooCommerce"
 msgstr "WooCommerce"
 
-#: includes/modules/class-mltp-woocommerce.php:288
+#: modules/module-woocommerce.php:288
 msgid "Set currency options in %1$sWooCommerce settings page%2$s"
 msgstr "Définissez les options de devise sur la %1$spage des paramètres WooCommerce%2$s"
 
-#: includes/modules/class-mltp-woocommerce.php:295
+#: modules/module-woocommerce.php:295
 msgid "Payment Products"
 msgstr "Produits de paiement"
 
-#: includes/modules/class-mltp-woocommerce.php:302
+#: modules/module-woocommerce.php:302
 msgid "WooCommerce Settings"
 msgstr "Paramètres WooCommerce"
 
-#: includes/modules/class-mltp-woocommerce.php:307
+#: modules/module-woocommerce.php:307
 msgid "Add customer name to notification subject"
 msgstr "Ajouter le nom du client au sujet du message de notification"
 
-#: includes/modules/class-mltp-woocommerce.php:310
+#: modules/module-woocommerce.php:310
 msgid "Append client name to the subject of administrator notification email"
 msgstr "Ajouter le nom du client au sujet du message de notification administrateur"
 
-#: includes/modules/class-mltp-woocommerce.php:319
+#: modules/module-woocommerce.php:319
 msgid "Sync orders and prestations, create prestation if none exist. Only useful after plugin activation or if out of sync."
 msgstr ""
 "Synchroniser les commandes et les prestations, créer des prestations si aucune n'existe. Uniquement utile après "
 "l'activation du plugin ou en cas de désynchronisation."
 
-#: includes/modules/class-mltp-woocommerce.php:820
+#: modules/module-woocommerce.php:820
 msgid "Online Shop (WooCommerce)"
 msgstr "Boutique en ligne (WooCommerce)"
 
@@ -2384,32 +2384,32 @@ msgstr[1] "%1$s titres / %2$s modifiés"
 msgid "Table and contact update in progress"
 msgstr "Mise à jour des tables et des contacts en cours"
 
-#: includes/class-mltp-calendar.php:497 includes/class-mltp-prestation.php:459
-#: includes/class-mltp-prestation.php:1947
+#: includes/class-calendar.php:497 includes/class-prestation.php:459
+#: includes/class-prestation.php:1947
 msgctxt "(noun)"
 msgid "Contact"
 msgstr "Contact"
 
-#: includes/class-mltp-calendar.php:498
-#: includes/class-mltp-prestation-detail.php:554
-#: includes/class-mltp-prestation-detail.php:591
+#: includes/class-calendar.php:498
+#: includes/class-prestation-detail.php:554
+#: includes/class-prestation-detail.php:591
 msgctxt "(noun)"
 msgid "Email"
 msgstr "E-mail"
 
-#: includes/class-mltp-calendar.php:499
-#: includes/class-mltp-prestation-detail.php:560
-#: includes/class-mltp-prestation-detail.php:597
+#: includes/class-calendar.php:499
+#: includes/class-prestation-detail.php:560
+#: includes/class-prestation-detail.php:597
 msgctxt "(noun)"
 msgid "Phone"
 msgstr "Téléphone"
 
-#: includes/class-mltp-prestation-detail.php:471
+#: includes/class-prestation-detail.php:471
 msgctxt "(mltp_detail) source"
 msgid "None"
 msgstr "Aucune"
 
-#: includes/class-mltp-resource.php:446
+#: includes/class-resource.php:446
 msgctxt "Calendar"
 msgid "Main"
 msgstr "Principal"
