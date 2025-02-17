@@ -151,7 +151,7 @@ class MultiPass {
 		/**
 		 * The standard plugin classes.
 		 */
-		require_once MULTIPASS_DIR . 'includes/class-loader.php';
+		require_once MULTIPASS_DIR . 'includes/loader.php';
 		require_once MULTIPASS_DIR . 'includes/class-i18n.php';
 		require_once MULTIPASS_DIR . 'admin/class-admin.php';
 		require_once MULTIPASS_DIR . 'public/class-public.php';

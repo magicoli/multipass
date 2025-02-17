@@ -12,8 +12,8 @@
  * Text Domain:       multipass
  * Domain Path:       /languages
  * Requires at least: 5.9.0
- * Tested up to:      6.5.2
- * Requires PHP:      7.4
+ * Tested up to:      6.7.2
+ * Requires PHP:      7.3
  *
  * @link              https://github.com/magicoli/multipass
  * @since             0.1.0
@@ -57,7 +57,7 @@ register_deactivation_hook( __FILE__, 'deactivate_multipass' );
 /**
  * The core plugin class.
  */
-require MULTIPASS_DIR . 'includes/class-multipass.php';
+require MULTIPASS_DIR . 'includes/main-class.php';
 
 /**
  * Begins execution of the plugin.
