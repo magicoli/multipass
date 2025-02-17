@@ -1,5 +1,13 @@
 ## Changelog
 
+### Unreleased (0.7.0-dev.827)
+- (dev breaking change) reorganized includes and modules
+- added dates to prestations list in menu
+- fix prestation options empty in resource edit form
+- fix prestation options empty in detail edit form
+- cache resources and prestations options menus
+- enchancement resource options hierarchical
+
 ### 0.6.1
 - updated dependencies
 - fix phone link on booking popup
