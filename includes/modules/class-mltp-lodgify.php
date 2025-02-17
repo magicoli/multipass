@@ -265,7 +265,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 					break;
 
 				default:
-					error_log( 'unmanaged action ' . $data['action'] );
+					error_log( __METHOD__ . ' unmanaged action ' . $data['action'] . ' data ' . print_r( $data, true ) );
 			}
 
 			// error_log(print_r($data, true));
