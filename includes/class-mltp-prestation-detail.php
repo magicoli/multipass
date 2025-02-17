@@ -1336,6 +1336,9 @@ class Mltp_Item {
 		}
 
 		add_action( current_action(), __CLASS__ . '::' . __FUNCTION__, 10, 3 );
+
+		# Fire an action to update external sources
+		do_action( 'multipass_update_external_sources', $post_id, $post, $update );
 	}
 
 	static function sanitize_mltp_detail_meta( $meta_value, $meta_key, $object_type ) {
