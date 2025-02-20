@@ -1,23 +1,6 @@
 <?php
 
-class Mltp_Lodgify_Booking {
-
-	public $id;
-	public $title;
-	public $status;
-	public $guests;
-	public $from;
-	public $to;
-
-	protected $data = array();
-
-	function __construct( $data = array() ) {
-		if ( ! $this->format( $data ) ) {
-			return false;
-		}
-
-		// MultiPass::debug( $resource_name );
-	}
+class Mltp_Lodgify_Booking extends Mltp_Booking {
 
 	function format( $data = array() ) {
 		if ( ! empty( $data['booking'] ) ) {
@@ -94,7 +77,7 @@ class Mltp_Lodgify_Booking {
 
 		if ( isset( $data['guest']['id'] ) && 'AAAAAAAAAAAAAAAAAAAAAA' === $data['guest']['id'] ) {
 			// TODO: find closed period comment and use it as client name
-			$this->title    = sprintf( __( 'Closed in %s', 'multipass' ), 'Lodgify' );
+			$title    = sprintf( __( 'Closed in %s', 'multipass' ), 'Lodgify' );
 			$status         = 'closed-period';
 			$source_url     = MultiPass::get_source_url( 'lodgify', $data['id'], null, array( 'type' => $status ) );
 			$customer_name  = null;
@@ -136,7 +119,7 @@ class Mltp_Lodgify_Booking {
 			// $origin_url = null;
 		}
 
-		$this->title = join(
+		$title = join(
 			' - ',
 			array(
 				$customer_name,
@@ -153,26 +136,19 @@ class Mltp_Lodgify_Booking {
 			)
 		);
 
-		$this->status = $status;
-		$this->guests = $guests;
-		$this->dates  = array(
-			'from' => $from,
-			'to'   => $to,
-		);
-		$this->from   = $from;
-		$this->to     = $to;
-
-		$this->data = array(
-			'customer_name'    => $customer_name,
-			'customer_email'   => $customer_email,
-			'customer_phone'   => $customer_phone,
+		$data = array(
+			'status' 		 => $status,
+			'guests' 		 => $guests,
+			'from' 			 => $from,
+			'to' 			 => $to,
 			'dates'            => array(
 				'from' => $from,
 				'to'   => $to,
 			),
-			'from'             => $from,
-			'to'               => $to,
-			// 'dates'               => array('from'=>$from,'to'=>$to),
+			'title' 		 => $title,
+			'customer_name'    => $customer_name,
+			'customer_email'   => $customer_email,
+			'customer_phone'   => $customer_phone,
 			'source'           => $source,
 			'source_id'        => $source_id,
 			'source_url'       => ( ! empty( $source_id ) ) ? MultiPass::get_source_url( $source, $source_id, $source_url ) : null,
@@ -228,6 +204,7 @@ class Mltp_Lodgify_Booking {
 			'notes'            => ( isset( $data['notes'] ) ) ? $data['notes'] : null,
 		);
 
+		parent::format( $data );
 	}
 
 	function format_api_data( $data = array() ) {
@@ -273,23 +250,30 @@ class Mltp_Lodgify_Booking {
 			}
 		}
 
-		$amount_gross = $data['current_order']['amount_gross'];
-		$subtotals    = array(
-			'stay'       => $amount_gross['total_room_rate_amount'],
-			'fees'       => $amount_gross['total_fees_amount'],
-			'taxes'      => $amount_gross['total_taxes_amount'],
-			'promotions' => $amount_gross['total_promotions_amount'],
-		);
-		$subtotal     = $subtotals['stay'] + $subtotals['fees'] + $subtotals['taxes'];
-		$discount     = ( empty( $subtotals['promotions'] ) ) ? null : -$subtotals['promotions'];
+		$amount_gross = $data['current_order']['amount_gross'] ?? null;
+		if( is_array( $amount_gross ) ) {
+			$subtotals    = array(
+				'stay'       => $amount_gross['total_room_rate_amount'],
+				'fees'       => $amount_gross['total_fees_amount'],
+				'taxes'      => $amount_gross['total_taxes_amount'],
+				'promotions' => $amount_gross['total_promotions_amount'],
+			);
+			$subtotal     = $subtotals['stay'] + $subtotals['fees'] + $subtotals['taxes'];
+			$discount     = ( empty( $subtotals['promotions'] ) ) ? null : -$subtotals['promotions'];
+			$total   = array_sum( $subtotals );
+		} else {
+			$subtotal = null;
+			$discount = null;
+			$total = null;
+			$amount_gross = array();
+		}
 
-		$language = isset( $data['language'] ) ? isset( $data['language'] ) : $data['guest']['locale'];
+		$language = $booking_data['language'] ?? $data['guest']['locale'] ?? 'en';
 
-		$total   = array_sum( $subtotals );
 		$paid    = array_sum( $data['total_transactions'] );
 		$balance = $data['balance_due'];
 
-		$currency_code = $data['current_order']['currency_code'];
+		$currency_code = $data['current_order']['currency_code'] ?? $booking_data['currency_code'];
 
 		if ( isset( $data['guest']['id'] ) && 'AAAAAAAAAAAAAAAAAAAAAA' === $data['guest']['id'] ) {
 			// TODO: find closed period comment and use it as client name
@@ -335,7 +319,7 @@ class Mltp_Lodgify_Booking {
 			// $origin_url = null;
 		}
 
-		$this->title = join(
+		$title = join(
 			' - ',
 			array(
 				$customer_name,
@@ -352,22 +336,19 @@ class Mltp_Lodgify_Booking {
 			)
 		);
 
-		$this->status = $status;
-		$this->guests = $guests;
-		$this->from   = $from;
-		$this->to     = $to;
-
-		$this->data = array(
-			'customer_name'    => $customer_name,
-			'customer_email'   => $customer_email,
-			'customer_phone'   => $customer_phone,
+		$data = array(
+			'status'		   => $status,
+			'guests'		   => $guests,
+			'from'			   => $from,
+			'to'			   => $to,
 			'dates'            => array(
 				'from' => $from,
 				'to'   => $to,
 			),
-			'from'             => $from,
-			'to'               => $to,
-			// 'dates'               => array('from'=>$from,'to'=>$to),
+			'title'			   => $title,
+			'customer_name'    => $customer_name,
+			'customer_email'   => $customer_email,
+			'customer_phone'   => $customer_phone,
 			'source'           => $source,
 			'source_id'        => $source_id,
 			'source_url'       => ( ! empty( $source_id ) ) ? MultiPass::get_source_url( $source, $source_id, $source_url ) : null,
@@ -396,10 +377,10 @@ class Mltp_Lodgify_Booking {
 			),
 			// 'source_details' => array(
 			// 'rooms'         => $data['rooms'],
-				'created'      => strtotime( $booking_data['date_created'] ),
+			'created'      => strtotime( $booking_data['date_created'] ),
 			'updated'          => time(),
 			'canceled'         => $canceled,
-			'is_deleted'       => $data['is_deleted'],
+			'is_deleted'       => isset( $data['is_deleted'] ) ? $data['is_deleted'] : null,
 			// 'currency_code' => $data['currency_code'],
 			// 'quote'         => $data['quote'],
 			// ),
@@ -422,6 +403,14 @@ class Mltp_Lodgify_Booking {
 			'type'             => 'booking',
 			'notes'            => ( isset( $booking_data['notes'] ) ) ? $booking_data['notes'] : null,
 		);
+
+		if ( empty( $attendees ) ) {
+			$this->data['guests'] = $guests;
+		} else {
+			$this->data['guests'] = array_merge( $attendees, array( 'total' => $guests ) );
+		}
+
+		parent::format( $data );
 
 		$mltp_detail = new Mltp_Item( $this->data, true );
 		if ( $mltp_detail ) {
@@ -456,17 +445,5 @@ class Mltp_Lodgify_Booking {
 		return sanitize_title( preg_replace( $p_keys, $p_replace, $string ) );
 	}
 
-	function save() {
-		if ( is_array( $this->data ) ) {
-			$mltp_detail = new Mltp_Item( $this->data, true );
-			if ( $mltp_detail ) {
-				$this->id = $mltp_detail->id;
-				return $mltp_detail;
-			}
-		}
-
-		// MultiPass::debug( 'no data', $this );
-		return false;
-	}
 
 }

@@ -168,6 +168,7 @@ class MultiPass {
 		}
 		require_once MULTIPASS_DIR . 'includes/class-prestation.php';
 		require_once MULTIPASS_DIR . 'includes/class-prestation-detail.php';
+		require_once MULTIPASS_DIR . 'includes/class-booking.php';
 		require_once MULTIPASS_DIR . 'includes/class-resource.php';
 		require_once MULTIPASS_DIR . 'includes/class-rates-and-taxes.php';
 		require_once MULTIPASS_DIR . 'includes/class-payment.php';
