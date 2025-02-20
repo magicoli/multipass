@@ -500,8 +500,8 @@ class Mltp_Calendar {
 
 		$html = '';
 
-		$event->total    = round( $event->total, 2 );
-		$event->subtotal = round( $event->subtotal, 2 );
+		$event->total    = is_numeric( $event->total) ? round( $event->total, 2 ) : 0;
+		$event->subtotal = is_numeric( $event->subtotal) ? round( $event->subtotal, 2 ) : 0;
 
 		$guests         = MultiPass::format_count( get_post_meta( $event->id, 'attendees', true ), 'long_with_total' );
 		$beds           = MultiPass::format_count( get_post_meta( $event->id, 'beds', true ) );
