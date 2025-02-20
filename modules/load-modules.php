@@ -96,7 +96,7 @@ class Mltp_Modules {
 		}
 
 		if ( in_array( 'lodgify', $enabled ) ) {
-			require_once MULTIPASS_DIR . 'modules/module-lodgify.php';
+			require_once MULTIPASS_DIR . 'modules/cm-lodgify.php';
 		}
 
 		if ( in_array( 'hbook', $enabled ) ) {

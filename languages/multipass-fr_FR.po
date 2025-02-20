@@ -91,8 +91,8 @@ msgstr "Indéterminé"
 #: includes/class-resource.php:212 includes/class-resource.php:224
 #: includes/class-resource.php:233 includes/class-resource.php:247
 #: includes/class-resource.php:287
-#: modules/module-lodgify.php:185
-#: modules/module-lodgify.php:192
+#: modules/cm-lodgify.php:185
+#: modules/cm-lodgify.php:192
 msgid "Resources"
 msgstr "Ressources"
 
@@ -2096,45 +2096,45 @@ msgstr "Hébergements HBook"
 msgid "Select an accommodation"
 msgstr "Sélectionnez un hébergement"
 
-#: modules/module-lodgify-booking.php:97
-#: modules/module-lodgify-booking.php:296
+#: modules/cm-lodgify-booking.php:97
+#: modules/cm-lodgify-booking.php:296
 msgid "Closed in %s"
 msgstr "Fermé dans %s"
 
-#: modules/module-lodgify.php:116
+#: modules/cm-lodgify.php:116
 #: modules/load-modules.php:175
 msgid "Lodgify"
 msgstr "Lodgify"
 
-#: modules/module-lodgify.php:135
+#: modules/cm-lodgify.php:135
 msgid "Lodgify Settings"
 msgstr "Paramètres Lodgify"
 
-#: modules/module-lodgify.php:141
+#: modules/cm-lodgify.php:141
 msgid "API Key"
 msgstr "Clé API"
 
-#: modules/module-lodgify.php:147
+#: modules/cm-lodgify.php:147
 msgid "API key is valid"
 msgstr "La clé API est valide"
 
-#: modules/module-lodgify.php:161
+#: modules/cm-lodgify.php:161
 msgid "An API key is required to connect to Lodgify."
 msgstr "Une clé API est requise pour la connexion à Lodgify."
 
-#: modules/module-lodgify.php:163
+#: modules/cm-lodgify.php:163
 msgid "Get your API key from Logdify Settings page > Public API"
 msgstr "Obtenez votre clé API depuis les réglages Lodgify > API publique"
 
-#: modules/module-lodgify.php:201
+#: modules/cm-lodgify.php:201
 msgid "Synchronize"
 msgstr "Synchroniser"
 
-#: modules/module-lodgify.php:206
+#: modules/cm-lodgify.php:206
 msgid "Import now"
 msgstr "Importer maintenant"
 
-#: modules/module-lodgify.php:209
+#: modules/cm-lodgify.php:209
 msgid ""
 "Import Lodgify bookings, create or resync matching prestations and entries. Only useful after plugin activation or if "
 "out of sync."
@@ -2142,20 +2142,20 @@ msgstr ""
 "Importer les réservations Lodgify, créer ou synchroniser les prestations correspondantes. Uniquement utile lors de "
 "l'activation de l'extension ou en cas de désynchronisation."
 
-#: modules/module-lodgify.php:301
+#: modules/cm-lodgify.php:301
 msgid "Do not synchronize"
 msgstr "Ne pas synchroniser"
 
-#: modules/module-lodgify.php:388
+#: modules/cm-lodgify.php:388
 msgid "Lodgify Property"
 msgstr "Propriété Lodgify"
 
-#: modules/module-lodgify.php:555
+#: modules/cm-lodgify.php:555
 msgid "API Key verification failed (%s)."
 msgstr "La vérification de la clé API a échoué (%s)."
 
-#: modules/module-lodgify.php:743
-#: modules/module-lodgify.php:779
+#: modules/cm-lodgify.php:743
+#: modules/cm-lodgify.php:779
 msgid "%1$s failed with error %2$s: %3$s"
 msgstr "%1$s a échoué avec l'erreur %2$s : %3$s"
 
