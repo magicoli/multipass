@@ -160,7 +160,7 @@ class Mltp_Lodgify extends Mltp_Modules {
 						'%s <a href="%s" target="_blank">%s</a>',
 						__( 'An API key is required to connect to Lodgify.', 'multipass' ),
 						'https://app.lodgify.com/#/reservation/settings/publicApiToken',
-						__( 'Get your API key from Logdify Settings page > Public API', 'multipass' ),
+						__( 'Get your API key from Lodgify Settings page > Public API', 'multipass' ),
 					),
 					'visible'    => array(
 						'when'     => array(

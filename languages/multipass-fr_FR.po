@@ -2123,7 +2123,7 @@ msgid "An API key is required to connect to Lodgify."
 msgstr "Une clé API est requise pour la connexion à Lodgify."
 
 #: modules/cm-lodgify.php:163
-msgid "Get your API key from Logdify Settings page > Public API"
+msgid "Get your API key from Lodgify Settings page > Public API"
 msgstr "Obtenez votre clé API depuis les réglages Lodgify > API publique"
 
 #: modules/cm-lodgify.php:201
