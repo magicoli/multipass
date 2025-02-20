@@ -21,7 +21,7 @@
  * @subpackage MultiPass/includes
  * @author     Magiiic <info@magiiic.com>
  */
-class Mltp_HBook extends Mltp_Modules {
+class Mltp_HBook extends Mltp_Booking {
 	private static $hbdb;
 	private static $db;
 
@@ -169,17 +169,18 @@ class Mltp_HBook extends Mltp_Modules {
 	// 	[updated_on] => 2025-02-17 13:43:01
 	// 	[uid] => D2025-02-17T13:43:01U67b33ce56297f@https://gites-mosaiques.com
 	// )
-	function format_booking( $data ) {
-		if( ! is_array($data) ) {
+	function format_booking( $hbook_data ) {
+		if( ! is_array($hbook_data) ) {
 			return false;
 		}
 
-		// error_log( __METHOD__ . ' data ' . print_r($data, true) );
-		error_log( __METHOD__ . ' booking_data ' . print_r($data, true) );
+		// error_log( __METHOD__ . ' data ' . print_r($hbook_data, true) );
+		error_log( __METHOD__ . ' booking_data ' . print_r($hbook_data, true) );
 		try {
-			$resource_id = Mltp_Resource::get_resource_id( 'hbook', $data['accom_id'] );
+			$hbook_id = $hbook_data['accom_id'] . ( empty( $hbook_data['accom_num'] ) ? '' : '-' . $hbook_data['accom_num'] );
+			$resource_id = Mltp_Resource::get_resource_id( 'hbook', $hbook_id );
 			if ( ! $resource_id ) {
-				throw new Exception( 'no resource for property ' . $data['accom_id'] );
+				throw new Exception( 'no resource for property ' . $hbook_id );
 			}
 			$resource      = new Mltp_Resource( $resource_id );
 			$resource_name = $resource->name;
@@ -187,56 +188,107 @@ class Mltp_HBook extends Mltp_Modules {
 			error_log( __METHOD__ . ' ' . $e->getMessage() );
 			return false;
 		}
-		error_log( __METHOD__ . ' resource ' . $resource_name . ' details' . print_r($resource, true) );
-		$status        = self::sanitize_status( $data['status'] );
+		error_log( __METHOD__ . ' resource ' . $resource_name );
+		$status        = self::sanitize_status( $hbook_data['status'] );
+		error_log( __METHOD__ . ' status ' . $status );
 
 		if ( ! in_array( $status, array( 'new', 'booked', 'option', 'declined', 'open' ) ) ) {
 			error_log( 'unmanaged status ' . $status );
 			return false;
 		}
 		
-		$confirmed = ( $data['paid'] >= $data['deposit'] ) ? true : false;
-		// if ( isset( $data['canceled_at'] ) ) {
-		// 	$canceled = strtotime( $data['canceled_at'] );
-		// } elseif ( isset( $data['date_deleted'] ) ) {
-		// 	$canceled = strtotime( $data['date_deleted'] );
-		// } elseif ( 'declined' === $data['status'] ) {
+		$hbook_admin_url = admin_url( 'admin.php?page=hb_reservations' );
+
+		$from   = strtotime( $hbook_data['check_in'] );
+		$to     = strtotime( $hbook_data['check_out'] );
+
+		// Exemple discount data
+		// $hbook_data[discount] => {"accom":[],"global":{"amount_type":"fixed","amount":"100"}}
+		// Make sure $discount is formatted as array
+		$discount_data = is_array($hbook_data['discount']) ? $hbook_data['discount'] : json_decode($hbook_data['discount'], true);
+		error_log( __METHOD__ . ' discount data ' . print_r($discount_data, true) );
+		$total    = $hbook_data['price'] ?? null;
+		$discount = 0;
+		$subtotal = $total;
+		$discount_type = $discount_data['global']['amount_type'] ?? null;
+		$discount_value = $discount_data['global']['amount'] ?? 0;
+		switch ($discount_type) {
+			case 'fixed':
+				$discount = $discount_value;
+				$subtotal = $total + $discount;
+				error_log( __METHOD__ . ' fixed discount ' . $discount_value );
+				break;
+			case 'percent':
+				$subtotal = round( $total / ( 1 - $discount_value / 100 ), 2 );
+				$discount = $total - $subtotal;
+				error_log( __METHOD__ . ' percent discount ' . $discount_value . ' % of ' . $total . ' = ' . $discount );
+				break;
+			default:
+				break;
+		}
+		$deposit  = $hbook_data['deposit'] ?? null;
+		$paid     = $hbook_data['paid'] ?? null;
+		$balance  = $total - $paid;
+
+		$confirmed = ( $paid >= $deposit ) ? true : false;
+		// if ( isset( $hbook_data['canceled_at'] ) ) {
+		// 	$canceled = strtotime( $hbook_data['canceled_at'] );
+		// } elseif ( isset( $hbook_data['date_deleted'] ) ) {
+		// 	$canceled = strtotime( $hbook_data['date_deleted'] );
+		// } elseif ( 'declined' === $hbook_data['status'] ) {
 		// 	$canceled = true;
 		// } else {
 			$canceled = null;
 		// }
 
-		$from   = strtotime( $data['check_in'] );
-		$to     = strtotime( $data['check_out'] );
-		// $guests = $data['room_types'][0]['people'];
-
-		// $deposit          = null;
-		// $deposit_due_date = null;
-		// if ( isset( $data['quote']['scheduled_transactions'] ) ) {
-		// 	foreach ( $data['quote']['scheduled_transactions'] as $key => $scheduled ) {
-		// 		if ( 'PrePayment' === $scheduled['type'] ) {
-		// 			$deposit         += $scheduled['amount'];
-		// 			$deposit_due_date = strtotime( $scheduled['due_at'] );
-		// 		}
-		// 	}
-		// }
-
-		// $amount_gross = $data['current_order']['amount_gross'];
-		// $subtotals    = array(
-		// 	'stay'       => $amount_gross['total_room_rate_amount'],
-		// 	'fees'       => $amount_gross['total_fees_amount'],
-		// 	'taxes'      => $amount_gross['total_taxes_amount'],
-		// 	'promotions' => $amount_gross['total_promotions_amount'],
-		// );
-		// $subtotal     = $subtotals['stay'] + $subtotals['fees'] + $subtotals['taxes'];
-		// $discount     = ( empty( $subtotals['promotions'] ) ) ? null : -$subtotals['promotions'];
-
-		// $language = isset( $data['language'] ) ? isset( $data['language'] ) : $data['guest']['locale'];
-
-		// $total   = array_sum( $subtotals );
-		// $paid    = array_sum( $data['total_transactions'] );
-		// $balance = $data['balance_due'];
-
+		$data = array(
+			// 'id'      => null,
+			// 'title'   => null,
+			'status'  => $status,
+			'guests'  => array(
+				'adults' => $hbook_data['adults'] ?? null,
+				'children' => $hbook_data['children'] ?? null,
+			),
+			'from'    => $from,
+			'to'      => $to,
+			'client' => array(
+				'name' => 'hbook id ' . $hbook_data['customer_id'],
+				// 'name'  => $data['customer_name'] ?? null,
+				// 'email' => $data['customer_email'] ?? null,
+				// 'phone' => $data['customer_phone'] ?? null,
+			),
+			'source'  => 'hbook', // channel
+			'source_id' => $hbook_data['alphanum_id'],
+			'source_url' => $hbook_admin_url,
+			// 'ota' => empty( $data['origin'] ) ? array() : array(
+			// 	'slug' => $data['origin'] ?? null,
+			// 	'id' => $data['origin_id'] ?? null,
+			// 	'url' => $data['origin_url'] ?? null,
+			// ),
+			'origin'  => 'hbook', // OTA
+			'origin_id' => $hbook_data['alphanum_id'],
+			'origin_url' => $hbook_admin_url,
+			'resource_id' => $resource_id,
+			'resource_name' => $resource_name,
+			'confirmed' => $confirmed,
+			'external' => false,
+			'description' => null,
+			'language' => null,
+			'created' => strtotime( $hbook_data['received_on'] ),
+			'updated' => time(),
+			'canceled' => $canceled,
+			'is_deleted' => $canceled,
+			'subtotal' => $subtotal,
+			'discount' => $discount,
+			'total' => $total,
+			'deposit' => $deposit,
+			'deposit_due_date' => null,
+			'paid' => $paid,
+			'balance' => $balance,
+			'type' => 'booking',
+			'notes' => null,
+		);
+		error_log( __METHOD__ . ' formatted data ' . print_r($data, true));
 		// $currency_code = $data['current_order']['currency_code'];
 
 		// if ( isset( $data['guest']['id'] ) && 'AAAAAAAAAAAAAAAAAAAAAA' === $data['guest']['id'] ) {
@@ -256,33 +308,6 @@ class Mltp_HBook extends Mltp_Modules {
 		// 	$source_url     = MultiPass::get_source_url( 'lodgify', $data['id'] );
 		// }
 
-		// $source    = 'lodgify';
-		// $source_id = $data['id'];
-		// $origin    = self::sanitize_origin( $data['source'] );
-		// $external  = false;
-		// switch ( $origin ) {
-		// 	case 'airbnb':
-		// 		$origin_details = json_decode( $data['source_text'] );
-		// 		$origin_id      = $origin_details->confirmationCode;
-		// 		$confirmed      = true;
-		// 		$external       = true;
-		// 		// $this->sources['airbnb_id'] = $origin_id;
-		// 		break;
-
-		// 	case 'bookingcom':
-		// 		$origin_details = explode( '|', $data['source_text'] );
-		// 		$origin_id      = $origin_details[0];
-		// 		$confirmed      = true;
-		// 		$external       = true;
-		// 		// $this->sources['bookingcom_id'] = $origin_id;
-		// 		break;
-
-		// 	// default:
-		// 	// $origin     = null;
-		// 	// $origin_id  = null;
-		// 	// $origin_url = null;
-		// }
-
 		// $this->title = join(
 		// 	' - ',
 		// 	array(
@@ -300,87 +325,7 @@ class Mltp_HBook extends Mltp_Modules {
 		// 	)
 		// );
 
-		// $this->status = $status;
-		// $this->guests = $guests;
-		// $this->from   = $from;
-		// $this->to     = $to;
-
-		// $this->data = array(
-		// 	'customer_name'    => $customer_name,
-		// 	'customer_email'   => $customer_email,
-		// 	'customer_phone'   => $customer_phone,
-		// 	'dates'            => array(
-		// 		'from' => $from,
-		// 		'to'   => $to,
-		// 	),
-		// 	'from'             => $from,
-		// 	'to'               => $to,
-		// 	// 'dates'               => array('from'=>$from,'to'=>$to),
-		// 	'source'           => $source,
-		// 	'source_id'        => $source_id,
-		// 	'source_url'       => ( ! empty( $source_id ) ) ? MultiPass::get_source_url( $source, $source_id, $source_url ) : null,
-		// 	'origin'           => $origin,
-		// 	'origin_id'        => ( ! empty( $origin_id ) ) ? $origin_id : null,
-		// 	'origin_url'       => ( ! empty( $origin_id ) ) ? MultiPass::get_source_url( $origin, $origin_id, $source_url ) : null,
-		// 	'lodgify_id'       => $data['id'],
-		// 	// 'lodgify_uuid'        => join( '-', array( $data['id'], $data['user_id'], $data['property_id'] ) ),
-		// 	// 'lodgify_edit_url'    => $source_url,
-		// 	// 'lodgify_property_id' => $data['property_id'],
-
-		// 	'resource_id'      => $resource_id,
-		// 	'resource_name'    => $resource_name,
-		// 	'status'           => $status,
-		// 	'confirmed'        => $confirmed,
-		// 	'external'         => $external,
-		// 	'description'      => $this->title,
-
-		// 	'language'         => $language,
-		// 	'customer'         => array(
-		// 		// TODO: try to get WP user if exists
-		// 		// 'user_id' => $customer_id,
-		// 		// 'name'  => $data['guest']['name'],
-		// 		// 'email' => $data['guest']['email'],
-		// 		// 'phone' => $data['guest']['phone'],
-		// 	),
-		// 	// 'source_details' => array(
-		// 	// 'rooms'         => $data['rooms'],
-		// 		'created'      => strtotime( $data['date_created'] ),
-		// 	'updated'          => time(),
-		// 	'canceled'         => $canceled,
-		// 	'is_deleted'       => $data['is_deleted'],
-		// 	// 'currency_code' => $data['currency_code'],
-		// 	// 'quote'         => $data['quote'],
-		// 	// ),
-		// 	// 'price'               => array(
-		// 	// 'quantity'  => 1,
-		// 	// 'unit'      => $subtotal,
-		// 	// 'sub_total' => $subtotal,
-		// 	// ),
-
-		// 	// 'attendees'        => $guests,
-		// 	// 'beds' => $beds,
-
-		// 	'subtotal'         => $subtotal,
-		// 	'discount'         => $discount,
-		// 	'total'            => $total,
-		// 	'deposit'          => $deposit,
-		// 	'deposit_due_date' => $deposit_due_date,
-		// 	'paid'             => $paid,
-		// 	'balance'          => $balance,
-		// 	'type'             => 'booking',
-		// 	'notes'            => ( isset( $data['notes'] ) ) ? $data['notes'] : null,
-		// );
-
-		// $mltp_detail = new Mltp_Item( $this->data, true );
-		// if ( $mltp_detail ) {
-		// 	$this->id  = $mltp_detail->id;
-		// 	$attendees = get_post_meta( $mltp_detail->id, 'attendees', true );
-		// 	if ( empty( $attendees ) ) {
-		// 		$this->data['guests'] = $guests;
-		// 	} else {
-		// 		$this->data['guests'] = array_merge( $attendees, array( 'total' => $guests ) );
-		// 	}
-		// }
+		parent::format( $data );
 	}
 
 	function register_settings_pages( $settings_pages ) {
@@ -513,6 +458,15 @@ class Mltp_HBook extends Mltp_Modules {
 		}
 		return $options;
 	}
+
+	// static function sanitize_status( $string ) {
+	// 	$p_replace = array(
+	// 		// '/Tentative/' => 'option', // Specific to Lodgify
+	// 	);
+	// 	$p_keys    = array_keys( $p_replace );
+
+	// 	return sanitize_title( preg_replace( $p_keys, $p_replace, $string ) );
+	// }
 }
 
 $this->modules[] = new Mltp_HBook();
