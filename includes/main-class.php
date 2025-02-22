@@ -27,6 +27,7 @@
  * @author     Magiiic <info@magiiic.com>
  */
 class MultiPass {
+	public static $debug;
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -1091,10 +1092,28 @@ class MultiPass {
 			}
 		}
 
-		// error_log( $backtrace . ' ' . join( ' ', $args ) );
+		$message = join( ' ', $args );
+		self::$debug[] = $message;
+		error_log( $backtrace . ' ' . join( ' ', $args ) );
 
 		return true;
 	}
+
+	public static function render_debug() {
+		if ( ! self::debug() ) {
+			return false;
+		}
+
+		$debug = self::$debug;
+		if ( empty( $debug ) ) {
+			return false;
+		}
+
+		$output = '<pre>' . join( "\n", $debug ) . '</pre>';
+
+		return $output;
+	}
+
 	// static function debug( $string = null ) {
 	// if ( ! current_user_can( 'mltp_administrator' ) ) {
 	// return false;

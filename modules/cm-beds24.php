@@ -30,10 +30,7 @@ class Mltp_Beds24 extends Mltp_Modules {
 	protected $namespace;
 	protected $route;
 	protected $webhooks_subscribe;
-
-	protected $invite_code;
-	protected $auth_token;
-	protected $token;
+	protected $debug;
 
 	protected $error_codes = array(
 		1009 => 'Not allowed for this role',
@@ -83,21 +80,17 @@ class Mltp_Beds24 extends Mltp_Modules {
 	 * @since    0.1.0
 	 */
 	public function init() {
+		// Activate REST API route
 		add_action( 'rest_api_init', array( $this, 'register_api_callback_route' ) );
 
+		// Register settings pages and fields
 		add_filter( 'mb_settings_pages', array( $this, 'register_settings_pages' ) );
 		add_filter( 'rwmb_meta_boxes', array( $this, 'register_settings_fields' ) );
 		
-		// $filters = array(
-		// 	array(
-		// 		'hook'     => 'rwmb_meta_boxes',
-		// 		'callback' => 'register_settings_fields',
-		// 	),
-		// 	array(
-		// 		'hook'     => 'rwmb_meta_boxes',
-		// 		'callback' => 'register_fields',
-		// 	),
+		// Register resources custom fields
+		add_filter( 'rwmb_meta_boxes', array( $this, 'register_fields' ) );
 
+		// $filters = array(
 		// 	array(
 		// 		'hook'     => 'multipass_register_terms_mltp_detail-source',
 		// 		'callback' => 'register_sources_filter',
@@ -141,6 +134,9 @@ class Mltp_Beds24 extends Mltp_Modules {
 		$prefix = $this->prefix;
 		// $beds24 = new Mltp_Beds24();
 
+		// $properties = $this->get_properties();
+		$rooms = $this->get_rooms();
+
 		// Lodify Settings tab
 		$meta_boxes[] = array(
 			'title'          => __( 'Beds24 Settings', 'multipass' ),
@@ -152,9 +148,9 @@ class Mltp_Beds24 extends Mltp_Modules {
 					'name'              => __( 'API access', 'multipass' ),
 					'id'                => $prefix . 'api',
 					'type'              => 'group',
-					'sanitize_callback' => array( $this, 'verify_token' ),
+					'sanitize_callback' => array( $this, 'sanitize_api' ),
 					'desc'        => sprintf(
-						__( 'An invite code or a long life token is required to connect to %s. Get it from %s.', 'multipass' ),
+						__( 'A token is required to connect to %s. Get it from %s.', 'multipass' ),
 						'Beds24',
 						sprintf(
 							'<a href="%s" target="_blank">%s</a>',
@@ -170,21 +166,22 @@ class Mltp_Beds24 extends Mltp_Modules {
 							'desc'	   => __( 'Invite code is required to connect to Beds24 with read/write access.', 'multipass' ),
 						),
 						array(
-							'name' => __( 'Invite code', 'multipass' ),
+							'name' => __( 'Invite Code', 'multipass' ),
 							'id'   => 'invite_code',
 							'type' => 'text',
 							'save_field' => false,
-							'required' => true,
+							'required' => $this->get_token() ? false : true,
 							'visible'    => array(
 								'when'     => array(
 									array( 'use_invite', '=', true ),
 								),
 								'relation' => 'or',
 							),
+							'desc' => __( 'The invite code allows read/write access to Beds24 and is used only once to generate the refresh token that will be used for authentication.', 'multipass' ),
 						),
 						array(
-							'id' => 'token',
-							'name' => __('Token', 'multipass'),
+							'id' => 'refresh_token',
+							'name' => __('Refresh token', 'multipass'),
 							'type' => 'text',
 							'readonly' => true,
 							'visible'    => array(
@@ -193,10 +190,11 @@ class Mltp_Beds24 extends Mltp_Modules {
 								),
 								'relation' => 'or',
 							),
+							'desc' => __( 'The refresh token will expire if no connections are made for 30 days.', 'multipass' ),
 						),
 						array(
-							'id' => 'token',
-							'name' => __('Token', 'multipass'),
+							'id' => 'long_life_token',
+							'name' => __('Long Life Token', 'multipass'),
 							'type' => 'text',
 							'readonly' => false,
 							'required' => true,
@@ -206,17 +204,19 @@ class Mltp_Beds24 extends Mltp_Modules {
 								),
 								'relation' => 'or',
 							),
+							'desc' => __( 'Long life token allows readonly access to Beds24 API and does not expire.', 'multipass' ),
+						),
+						array(
+							'id' => 'token',
+							'name' => __('Token', 'multipass'),
+							'type' => 'text',
+							'save_field' => false,
+							'readonly' => true,
+							'std' => $this->get_token(),
+							'desc' => __( 'The token is generated automatically and is used to authenticate API requests, it expires after 1 hour.', 'multipass' ),
+							// 'visible'    => $this->get_token(),
 						),
 					),
-				),
-				array(
-					'name'              => __( 'API key is valid', 'multipass' ),
-					'id'                => 'api_key_verified',
-					'type'              => 'hidden',
-					// 'readonly' => true,
-					// 'disabled' => true,
-					// 'save_field' => false,
-					'sanitize_callback' => array( $this, 'sanitize_api_key' ),
 				),
 				array(
 					'name' => __( 'Webhook', 'multipass' ),
@@ -236,10 +236,18 @@ class Mltp_Beds24 extends Mltp_Modules {
 					),
 				),
 				array(
+					'name' => __( 'Rooms', 'multipass' ),
+					'id'   => $prefix . 'rooms',
+					'type' => 'custom_html',
+					'callback' => array( $this, 'room_list' ),
+					'save_field' => false,
+				),
+				array(
 					// 'name'              => __( 'Debug', 'multipass' ),
 					'id'       => $prefix . 'debug',
 					'type'     => 'custom_html',
-					'callback' => array( $this, 'render_debug' ),
+					'callback' => 'MultiPass::render_debug',
+					'visible' => MultiPass::debug(),
 				),
 			),
 		);
@@ -435,13 +443,12 @@ class Mltp_Beds24 extends Mltp_Modules {
 	function register_fields( $meta_boxes ) {
 		$prefix = $this->prefix;
 		// $beds24 = new Mltp_Beds24();
-
 		$meta_boxes['resources']['fields'][] = array(
-			'name'          => __( 'Beds24 Property', 'multipass' ),
-			'id'            => 'resource_' . $prefix . 'name',
-			'type'          => 'custom_html',
-			'callback'      => array( $this, 'property_name' ),
-			'save_field'    => false,
+			'name'          => __( 'Beds24 Room', 'multipass' ),
+			'id'            => 'resource_' . $prefix . 'id',
+			'type'          => 'select_advanced',
+			'options'       => $this->get_room_options(),
+			'placeholder'   => __( 'Select a room', 'multipass' ),
 			'admin_columns' => array(
 				'position'   => 'before date',
 				'sort'       => true,
@@ -449,6 +456,20 @@ class Mltp_Beds24 extends Mltp_Modules {
 			),
 			'columns'       => 3,
 		);
+
+		// $meta_boxes['resources']['fields'][] = array(
+		// 	'name'          => __( 'Beds24 Room', 'multipass' ),
+		// 	'id'            => 'resource_' . $prefix . 'roomid',
+		// 	'type'          => 'custom_html',
+		// 	'callback'      => array( $this, 'property_name' ),
+		// 	'save_field'    => false,
+		// 	'admin_columns' => array(
+		// 		'position'   => 'before date',
+		// 		'sort'       => true,
+		// 		'searchable' => true,
+		// 	),
+		// 	'columns'       => 3,
+		// );
 
 		return $meta_boxes;
 	}
@@ -471,51 +492,172 @@ class Mltp_Beds24 extends Mltp_Modules {
 		return $sources;
 	}
 
-	function get_properties() {
-		$transient_key = sanitize_title( __CLASS__ . '-' . __FUNCTION__ );
-		$properties    = get_transient( $transient_key );
-		if ( $properties ) {
-			$check = reset( $properties );
-			if ( ! empty( $check ) && preg_match( '/^(Elite Royal Apartment|The Freeman)/', $check['name'] ) ) {
-				error_log( 'Demo data properties received from Beds24, ignoring.' );
-			} else {
-				return $properties;
-			}
+	function get_room_options() {
+		$rooms = $this->get_rooms();
+		$options = array();
+		foreach ( $rooms as $room ) {
+			$name = $room['name'] ?? $room['roomId'];
+			$name .= empty( $room['resource_name'] ) ? '' : ' (' . $room['resource_name'] . ')';
+			$options[ $room['roomId'] ] = $name;
+		}
+		return $options;
+	}
+
+	function room_list() {
+		$rooms = $this->get_rooms();
+		$list  = array();
+		foreach( $rooms as $room ) {
+			$name = $room['name'] ?? $room['roomId'];
+			$name .= empty( $room['resource_name'] ) ? '' : ' (' . $room['resource_name'] . ')';
+			$list[ $room['roomId'] ] = $name;
+		}
+		return '<ul class="room-list"><li>' . implode( '</li><li>', $list ) . '</li></ul>';
+	}
+
+	function get_rooms() {
+		$transient_key = sanitize_title( __METHOD__ );
+
+		$rooms = get_transient( $transient_key );
+		if ( $rooms ) {
+			return $rooms;
 		}
 
-		if ( empty( $this->api_key ) ) {
+		$token = $this->get_token();
+
+		if ( empty( $token ) ) {
+			error_log( __METHOD__ . ' empty token, abort' );
 			return array();
 		}
-		$results = $this->api_request( '/v1/properties', array() );
+		// $args = array();
+		$args = array(
+			'arrival' => date( 'Y-m-d' ),
+			'departure' => date( 'Y-m-d', strtotime( '+1 day' ) ),
+			'numAdults' => 1,
+		);
+
+		$results = $this->api_request( '/inventory/rooms/offers', $args );
+
+		if ( is_array( $results ) && ! empty( $results['success'] ) && ! empty( $results['data'] ) ) {
+			// TODO: get room data (requires additional API call or web scraping)
+			foreach( $results['data'] as $room ) {
+				$id = $room['roomId'];
+				$rooms[$id] = $room;
+				// WP Query to find resource post type with meta field 'beds24_resource_id' matching $id
+				$query = new WP_Query( array(
+					'post_type' => 'mltp_resource',
+					'meta_query' => array(
+						array(
+							'key' => 'resource_beds24_id',
+							'value' => $id,
+						),
+					),
+				) );
+				if ( $query->have_posts() ) {
+					$query->the_post();
+					$rooms[$id]['resource_id'] = get_the_ID();
+					$rooms[$id]['resource_name'] = get_the_title();
+				}
+			}
+
+			// $rooms = $results['data'];
+			// MultiPass::debug( __METHOD__, 'rooms', $rooms );
+			set_transient( $transient_key, $rooms, 3600 );
+			return $rooms;
+		}
+
 		if ( is_wp_error( $results ) ) {
 			$message = sprintf(
 				'%s failed ("%s")',
-				__CLASS__ . '::' . __METHOD__,
+				__METHOD__,
+				$results->get_error_message(),
+			);
+			error_log( $message );
+			return array();
+		}  else {
+			$message = sprintf(
+				'%s failed (unmanaged error) %s',
+				__METHOD__,
+				print_r( $results, true ),
+			);
+		}
+		error_log( $message );
+		return array();
+	}
+
+	function get_properties() {
+
+		$transient_key = sanitize_title( __METHOD__ );
+		$properties    = get_transient( $transient_key );
+		if ( $properties ) {
+			// MultiPass::debug( __METHOD__, 'using transient', $properties );
+			return $properties;
+			// $check = reset( $properties );
+			// if ( ! empty( $check ) && preg_match( '/^(Elite Royal Apartment|The Freeman)/', $check['name'] ) ) {
+			// 	error_log( 'Demo data properties received from Beds24, ignoring.' );
+			// } else {
+			// }
+		}
+
+		$token = $this->get_token();
+
+		if ( empty( $token ) ) {
+			error_log( __METHOD__ . ' empty token, abort' );
+			return array();
+		}
+
+		$results = $this->api_request( '/properties', array() );
+
+		if ( is_array( $results ) && ! empty( $results['success'] ) && ! empty( $results['data'] ) ) {
+			error_log( __METHOD__ . ' success ' . print_r( $results['data'], true ) );
+			$properties = $results['data'];
+			set_transient( $transient_key, $properties, 3600 );
+			// MultiPass::debug( __METHOD__ . ' properties', $properties );
+			return $properties;
+		}
+		
+		if ( is_wp_error( $results ) ) {
+			$message = sprintf(
+				'%s failed ("%s")',
+				__METHOD__,
 				$results->get_error_message(),
 			);
 			error_log( $message );
 			// add_settings_error( $field['id'], $field['id'], $message, 'error' );
 			return array();
+		}  else {
+			$message = sprintf(
+				'%s failed (unmanaged error) %s',
+				__METHOD__,
+				print_r( $results, true ),
+			);
 		}
-
-		$properties = array();
-		foreach ( $results as $result ) {
-			$properties[ $result['id'] ] = $result;
-		}
-
-		set_transient( $transient_key, $properties, 3600 );
-		return $properties;
+		error_log( $message );
+		return array();
 	}
 
 	function get_property_options( $prefix = '' ) {
-		$options    = array();
-		$properties = $this->get_properties();
-		if ( $properties ) {
-			foreach ( $properties as $id => $property ) {
-				$options[ $prefix . $id ] = $property['name'];
-			}
-		}
-		return $options;
+		// $options    = array();
+		// $properties = $this->get_properties();
+		// if ( $properties ) {
+		// 	foreach ( $properties as $id => $property ) {
+		// 		$options[ $prefix . $id ] = $property['name'];
+		// 	}
+		// }
+		// return $options;
+	}
+
+	function get_token() {
+		$token = get_transient( 'multipass_beds24-token' );
+		// $token = wp_cache_get( 'multipass_beds24-token' );
+		// if ( $token ) {
+			return $token;
+		// }
+		// $token = $this->api_request( '/authentication/setup', array() );
+		// if ( ! empty( $token['refreshToken'] ) ) {
+		// 	wp_cache_set( 'multipass_beds24-token', $token['refreshToken'], $token['expiresIn'] );
+		// 	return $token['refreshToken'];
+		// }
+		return null;
 	}
 
 	function api_request( $path, $args = array() ) {
@@ -525,7 +667,7 @@ class Mltp_Beds24 extends Mltp_Modules {
 		if ( preg_match( '~^[a-z]+://~', $path ) ) {
 			$url = $path;
 		} else {
-			$url = $this->api_url . $path . ( empty( $args ) ? '' : '?' . http_build_query( $args ) );
+			$url = $this->api_url . $path;
 		}
 		$args = array_filter(wp_parse_args(
 			array(
@@ -534,19 +676,28 @@ class Mltp_Beds24 extends Mltp_Modules {
 		) );
 		$json_data = array();
 
+		// $token = $args['token'] ?? get_transient( 'multipass_beds24-token', false);
+		// if ( empty( $token ) ) {
+		// 	error_log( __METHOD__ . ' empty token' );
+		// 	return new WP_Error( __FUNCTION__ . '-notoken', 'No token' );
+		// }
+
 		$options = array(
 			'method'  => $method,
 			'timeout' => 20,
 			// 'ignore_errors' => true,
-			'headers' => array(
+			'headers' => array_filter( array(
 				'accept'        => 'application/json',
-				'code'  => $this->token ?? $this->invite_code,
-				// 'token' => $thi->token ?? null,
+				'code'  => $args['code'] ?? null,
+				'token' => $args['token'] ?? get_transient( 'multipass_beds24-token', null),
 				// 'X-ApiKey'        => $this->api_key,
 				// 'Accept-Language' => $this->locale,
-			),
+			) ),
 		);
 
+		unset($args['token']);
+		unset($args['code']);
+		
 		if ( 'GET' === $method ) {
 			if ( ! empty( $args ) ) {
 				$url = $url . '?' . http_build_query( $args );
@@ -557,16 +708,17 @@ class Mltp_Beds24 extends Mltp_Modules {
 				$options['body'] = json_encode( $options['body'], JSON_UNESCAPED_SLASHES );
 			}
 		}
+
 		$response = wp_remote_request( $url, $options );
 		
 		if ( is_wp_error( $response ) ) {
-			error_log( __CLASS__ . '::' . __METHOD__ . ' fail ' . $response->get_error_message() . " $url" );
+			error_log( __METHOD__ . ' fail ' . $response->get_error_message() . " $url" );
 			return $response;
 		} elseif ( $response['response']['code'] != 200 && $response['response']['code'] != 201 ) {
-			error_log( __CLASS__ . '::' . __METHOD__ . ' fail ' . $response['response']['code'] );
+			error_log( __METHOD__ . ' fail ' . $response['response']['code'] );
 			return new WP_Error( __FUNCTION__ . '-wrongresponse', 'Response code ' . $response['response']['code'] . " $url" );
 		} else {
-			// MultiPass::debug( __CLASS__ . '::' . __METHOD__ . " success $url" );
+			// MultiPass::debug( __METHOD__ . " success $url" );
 			$json_data = json_decode( $response['body'], true );
 		}
 		
@@ -589,69 +741,77 @@ class Mltp_Beds24 extends Mltp_Modules {
 		}
 	}
 
-	function sanitize_api_key( $value, $field, $oldvalue ) {
-		return wp_cache_get( 'multipass_beds24-api_key_verified' );
-		// // add_settings_error( $field['id'], $field['id'], $message, 'error' );
-		// if($status === 'valid')  return true;
-		//
-		// return false;
-	}
-
 	function sanitize_callback_url( $value, $field, $oldvalue ) {
 		return get_transient( 'multipass_beds24-callback_url' );
 	}
 
-	function verify_token( $api, $field, $oldapi ) {
+	function sanitize_api( $api, $field, $oldapi ) {
 		$api = wp_parse_args( $api, array(
 			'use_invite' => false,
 			'invite_code' => null,
+			'refresh_token' => null,
+			'long_life_token' => null,
 			'token' => null,
 		) );
-		error_log( __METHOD__ . ' invite ' . print_r( $api, true ) );
 		
-		if( $api['use_invite'] && ! empty( $api['invite_code'] ) ) {
-			$token = $api['invite_code'];
-		} else {
-			$token = $api['token'] ?? null;
+		if( $api['use_invite'] && ! empty( $api['invite_code'] . $api['refresh_token'] ) ) {
+			if( ! empty( $api['invite_code'] ) ) {
+				$auth_field = 'beds24_api_invite_code';
+				$code = $api['invite_code'];
+			} else {
+				$auth_field = 'beds24_api_refresh_token'; 
+				$code = $api['refresh_token'];
+			}
+		} else if ( ! empty( $api['long_life_token'] ) ) {
+			unset( $api['invite_code'] );
+			$auth_field = 'beds24_api_long_life_token';
+			$code = $api['long_life_token'] ?? null;
 		}
 		
-		if ( empty( $token ) ) {
+		if ( empty( $code ) ) {
+			$message = __( 'An invite code or a long life token is required.', 'multipass' );
+			add_settings_error( 'beds24_api_long_life_token', 'beds24_api_long_life_token-error-empty', $message, 'error' );
+			add_settings_error( 'beds24_api_invite_code', 'beds24_api_invite_code-error-empty', $message, 'error' );
+
 			error_log( __METHOD__ . ' empty invite code/token' );
 			// $this->update_option('invite_verified', false);
 			wp_cache_set( 'multipass_beds24-invite_verified', false );
 			return false;
 		}
 
-		error_log( __METHOD__ . ' token ' . $token );
+		$result       = $this->api_request( '/authentication/setup', [ 'code' => $code ] );
 
-		$this->token = $token;
-
-		$result       = $this->api_request( '/authentication/setup', array() );
-		error_log( __METHOD__ . ' result ' . print_r( $result, true ) );
 		if ( is_wp_error( $result ) ) {
-			$this->invite = null;
 			$message      = sprintf(
 				__( 'Token verification failed (%s).', 'multipass' ),
 				$result->get_error_message(),
 			);
-			add_settings_error( $field['id'], $field['id'], $message, 'error' );
-			wp_cache_set( 'multipass_beds24-invite_verified', false );
-			return false;
+			$field_id = $auth_field ?? $field['id'];
+			add_settings_error( $field_id, $field_id . '-error-auth-failed', $message, 'error' );
+			delete_transient( 'multipass_beds24-token' );
+			unset( $api['refresh_token'] );
+			// wp_cache_set( 'multipass_beds24-invite_verified', false );
+			return $api;
 		}
-		error_log( __METHOD__ . ' api_request result ' . print_r( $result, true ) );
+
 		if( ! empty( $result['refreshToken'] ) ) {
-			wp_cache_set( 'multipass_beds24-invite_verified', true );
-			$api['token'] = $result['refreshToken'];
+			// wp_cache_set( 'multipass_beds24-invite_verified', true );
+			$api['refresh_token'] = $result['refreshToken'];
 		}
 		if( ! empty( $result['token'] ) && ! empty( $result['expiresIn'] ) ) {
-			wp_cache_set( 'multipass_beds24-token', $result['token'], $result['expiresIn'] );
+			set_transient( 'multipass_beds24-token', $result['token'], $result['expiresIn'] );
+			// wp_cache_set( 'multipass_beds24-token', $result['token'], $result['expiresIn'] );
 		}
+
+		// $this->get_properties();
+
 		$api['invite_code'] = null;
 		return $api;
 	}
 
 	/**
-	 * Not sure Beds24 handles automatic webhook subscription
+	 * Beds24 does not handle automatic webhook subscription.
+	 * Kept for reference. Will be deleted eventually.
 	 *
 	 * @return void
 	 */
@@ -827,7 +987,7 @@ class Mltp_Beds24 extends Mltp_Modules {
 		$response  = $this->api_request( '/v1/reservation', $api_query );
 		if ( is_wp_error( $response ) ) {
 			$error_id = __CLASS__ . '-' . __METHOD__ . '-' . $response->get_error_code();
-			error_log( $error_id . ' ' . print_r( $response, true ) );
+			// error_log( $error_id . ' ' . print_r( $response, true ) );
 			$message = sprintf( __( '%1$s failed with error %2$s: %3$s', 'multipass' ), __CLASS__ . ' ' . __METHOD__ . '()', $response->get_error_code(), $response->get_error_message() );
 			add_settings_error( $error_id, $error_id, $message, 'error' );
 			return $response;
@@ -863,7 +1023,7 @@ class Mltp_Beds24 extends Mltp_Modules {
 		$response  = $this->api_request( '/v2/reservations/bookings', $api_query );
 		if ( is_wp_error( $response ) ) {
 			$error_id = __CLASS__ . '-' . __METHOD__ . '-second-round-' . $response->get_error_code();
-			error_log( $error_id . ' ' . print_r( $response, true ) );
+			// error_log( $error_id . ' ' . print_r( $response, true ) );
 			$message = sprintf( __( '%1$s failed with error %2$s: %3$s', 'multipass' ), __CLASS__ . ' ' . __METHOD__ . '()', $response->get_error_code(), $response->get_error_message() );
 			add_settings_error( $error_id, $error_id, $message, 'error' );
 			return $response;
@@ -887,9 +1047,9 @@ class Mltp_Beds24 extends Mltp_Modules {
 
 		$count = count( $bookings );
 		if ( $count < $total ) {
-			error_log( __CLASS__ . '::' . __METHOD__ . "() partial result $count/$total" );
+			error_log( __METHOD__ . "() partial result $count/$total" );
 		} else {
-			error_log( __CLASS__ . '::' . __METHOD__ . "result $count/$total" );
+			error_log( __METHOD__ . "result $count/$total" );
 		}
 
 		$response = array(
