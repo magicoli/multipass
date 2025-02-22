@@ -99,6 +99,10 @@ class Mltp_Modules {
 			require_once MULTIPASS_DIR . 'modules/cm-lodgify.php';
 		}
 
+		if ( in_array( 'beds24', $enabled ) ) {
+			require_once MULTIPASS_DIR . 'modules/cm-beds24.php';
+		}
+
 		if ( in_array( 'hbook', $enabled ) ) {
 			require_once MULTIPASS_DIR . 'modules/module-hbook.php';
 		}
@@ -172,8 +176,9 @@ class Mltp_Modules {
 					'type'    => 'checkbox_list',
 					'options' => array(
 						'imap'    => __( 'Mail Processing', 'multipass' ),
-						'lodgify' => __( 'Lodgify', 'multipass' ),
-						'hbook'   => __( 'HBook Plugin', 'multipass' ),
+						'lodgify' => __( 'Lodgify Channel Manager', 'multipass' ),
+						'beds24'   => __( 'Beds24 Channel Manager', 'multipass' ),
+						'hbook'   => __( 'HBook PMS', 'multipass' ),
 					),
 				),
 			),
