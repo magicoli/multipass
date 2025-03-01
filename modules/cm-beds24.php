@@ -335,7 +335,16 @@ class Mltp_Beds24 extends Mltp_Modules {
 				$roomId = $data['roomId'] ?? null;
 				$propId = $data['propId'] ?? null;
 				$ownerId = $data['ownerId'] ?? null;
-				// TODO: query beds24 to refresh room availability
+				
+				// Beds24 retry time is 30 minutes, so we fetch bookings modified less than 1 hour ago.
+				$args = array(
+					'roomId' => $roomId,
+					'propId' => $propId,
+					'modifiedFrom' => date( 'Y-m-d H:i:s', strtotime( '-1 hour' ) ),
+				);
+				$bookings = $this->api_request_data( '/bookings', $args );
+				error_log('modified bookings (' . count( $bookings) . ') ' . print_r( $bookings, true ) );
+
 				break;
 
 			default:
@@ -525,7 +534,7 @@ class Mltp_Beds24 extends Mltp_Modules {
 		$token = $this->get_token();
 
 		if ( empty( $token ) ) {
-			error_log( __METHOD__ . ' empty token, abort' );
+			// error_log( __METHOD__ . ' empty token, abort' );
 			return array();
 		}
 		// $args = array();
@@ -535,11 +544,11 @@ class Mltp_Beds24 extends Mltp_Modules {
 			'numAdults' => 1,
 		);
 
-		$results = $this->api_request( '/inventory/rooms/offers', $args );
+		$result = $this->api_request( '/inventory/rooms/offers', $args );
 
-		if ( is_array( $results ) && ! empty( $results['success'] ) && ! empty( $results['data'] ) ) {
+		if ( is_array( $result ) && ! empty( $result['success'] ) && ! empty( $result['data'] ) ) {
 			// TODO: get room data (requires additional API call or web scraping)
-			foreach( $results['data'] as $room ) {
+			foreach( $result['data'] as $room ) {
 				$id = $room['roomId'];
 				$rooms[$id] = $room;
 				// WP Query to find resource post type with meta field 'beds24_resource_id' matching $id
@@ -559,17 +568,17 @@ class Mltp_Beds24 extends Mltp_Modules {
 				}
 			}
 
-			// $rooms = $results['data'];
+			// $rooms = $result['data'];
 			// MultiPass::debug( __METHOD__, 'rooms', $rooms );
 			set_transient( $transient_key, $rooms, 3600 );
 			return $rooms;
 		}
 
-		if ( is_wp_error( $results ) ) {
+		if ( is_wp_error( $result ) ) {
 			$message = sprintf(
 				'%s failed ("%s")',
 				__METHOD__,
-				$results->get_error_message(),
+				$result->get_error_message(),
 			);
 			error_log( $message );
 			return array();
@@ -577,7 +586,7 @@ class Mltp_Beds24 extends Mltp_Modules {
 			$message = sprintf(
 				'%s failed (unmanaged error) %s',
 				__METHOD__,
-				print_r( $results, true ),
+				print_r( $result, true ),
 			);
 		}
 		error_log( $message );
@@ -605,21 +614,21 @@ class Mltp_Beds24 extends Mltp_Modules {
 			return array();
 		}
 
-		$results = $this->api_request( '/properties', array() );
+		$result = $this->api_request( '/properties', array() );
 
-		if ( is_array( $results ) && ! empty( $results['success'] ) && ! empty( $results['data'] ) ) {
-			error_log( __METHOD__ . ' success ' . print_r( $results['data'], true ) );
-			$properties = $results['data'];
+		if ( is_array( $result ) && ! empty( $result['success'] ) && ! empty( $result['data'] ) ) {
+			error_log( __METHOD__ . ' success ' . print_r( $result['data'], true ) );
+			$properties = $result['data'];
 			set_transient( $transient_key, $properties, 3600 );
 			// MultiPass::debug( __METHOD__ . ' properties', $properties );
 			return $properties;
 		}
 		
-		if ( is_wp_error( $results ) ) {
+		if ( is_wp_error( $result ) ) {
 			$message = sprintf(
 				'%s failed ("%s")',
 				__METHOD__,
-				$results->get_error_message(),
+				$result->get_error_message(),
 			);
 			error_log( $message );
 			// add_settings_error( $field['id'], $field['id'], $message, 'error' );
@@ -628,7 +637,7 @@ class Mltp_Beds24 extends Mltp_Modules {
 			$message = sprintf(
 				'%s failed (unmanaged error) %s',
 				__METHOD__,
-				print_r( $results, true ),
+				print_r( $result, true ),
 			);
 		}
 		error_log( $message );
@@ -648,16 +657,75 @@ class Mltp_Beds24 extends Mltp_Modules {
 
 	function get_token() {
 		$token = get_transient( 'multipass_beds24-token' );
-		// $token = wp_cache_get( 'multipass_beds24-token' );
-		// if ( $token ) {
+		if ( $token ) {
 			return $token;
+		}
+		$api = self::get_option( 'beds24_api' );
+		$api = wp_parse_args( $api, array(
+			'use_invite' => false,
+			'invite_code' => null,
+			'refresh_token' => null,
+			'long_life_token' => null,
+			'token' => null,
+		) );
+		
+		if( $api['use_invite'] && ! empty( $api['invite_code'] . $api['refresh_token'] ) ) {
+			if( ! empty( $api['invite_code'] ) ) {
+				$auth_field = 'beds24_api_invite_code';
+				$code = $api['invite_code'];
+			} else {
+				$auth_field = 'beds24_api_refresh_token'; 
+				$code = $api['refresh_token'];
+			}
+		} else if ( ! empty( $api['long_life_token'] ) ) {
+			unset( $api['invite_code'] );
+			$auth_field = 'beds24_api_long_life_token';
+			$code = $api['long_life_token'] ?? null;
+		}
+		
+		$result       = $this->api_request( '/authentication/setup', [ 'code' => $code ] );
+
+		if ( is_wp_error( $result ) ) {
+			$message      = sprintf(
+				__( 'Token verification failed (%s).', 'multipass' ),
+				$result->get_error_message(),
+			);
+			error_log( __METHOD__ . ' ' . $message );
+			$field_id = $auth_field ?? $field['id'];
+			delete_transient( 'multipass_beds24-token' );
+			return false;
+		}
+
+		// if( ! empty( $result['refreshToken'] ) ) {
+		// 	// wp_cache_set( 'multipass_beds24-invite_verified', true );
+		// 	$api['refresh_token'] = $result['refreshToken'];
 		// }
+		if( ! empty( $result['token'] ) && ! empty( $result['expiresIn'] ) ) {
+			set_transient( 'multipass_beds24-token', $result['token'], $result['expiresIn'] );
+			return $result['token'];
+		}
+
 		// $token = $this->api_request( '/authentication/setup', array() );
 		// if ( ! empty( $token['refreshToken'] ) ) {
 		// 	wp_cache_set( 'multipass_beds24-token', $token['refreshToken'], $token['expiresIn'] );
 		// 	return $token['refreshToken'];
 		// }
 		return null;
+	}
+
+	function api_request_data( $path, $args = array() ) {
+		$result = $this->api_request( $path, $args );
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		if ( is_array( $result ) && ! empty( $result['success'] ) && ! empty( $result['data'] ) ) {
+			MultiPass::debug( __METHOD__, ' success ', $result['data'] );
+			return $result['data'];
+		}
+
+		error_log( __METHOD__ . ' ' . $path . ' fail ' . print_r( $result, true ) );
+		return false;
 	}
 
 	function api_request( $path, $args = array() ) {
