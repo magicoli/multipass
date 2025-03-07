@@ -485,17 +485,31 @@ class Mltp_Calendar {
 	}
 
 	static function get_the_modal( $item_id ) {
+		$debug_presta = array( 
+			// 17386, // Emma Prades
+			// 17387, // Emma Prades Sun
+			// 17373, // Rara Avis
+			// 17406, // Carol Pisula
+			// 17410, // Alex Lamy
+		);
+		$debug = in_array( $item_id, $debug_presta ) ? true : false;
+
 		$event = new Mltp_Event( $item_id );
 		if ( ! $event ) {
+			if( $debug ) {
+				MultiPass::debug( 'no event for item_id', $item_id );
+			}
 			return false;
 		}
 		$user_id = get_current_user_id();
 		if(empty($user_id)) return false;
 
 		$transient_key = 'mltp_cal_event_modal_' . $user_id . '_' . $event->id;
-		$html          = get_transient( $transient_key );
-		if ( $html ) {
-			return $html;
+		if( ! $debug ) {
+			$html          = get_transient( $transient_key );
+			if ( $html && ! $debug ) {
+				return $html;
+			}
 		}
 
 		$html = '';
@@ -508,8 +522,29 @@ class Mltp_Calendar {
 		$dates          = get_post_meta( $event->id, 'dates', true );
 		$event->checkin = get_post_meta( $event->id, 'checkin', true );
 
-		$prestation_id = empty( $event->prestation_id ) ? null : $event->prestation_id;
+		if(empty( $event->source )) {
+			$terms = get_the_terms( $event->id, 'mltp_detail-source' );
+			if( ! empty( $terms) ) {
+				$term = array_shift($terms);
+				$event->source = $term->slug;
+				$event->source_id = $event->source_id ?? get_post_meta( $event->id, 'source_id', true );
+				$event->source_url = MultiPass::get_source_url( $event->source, $event->source_id );
+				// $event->origin = $event->origin ?? $event->source;
+				// $event->origin_id = $event->origin_id ?? $event->source_id;
+				// $event->origin_url = $event->origin_url ?? $event->source_url;
+			}
+		}
+
+		if( $debug ) {
+			MultiPass::debug('item_id', $item_id, 'event', $event);
+		}
+
+		$prestation_id = $event->prestation_id ?? get_post_meta( $event->id, 'prestation_id', true );
 		$prestation    = new Mltp_Prestation( $prestation_id );
+
+		// if( $debug ) {
+		// 	MultiPass::debug('prestation id', $prestation_id );
+		// }
 
 		if ( ! $prestation->is_prestation() ) {
 			// MultiPass::debug('event', $event->id, 'prestation', $event->prestation_id, 'not a prestation', $prestation);
@@ -532,7 +567,7 @@ class Mltp_Calendar {
 			$nights = null;
 		}
 		$nights = round( $nights, 0 );
-
+		
 		$data = array(
 			'prestation' => array(
 				// __( 'Dates', 'multipass' )               => MultiPass::format_date_range( $prestation->dates ),
@@ -581,6 +616,7 @@ class Mltp_Calendar {
 		}
 
 		// $rows = array_filter($rows);
+
 		if ( MultiPass::debug() ) {
 			$extra = array();
 
@@ -604,7 +640,6 @@ class Mltp_Calendar {
 
 			$rows = array_merge( $rows, array( 'divider' ), array_filter( $extra ) );
 		}
-
 
 		// $prestation_id = get_post_meta($event->post->ID, 'prestation_'
 		$html .= '<span class="description">' . $event->title . '</span>';
@@ -754,9 +789,15 @@ class Mltp_Event extends Mltp_Item {
 	public $email;
 	public $phone;
 	public $source;
+	public $source_id;
 	public $source_url;
 	public $origin;
 	public $origin_url;
+	public $prestation_id;
+	public $prestation;
+	public $checkin;
+	public $checkout;
+
 
 	public function __construct( $args ) {
 		if ( empty( $args ) ) {
@@ -764,6 +805,7 @@ class Mltp_Event extends Mltp_Item {
 		}
 
 		if ( is_numeric( $args ) ) {
+			$this->id = $args;
 			$this->post = get_post( $args );
 		} elseif ( is_object( $args ) && 'mltp_detail' === $args->post_type ) {
 			$this->post = $args;
@@ -800,6 +842,11 @@ class Mltp_Event extends Mltp_Item {
 		$this->flags      = (int) get_post_meta( $this->id, 'flags', true );
 		$this->edit_url   = get_post_meta( $this->id, 'edit_url', true );
 		$this->source     = get_post_meta( $this->id, 'source', true );
+		if( empty( $this->source ) ) {
+			// Use taxonomy instead
+			$this->source = get_the_terms( $this->id, 'mltp_detail-source' );
+		}
+		$this->source_id     = get_post_meta( $this->id, 'source_id', true );
 		$this->source_url = get_post_meta( $this->id, 'source_url', true );
 		$this->origin     = get_post_meta( $this->id, 'origin', true );
 		$this->origin_url = get_post_meta( $this->id, 'origin_url', true );
