@@ -1,4 +1,5 @@
 <?php
+
 /**
  * libphonenumber-for-php-lite data file
  * This file has been @generated from libphonenumber data
@@ -8,20 +9,20 @@
 
 return [
     'generalDesc' => [
-        'NationalNumberPattern' => '596\\d{6}|(?:69|80|9\\d)\\d{7}',
+        'NationalNumberPattern' => '(?:596\\d|7091)\\d{5}|(?:69|[89]\\d)\\d{7}',
         'PossibleLength' => [
             9,
         ],
         'PossibleLengthLocalOnly' => [],
     ],
     'fixedLine' => [
-        'NationalNumberPattern' => '596(?:[03-7]\\d|1[05]|2[7-9]|8[0-39]|9[04-9])\\d{4}',
+        'NationalNumberPattern' => '(?:596(?:[03-7]\\d|1[05]|2[7-9]|8[0-39]|9[04-9])|80[6-9]\\d\\d|9(?:477[6-9]|767[4589]))\\d{4}',
         'ExampleNumber' => '596301234',
         'PossibleLength' => [],
         'PossibleLengthLocalOnly' => [],
     ],
     'mobile' => [
-        'NationalNumberPattern' => '69(?:6(?:[0-46-9]\\d|5[0-6])|727)\\d{4}',
+        'NationalNumberPattern' => '(?:69[67]\\d\\d|7091[0-3])\\d{4}',
         'ExampleNumber' => '696201234',
         'PossibleLength' => [],
         'PossibleLengthLocalOnly' => [],
@@ -33,9 +34,9 @@ return [
         'PossibleLengthLocalOnly' => [],
     ],
     'premiumRate' => [
-        'PossibleLength' => [
-            -1,
-        ],
+        'NationalNumberPattern' => '8[129]\\d{7}',
+        'ExampleNumber' => '810123456',
+        'PossibleLength' => [],
         'PossibleLengthLocalOnly' => [],
     ],
     'sharedCost' => [
@@ -91,7 +92,7 @@ return [
             'pattern' => '(\\d{3})(\\d{2})(\\d{2})(\\d{2})',
             'format' => '$1 $2 $3 $4',
             'leadingDigitsPatterns' => [
-                '[569]',
+                '[5-79]|8(?:0[6-9]|[36])',
             ],
             'nationalPrefixFormattingRule' => '0$1',
             'domesticCarrierCodeFormattingRule' => '',

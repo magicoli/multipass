@@ -1,4 +1,5 @@
 <?php
+
 /**
  * libphonenumber-for-php-lite data file
  * This file has been @generated from libphonenumber data
@@ -41,7 +42,7 @@ return [
         'PossibleLengthLocalOnly' => [],
     ],
     'shortCode' => [
-        'NationalNumberPattern' => '1(?:1(?:[2-48]|6(?:00[06]|111))|619[0-2]|8(?:01|1[0238]|28|30|5[13]|8[18]))',
+        'NationalNumberPattern' => '1(?:1(?:[248]|6(?:00[06]|111))|619[0-2]|8(?:01|1[0238]|28|30|5[13]|8[18]))',
         'ExampleNumber' => '112',
         'PossibleLength' => [],
         'PossibleLengthLocalOnly' => [],

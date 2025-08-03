@@ -81,7 +81,7 @@ abstract class Property extends Node
      * @param array             $parameters List of parameters
      * @param string            $group      The vcard property group
      */
-    public function __construct(Component $root, $name, $value = null, array $parameters = [], $group = null, int $lineIndex = null, string $lineString = null)
+    public function __construct(Component $root, $name, $value = null, array $parameters = [], $group = null, ?int $lineIndex = null, ?string $lineString = null)
     {
         $this->name = $name;
         $this->group = $group;
@@ -457,6 +457,8 @@ abstract class Property extends Node
      *
      * @param string $name
      * @param mixed  $value
+     *
+     * @return void
      */
     #[\ReturnTypeWillChange]
     public function offsetSet($name, $value)
@@ -478,6 +480,8 @@ abstract class Property extends Node
      * Removes one or more parameters with the specified name.
      *
      * @param string $name
+     *
+     * @return void
      */
     #[\ReturnTypeWillChange]
     public function offsetUnset($name)

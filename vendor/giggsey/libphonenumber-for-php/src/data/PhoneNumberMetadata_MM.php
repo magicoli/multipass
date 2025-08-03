@@ -1,4 +1,5 @@
 <?php
+
 /**
  * libphonenumber-for-php-lite data file
  * This file has been @generated from libphonenumber data
@@ -71,7 +72,7 @@ return [
         'PossibleLengthLocalOnly' => [],
     ],
     'voip' => [
-        'NationalNumberPattern' => '1333\\d{4}|[12]468\\d{4}',
+        'NationalNumberPattern' => '1333\\d{4}',
         'ExampleNumber' => '13331234',
         'PossibleLength' => [
             8,
