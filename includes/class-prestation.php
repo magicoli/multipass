@@ -461,33 +461,45 @@ class Mltp_Prestation {
 			'style'      => 'seamless',
 			'autosave'   => true,
 			'fields'     => array(
-				// array(
-				// 'name'       => __( 'Customer', 'multipass' ),
-				// 'id'         => $prefix . 'customer_id',
-				// 'type'       => 'user',
-				// 'field_type' => 'select_advanced',
-				// ),
-				// array(
-				// 'name'        => __( 'Contact name', 'multipass' ),
-				// 'id'          => $prefix . 'contact_name',
-				// 'type'        => 'text',
-				// 'description' => __( 'Leave empty if same as customer name', 'multipass' ),
-				// ),
-				// array(
-				// 'name' => _x( 'Contact', '(noun)', 'multipass' ),
-				// 'id'   => $prefix . 'display_name',
-				// 'type' => 'hidden',
-				// ),
-				// array(
-				// 'name' => __( 'Contact Email', 'multipass' ),
-				// 'id'   => $prefix . 'contact_email',
-				// 'type' => 'email',
-				// ),
-				// array(
-				// 'name' => __( 'Contact Phone', 'multipass' ),
-				// 'id'   => $prefix . 'contact_phone',
-				// 'type' => 'text',
-				// ),
+				array(
+					'name'       => __( 'Customer', 'multipass' ),
+					'id'         => $prefix . 'customer_id',
+					'type'       => 'user',
+					'field_type' => 'select_advanced',
+				),
+				array(
+					'name'        => __( 'Contact name', 'multipass' ),
+					'id'          => $prefix . 'contact_name',
+					'type'        => 'text',
+					'description' => __( 'Leave empty if same as customer name', 'multipass' ),
+					'visible'     => array(
+						'when'     => array( array( 'customer_id', '=', '' ) ),
+						'relation' => 'and',
+					),
+				),
+				array(
+					'name' => _x( 'Contact', '(noun)', 'multipass' ),
+					'id'   => $prefix . 'display_name',
+					'type' => 'hidden',
+				),
+				array(
+					'name' => __( 'Contact Email', 'multipass' ),
+					'id'   => $prefix . 'contact_email',
+					'type' => 'email',
+					'visible'     => array(
+						'when'     => array( array( 'customer_id', '=', '' ) ),
+						'relation' => 'and',
+					),
+				),
+				array(
+					'name' => __( 'Contact Phone', 'multipass' ),
+					'id'   => $prefix . 'contact_phone',
+					'type' => 'text',
+					'visible'     => array(
+						'when'     => array( array( 'customer_id', '=', '' ) ),
+						'relation' => 'and',
+					),
+				),
 				array(
 					'name'   => __( 'Dates', 'multipass' ),
 					'id'     => $prefix . 'dates',

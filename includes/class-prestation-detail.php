@@ -915,25 +915,26 @@ class Mltp_Item {
 					// 'min'           => 0,
 					'step'          => 'any',
 					'size'          => 10,
-					'readonly'      => true,
+					// 'readonly'      => true,
 					// 'save_field'	=> false,
 					'admin_columns' => array(
 						'position' => 'after paid',
 						'sort'     => true,
 					),
 				),
-				// array(
-				// 	'name'          => __( 'Status', 'multipass' ),
-				// 	'id'            => $prefix . 'status',
-				// 	'type'          => 'taxonomy',
-				// 	'taxonomy'      => array( 'prestation-status' ),
-				// 	'field_type'    => 'select',
-				// 	'admin_columns' => array(
-				// 		'position'   => 'before source',
-				// 		'sort'       => true,
-				// 		'filterable' => true,
-				// 	),
-				// ),
+				array(
+					'name'          => __( 'Status', 'multipass' ),
+					'id'            => $prefix . 'status',
+					'type'          => 'taxonomy',
+					'taxonomy'      => array( 'prestation-status' ),
+					'readonly'      => true,
+					'field_type'    => 'select',
+					'admin_columns' => array(
+						'position'   => 'before source',
+						'sort'       => true,
+						'filterable' => true,
+					),
+				),
 				// array(
 				// 	'name'    => __( 'Notes', 'prestations' ),
 				// 	'id'      => $prefix . 'notes',
@@ -1149,14 +1150,19 @@ class Mltp_Item {
 		foreach ( array( 'source', 'origin' ) as $received_source ) {
 			$source    = get_post_meta( $post_id, $received_source, true );
 			$source_id = get_post_meta( $post_id, $received_source . '_id', true );
+			if( empty( $source_id ) ) {
+				$terms = get_the_terms( $post_id, 'mltp_detail-source' );
+				$source_id = ( ! empty( $terms ) ) ? $terms[0]->slug : null;
+			}
+			error_log('updates ' . $received_source . ' ' . $source_id);
 			if ( ! empty( $source_id ) ) {
 				// error_log("$source id $source_id");
-				if ( empty( get_post_meta( $post_id, $source . '_id', true ) ) ) {
-					// error_log("updating " . $source . '_id'. " with" . $source_id);
-					$updates[ $source . '_id' ] = $source_id;
-					// } else {
-					// error_log( $source . '_id'. " already stored " . get_post_meta( $post_id, $source . '_id', true ) );
-				}
+				$updates[ $source . '_id' ] = $source_id;
+				$updates[ $source . '_uuid' ]     = MultiPass::hash_source_uuid( $source, $source_id );
+				$updates[ $source . '_edit_url' ] = MultiPass::get_source_url( $source, $source_id );
+				// if ( empty( get_post_meta( $post_id, $source . '_id', true ) ) ) {
+				// 	$updates[ $source . '_id' ] = $source_id;
+				// }
 			}
 		}
 
