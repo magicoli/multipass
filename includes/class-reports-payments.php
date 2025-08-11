@@ -210,7 +210,7 @@ class Mltp_Payments_Report {
 			$row = array(
 				'date'        => empty( $payment['date'] ) ? null : date_i18n( 'Y-m-d', $payment['date'] ),
 				'description' => $payment['description'],
-				'amount'      => empty( $payment['amount'] ) ? null : number_format_i18n( $payment['amount'], 2 ),
+				'amount'      => (empty( $payment['amount'] ) || ! is_numeric($payment['amount'])) ? null : number_format_i18n( $payment['amount'], 2 ),
 				'prestation'  => $payment['prestation_title'],
 				'from'        => empty( $payment['from'] ) ? null : date_i18n( 'Y-m-d', $payment['from'] ),
 				'to'          => empty( $payment['to'] ) ? null : date_i18n( 'Y-m-d', $payment['to'] ),
