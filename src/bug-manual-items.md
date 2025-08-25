@@ -20,14 +20,14 @@ Meta Box library (v5.6+) cloned group fields (`'type' => 'group', 'clone' => tru
 - Field definition follows Meta Box standards
 
 ## Confirmed Broken
-- **1 item**: Edit page shows empty, click "Add item" populates the existing data
-- **2+ items**: Edit page shows only last item, click "Add more" shows blank row
-- Saving without interacting clears existing values
+- **1 item**: Edit page shows empty, click "Add more" adds a row (as it should) populated with the existing data
+- **2+ items**: Edit page shows only last item, click "Add more" adds blank row (as it should) but missing rows are still missing
+- Saving without interacting clears the non-displayed values from post_meta, rendering them definitively missing
 
 ## Constraints for Fix
 - **CANNOT** change field definition structure (hundreds of existing records)
 - **CANNOT** modify save/storage format (used throughout plugin)
-- **MUST** use standard Meta Box hooks/filters only
+- **MUST** use standard wp Meta Box hooks/filters only (avoid rwmb in new developments)
 - **FOCUS** only on admin UI value population
 
 ## Attempted Solutions (didn't work)
