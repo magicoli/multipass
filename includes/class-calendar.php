@@ -220,6 +220,8 @@ class Mltp_Calendar {
 
 	public static function render_calendar_page() {
 		wp_enqueue_script( 'jquery-ui-progressbar' );
+		wp_enqueue_script( 'jquery-ui-dialog' );
+		wp_enqueue_style( 'jquery-ui-dialog' );
 
 		// Full Calendar library
 		wp_enqueue_script( 'fullcalendar-cdn', 'https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.3.0/main.min.js' );
@@ -227,7 +229,7 @@ class Mltp_Calendar {
 		wp_enqueue_style( 'fullcalendar-main', plugins_url( 'includes/fullcalendar/fullcalendar.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION );
 
 		// Calendar additions
-		wp_enqueue_script( 'mltp-calendar', plugins_url( 'includes/calendar/calendar.js', MULTIPASS_FILE ), array( 'jquery' ), MULTIPASS_VERSION );
+		wp_enqueue_script( 'mltp-calendar', plugins_url( 'includes/calendar/calendar.js', MULTIPASS_FILE ), array( 'jquery', 'jquery-ui-dialog' ), MULTIPASS_VERSION );
 		wp_enqueue_style( 'mltp-calendar', plugins_url( 'includes/calendar/calendar.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION );
 
 		// Transmettez les données à votre script
