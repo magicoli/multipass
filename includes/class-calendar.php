@@ -219,8 +219,15 @@ class Mltp_Calendar {
 	}
 
 	public static function render_calendar_page() {
-		wp_enqueue_script( 'jquery-ui-progressbar' );
+		// Ensure jQuery UI components are loaded
+		wp_enqueue_script( 'jquery-ui-core' );
+		wp_enqueue_script( 'jquery-ui-widget' );
+		wp_enqueue_script( 'jquery-ui-position' );
 		wp_enqueue_script( 'jquery-ui-dialog' );
+		wp_enqueue_script( 'jquery-ui-progressbar' );
+		
+		// Load jQuery UI styles
+		wp_enqueue_style( 'jquery-ui-core' );
 		wp_enqueue_style( 'jquery-ui-dialog' );
 
 		// Full Calendar library
