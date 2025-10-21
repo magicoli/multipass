@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -eu
+
+PGM=$(basename "$0")
+TMP=$(mktemp -t "$PGM.XXXXXXXXXX")
+trap "rm -f $TMP $TMP.* 2>/dev/null" EXIT
+
+# Use wp cli to create a mtlp_prestation post. Use title from command line arguments.
+client_name="${@:-}"
+
+# Confirm client name, allow to edit if not correct
+read -e -i "$client_name" -p "Client name: " client_name
+
+if [ -z "$client_name" ]; then
+    echo "Client name is required"
+    exit 1
+fi
+
+wp post create --post_type=mltp_prestation --post_title="$client_name" | tee $TMP.post
+# magic@mosaiques multipass $ cat /tmp/test 
+# Success: Created post 18180.
+prestation_id=$(cat $TMP.post | grep "^Success:" | tail -1 | awk '{print $4}' | cut -d. -f 1)
+echo "Prestation ID: $prestation_id"
+
+wp post meta update $prestation_id contact_name "$client_name"
+
+# request mail address from user
+read -p "Client email address: " email
+if [ -n "$email" ]; then
+    wp post meta update $prestation_id contact_email "$email"
+fi
+
+read -p "Client phone number: " phone
+if [ -n "$phone" ]; then
+    wp post meta update $prestation_id contact_phone "$phone"
+fi
