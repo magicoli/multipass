@@ -70,7 +70,7 @@ class Mltp_Calendar {
 				'component' => $this,
 				'callback'  => 'ajax_feed_events_action',
 			),
-			
+
 			array(
 				'hook'      => 'save_post',
 				'component' => $this,
@@ -225,7 +225,7 @@ class Mltp_Calendar {
 		wp_enqueue_script( 'jquery-ui-position' );
 		wp_enqueue_script( 'jquery-ui-dialog' );
 		wp_enqueue_script( 'jquery-ui-progressbar' );
-		
+
 		// Load jQuery UI styles
 		wp_enqueue_style( 'jquery-ui-core' );
 		wp_enqueue_style( 'jquery-ui-dialog' );
@@ -236,7 +236,8 @@ class Mltp_Calendar {
 		wp_enqueue_style( 'fullcalendar-main', plugins_url( 'includes/fullcalendar/fullcalendar.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION );
 
 		// Calendar additions
-		wp_enqueue_script( 'mltp-calendar', plugins_url( 'includes/calendar/calendar.js', MULTIPASS_FILE ), array( 'jquery', 'jquery-ui-dialog' ), MULTIPASS_VERSION );
+		// wp_enqueue_script( 'mltp-calendar', plugins_url( 'includes/calendar/calendar.js', MULTIPASS_FILE ), array( 'jquery', 'jquery-ui-dialog' ), MULTIPASS_VERSION );
+        wp_enqueue_script( 'mltp-calendar', plugins_url( 'includes/calendar/calendar.js', MULTIPASS_FILE ), array( 'jquery', 'jquery-ui-dialog', 'fullcalendar-cdn' ), MULTIPASS_VERSION );
 		wp_enqueue_style( 'mltp-calendar', plugins_url( 'includes/calendar/calendar.css', MULTIPASS_FILE ), array(), MULTIPASS_VERSION );
 
 		// Transmettez les données à votre script
@@ -485,7 +486,7 @@ class Mltp_Calendar {
 		$json = json_encode( $data );
 
 		echo json_encode( $data );
-		
+
 		// store transient with the process time, based on $start_time value passed earlier
 		$process_time = microtime( true ) - $start_time;
 		set_transient( 'mltp_ajax_feed_process_time', $process_time );
@@ -494,7 +495,7 @@ class Mltp_Calendar {
 	}
 
 	static function get_the_modal( $item_id ) {
-		$debug_presta = array( 
+		$debug_presta = array(
 			// 17386, // Emma Prades
 			// 17387, // Emma Prades Sun
 			// 17373, // Rara Avis
@@ -576,7 +577,7 @@ class Mltp_Calendar {
 			$nights = null;
 		}
 		$nights = round( $nights, 0 );
-		
+
 		$data = array(
 			'prestation' => array(
 				// __( 'Dates', 'multipass' )               => MultiPass::format_date_range( $prestation->dates ),
@@ -731,9 +732,9 @@ class Mltp_Calendar {
 
 			$html .= '<ul class="modal-buttons">' . $links_html . '</ul>';
 		}
-		
+
 		if(!empty($html)) {
-			
+
 			set_transient( $transient_key, $html );
 		}
 
@@ -767,12 +768,12 @@ class Mltp_Calendar {
 
 		$user_id = get_current_user_id();
 		if(empty($user_id)) return false;
-		
+
 		foreach ( $post_ids as $post_id ) {
 			$transient_key = 'mltp_cal_event_modal_' . $user_id . '_' . $post_id;
 			delete_transient( $transient_key );
 		}
-		
+
 	}
 
 }
